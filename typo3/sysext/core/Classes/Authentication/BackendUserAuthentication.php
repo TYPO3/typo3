@@ -563,11 +563,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		if (!is_object($RTE)) {
 			$this->RTE_errors = array_merge($this->RTE_errors, $RTE);
 		}
-		if (!count($this->RTE_errors)) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+
+		return empty($this->RTE_errors);
 	}
 
 	/**

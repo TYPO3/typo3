@@ -297,7 +297,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	 */
 	public function flushByTag($tag) {
 		$identifiers = $this->findIdentifiersByTag($tag);
-		if (count($identifiers) === 0) {
+		if (empty($identifiers)) {
 			return;
 		}
 		foreach ($identifiers as $entryIdentifier) {

@@ -268,7 +268,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 		}
 		if (!$this->collectionInstances[$uid]) {
 			// Get mount data if not already supplied as argument to this function
-			if (count($recordData) === 0 || $recordData['uid'] !== $uid) {
+			if (empty($recordData) || $recordData['uid'] !== $uid) {
 				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
 				$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_collection', 'uid=' . (int)$uid . ' AND deleted=0');
 				if (!is_array($recordData)) {

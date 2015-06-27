@@ -66,7 +66,7 @@ class ExtDirectApi {
 	public function getApiPhp(array $filterNamespaces) {
 		$javascriptNamespaces = $this->getExtDirectApi($filterNamespaces);
 		// Return the generated javascript API configuration
-		if (count($javascriptNamespaces)) {
+		if (!empty($javascriptNamespaces)) {
 			return '
 				if (!Ext.isObject(Ext.app.ExtDirectAPI)) {
 					Ext.app.ExtDirectAPI = {};
@@ -159,7 +159,7 @@ class ExtDirectApi {
 		// Generate the javascript content if it wasn't found inside the cache and cache it!
 		if ($noCache || !is_array(($javascriptNamespaces = \TYPO3\CMS\Frontend\Page\PageRepository::getHash($cacheHash)))) {
 			$javascriptNamespaces = $this->generateAPI($filterNamespaces);
-			if (count($javascriptNamespaces)) {
+			if (!empty($javascriptNamespaces)) {
 				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($cacheHash, $javascriptNamespaces, $cacheIdentifier);
 			}
 		}
@@ -173,7 +173,7 @@ class ExtDirectApi {
 	 * @return string $errorMessage
 	 */
 	protected function getNamespaceError(array $filterNamespaces) {
-		if (count($filterNamespaces)) {
+		if (!empty($filterNamespaces)) {
 			// Namespace error
 			$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ExtDirect.namespaceError'), __CLASS__, implode(',', $filterNamespaces));
 		} else {

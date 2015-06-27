@@ -194,7 +194,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 						unset($this->fileCmdMap['upload'][$upload['data']]);
 					}
 				}
-				if (count($this->fileCmdMap['upload']) == 0) {
+				if (empty($this->fileCmdMap['upload'])) {
 					$this->writelog(1, 1, 108, 'No file was uploaded!', '');
 				}
 			}
@@ -206,7 +206,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 						unset($this->fileCmdMap['newfolder'][$key]);
 					}
 				}
-				if (count($this->fileCmdMap['newfolder']) === 0) {
+				if (empty($this->fileCmdMap['newfolder'])) {
 					$this->writeLog(6, 1, 108, 'No name for new folder given!', '');
 				}
 			}
@@ -360,7 +360,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 					. ' AND tablename != ' . $databaseConnection->fullQuoteStr('sys_file_metadata', $table)
 			);
 			$deleteFile = TRUE;
-			if (count($refIndexRecords) > 0) {
+			if (!empty($refIndexRecords)) {
 				$shortcutContent = array();
 				$brokenReferences = array();
 

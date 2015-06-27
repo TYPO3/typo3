@@ -1585,7 +1585,7 @@ class SqlParser {
 		}
 		// Make query:
 		$query = 'INSERT INTO ' . $components['TABLE'];
-		if (count($tableFields)) {
+		if (!empty($tableFields)) {
 			$query .= ' (' . implode(',', $tableFields) . ')';
 		}
 		$query .= ' VALUES ' . implode(',', $values);

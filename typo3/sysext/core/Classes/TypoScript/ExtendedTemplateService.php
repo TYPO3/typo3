@@ -988,7 +988,7 @@ class ExtendedTemplateService extends TemplateService {
 		// Returns array used for labels in the menu.
 		$retArr = array();
 		foreach ($this->categories as $k => $v) {
-			if (count($v)) {
+			if (!empty($v)) {
 				$retArr[$k] = strtoupper($k) . ' (' . count($v) . ')';
 			}
 		}

@@ -80,7 +80,7 @@ class CommandLineController {
 		}
 		if ((string)$argv[0] === (string)$option) {
 			array_shift($argv);
-			return count($argv) ? $argv : array('');
+			return !empty($argv) ? $argv : array('');
 		}
 	}
 
@@ -166,7 +166,7 @@ class CommandLineController {
 				unset($cli_args_copy[$argSplit[0]]);
 			}
 		}
-		if (count($cli_args_copy)) {
+		if (!empty($cli_args_copy)) {
 			echo wordwrap('ERROR: Option ' . implode(',', array_keys($cli_args_copy)) . ' was unknown to this script!' . LF . '(Options are: ' . implode(', ', $allOptions) . ')' . LF);
 			die;
 		}

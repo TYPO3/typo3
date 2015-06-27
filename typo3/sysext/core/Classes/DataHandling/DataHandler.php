@@ -1226,7 +1226,7 @@ class DataHandler {
 					// Removing fields which are equal to the current value:
 					$fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray);
 				}
-				if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] && count($fieldArray)) {
+				if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] && !empty($fieldArray)) {
 					$fieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 					if ($createNewVersion) {
 						$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
@@ -1288,7 +1288,7 @@ class DataHandler {
 							// only a certain number of fields needs to be checked for updates
 							// if $this->checkSimilar is TRUE, fields with unchanged values are already removed here
 							$fieldsToCheck = array_intersect($this->pagetreeRefreshFieldsFromPages, array_keys($fieldArray));
-							if (count($fieldsToCheck)) {
+							if (!empty($fieldsToCheck)) {
 								$this->pagetreeNeedsRefresh = TRUE;
 							}
 						}
@@ -1342,7 +1342,7 @@ class DataHandler {
 						$newRecord[$fieldName] = $justStoredRecord[$fieldName];
 					}
 				}
-				if (count($newRecord)) {
+				if (!empty($newRecord)) {
 					if ($this->enableLogging) {
 						$this->newlog2('Shadowing done on fields <i>' . implode(',', array_keys($newRecord)) . '</i> in placeholder record ' . $table . ':' . $liveRec['uid'] . ' (offline version UID=' . $id . ')', $table, $liveRec['uid'], $liveRec['pid']);
 					}
@@ -1981,7 +1981,7 @@ class DataHandler {
 				}
 			}
 			// During the check it turns out that the value / all values were removed - we respond by simply returning an empty array so nothing is written to DB for this field.
-			if ($preCount && !count($valueArray)) {
+			if ($preCount && empty($valueArray)) {
 				return array();
 			}
 		}
@@ -2139,7 +2139,7 @@ class DataHandler {
 					}
 					$currentFilesForHistory = implode(',', $theFileValues);
 					// DELETE files: If existing files were found, traverse those and register files for deletion which has been removed:
-					if (count($theFileValues)) {
+					if (!empty($theFileValues)) {
 						// Traverse the input values and for all input values which match an EXISTING value, remove the existing from $theFileValues array (this will result in an array of all the existing files which should be deleted!)
 						foreach ($valueArray as $key => $theFile) {
 							if ($theFile && !strstr(GeneralUtility::fixWindowsFilePath($theFile), '/')) {
@@ -2258,7 +2258,7 @@ class DataHandler {
 				$valueArray = $dbAnalysis->countItems();
 			}
 		} else {
-			if (count($valueArray)) {
+			if (!empty($valueArray)) {
 				// If filehandling should NOT be bypassed, do processing:
 				if (!$this->bypassFileHandling) {
 					// For logging..
@@ -3723,7 +3723,7 @@ class DataHandler {
 					} elseif ($this->BE_USER->workspace > 0 && BackendUtility::isTableWorkspaceEnabled($v['table'])) {
 						// A filled $workspaceOptions indicated that this call
 						// has it's origin in previous versionizeRecord() processing
-						if (count($workspaceOptions)) {
+						if (!empty($workspaceOptions)) {
 							// Versions use live default id, thus the "new"
 							// id is the original live default child record
 							$newId = $v['id'];
@@ -4530,7 +4530,7 @@ class DataHandler {
 						$value = implode(',', $dbAnalysisCurrent->getValueArray());
 						$this->registerDBList[$table][$id][$field] = $value;
 						// Remove child records (if synchronization requested it):
-						if (is_array($removeArray) && count($removeArray)) {
+						if (is_array($removeArray) && !empty($removeArray)) {
 							/** @var DataHandler $tce */
 							$tce = GeneralUtility::makeInstance(__CLASS__);
 							$tce->stripslashes_values = FALSE;
@@ -4549,7 +4549,7 @@ class DataHandler {
 							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
 						}
 						// Update field referencing to child records of localized parent record:
-						if (is_array($updateFields) && count($updateFields)) {
+						if (is_array($updateFields) && !empty($updateFields)) {
 							$this->updateDB($table, $id, $updateFields);
 						}
 					}
@@ -5211,13 +5211,13 @@ class DataHandler {
 					/** @var $dbAnalysis RelationHandler */
 					$dbAnalysis = $this->createRelationHandlerInstance();
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $id, $table, $conf);
-					if (count($dbAnalysis->getValueArray($prependName))) {
+					if (!empty($dbAnalysis->getValueArray($prependName))) {
 						$this->version_remapMMForVersionSwap_reg[$id][$field] = array($dbAnalysis, $conf['MM'], $prependName);
 					}
 					/** @var $dbAnalysis RelationHandler */
 					$dbAnalysis = $this->createRelationHandlerInstance();
 					$dbAnalysis->start('', $allowedTables, $conf['MM'], $swapWith, $table, $conf);
-					if (count($dbAnalysis->getValueArray($prependName))) {
+					if (!empty($dbAnalysis->getValueArray($prependName))) {
 						$this->version_remapMMForVersionSwap_reg[$swapWith][$field] = array($dbAnalysis, $conf['MM'], $prependName);
 					}
 				}
@@ -5325,7 +5325,7 @@ class DataHandler {
 	 * @return void
 	 */
 	public function remapListedDBRecords() {
-		if (count($this->registerDBList)) {
+		if (!empty($this->registerDBList)) {
 			foreach ($this->registerDBList as $table => $records) {
 				foreach ($records as $uid => $fields) {
 					$newData = array();
@@ -5368,7 +5368,7 @@ class DataHandler {
 						}
 					}
 					// If any fields were changed, those fields are updated!
-					if (count($newData)) {
+					if (!empty($newData)) {
 						$this->updateDB($table, $theUidToUpdate_saveTo, $newData);
 					}
 				}
@@ -5763,7 +5763,7 @@ class DataHandler {
 			}
 			// Clean up the $registerDBList array:
 			unset($registerDBList[$table][$id]);
-			if (!count($registerDBList[$table])) {
+			if (empty($registerDBList[$table])) {
 				unset($registerDBList[$table]);
 			}
 		}
@@ -6263,7 +6263,7 @@ class DataHandler {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && (int)$id) {
 			// Do NOT update the UID field, ever!
 			unset($fieldArray['uid']);
-			if (count($fieldArray)) {
+			if (!empty($fieldArray)) {
 				$fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
 				// Execute the UPDATE query:
 				$this->databaseConnection->exec_UPDATEquery($table, 'uid=' . (int)$id, $fieldArray);
@@ -6310,7 +6310,7 @@ class DataHandler {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && isset($fieldArray['pid'])) {
 			// Do NOT insert the UID field, ever!
 			unset($fieldArray['uid']);
-			if (count($fieldArray)) {
+			if (!empty($fieldArray)) {
 				// Check for "suggestedUid".
 				// This feature is used by the import functionality to force a new record to have a certain UID value.
 				// This is only recommended for use when the destination server is a passive mirror of another server.
@@ -7040,7 +7040,7 @@ class DataHandler {
 					$newData[$field] = $prevData[$field];
 				}
 			}
-			if ($update && count($newData)) {
+			if ($update && !empty($newData)) {
 				$this->updateDB($table, $uid, $newData);
 			}
 		}
@@ -7471,7 +7471,7 @@ class DataHandler {
 			$tagsToFlush[] = $cacheTag;
 		}
 		// process caching framwork operations
-		if (count($tagsToFlush) > 0) {
+		if (!empty($tagsToFlush)) {
 			foreach (array_unique($tagsToFlush) as $tag) {
 				$this->getCacheManager()->flushCachesInGroupByTag('pages', $tag);
 			}

@@ -232,7 +232,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 			// anywhere.
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
-				if (count($identifiers)) {
+				if (!empty($identifiers)) {
 					wincache_ucache_set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
 					wincache_ucache_delete($this->identifierPrefix . 'tag_' . $tag);

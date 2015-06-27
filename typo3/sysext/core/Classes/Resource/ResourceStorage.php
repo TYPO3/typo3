@@ -2201,7 +2201,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @return Folder
 	 */
 	public function getRootLevelFolder($respectFileMounts = TRUE) {
-		if ($respectFileMounts && count($this->fileMounts)) {
+		if ($respectFileMounts && !empty($this->fileMounts)) {
 			$mount = reset($this->fileMounts);
 			return $mount['folder'];
 		} else {

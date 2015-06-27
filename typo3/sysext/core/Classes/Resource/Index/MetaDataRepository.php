@@ -149,7 +149,7 @@ class MetaDataRepository implements SingletonInterface {
 	 * @internal
 	 */
 	public function update($fileUid, array $data) {
-		if (count($this->tableFields) === 0) {
+		if (empty($this->tableFields)) {
 			$this->tableFields = $this->getDatabaseConnection()->admin_get_fields($this->tableName);
 		}
 		$updateRow = array_intersect_key($data, $this->tableFields);
@@ -157,7 +157,7 @@ class MetaDataRepository implements SingletonInterface {
 			unset($updateRow['uid']);
 		}
 		$row = $this->findByFileUid($fileUid);
-		if (count($updateRow) > 0) {
+		if (!empty($updateRow)) {
 			$updateRow['tstamp'] = time();
 			$this->getDatabaseConnection()->exec_UPDATEquery($this->tableName, 'uid = ' . (int)$row['uid'], $updateRow);
 

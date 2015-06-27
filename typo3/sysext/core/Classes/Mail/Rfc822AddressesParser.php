@@ -426,7 +426,7 @@ class Rfc822AddressesParser {
 		// Check that $addresses is set, if address like this:
 		// Groupname:;
 		// Then errors were appearing.
-		if (!count($addresses)) {
+		if (empty($addresses)) {
 			$this->error = 'Empty group.';
 			return FALSE;
 		}
@@ -465,7 +465,7 @@ class Rfc822AddressesParser {
 		// Splits on one or more Tab or space.
 		$parts = preg_split('/[ \\x09]+/', $phrase, -1, PREG_SPLIT_NO_EMPTY);
 		$phrase_parts = array();
-		while (count($parts) > 0) {
+		while (!empty($parts)) {
 			$phrase_parts[] = $this->_splitCheck($parts, ' ');
 			for ($i = 0; $i < $this->index + 1; $i++) {
 				array_shift($parts);
@@ -687,7 +687,7 @@ class Rfc822AddressesParser {
 	protected function _validateDomain($domain) {
 		// Note the different use of $subdomains and $sub_domains
 		$subdomains = explode('.', $domain);
-		while (count($subdomains) > 0) {
+		while (!empty($subdomains)) {
 			$sub_domains[] = $this->_splitCheck($subdomains, '.');
 			for ($i = 0; $i < $this->index + 1; $i++) {
 				array_shift($subdomains);
@@ -778,7 +778,7 @@ class Rfc822AddressesParser {
 		$parts = explode('.', $local_part);
 		$words = array();
 		// Split the local_part into words.
-		while (count($parts) > 0) {
+		while (!empty($parts)) {
 			$words[] = $this->_splitCheck($parts, '.');
 			for ($i = 0; $i < $this->index + 1; $i++) {
 				array_shift($parts);

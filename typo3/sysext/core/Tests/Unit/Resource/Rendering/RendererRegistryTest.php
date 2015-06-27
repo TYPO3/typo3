@@ -30,7 +30,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->setMethods(array('createRendererInstance'))
 			->getMock();
 
-		if (count($createsRendererInstances)) {
+		if (!empty($createsRendererInstances)) {
 			$rendererRegistry->expects($this->any())
 				->method('createRendererInstance')
 				->will($this->returnValueMap($createsRendererInstances));

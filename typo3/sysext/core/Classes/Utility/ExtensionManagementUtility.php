@@ -508,7 +508,7 @@ class ExtensionManagementUtility {
 		if ($relativePosition !== '') {
 			// Insert at specified position
 			$matchedPosition = ArrayUtility::filterByValueRecursive($relativeToField, $GLOBALS['TCA'][$table]['columns'][$field]['config']['items']);
-			if (count($matchedPosition) > 0) {
+			if (!empty($matchedPosition)) {
 				$relativeItemKey = key($matchedPosition);
 				if ($relativePosition === 'replace') {
 					$GLOBALS['TCA'][$table]['columns'][$field]['config']['items'][$relativeItemKey] = $item;
@@ -920,7 +920,7 @@ class ExtensionManagementUtility {
 		}
 
 		// add additional configuration
-		if (is_array($moduleConfiguration) && count($moduleConfiguration) > 0) {
+		if (is_array($moduleConfiguration) && !empty($moduleConfiguration)) {
 			$GLOBALS['TBE_MODULES']['_configuration'][$fullModuleSignature] = $moduleConfiguration;
 		}
 	}

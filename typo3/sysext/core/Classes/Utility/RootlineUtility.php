@@ -365,7 +365,7 @@ class RootlineUtility {
 		$cacheTags = array('pageId_' . $page['uid']);
 		if ($parentUid > 0) {
 			// Get rootline of (and including) parent page
-			$mountPointParameter = count($this->parsedMountPointParameters) > 0 ? $this->mountPointParameter : '';
+			$mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
 			/** @var $rootline \TYPO3\CMS\Core\Utility\RootlineUtility */
 			$rootline = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\RootlineUtility::class, $parentUid, $mountPointParameter, $this->pageContext);
 			$rootline = $rootline->get();

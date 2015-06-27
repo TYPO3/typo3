@@ -64,7 +64,7 @@ class ArrayUtility {
 				($resultArray[$key] = $value);
 			} elseif (is_array($value)) {
 				($subArrayMatches = static::filterByValueRecursive($needle, $value));
-				if (count($subArrayMatches) > 0) {
+				if (!empty($subArrayMatches)) {
 					($resultArray[$key] = $subArrayMatches);
 				}
 			}
@@ -317,7 +317,7 @@ class ArrayUtility {
 				$lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
 			}
 			if (is_array($value)) {
-				if (count($value) > 0) {
+				if (!empty($value)) {
 					$lines .= self::arrayExport($value, $level);
 				} else {
 					$lines .= 'array(),' . LF;
@@ -614,7 +614,7 @@ class ArrayUtility {
 				$getValueFunc = NULL;
 			}
 			// Do the filtering:
-			if (is_array($keepItems) && count($keepItems)) {
+			if (is_array($keepItems) && !empty($keepItems)) {
 				foreach ($array as $key => $value) {
 					// Get the value to compare by using the callback function:
 					$keepValue = isset($getValueFunc) ? call_user_func($getValueFunc, $value) : $value;

@@ -655,7 +655,7 @@ class RelationHandler {
 				}
 			}
 			// Delete all not-used relations:
-			if (is_array($oldMMs) && count($oldMMs) > 0) {
+			if (is_array($oldMMs) && !empty($oldMMs)) {
 				$removeClauses = array();
 				$updateRefIndex_records = array();
 				foreach ($oldMMs as $oldMM_key => $mmItem) {
@@ -807,7 +807,7 @@ class RelationHandler {
 		$sortby = $GLOBALS['TYPO3_DB']->stripOrderBy($sortby);
 		// Get the rows from storage
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $foreign_table, $whereClause, '', $sortby, '', 'uid');
-		if (count($rows)) {
+		if (!empty($rows)) {
 			if (BackendUtility::isTableWorkspaceEnabled($foreign_table) && !$this->useLiveReferenceIds) {
 				$rows = $this->getRecordVersionsIds($foreign_table, $rows);
 			}
@@ -844,7 +844,7 @@ class RelationHandler {
 		$foreign_table_field = $conf['foreign_table_field'];
 		$foreign_match_fields = is_array($conf['foreign_match_fields']) ? $conf['foreign_match_fields'] : array();
 		// If there are table items and we have a proper $parentUid
-		if (MathUtility::canBeInterpretedAsInteger($parentUid) && count($this->tableArray)) {
+		if (MathUtility::canBeInterpretedAsInteger($parentUid) && !empty($this->tableArray)) {
 			// If updateToUid is not a positive integer, set it to '0', so it will be ignored
 			if (!(MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
 				$updateToUid = 0;
@@ -916,7 +916,7 @@ class RelationHandler {
 					}
 				}
 				// Update accordant fields in the database:
-				if (count($updateValues)) {
+				if (!empty($updateValues)) {
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . (int)$uid, $updateValues);
 					$this->updateRefIndex($table, $uid);
 				}
@@ -1127,7 +1127,7 @@ class RelationHandler {
 		$itemArrayHasBeenPurged = FALSE;
 
 		foreach ($this->tableArray as $itemTableName => $itemIds) {
-			if (!count($itemIds) || !BackendUtility::isTableWorkspaceEnabled($itemTableName)) {
+			if (empty($itemIds) || !BackendUtility::isTableWorkspaceEnabled($itemTableName)) {
 				continue;
 			}
 
@@ -1137,7 +1137,7 @@ class RelationHandler {
 				$this->removeFromItemArray($itemTableName, $removedItemId);
 			}
 			$this->tableArray[$itemTableName] = $purgedItemIds;
-			if (count($removedItemIds)) {
+			if (!empty($removedItemIds)) {
 				$itemArrayHasBeenPurged = TRUE;
 			}
 		}

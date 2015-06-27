@@ -298,7 +298,7 @@ class ApcBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 			// anywhere.
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
-				if (count($identifiers)) {
+				if (!empty($identifiers)) {
 					apc_store($this->getIdentifierPrefix() . 'tag_' . $tag, $identifiers);
 				} else {
 					apc_delete($this->getIdentifierPrefix() . 'tag_' . $tag);

@@ -363,7 +363,7 @@ class FrontendEditingController {
 	 */
 	public function doDelete($table, $uid) {
 		$cmdData[$table][$uid]['delete'] = 1;
-		if (count($cmdData)) {
+		if (!empty($cmdData)) {
 			$this->initializeTceMain();
 			$this->tce->start(array(), $cmdData);
 			$this->tce->process_cmdmap();
@@ -480,11 +480,11 @@ class FrontendEditingController {
 				if ($table == 'pages') {
 					$allow = $this->getAllowedEditActions($table, $conf, $dataArray['pid'], $allow);
 					// Can only display editbox if there are options in the menu
-					if (count($allow)) {
+					if (!empty($allow)) {
 						$mayEdit = TRUE;
 					}
 				} else {
-					$mayEdit = count($allow) && $perms & Permission::CONTENT_EDIT;
+					$mayEdit = !empty($allow) && $perms & Permission::CONTENT_EDIT;
 				}
 			}
 		}

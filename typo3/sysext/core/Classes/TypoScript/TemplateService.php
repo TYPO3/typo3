@@ -729,7 +729,7 @@ class TemplateService {
 	 * @throws \RuntimeException If the given $fullRootLine does not contain all pages that are in the current template rootline
 	 */
 	public function updateRootlineData($fullRootLine) {
-		if (!is_array($this->rootLine) || count($this->rootLine) === 0) {
+		if (!is_array($this->rootLine) || empty($this->rootLine)) {
 			return;
 		}
 
@@ -1546,7 +1546,7 @@ class TemplateService {
 		}
 		// Finding MP var for Page ID:
 		if ($pageId) {
-			if (is_array($this->MPmap[$pageId]) && count($this->MPmap[$pageId])) {
+			if (is_array($this->MPmap[$pageId]) && !empty($this->MPmap[$pageId])) {
 				return implode(',', $this->MPmap[$pageId]);
 			}
 		}

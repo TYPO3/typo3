@@ -129,7 +129,7 @@ class ExtractorRegistryTest extends UnitTestCase {
 			->setMethods(array('createExtractorInstance'))
 			->getMock();
 
-		if (count($createsExtractorInstances) > 0) {
+		if (!empty($createsExtractorInstances)) {
 			$extractorRegistry->expects($this->any())
 				->method('createExtractorInstance')
 				->will($this->returnValueMap($createsExtractorInstances));

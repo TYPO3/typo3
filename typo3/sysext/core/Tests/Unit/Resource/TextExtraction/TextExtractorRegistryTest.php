@@ -34,7 +34,7 @@ class TextExtractorRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			->setMethods(array('createTextExtractorInstance'))
 			->getMock();
 
-		if (count($createsTextExtractorInstances)) {
+		if (!empty($createsTextExtractorInstances)) {
 			$textExtractorRegistry->expects($this->any())
 				->method('createTextExtractorInstance')
 				->will($this->returnValueMap($createsTextExtractorInstances));

@@ -250,13 +250,13 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 							$modifiedAspectClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
 						}
 						// As long as no modified aspect was found, we are optimistic that only part of the cache needs to be flushed:
-						if (count($modifiedAspectClassNamesWithUnderscores) === 0) {
+						if (empty($modifiedAspectClassNamesWithUnderscores)) {
 							$objectClassesCache->remove($classNameWithUnderscores);
 						}
 					}
 				}
 				$flushDoctrineProxyCache = FALSE;
-				if (count($modifiedClassNamesWithUnderscores) > 0) {
+				if (!empty($modifiedClassNamesWithUnderscores)) {
 					$reflectionStatusCache = $this->getCache('FLOW3_Reflection_Status');
 					foreach ($modifiedClassNamesWithUnderscores as $classNameWithUnderscores => $_) {
 						$reflectionStatusCache->remove($classNameWithUnderscores);
@@ -266,7 +266,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 					}
 					$objectConfigurationCache->remove('allCompiledCodeUpToDate');
 				}
-				if (count($modifiedAspectClassNamesWithUnderscores) > 0) {
+				if (!empty($modifiedAspectClassNamesWithUnderscores)) {
 					$this->systemLogger->log('Aspect classes have been modified, flushing the whole proxy classes cache.', LOG_INFO);
 					$objectClassesCache->flush();
 				}

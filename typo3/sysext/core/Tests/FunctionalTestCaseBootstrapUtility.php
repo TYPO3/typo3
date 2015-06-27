@@ -674,7 +674,7 @@ class FunctionalTestCaseBootstrapUtility {
 				$lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
 			}
 			if (is_array($value)) {
-				if (count($value) > 0) {
+				if (!empty($value)) {
 					$lines .= $this->arrayExport($value, $level);
 				} else {
 					$lines .= 'array(),' . chr(10);

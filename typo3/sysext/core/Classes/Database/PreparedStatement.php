@@ -313,7 +313,7 @@ class PreparedStatement {
 			$precompiledQueryParts = $this->precompiledQueryParts;
 
 			$this->convertNamedPlaceholdersToQuestionMarks($query, $parameterValues, $precompiledQueryParts);
-			if (count($precompiledQueryParts) > 0) {
+			if (!empty($precompiledQueryParts)) {
 				$query = implode('', $precompiledQueryParts['queryParts']);
 			}
 			$this->statement = $GLOBALS['TYPO3_DB']->prepare_PREPAREDquery($query, $precompiledQueryParts);
@@ -369,7 +369,7 @@ class PreparedStatement {
 			return FALSE;
 		}
 
-		if (count($this->fields) === 0) {
+		if (empty($this->fields)) {
 			// Store the list of fields
 			if ($this->statement instanceof \mysqli_stmt) {
 				$result = $this->statement->result_metadata();
@@ -594,7 +594,7 @@ class PreparedStatement {
 			if ($hasNamedPlaceholders) {
 				$query = $this->tokenizeQueryParameterMarkers($query, $parameterValues);
 			}
-		} elseif (count($parameterValues) > 0) {
+		} elseif (!empty($parameterValues)) {
 			$hasNamedPlaceholders = !is_int(key($parameterValues));
 			if ($hasNamedPlaceholders) {
 				for ($i = 1; $i < $queryPartsCount; $i += 2) {

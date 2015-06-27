@@ -135,10 +135,11 @@ class CommandUtility {
 		if ($command == 'composite' && $switchCompositeParameters) {
 			$paramsArr = GeneralUtility::unQuoteFilenames($parameters);
 			// The mask image has been specified => swap the parameters
-			if (count($paramsArr) > 5) {
-				$tmp = $paramsArr[count($paramsArr) - 3];
-				$paramsArr[count($paramsArr) - 3] = $paramsArr[count($paramsArr) - 4];
-				$paramsArr[count($paramsArr) - 4] = $tmp;
+			$paramsArrCount = count($paramsArr);
+			if ($paramsArrCount > 5) {
+				$tmp = $paramsArr[$paramsArrCount - 3];
+				$paramsArr[$paramsArrCount - 3] = $paramsArr[$paramsArrCount - 4];
+				$paramsArr[$paramsArrCount - 4] = $tmp;
 			}
 			$cmdLine = $path . ' ' . implode(' ', $paramsArr);
 		}

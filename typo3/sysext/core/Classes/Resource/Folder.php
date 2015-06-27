@@ -413,7 +413,7 @@ class Folder implements FolderInterface {
 				break;
 
 			case self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS:
-				if (count($this->fileAndFolderNameFilters) > 0) {
+				if (!empty($this->fileAndFolderNameFilters)) {
 					$backedUpFilters = $this->storage->getFileAndFolderNameFilters();
 					foreach ($this->fileAndFolderNameFilters as $filter) {
 						$this->storage->addFileAndFolderNameFilter($filter);

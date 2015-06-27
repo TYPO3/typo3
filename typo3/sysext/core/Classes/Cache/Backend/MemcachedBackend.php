@@ -130,7 +130,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 * @throws \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function initializeObject() {
-		if (!count($this->servers)) {
+		if (empty($this->servers)) {
 			throw new \TYPO3\CMS\Core\Cache\Exception('No servers were given to Memcache', 1213115903);
 		}
 		$this->memcache = new \Memcache();
@@ -361,7 +361,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 			// anywhere.
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
-				if (count($identifiers)) {
+				if (!empty($identifiers)) {
 					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
 					$this->memcache->delete($this->identifierPrefix . 'tag_' . $tag, 0);

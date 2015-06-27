@@ -276,7 +276,7 @@ class Bootstrap {
 				$suitableRequestHandlers[$priority] = $requestHandler;
 			}
 		}
-		if (count($suitableRequestHandlers) === 0) {
+		if (empty($suitableRequestHandlers)) {
 			throw new \TYPO3\CMS\Core\Exception('No suitable request handler found.', 1225418233);
 		}
 		ksort($suitableRequestHandlers);

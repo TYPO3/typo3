@@ -200,7 +200,7 @@ class HtmlParser {
 					// use strtr instead of strtoupper to avoid locale problems with Turkish
 					$marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 				}
-				if (count($wrapArr) > 0) {
+				if (!empty($wrapArr)) {
 					$marker = $wrapArr[0] . $marker . $wrapArr[1];
 				}
 				$search[] = $marker;
@@ -273,7 +273,7 @@ class HtmlParser {
 				// Use strtr instead of strtoupper to avoid locale problems with Turkish
 				$subpartMarker = strtr($subpartMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 			}
-			if (count($wraps) > 0) {
+			if (!empty($wraps)) {
 				$subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
 			}
 			$subTemplates[$subpartMarker] = self::getSubpart($content, $subpartMarker);
@@ -285,10 +285,10 @@ class HtmlParser {
 				// use strtr instead of strtoupper to avoid locale problems with Turkish
 				$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 			}
-			if (count($wraps) > 0) {
+			if (!empty($wraps)) {
 				$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
 			}
-			if (count($markersAndSubparts[$subpartMarker]) > 0) {
+			if (!empty($markersAndSubparts[$subpartMarker])) {
 				foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
 					$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker],
 						$partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
@@ -843,7 +843,7 @@ class HtmlParser {
 															$newClasses[] = $class;
 														}
 													}
-													if (count($newClasses)) {
+													if (!empty($newClasses)) {
 														$tagAttrib[0][$attr] = implode(' ', $newClasses);
 													} else {
 														$tagAttrib[0][$attr] = '';
@@ -924,7 +924,7 @@ class HtmlParser {
 											$lastEl = end($tagStack);
 											if ($tagName !== $lastEl) {
 												if (in_array($tagName, $tagStack)) {
-													while (count($tagStack) && $tagName !== $lastEl) {
+													while (!empty($tagStack) && $tagName !== $lastEl) {
 														$elPos = end($tagRegister[$lastEl]);
 														unset($newContent[$elPos]);
 														array_pop($tagRegister[$lastEl]);
@@ -937,7 +937,7 @@ class HtmlParser {
 												}
 											}
 										}
-										if (!count($tagRegister[$tagName]) || !$correctTag) {
+										if (empty($tagRegister[$tagName]) || !$correctTag) {
 											$setTag = 0;
 										} else {
 											array_pop($tagRegister[$tagName]);
@@ -1155,7 +1155,7 @@ class HtmlParser {
 					$newAttribs[] = 'color="' . $attribArray['color'] . '"';
 				}
 				$innerContent = $this->cleanFontTags($this->removeFirstAndLastTag($v), $keepFace, $keepSize, $keepColor);
-				if (count($newAttribs)) {
+				if (!empty($newAttribs)) {
 					$fontSplit[$k] = '<font ' . implode(' ', $newAttribs) . '>' . $innerContent . '</font>';
 				} else {
 					$fontSplit[$k] = $innerContent;
@@ -1475,7 +1475,7 @@ class HtmlParser {
 	 */
 	public function processTag($value, $conf, $endTag, $protected = 0) {
 		// Return immediately if protected or no parameters
-		if ($protected || !count($conf)) {
+		if ($protected || empty($conf)) {
 			return $value;
 		}
 		// OK then, begin processing for XHTML output:

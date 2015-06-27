@@ -622,7 +622,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @return array
 	 */
 	protected function extractFileInformation($filePath, $containerPath, array $propertiesToExtract = array()) {
-		if (count($propertiesToExtract) === 0) {
+		if (empty($propertiesToExtract)) {
 			$propertiesToExtract = array(
 				'size', 'atime', 'atime', 'mtime', 'ctime', 'mimetype', 'name',
 				'identifier', 'identifier_hash', 'storage', 'folder_hash'

@@ -84,7 +84,7 @@ abstract class AbstractConditionMatcher {
 	 * @return void
 	 */
 	public function setRootline(array $rootline) {
-		if (count($rootline)) {
+		if (!empty($rootline)) {
 			$this->rootline = $rootline;
 		}
 	}
@@ -151,7 +151,7 @@ abstract class AbstractConditionMatcher {
 			return $this->simulateMatchResult;
 		}
 		// Return directly if matching for specific condition is simulated only:
-		if (count($this->simulateMatchConditions)) {
+		if (!empty($this->simulateMatchConditions)) {
 			return in_array($expression, $this->simulateMatchConditions);
 		}
 		// Sets the current pageId if not defined yet:

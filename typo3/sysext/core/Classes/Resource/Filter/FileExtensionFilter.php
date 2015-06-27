@@ -109,11 +109,11 @@ class FileExtensionFilter {
 		$result = TRUE;
 		$fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 		// Check allowed file extensions
-		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0 && !in_array($fileExt, $this->allowedFileExtensions)) {
+		if ($this->allowedFileExtensions !== NULL && !empty($this->allowedFileExtensions) && !in_array($fileExt, $this->allowedFileExtensions)) {
 			$result = FALSE;
 		}
 		// Check disallowed file extensions
-		if ($this->disallowedFileExtensions !== NULL && count($this->disallowedFileExtensions) > 0 && in_array($fileExt, $this->disallowedFileExtensions)) {
+		if ($this->disallowedFileExtensions !== NULL && !empty($this->disallowedFileExtensions) && in_array($fileExt, $this->disallowedFileExtensions)) {
 			$result = FALSE;
 		}
 		return $result;

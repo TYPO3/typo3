@@ -317,7 +317,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 		}
 		$storage = NULL;
 		$children = $this->getRelatedRecords($nodeData);
-		if (count($children)) {
+		if (!empty($children)) {
 			/** @var $storage \TYPO3\CMS\Backend\Tree\TreeNodeCollection */
 			$storage = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
 			foreach ($children as $child) {

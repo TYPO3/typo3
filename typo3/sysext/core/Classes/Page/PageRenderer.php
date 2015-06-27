@@ -1355,7 +1355,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			return;
 		}
 		$this->extDirectCodeAdded = TRUE;
-		if (count($filterNamespaces) === 0) {
+		if (empty($filterNamespaces)) {
 			$filterNamespaces = array('TYPO3');
 		}
 		// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
@@ -1594,7 +1594,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	public function loadRequireJs() {
 
 		// load all paths to map to package names / namespaces
-		if (count($this->requireJsConfig) === 0) {
+		if (empty($this->requireJsConfig)) {
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
@@ -2161,7 +2161,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			if (in_array('dragdrop', $mods) || in_array('controls', $mods)) {
 				$mods = array_merge(array('effects'), $mods);
 			}
-			if (count($mods)) {
+			if (!empty($mods)) {
 				foreach ($mods as $module) {
 					$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->scriptaculousPath . $module . '.js')) . '" type="text/javascript"></script>' . LF;
 					unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . $module . '.js']);
@@ -2209,7 +2209,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($this->addExtCore || $this->addExtJS) {
 			// Set clear.gif, move it on top, add handler code
 			$code = '';
-			if (count($this->extOnReadyCode)) {
+			if (!empty($this->extOnReadyCode)) {
 				foreach ($this->extOnReadyCode as $block) {
 					$code .= $block;
 				}
@@ -2261,7 +2261,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Load the language strings into JavaScript
 	 */
 	protected function loadJavaScriptLanguageStrings() {
-		if (count($this->inlineLanguageLabelFiles)) {
+		if (!empty($this->inlineLanguageLabelFiles)) {
 			foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
 				$this->includeLanguageFileForInline($languageLabelFile['fileRef'], $languageLabelFile['selectionPrefix'], $languageLabelFile['stripFromSelectionName'], $languageLabelFile['errorMode']);
 			}
@@ -2342,7 +2342,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function renderCssLibraries() {
 		$cssFiles = '';
-		if (count($this->cssLibs)) {
+		if (!empty($this->cssLibs)) {
 			foreach ($this->cssLibs as $file => $properties) {
 				$file = GeneralUtility::resolveBackPath($file);
 				$file = GeneralUtility::createVersionNumberedFilename($file);
@@ -2373,7 +2373,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function renderCssFiles() {
 		$cssFiles = '';
-		if (count($this->cssFiles)) {
+		if (!empty($this->cssFiles)) {
 			foreach ($this->cssFiles as $file => $properties) {
 				$file = GeneralUtility::resolveBackPath($file);
 				$file = GeneralUtility::createVersionNumberedFilename($file);
@@ -2404,7 +2404,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function renderCssInline() {
 		$cssInline = '';
-		if (count($this->cssInline)) {
+		if (!empty($this->cssInline)) {
 			foreach ($this->cssInline as $name => $properties) {
 				$cssCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
 				if ($properties['forceOnTop']) {
@@ -2426,7 +2426,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function renderAdditionalJavaScriptLibraries() {
 		$jsLibs = '';
 		$jsFooterLibs = '';
-		if (count($this->jsLibs)) {
+		if (!empty($this->jsLibs)) {
 			foreach ($this->jsLibs as $properties) {
 				$properties['file'] = GeneralUtility::resolveBackPath($properties['file']);
 				$properties['file'] = GeneralUtility::createVersionNumberedFilename($properties['file']);
@@ -2468,7 +2468,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function renderJavaScriptFiles() {
 		$jsFiles = '';
 		$jsFooterFiles = '';
-		if (count($this->jsFiles)) {
+		if (!empty($this->jsFiles)) {
 			foreach ($this->jsFiles as $file => $properties) {
 				$file = GeneralUtility::resolveBackPath($file);
 				$file = GeneralUtility::createVersionNumberedFilename($file);
@@ -2510,7 +2510,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function renderInlineJavaScript() {
 		$jsInline = '';
 		$jsFooterInline = '';
-		if (count($this->jsInline)) {
+		if (!empty($this->jsInline)) {
 			foreach ($this->jsInline as $name => $properties) {
 				$jsCode = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF;
 				if ($properties['forceOnTop']) {
@@ -2735,7 +2735,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 			} else {
 				// Traverse the arrays, compress files
-				if (count($this->jsInline)) {
+				if (!empty($this->jsInline)) {
 					foreach ($this->jsInline as $name => $properties) {
 						if ($properties['compress']) {
 							$error = '';

@@ -249,7 +249,7 @@ class FileIndexRepository implements SingletonInterface {
 		foreach ($updatedProperties as $key) {
 			$updateRow[$key] = $file->getProperty($key);
 		}
-		if (count($updateRow) > 0) {
+		if (!empty($updateRow)) {
 			$updateRow['tstamp'] = time();
 			$this->getDatabaseConnection()->exec_UPDATEquery($this->table, $this->getWhereClauseForFile($file), $updateRow);
 			$this->updateRefIndex($file->getUid());

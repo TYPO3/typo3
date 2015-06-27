@@ -3313,7 +3313,7 @@ Connection: close
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
 					$ip = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
 					// Choose which IP in list to use
-					if (count($ip)) {
+					if (!empty($ip)) {
 						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
 							case 'last':
 								$ip = array_pop($ip);
@@ -3337,7 +3337,7 @@ Connection: close
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
 					$host = self::trimExplode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
 					// Choose which host in list to use
-					if (count($host)) {
+					if (!empty($host)) {
 						switch ($GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue']) {
 							case 'last':
 								$host = array_pop($host);

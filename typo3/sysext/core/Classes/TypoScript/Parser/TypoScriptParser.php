@@ -544,7 +544,7 @@ class TypoScriptParser {
 			case 'removeFromList':
 				$existingElements = GeneralUtility::trimExplode(',', $currentValue);
 				$removeElements = GeneralUtility::trimExplode(',', $modifierArgument);
-				if (count($removeElements)) {
+				if (!empty($removeElements)) {
 					$newValue = implode(',', array_diff($existingElements, $removeElements));
 				}
 				break;

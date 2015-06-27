@@ -1322,7 +1322,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						$attribs = $this->get_tag_attributes($fTag);
 						// Keep attributes (lowercase)
 						$newAttribs = array();
-						if (count($keepAttribListArr)) {
+						if (!empty($keepAttribListArr)) {
 							foreach ($keepAttribListArr as $keepA) {
 								if (isset($attribs[0][$keepA])) {
 									$newAttribs[$keepA] = $attribs[0][$keepA];
@@ -1337,7 +1337,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						// CLASS attribute:
 						// Set to whatever value
 						if (!$this->procOptions['skipClass'] && trim($attribs[0]['class']) !== '') {
-							if (!count($this->allowedClasses) || in_array($attribs[0]['class'], $this->allowedClasses)) {
+							if (empty($this->allowedClasses) || in_array($attribs[0]['class'], $this->allowedClasses)) {
 								$newAttribs['class'] = $attribs[0]['class'];
 							} else {
 								$classes = GeneralUtility::trimExplode(' ', $attribs[0]['class'], TRUE);
@@ -1347,7 +1347,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 										$newClasses[] = $class;
 									}
 								}
-								if (count($newClasses)) {
+								if (!empty($newClasses)) {
 									$newAttribs['class'] = implode(' ', $newClasses);
 								}
 							}
@@ -1355,7 +1355,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 						// Remove any line break char (10 or 13)
 						$subLines[$sk] = preg_replace('/' . LF . '|' . CR . '/', '', $subLines[$sk]);
 						// If there are any attributes or if we are supposed to remap the tag, then do so:
-						if (count($newAttribs) && $remapParagraphTag !== '1') {
+						if (!empty($newAttribs) && $remapParagraphTag !== '1') {
 							if ($remapParagraphTag === 'P') {
 								$tagName = 'p';
 							}

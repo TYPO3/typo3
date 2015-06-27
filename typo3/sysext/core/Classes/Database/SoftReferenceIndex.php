@@ -216,7 +216,7 @@ class SoftReferenceIndex {
 			}
 		}
 		// Return result:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => implode('', $splitContent),
 				'elements' => $elements
@@ -251,7 +251,7 @@ class SoftReferenceIndex {
 			$linkElement[$k] = $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $k);
 		}
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => implode(',', $linkElement),
 				'elements' => $elements
@@ -283,7 +283,7 @@ class SoftReferenceIndex {
 			}
 		}
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => implode('', $linkTags),
 				'elements' => $elements
@@ -356,7 +356,7 @@ class SoftReferenceIndex {
 		// Process free fileadmin/ references as well:
 		$content = $this->fileadminReferences($content, $elements);
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => $content,
 				'elements' => $elements
@@ -378,7 +378,7 @@ class SoftReferenceIndex {
 		// Process free fileadmin/ references from TSconfig
 		$content = $this->fileadminReferences($content, $elements);
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => $content,
 				'elements' => $elements
@@ -414,7 +414,7 @@ class SoftReferenceIndex {
 			}
 		}
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => substr(implode('', $parts), 1, -1),
 				'elements' => $elements
@@ -453,7 +453,7 @@ class SoftReferenceIndex {
 			}
 		}
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => substr(implode('', $parts), 1, -1),
 				'elements' => $elements
@@ -481,7 +481,7 @@ class SoftReferenceIndex {
 			}
 		}
 		// Return output:
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$resultArray = array(
 				'content' => substr(implode('', $parts), 1, -1),
 				'elements' => $elements

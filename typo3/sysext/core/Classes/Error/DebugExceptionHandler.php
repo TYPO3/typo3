@@ -141,7 +141,7 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 	 */
 	protected function getBacktraceCode(array $trace) {
 		$backtraceCode = '';
-		if (count($trace)) {
+		if (!empty($trace)) {
 			foreach ($trace as $index => $step) {
 				$class = isset($step['class']) ? $step['class'] . '<span style="color:white;">::</span>' : '';
 				$arguments = '';

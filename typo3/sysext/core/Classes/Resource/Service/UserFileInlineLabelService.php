@@ -34,7 +34,7 @@ class UserFileInlineLabelService {
 			? $params['options']['sys_file']
 			: array();
 
-		if (!count($sysFileFields)) {
+		if (empty($sysFileFields)) {
 			// Nothing to do
 			$params['title'] = $params['row']['uid'];
 			return;

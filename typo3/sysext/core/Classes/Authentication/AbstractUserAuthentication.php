@@ -661,15 +661,15 @@ abstract class AbstractUserAuthentication {
 			if ($this->writeDevLog && $serviceChain) {
 				GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
 			}
-			if ($this->writeDevLog && !count($tempuserArr)) {
+			if ($this->writeDevLog && empty($tempuserArr)) {
 				GeneralUtility::devLog('No user found by services', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
 			}
-			if ($this->writeDevLog && count($tempuserArr)) {
+			if ($this->writeDevLog && !empty($tempuserArr)) {
 				GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class);
 			}
 		}
 		// If no new user was set we use the already found user session
-		if (!count($tempuserArr) && $haveSession) {
+		if (empty($tempuserArr) && $haveSession) {
 			$tempuserArr[] = $authInfo['userSession'];
 			$tempuser = $authInfo['userSession'];
 			// User is authenticated because we found a user session
@@ -686,7 +686,7 @@ abstract class AbstractUserAuthentication {
 			}
 		}
 		// Authenticate the user if needed
-		if (count($tempuserArr) && !$authenticated) {
+		if (!empty($tempuserArr) && !$authenticated) {
 			foreach ($tempuserArr as $tempuser) {
 				// Use 'auth' service to authenticate the user
 				// If one service returns FALSE then authentication failed
@@ -770,12 +770,12 @@ abstract class AbstractUserAuthentication {
 					\TYPO3\CMS\Core\Utility\HttpUtility::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
 				}
 			}
-		} elseif ($activeLogin || count($tempuserArr)) {
+		} elseif ($activeLogin || !empty($tempuserArr)) {
 			$this->loginFailure = TRUE;
-			if ($this->writeDevLog && !count($tempuserArr) && $activeLogin) {
+			if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
 				GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($loginData), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
 			}
-			if ($this->writeDevLog && count($tempuserArr)) {
+			if ($this->writeDevLog && !empty($tempuserArr)) {
 				GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, array($this->userid_column, $this->username_column)), \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
 			}
 		}

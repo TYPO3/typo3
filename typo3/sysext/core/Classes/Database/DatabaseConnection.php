@@ -491,7 +491,7 @@ class DatabaseConnection {
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
 		// function (contrary to values in the arrays which may be insecure).
-		if (!is_array($fields_values) || count($fields_values) === 0) {
+		if (!is_array($fields_values) || empty($fields_values)) {
 			return NULL;
 		}
 		foreach ($this->preProcessHookObjects as $hookObject) {
@@ -520,7 +520,7 @@ class DatabaseConnection {
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this
 		// function (contrary to values in the arrays which may be insecure).
-		if (count($rows) === 0) {
+		if (empty($rows)) {
 			return NULL;
 		}
 		foreach ($this->preProcessHookObjects as $hookObject) {
@@ -563,7 +563,7 @@ class DatabaseConnection {
 				$hookObject->UPDATEquery_preProcessAction($table, $where, $fields_values, $no_quote_fields, $this);
 			}
 			$fields = array();
-			if (is_array($fields_values) && count($fields_values)) {
+			if (is_array($fields_values) && !empty($fields_values)) {
 				// Quote and escape values
 				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields, TRUE);
 				foreach ($nArr as $k => $v) {
@@ -1857,10 +1857,10 @@ class DatabaseConnection {
 				if ($error) {
 					$data['error'] = $error;
 				}
-				if (count($explain_output)) {
+				if (!empty($explain_output)) {
 					$data['explain'] = $explain_output;
 				}
-				if (count($indices_output)) {
+				if (!empty($indices_output)) {
 					$data['indices'] = $indices_output;
 				}
 				if ($explainMode == 1) {

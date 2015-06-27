@@ -333,7 +333,7 @@ class TimeTracker {
 				array_pop($temp);
 				$temp = array_reverse($temp);
 				array_pop($temp);
-				if (count($temp)) {
+				if (!empty($temp)) {
 					$keyLabel = '<br /><span style="color:#999999;">' . implode($temp, '<br />') . '</span>';
 				}
 			}
@@ -380,7 +380,7 @@ class TimeTracker {
 				}
 				$msgArr[] = '<span style="color:#000066;">' . nl2br($data['content']) . '</span>';
 			}
-			if (count($msgArr)) {
+			if (!empty($msgArr)) {
 				$msg = implode($msgArr, '<hr />');
 			}
 			$item .= '<td valign="top" class="' . $logRowClass . '" style="text-align:left;">' . $this->fw($msg) . '</td>';

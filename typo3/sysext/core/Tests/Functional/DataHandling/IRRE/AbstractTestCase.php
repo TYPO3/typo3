@@ -144,7 +144,7 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTestCase
 
 		$logEntries = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'sys_log', 'error IN (1,2)', '', '', 1);
 
-		if (is_array($logEntries) && count($logEntries)) {
+		if (is_array($logEntries) && !empty($logEntries)) {
 			$message = $logEntries[0]['details'];
 		}
 

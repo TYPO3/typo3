@@ -41,7 +41,7 @@ class ClientUtility {
 				// so create a reference to NULL
 				$null = NULL;
 				$hookResult = GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
-				if ($returnResult && is_array($hookResult) && count($hookResult)) {
+				if ($returnResult && is_array($hookResult) && !empty($hookResult)) {
 					return $hookResult;
 				}
 			}

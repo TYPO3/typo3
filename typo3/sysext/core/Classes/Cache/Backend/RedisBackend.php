@@ -287,7 +287,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface {
 				$addTags = array_diff($tags, $existingTags);
 				$removeTags = array_diff($existingTags, $tags);
 			}
-			if (count($removeTags) > 0 || count($addTags) > 0) {
+			if (!empty($removeTags) || !empty($addTags)) {
 				$queue = $this->redis->multi(\Redis::PIPELINE);
 				foreach ($removeTags as $tag) {
 					$queue->sRemove(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier, $tag);
@@ -428,7 +428,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface {
 		}
 		if ($this->connected) {
 			$identifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);
-			if (count($identifiers) > 0) {
+			if (!empty($identifiers)) {
 				$this->removeIdentifierEntriesAndRelations($identifiers, array($tag));
 			}
 		}

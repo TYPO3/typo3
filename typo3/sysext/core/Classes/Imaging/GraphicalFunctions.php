@@ -980,7 +980,7 @@ class GraphicalFunctions {
 					$calc = ImageTTFBBox(GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $fontFile, $strCfg['str']);
 				} while ($calc[2] < 0 && $try++ < 10);
 				// Calculate offsets:
-				if (!count($offsetInfo)) {
+				if (empty($offsetInfo)) {
 					// First run, just copy over.
 					$offsetInfo = $calc;
 				} else {
@@ -1097,7 +1097,7 @@ class GraphicalFunctions {
 								}
 							}
 							// Set the new result as result array:
-							if (count($newResult)) {
+							if (!empty($newResult)) {
 								$result = $newResult;
 							}
 						}
@@ -1171,7 +1171,7 @@ class GraphicalFunctions {
 								}
 							}
 							// Set the new result as result array:
-							if (count($newResult)) {
+							if (!empty($newResult)) {
 								$result = $newResult;
 							}
 						}
@@ -2935,7 +2935,7 @@ class GraphicalFunctions {
 	 */
 	public function unifyColors(&$img, $colArr, $closest = FALSE) {
 		$retCol = -1;
-		if (is_array($colArr) && count($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
+		if (is_array($colArr) && !empty($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
 			$firstCol = array_shift($colArr);
 			$firstColArr = $this->convertColor($firstCol);
 			if (count($colArr) > 1) {

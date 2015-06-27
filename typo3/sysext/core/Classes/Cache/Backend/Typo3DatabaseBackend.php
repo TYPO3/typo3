@@ -146,7 +146,7 @@ class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
 			'expires' => $expires,
 			'content' => $data
 		));
-		if (count($tags)) {
+		if (!empty($tags)) {
 			$fields = array();
 			$fields[] = 'identifier';
 			$fields[] = 'tag';

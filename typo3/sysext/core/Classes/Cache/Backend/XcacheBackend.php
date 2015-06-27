@@ -270,7 +270,7 @@ class XcacheBackend extends AbstractBackend implements TaggableBackendInterface 
 			// anywhere.
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
-				if (count($identifiers)) {
+				if (!empty($identifiers)) {
 					xcache_set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
 					xcache_unset($this->identifierPrefix . 'tag_' . $tag);
