@@ -1037,7 +1037,10 @@ class Bootstrap {
 				/** @var $hookObject \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface */
 				$hookObject = Utility\GeneralUtility::getUserObj($classReference);
 				if (!$hookObject instanceof \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface', 1320585902);
+					throw new \UnexpectedValueException(
+						'$hookObject "' . $classReference . '" must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
+						1320585902
+					);
 				}
 				$hookObject->processData();
 			}
