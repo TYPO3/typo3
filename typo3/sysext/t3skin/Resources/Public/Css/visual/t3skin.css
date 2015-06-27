@@ -12295,11 +12295,17 @@ iframe {
 .typo3-module-menu-snapped .typo3-module-menu-item-title {
   display: none;
 }
+.query-builder .form-inline > .form-control-clearable {
+  display: inline;
+}
 .query-builder .form-group-with-button-addon .input-group {
   margin-bottom: 10px;
 }
 .query-builder .form-group-with-button-addon .input-group .input-group-addon {
-  padding: 2px;
+  padding: 0 0 0 1px;
+}
+.query-builder .form-group-with-button-addon .input-group .input-group-addon .btn-default {
+  border: 0;
 }
 .query-builder .from-control-operator {
   width: 70px;
@@ -12309,7 +12315,6 @@ iframe {
   margin: 10px 0;
 }
 .query-builder .row-group {
-  background-color: #f5f5f5;
   margin: 10px 0;
   padding: 10px;
   border-color: #999;

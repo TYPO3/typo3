@@ -302,6 +302,7 @@ class DatabaseIntegrityView extends BaseScriptClass {
 		$this->view->assign('searchMode', $searchMode);
 		switch ($searchMode) {
 			case 'query':
+				$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Core/QueryGenerator');
 				$this->view->assign('queryMaker', $fullsearch->queryMaker());
 				break;
 			case 'raw':

@@ -184,6 +184,11 @@ class QueryGenerator {
 	public $table;
 
 	/**
+	 * @var array
+	 */
+	public $tableArray;
+
+	/**
 	 * Field list
 	 *
 	 * @var string
@@ -221,6 +226,7 @@ class QueryGenerator {
 
 	/**
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $extJSCODE = '';
 
@@ -326,7 +332,7 @@ class QueryGenerator {
 							break;
 						case 'group':
 							$this->fields[$fieldName]['type'] = 'files';
-							if ($this->fields[$fieldName]['internal_type'] == 'db') {
+							if ($this->fields[$fieldName]['internal_type'] === 'db') {
 								$this->fields[$fieldName]['type'] = 'relation';
 							}
 							break;
@@ -510,7 +516,7 @@ class QueryGenerator {
 			// Do stuff:
 			$tempEl = $workArr[$ssArr[$i]];
 			if (is_array($tempEl)) {
-				if ($tempEl['type'] == 'newlevel') {
+				if ($tempEl['type'] === 'newlevel') {
 					$a1 = array_slice($workArr, 0, $ssArr[$i]);
 					$a2 = array_slice($workArr, $ssArr[$i]);
 					array_shift($a2);
@@ -541,10 +547,10 @@ class QueryGenerator {
 		// Traverse:
 		foreach ($queryConfig as $key => $conf) {
 			$fieldName = '';
-			if (substr($conf['type'], 0, 6) == 'FIELD_') {
+			if (substr($conf['type'], 0, 6) === 'FIELD_') {
 				$fieldName = substr($conf['type'], 6);
 				$fieldType = $this->fields[$fieldName]['type'];
-			} elseif ($conf['type'] == 'newlevel') {
+			} elseif ($conf['type'] === 'newlevel') {
 				$fieldType = $conf['type'];
 			} else {
 				$fieldType = 'ignore';
@@ -589,7 +595,7 @@ class QueryGenerator {
 		}
 		$c = 0;
 		$arrCount = 0;
-		$loopcount = 0;
+		$loopCount = 0;
 		foreach ($queryConfig as $key => $conf) {
 			$fieldName = '';
 			$subscript = $parent . '[' . $key . ']';
@@ -611,6 +617,7 @@ class QueryGenerator {
 			} else {
 				$fieldType = 'ignore';
 			}
+			$fieldPrefix = htmlspecialchars($this->name . $subscript);
 			switch ($fieldType) {
 				case 'ignore':
 					break;
@@ -618,39 +625,33 @@ class QueryGenerator {
 					if (!$queryConfig[$key]['nl']) {
 						$queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
 					}
-					$lineHTML[] = '<input type="hidden" name="' . $this->name . $subscript . '[type]" value="newlevel">';
+					$lineHTML[] = '<input type="hidden" name="' . $fieldPrefix . '[type]" value="newlevel">';
 					$codeArr[$arrCount]['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
 					break;
 				case 'userdef':
-					$lineHTML[] = $this->userDef($this->name . $subscript, $conf, $fieldName, $fieldType);
+					$lineHTML[] = $this->userDef($fieldPrefix, $conf, $fieldName, $fieldType);
 					break;
 				case 'date':
 					$lineHTML[] = '<div class="form-inline">';
 					$lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-					if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
+					if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
 						// between
-						$lineHTML[] = '<input class="form-control" type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-						$lineHTML[] = '<input class="form-control" type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue1']) . '" onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
-						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
-						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "date", "", 0,0);';
+						$lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'date');
+						$lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', $conf['inputValue1'], 'date');
 					} else {
-						$lineHTML[] = '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
+						$lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'date');
 					}
 					$lineHTML[] = '</div>';
 					break;
 				case 'time':
 					$lineHTML[] = '<div class="form-inline">';
 					$lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-					if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
+					if ($conf['comparison'] === 100 || $conf['comparison'] === 101) {
 						// between:
-						$lineHTML[] = '<input class="form-control" type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue']) . '" onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-						$lineHTML[] = '<input class="form-control" type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue1']) . '" onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
-						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
-						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "datetime", "", 0,0);';
+						$lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'datetime');
+						$lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue1]', $conf['inputValue1'], 'datetime');
 					} else {
-						$lineHTML[] = '<input class="form-control" type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', (int)$conf['inputValue']) . '" onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-						$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
+						$lineHTML[] = $this->getDateTimePickerField($fieldPrefix . '[inputValue]', $conf['inputValue'], 'datetime');
 					}
 					$lineHTML[] = '</div>';
 					break;
@@ -659,15 +660,15 @@ class QueryGenerator {
 				case 'relation':
 					$lineHTML[] = '<div class="form-inline">';
 					$lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-					if ($conf['comparison'] == 68 || $conf['comparison'] == 69 || $conf['comparison'] == 162 || $conf['comparison'] == 163) {
-						$lineHTML[] = '<select class="form-control" name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
-					} elseif ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
+					if ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
+						$lineHTML[] = '<select class="form-control" name="' . $fieldPrefix . '[inputValue]' . '[]" multiple="multiple">';
+					} elseif ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
 						if (is_array($conf['inputValue'])) {
 							$conf['inputValue'] = implode(',', $conf['inputValue']);
 						}
-						$lineHTML[] = '<input class="form-control" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]' . '">';
 					} else {
-						$lineHTML[] = '<select class="form-control" name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
+						$lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]' . '">';
 					}
 					if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
 						$lineHTML[] = $this->makeOptionList($fieldName, $conf, $this->table);
@@ -678,51 +679,51 @@ class QueryGenerator {
 				case 'files':
 					$lineHTML[] = '<div class="form-inline">';
 					$lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-					if ($conf['comparison'] == 68 || $conf['comparison'] == 69) {
-						$lineHTML[] = '<select class="form-control" name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
+					if ($conf['comparison'] === 68 || $conf['comparison'] === 69) {
+						$lineHTML[] = '<select class="form-control" name="' . $fieldPrefix . '[inputValue]' . '[]" multiple="multiple">';
 					} else {
-						$lineHTML[] = '<select class="form-control" name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
+						$lineHTML[] = '<select class="form-control t3js-submit-change" name="' . $fieldPrefix . '[inputValue]' . '">';
 					}
 					$lineHTML[] = '<option value=""></option>' . $this->makeOptionList($fieldName, $conf, $this->table);
 					$lineHTML[] = '</select>';
-					if ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
-						$lineHTML[] = ' + <input class="form-control" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
+					if ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
+						$lineHTML[] = ' + <input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $fieldPrefix . '[inputValue1]' . '">';
 					}
 					$lineHTML[] = '</div>';
 					break;
 				case 'boolean':
 					$lineHTML[] = '<div class="form-inline">';
 					$lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-					$lineHTML[] = '<input type="hidden" value="1" name="' . $this->name . $subscript . '[inputValue]' . '">';
+					$lineHTML[] = '<input type="hidden" value="1" name="' . $fieldPrefix . '[inputValue]' . '">';
 					$lineHTML[] = '</div>';
 					break;
 				default:
 					$lineHTML[] = '<div class="form-inline">';
 					$lineHTML[] = $this->makeComparisonSelector($subscript, $fieldName, $conf);
-					if ($conf['comparison'] == 37 || $conf['comparison'] == 36) {
+					if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
 						// between:
-						$lineHTML[] = '<input class="form-control" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
-						$lineHTML[] = '<input class="form-control" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
+						$lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]' . '">';
+						$lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $fieldPrefix . '[inputValue1]' . '">';
 					} else {
-						$lineHTML[] = '<input class="form-control" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+						$lineHTML[] = '<input class="form-control t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]' . '">';
 					}
 					$lineHTML[] = '</div>';
 			}
 			if ($fieldType !== 'ignore') {
 				$lineHTML[] = '<div class="btn-group action-button-group">';
 				$lineHTML[] = $this->updateIcon();
-				if ($loopcount) {
-					$lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . $subscript . '"><i class="fa fa-trash fa-fw"></i></button>';
+				if ($loopCount) {
+					$lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '"><i class="fa fa-trash fa-fw"></i></button>';
 				}
-				$lineHTML[] = '<button class="btn btn-default" title="Add condition" name="qG_ins' . $subscript . '"><i class="fa fa-plus fa-fw"></i></button>';
+				$lineHTML[] = '<button class="btn btn-default" title="Add condition" name="qG_ins' . htmlspecialchars($subscript) . '"><i class="fa fa-plus fa-fw"></i></button>';
 				if ($c != 0) {
-					$lineHTML[] = '<button class="btn btn-default" title="Move up" name="qG_up' . $subscript . '"><i class="fa fa-chevron-up fa-fw"></i></button>';
+					$lineHTML[] = '<button class="btn btn-default" title="Move up" name="qG_up' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-up fa-fw"></i></button>';
 				}
 				if ($c != 0 && $fieldType != 'newlevel') {
-					$lineHTML[] = '<button class="btn btn-default" title="New level" name="qG_nl' . $subscript . '"><i class="fa fa-chevron-right fa-fw"></i></button>';
+					$lineHTML[] = '<button class="btn btn-default" title="New level" name="qG_nl' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-right fa-fw"></i></button>';
 				}
-				if ($fieldType == 'newlevel') {
-					$lineHTML[] = '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . $subscript . '"><i class="fa fa-chevron-left fa-fw"></i></button>';
+				if ($fieldType === 'newlevel') {
+					$lineHTML[] = '<button class="btn btn-default" title="Collapse new level" name="qG_remnl' . htmlspecialchars($subscript) . '"><i class="fa fa-chevron-left fa-fw"></i></button>';
 				}
 				$lineHTML[] = '</div>';
 				$codeArr[$arrCount]['html'] = implode(LF, $lineHTML);
@@ -730,7 +731,7 @@ class QueryGenerator {
 				$arrCount++;
 				$c++;
 			}
-			$loopcount = 1;
+			$loopCount = 1;
 		}
 		$this->queryConfig = $queryConfig;
 		return $codeArr;
@@ -744,12 +745,13 @@ class QueryGenerator {
 	 * @return string
 	 */
 	protected function makeComparisonSelector($subscript, $fieldName, $conf) {
+		$fieldPrefix = $this->name . $subscript;
 		$lineHTML = array();
-		$lineHTML[] = $this->mkTypeSelect($this->name . $subscript . '[type]', $fieldName);
+		$lineHTML[] = $this->mkTypeSelect($fieldPrefix . '[type]', $fieldName);
 		$lineHTML[] = '	<div class="input-group">';
-		$lineHTML[] = $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+		$lineHTML[] = $this->mkCompSelect($fieldPrefix . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
 		$lineHTML[] = '	<div class="input-group-addon">';
-		$lineHTML[] = '		<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+		$lineHTML[] = '		<input type="checkbox" class="checkbox t3js-submit-click"' . ($conf['negate'] ? ' checked' : '') . ' name="' . htmlspecialchars($fieldPrefix) . '[negate]' . '">';
 		$lineHTML[] = '	</div>';
 		$lineHTML[] = '	</div>';
 		return implode(LF, $lineHTML);
@@ -767,21 +769,21 @@ class QueryGenerator {
 		$out = array();
 		$fieldSetup = $this->fields[$fieldName];
 		$languageService = $this->getLanguageService();
-		if ($fieldSetup['type'] == 'files') {
-			if ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
+		if ($fieldSetup['type'] === 'files') {
+			if ($conf['comparison'] === 66 || $conf['comparison'] === 67) {
 				$fileExtArray = explode(',', $fieldSetup['allowed']);
 				natcasesort($fileExtArray);
 				foreach ($fileExtArray as $fileExt) {
 					if (GeneralUtility::inList($conf['inputValue'], $fileExt)) {
-						$out[] = '<option value="' . $fileExt . '" selected>.' . $fileExt . '</option>';
+						$out[] = '<option value="' . htmlspecialchars($fileExt) . '" selected>.' . htmlspecialchars($fileExt) . '</option>';
 					} else {
-						$out[] = '<option value="' . $fileExt . '">.' . $fileExt . '</option>';
+						$out[] = '<option value="' . htmlspecialchars($fileExt) . '">.' . htmlspecialchars($fileExt) . '</option>';
 					}
 				}
 			}
 			$d = dir(PATH_site . $fieldSetup['uploadfolder']);
 			while (FALSE !== ($entry = $d->read())) {
-				if ($entry == '.' || $entry == '..') {
+				if ($entry === '.' || $entry === '..') {
 					continue;
 				}
 				$fileArray[] = $entry;
@@ -790,55 +792,55 @@ class QueryGenerator {
 			natcasesort($fileArray);
 			foreach ($fileArray as $fileName) {
 				if (GeneralUtility::inList($conf['inputValue'], $fileName)) {
-					$out[] = '<option value="' . $fileName . '" selected>' . $fileName . '</option>';
+					$out[] = '<option value="' . htmlspecialchars($fileName) . '" selected>' . htmlspecialchars($fileName) . '</option>';
 				} else {
-					$out[] = '<option value="' . $fileName . '">' . $fileName . '</option>';
+					$out[] = '<option value="' . htmlspecialchars($fileName) . '">' . htmlspecialchars($fileName) . '</option>';
 				}
 			}
 		}
-		if ($fieldSetup['type'] == 'multiple') {
+		if ($fieldSetup['type'] === 'multiple') {
 			foreach ($fieldSetup['items'] as $key => $val) {
-				if (substr($val[0], 0, 4) == 'LLL:') {
+				if (substr($val[0], 0, 4) === 'LLL:') {
 					$value = $languageService->sL($val[0]);
 				} else {
 					$value = $val[0];
 				}
 				if (GeneralUtility::inList($conf['inputValue'], $val[1])) {
-					$out[] = '<option value="' . $val[1] . '" selected>' . $value . '</option>';
+					$out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
 				} else {
-					$out[] = '<option value="' . $val[1] . '">' . $value . '</option>';
+					$out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
 				}
 			}
 		}
-		if ($fieldSetup['type'] == 'binary') {
+		if ($fieldSetup['type'] === 'binary') {
 			foreach ($fieldSetup['items'] as $key => $val) {
-				if (substr($val[0], 0, 4) == 'LLL:') {
+				if (substr($val[0], 0, 4) === 'LLL:') {
 					$value = $languageService->sL($val[0]);
 				} else {
 					$value = $val[0];
 				}
 				if (GeneralUtility::inList($conf['inputValue'], pow(2, $key))) {
-					$out[] = '<option value="' . pow(2, $key) . '" selected>' . $value . '</option>';
+					$out[] = '<option value="' . pow(2, $key) . '" selected>' . htmlspecialchars($value) . '</option>';
 				} else {
-					$out[] = '<option value="' . pow(2, $key) . '">' . $value . '</option>';
+					$out[] = '<option value="' . pow(2, $key) . '">' . htmlspecialchars($value) . '</option>';
 				}
 			}
 		}
-		if ($fieldSetup['type'] == 'relation') {
+		if ($fieldSetup['type'] === 'relation') {
 			$databaseConnection = $this->getDatabaseConnection();
 			$useTablePrefix = 0;
 			$dontPrefixFirstTable = 0;
 			if ($fieldSetup['items']) {
 				foreach ($fieldSetup['items'] as $key => $val) {
-					if (substr($val[0], 0, 4) == 'LLL:') {
+					if (substr($val[0], 0, 4) === 'LLL:') {
 						$value = $languageService->sL($val[0]);
 					} else {
 						$value = $val[0];
 					}
 					if (GeneralUtility::inList($conf['inputValue'], $val[1])) {
-						$out[] = '<option value="' . $val[1] . '" selected>' . $value . '</option>';
+						$out[] = '<option value="' . htmlspecialchars($val[1]) . '" selected>' . htmlspecialchars($value) . '</option>';
 					} else {
-						$out[] = '<option value="' . $val[1] . '">' . $value . '</option>';
+						$out[] = '<option value="' . htmlspecialchars($val[1]) . '">' . htmlspecialchars($value) . '</option>';
 					}
 				}
 			}
@@ -880,8 +882,12 @@ class QueryGenerator {
 			$tablePrefix = '';
 			$backendUserAuthentication = $this->getBackendUserAuthentication();
 			$module = $this->getModule();
+			$outArray = array();
+			$labelFieldSelect = array();
 			foreach ($from_table_Arr as $from_table) {
-				if ($useTablePrefix && !$dontPrefixFirstTable && $counter != 1 || $counter == 1) {
+				$useSelectLabels = FALSE;
+				$useAltSelectLabels = FALSE;
+				if ($useTablePrefix && !$dontPrefixFirstTable && $counter != 1 || $counter === 1) {
 					$tablePrefix = $from_table . '_';
 				}
 				$counter = 1;
@@ -890,23 +896,23 @@ class QueryGenerator {
 					$altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'];
 					if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items']) {
 						foreach ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] as $labelArray) {
-							if (substr($labelArray[0], 0, 4) == 'LLL:') {
+							if (substr($labelArray[0], 0, 4) === 'LLL:') {
 								$labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
 							} else {
 								$labelFieldSelect[$labelArray[1]] = $labelArray[0];
 							}
 						}
-						$useSelectLabels = 1;
+						$useSelectLabels = TRUE;
 					}
 					if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items']) {
 						foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
-							if (substr($altLabelArray[0], 0, 4) == 'LLL:') {
+							if (substr($altLabelArray[0], 0, 4) === 'LLL:') {
 								$altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
 							} else {
 								$altLabelFieldSelect[$altLabelArray[1]] = $altLabelArray[0];
 							}
 						}
-						$useAltSelectLabels = 1;
+						$useAltSelectLabels = TRUE;
 					}
 					$altLabelFieldSelect = $altLabelField ? ',' . $altLabelField : '';
 					$select_fields = 'uid,' . $labelField . $altLabelFieldSelect;
@@ -920,7 +926,7 @@ class QueryGenerator {
 							}
 							$webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
 						}
-						if ($from_table == 'pages') {
+						if ($from_table === 'pages') {
 							$where_clause = 'uid IN (' . $webMountPageTree . ') ';
 							if (!$module->MOD_SETTINGS['show_deleted']) {
 								$where_clause .= BackendUtility::deleteClause($from_table) . ' AND' . $perms_clause;
@@ -938,15 +944,14 @@ class QueryGenerator {
 						}
 					}
 					$orderBy = 'uid';
-					// @TODO: $this->tableArray is never set!?!
 					if (!$this->tableArray[$from_table]) {
 						$res = $databaseConnection->exec_SELECTquery($select_fields, $from_table, $where_clause, ($groupBy = ''), $orderBy, ($limit = ''));
-					}
-					if ($res) {
-						while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-							$this->tableArray[$from_table][] = $row;
+						if ($res) {
+							while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+								$this->tableArray[$from_table][] = $row;
+							}
+							$databaseConnection->sql_free_result($res);
 						}
-						$databaseConnection->sql_free_result($res);
 					}
 					foreach ($this->tableArray[$from_table] as $key => $val) {
 						if ($useSelectLabels) {
@@ -966,9 +971,9 @@ class QueryGenerator {
 			}
 			foreach ($outArray as $key2 => $val2) {
 				if (GeneralUtility::inList($conf['inputValue'], $key2)) {
-					$out[] = '<option value="' . $key2 . '" selected>[' . $key2 . '] ' . $val2 . '</option>';
+					$out[] = '<option value="' . htmlspecialchars($key2) . '" selected>[' . htmlspecialchars($key2) . '] ' . htmlspecialchars($val2) . '</option>';
 				} else {
-					$out[] = '<option value="' . $key2 . '">[' . $key2 . '] ' . $val2 . '</option>';
+					$out[] = '<option value="' . htmlspecialchars($key2) . '">[' . htmlspecialchars($key2) . '] ' . htmlspecialchars($val2) . '</option>';
 				}
 			}
 		}
@@ -993,9 +998,9 @@ class QueryGenerator {
 			$out[] = $v['html'];
 
 			if ($this->enableQueryParts) {
-				$out[] = '<div class="' . $indent . '">';
+				$out[] = '<pre>';
 				$out[] = htmlspecialchars($v['query']);
-				$out[] = '</div>';
+				$out[] = '</pre>';
 			}
 			if (is_array($v['sub'])) {
 				$out[] = '<div class="' . $indent . '">';
@@ -1032,12 +1037,12 @@ class QueryGenerator {
 	public function mkOperatorSelect($name, $op, $draw, $submit) {
 		$out = array();
 		if ($draw) {
-			$out[] = '<select class="form-control from-control-operator" name="' . $name . '[operator]"' . ($submit ? ' onChange="submit();"' : '') . '>';
-			$out[] = '	<option value="AND"' . (!$op || $op == 'AND' ? ' selected' : '') . '>' . $this->lang['AND'] . '</option>';
-			$out[] = '	<option value="OR"' . ($op == 'OR' ? ' selected' : '') . '>' . $this->lang['OR'] . '</option>';
+			$out[] = '<select class="form-control from-control-operator' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
+			$out[] = '	<option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
+			$out[] = '	<option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
 			$out[] = '</select>';
 		} else {
-			$out[] = '<input type="hidden" value="' . $op . '" name="' . $name . '[operator]">';
+			$out[] = '<input type="hidden" value="' . htmlspecialchars($op) . '" name="' . htmlspecialchars($name) . '[operator]">';
 		}
 		return implode(LF, $out);
 	}
@@ -1052,12 +1057,12 @@ class QueryGenerator {
 	 */
 	public function mkTypeSelect($name, $fieldName, $prepend = 'FIELD_') {
 		$out = array();
-		$out[] = '<select class="form-control" name="' . $name . '" onChange="submit();">';
+		$out[] = '<select class="form-control t3js-submit-change" name="' . htmlspecialchars($name) . '">';
 		$out[] = '<option value=""></option>';
 		foreach ($this->fields as $key => $value) {
 			if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
 				$label = $this->fields[$key]['label'];
-				$out[] = '<option value="' . $prepend . $key . '"' . ($key == $fieldName ? ' selected' : '') . '>' . $label . '</option>';
+				$out[] = '<option value="' . htmlspecialchars($prepend . $key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
 			}
 		}
 		$out[] = '</select>';
@@ -1094,10 +1099,10 @@ class QueryGenerator {
 		$compOffSet = $comparison >> 5;
 		$first = -1;
 		for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
-			if ($first == -1) {
+			if ($first === -1) {
 				$first = $i;
 			}
-			if ($i >> 1 == $comparison >> 1) {
+			if ($i >> 1 === $comparison >> 1) {
 				return $i;
 			}
 		}
@@ -1115,17 +1120,18 @@ class QueryGenerator {
 		$out = array();
 		$out[] = '<div class="input-group">';
 		$out[] = '	<div class="input-group-addon">';
-		$out[] = $this->updateIcon('sm');
-		$out[] = '<button onClick="document.forms[0][\'' . $name . '\'].value=\'\';return false;" class="btn btn-sm"><i class="fa fa-trash fa-fw"></i></button>';
+		$out[] = '		<span class="input-group-btn">';
+		$out[] = $this->updateIcon();
+		$out[] = ' 		</span>';
 		$out[] = ' 	</div>';
-		$out[] = '	<input type="text" class="form-control" value="' . htmlspecialchars($fieldName) . '" name="' . $name . '">';
+		$out[] = '	<input type="text" class="form-control t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
 		$out[] = '</div>';
 
-		$out[] = '<select class="form-control" name="_fieldListDummy" size="5" onChange="document.forms[0][\'' . $name . '\'].value+=\',\'+this.value">';
+		$out[] = '<select class="form-control t3js-addfield" name="_fieldListDummy" size="5" data-field="' . htmlspecialchars($name) . '">';
 		foreach ($this->fields as $key => $value) {
 			if (!$value['exclude'] || $this->getBackendUserAuthentication()->check('non_exclude_fields', $this->table . ':' . $key)) {
 				$label = $this->fields[$key]['label'];
-				$out[] = '<option value="' . $key . '"' . ($key == $fieldName ? ' selected' : '') . '>' . $label . '</option>';
+				$out[] = '<option value="' . htmlspecialchars($key) . '"' . ($key === $fieldName ? ' selected' : '') . '>' . htmlspecialchars($label) . '</option>';
 			}
 		}
 		$out[] = '</select>';
@@ -1141,11 +1147,11 @@ class QueryGenerator {
 	 */
 	public function mkTableSelect($name, $cur) {
 		$out = array();
-		$out[] = '<select class="form-control" name="' . $name . '" onChange="submit();">';
+		$out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
 		$out[] = '<option value=""></option>';
 		foreach ($GLOBALS['TCA'] as $tN => $value) {
 			if ($this->getBackendUserAuthentication()->check('tables_select', $tN)) {
-				$out[] = '<option value="' . $tN . '"' . ($tN == $cur ? ' selected' : '') . '>' . $this->getLanguageService()->sl($GLOBALS['TCA'][$tN]['ctrl']['title']) . '</option>';
+				$out[] = '<option value="' . htmlspecialchars($tN) . '"' . ($tN === $cur ? ' selected' : '') . '>' . htmlspecialchars($this->getLanguageService()->sl($GLOBALS['TCA'][$tN]['ctrl']['title'])) . '</option>';
 			}
 		}
 		$out[] = '</select>';
@@ -1163,10 +1169,10 @@ class QueryGenerator {
 	public function mkCompSelect($name, $comparison, $neg) {
 		$compOffSet = $comparison >> 5;
 		$out = array();
-		$out[] = '<select class="form-control" name="' . $name . '" onChange="submit();">';
+		$out[] = '<select class="form-control t3js-submit-change" name="' . $name . '">';
 		for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
 			if ($this->lang['comparison'][$i . '_']) {
-				$out[] = '<option value="' . $i . '"' . ($i >> 1 == $comparison >> 1 ? ' selected' : '') . '>' . $this->lang['comparison'][($i . '_')] . '</option>';
+				$out[] = '<option value="' . $i . '"' . ($i >> 1 === $comparison >> 1 ? ' selected' : '') . '>' . htmlspecialchars($this->lang['comparison'][($i . '_')]) . '</option>';
 			}
 		}
 		$out[] = '</select>';
@@ -1202,10 +1208,15 @@ class QueryGenerator {
 	/**
 	 * User definition
 	 *
-	 * @return void
+	 * @param string $fieldPrefix
+	 * @param array $conf
+	 * @param string $fieldName
+	 * @param string $fieldType
+	 *
+	 * @return string
 	 */
-	public function userDef() {
-
+	public function userDef($fieldPrefix, $conf, $fieldName, $fieldType) {
+		return '';
 	}
 
 	/**
@@ -1263,14 +1274,14 @@ class QueryGenerator {
 		}
 		$qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$conf['comparison']]);
 		$inputVal = $this->cleanInputVal($conf);
-		if ($conf['comparison'] == 68 || $conf['comparison'] == 69) {
+		if ($conf['comparison'] === 68 || $conf['comparison'] === 69) {
 			$inputVal = explode(',', $inputVal);
 			foreach ($inputVal as $key => $fileName) {
 				$inputVal[$key] = '\'' . $fileName . '\'';
 			}
 			$inputVal = implode(',', $inputVal);
 			$qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
-		} elseif ($conf['comparison'] == 162 || $conf['comparison'] == 163) {
+		} elseif ($conf['comparison'] === 162 || $conf['comparison'] === 163) {
 			$inputValArray = explode(',', $inputVal);
 			$inputVal = 0;
 			foreach ($inputValArray as $fileName) {
@@ -1280,7 +1291,7 @@ class QueryGenerator {
 		} else {
 			$qsTmp = str_replace('#VALUE#', $databaseConnection->quoteStr($inputVal, $this->table), $qsTmp);
 		}
-		if ($conf['comparison'] == 37 || $conf['comparison'] == 36 || $conf['comparison'] == 66 || $conf['comparison'] == 67 || $conf['comparison'] == 100 || $conf['comparison'] == 101) {
+		if ($conf['comparison'] === 37 || $conf['comparison'] === 36 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 100 || $conf['comparison'] === 101) {
 			// between:
 			$inputVal = $this->cleanInputVal($conf, '1');
 			$qsTmp = str_replace('#VALUE1#', $databaseConnection->quoteStr($inputVal, $this->table), $qsTmp);
@@ -1297,12 +1308,12 @@ class QueryGenerator {
 	 * @return string
 	 */
 	public function cleanInputVal($conf, $suffix = '') {
-		if ($conf['comparison'] >> 5 == 0 || ($conf['comparison'] == 32 || $conf['comparison'] == 33 || $conf['comparison'] == 64 || $conf['comparison'] == 65 || $conf['comparison'] == 66 || $conf['comparison'] == 67 || $conf['comparison'] == 96 || $conf['comparison'] == 97)) {
+		if ($conf['comparison'] >> 5 === 0 || ($conf['comparison'] === 32 || $conf['comparison'] === 33 || $conf['comparison'] === 64 || $conf['comparison'] === 65 || $conf['comparison'] === 66 || $conf['comparison'] === 67 || $conf['comparison'] === 96 || $conf['comparison'] === 97)) {
 			$inputVal = $conf['inputValue' . $suffix];
-		} elseif ($conf['comparison'] == 39 || $conf['comparison'] == 38) {
+		} elseif ($conf['comparison'] === 39 || $conf['comparison'] === 38) {
 			// in list:
 			$inputVal = implode(',', GeneralUtility::intExplode(',', $conf['inputValue' . $suffix]));
-		} elseif ($conf['comparison'] == 68 || $conf['comparison'] == 69 || $conf['comparison'] == 162 || $conf['comparison'] == 163) {
+		} elseif ($conf['comparison'] === 68 || $conf['comparison'] === 69 || $conf['comparison'] === 162 || $conf['comparison'] === 163) {
 			// in list:
 			if (is_array($conf['inputValue' . $suffix])) {
 				$inputVal = implode(',', $conf['inputValue' . $suffix]);
@@ -1331,12 +1342,10 @@ class QueryGenerator {
 	/**
 	 * Update icon
 	 *
-	 * @param string $buttonType the bootstrap appendix (default, sm, etc.)
-	 *
 	 * @return string
 	 */
-	public function updateIcon($buttonType = 'default') {
-		return '<button class="btn btn-' . htmlspecialchars($buttonType) . '" title="Update" name="just_update"><i class="fa fa-refresh fa-fw"></i></button>';
+	public function updateIcon() {
+		return '<button class="btn btn-default" title="Update" name="just_update"><i class="fa fa-refresh fa-fw"></i></button>';
 	}
 
 	/**
@@ -1446,7 +1455,9 @@ class QueryGenerator {
 				$limit = array();
 				$limit[] = '<div class="input-group">';
 				$limit[] = '	<div class="input-group-addon">';
-				$limit[] = 			$this->updateIcon('sm');
+				$limit[] = '		<span class="input-group-btn">';
+				$limit[] = $this->updateIcon();
+				$limit[] = '		</span>';
 				$limit[] = '	</div>';
 				$limit[] = '	<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
 				$limit[] = '</div>';
@@ -1456,7 +1467,7 @@ class QueryGenerator {
 				$nextButton = '';
 
 				if ($this->limitBegin) {
-					$prevButton = '<input type="button" class="btn btn-default" value="previous ' . $this->limitLength . '" onclick=\'document.getElementById("queryLimit").value="' . $prevLimit . ',' . $this->limitLength . '";document.forms[0].submit();\'>';
+					$prevButton = '<input type="button" class="btn btn-default" value="previous ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($prevLimit . ',' . $this->limitLength) . '">';
 				}
 				if (!$this->limitLength) {
 					$this->limitLength = 100;
@@ -1467,7 +1478,7 @@ class QueryGenerator {
 					$nextLimit = 0;
 				}
 				if ($nextLimit) {
-					$nextButton = '<input type="button" class="btn btn-default" value="next ' . $this->limitLength . '" onclick=\'document.getElementById("queryLimit").value="' . $nextLimit . ',' . $this->limitLength . '";document.forms[0].submit();\'>';
+					$nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $this->limitLength) . '">';
 				}
 
 				$out[] = '<div class="form-group form-group-with-button-addon">';
@@ -1475,15 +1486,15 @@ class QueryGenerator {
 				$out[] = '	<div class="form-inline">';
 				$out[] = 		implode(LF, $limit);
 				$out[] = '		<div class="input-group">';
-				$out[] = '			<div class="btn-group">';
+				$out[] = '			<div class="btn-group t3js-limit-submit">';
 				$out[] = 				$prevButton;
 				$out[] =				$nextButton;
 				$out[] = '			</div>';
-				$out[] = '			<div class="btn-group">';
-				$out[] = '				<input type="button" class="btn btn-default" value="10" onclick=\'document.getElementById("queryLimit").value="10";document.forms[0].submit();\'>';
-				$out[] = '				<input type="button" class="btn btn-default" value="20" onclick=\'document.getElementById("queryLimit").value="20";document.forms[0].submit();\'>';
-				$out[] = '				<input type="button" class="btn btn-default" value="50" onclick=\'document.getElementById("queryLimit").value="50";document.forms[0].submit();\'>';
-				$out[] = '				<input type="button" class="btn btn-default" value="100" onclick=\'document.getElementById("queryLimit").value="100";document.forms[0].submit();\'>';
+				$out[] = '			<div class="btn-group t3js-limit-submit">';
+				$out[] = '				<input type="button" class="btn btn-default" data-value="10" value="10">';
+				$out[] = '				<input type="button" class="btn btn-default" data-value="20" value="20">';
+				$out[] = '				<input type="button" class="btn btn-default" data-value="50" value="50">';
+				$out[] = '				<input type="button" class="btn btn-default" data-value="100" value="100">';
 				$out[] = '			</div>';
 				$out[] = '		</div>';
 				$out[] = '	</div>';
@@ -1510,7 +1521,7 @@ class QueryGenerator {
 		if ($id < 0) {
 			$id = abs($id);
 		}
-		if ($begin == 0) {
+		if ($begin === 0) {
 			$theList = $id;
 		} else {
 			$theList = '';
@@ -1555,7 +1566,7 @@ class QueryGenerator {
 				}
 				$webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
 			}
-			if ($this->table == 'pages') {
+			if ($this->table === 'pages') {
 				$qString .= ' AND uid IN (' . $webMountPageTree . ')';
 			} else {
 				$qString .= ' AND pid IN (' . $webMountPageTree . ')';
@@ -1574,19 +1585,41 @@ class QueryGenerator {
 	 *
 	 * @param string $formname
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function JSbottom($formname) {
+		GeneralUtility::logDeprecatedFunction();
 		$out = array();
 		if ($this->extJSCODE) {
-			$out[] = '<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'sysext/core/Resources/Public/JavaScript/QueryGenerator/jsfunc.evalfield.js"></script>';
-			$out[] = '<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'sysext/core/Resources/Public/JavaScript/QueryGenerator/jsfunc.tbe_editor.js"></script>';
 			$out[] = '<script language="javascript" type="text/javascript">';
-			$out[] = '	TBE_EDITOR.formname = "' . $formname . '"';
-			$out[] = '	TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '"';
 			$out[] = '	' . $this->extJSCODE;
 			$out[] = '</script>';
 		}
 		return implode(LF, $out);
+	}
+
+	/**
+	 * @param string $name the field name
+	 * @param int $timestamp the unix timestamp
+	 * @param string $type [datetime, date, time, timesec, year]
+	 *
+	 * @return string
+	 */
+	protected function getDateTimePickerField($name, $timestamp, $type) {
+		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
+		$value = ($timestamp > 0 ? strftime($dateFormat, $timestamp) : '');
+		$id = uniqid('dt_');
+		$html = array();
+		$html[] = '<div class="input-group" id="' . $id . '-wrapper">';
+		$html[] = '		<input name="' . htmlspecialchars($name) . '_hr" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" data-date-offset="0" type="text" id="' . $id . '">';
+		$html[] = '		<input name="' . htmlspecialchars($name) . '" value="' . (int)$timestamp . '" type="hidden">';
+		$html[] = '		<span class="input-group-btn">';
+		$html[] = '			<label class="btn btn-default" for="' . $id . '">';
+		$html[] = '				<span class="fa fa-calendar"></span>';
+		$html[] = '			</label>';
+		$html[] = ' 	</span>';
+		$html[] = '</div>';
+		return implode(LF, $html);
 	}
 
 	/**

@@ -2,11 +2,17 @@
 // Query-Builder
 //
 .query-builder {
+	.form-inline > .form-control-clearable {
+		display: inline;
+	}
 	.form-group-with-button-addon {
 		.input-group {
 			margin-bottom: 10px;
 			.input-group-addon {
-				padding: 2px;
+				padding: 0 0 0 1px;
+				.btn-default {
+					border: 0;
+				}
 			}
 		}
 	}
@@ -18,7 +24,6 @@
 		margin: 10px 0;
 	}
 	.row-group {
-		background-color: @gray-lighter;
 		margin: 10px 0;
 		padding: 10px;
 		border-color: #999;
