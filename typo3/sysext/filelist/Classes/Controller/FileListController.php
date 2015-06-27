@@ -319,7 +319,7 @@ class FileListController {
 			// If the "cmd" was to delete files from the list (clipboard thing), do that:
 			if ($this->cmd == 'delete') {
 				$items = $this->filelist->clipObj->cleanUpCBC(GeneralUtility::_POST('CBC'), '_FILE', 1);
-				if (count($items)) {
+				if (!empty($items)) {
 					// Make command array:
 					$FILE = array();
 					foreach ($items as $v) {

@@ -254,7 +254,7 @@ class FileList extends AbstractRecordList {
 			// Add paste button if clipboard is initialized
 			if ($this->clipObj instanceof Clipboard && $folderObject->checkActionPermission('write')) {
 				$elFromTable = $this->clipObj->elFromTable('_FILE');
-				if (count($elFromTable)) {
+				if (!empty($elFromTable)) {
 					$addPasteButton = TRUE;
 					$elToConfirm = array();
 					foreach ($elFromTable as $key => $element) {
@@ -394,7 +394,7 @@ class FileList extends AbstractRecordList {
 					$cells = array();
 					$table = '_FILE';
 					$elFromTable = $this->clipObj->elFromTable($table);
-					if (count($elFromTable) && $this->folderObject->checkActionPermission('write')) {
+					if (!empty($elFromTable) && $this->folderObject->checkActionPermission('write')) {
 						$addPasteButton = TRUE;
 						$elToConfirm = array();
 						foreach ($elFromTable as $key => $element) {
@@ -838,7 +838,7 @@ class FileList extends AbstractRecordList {
 		}
 		// Display PASTE button, if directory:
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
-		if ($fileOrFolderObject instanceof Folder && count($elFromTable) && $fileOrFolderObject->checkActionPermission('write')) {
+		if ($fileOrFolderObject instanceof Folder && !empty($elFromTable) && $fileOrFolderObject->checkActionPermission('write')) {
 			$addPasteButton = TRUE;
 			$elToConfirm = array();
 			foreach ($elFromTable as $key => $element) {
