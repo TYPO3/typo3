@@ -125,7 +125,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function uninstall($extensionKey) {
 		$dependentExtensions = $this->dependencyUtility->findInstalledExtensionsThatDependOnMe($extensionKey);
-		if (is_array($dependentExtensions) && count($dependentExtensions) > 0) {
+		if (is_array($dependentExtensions) && !empty($dependentExtensions)) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(
 				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
 					'extensionList.uninstall.dependencyError',
@@ -324,7 +324,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function updateDbWithExtTablesSql($rawDefinitions) {
 		$fieldDefinitionsFromFile = $this->installToolSqlParser->getFieldDefinitions_fileContent($rawDefinitions);
-		if (count($fieldDefinitionsFromFile)) {
+		if (!empty($fieldDefinitionsFromFile)) {
 			$fieldDefinitionsFromCurrentDatabase = $this->installToolSqlParser->getFieldDefinitions_database();
 			$diff = $this->installToolSqlParser->getDatabaseExtra($fieldDefinitionsFromFile, $fieldDefinitionsFromCurrentDatabase);
 			$updateStatements = $this->installToolSqlParser->getUpdateSuggestions($diff);

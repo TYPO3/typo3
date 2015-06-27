@@ -154,7 +154,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		$queue = $this->downloadQueue->getExtensionQueue();
 		$copyQueue = $this->downloadQueue->getExtensionCopyStorage();
 
-		if (count($copyQueue) > 0) {
+		if (!empty($copyQueue)) {
 			$this->copyDependencies($copyQueue);
 		}
 		$downloadedDependencies = array();
@@ -169,7 +169,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 			// add extension at the end of the download queue
 			$this->downloadQueue->addExtensionToInstallQueue($extension);
 			$installQueue = $this->downloadQueue->getExtensionInstallStorage();
-			if (count($installQueue) > 0) {
+			if (!empty($installQueue)) {
 				$installedDependencies = $this->installDependencies($installQueue);
 			}
 		}
@@ -326,7 +326,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->dependencyUtility->setSkipSystemDependencyCheck($this->skipSystemDependencyCheck);
 		$this->dependencyUtility->checkDependencies($extension);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
-		if (is_array($installQueue) && count($installQueue) > 0) {
+		if (is_array($installQueue) && !empty($installQueue)) {
 			$installQueue = array('install' => $installQueue);
 		}
 		return array_merge($this->downloadQueue->getExtensionQueue(), $installQueue);

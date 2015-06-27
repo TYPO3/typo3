@@ -146,7 +146,7 @@ class ExtensionListUtility implements \SplObserver {
 		$this->sumRecords = 0;
 		$this->parser->parseXML($zlibStream . $localExtensionListFile);
 		// flush last rows to database if existing
-		if (count($this->arrRows)) {
+		if (!empty($this->arrRows)) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows('tx_extensionmanager_domain_model_extension', self::$fieldNames, $this->arrRows, self::$fieldIndicesNoQuote);
 		}
 		$extensions = $this->extensionRepository->insertLastVersion($this->repositoryUid);

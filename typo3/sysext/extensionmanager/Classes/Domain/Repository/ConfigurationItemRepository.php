@@ -53,7 +53,7 @@ class ConfigurationItemRepository {
 		$defaultConfiguration = $configurationUtility->getDefaultConfigurationFromExtConfTemplateAsValuedArray($extensionKey);
 
 		$resultArray = array();
-		if (count($defaultConfiguration) > 0) {
+		if (!empty($defaultConfiguration)) {
 			$metaInformation = $this->addMetaInformation($defaultConfiguration);
 			$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extensionKey);
 			$hierarchicConfiguration = array();

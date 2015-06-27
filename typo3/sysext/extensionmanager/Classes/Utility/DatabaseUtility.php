@@ -86,7 +86,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		// Compile final output:
-		if (count($lines)) {
+		if (!empty($lines)) {
 			$dump = trim('
 #
 # Table structure for table "' . $table . '"

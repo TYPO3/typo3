@@ -173,7 +173,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 
 		$result = new \stdClass();
 
-		if (count($loadedInsecure) === 0) {
+		if (empty($loadedInsecure)) {
 			$value = $this->languageService->getLL('report.status.loadedExtensions.noInsecureExtensionLoaded.value');
 			$message = '';
 			$severity = \TYPO3\CMS\Reports\Status::OK;
@@ -204,7 +204,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity
 		);
 
-		if (count($existingInsecure) === 0) {
+		if (empty($existingInsecure)) {
 			$value = $this->languageService->getLL('report.status.existingExtensions.noInsecureExtensionExists.value');
 			$message = '';
 			$severity = \TYPO3\CMS\Reports\Status::OK;
@@ -235,7 +235,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity
 		);
 
-		if (count($loadedOutdated) === 0) {
+		if (empty($loadedOutdated)) {
 			$value = $this->languageService->getLL('report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value');
 			$message = '';
 			$severity = \TYPO3\CMS\Reports\Status::OK;
@@ -266,7 +266,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			$severity
 		);
 
-		if (count($existingOutdated) === 0) {
+		if (empty($existingOutdated)) {
 			$value = $this->languageService->getLL('report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value');
 			$message = '';
 			$severity = \TYPO3\CMS\Reports\Status::OK;
