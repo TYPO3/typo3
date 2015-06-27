@@ -306,7 +306,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					}
 					$idH = array();
 					$idH[$pid]['uid'] = $pid;
-					if (count($tree->buffer_idH)) {
+					if (!empty($tree->buffer_idH)) {
 						$idH[$pid]['subrow'] = $tree->buffer_idH;
 					}
 					$pagetree = GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\LocalPageTree::class);
@@ -327,7 +327,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// After adding ALL records we set relations:
 		for ($a = 0; $a < 10; $a++) {
 			$addR = $this->export->export_addDBRelations($a);
-			if (!count($addR)) {
+			if (empty($addR)) {
 				break;
 			}
 		}
@@ -650,7 +650,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$excludeHiddenFields .= '<input type="hidden" name="tx_impexp[exclude][' . $key . ']" value="1" />';
 			}
 		}
-		if (count($inData['exclude'])) {
+		if (!empty($inData['exclude'])) {
 			$excludedElements = '<em>' . implode(', ', array_keys($inData['exclude'])) . '</em><hr/><label for="checkExclude">'
 				. $this->lang->getLL('makeconfig_clearAllExclusions', TRUE)
 				. '</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />';
@@ -1074,12 +1074,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							}
 						}
 					}
-					if (count($extKeysToInstall)) {
+					if (!empty($extKeysToInstall)) {
 						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'
 							. implode('", "', $extKeysToInstall) . '".';
 					}
 					if ($inData['import_file']) {
-						if (!count($extKeysToInstall)) {
+						if (empty($extKeysToInstall)) {
 							$import->importData($this->id);
 							BackendUtility::setUpdateSignal('updatePageTree');
 						}
@@ -1442,7 +1442,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 		}
 		// Add to clause:
-		if (count($pageIds)) {
+		if (!empty($pageIds)) {
 			return ' AND uid NOT IN (' . implode(',', $pageIds) . ')';
 		}
 		return '';

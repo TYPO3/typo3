@@ -73,7 +73,7 @@ abstract class AbstractExportTestCase extends \TYPO3\CMS\Core\Tests\FunctionalTe
 		}
 
 		$idH[$pidToStart]['uid'] = $pidToStart;
-		if (count($tree->buffer_idH)) {
+		if (!empty($tree->buffer_idH)) {
 			$idH[$pidToStart]['subrow'] = $tree->buffer_idH;
 		}
 

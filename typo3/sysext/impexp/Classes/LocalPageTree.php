@@ -121,7 +121,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$this->getTree($pid, 999, $depthD);
 			$idH = array();
 			$idH[$pid]['uid'] = $pid;
-			if (count($this->buffer_idH)) {
+			if (!empty($this->buffer_idH)) {
 				$idH[$pid]['subrow'] = $this->buffer_idH;
 			}
 			$this->buffer_idH = $idH;

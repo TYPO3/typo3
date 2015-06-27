@@ -142,7 +142,7 @@ class ExportTest extends \TYPO3\CMS\Impexp\Tests\Functional\Export\AbstractExpor
 		// After adding ALL records we set relations:
 		for ($a = 0; $a < 10; $a++) {
 			$addR = $this->export->export_addDBRelations($a);
-			if (!count($addR)) {
+			if (empty($addR)) {
 				break;
 			}
 		}

@@ -42,7 +42,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Adding all the relations (recursively in 5 levels so relations has THEIR relations registered as well)
  * for($a=0;$a<5;$a++) {
  * $addR = $this->export->export_addDBRelations($a);
- * if (!count($addR)) break;
+ * if (empty($addR)) break;
  * }
  *
  * Finally load all the files.
@@ -1893,7 +1893,7 @@ class ImportExport {
 				}
 			}
 			// Then add all remaining pages not in tree on root level:
-			if (count($pageRecords)) {
+			if (!empty($pageRecords)) {
 				$remainingPageUids = array_keys($pageRecords);
 				foreach ($remainingPageUids as $pUid) {
 					$this->addSingle('pages', $pUid, $pid);
@@ -1948,7 +1948,7 @@ class ImportExport {
 			}
 		}
 		// Execute the move commands if any:
-		if (count($cmd_data)) {
+		if (!empty($cmd_data)) {
 			$tce = $this->getNewTCE();
 			$this->callHook('before_writeRecordsPagesOrder', array(
 				'tce' => &$tce,
@@ -2059,7 +2059,7 @@ class ImportExport {
 			}
 		}
 		// Execute the move commands if any:
-		if (count($cmd_data)) {
+		if (!empty($cmd_data)) {
 			$tce = $this->getNewTCE();
 			$this->callHook('before_writeRecordsRecordsOrder', array(
 				'tce' => &$tce,
@@ -2275,14 +2275,14 @@ class ImportExport {
 						}
 						switch ((string)$config['type']) {
 							case 'db':
-								if (is_array($config['itemArray']) && count($config['itemArray'])) {
+								if (is_array($config['itemArray']) && !empty($config['itemArray'])) {
 									$itemConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 									$valArray = $this->setRelations_db($config['itemArray'], $itemConfig);
 									$updateData[$table][$thisNewUid][$field] = implode(',', $valArray);
 								}
 								break;
 							case 'file':
-								if (is_array($config['newValueFiles']) && count($config['newValueFiles'])) {
+								if (is_array($config['newValueFiles']) && !empty($config['newValueFiles'])) {
 									$valArr = array();
 									foreach ($config['newValueFiles'] as $fI) {
 										$valArr[] = $this->import_addFileNameToBeCopied($fI);
@@ -2344,7 +2344,7 @@ class ImportExport {
 				$this->error('Error: this records is NOT created it seems! (' . $table . ':' . $uid . ')', 1);
 			}
 		}
-		if (count($updateData)) {
+		if (!empty($updateData)) {
 			$tce = $this->getNewTCE();
 			$tce->isImporting = TRUE;
 			$this->callHook('before_setRelation', array(
@@ -2482,7 +2482,7 @@ class ImportExport {
 						// Get XML content and set as default value (string, non-processed):
 						$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
 						// If there has been registered relations inside the flex form field, run processing on the content:
-						if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
+						if (!empty($config['flexFormRels']['db']) || !empty($config['flexFormRels']['file'])) {
 							$origRecordRow = BackendUtility::getRecord($table, $thisNewUid, '*');
 							// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
 							$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
@@ -2511,7 +2511,7 @@ class ImportExport {
 				}
 			}
 		}
-		if (count($updateData)) {
+		if (!empty($updateData)) {
 			$tce = $this->getNewTCE();
 			$tce->isImporting = TRUE;
 			$this->callHook('before_setFlexFormRelations', array(
@@ -2661,7 +2661,7 @@ class ImportExport {
 				}
 			}
 			// If any was found, do processing:
-			if (count($thisSoftRefCfgList)) {
+			if (!empty($thisSoftRefCfgList)) {
 				// Get tokenizedContent string and proceed only if that is not blank:
 				$tokenizedContent = $this->dat['records'][$table . ':' . $origUid]['rels'][$field]['flexFormRels']['softrefs'][$path]['tokenizedContent'];
 				if (strlen($tokenizedContent)) {
@@ -3427,7 +3427,7 @@ class ImportExport {
 					$this->traversePageRecords($this->remainHeader['records']['pages'], $lines);
 				}
 				$this->traverseAllRecords($this->remainHeader['records'], $lines);
-				if (count($lines)) {
+				if (!empty($lines)) {
 					$rows = array();
 					$rows[] = '
 					<tr class="bgColor5 tableheader">
@@ -3670,7 +3670,7 @@ class ImportExport {
 			$this->addRelations($record['rels'], $lines, $preCode);
 		}
 		// Soft ref
-		if (count($record['softrefs'])) {
+		if (!empty($record['softrefs'])) {
 			$preCode_A = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;';
 			$preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			foreach ($record['softrefs'] as $info) {
@@ -4132,7 +4132,7 @@ class ImportExport {
 				}
 			}
 			// Create output:
-			if (count($output)) {
+			if (!empty($output)) {
 				$tRows = array();
 				foreach ($output as $fN => $state) {
 					$tRows[] = '
@@ -4218,7 +4218,7 @@ class ImportExport {
 	 * @return string HTML print of error log
 	 */
 	public function printErrorLog() {
-		return count($this->errorLog) ? \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->errorLog) : '';
+		return !empty($this->errorLog) ? \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($this->errorLog) : '';
 	}
 
 }
