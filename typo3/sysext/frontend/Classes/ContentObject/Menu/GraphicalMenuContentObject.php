@@ -393,7 +393,7 @@ class GraphicalMenuContentObject extends AbstractMenuContentObject {
 				if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) {
 					$this->I['spacer'] = 1;
 				}
-				$this->I['noLink'] = $this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]);
+				$this->I['noLink'] = $this->I['spacer'] || $this->I['val']['noLink'] || empty($this->menuArr[$key]);
 				// !count($this->menuArr[$key]) means that this item is a dummyItem
 				$this->I['name'] = '';
 				// Set access key

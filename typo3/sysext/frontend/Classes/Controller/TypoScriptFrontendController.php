@@ -1072,7 +1072,7 @@ class TypoScriptFrontendController {
 		$this->fe_user->showHiddenRecords = $this->showHiddenRecords;
 		// no matter if we have an active user we try to fetch matching groups which can be set without an user (simulation for instance!)
 		$this->fe_user->fetchGroupData();
-		if (is_array($this->fe_user->user) && count($this->fe_user->groupData['uid'])) {
+		if (is_array($this->fe_user->user) && !empty($this->fe_user->groupData['uid'])) {
 			// global flag!
 			$this->loginUser = TRUE;
 			// group -2 is not an existing group, but denotes a 'default' group when a user IS logged in. This is used to let elements be shown for all logged in users!
@@ -1095,7 +1095,7 @@ class TypoScriptFrontendController {
 		$gr_array = array_unique($gr_array);
 		// sort
 		sort($gr_array);
-		if (count($gr_array) && !$this->loginAllowedInBranch_mode) {
+		if (!empty($gr_array) && !$this->loginAllowedInBranch_mode) {
 			$this->gr_list .= ',' . implode(',', $gr_array);
 		}
 		if ($this->fe_user->writeDevLog) {
@@ -1277,10 +1277,10 @@ class TypoScriptFrontendController {
 					$temp_sys_page = GeneralUtility::makeInstance(PageRepository::class);
 					$temp_sys_page->init($this->showHiddenPage);
 					// If root line contained NO records and ->error_getRootLine_failPid tells us that it was because of a pid=-1 (indicating a "version" record)...:
-					if (!count($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
+					if (empty($temp_sys_page->getRootLine($this->id, $this->MP)) && $temp_sys_page->error_getRootLine_failPid == -1) {
 						// Setting versioningPreview flag and try again:
 						$temp_sys_page->versioningPreview = TRUE;
-						if (count($temp_sys_page->getRootLine($this->id, $this->MP))) {
+						if (!empty($temp_sys_page->getRootLine($this->id, $this->MP))) {
 							// Finally, we got a root line (meaning that it WAS due to versioning preview of a page somewhere) and we set the fePreview flag which in itself will allow sys_page class to display previews of versionized records.
 							$this->fePreview = 1;
 						}
@@ -1500,12 +1500,12 @@ class TypoScriptFrontendController {
 	 */
 	public function getPageAndRootline() {
 		$this->page = $this->sys_page->getPage($this->id);
-		if (!count($this->page)) {
+		if (empty($this->page)) {
 			// If no page, we try to find the page before in the rootLine.
 			// Page is 'not found' in case the id itself was not an accessible page. code 1
 			$this->pageNotFound = 1;
 			$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
-			if (count($this->rootLine)) {
+			if (!empty($this->rootLine)) {
 				$c = count($this->rootLine) - 1;
 				while ($c > 0) {
 					// Add to page access failure history:
@@ -1514,13 +1514,13 @@ class TypoScriptFrontendController {
 					$c--;
 					$this->id = $this->rootLine[$c]['uid'];
 					$this->page = $this->sys_page->getPage($this->id);
-					if (count($this->page)) {
+					if (!empty($this->page)) {
 						break;
 					}
 				}
 			}
 			// If still no page...
-			if (!count($this->page)) {
+			if (empty($this->page)) {
 				$message = 'The requested page does not exist!';
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling']) {
 					$this->pageNotFoundAndExit($message);
@@ -1569,14 +1569,14 @@ class TypoScriptFrontendController {
 		// Gets the rootLine
 		$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 		// If not rootline we're off...
-		if (!count($this->rootLine)) {
+		if (empty($this->rootLine)) {
 			$ws = $this->whichWorkspace();
 			if ($this->sys_page->error_getRootLine_failPid == -1 && $ws) {
 				$this->sys_page->versioningPreview = TRUE;
 				$this->versioningWorkspaceId = $ws;
 				$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 			}
-			if (!count($this->rootLine)) {
+			if (empty($this->rootLine)) {
 				$message = 'The requested page didn\'t have a proper connection to the tree-root!';
 				if ($this->checkPageUnavailableHandler()) {
 					$this->pageUnavailableAndExit($message);
@@ -1590,7 +1590,7 @@ class TypoScriptFrontendController {
 		}
 		// Checking for include section regarding the hidden/starttime/endtime/fe_user (that is access control of a whole subbranch!)
 		if ($this->checkRootlineForIncludeSection()) {
-			if (!count($this->rootLine)) {
+			if (empty($this->rootLine)) {
 				$message = 'The requested page was not accessible!';
 				if ($this->checkPageUnavailableHandler()) {
 					$this->pageUnavailableAndExit($message);
@@ -1631,7 +1631,7 @@ class TypoScriptFrontendController {
 			case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
 				$pageArray = $this->sys_page->getMenu($idArray[0] ? $idArray[0] : $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . PageRepository::DOKTYPE_BE_USER_SECTION);
 				$pO = 0;
-				if ($mode == PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && count($pageArray)) {
+				if ($mode == PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
 					$randval = (int)rand(0, count($pageArray) - 1);
 					$pO = $randval;
 				}
@@ -1643,7 +1643,7 @@ class TypoScriptFrontendController {
 					}
 					$c++;
 				}
-				if (count($page) == 0) {
+				if (empty($page)) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a subpage. ' . 'However, this page has no accessible subpages.';
 					throw new PageNotFoundException($message, 1301648328);
 				}
@@ -1651,14 +1651,14 @@ class TypoScriptFrontendController {
 			case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
 				$parent = $this->sys_page->getPage($idArray[0] ? $idArray[0] : $thisUid, $disableGroupCheck);
 				$page = $this->sys_page->getPage($parent['pid'], $disableGroupCheck);
-				if (count($page) == 0) {
+				if (empty($page)) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to its parent page. ' . 'However, the parent page is not accessible.';
 					throw new PageNotFoundException($message, 1301648358);
 				}
 				break;
 			default:
 				$page = $this->sys_page->getPage($idArray[0], $disableGroupCheck);
-				if (count($page) == 0) {
+				if (empty($page)) {
 					$message = 'This page (ID ' . $thisUid . ') is of type "Shortcut" and configured to redirect to a page, which is not accessible (ID ' . $idArray[0] . ').';
 					throw new PageNotFoundException($message, 1301648404);
 				}
@@ -1811,7 +1811,7 @@ class TypoScriptFrontendController {
 	public function getPageAccessFailureReasons() {
 		$output = array();
 		$combinedRecords = array_merge(is_array($this->pageAccessFailureHistory['direct_access']) ? $this->pageAccessFailureHistory['direct_access'] : array(array('fe_group' => 0)), is_array($this->pageAccessFailureHistory['sub_section']) ? $this->pageAccessFailureHistory['sub_section'] : array());
-		if (count($combinedRecords)) {
+		if (!empty($combinedRecords)) {
 			foreach ($combinedRecords as $k => $pagerec) {
 				// If $k=0 then it is the very first page the original ID was pointing at and that will get a full check of course
 				// If $k>0 it is parent pages being tested. They are only significant for the access to the first page IF they had the extendToSubpages flag set, hence checked only then!
@@ -2606,7 +2606,7 @@ class TypoScriptFrontendController {
 			$this->checkTranslatedShortcut();
 			// Request the overlay record for the sys_language_uid:
 			$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
-			if (!count($olRec)) {
+			if (empty($olRec)) {
 				// If no OL record exists and a foreign language is asked for...
 				if ($this->sys_language_uid) {
 					// If requested translation is not available:
@@ -2620,7 +2620,7 @@ class TypoScriptFrontendController {
 							case 'content_fallback':
 								$fallBackOrder = GeneralUtility::intExplode(',', $sys_language_content);
 								foreach ($fallBackOrder as $orderValue) {
-									if ((string)$orderValue === '0' || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
+									if ((string)$orderValue === '0' || !empty($this->sys_page->getPageOverlay($this->id, $orderValue))) {
 										$this->sys_language_content = $orderValue;
 										// Setting content uid (but leaving the sys_language_uid)
 										break;
@@ -2787,7 +2787,7 @@ class TypoScriptFrontendController {
 		$locData = explode(':', $locationData);
 		if (!$locData[1] || $this->sys_page->checkRecord($locData[1], $locData[2], 1)) {
 			// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
-			if (count($this->sys_page->getPage($locData[0]))) {
+			if (!empty($this->sys_page->getPage($locData[0]))) {
 				return 1;
 			} else {
 				$GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data (' . $locationData . ') was not accessible.', 2);
@@ -3760,7 +3760,7 @@ class TypoScriptFrontendController {
 				}
 			}
 		}
-		if (count($search)) {
+		if (!empty($search)) {
 			$this->content = str_replace($search, $replace, $this->content);
 		}
 	}
@@ -4523,7 +4523,7 @@ class TypoScriptFrontendController {
 	 * @return void
 	 */
 	public function convPOSTCharset() {
-		if ($this->renderCharset != $this->metaCharset && is_array($_POST) && count($_POST)) {
+		if ($this->renderCharset != $this->metaCharset && is_array($_POST) && !empty($_POST)) {
 			$this->csConvObj->convArray($_POST, $this->metaCharset, $this->renderCharset);
 			$GLOBALS['HTTP_POST_VARS'] = $_POST;
 		}

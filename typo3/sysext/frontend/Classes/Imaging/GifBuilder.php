@@ -815,7 +815,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 	 */
 	protected function calculateMaximum($string) {
 		$parts = GeneralUtility::trimExplode(',', $this->calcOffset($string), TRUE);
-		$maximum = count($parts) ? max($parts) : 0;
+		$maximum = !empty($parts) ? max($parts) : 0;
 		return $maximum;
 	}
 

@@ -253,7 +253,7 @@ class AbstractPlugin {
 			// cHash mode check
 			// IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
 			// Background: The function call will check if a cHash parameter was sent with the URL because only if it was the page may be cached. If no cHash was found the function will simply disable caching to avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and the only risk is that the content may not be cached. A missing cHash value is considered a mistake in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare (more frequent with "realurl") but when it occurs it is very puzzling!
-			if ($this->pi_checkCHash && count($this->piVars)) {
+			if ($this->pi_checkCHash && !empty($this->piVars)) {
 				$this->frontendController->reqCHash();
 			}
 		}
@@ -299,7 +299,7 @@ class AbstractPlugin {
 					if (is_array($subConfNextLevel) && $subKey === 'stdWrap.') {
 						$conf[$key] = $this->cObj->stdWrap($conf[$key], $conf[$key . '.']['stdWrap.']);
 						unset($conf[$key . '.']['stdWrap.']);
-						if (!count($conf[$key . '.'])) {
+						if (empty($conf[$key . '.'])) {
 							unset($conf[$key . '.']);
 						}
 					}
@@ -1196,7 +1196,7 @@ class AbstractPlugin {
 				unset($tempPiVars[$k]);
 			}
 		}
-		if (!count($tempPiVars)) {
+		if (empty($tempPiVars)) {
 			//@TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
 			return 1;
 		}
@@ -1227,7 +1227,7 @@ class AbstractPlugin {
 				}
 			}
 		}
-		if (!count($inArray)) {
+		if (empty($inArray)) {
 			//@TODO: How do we deal with this? return TRUE would be the right thing to do here but that might be breaking
 			return 1;
 		}

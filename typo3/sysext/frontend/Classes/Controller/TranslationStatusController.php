@@ -285,7 +285,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		$res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_language', '1=1' . BackendUtility::deleteClause('sys_language'));
 		$outputArray = array();
 		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-			if (is_array($allowed_languages) && count($allowed_languages)) {
+			if (is_array($allowed_languages) && !empty($allowed_languages)) {
 				if (isset($allowed_languages[$row['uid']])) {
 					$outputArray[] = $row;
 				}

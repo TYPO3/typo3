@@ -1433,7 +1433,7 @@ class ContentObjectRenderer {
 				continue;
 			}
 			if (isset($value['el'])) {
-				if (is_array($value['el']) && count($value['el']) > 0) {
+				if (is_array($value['el']) && !empty($value['el'])) {
 					foreach ($value['el'] as $ekey => $element) {
 						if (isset($element['vDEF'])) {
 							$conf[$ekey] = $element['vDEF'];
@@ -1473,7 +1473,7 @@ class ContentObjectRenderer {
 			$listArr = $this->checkPidArray($listArr);
 		}
 		$pidList = array();
-		if (is_array($listArr) && count($listArr)) {
+		if (is_array($listArr) && !empty($listArr)) {
 			foreach ($listArr as $uid) {
 				$page = $GLOBALS['TSFE']->sys_page->getPage($uid);
 				if (!$page['is_siteroot']) {
@@ -2064,7 +2064,7 @@ class ContentObjectRenderer {
 		$sPkeys = array_keys($subpartContentArray);
 		$wPkeys = array_keys($wrappedSubpartContentArray);
 		$aKeys = array_merge(array_keys($markContentArray), $sPkeys, $wPkeys);
-		if (!count($aKeys)) {
+		if (empty($aKeys)) {
 			$GLOBALS['TT']->pull();
 			return $content;
 		}
@@ -3918,14 +3918,14 @@ class ContentObjectRenderer {
 					$d->close();
 				}
 				// Sort if required
-				if (count($items['sorting'])) {
+				if (!empty($items['sorting'])) {
 					if (strtolower(trim($data_arr[3])) != 'r') {
 						asort($items['sorting']);
 					} else {
 						arsort($items['sorting']);
 					}
 				}
-				if (count($items['files'])) {
+				if (!empty($items['files'])) {
 					// Make list
 					reset($items['sorting']);
 					$fullPath = trim($data_arr[4]);
@@ -4701,7 +4701,7 @@ class ContentObjectRenderer {
 		$conf['max'] = isset($conf['max.']) ? (int)$this->stdWrap($conf['max'], $conf['max.']) : (int)$conf['max'];
 		$conf['min'] = isset($conf['min.']) ? (int)$this->stdWrap($conf['min'], $conf['min.']) : (int)$conf['min'];
 		$valArr = explode($conf['token'], $value);
-		if (count($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
+		if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
 			$key = isset($conf['returnKey.']) ? (int)$this->stdWrap($conf['returnKey'], $conf['returnKey.']) : (int)$conf['returnKey'];
 			$content = isset($valArr[$key]) ? $valArr[$key] : '';
 		} else {
@@ -6053,7 +6053,7 @@ class ContentObjectRenderer {
 		$urlChar = intval(strpos($linkParameter, '.'));
 
 		// Firsts, test if $linkParameter is numeric and page with such id exists. If yes, do not attempt to link to file
-		if (!MathUtility::canBeInterpretedAsInteger($linkParameter) || count($GLOBALS['TSFE']->sys_page->getPage_noCheck($linkParameter)) == 0) {
+		if (!MathUtility::canBeInterpretedAsInteger($linkParameter) || empty($GLOBALS['TSFE']->sys_page->getPage_noCheck($linkParameter))) {
 			// Detects if a file is found in site-root and if so it will be treated like a normal file.
 			list($rootFileDat) = explode('?', rawurldecode($linkParameter));
 			$containsSlash = (strpos($rootFileDat, '/') !== FALSE);
@@ -6285,7 +6285,7 @@ class ContentObjectRenderer {
 					}
 					// Looking up the page record to verify its existence:
 					$page = $GLOBALS['TSFE']->sys_page->getPage($linkParameter, $disableGroupAccessCheck);
-					if (count($page)) {
+					if (!empty($page)) {
 						// MointPoints, look for closest MPvar:
 						$MPvarAcc = array();
 						if (!$GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue']) {
@@ -6298,7 +6298,7 @@ class ContentObjectRenderer {
 						$mount_info = $GLOBALS['TSFE']->sys_page->getMountPointInfo($page['uid'], $page);
 						if (is_array($mount_info) && $mount_info['overlay']) {
 							$page = $GLOBALS['TSFE']->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
-							if (!count($page)) {
+							if (empty($page)) {
 								$GLOBALS['TT']->setTSlogMessage('typolink(): Mount point \'' . $mount_info['mount_pid'] . '\' was not available, so \'' . $linktxt . '\' was not linked.', 1);
 								return $linktxt;
 							}
@@ -6328,7 +6328,7 @@ class ContentObjectRenderer {
 						$targetDomain = '';
 						$currentDomain = $this->getEnvironmentVariable('HTTP_HOST');
 						// Mount pages are always local and never link to another domain
-						if (count($MPvarAcc)) {
+						if (!empty($MPvarAcc)) {
 							// Add "&MP" var:
 							$addQueryParams .= '&MP=' . rawurlencode(implode(',', $MPvarAcc));
 						} elseif (strpos($addQueryParams, '&MP=') === FALSE && $GLOBALS['TSFE']->config['config']['typolinkCheckRootline']) {
@@ -6347,7 +6347,7 @@ class ContentObjectRenderer {
 									$page = $GLOBALS['TSFE']->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
 									$maxLoopCount--;
 								}
-								if (count($page) == 0 || $maxLoopCount == 0) {
+								if (empty($page) || $maxLoopCount == 0) {
 									// We revert if shortcut is broken or maximum number of loops is exceeded (indicates endless loop)
 									$page = $page2;
 								}
@@ -6432,7 +6432,7 @@ class ContentObjectRenderer {
 								unset($URLparamsArray['id']);
 								unset($URLparamsArray['type']);
 								// If there are no parameters left.... set the new url.
-								if (!count($URLparamsArray)) {
+								if (empty($URLparamsArray)) {
 									$this->lastTypoLinkUrl = $sectionMark;
 								}
 							}
@@ -6613,7 +6613,7 @@ class ContentObjectRenderer {
 			$conf['fileTarget'] = $target;
 		}
 		if (is_array($urlParameters)) {
-			if (count($urlParameters)) {
+			if (!empty($urlParameters)) {
 				$conf['additionalParams'] .= GeneralUtility::implodeArrayForUrl('', $urlParameters);
 			}
 		} else {
@@ -6729,7 +6729,7 @@ class ContentObjectRenderer {
 						break;
 					}
 				}
-				if (count($rl_mpArray)) {
+				if (!empty($rl_mpArray)) {
 					$MP = implode(',', array_reverse($rl_mpArray));
 				}
 			}
@@ -7104,7 +7104,7 @@ class ContentObjectRenderer {
 		}
 		$mail->setFrom($sender);
 		$parsedReplyTo = MailUtility::parseAddresses($replyTo);
-		if (count($parsedReplyTo) > 0) {
+		if (!empty($parsedReplyTo)) {
 			$mail->setReplyTo($parsedReplyTo);
 		}
 		$message = trim($message);
@@ -7114,17 +7114,17 @@ class ContentObjectRenderer {
 			$subject = trim($messageParts[0]);
 			$plainMessage = trim($messageParts[1]);
 			$parsedRecipients = MailUtility::parseAddresses($recipients);
-			if (count($parsedRecipients) > 0) {
+			if (!empty($parsedRecipients)) {
 				$mail->setTo($parsedRecipients)
 					->setSubject($subject)
 					->setBody($plainMessage);
 				$mail->send();
 			}
 			$parsedCc = MailUtility::parseAddresses($cc);
-			if (count($parsedCc) > 0) {
+			if (!empty($parsedCc)) {
 				/** @var $mail MailMessage */
 				$mail = GeneralUtility::makeInstance(MailMessage::class);
-				if (count($parsedReplyTo) > 0) {
+				if (!empty($parsedReplyTo)) {
 					$mail->setReplyTo($parsedReplyTo);
 				}
 				$mail->setFrom($sender)
@@ -7187,7 +7187,7 @@ class ContentObjectRenderer {
 			// $name and $conf is loaded with the referenced values.
 			$old_conf = $confArr[$prop . '.'];
 			list($name, $conf) = $cF->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
-			if (is_array($old_conf) && count($old_conf)) {
+			if (is_array($old_conf) && !empty($old_conf)) {
 				$conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;
 			}
 			$confArr[$prop . '.'] = $conf;
@@ -7389,12 +7389,11 @@ class ContentObjectRenderer {
 			if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
 				$updateFields[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 			}
-			if (count($updateFields)) {
+			if (!empty($updateFields)) {
 				if ($doExec) {
 					return $GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . $uid, $updateFields);
-				} else {
-					return $GLOBALS['TYPO3_DB']->UPDATEquery($table, 'uid=' . $uid, $updateFields);
 				}
+				return $GLOBALS['TYPO3_DB']->UPDATEquery($table, 'uid=' . $uid, $updateFields);
 			}
 		}
 	}
@@ -7535,7 +7534,7 @@ class ContentObjectRenderer {
 			$OR_arr[] = 'uid=' . (int)$feUserRow['uid'];
 		}
 		$whereDef = ' AND 1=0';
-		if (count($OR_arr)) {
+		if (!empty($OR_arr)) {
 			$whereDef = ' AND (' . implode(' OR ', $OR_arr) . ')';
 			if ($GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']) {
 				$whereDef .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'] . '=0';
@@ -7812,7 +7811,7 @@ class ContentObjectRenderer {
 						$where_p[] = $prefixTableName . $field . ' LIKE \'%' . $val . '%\'';
 					}
 				}
-				if (count($where_p)) {
+				if (!empty($where_p)) {
 					$where .= ' AND (' . implode(' OR ', $where_p) . ')';
 				}
 			}
@@ -8161,7 +8160,7 @@ class ContentObjectRenderer {
 	 */
 	public function checkPidArray($listArr) {
 		$outArr = array();
-		if (is_array($listArr) && count($listArr)) {
+		if (is_array($listArr) && !empty($listArr)) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid IN (' . implode(',', $listArr) . ')' . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
 				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery, 3);
@@ -8283,7 +8282,7 @@ class ContentObjectRenderer {
 			if (!$currentRecord) {
 				$currentRecord = $this->currentRecord;
 			}
-			if (!count($dataArr)) {
+			if (empty($dataArr)) {
 				$dataArr = $this->data;
 			}
 			// Delegate rendering of the edit panel to the frontend edit
@@ -8309,7 +8308,7 @@ class ContentObjectRenderer {
 			if (!$currentRecord) {
 				$currentRecord = $this->currentRecord;
 			}
-			if (!count($dataArr)) {
+			if (empty($dataArr)) {
 				$dataArr = $this->data;
 			}
 			// Delegate rendering of the edit panel to frontend edit class.

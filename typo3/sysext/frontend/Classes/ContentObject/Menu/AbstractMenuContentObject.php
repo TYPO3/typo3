@@ -1102,7 +1102,7 @@ abstract class AbstractMenuContentObject {
 					if ($v_b['uid'] == $value_rec['pid']) {
 						if ($lastKey) {
 							$sectionRec_temp = $this->removeInaccessiblePages($this->sys_page->getMenu($prevnextsection_menu[$lastKey]['uid'], '*', $sortingField, $additionalWhere));
-							if (count($sectionRec_temp)) {
+							if (!empty($sectionRec_temp)) {
 								$recArr['prevsection'] = reset($sectionRec_temp);
 								$recArr['prevsection_last'] = end($sectionRec_temp);
 							}
@@ -1708,7 +1708,7 @@ abstract class AbstractMenuContentObject {
 	public function subMenu($uid, $objSuffix = '') {
 		// Setting alternative menu item array if _SUB_MENU has been defined in the current ->menuArr
 		$altArray = '';
-		if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU']) && count($this->menuArr[$this->I['key']]['_SUB_MENU'])) {
+		if (is_array($this->menuArr[$this->I['key']]['_SUB_MENU']) && !empty($this->menuArr[$this->I['key']]['_SUB_MENU'])) {
 			$altArray = $this->menuArr[$this->I['key']]['_SUB_MENU'];
 		}
 		// Make submenu if the page is the next active

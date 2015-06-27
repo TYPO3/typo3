@@ -177,7 +177,7 @@ class PageGenerator {
 		$setEvents = array();
 		$setBody = array();
 		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
-			if (count($handlers)) {
+			if (!empty($handlers)) {
 				GeneralUtility::deprecationLog('The usage of $GLOBALS[\'TSFE\']->JSeventFuncCalls is deprecated as of TYPO3 CMS 7. Use Javascript directly.');
 				$functions[] = '	function T3_' . $event . 'Wrapper(e) {	' . implode('   ', $handlers) . '	}';
 				$setEvents[] = '	document.' . $event . '=T3_' . $event . 'Wrapper;';
@@ -187,7 +187,7 @@ class PageGenerator {
 				}
 			}
 		}
-		return array(count($functions) ? implode(LF, $functions) . LF . implode(LF, $setEvents) : '', $setBody);
+		return array(!empty($functions) ? implode(LF, $functions) . LF . implode(LF, $setEvents) : '', $setBody);
 	}
 
 	/**
@@ -363,7 +363,7 @@ class PageGenerator {
 			$docTypeParts = array_reverse($docTypeParts);
 		}
 		// Adding doctype parts:
-		if (count($docTypeParts)) {
+		if (!empty($docTypeParts)) {
 			$pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
 		}
 		// Begin header section:
@@ -427,7 +427,7 @@ class PageGenerator {
 					}
 				}
 			}
-			if (count($temp_styleLines)) {
+			if (!empty($temp_styleLines)) {
 				if ($tsfe->config['config']['inlineStyle2TempFile']) {
 					$pageRenderer->addCssFile(self::inline2TempFile(implode(LF, $temp_styleLines), 'css'));
 				} else {
@@ -975,7 +975,7 @@ class PageGenerator {
 				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($tsfe->pSetup['bodyTagAdd']) . '>';
 			}
 			// Event functions
-			if (count($JSef[1])) {
+			if (!empty($JSef[1])) {
 				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
 			}
 		}

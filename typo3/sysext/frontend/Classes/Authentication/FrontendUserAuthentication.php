@@ -295,7 +295,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 			$serviceChain .= ',' . $serviceObj->getServiceKey();
 			$serviceObj->initAuth($subType, array(), $authInfo, $this);
 			$groupData = $serviceObj->getGroups($this->user, $groupDataArr);
-			if (is_array($groupData) && count($groupData)) {
+			if (is_array($groupData) && !empty($groupData)) {
 				// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
 				$groupDataArr = $groupData + $groupDataArr;
 			}
@@ -304,10 +304,10 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 		if ($this->writeDevLog && $serviceChain) {
 			GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, __CLASS__);
 		}
-		if ($this->writeDevLog && !count($groupDataArr)) {
+		if ($this->writeDevLog && empty($groupDataArr)) {
 			GeneralUtility::devLog('No usergroups found by services', __CLASS__);
 		}
-		if ($this->writeDevLog && count($groupDataArr)) {
+		if ($this->writeDevLog && !empty($groupDataArr)) {
 			GeneralUtility::devLog(count($groupDataArr) . ' usergroup records found by services', __CLASS__);
 		}
 		// Use 'auth' service to check the usergroups if they are really valid
@@ -336,7 +336,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 				$this->groupData['TSconfig'][$groupData['uid']] = $groupData['TSconfig'];
 			}
 		}
-		if (count($this->groupData) && count($this->groupData['TSconfig'])) {
+		if (!empty($this->groupData) && !empty($this->groupData['TSconfig'])) {
 			// TSconfig: collect it in the order it was collected
 			foreach ($this->groupData['TSconfig'] as $TSdata) {
 				$this->TSdataArray[] = $TSdata;
@@ -347,7 +347,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 			ksort($this->groupData['uid']);
 			ksort($this->groupData['pid']);
 		}
-		return count($this->groupData['uid']) ?: 0;
+		return !empty($this->groupData['uid']) ? count($this->groupData['uid']) : 0;
 	}
 
 	/**
@@ -385,7 +385,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication {
 	 */
 	public function fetchSessionData() {
 		// Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
-		if ($this->id && !count($this->sesData)) {
+		if ($this->id && empty($this->sesData)) {
 			$statement = $this->db->prepare_SELECTquery('*', 'fe_session_data', 'hash = :hash');
 			$statement->execute(array(':hash' => $this->id));
 			if (($sesDataRow = $statement->fetch()) !== FALSE) {

@@ -490,7 +490,7 @@ class AdminPanelView {
 			if ($this->extGetFeAdminValue('cache', 'noCache')) {
 				$theBytes = 0;
 				$count = 0;
-				if (count($GLOBALS['TSFE']->imagesOnPage)) {
+				if (!empty($GLOBALS['TSFE']->imagesOnPage)) {
 					$tableArr[] = array($this->extGetLL('info_imagesOnPage'), count($GLOBALS['TSFE']->imagesOnPage), TRUE);
 					foreach ($GLOBALS['TSFE']->imagesOnPage as $file) {
 						$fs = @filesize($file);
