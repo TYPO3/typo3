@@ -354,7 +354,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration (or a subclass thereof)
 	 */
 	public function traverseProperties(array $splittedPropertyPath) {
-		if (count($splittedPropertyPath) === 0) {
+		if (empty($splittedPropertyPath)) {
 			return $this;
 		}
 

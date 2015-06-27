@@ -100,7 +100,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (count($pluginNames) > 1) {
 			throw new \TYPO3\CMS\Extbase\Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument', 1280825466);
 		}
-		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
+		return !empty($pluginNames) ? $pluginNames[0] : NULL;
 	}
 
 	/**
@@ -144,7 +144,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 				if (count($pages) > 1) {
 					throw new \TYPO3\CMS\Extbase\Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
 				}
-				$this->targetPidPluginCache[$pluginSignature] = count($pages) > 0 ? $pages[0]['pid'] : NULL;
+				$this->targetPidPluginCache[$pluginSignature] = !empty($pages) ? $pages[0]['pid'] : NULL;
 			}
 			return $this->targetPidPluginCache[$pluginSignature];
 

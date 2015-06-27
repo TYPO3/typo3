@@ -61,7 +61,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$request->setCallingScript($callingScript);
 		$request->setControllerObjectName(\TYPO3\CMS\Extbase\Command\HelpCommandController::class);
 		$rawCommandLineArguments = is_array($commandLine) ? $commandLine : explode(' ', $commandLine);
-		if (count($rawCommandLineArguments) === 0) {
+		if (empty($rawCommandLineArguments)) {
 			$request->setControllerCommandName('helpStub');
 			return $request;
 		}
@@ -113,7 +113,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$decidedToUseNamedArguments = FALSE;
 		$decidedToUseUnnamedArguments = FALSE;
 		$argumentIndex = 0;
-		while (count($rawCommandLineArguments) > 0) {
+		while (!empty($rawCommandLineArguments)) {
 			$rawArgument = array_shift($rawCommandLineArguments);
 			if ($rawArgument[0] === '-') {
 				if ($rawArgument[1] === '-') {
@@ -135,7 +135,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 					unset($requiredArguments[$argumentName]);
 				}
 			} else {
-				if (count($requiredArguments) > 0) {
+				if (!empty($requiredArguments)) {
 					if ($decidedToUseNamedArguments) {
 						throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException(sprintf('Unexpected unnamed argument "%s". If you use named arguments, all required arguments must be passed named.', $rawArgument), 1309971820);
 					}
@@ -196,7 +196,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 			$currentArgument .= $possibleValue;
 		}
 		$splitArgument = explode('=', $currentArgument, 2);
-		while ((!isset($splitArgument[1]) || trim($splitArgument[1]) === '') && count($rawCommandLineArguments) > 0) {
+		while ((!isset($splitArgument[1]) || trim($splitArgument[1]) === '') && !empty($rawCommandLineArguments)) {
 			$currentArgument .= array_shift($rawCommandLineArguments);
 			$splitArgument = explode('=', $currentArgument);
 		}

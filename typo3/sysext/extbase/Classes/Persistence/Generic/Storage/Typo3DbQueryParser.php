@@ -543,7 +543,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = array(), $includeDeleted) {
 		$statement = '';
 		if ($ignoreEnableFields && !$includeDeleted) {
-			if (count($enableFieldsToBeIgnored)) {
+			if (!empty($enableFieldsToBeIgnored)) {
 				// array_combine() is necessary because of the way \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() is implemented
 				$statement .= $this->getPageRepository()->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
 			} else {

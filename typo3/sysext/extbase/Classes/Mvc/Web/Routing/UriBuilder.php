@@ -685,14 +685,14 @@ class UriBuilder {
 			$targetPageType = $this->extensionService->getTargetPageTypeByFormat($this->request->getControllerExtensionName(), $this->format);
 			$typolinkConfiguration['parameter'] .= ',' . $targetPageType;
 		}
-		if (count($this->arguments) > 0) {
+		if (!empty($this->arguments)) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
 			$this->lastArguments = $arguments;
 			$typolinkConfiguration['additionalParams'] = GeneralUtility::implodeArrayForUrl(NULL, $arguments);
 		}
 		if ($this->addQueryString === TRUE) {
 			$typolinkConfiguration['addQueryString'] = 1;
-			if (count($this->argumentsToBeExcludedFromQueryString) > 0) {
+			if (!empty($this->argumentsToBeExcludedFromQueryString)) {
 				$typolinkConfiguration['addQueryString.'] = array(
 					'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
 				);

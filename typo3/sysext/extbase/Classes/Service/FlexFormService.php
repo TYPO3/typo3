@@ -86,7 +86,8 @@ class FlexFormService implements \TYPO3\CMS\Core\SingletonInterface {
 				if (strpos($nodeKey, '.')) {
 					$nodeKeyParts = explode('.', $nodeKey);
 					$currentNode = &$return;
-					for ($i = 0; $i < count($nodeKeyParts) - 1; $i++) {
+					$nodeKeyPartsCount = count($nodeKeyParts);
+					for ($i = 0; $i < $nodeKeyPartsCount - 1; $i++) {
 						$currentNode = &$currentNode[$nodeKeyParts[$i]];
 					}
 					$newNode = array(next($nodeKeyParts) => $nodeValue);

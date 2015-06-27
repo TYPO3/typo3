@@ -354,7 +354,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 				$row[$columnMap->getColumnName()] = $this->dataMapper->getPlainValue($propertyValue, $columnMap);
 			}
 		}
-		if (count($row) > 0) {
+		if (!empty($row)) {
 			$this->updateObject($object, $row);
 			$object->_memorizeCleanState();
 		}
@@ -570,7 +570,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 					$row[$parentTableFieldName] = '';
 				}
 				$relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
-				if (is_array($relationTableMatchFields) && count($relationTableMatchFields)) {
+				if (is_array($relationTableMatchFields) && !empty($relationTableMatchFields)) {
 					$row = array_merge(array_fill_keys(array_keys($relationTableMatchFields), ''), $row);
 				}
 			}
@@ -578,7 +578,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if (!empty($childSortByFieldName)) {
 				$row[$childSortByFieldName] = 0;
 			}
-			if (count($row) > 0) {
+			if (!empty($row)) {
 				$this->updateObject($object, $row);
 			}
 		} elseif ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {

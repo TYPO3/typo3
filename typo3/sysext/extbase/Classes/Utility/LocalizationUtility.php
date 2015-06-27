@@ -94,7 +94,7 @@ class LocalizationUtility {
 				if (!empty(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
 					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
 				}
-			} elseif (count(self::$alternativeLanguageKeys)) {
+			} elseif (!empty(self::$alternativeLanguageKeys)) {
 				$languages = array_reverse(self::$alternativeLanguageKeys);
 				foreach ($languages as $language) {
 					if (!empty(self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'])

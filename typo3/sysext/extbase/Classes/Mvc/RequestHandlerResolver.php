@@ -57,7 +57,7 @@ class RequestHandlerResolver {
 				$suitableRequestHandlers[$priority] = $requestHandler;
 			}
 		}
-		if (count($suitableRequestHandlers) === 0) {
+		if (empty($suitableRequestHandlers)) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception('No suitable request handler found.', 1205414233);
 		}
 		ksort($suitableRequestHandlers);

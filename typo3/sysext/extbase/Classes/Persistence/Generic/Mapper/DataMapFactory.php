@@ -312,7 +312,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$fieldEvaluations = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['eval'], TRUE);
 			$dateTimeEvaluations = array('date', 'datetime');
 
-			if (count(array_intersect($dateTimeEvaluations, $fieldEvaluations)) > 0 && !empty($columnConfiguration['dbType'])) {
+			if (!empty(array_intersect($dateTimeEvaluations, $fieldEvaluations)) && !empty($columnConfiguration['dbType'])) {
 				$columnMap->setDateTimeStorageFormat($columnConfiguration['dbType']);
 			}
 		}

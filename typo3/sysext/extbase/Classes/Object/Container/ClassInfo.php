@@ -151,14 +151,14 @@ class ClassInfo {
 	 * @return bool
 	 */
 	public function hasInjectMethods() {
-		return count($this->injectMethods) > 0;
+		return !empty($this->injectMethods);
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function hasInjectProperties() {
-		return count($this->injectProperties) > 0;
+		return !empty($this->injectProperties);
 	}
 
 }

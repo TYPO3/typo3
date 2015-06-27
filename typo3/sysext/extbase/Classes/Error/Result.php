@@ -225,7 +225,7 @@ class Result {
 	 * @return \TYPO3\CMS\Extbase\Error\Result
 	 */
 	public function recurseThroughResult(array $pathSegments) {
-		if (count($pathSegments) === 0) {
+		if (empty($pathSegments)) {
 			return $this;
 		}
 
@@ -312,7 +312,7 @@ class Result {
 	 * @return bool
 	 */
 	protected function hasProperty($propertyName, $checkerMethodName) {
-		if (count($this->{$propertyName}) > 0) {
+		if (!empty($this->{$propertyName})) {
 			return TRUE;
 		}
 		foreach ($this->propertyResults as $subResult) {
@@ -406,7 +406,7 @@ class Result {
 	 * @return void
 	 */
 	public function flattenTree($propertyName, &$result, $level) {
-		if (count($this->$propertyName) > 0) {
+		if (!empty($this->$propertyName)) {
 			$result[implode('.', $level)] = $this->$propertyName;
 		}
 		foreach ($this->propertyResults as $subPropertyName => $subResult) {

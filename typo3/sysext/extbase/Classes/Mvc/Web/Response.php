@@ -282,7 +282,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 * @return null|string
 	 */
 	public function shutdown() {
-		if (count($this->getAdditionalHeaderData()) > 0) {
+		if (!empty($this->getAdditionalHeaderData())) {
 			$this->getTypoScriptFrontendController()->additionalHeaderData[] = implode(LF, $this->getAdditionalHeaderData());
 		}
 		$this->sendHeaders();

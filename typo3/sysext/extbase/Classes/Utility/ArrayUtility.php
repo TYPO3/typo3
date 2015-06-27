@@ -127,7 +127,7 @@ class ArrayUtility {
 	 * @api
 	 */
 	static public function containsMultipleTypes(array $array) {
-		if (count($array) > 0) {
+		if (!empty($array)) {
 			foreach ($array as $value) {
 				if (!isset($previousType)) {
 					$previousType = gettype($value);
@@ -174,11 +174,10 @@ class ArrayUtility {
 		}
 		$key = array_shift($path);
 		if (isset($array[$key])) {
-			if (count($path) > 0) {
+			if (!empty($path)) {
 				return is_array($array[$key]) ? self::getValueByPath($array[$key], $path) : NULL;
-			} else {
-				return $array[$key];
 			}
+			return $array[$key];
 		} else {
 			return NULL;
 		}
@@ -203,7 +202,7 @@ class ArrayUtility {
 			throw new \InvalidArgumentException('setValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111499);
 		}
 		$key = array_shift($path);
-		if (count($path) === 0) {
+		if (empty($path)) {
 			$subject[$key] = $value;
 		} else {
 			if (!isset($subject[$key]) || !is_array($subject[$key])) {
@@ -229,7 +228,7 @@ class ArrayUtility {
 			throw new \InvalidArgumentException('unsetValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111513);
 		}
 		$key = array_shift($path);
-		if (count($path) === 0) {
+		if (empty($path)) {
 			unset($array[$key]);
 		} else {
 			if (!isset($array[$key]) || !is_array($array[$key])) {

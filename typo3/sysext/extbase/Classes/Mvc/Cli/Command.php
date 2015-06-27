@@ -129,7 +129,7 @@ class Command {
 	 */
 	public function getShortDescription() {
 		$lines = explode(LF, $this->getCommandMethodReflection()->getDescription());
-		return count($lines) > 0 ? trim($lines[0]) : '<no description available>';
+		return !empty($lines) ? trim($lines[0]) : '<no description available>';
 	}
 
 	/**
@@ -158,7 +158,7 @@ class Command {
 	 * @return bool
 	 */
 	public function hasArguments() {
-		return count($this->getCommandMethodReflection()->getParameters()) > 0;
+		return !empty($this->getCommandMethodReflection()->getParameters());
 	}
 
 	/**

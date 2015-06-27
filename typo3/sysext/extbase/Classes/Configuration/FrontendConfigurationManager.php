@@ -113,7 +113,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 					$list[] = $this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']);
 				}
 			}
-			if (count($list) > 0) {
+			if (!empty($list)) {
 				$pages = $pages . ',' . implode(',', $list);
 			}
 			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, array(
@@ -160,7 +160,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 				$flexFormConfiguration = array();
 			}
 		}
-		if (is_array($flexFormConfiguration) && count($flexFormConfiguration)) {
+		if (is_array($flexFormConfiguration) && !empty($flexFormConfiguration)) {
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
@@ -211,7 +211,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 			}
 			$newSwitchableControllerActionsFromFlexForm[$controller][] = $action;
 		}
-		if (count($newSwitchableControllerActionsFromFlexForm) > 0) {
+		if (!empty($newSwitchableControllerActionsFromFlexForm)) {
 			$this->overrideSwitchableControllerActions($frameworkConfiguration, $newSwitchableControllerActionsFromFlexForm);
 		}
 		return $frameworkConfiguration;

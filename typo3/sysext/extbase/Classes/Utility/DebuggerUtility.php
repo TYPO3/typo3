@@ -276,7 +276,7 @@ class DebuggerUtility {
 				$dump .= '<span class="debug-filtered">max depth</span>';
 			}
 		} elseif ($level > 1 && !$object instanceof \DateTime && !$plainText) {
-			if (($object instanceof \Countable && count($object) === 0) || (count($classReflection->getProperties()) === 0)) {
+			if (($object instanceof \Countable && count($object) === 0) || empty($classReflection->getProperties())) {
 				$dump = '<span>' . $dump . '</span>';
 			} else {
 				$dump = '<input type="checkbox" id="' . spl_object_hash($object) . '" /><span class="debug-header">' . $dump . '</span>';

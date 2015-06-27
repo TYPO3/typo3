@@ -54,13 +54,14 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
 		foreach ($formFieldNames as $formField) {
 			$formFieldParts = explode('[', $formField);
 			$currentPosition = &$formFieldArray;
-			for ($i = 0; $i < count($formFieldParts); $i++) {
+			$formFieldPartsCount = count($formFieldParts);
+			for ($i = 0; $i < $formFieldPartsCount; $i++) {
 				$formFieldPart = $formFieldParts[$i];
 				$formFieldPart = rtrim($formFieldPart, ']');
 				if (!is_array($currentPosition)) {
 					throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('The form field "' . $formField . '" is declared as array, but it collides with a previous form field of the same name which declared the field as string. This is an inconsistency you need to fix inside your Fluid form. (String overridden by Array)', 1255072196);
 				}
-				if ($i === count($formFieldParts) - 1) {
+				if ($i === $formFieldPartsCount - 1) {
 					if (isset($currentPosition[$formFieldPart]) && is_array($currentPosition[$formFieldPart])) {
 						throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('The form field "' . $formField . '" is declared as string, but it collides with a previous form field of the same name which declared the field as array. This is an inconsistency you need to fix inside your Fluid form. (Array overridden by String)', 1255072587);
 					}

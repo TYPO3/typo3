@@ -84,7 +84,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 				$matchedCommands[] = $command;
 			}
 		}
-		if (count($matchedCommands) === 0) {
+		if (empty($matchedCommands)) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('No command could be found that matches the command identifier "' . $commandIdentifier . '".', 1310556663);
 		}
 		if (count($matchedCommands) > 1) {

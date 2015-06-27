@@ -382,7 +382,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		} else {
 			$constraint = $query->in('uid', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $fieldValue));
 		}
-		if (count($relationTableMatchFields) > 0) {
+		if (!empty($relationTableMatchFields)) {
 			foreach ($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
 				$constraint = $query->logicalAnd($constraint, $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue));
 			}

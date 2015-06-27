@@ -137,14 +137,14 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 				}
 			}
 		}
-		if (count($argumentDescriptions) > 0) {
+		if (!empty($argumentDescriptions)) {
 			$this->outputLine();
 			$this->outputLine('ARGUMENTS:');
 			foreach ($argumentDescriptions as $argumentDescription) {
 				$this->outputLine($argumentDescription);
 			}
 		}
-		if (count($optionDescriptions) > 0) {
+		if (!empty($optionDescriptions)) {
 			$this->outputLine();
 			$this->outputLine('OPTIONS:');
 			foreach ($optionDescriptions as $optionDescription) {
