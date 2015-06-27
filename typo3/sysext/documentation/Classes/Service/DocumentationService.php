@@ -100,7 +100,7 @@ class DocumentationService {
 		$success = FALSE;
 
 		$packages = $this->getAvailablePackages($url);
-		if (count($packages) == 0) {
+		if (empty($packages)) {
 			return $success;
 		}
 
@@ -166,7 +166,7 @@ class DocumentationService {
 		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/' . $packageName);
 
 		$packages = $this->getAvailablePackages($url);
-		if (count($packages) == 0 || !isset($packages[$version][$language])) {
+		if (empty($packages) || !isset($packages[$version][$language])) {
 			return FALSE;
 		}
 
