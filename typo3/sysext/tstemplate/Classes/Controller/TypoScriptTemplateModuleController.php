@@ -300,7 +300,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
 					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
 				}
-			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && count($this->MOD_MENU['constant_editor_cat'])) {
+			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
 				$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'));
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
@@ -526,7 +526,7 @@ page.10.value = HELLO WORLD!
 		$cEl = current($rlArr);
 		$pArray[$cEl['uid']] = htmlspecialchars($cEl['title']);
 		array_shift($rlArr);
-		if (count($rlArr)) {
+		if (!empty($rlArr)) {
 			if (!isset($pArray[($cEl['uid'] . '.')])) {
 				$pArray[$cEl['uid'] . '.'] = array();
 			}

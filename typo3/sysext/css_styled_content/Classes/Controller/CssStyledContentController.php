@@ -257,7 +257,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// Explode into an array:
 			$fileArray = GeneralUtility::trimExplode(',', $fileList, TRUE);
 			// If there were files to list...:
-			if (count($fileArray)) {
+			if (!empty($fileArray)) {
 				// Get the descriptions for the files (if any):
 				$descriptions = GeneralUtility::trimExplode(LF, $this->cObj->data['imagecaption']);
 				// Get the titles for the files (if any)
@@ -484,7 +484,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			return $content;
 		}
 		$imgs = GeneralUtility::trimExplode(',', $imgList, TRUE);
-		if (count($imgs) === 0) {
+		if (empty($imgs)) {
 			// The imgList was not empty but did only contain empty values
 			if ($restoreRegisters) {
 				$this->cObj->cObjGetSingle('RESTORE_REGISTER', array());

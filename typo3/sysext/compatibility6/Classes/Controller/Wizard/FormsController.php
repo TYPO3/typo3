@@ -700,7 +700,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 							break;
 					}
 					$tArr = $this->cleanT($tArr);
-					if (count($tArr)) {
+					if (!empty($tArr)) {
 						$thisLine[1] .= ',' . implode(',', $tArr);
 					}
 					$thisLine[1] = str_replace('|', '', $thisLine[1]);

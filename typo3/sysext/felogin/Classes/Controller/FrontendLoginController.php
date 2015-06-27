@@ -161,7 +161,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		// Redirect
 		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect && !$this->conf['showLogoutFormAfterLogin']) {
 			$redirectUrl = $this->processRedirect();
-			if (count($redirectUrl)) {
+			if (!empty($redirectUrl)) {
 				$this->redirectUrl = $this->conf['redirectFirstMethod'] ? array_shift($redirectUrl) : array_pop($redirectUrl);
 			} else {
 				$this->redirectUrl = '';
@@ -573,10 +573,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 				$extraHiddenAr[] = $hid;
 			}
 		}
-		if (count($onSubmitAr)) {
+		if (!empty($onSubmitAr)) {
 			$onSubmit = implode('; ', $onSubmitAr) . '; return true;';
 		}
-		if (count($extraHiddenAr)) {
+		if (!empty($extraHiddenAr)) {
 			$extraHidden = implode(LF, $extraHiddenAr);
 		}
 		if (!$gpRedirectUrl && $this->redirectUrl) {
@@ -755,11 +755,10 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 			}
 		}
 		// Remove empty values
-		if (count($redirect_url)) {
+		if (!empty($redirect_url)) {
 			return GeneralUtility::trimExplode(',', implode(',', $redirect_url), TRUE);
-		} else {
-			return array();
 		}
+		return array();
 	}
 
 	/**
@@ -833,7 +832,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	 */
 	protected function getPageLink($label, $piVars, $returnUrl = FALSE) {
 		$additionalParams = '';
-		if (count($piVars)) {
+		if (!empty($piVars)) {
 			foreach ($piVars as $key => $val) {
 				$additionalParams .= '&' . $key . '=' . $val;
 			}

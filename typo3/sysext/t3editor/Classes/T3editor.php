@@ -316,7 +316,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 		$code .= '<div>' . '<textarea id="t3editor_' . $this->editorCounter . '" ' . 'name="' . $name . '" ' . 'class="' . $class . '" ' . $additionalParams . ' ' . $alt . '>' . htmlspecialchars($content) . '</textarea></div>';
 		$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
 		$code .= '<div class="checkbox"><label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox"><input type="checkbox" class="checkbox t3editor_disableEditor" onclick="T3editor.toggleEditor(this);" name="t3editor_disableEditor" value="true" id="t3editor_disableEditor_' . $this->editorCounter . '_checkbox" ' . $checked . ' />' . $GLOBALS['LANG']->getLL('deactivate') . '</label></div>';
-		if (count($hiddenfields)) {
+		if (!empty($hiddenfields)) {
 			foreach ($hiddenfields as $name => $value) {
 				$code .= '<input type="hidden" ' . 'name="' . $name . '" ' . 'value="' . $value . '" />';
 			}

@@ -94,7 +94,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				}
 				$this->getBackendUserAuthentication()->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
 			}
-			if (count($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
+			if (!empty($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType])) {
 				$modMenu['ts_browser_toplevel_' . $bType]['-'] = '---';
 				$modMenu['ts_browser_toplevel_' . $bType] = $modMenu[('ts_browser_toplevel_' . $bType)] + $this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)];
 			}
@@ -363,7 +363,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			if (!$this->pObj->MOD_SETTINGS[('ts_browser_TLKeys_' . $bType)][$this->pObj->sObj]) {
-				if (count($theSetup)) {
+				if (!empty($theSetup)) {
 					$out = '<a href="' . htmlspecialchars(($aHref . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj))) . '">';
 					$out .= sprintf($lang->getLL('addKey'), htmlspecialchars($this->pObj->sObj));
 				}
@@ -429,7 +429,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			// Parser Errors:
 			$pEkey = $bType == 'setup' ? 'config' : 'constants';
-			if (count($templateService->parserErrors[$pEkey])) {
+			if (!empty($templateService->parserErrors[$pEkey])) {
 				$errMsg = array();
 				foreach ($templateService->parserErrors[$pEkey] as $inf) {
 					$errorLink = ' <a href="' . htmlspecialchars(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TemplateAnalyzerModuleFunctionController&template=all&SET[ts_analyzer_checkLinenum]=1#line-' . $inf[2])) . '">' . $lang->getLL('errorShowDetails') . '</a>';

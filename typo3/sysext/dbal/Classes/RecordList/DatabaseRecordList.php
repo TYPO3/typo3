@@ -60,7 +60,7 @@ class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecord
 					}
 				}
 				// If search-fields were defined (and there always are) we create the query:
-				if (count($sfields)) {
+				if (!empty($sfields)) {
 					$like = ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table) . '%\'';
 					// Free-text
 					$queryPart .= implode(($like . ' OR '), $sfields) . $like;

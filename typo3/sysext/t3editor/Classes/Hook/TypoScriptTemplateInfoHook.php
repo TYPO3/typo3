@@ -124,7 +124,7 @@ class TypoScriptTemplateInfoHook {
 							}
 						}
 					}
-					if (count($recData)) {
+					if (!empty($recData)) {
 						// process template row before saving
 						$tstemplateinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class);
 						/* @var $tstemplateinfo \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController */

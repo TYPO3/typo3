@@ -163,7 +163,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 					if ($pId) {
 						$altRootLine = $GLOBALS['TSFE']->sys_page->getRootLine($pId);
 						ksort($altRootLine);
-						if (count($altRootLine)) {
+						if (!empty($altRootLine)) {
 							// Check if the rootline has the real Level0 in it!!
 							$hitRoot = 0;
 							$theNewRoot = array();
@@ -501,7 +501,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 						$primKeys[] = $key . '.' . $fkey . '=' . $primary_table_and_key;
 					}
 				}
-				if (count($primKeys)) {
+				if (!empty($primKeys)) {
 					$whereArray[] = '(' . implode(' OR ', $primKeys) . ')';
 				}
 				// Additional where clause:
@@ -551,12 +551,12 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 						}
 					}
 				}
-				if (count($sub_query_part)) {
+				if (!empty($sub_query_part)) {
 					$main_query_part[] = $this->sword_array[$key]['oper'];
 					$main_query_part[] = '(' . implode(' OR ', $sub_query_part) . ')';
 				}
 			}
-			if (count($main_query_part)) {
+			if (!empty($main_query_part)) {
 				// Remove first part anyways.
 				unset($main_query_part[0]);
 				return implode(' ', $main_query_part);

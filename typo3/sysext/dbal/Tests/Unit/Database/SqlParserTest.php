@@ -702,7 +702,8 @@ class SqlParserTest extends AbstractTestCase {
 		$sql = 'SELECT * FROM pages WHERE pid = ? AND timestamp < ? AND title != \'How to test?\'';
 		$parameterValues = array(12, 1281782690);
 		$components = $this->subject->_callRef('parseSELECT', $sql);
-		for ($i = 0; $i < count($components['parameters']['?']); $i++) {
+		$questionMarkParamCount = count($components['parameters']['?']);
+		for ($i = 0; $i < $questionMarkParamCount; $i++) {
 			$components['parameters']['?'][$i][0] = $parameterValues[$i];
 		}
 

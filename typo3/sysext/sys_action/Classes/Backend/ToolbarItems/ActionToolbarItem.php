@@ -136,7 +136,7 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	 */
 	public function checkAccess() {
 		$result = FALSE;
-		if (count($this->actionEntries)) {
+		if (!empty($this->actionEntries)) {
 			$result = TRUE;
 		}
 		return $result;

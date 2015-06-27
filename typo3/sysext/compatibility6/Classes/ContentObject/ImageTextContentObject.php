@@ -213,7 +213,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 					$maxW = 0;
 				}
 				if ($maxW) {
-					if (count($colMaxW)) {
+					if (!empty($colMaxW)) {
 						$imgConf['file.']['maxW'] = $colMaxW[$a % $colCount];
 					} else {
 						$imgConf['file.']['maxW'] = $maxW;

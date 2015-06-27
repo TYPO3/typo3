@@ -285,7 +285,7 @@ class PermissionController extends ActionController {
 		$options = array();
 		$options[''] = '';
 		// If there are a hierarchy of page ids, then...
-		if ($this->getBackendUser()->user['uid'] && count($tree->orig_ids_hierarchy)) {
+		if ($this->getBackendUser()->user['uid'] && !empty($tree->orig_ids_hierarchy)) {
 			// Init:
 			$labelRecursive = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:recursive', 'beuser');
 			$labelLevels = LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:levels', 'beuser');

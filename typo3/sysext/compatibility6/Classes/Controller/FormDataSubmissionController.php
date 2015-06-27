@@ -146,11 +146,10 @@ class FormDataSubmissionController {
 		$locData = explode(':', $locationData);
 		if (!$locData[1] || $this->frontendController->sys_page->checkRecord($locData[1], $locData[2], 1)) {
 			// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
-			if (count($this->frontendController->sys_page->getPage($locData[0]))) {
+			if (!empty($this->frontendController->sys_page->getPage($locData[0]))) {
 				return 1;
-			} else {
-				$GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data (' . $locationData . ') was not accessible.', 2);
 			}
+			$GLOBALS['TT']->setTSlogMessage('LocationData Error: The page pointed to by location data (' . $locationData . ') was not accessible.', 2);
 		} else {
 			$GLOBALS['TT']->setTSlogMessage('LocationData Error: Location data (' . $locationData . ') record pointed to was not accessible.', 2);
 		}

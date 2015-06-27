@@ -119,7 +119,7 @@ class HelpModuleController {
 		// The field is the second one
 		$this->field = array_shift($identifierParts);
 		// There may be extra parts for FlexForms
-		if (count($identifierParts) > 0) {
+		if (!empty($identifierParts)) {
 			// There's at least one extra part
 			$extraIdentifierInformation = array();
 			$extraIdentifierInformation[] = array_shift($identifierParts);
@@ -458,7 +458,7 @@ class HelpModuleController {
 		$code = '';
 		// Splitting:
 		$imgArray = GeneralUtility::trimExplode(',', $images, TRUE);
-		if (count($imgArray)) {
+		if (!empty($imgArray)) {
 			$descrArray = explode(LF, $descr, count($imgArray));
 			foreach ($imgArray as $k => $image) {
 				$descr = $descrArray[$k];

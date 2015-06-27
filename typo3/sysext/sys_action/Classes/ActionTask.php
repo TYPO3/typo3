@@ -78,7 +78,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		} else {
 			$record = BackendUtility::getRecord('sys_action', $show);
 			// If the action is not found
-			if (count($record) == 0) {
+			if (empty($record)) {
 				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('action_error-not-found', TRUE), $this->getLanguageService()->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= $flashMessage->render();
 			} else {
@@ -124,7 +124,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$content = '<p>' . $this->getLanguageService()->getLL('description') . '</p>';
 		// Get the actions
 		$actionList = $this->getActions();
-		if (count($actionList) > 0) {
+		if (!empty($actionList)) {
 			$items = '';
 			// Render a single action menu item
 			foreach ($actionList as $action) {
@@ -191,7 +191,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// Get the sys_action records
 		$actionList = $this->getActions();
 		// If any actions are found for the current users
-		if (count($actionList) > 0) {
+		if (!empty($actionList)) {
 			$content .= $this->taskObject->renderListMenu($actionList);
 		} else {
 			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $this->getLanguageService()->getLL('action_not-found-description', TRUE), $this->getLanguageService()->getLL('action_not-found'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
@@ -255,7 +255,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				}
 			}
 			// Show errors if there are any
-			if (count($errors) > 0) {
+			if (!empty($errors)) {
 				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, implode('<br />', $errors), $this->getLanguageService()->getLL('action_error'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				$content .= $flashMessage->render() . '<br />';
 			} else {
@@ -381,7 +381,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		}
 		$this->getDatabaseConnection()->sql_free_result($res);
 		// If any records found
-		if (count($userList)) {
+		if (!empty($userList)) {
 			$content .= '<br />' . $this->taskObject->doc->section($this->getLanguageService()->getLL('action_t1_listOfUsers'), implode('<br />', $userList));
 		}
 		return $content;

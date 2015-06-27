@@ -804,7 +804,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$remappedParameters = $this->map_remapSELECTQueryParts($select_fields, $from, $where_clause, $groupBy, $orderBy);
 		}
 		// Get handler key and select API:
-		if (count($remappedParameters) > 0) {
+		if (!empty($remappedParameters)) {
 			$mappedQueryParts = $this->compileSelectParameters($remappedParameters);
 			$fromTable = $mappedQueryParts[1];
 		} else {
@@ -815,7 +815,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		$sqlResult = NULL;
 		switch ($hType) {
 			case 'native':
-				if (count($remappedParameters) > 0) {
+				if (!empty($remappedParameters)) {
 					list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($remappedParameters);
 				}
 				$this->lastQuery = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
@@ -834,14 +834,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						$numrows = $splitLimit[0];
 						$offset = 0;
 					}
-					if (count($remappedParameters) > 0) {
+					if (!empty($remappedParameters)) {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTqueryFromArray($remappedParameters), $numrows, $offset);
 					} else {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy), $numrows, $offset);
 					}
 					$this->lastQuery = $sqlResult->sql;
 				} else {
-					if (count($remappedParameters) > 0) {
+					if (!empty($remappedParameters)) {
 						$this->lastQuery = $this->SELECTqueryFromArray($remappedParameters);
 					} else {
 						$this->lastQuery = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
@@ -856,7 +856,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
 				break;
 			case 'userdefined':
-				if (count($remappedParameters) > 0) {
+				if (!empty($remappedParameters)) {
 					list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($remappedParameters);
 				}
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
@@ -1017,7 +1017,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function INSERTquery($table, $fields_values, $no_quote_fields = FALSE) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
-		if (!is_array($fields_values) || count($fields_values) === 0) {
+		if (!is_array($fields_values) || empty($fields_values)) {
 			return '';
 		}
 		foreach ($this->preProcessHookObjects as $hookObject) {
@@ -1051,9 +1051,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$nArr[$this->quoteFieldNames($k)] = !in_array($k, $no_quote_fields) ? $this->fullQuoteStr($v, $table, TRUE) : $v;
 			}
 		}
-		if (count($blobFields) || count($clobFields)) {
+		if (!empty($blobFields) || !empty($clobFields)) {
 			$query = array();
-			if (count($nArr)) {
+			if (!empty($nArr)) {
 				$query[0] = 'INSERT INTO ' . $this->quoteFromTables($table) . '
 				(
 					' . implode(',
@@ -1063,10 +1063,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					', $nArr) . '
 				)';
 			}
-			if (count($blobFields)) {
+			if (!empty($blobFields)) {
 				$query[1] = $blobFields;
 			}
-			if (count($clobFields)) {
+			if (!empty($clobFields)) {
 				$query[2] = $clobFields;
 			}
 			if (isset($query[0]) && ($this->debugOutput || $this->store_lastBuiltQuery)) {
@@ -1136,7 +1136,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			$blobFields = $clobFields = array();
 			$nArr = array();
-			if (is_array($fields_values) && count($fields_values)) {
+			if (is_array($fields_values) && !empty($fields_values)) {
 				if (is_string($no_quote_fields)) {
 					$no_quote_fields = explode(',', $no_quote_fields);
 				} elseif (!is_array($no_quote_fields)) {
@@ -1164,9 +1164,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 				}
 			}
-			if (count($blobFields) || count($clobFields)) {
+			if (!empty($blobFields) || !empty($clobFields)) {
 				$query = array();
-				if (count($nArr)) {
+				if (!empty($nArr)) {
 					$query[0] = 'UPDATE ' . $this->quoteFromTables($table) . '
 						SET
 							' . implode(',
@@ -1174,10 +1174,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						WHERE
 							' . $this->quoteWhereClause($where) : '');
 				}
-				if (count($blobFields)) {
+				if (!empty($blobFields)) {
 					$query[1] = $blobFields;
 				}
-				if (count($clobFields)) {
+				if (!empty($clobFields)) {
 					$query[2] = $clobFields;
 				}
 				if (isset($query[0]) && ($this->debugOutput || $this->store_lastBuiltQuery)) {
@@ -1275,15 +1275,15 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// $from_table
 		$params[1] = $this->_quoteFromTables($params[1]);
 		// $where_clause
-		if (count($params[2]) > 0) {
+		if (!empty($params[2])) {
 			$params[2] = $this->_quoteWhereClause($params[2]);
 		}
 		// $group_by
-		if (count($params[3]) > 0) {
+		if (!empty($params[3])) {
 			$params[3] = $this->_quoteGroupBy($params[3]);
 		}
 		// $order_by
-		if (count($params[4]) > 0) {
+		if (!empty($params[4])) {
 			$params[4] = $this->_quoteOrderBy($params[4]);
 		}
 		// Compile the SELECT parameters
@@ -1306,9 +1306,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	protected function compileSelectParameters(array $params) {
 		$select_fields = $this->SQLparser->compileFieldList($params[0]);
 		$from_table = $this->SQLparser->compileFromTables($params[1]);
-		$where_clause = count($params[2]) > 0 ? $this->SQLparser->compileWhereClause($params[2]) : '';
-		$groupBy = count($params[3]) > 0 ? $this->SQLparser->compileFieldList($params[3]) : '';
-		$orderBy = count($params[4]) > 0 ? $this->SQLparser->compileFieldList($params[4]) : '';
+		$where_clause = !empty($params[2]) ? $this->SQLparser->compileWhereClause($params[2]) : '';
+		$groupBy = !empty($params[3]) ? $this->SQLparser->compileFieldList($params[3]) : '';
+		$orderBy = !empty($params[4]) ? $this->SQLparser->compileFieldList($params[4]) : '';
 		return array($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
 	}
 
@@ -1372,7 +1372,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 		}
 		$ORIG_tableName = '';
-		if (count($precompiledParts) == 0) {
+		if (empty($precompiledParts)) {
 			// Map table / field names if needed:
 			$ORIG_tableName = $from_table;
 			// Saving table names in $ORIG_from_table since $from_table is transformed beneath:
@@ -2594,7 +2594,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 		}
 		// Check mapping:
-		if (is_array($this->mapping) && count($this->mapping)) {
+		if (is_array($this->mapping) && !empty($this->mapping)) {
 			// Mapping table names in reverse, first getting list of real table names:
 			$tMap = array();
 			foreach ($this->mapping as $tN => $tMapInfo) {
@@ -2900,7 +2900,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$_tableList = $tableList;
 			$tableArray = $this->SQLparser->parseFromTables($_tableList);
 			// If success, traverse the tables:
-			if (is_array($tableArray) && count($tableArray)) {
+			if (is_array($tableArray) && !empty($tableArray)) {
 				$outputHandlerKey = '';
 				foreach ($tableArray as $vArray) {
 					// Find handler key, select "_DEFAULT" if none is specifically configured:
@@ -3687,7 +3687,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 								unset($parseResults[$k]);
 							}
 						}
-						if (count($parseResults)) {
+						if (!empty($parseResults)) {
 							$data['parseError'] = $parseResults;
 							$errorFlag |= 2;
 						}
@@ -3741,10 +3741,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function debug_log($query, $ms, $data, $join, $errorFlag, $script = '') {
 		if (is_array($query)) {
 			$queryToLog = $query[0] . ' --  ';
-			if (count($query[1])) {
+			if (!empty($query[1])) {
 				$queryToLog .= count($query[1]) . ' BLOB FIELDS: ' . implode(', ', array_keys($query[1]));
 			}
-			if (count($query[2])) {
+			if (!empty($query[2])) {
 				$queryToLog .= count($query[2]) . ' CLOB FIELDS: ' . implode(', ', array_keys($query[2]));
 			}
 		} else {
