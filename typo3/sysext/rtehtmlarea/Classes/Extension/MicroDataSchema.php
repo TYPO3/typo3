@@ -32,13 +32,6 @@ class MicroDataSchema extends RteHtmlAreaApi {
 	protected $pluginName = 'MicrodataSchema';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/MicrodataSchema/locallang.xlf';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
@@ -85,13 +78,9 @@ class MicroDataSchema extends RteHtmlAreaApi {
 		uasort($schema['types'], array($this, 'compareLabels'));
 		uasort($schema['properties'], array($this, 'compareLabels'));
 		// Insert no type and no property entries
-		if ($this->htmlAreaRTE->is_FE()) {
-			$noSchema = $GLOBALS['TSFE']->getLLL('No type', $this->LOCAL_LANG);
-			$noProperty = $GLOBALS['TSFE']->getLLL('No property', $this->LOCAL_LANG);
-		} else {
-			$noSchema = $GLOBALS['LANG']->getLL('No type');
-			$noProperty = $GLOBALS['LANG']->getLL('No property');
-		}
+		$languageService = $this->getLanguageService();
+		$noSchema = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/MicrodataSchema/locallang.xlf:No type');
+		$noProperty = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/MicrodataSchema/locallang.xlf:No property');
 		array_unshift($schema['types'], array('name' => 'none', 'label' => $noSchema));
 		array_unshift($schema['properties'], array('name' => 'none', 'label' => $noProperty));
 		// Convert character set
@@ -99,7 +88,7 @@ class MicroDataSchema extends RteHtmlAreaApi {
 			$GLOBALS['TSFE']->csConvObj->convArray($schema, $this->htmlAreaRTE->outputCharset, 'utf-8');
 		}
 		// Store json encoded array in temporary file
-		$registerRTEinJavascriptString = LF . TAB . 'RTEarea[editornumber].schemaUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ('schema_' . $this->htmlAreaRTE->language), 'js', json_encode($schema), TRUE) . '";';
+		$registerRTEinJavascriptString = LF . TAB . 'RTEarea[editornumber].schemaUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('schema_' . $this->htmlAreaRTE->language, 'js', json_encode($schema)) . '";';
 		return $registerRTEinJavascriptString;
 	}
 

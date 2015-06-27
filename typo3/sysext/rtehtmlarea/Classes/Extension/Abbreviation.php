@@ -134,7 +134,7 @@ class Abbreviation extends RteHtmlAreaApi {
 			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.abbreviationUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('abbreviation_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAbbreviationArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.abbreviationUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('abbreviation_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSAbbreviationArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
 			// <abbr> was not supported by IE before version 7
 			if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
 				$this->abbreviationIndex = 0;

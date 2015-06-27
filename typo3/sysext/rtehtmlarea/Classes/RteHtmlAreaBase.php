@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
 
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
@@ -121,8 +122,6 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 
 	// Relative path to this extension. It ends with "/"
 	public $extHttpPath;
-
-	public $backPath = '';
 
 	// TYPO3 site url
 	public $siteURL;
@@ -334,7 +333,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$database = $this->getDatabaseConnection();
 
 		$this->globalOptions = $globalOptions;
-		$languageService->includeLLFile('EXT:' . $this->ID . '/locallang.xlf');
+		$languageService->includeLLFile('EXT:rtehtmlarea/locallang.xlf');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
 		$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
@@ -345,7 +344,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		 * =======================================
 		 */
 		// Get the path to this extension:
-		$this->extHttpPath = $this->backPath . ExtensionManagementUtility::extRelPath($this->ID);
+		$this->extHttpPath = ExtensionManagementUtility::extRelPath('rtehtmlarea');
 		// Get the site URL
 		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		// Get the host URL
@@ -475,7 +474,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 		// Add RTE JavaScript
 		$this->addRteJsFiles();
-		$this->pageRenderer->addJsFile($this->buildJSMainLangFile());
+		$this->pageRenderer->addJsFile($this->createJavaScriptLanguageLabelsFromFiles());
 		$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
 		/* =======================================
 		 * DRAW THE EDITOR
@@ -567,7 +566,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					$key = $this->registeredPlugins[$pluginId]->getExtensionKey();
 					$resultArray = $this->addStyleSheet(
 						'rtehtmlarea-plugin-' . $pluginId . '-skin',
-						($this->is_FE() ? ExtensionManagementUtility::siteRelPath($key) : $this->backPath . ExtensionManagementUtility::extRelPath($key)) . $pathToSkin,
+						($this->is_FE() ? ExtensionManagementUtility::siteRelPath($key) : ExtensionManagementUtility::extRelPath($key)) . $pathToSkin,
 						'',
 						'stylesheet',
 						$resultArray
@@ -1068,7 +1067,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		}
 		// Include JS arrays of configured classes
 		$configureRTEInJavascriptString = '
-			RTEarea[editornumber].classesUrl = "' . ($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->writeTemporaryFile('', ('classes_' . $this->language), 'js', $this->buildJSClassesArray(), TRUE) . '";';
+			RTEarea[editornumber].classesUrl = "' . ($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->writeTemporaryFile(('classes_' . $this->language), 'js', $this->buildJSClassesArray()) . '";';
 		return $configureRTEInJavascriptString;
 	}
 
@@ -1197,104 +1196,86 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	}
 
 	/**
-	 * Return a Javascript localization array for htmlArea RTE
-	 *
-	 * @return string Javascript localization array
-	 */
-	public function buildJSMainLangArray() {
-		$JSLanguageArray = 'HTMLArea.I18N = new Object();' . LF;
-		$labelsArray = array('tooltips' => array(), 'msg' => array(), 'dialogs' => array());
-		foreach ($labelsArray as $labels => $subArray) {
-			$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xlf', $this->language, 'utf-8');
-			if (!empty($LOCAL_LANG[$this->language])) {
-				$mergedLocalLang = $LOCAL_LANG['default'];
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($mergedLocalLang, $LOCAL_LANG[$this->language], TRUE, FALSE);
-				$LOCAL_LANG[$this->language] = $mergedLocalLang;
-			} else {
-				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
-			}
-			$labelsArray[$labels] = $LOCAL_LANG[$this->language];
-		}
-		$JSLanguageArray .= 'HTMLArea.I18N = ' . json_encode($labelsArray) . ';' . LF;
-		return $JSLanguageArray;
-	}
-
-	/**
 	 * Writes contents in a file in typo3temp/rtehtmlarea directory and returns the file name
 	 *
-	 * @param string $sourceFileName: The name of the file from which the contents should be extracted
 	 * @param string $label: A label to insert at the beginning of the name of the file
 	 * @param string $fileExtension: The file extension of the file, defaulting to 'js'
-	 * @param string $contents: The contents to write into the file if no $sourceFileName is provided
-	 * @param bool $concatenate Not used anymore
+	 * @param string $contents: The contents to write into the file
 	 * @return string The name of the file writtten to typo3temp/rtehtmlarea
 	 */
-	public function writeTemporaryFile($sourceFileName = '', $label, $fileExtension = 'js', $contents = '', $concatenate = FALSE) {
-		if ($sourceFileName) {
-			$output = '';
-			$source = GeneralUtility::getFileAbsFileName($sourceFileName);
-			$output = file_get_contents($source);
-		} else {
-			$output = $contents;
-		}
-		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5((TYPO3_version . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . ($sourceFileName ? $sourceFileName : $output)), 20) . '.' . $fileExtension;
+	public function writeTemporaryFile($label, $fileExtension = 'js', $contents = '') {
+		$relativeFilename = 'typo3temp/' . $this->ID . '_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5($contents, 20) . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
 		if (!file_exists($destination)) {
 			$minifiedJavaScript = '';
-			if ($fileExtension == 'js' && $output != '') {
-				$minifiedJavaScript = GeneralUtility::minifyJavaScript($output);
+			if ($fileExtension == 'js' && $contents != '') {
+				$minifiedJavaScript = GeneralUtility::minifyJavaScript($contents);
 			}
-			$failure = GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $output);
+			$failure = GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $contents);
 			if ($failure) {
 				throw new \RuntimeException($failure, 1294585668);
 			}
 		}
-		if ($this->is_FE()) {
-			$filename = $relativeFilename;
+		if (isset($GLOBALS['TSFE'])) {
+			$fileName = $relativeFilename;
 		} else {
-			$filename = ($this->isFrontendEditActive() ? '' : $this->backPath . '../') . $relativeFilename;
+			$fileName = '../' . $relativeFilename;
 		}
-		return GeneralUtility::resolveBackPath($filename);
+		return GeneralUtility::resolveBackPath($fileName);
 	}
 
 	/**
-	 * Return a file name containing the main JS language array for HTMLArea
+	 * Both rte framework and rte plugins can have label files that are
+	 * used in JS. The methods gathers those and creates a JS object from
+	 * file labels.
 	 *
-	 * @param int $RTEcounter: The index number of the current RTE editing area within the form. @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
-	 * @return string filename
+	 * @return string
 	 */
-	public function buildJSMainLangFile($RTEcounter = NULL) {
-		if ($RTEcounter !== NULL) {
-			GeneralUtility::deprecationLog('$RTEcounter parameter is deprecated and ignored');
-		}
-		$contents = $this->buildJSMainLangArray() . LF;
-		foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
-			$contents .= $this->buildJSLangArray($pluginId) . LF;
-		}
-		return $this->writeTemporaryFile('', $this->language . '_' . $this->OutputCharset, 'js', $contents, TRUE);
-	}
-
-	/**
-	 * Return a Javascript localization array for the plugin
-	 *
-	 * @param string $plugin: identification string of the plugin
-	 * @return string Javascript localization array
-	 */
-	public function buildJSLangArray($plugin) {
-		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
-		$LOCAL_LANG = GeneralUtility::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xlf', $this->language, 'utf-8', 1);
-		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . LF;
-		if (is_array($LOCAL_LANG)) {
-			if (!empty($LOCAL_LANG[$this->language])) {
-				$defaultLocalLang = $LOCAL_LANG['default'];
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($defaultLocalLang, $LOCAL_LANG[$this->language], TRUE, FALSE);
-				$LOCAL_LANG[$this->language] = $defaultLocalLang;
-			} else {
-				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
+	protected function createJavaScriptLanguageLabelsFromFiles() {
+		$labelArray = array();
+		// Load labels of 3 base files into JS
+		foreach(array('tooltips', 'msg', 'dialogs') as $identifier) {
+			$fileName = 'EXT:rtehtmlarea/Resources/Private/Language/locallang_' . $identifier . '.xlf';
+			$newLabels = $this->getMergedLabelsFromFile($fileName);
+			if (!empty($newLabels)) {
+				$labelArray[$identifier] = $newLabels;
 			}
-			$JSLanguageArray .= 'HTMLArea.I18N["' . $plugin . '"] = ' . json_encode($LOCAL_LANG[$this->language]) . ';' . LF;
 		}
-		return $JSLanguageArray;
+		// Load labels of plugins into JS
+		foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
+			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : 'rtehtmlarea';
+			$fileName = 'EXT:' . $extensionKey . '/Resources/Private/Language/Plugins/' . $pluginId . '/locallang_js.xlf';
+			$newLabels = $this->getMergedLabelsFromFile($fileName);
+			if (!empty($newLabels)) {
+				$labelArray[$pluginId] = $newLabels;
+			}
+		}
+		$javaScriptString = 'HTMLArea.I18N = new Object();' . LF;
+		$javaScriptString .= 'HTMLArea.I18N = ' . json_encode($labelArray);
+		return $this->writeTemporaryFile($this->language . '_' . $this->OutputCharset, 'js', $javaScriptString);
+	}
+
+	/**
+	 * Get all labels from a specific label file, merge default
+	 * labels and target language labels.
+	 *
+	 * @param $fileName
+	 * @return array Label keys and values
+	 */
+	protected function getMergedLabelsFromFile($fileName) {
+		$localizationArray = GeneralUtility::readLLfile($fileName, $this->language, 'utf-8', 1);
+		if (is_array($localizationArray) && !empty($localizationArray)) {
+			if (!empty($localizationArray[$this->language])) {
+				$finalLocalLang = $localizationArray['default'];
+				ArrayUtility::mergeRecursiveWithOverrule($finalLocalLang, $localizationArray[$this->language], TRUE, FALSE);
+				$localizationArray[$this->language] = $finalLocalLang;
+			} else {
+				$localizationArray[$this->language] = $localizationArray['default'];
+			}
+		} else {
+			$localizationArray = array();
+		}
+		return $localizationArray[$this->language];
 	}
 
 	/**
@@ -1414,10 +1395,13 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$newFilename = '';
 			if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
-				$newFilename = ($this->is_FE() || $this->isFrontendEditActive() ? ExtensionManagementUtility::siteRelPath($extKey) : $this->backPath . ExtensionManagementUtility::extRelPath($extKey)) . $local;
+				$newFilename = ($this->is_FE() || $this->isFrontendEditActive()
+						? ExtensionManagementUtility::siteRelPath($extKey)
+						: ExtensionManagementUtility::extRelPath($extKey))
+					. $local;
 			}
 		} else {
-			$path = ($this->is_FE() || $this->isFrontendEditActive() ? '' : $this->backPath . '../');
+			$path = ($this->is_FE() || $this->isFrontendEditActive() ? '' : '../');
 			$newFilename = $path . ($filename[0] === '/' ? substr($filename, 1) : $filename);
 		}
 		return GeneralUtility::resolveBackPath($newFilename);

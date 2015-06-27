@@ -31,9 +31,9 @@ class SelectImageController {
 	 * Initialize language files
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser.xlf');
-		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/mod4/locallang.xlf');
-		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_browse_links.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_selectimagecontroller.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_dialogs.xlf');
 	}
 
 	/**

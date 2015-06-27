@@ -56,8 +56,8 @@ class UserElementsController {
 	 * Initialize language files
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/mod5/locallang.xlf');
-		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_userelementscontroller.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_dialogs.xlf');
 	}
 
 	/**

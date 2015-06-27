@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * API for extending htmlArea RTE
@@ -37,13 +37,6 @@ abstract class RteHtmlAreaApi {
 	 * @var string
 	 */
 	protected $pluginName;
-
-	/**
-	 * Path to the localization file for this script, relative to the extension dir
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = '';
 
 	/**
 	 * Path to the skin (css) file that should be added to the RTE skin when the registered plugin is enabled, relative to the extension dir
@@ -79,13 +72,6 @@ abstract class RteHtmlAreaApi {
 	 * @var array
 	 */
 	protected $toolbar;
-
-	/**
-	 * Frontend language array
-	 *
-	 * @var array
-	 */
-	protected $LOCAL_LANG;
 
 	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
@@ -140,26 +126,11 @@ abstract class RteHtmlAreaApi {
 		$this->rteExtensionKey = &$this->htmlAreaRTE->ID;
 		$this->thisConfig = &$this->htmlAreaRTE->thisConfig;
 		$this->toolbar = &$this->htmlAreaRTE->toolbar;
-		$this->LOCAL_LANG = &$this->htmlAreaRTE->LOCAL_LANG;
 		// Set the value of this boolean based on the initial value of $this->pluginButtons
 		$this->pluginAddsButtons = !empty($this->pluginButtons);
 		// Check if the plugin should be disabled in frontend
 		if ($this->htmlAreaRTE->is_FE() && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
 			return FALSE;
-		}
-		// Localization array must be initialized here
-		if ($this->relativePathToLocallangFile) {
-			if ($this->htmlAreaRTE->is_FE()) {
-				\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
-					$this->LOCAL_LANG,
-					GeneralUtility::readLLfile(
-						'EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile,
-						$this->htmlAreaRTE->language
-					)
-				);
-			} else {
-				$GLOBALS['LANG']->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
-			}
 		}
 		return TRUE;
 	}
@@ -272,6 +243,19 @@ abstract class RteHtmlAreaApi {
 	 */
 	public function getRequiredPlugins() {
 		return $this->requiredPlugins;
+	}
+
+	/**
+	 * Get language service, instantiate if not there, yet
+	 *
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		if (isset($GLOBALS['LANG'])) {
+			return $GLOBALS['LANG'];
+		} else {
+			return GeneralUtility::makeInstance(LanguageService::class);
+		}
 	}
 
 }

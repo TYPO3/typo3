@@ -33,13 +33,6 @@ class SelectFont extends RteHtmlAreaApi {
 	protected $pluginName = 'SelectFont';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/SelectFont/locallang.xlf';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
@@ -145,26 +138,23 @@ class SelectFont extends RteHtmlAreaApi {
 				$addItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), TRUE);
 			}
 		}
+		$languageService = $this->getLanguageService();
 		// Initializing the items array
-		$items = array();
-		if ($this->htmlAreaRTE->is_FE()) {
-			$items['none'] = array($GLOBALS['TSFE']->getLLL($buttonId == 'fontstyle' ? 'Default font' : 'Default size', $this->LOCAL_LANG), 'none');
-		} else {
-			$items['none'] = array($GLOBALS['LANG']->getLL($buttonId == 'fontstyle' ? 'Default font' : 'Default size'), 'none');
-		}
+		$languageKey = $buttonId == 'fontstyle' ? 'Default font' : 'Default size';
+		$items = array(
+			'none' => array(
+				$languageService->sL(
+					'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/SelectFont/locallang.xlf:' . $languageKey
+				),
+				'none'
+			),
+		);
 		// Inserting and localizing default items
 		if ($hideItems != '*') {
 			$index = 0;
 			foreach ($this->defaultFont[$buttonId] as $name => $value) {
 				if (!GeneralUtility::inList($hideItems, strval(($index + 1)))) {
-					if ($this->htmlAreaRTE->is_FE()) {
-						$label = $GLOBALS['TSFE']->getLLL($name, $this->LOCAL_LANG);
-					} else {
-						$label = $GLOBALS['LANG']->getLL($name);
-						if (!$label) {
-							$label = $name;
-						}
-					}
+					$label = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/SelectFont/locallang.xlf:' . $name) ?: $name;
 					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($value));
 				}
 				$index++;
@@ -200,7 +190,7 @@ class SelectFont extends RteHtmlAreaApi {
 			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . ' = new Object();';
 		}
 		$configureRTEInJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($buttonId . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $itemsJSArray) . '";';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile($buttonId . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $itemsJSArray) . '";';
 		return $configureRTEInJavascriptString;
 	}
 

@@ -32,13 +32,6 @@ class InlineElements extends RteHtmlAreaApi {
 	protected $pluginName = 'InlineElements';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/InlineElements/locallang.xlf';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
@@ -191,11 +184,9 @@ class InlineElements extends RteHtmlAreaApi {
 			// Localizing the options
 			$inlineElementsOptions = array();
 			foreach ($inlineElementsOrder as $item) {
-				if ($this->htmlAreaRTE->is_FE()) {
-					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $GLOBALS['TSFE']->getLLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]], $this->LOCAL_LANG);
-				} else {
-					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $GLOBALS['LANG']->getLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]]);
-				}
+				$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $this->getLanguageService()->sL(
+					'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/InlineElements/locallang.xlf:' . $this->defaultInlineElements[$this->buttonToInlineElement[$item]]
+				);
 				$inlineElementsOptions[$this->buttonToInlineElement[$item]] = ($prefixLabelWithTag && $item != 'none' ? $this->buttonToInlineElement[$item] . ' - ' : '') . $inlineElementsOptions[$this->buttonToInlineElement[$item]] . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $this->buttonToInlineElement[$item] : '');
 			}
 			$first = array_shift($inlineElementsOptions);

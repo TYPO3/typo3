@@ -78,12 +78,11 @@ class Language extends RteHtmlAreaApi {
 			$registerRTEinJavascriptString .= '
 			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
 		}
-		if ($this->htmlAreaRTE->is_FE()) {
-			$first = $GLOBALS['TSFE']->getLLL('No language mark', $this->LOCAL_LANG);
-		} else {
-			$first = $GLOBALS['LANG']->getLL('No language mark');
-		}
-		$languages = array('none' => $first);
+		$languages = array(
+			'none' => $this->getLanguageService()->sL(
+				'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/Language/locallang.xlf:No language mark'
+			),
+		);
 		$languages = array_flip(array_merge($languages, $this->getLanguages()));
 		$languagesJSArray = array();
 		foreach ($languages as $key => $value) {
@@ -91,7 +90,7 @@ class Language extends RteHtmlAreaApi {
 		}
 		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
 		$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($button . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $languagesJSArray) . '";';
+			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile($button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
 		return $registerRTEinJavascriptString;
 	}
 

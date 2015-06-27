@@ -32,13 +32,6 @@ class BlockElements extends RteHtmlAreaApi {
 	protected $pluginName = 'BlockElements';
 
 	/**
-	 * Path to this main locallang file of the extension relative to the extension directory
-	 *
-	 * @var string
-	 */
-	protected $relativePathToLocallangFile = 'extensions/BlockElements/locallang.xlf';
-
-	/**
 	 * The comma-separated list of button names that the registered plugin is adding to the htmlArea RTE toolbar
 	 *
 	 * @var string
@@ -167,11 +160,9 @@ class BlockElements extends RteHtmlAreaApi {
 				$labels = $this->thisConfig['buttons.']['formatblock.']['items.'];
 			}
 			foreach ($blockElementsOrder as $item) {
-				if ($this->htmlAreaRTE->is_FE()) {
-					$blockElementsOptions[$item] = $GLOBALS['TSFE']->getLLL($this->defaultBlockElements[$item], $this->LOCAL_LANG);
-				} else {
-					$blockElementsOptions[$item] = $GLOBALS['LANG']->getLL($this->defaultBlockElements[$item]);
-				}
+				$blockElementsOptions[$item] = $this->getLanguageService()->sL(
+					'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/BlockElements/locallang.xlf:' . $this->defaultBlockElements[$item]
+				);
 				// Getting custom labels
 				if (is_array($labels[$item . '.']) && $labels[$item . '.']['label']) {
 					$blockElementsOptions[$item] = $this->htmlAreaRTE->getPageConfigLabel($labels[$item . '.']['label'], 0);

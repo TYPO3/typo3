@@ -54,18 +54,4 @@ class QuickTag extends RteHtmlAreaApi {
 	 */
 	protected $requiredPlugins = 'TYPO3Color';
 
-	/**
-	 * Returns TRUE if the plugin is available and correctly initialized
-	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
-	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
-	 */
-	public function main($parentObject) {
-		$available = parent::main($parentObject);
-		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['browser'] != 'gecko') {
-			$this->requiredPlugins = 'DefaultColor';
-		}
-		return $available;
-	}
-
 }
