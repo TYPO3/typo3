@@ -86,7 +86,7 @@ class FormDataTraverser {
 		$this->currentRow = $row;
 		$this->inlineFirstPid = $inlineFirstPid;
 		$fieldValue = '';
-		if (count($fieldNameArray) > 0) {
+		if (!empty($fieldNameArray)) {
 			$this->initializeOriginalLanguageUid();
 			$fieldValue = $this->getFieldValueRecursive($fieldNameArray);
 		}
@@ -208,7 +208,7 @@ class FormDataTraverser {
 			$relatedUids[] = $foreignUid;
 		}
 
-		if (count($relatedUids) > 0) {
+		if (!empty($relatedUids)) {
 			$this->currentTable = $allowedTable;
 		}
 

@@ -372,7 +372,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$backendUser = $this->getBackendUser();
 		// Groups from TSConfig
 		$bookmarkGroups = $backendUser->getTSConfigProp('options.bookmarkGroups');
-		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
+		if (is_array($bookmarkGroups) && !empty($bookmarkGroups)) {
 			foreach ($bookmarkGroups as $groupId => $label) {
 				if (!empty($label)) {
 					$this->shortcutGroups[$groupId] = (string)$label;
@@ -382,7 +382,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			}
 		}
 		// Generate global groups, all global groups have negative IDs.
-		if (count($this->shortcutGroups)) {
+		if (!empty($this->shortcutGroups)) {
 			$groups = $this->shortcutGroups;
 			foreach ($groups as $groupId => $groupLabel) {
 				$this->shortcutGroups[$groupId * -1] = $groupLabel;
@@ -518,7 +518,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
 			if (MathUtility::canBeInterpretedAsInteger($pageId)) {
 				$page = BackendUtility::getRecord('pages', $pageId);
-				if (count($page)) {
+				if (!empty($page)) {
 					// Set the name to the title of the page
 					if ($shortcut['type'] == 'other') {
 						$shortcutName = $page['title'];

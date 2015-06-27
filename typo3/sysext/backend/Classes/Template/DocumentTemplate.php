@@ -839,7 +839,7 @@ function jumpToUrl(URL) {
 		foreach ($this->JScodeArray as $name => $code) {
 			$this->pageRenderer->addJsInlineCode($name, $code, FALSE);
 		}
-		if (count($this->JScodeLibArray)) {
+		if (!empty($this->JScodeLibArray)) {
 			GeneralUtility::deprecationLog('DocumentTemplate->JScodeLibArray is deprecated since TYPO3 CMS 7. Use the functionality within pageRenderer directly');
 			foreach ($this->JScodeLibArray as $library) {
 				$this->pageRenderer->addHeaderData($library);
@@ -1423,9 +1423,9 @@ function jumpToUrl(URL) {
 			$cls = array();
 			$valign = 'middle';
 			$cls[] = '<td valign="' . $valign . '">' . $arr1[$a][0] . '</td><td>' . $arr1[$a][1] . '</td>';
-			if (count($arr2)) {
+			if (!empty($arr2)) {
 				$cls[] = '<td valign="' . $valign . '">' . $arr2[$a][0] . '</td><td>' . $arr2[$a][1] . '</td>';
-				if (count($arr3)) {
+				if (!empty($arr3)) {
 					$cls[] = '<td valign="' . $valign . '">' . $arr3[$a][0] . '</td><td>' . $arr3[$a][1] . '</td>';
 				}
 			}

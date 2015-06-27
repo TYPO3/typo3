@@ -124,7 +124,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 					$hasHelp = FALSE;
 					$help = '';
 					$helpArray = array();
-					if (is_array($p[3]) && count($p[3]) > 0 || !empty($p[3])) {
+					if (!empty($p[3])) {
 						$hasHelp = TRUE;
 						if (is_array($p[3])) {
 							$helpArray = $p[3];
@@ -160,7 +160,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 			}
 		}
 		// Remaining values (invalid):
-		if (count($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
+		if (!empty($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
 			$currentGroup++;
 			foreach ($itemArray as $theNoMatchValue => $temp) {
 				// Build item array

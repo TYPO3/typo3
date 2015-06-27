@@ -533,7 +533,7 @@ class SingleFieldContainer extends AbstractContainer {
 	protected function arrayCompareComplex($subjectArray, $searchArray, $type = '') {
 		$localMatches = 0;
 		$localEntries = 0;
-		if (is_array($searchArray) && count($searchArray)) {
+		if (is_array($searchArray) && !empty($searchArray)) {
 			// If no type was passed, try to determine
 			if (!$type) {
 				reset($searchArray);
@@ -587,7 +587,7 @@ class SingleFieldContainer extends AbstractContainer {
 	 * @return bool Returns TRUE, if the object is an associative array
 	 */
 	protected function isAssociativeArray($object) {
-		return is_array($object) && count($object) && array_keys($object) !== range(0, sizeof($object) - 1) ? TRUE : FALSE;
+		return is_array($object) && !empty($object) && array_keys($object) !== range(0, sizeof($object) - 1) ? TRUE : FALSE;
 	}
 
 	/**

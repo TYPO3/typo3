@@ -54,7 +54,7 @@ class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Seri
 	 * @param array $data
 	 */
 	public function __construct(array $data = array()) {
-		if (count($data)) {
+		if (!empty($data)) {
 			$this->dataFromArray($data);
 		}
 	}

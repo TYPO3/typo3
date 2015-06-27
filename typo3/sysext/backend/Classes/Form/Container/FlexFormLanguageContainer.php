@@ -63,7 +63,7 @@ class FlexFormLanguageContainer extends AbstractContainer {
 				$flexFormRowData['meta']['currentLangId'][] = $langInfo['ISOcode'];
 			}
 		}
-		if (!is_array($flexFormRowData['meta']['currentLangId']) || !count($flexFormRowData['meta']['currentLangId'])) {
+		if (!is_array($flexFormRowData['meta']['currentLangId']) || empty($flexFormRowData['meta']['currentLangId'])) {
 			$flexFormRowData['meta']['currentLangId'] = array('DEF');
 		}
 		$flexFormRowData['meta']['currentLangId'] = array_unique($flexFormRowData['meta']['currentLangId']);

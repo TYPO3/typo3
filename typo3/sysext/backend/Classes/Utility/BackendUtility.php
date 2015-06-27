@@ -196,7 +196,7 @@ class BackendUtility {
 				$rows[] = $row;
 			}
 			$db->sql_free_result($res);
-			if (count($rows)) {
+			if (!empty($rows)) {
 				return $rows;
 			}
 		}
@@ -542,7 +542,7 @@ class BackendUtility {
 				}
 			}
 			// Sort fields by the translated value
-			if (count($excludeArrayTable) > 0) {
+			if (!empty($excludeArrayTable)) {
 				usort($excludeArrayTable, array(\TYPO3\CMS\Backend\Form\FlexFormsHelper::class, 'compareArraysByFirstValue'));
 				$finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
 			}
@@ -1951,7 +1951,7 @@ class BackendUtility {
 	static public function getLabelsFromItemsList($table, $column, $key) {
 		$labels = array();
 		$values = GeneralUtility::trimExplode(',', $key, TRUE);
-		if (count($values) > 0) {
+		if (!empty($values)) {
 			// Check if there is an "items" array
 			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]) && is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
 				// Loop on all selected values
@@ -2186,7 +2186,7 @@ class BackendUtility {
 						$dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
 						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
 						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
-						if (is_array($selectUids) && count($selectUids) > 0) {
+						if (is_array($selectUids) && !empty($selectUids)) {
 							$MMres = $db->exec_SELECTquery('uid, ' . $MMfield, $theColConf['foreign_table'], 'uid IN (' . implode(',', $selectUids) . ')' . self::deleteClause($theColConf['foreign_table']));
 							$mmlA = array();
 							while ($MMrow = $db->sql_fetch_assoc($MMres)) {
@@ -2664,7 +2664,7 @@ class BackendUtility {
 		$helpText = '';
 		$abbrClassAdd = '';
 		$wrappedText = $text;
-		$hasHelpTextOverload = count($overloadHelpText) > 0;
+		$hasHelpTextOverload = !empty($overloadHelpText);
 		// Get the help text that should be shown on hover
 		if (!$hasHelpTextOverload) {
 			$helpText = self::helpText($table, $field);
@@ -2857,7 +2857,7 @@ class BackendUtility {
 			$rootLine = self::BEgetRootLine($pageId);
 		}
 		// Checks alternate domains
-		if (count($rootLine) > 0) {
+		if (!empty($rootLine)) {
 			$urlParts = parse_url($domain);
 			/** @var PageRepository $sysPage */
 			$sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
@@ -2937,7 +2937,7 @@ class BackendUtility {
 		foreach ($menuItems as $value => $label) {
 			$options[] = '<option value="' . htmlspecialchars($value) . '"' . ((string)$currentValue === (string)$value ? ' selected="selected"' : '') . '>' . htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
 		}
-		if (count($options)) {
+		if (!empty($options)) {
 			$onChange = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($scriptUrl . '&' . $elementName . '=') . '+this.options[this.selectedIndex].value,this);';
 			return '
 
@@ -3080,7 +3080,7 @@ class BackendUtility {
 	static public function getUpdateSignalCode() {
 		$signals = array();
 		$modData = static::getBackendUserAuthentication()->getModuleData(\TYPO3\CMS\Backend\Utility\BackendUtility::class . '::getUpdateSignal', 'ses');
-		if (!count($modData)) {
+		if (empty($modData)) {
 			return '';
 		}
 		// Hook: Allows to let TYPO3 execute your JS code
@@ -3707,7 +3707,7 @@ class BackendUtility {
 					}
 				}
 			}
-			if (!count($GLOBALS['T3_VAR']['RTEobj'])) {
+			if (empty($GLOBALS['T3_VAR']['RTEobj'])) {
 				$GLOBALS['T3_VAR']['RTEobj'][] = 'No RTEs configured at all';
 			}
 		}

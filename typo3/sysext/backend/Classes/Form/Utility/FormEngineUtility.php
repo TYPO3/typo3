@@ -86,7 +86,7 @@ class FormEngineUtility {
 					}
 				}
 				// Override $GLOBALS['TCA'] field config by remaining TSconfig['config']:
-				if (count($TSconfig['config'])) {
+				if (!empty($TSconfig['config'])) {
 					ArrayUtility::mergeRecursiveWithOverrule($fieldConfig, $TSconfig['config']);
 				}
 			}

@@ -622,7 +622,7 @@ abstract class AbstractFormElement extends AbstractNode {
 				}
 			}
 			$clipElements = $this->getClipboardElements($allowed, $mode);
-			if (count($clipElements)) {
+			if (!empty($clipElements)) {
 				$aOnClick = '';
 				foreach ($clipElements as $elValue) {
 					if ($mode == 'db') {

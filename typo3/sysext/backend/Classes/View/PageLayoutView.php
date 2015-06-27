@@ -455,7 +455,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 					// Start wrapping div
 					$content[$key] .= '<div data-colpos="' . $key . '" data-language-uid="' . $lP . '" class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-' . $lP . ' t3-page-ce-wrapper';
-					if (count($contentRecordsPerColumn[$key]) === 0) {
+					if (empty($contentRecordsPerColumn[$key])) {
 						$content[$key] .= ' t3-page-ce-empty';
 					}
 					$content[$key] .= '">';
@@ -1241,7 +1241,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			if ($pasteParams) {
 				$elFromTable = $this->clipboard->elFromTable('tt_content');
-				if (count($elFromTable)) {
+				if (!empty($elFromTable)) {
 					$iconsArr['paste'] = '<a href="'
 						. htmlspecialchars($this->clipboard->pasteUrl('tt_content', $this->id, TRUE, $pasteParams))
 						. '" onclick="' . htmlspecialchars(('return '
@@ -1252,7 +1252,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 		}
 		$icons = '';
-		if (count($iconsArr)) {
+		if (!empty($iconsArr)) {
 			$icons = '<div class="t3-page-column-header-icons">' . implode('', $iconsArr) . '</div>';
 		}
 		// Create header row:
@@ -1288,7 +1288,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 
 		// Display info from records fields:
-		if (count($info)) {
+		if (!empty($info)) {
 			$content = '<div class="t3-page-ce-info">
 				' . implode('<br>', $info) . '
 				</div>';
@@ -1519,7 +1519,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'])) {
 						$hookArr = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['_DEFAULT'];
 					}
-					if (count($hookArr) > 0) {
+					if (!empty($hookArr)) {
 						$_params = array('pObj' => &$this, 'row' => $row, 'infoArr' => $infoArr);
 						foreach ($hookArr as $_funcRef) {
 							$hookOut .= GeneralUtility::callUserFunction($_funcRef, $_params, $this);
@@ -1631,7 +1631,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return array Modified $defLanguageCount
 	 */
 	public function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
-		if ($lP && count($defLanguageCount)) {
+		if ($lP && !empty($defLanguageCount)) {
 			// Select all translations here:
 			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . (int)$lP
 				. ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
@@ -1657,7 +1657,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return string "Copy languages" button, if available.
 	 */
 	public function newLanguageButton($defLanguageCount, $lP) {
-		if (!$this->doEdit || count($defLanguageCount) === 0 || !$lP) {
+		if (!$this->doEdit || empty($defLanguageCount) || !$lP) {
 			return '';
 		}
 		$params = '';
@@ -1769,7 +1769,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				&& $this->getBackendUser()->groupData['allowed_languages'] !== ''
 			) {
 				$allowed_languages = array_flip(explode(',', $this->getBackendUser()->groupData['allowed_languages']));
-				if (count($allowed_languages)) {
+				if (!empty($allowed_languages)) {
 					foreach ($langSelItems as $key => $value) {
 						if (!isset($allowed_languages[$key]) && $key != 0) {
 							unset($langSelItems[$key]);
@@ -1782,7 +1782,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages'])
 				? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], TRUE)
 				: array();
-			if (count($langSelItems) && count($disableLanguages)) {
+			if (!empty($langSelItems) && !empty($disableLanguages)) {
 				foreach ($disableLanguages as $language) {
 					if ($language != 0 && isset($langSelItems[$language])) {
 						unset($langSelItems[$language]);
@@ -2039,7 +2039,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	public function isRTEforField($table, $row, $field) {
 		$specConf = $this->getSpecConfForField($table, $row, $field);
-		if (!count($specConf)) {
+		if (empty($specConf)) {
 			return FALSE;
 		}
 		$p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);

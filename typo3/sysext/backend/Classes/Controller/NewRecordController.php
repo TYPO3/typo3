@@ -511,7 +511,7 @@ class NewRecordController {
 	 * @return int -1 for lower, 0 for equal, 1 for greater
 	 */
 	public function sortNewRecordsByConfig($a, $b) {
-		if (count($this->newRecordSortList)) {
+		if (!empty($this->newRecordSortList)) {
 			if (in_array($a, $this->newRecordSortList) && in_array($b, $this->newRecordSortList)) {
 				// Both are in the list, return relative to position in array
 				$sub = array_search($a, $this->newRecordSortList) - array_search($b, $this->newRecordSortList);
@@ -612,13 +612,11 @@ class NewRecordController {
 		$allowedNewTables = $allowedNewTables ?: $this->allowedNewTables;
 		$deniedNewTables = $deniedNewTables ?: $this->deniedNewTables;
 		// No deny/allow tables are set:
-		if (!count($allowedNewTables) && !count($deniedNewTables)) {
+		if (empty($allowedNewTables) && empty($deniedNewTables)) {
 			return TRUE;
-		} elseif (!in_array($table, $deniedNewTables) && (!count($allowedNewTables) || in_array($table, $allowedNewTables))) {
-			return TRUE;
-		} else {
-			return FALSE;
 		}
+
+		return !in_array($table, $deniedNewTables) && (empty($allowedNewTables) || in_array($table, $allowedNewTables));
 	}
 
 	/**

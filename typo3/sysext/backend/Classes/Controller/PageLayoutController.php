@@ -608,7 +608,7 @@ class PageLayoutController {
 			$languageMenu = count($this->MOD_MENU['language']) > 1 ? $lang->sL('LLL:EXT:lang/locallang_general.xlf:LGL.language', TRUE) . BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], '', '') : '';
 			// Find backend layout / coumns
 			$backendLayout = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
-			if (count($backendLayout['__colPosList'])) {
+			if (!empty($backendLayout['__colPosList'])) {
 				$this->colPosList = implode(',', $backendLayout['__colPosList']);
 			}
 			// Removing duplicates, if any

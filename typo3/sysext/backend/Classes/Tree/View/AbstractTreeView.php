@@ -778,7 +778,7 @@ abstract class AbstractTreeView {
 			$HTML_depthData = $depthData . IconUtility::getSpriteIcon('treeline-' . $LN);
 			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
 				$nextCount = $this->getTree($newID, $depth - 1, $this->makeHTML ? $HTML_depthData : '', $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
-				if (count($this->buffer_idH)) {
+				if (!empty($this->buffer_idH)) {
 					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
 				}
 				// Set "did expand" flag
@@ -927,7 +927,7 @@ abstract class AbstractTreeView {
 			}
 			// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass !== '') {
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
+				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && !empty(BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
 					$row['_CSSCLASS'] = 'ver-versions';
 				}
 				if (!isset($row['_CSSCLASS'])) {

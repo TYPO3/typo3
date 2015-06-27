@@ -174,7 +174,7 @@ class FileController {
 		$this->init();
 		$this->main();
 		$errors = $this->fileProcessor->getErrorMessages();
-		if (count($errors)) {
+		if (!empty($errors)) {
 			$ajaxObj->setError(implode(',', $errors));
 		} else {
 			$flatResult = array();

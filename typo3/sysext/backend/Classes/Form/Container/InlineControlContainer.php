@@ -276,7 +276,7 @@ class InlineControlContainer extends AbstractContainer {
 	 */
 	protected function getUniqueIds($records, $conf = array(), $splitValue = FALSE) {
 		$uniqueIds = array();
-		if (isset($conf['foreign_unique']) && $conf['foreign_unique'] && count($records)) {
+		if (isset($conf['foreign_unique']) && $conf['foreign_unique'] && !empty($records)) {
 			foreach ($records as $rec) {
 				// Skip virtual records (e.g. shown in localization mode):
 				if (!isset($rec['__virtual']) || !$rec['__virtual']) {

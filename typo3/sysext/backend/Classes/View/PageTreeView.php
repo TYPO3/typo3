@@ -372,7 +372,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			}
 		}
 		$label_shownAlphabetically = '';
-		if (count($outOfMenuPages)) {
+		if (!empty($outOfMenuPages)) {
 			// Sort out-of-menu pages:
 			$outOfMenuPages_alphabetic = array();
 			if ($this->ext_alphasortNotinmenuPages) {
@@ -408,7 +408,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			// Make a recursive call to the next level
 			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
 				$nextCount = $this->getTree($newID, $depth - 1, $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
-				if (count($this->buffer_idH)) {
+				if (!empty($this->buffer_idH)) {
 					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
 				}
 				// Set "did expand" flag

@@ -97,7 +97,7 @@ class GroupElement extends AbstractFormElement {
 				// Fall through
 			case 'file':
 				// Creating string showing allowed types:
-				if (!count($allowed)) {
+				if (empty($allowed)) {
 					$allowed = array('*');
 				}
 				// Making the array of file items:

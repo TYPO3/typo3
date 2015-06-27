@@ -570,17 +570,17 @@ class EditDocumentController {
 			$tce->process_datamap();
 			$tce->process_cmdmap();
 			// If pages are being edited, we set an instruction about updating the page tree after this operation.
-			if ($tce->pagetreeNeedsRefresh && (isset($this->data['pages']) || $beUser->workspace != 0 && count($this->data))) {
+			if ($tce->pagetreeNeedsRefresh && (isset($this->data['pages']) || $beUser->workspace != 0 && !empty($this->data))) {
 				BackendUtility::setUpdateSignal('updatePageTree');
 			}
 			// If there was saved any new items, load them:
-			if (count($tce->substNEWwithIDs_table)) {
+			if (!empty($tce->substNEWwithIDs_table)) {
 				// save the expanded/collapsed states for new inline records, if any
 				FormEngineUtility::updateInlineView($this->uc, $tce);
 				$newEditConf = array();
 				foreach ($this->editconf as $tableName => $tableCmds) {
 					$keys = array_keys($tce->substNEWwithIDs_table, $tableName);
-					if (count($keys) > 0) {
+					if (!empty($keys)) {
 						foreach ($keys as $key) {
 							$editId = $tce->substNEWwithIDs[$key];
 							// Check if the $editId isn't a child record of an IRRE action
@@ -601,7 +601,7 @@ class EditDocumentController {
 					}
 				}
 				// Resetting editconf if newEditConf has values:
-				if (count($newEditConf)) {
+				if (!empty($newEditConf)) {
 					$this->editconf = $newEditConf;
 				}
 				// Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
@@ -612,7 +612,7 @@ class EditDocumentController {
 				$this->compileStoreDat();
 			}
 			// See if any records was auto-created as new versions?
-			if (count($tce->autoVersionIdMap)) {
+			if (!empty($tce->autoVersionIdMap)) {
 				$this->fixWSversioningInEditConf($tce->autoVersionIdMap);
 			}
 			// If a document is saved and a new one is created right after.
@@ -1608,7 +1608,7 @@ class EditDocumentController {
 		if ($retUrl === '') {
 			return;
 		}
-		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {
+		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && !empty($this->docHandler)) {
 			if (isset($this->docHandler[$currentDocFromHandlerMD5])) {
 				$setupArr = $this->docHandler[$currentDocFromHandlerMD5];
 			} else {

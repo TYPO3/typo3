@@ -129,7 +129,7 @@ class BackendLayoutWizardController {
 				for ($j = 1; $j <= $colCount; $j++) {
 					$cellData = array();
 					if (!$spannedMatrix[$i][$j]) {
-						if (is_array($columns) && count($columns)) {
+						if (is_array($columns) && !empty($columns)) {
 							$column = array_shift($columns);
 							if (isset($column['colspan'])) {
 								$cellData['colspan'] = (int)$column['colspan'];

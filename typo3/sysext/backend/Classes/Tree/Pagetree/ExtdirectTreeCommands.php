@@ -338,7 +338,7 @@ class ExtdirectTreeCommands {
 	 */
 	static public function addRootlineOfNodeToStateHash($stateId, $nodeId) {
 		$mountPoints = array_map('intval', $GLOBALS['BE_USER']->returnWebmounts());
-		if (count($mountPoints) == 0) {
+		if (empty($mountPoints)) {
 			$mountPoints = array(0);
 		}
 		$mountPoints[] = (int)$GLOBALS['BE_USER']->uc['pageTree_temporaryMountPoint'];

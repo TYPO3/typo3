@@ -385,7 +385,7 @@ class NewContentElementController {
 							}
 						}
 					}
-					if (count($groupItems)) {
+					if (!empty($groupItems)) {
 						$wizardItems[$groupKey] = $this->wizard_getGroupHeader($groupKey, $wizardGroup);
 						$wizardItems = array_merge($wizardItems, $groupItems);
 					}
@@ -496,7 +496,7 @@ class NewContentElementController {
 						if (!isset($keepItems[$fN])) {
 							$keepItems[$fN] = GeneralUtility::trimExplode(',', $TCEFORM_TSconfig[$fN]['keepItems'], TRUE);
 						}
-						$isNotInKeepItems = count($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
+						$isNotInKeepItems = !empty($keepItems[$fN]) && !in_array($fV, $keepItems[$fN]);
 						if ($authModeDeny || $fN === 'CType' && in_array($fV, $removeItems[$fN]) || $isNotInKeepItems) {
 							// Remove element all together:
 							unset($wizardItems[$key]);

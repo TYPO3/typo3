@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Module;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class with utility functions for module menu
  *
@@ -36,9 +38,9 @@ class ModuleController {
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, not in use, as everything can be done via the ModuleMenuRepository directly
 	 */
 	public function __construct() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$this->moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleStorage::class);
-		$this->moduleMenuRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
+		GeneralUtility::logDeprecatedFunction();
+		$this->moduleMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleStorage::class);
+		$this->moduleMenuRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository::class);
 	}
 
 	/**
@@ -49,9 +51,9 @@ class ModuleController {
 	 * @return void
 	 */
 	public function createModuleMenu() {
-		if (count($this->moduleMenu->getEntries()) === 0) {
+		if (empty($this->moduleMenu->getEntries())) {
 			/** @var $moduleMenu \TYPO3\CMS\Backend\View\ModuleMenuView */
-			$moduleMenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\ModuleMenuView::class);
+			$moduleMenu = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\View\ModuleMenuView::class);
 			$rawData = $moduleMenu->getRawModuleData();
 			$this->convertRawModuleDataToModuleMenuObject($rawData);
 			$this->createMenuEntriesForTbeModulesExt();
@@ -68,7 +70,7 @@ class ModuleController {
 	protected function convertRawModuleDataToModuleMenuObject(array $rawModuleData) {
 		foreach ($rawModuleData as $module) {
 			$entry = $this->createEntryFromRawData($module);
-			if (isset($module['subitems']) && count($module['subitems']) > 0) {
+			if (isset($module['subitems']) && !empty($module['subitems'])) {
 				foreach ($module['subitems'] as $subitem) {
 					$subEntry = $this->createEntryFromRawData($subitem);
 					$entry->addChild($subEntry);
@@ -86,7 +88,7 @@ class ModuleController {
 	 */
 	protected function createEntryFromRawData(array $module) {
 		/** @var $entry \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule */
-		$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class);
+		$entry = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Domain\Model\Module\BackendModule::class);
 		if (!empty($module['name']) && is_string($module['name'])) {
 			$entry->setName($module['name']);
 		}
@@ -126,7 +128,7 @@ class ModuleController {
 			$mainEntry = $this->moduleMenuRepository->findByModuleName($main);
 			if ($mainEntry !== FALSE) {
 				$subEntries = $mainEntry->getChildren();
-				if (count($subEntries) > 0) {
+				if (!empty($subEntries)) {
 					$matchingSubEntry = $this->moduleMenuRepository->findByModuleName($mainModule);
 					if ($matchingSubEntry !== FALSE) {
 						if (array_key_exists('MOD_MENU', $tbeModuleExt) && array_key_exists('function', $tbeModuleExt['MOD_MENU'])) {

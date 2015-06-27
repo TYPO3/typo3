@@ -171,7 +171,7 @@ class SuggestWizard {
 			foreach ($flexformDSArray as $sheet) {
 				foreach ($sheet as $dataStructure) {
 					$fieldConfig = $this->getNestedDsFieldConfig($dataStructure, $flexformElement);
-					if (count($fieldConfig) > 0) {
+					if (!empty($fieldConfig)) {
 						$continue = FALSE;
 						break;
 					}
@@ -211,7 +211,7 @@ class SuggestWizard {
 		// be added to the TCEForm selector, originally fetched from the "allowed" config option in the TCA
 		foreach ($queryTables as $queryTable) {
 			// if the table does not exist, skip it
-			if (!is_array($GLOBALS['TCA'][$queryTable]) || !count($GLOBALS['TCA'][$queryTable])) {
+			if (!is_array($GLOBALS['TCA'][$queryTable]) || empty($GLOBALS['TCA'][$queryTable])) {
 				continue;
 			}
 			$config = (array)$wizardConfig['default'];
@@ -272,7 +272,7 @@ class SuggestWizard {
 			unset($rows);
 		}
 		$listItems = array();
-		if (count($resultRows) > 0) {
+		if (!empty($resultRows)) {
 			// traverse all found records and sort them
 			$rowsSort = array();
 			foreach ($resultRows as $key => $row) {
@@ -290,7 +290,7 @@ class SuggestWizard {
 				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '"' . ($row['style'] != '' ? ' style="' . $row['style'] . '"' : '') . '>' . $row['sprite'] . $row['text'] . '</li>';
 			}
 		}
-		if (count($listItems) > 0) {
+		if (!empty($listItems)) {
 			$list = implode('', $listItems);
 		} else {
 			$list = '<li class="suggest-noresults"><i>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRecordFound') . '</i></li>';

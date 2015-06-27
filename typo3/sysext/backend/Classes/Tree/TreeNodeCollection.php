@@ -31,7 +31,7 @@ class TreeNodeCollection extends \ArrayObject {
 	 * @param array $data
 	 */
 	public function __construct(array $data = array()) {
-		if (count($data)) {
+		if (!empty($data)) {
 			$this->dataFromArray($data);
 		}
 	}

@@ -117,7 +117,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 					$parameters['values'] = array($table . '_' . $row['uid']);
 					$parameters['tcaFieldConfig'] = $tcaFieldConfig;
 					$valueArray = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
-					if (count($valueArray) === 0) {
+					if (empty($valueArray)) {
 						$returnValue = FALSE;
 					}
 				}

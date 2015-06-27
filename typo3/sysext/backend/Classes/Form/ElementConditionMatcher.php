@@ -87,13 +87,13 @@ class ElementConditionMatcher {
 					}
 				}
 			}
-			if (count($conditionEvaluations['OR']) > 0 && in_array(TRUE, $conditionEvaluations['OR'], TRUE)) {
+			if (!empty($conditionEvaluations['OR']) && in_array(TRUE, $conditionEvaluations['OR'], TRUE)) {
 				// There are OR conditions and at least one of them is TRUE
 				$result = TRUE;
-			} elseif (count($conditionEvaluations['AND']) > 0 && !in_array(FALSE, $conditionEvaluations['AND'], TRUE)) {
+			} elseif (!empty($conditionEvaluations['AND']) && !in_array(FALSE, $conditionEvaluations['AND'], TRUE)) {
 				// There are AND conditions and none of them is FALSE
 				$result = TRUE;
-			} elseif (count($conditionEvaluations['OR']) > 0 || count($conditionEvaluations['AND']) > 0) {
+			} elseif (!empty($conditionEvaluations['OR']) || !empty($conditionEvaluations['AND'])) {
 				// There are some conditions. But no OR was TRUE and at least one AND was FALSE
 				$result = FALSE;
 			} else {

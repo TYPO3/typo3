@@ -120,7 +120,7 @@ class SelectSingleBoxElement extends AbstractFormElement {
 			$c++;
 		}
 		// Remaining values:
-		if (count($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
+		if (!empty($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
 			foreach ($itemArray as $theNoMatchValue => $temp) {
 				// Compile <option> tag:
 				array_unshift($opt, '<option value="' . htmlspecialchars($theNoMatchValue) . '" selected="selected">'

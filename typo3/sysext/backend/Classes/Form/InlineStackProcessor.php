@@ -86,7 +86,7 @@ class InlineStackProcessor {
 						$fieldParts = GeneralUtility::trimExplode(':', $unstable['field']);
 						$unstable['field'] = array_shift($fieldParts);
 						// FlexForm parts start with data:
-						if (count($fieldParts) > 0 && $fieldParts[0] === 'data') {
+						if (!empty($fieldParts) && $fieldParts[0] === 'data') {
 							$unstable['flexform'] = $fieldParts;
 						}
 					}
@@ -96,7 +96,7 @@ class InlineStackProcessor {
 				}
 				$unstable[$vector[$i % 3]] = $parts[$i];
 			}
-			if (count($unstable)) {
+			if (!empty($unstable)) {
 				$this->inlineStructure['unstable'] = $unstable;
 			}
 		}

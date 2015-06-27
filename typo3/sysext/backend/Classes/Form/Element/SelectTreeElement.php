@@ -87,7 +87,7 @@ class SelectTreeElement extends AbstractFormElement {
 		if (!empty($PA['itemFormElValue'])) {
 			$valueArray = explode(',', $PA['itemFormElValue']);
 		}
-		if (count($valueArray)) {
+		if (!empty($valueArray)) {
 			foreach ($valueArray as $selectedValue) {
 				$temp = explode('|', $selectedValue);
 				$selectedNodes[] = $temp[0];

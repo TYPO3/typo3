@@ -231,9 +231,9 @@ class SuggestWizardDefaultReceiver {
 		if (isset($GLOBALS['TCA'][$this->table]['ctrl']['delete'])) {
 			$this->selectClause .= ' AND ' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] . ' = 0';
 		}
-		if (count($this->allowedPages)) {
+		if (!empty($this->allowedPages)) {
 			$pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($this->allowedPages);
-			if (count($pidList)) {
+			if (!empty($pidList)) {
 				$this->selectClause .= ' AND pid IN (' . implode(', ', $pidList) . ') ';
 			}
 		}
@@ -261,7 +261,7 @@ class SuggestWizardDefaultReceiver {
 			++$level;
 			$pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds);
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'pid IN (' . implode(', ', $pidList) . ')', '', '', '', 'uid');
-			if (count($rows) > 0) {
+			if (!empty($rows)) {
 				$pageIds = array_keys($rows);
 				$pages = array_merge($pages, $pageIds);
 			} else {

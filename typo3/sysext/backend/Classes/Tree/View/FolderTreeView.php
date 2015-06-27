@@ -249,7 +249,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		// If there are filemounts, show each, otherwise just the rootlevel folder
 		$fileMounts = $storageObject->getFileMounts();
 		$rootLevelFolders = array();
-		if (count($fileMounts)) {
+		if (!empty($fileMounts)) {
 			foreach ($fileMounts as $fileMountInfo) {
 				$rootLevelFolders[] = array(
 					'folder' => $fileMountInfo['folder'],
@@ -570,7 +570,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$hashMap = array();
 			foreach ($this->storages as $storageUid => $storage) {
 				$fileMounts = $storage->getFileMounts();
-				if (count($fileMounts)) {
+				if (!empty($fileMounts)) {
 					foreach ($fileMounts as $fileMount) {
 						$nkey = hexdec(substr(GeneralUtility::md5int($fileMount['folder']->getCombinedIdentifier()), 0, 4));
 						$this->storageHashNumbers[$storageUid . $fileMount['folder']->getCombinedIdentifier()] = $nkey;

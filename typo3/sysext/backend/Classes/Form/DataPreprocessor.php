@@ -405,7 +405,7 @@ class DataPreprocessor {
 			if ($GLOBALS['TCA'][$fieldConfig['config']['foreign_table']]) {
 				// Getting the data
 				$dataIds = $this->getDataIdList($elements, $fieldConfig, $row, $table);
-				if (!count($dataIds)) {
+				if (empty($dataIds)) {
 					$dataIds = array(0);
 				}
 				$dataAcc[] = $dataIds[0];

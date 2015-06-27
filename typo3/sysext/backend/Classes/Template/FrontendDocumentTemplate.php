@@ -45,7 +45,7 @@ class FrontendDocumentTemplate extends DocumentTemplate {
 		if ($this->JScode) {
 			$this->pageRenderer->addHeaderData($this->JScode);
 		}
-		if (count($this->JScodeArray)) {
+		if (!empty($this->JScodeArray)) {
 			foreach ($this->JScodeArray as $name => $code) {
 				$this->pageRenderer->addJsInlineCode($name, $code, FALSE);
 			}

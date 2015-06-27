@@ -135,7 +135,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				}
 			}
 		}
-		if (is_array($subpages) && count($subpages) > 0) {
+		if (is_array($subpages) && !empty($subpages)) {
 			foreach ($subpages as $subpage) {
 				if (in_array($subpage['uid'], $this->hiddenRecords)) {
 					continue;
@@ -346,7 +346,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$isTemporaryMountPoint = TRUE;
 			$mountPoints = array($mountPoints);
 		}
-		if (!count($mountPoints)) {
+		if (empty($mountPoints)) {
 			return $nodeCollection;
 		}
 

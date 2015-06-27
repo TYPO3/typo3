@@ -619,7 +619,7 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		$infoDataHeader = '';
-		if (count($rows)) {
+		if (!empty($rows)) {
 			$infoDataHeader = '
 				<tr>
 					<th class="col-icon"></th>
@@ -690,7 +690,7 @@ class ElementInformationController {
 			}
 		}
 		$referenceLine = '';
-		if (count($infoData)) {
+		if (!empty($infoData)) {
 			$referenceLine = '
 				<div class="table-fit">
 					<table class="table table-striped table-hover">
@@ -720,7 +720,7 @@ class ElementInformationController {
 		// Compile information for title tag:
 		$infoData = array();
 		$infoDataHeader = '';
-		if (count($rows)) {
+		if (!empty($rows)) {
 			$infoDataHeader = '
 				<tr>
 					<th class="col-icon"></th>

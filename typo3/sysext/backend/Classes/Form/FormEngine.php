@@ -449,7 +449,7 @@ class FormEngine {
 	public function processInlineAjaxRequest($_, AjaxRequestHandler $ajaxObj) {
 		$ajaxArguments = GeneralUtility::_GP('ajax');
 		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
-		if (isset($ajaxArguments) && is_array($ajaxArguments) && count($ajaxArguments)) {
+		if (isset($ajaxArguments) && is_array($ajaxArguments) && !empty($ajaxArguments)) {
 			$ajaxMethod = $ajaxIdParts[1];
 			$ajaxObj->setContentFormat('jsonbody');
 			// Construct runtime environment for Inline Relational Record Editing
@@ -1203,7 +1203,7 @@ class FormEngine {
 	public function JStop() {
 		$out = '';
 		// Additional top HTML:
-		if (count($this->additionalCode_pre)) {
+		if (!empty($this->additionalCode_pre)) {
 			$out .= implode('
 
 				<!-- NEXT: -->

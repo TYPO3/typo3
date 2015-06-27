@@ -104,7 +104,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				return $entry;
 			}
 			$children = $entry->getChildren();
-			if (count($children) > 0) {
+			if (!empty($children)) {
 				$childRecord = $this->findByModuleNameInGivenEntries($name, $children);
 				if ($childRecord !== FALSE) {
 					return $childRecord;
