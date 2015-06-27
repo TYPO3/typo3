@@ -20,13 +20,20 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Render system info toolbar item
  */
-class SystemInformationToolbarItem extends AbstractToolbarItem implements ToolbarItemInterface {
+class SystemInformationToolbarItem implements ToolbarItemInterface {
+
+	/**
+	 * @var StandaloneView
+	 */
+	protected $standaloneView = NULL;
 
 	/**
 	 * Template file for the dropdown menu
@@ -77,7 +84,10 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 			return;
 		}
 
-		parent::__construct();
+		$extPath = ExtensionManagementUtility::extPath('backend');
+		/* @var $view StandaloneView */
+		$this->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
+		$this->standaloneView->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/ToolbarMenu/' . static::TOOLBAR_MENU_TEMPLATE);
 
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
@@ -280,14 +290,16 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 			return '';
 		}
 
-		$this->getStandaloneView('backend')->assignMultiple(array(
+		$request = $this->standaloneView->getRequest();
+		$request->setControllerExtensionName('backend');
+		$this->standaloneView->assignMultiple(array(
 			'installToolUrl' => BackendUtility::getModuleUrl('system_InstallInstall'),
 			'messages' => $this->systemMessages,
 			'count' => $this->totalCount,
 			'severityBadgeClass' => $this->severityBadgeClass,
 			'systemInformation' => $this->systemInformation
 		));
-		return $this->getStandaloneView()->render();
+		return $this->standaloneView->render();
 	}
 
 	/**
@@ -367,5 +379,4 @@ class SystemInformationToolbarItem extends AbstractToolbarItem implements Toolba
 		}
 		return $this->signalSlotDispatcher;
 	}
-
 }
