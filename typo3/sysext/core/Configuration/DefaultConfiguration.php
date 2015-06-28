@@ -280,7 +280,7 @@ return array(
 		'allowGlobalInstall' => FALSE,		// Boolean: If set, global extensions in typo3/ext/ are allowed to be installed, updated and deleted etc.
 		'allowLocalInstall' => TRUE,		// Boolean: If set, local extensions in typo3conf/ext/ are allowed to be installed, updated and deleted etc.
 		'allowSystemInstall' => FALSE,		// Boolean: If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
-		'excludeForPackaging' => '(CVS|\\..*|.*~|.*\\.bak)',		// String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
+		'excludeForPackaging' => '(?:\\..*|.*~|.*\\.swp|.*\\.bak)',		// String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
 		'extConf' => array(
 			'saltedpasswords' => serialize(array(
 				'BE.' => array(
