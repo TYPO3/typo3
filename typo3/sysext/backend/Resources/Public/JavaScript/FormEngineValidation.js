@@ -19,14 +19,13 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	/**
 	 * the main FormEngineValidation object
 	 *
-	 * @type {{rulesSelector: string, dateTimeSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, fieldsWithRules: null}}
+	 * @type {{rulesSelector: string, dateTimeSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string}}
 	 */
 	var FormEngineValidation = {
 		rulesSelector: '[data-formengine-validation-rules]',
 		dateTimeSelector: '.t3js-datetimepicker',
 		groupFieldHiddenElement: '.t3js-formengine-field-group input[type=hidden]',
-		relatedFieldSelector: '[data-relatedfieldname]',
-		fieldsWithRules: null
+		relatedFieldSelector: '[data-relatedfieldname]'
 	};
 
 	/**
@@ -34,10 +33,9 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	 */
 	FormEngineValidation.initialize = function() {
 		$(document).find('.has-error').removeClass('has-error');
-		FormEngineValidation.fieldsWithRules = $(document).find(FormEngineValidation.rulesSelector);
 
 		// bind to field changes
-		FormEngineValidation.fieldsWithRules.on('change', function() {
+		$(document).on('change', FormEngineValidation.rulesSelector, function() {
 			// we need to wait, because the update of the select field needs some time
 			window.setTimeout(function() {
 				FormEngineValidation.validate();
@@ -58,16 +56,15 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	 * validate the complete form
 	 */
 	FormEngineValidation.validate = function() {
-		FormEngineValidation.initialize();
-
 		$(document).find('.t3js-formengine-validation-marker, .t3js-tabmenu-item')
 			.removeClass('has-error')
 			.removeClass('has-validation-error');
 
-		FormEngineValidation.fieldsWithRules.each(function() {
+		$(FormEngineValidation.rulesSelector).each(function() {
 			var $field = $(this);
 			var $rules = $field.data('formengine-validation-rules');
 			var markParent = false;
+			var selected = 0;
 			$rules.each(function(rule) {
 				switch (rule.type) {
 					case 'required':
@@ -76,18 +73,36 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 							$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
 						}
 						break;
-					case 'select':
 					case 'range':
 						if (rule.minItems || rule.maxItems) {
 							$relatedField = $(document).find('[name="' + $field.data('relatedfieldname') + '"]');
 							if ($relatedField.length) {
-								var selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
+								selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
 								if (selected < rule.minItems || selected > rule.maxItems) {
 									markParent = true;
 									$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
 								}
 							} else {
-								var selected = $field.val();
+								selected = $field.val();
+								if (selected < rule.minItems || selected > rule.maxItems) {
+									markParent = true;
+									$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
+								}
+
+							}
+						}
+						break;
+					case 'select':
+						if (rule.minItems || rule.maxItems) {
+							$relatedField = $(document).find('[name="' + $field.data('relatedfieldname') + '"]');
+							if ($relatedField.length) {
+								selected = FormEngineValidation.trimExplode(',', $relatedField.val()).length;
+								if (selected < rule.minItems || selected > rule.maxItems) {
+									markParent = true;
+									$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
+								}
+							} else {
+								selected = $field.find('option:selected').length;
 								if (selected < rule.minItems || selected > rule.maxItems) {
 									markParent = true;
 									$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
@@ -98,7 +113,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 						break;
 					case 'group':
 						if (rule.minItems || rule.maxItems) {
-							var selected = $field.find('option').length;
+							selected = $field.find('option').length;
 							if (selected < rule.minItems || selected > rule.maxItems) {
 								markParent = true;
 								$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
@@ -107,7 +122,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 						break;
 					case 'inline':
 						if (rule.minItems || rule.maxItems) {
-							var selected = FormEngineValidation.trimExplode(',', $field.val()).length;
+							selected = FormEngineValidation.trimExplode(',', $field.val()).length;
 							if (selected < rule.minItems || selected > rule.maxItems) {
 								markParent = true;
 								$field.closest('.t3js-formengine-validation-marker').addClass('has-error');
