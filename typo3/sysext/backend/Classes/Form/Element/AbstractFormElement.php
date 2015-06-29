@@ -336,7 +336,7 @@ abstract class AbstractFormElement extends AbstractNode {
 					$aOnClick =
 						'this.blur();' .
 						'vHWin=window.open('. GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
-							'document.editform[\'' . $itemName . '\'].value,200' .
+							'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,200' .
 							')' .
 							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName . $listFlag) . '),' .
 							GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .
@@ -345,25 +345,8 @@ abstract class AbstractFormElement extends AbstractNode {
 						'vHWin.focus();' .
 						'return false;';
 
-					$dim = GeneralUtility::intExplode('x', $wizardConfiguration['dim']);
-					$dX = MathUtility::forceIntegerInRange($dim[0], 1, 200, 20);
-					$dY = MathUtility::forceIntegerInRange($dim[1], 1, 200, 20);
-					$color = $PA['itemFormElValue'] ? ' bgcolor="' . htmlspecialchars($PA['itemFormElValue']) . '"' : '';
-					$skinImg = IconUtility::skinImg(
-						'',
-						$PA['itemFormElValue'] === '' ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png',
-						'width="' . $dX . '" height="' . $dY . '"' . BackendUtility::titleAltAttrib(trim($iTitle . ' ' . $PA['itemFormElValue'])) . ' border="0"'
-					);
-					$otherWizards[] =
-						'<table border="0" id="' . $md5ID . '"' . $color . ' style="' . htmlspecialchars($wizardConfiguration['tableStyle']) . '">' .
-							'<tr>' .
-								'<td>' .
-									'<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . '<img ' . $skinImg . '>' . '</a>' .
-								'</td>' .
-							'</tr>' .
-						'</table>';
+					$otherWizards[] = '<a id="' . $md5ID . '" class="btn btn-default" href="#" onclick="' . htmlspecialchars($aOnClick) . '"><span class="t3-icon fa fa-eyedropper"></span></a>';
 					break;
-
 				case 'slider':
 					$params = array();
 					$params['fieldConfig'] = $fieldConfig;
