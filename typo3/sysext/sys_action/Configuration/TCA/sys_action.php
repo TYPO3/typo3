@@ -189,7 +189,6 @@ return array(
 			type,
 			title,
 			description,
-			--div--,
 			--div--;LLL:EXT:sys_action/locallang_tca.xlf:sys_action.tab.access,
 				hidden,
 				assign_to_groups
