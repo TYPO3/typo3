@@ -120,7 +120,7 @@ return array(
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'a title',
-						'icon' => 'link_popup.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
 						'module' => array(
 							'name' => 'wizard_element_browser',
 							'urlParameters' => array(

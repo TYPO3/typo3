@@ -325,7 +325,7 @@ return array(
 					'link' => array(
 						'type' => 'popup',
 						'title' => 'Link',
-						'icon' => 'link_popup.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
 						'module' => array(
 							'name' => 'wizard_element_browser',
 							'urlParameters' => array(
@@ -1316,14 +1316,14 @@ return array(
 						'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
 							'name' => 'wizard_edit',
 						),
-						'icon' => 'edit2.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
 					'add' => array(
 						'type' => 'script',
 						'title' => 'add',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						'module' => array(
 							'name' => 'wizard_add',
 						),
@@ -1336,7 +1336,7 @@ return array(
 					'list' => array(
 						'type' => 'script',
 						'title' => 'list',
-						'icon' => 'list.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
 						'module' => array(
 							'name' => 'wizard_list',
 						),
@@ -2007,14 +2007,14 @@ return array(
 						'module' => array( // @TODO: TCA documentation is not up to date at least in "Adding wizards" section of type=select here
 							'name' => 'wizard_edit',
 						),
-						'icon' => 'edit2.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 						'popup_onlyOpenIfSelected' => 1,
 						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
 					),
 					'add' => array(
 						'type' => 'script',
 						'title' => 'add',
-						'icon' => 'add.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 						'module' => array(
 							'name' => 'wizard_add',
 						),
@@ -2027,7 +2027,7 @@ return array(
 					'list' => array(
 						'type' => 'script',
 						'title' => 'list',
-						'icon' => 'list.gif',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
 						'module' => array(
 							'name' => 'wizard_list',
 						),
@@ -2129,7 +2129,7 @@ return array(
 													<link type="array">
 														<type>popup</type>
 														<title>Link</title>
-														<icon>link_popup.gif</icon>
+														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
 															<name>wizard_element_browser</name>
 															<urlParameters type="array">
