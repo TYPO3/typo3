@@ -419,6 +419,20 @@ class DataHandler {
 	 */
 	public $cmdmap = array();
 
+	/**
+	 * List of changed old record ids to new records ids
+	 *
+	 * @var array
+	 */
+	protected $mmHistoryRecords = array();
+
+	/**
+	 * List of changed old record ids to new records ids
+	 *
+	 * @var array
+	 */
+	protected $historyRecords = array();
+
 	// Internal static:
 	/**
 	 * Permission mapping
@@ -811,7 +825,7 @@ class DataHandler {
 			if ($this->enableLogging) {
 				$this->newlog('All editing in this workspace has been frozen!', 1);
 			}
-			return FALSE;
+			return;
 		}
 		$subA = reset($postFiles);
 		if (is_array($subA)) {
@@ -889,6 +903,7 @@ class DataHandler {
 	 * The first call initializes the accordant objects.
 	 *
 	 * @return array The 'checkModifyAccessList' hook objects (if any)
+	 * @throws \UnexpectedValueException
 	 */
 	protected function getCheckModifyAccessListHookObjects() {
 		if (!isset($this->checkModifyAccessListHookObjects)) {
@@ -974,6 +989,7 @@ class DataHandler {
 				if (!is_array($incomingFieldArray)) {
 					continue;
 				}
+				$theRealPid = NULL;
 
 				// Handle native date/time fields
 				$dateTimeFormats = $this->databaseConnection->getDateTimeFormats($table);
@@ -1140,7 +1156,7 @@ class DataHandler {
 
 								/** @var $tce DataHandler */
 								$tce = GeneralUtility::makeInstance(__CLASS__);
-								$tce->stripslashes_values = 0;
+								$tce->stripslashes_values = FALSE;
 								// Setting up command for creating a new version of the record:
 								$cmd = array();
 								$cmd[$table][$id]['version'] = array(
@@ -1197,6 +1213,7 @@ class DataHandler {
 				}
 				// Processing of all fields in incomingFieldArray and setting them in $fieldArray
 				$fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
+				$newVersion_placeholderFieldArray = array();
 				if ($createNewVersion) {
 					// create a placeholder array with already processed field content
 					$newVersion_placeholderFieldArray = $fieldArray;
@@ -2064,6 +2081,8 @@ class DataHandler {
 	 * @param int $id UID of record
 	 * @param string $recFID Field identifier [table:uid:field] for flexforms
 	 * @return array Modified value array
+	 *
+	 * @throws \RuntimeException
 	 * @see checkValue_group_select()
 	 */
 	public function checkValue_group_select_file($valueArray, $tcaFieldConf, $curValue, $uploadedFileArray, $status, $table, $id, $recFID) {
@@ -2097,6 +2116,7 @@ class DataHandler {
 		}
 		// If there is an upload folder defined:
 		if ($tcaFieldConf['uploadfolder'] && $tcaFieldConf['internal_type'] == 'file') {
+			$currentFilesForHistory = NULL;
 			// If filehandling should NOT be bypassed, do processing:
 			if (!$this->bypassFileHandling) {
 				// For logging..
@@ -2319,9 +2339,11 @@ class DataHandler {
 								}
 							}
 						}
-						$theFile = GeneralUtility::fixWindowsFilePath($theFile);
-						if (GeneralUtility::isFirstPartOfStr($theFile, PATH_site)) {
-							$theFile = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($theFile);
+						if (!empty($theFile)) {
+							$theFile = GeneralUtility::fixWindowsFilePath($theFile);
+							if (GeneralUtility::isFirstPartOfStr($theFile, PATH_site)) {
+								$theFile = PathUtility::stripPathSitePrefix($theFile);
+							}
 						}
 					}
 					unset($theFile);
@@ -3042,6 +3064,8 @@ class DataHandler {
 	protected function checkValue_inline_processDBdata($valueArray, $tcaFieldConf, $id, $status, $table, $field, array $additionalData = NULL) {
 		$newValue = '';
 		$foreignTable = $tcaFieldConf['foreign_table'];
+		$transOrigPointer = 0;
+		$keepTranslation = FALSE;
 		$valueArray = $this->applyFiltersToValues($tcaFieldConf, $valueArray);
 		// Fetch the related child records using \TYPO3\CMS\Core\Database\RelationHandler
 		/** @var $dbAnalysis RelationHandler */
@@ -3100,7 +3124,7 @@ class DataHandler {
 	 * Processing the cmd-array
 	 * See "TYPO3 Core API" for a description of the options.
 	 *
-	 * @return void
+	 * @return void|bool
 	 */
 	public function process_cmdmap() {
 		// Editing frozen:
@@ -3440,7 +3464,7 @@ class DataHandler {
 	 * @param int $destPid Destination PID: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
 	 * @param array $copyTablesArray Table on pages to copy along with the page.
 	 * @param bool $first Is a flag set, if the record copied is NOT a 'slave' to another record copied. That is, if this record was asked to be copied in the cmd-array
-	 * @return int The id of the new page, if applicable.
+	 * @return int|NULL The id of the new page, if applicable.
 	 */
 	public function copySpecificPage($uid, $destPid, $copyTablesArray, $first = FALSE) {
 		// Copy the page itself:
@@ -3461,6 +3485,7 @@ class DataHandler {
 			$this->processRemapStack();
 			return $theNewRootID;
 		}
+		return NULL;
 	}
 
 	/**
@@ -3475,7 +3500,7 @@ class DataHandler {
 	 * @param int $uid Element UID
 	 * @param int $pid Element PID (real PID, not checked)
 	 * @param array $overrideArray Override array - must NOT contain any fields not in the table!
-	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
 	 * @return int Returns the new ID of the record (if applicable)
 	 */
 	public function copyRecord_raw($table, $uid, $pid, $overrideArray = array(), array $workspaceOptions = array()) {
@@ -3595,7 +3620,8 @@ class DataHandler {
 	 * @param array $conf TCA field configuration
 	 * @param int $realDestPid Real page id (pid) the record is copied to
 	 * @param int $language Language ID (from sys_language table) used in the duplicated record
-	 * @return array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @param array $workspaceOptions Options to be forwarded if actions happen on a workspace currently
+	 * @return array|string
 	 * @access private
 	 * @see copyRecord()
 	 */
@@ -3710,6 +3736,7 @@ class DataHandler {
 			$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 			// Walk through the items, copy them and remember the new id:
 			foreach ($dbAnalysis->itemArray as $k => $v) {
+				$newId = NULL;
 				// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
 				if ($language > 0 && BackendUtility::isTableLocalizable($table) && $language != $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) {
 					// If children should be localized when the parent gets localized the first time, just do it:
@@ -3950,9 +3977,9 @@ class DataHandler {
 		// Get the localized records to be copied
 		$l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
+			$localizedDestPids = array();
 			// If $destPid < 0, then it is the uid of the original language record we are inserting after
 			if ($destPid < 0) {
-				$localizedDestPids = array();
 				// Get the localized records of the record we are inserting after
 				$destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($destPid), $where);
 				// Index the localized record uids by language
@@ -4288,9 +4315,9 @@ class DataHandler {
 		}
 		$l10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
+			$localizedDestPids = array();
 			// If $$originalRecordDestinationPid < 0, then it is the uid of the original language record we are inserting after
 			if ($originalRecordDestinationPid < 0) {
-				$localizedDestPids = array();
 				// Get the localized records of the record we are inserting after
 				$destL10nRecords = BackendUtility::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], abs($originalRecordDestinationPid), $where);
 				// Index the localized record uids by language
@@ -4410,7 +4437,7 @@ class DataHandler {
 						$translateToMsg = $GLOBALS['LANG'] ? $GLOBALS['LANG']->sL($TSConfig['translateToMessage']) : $TSConfig['translateToMessage'];
 						$translateToMsg = @sprintf($translateToMsg, $langRec['title']);
 					}
-					if (!strlen($translateToMsg)) {
+					if (empty($translateToMsg)) {
 						$translateToMsg = 'Translate to ' . $langRec['title'] . ':';
 					} else {
 						$translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
@@ -4538,6 +4565,7 @@ class DataHandler {
 							$tce->process_cmdmap();
 							unset($tce);
 						}
+						$updateFields = array();
 						// Handle, reorder and store relations:
 						if ($inlineSubType == 'list') {
 							$updateFields = array($field => $value);
@@ -4549,7 +4577,7 @@ class DataHandler {
 							$updateFields = array($field => $dbAnalysisCurrent->countItems(FALSE));
 						}
 						// Update field referencing to child records of localized parent record:
-						if (is_array($updateFields) && !empty($updateFields)) {
+						if (!empty($updateFields)) {
 							$this->updateDB($table, $id, $updateFields);
 						}
 					}
@@ -4816,9 +4844,10 @@ class DataHandler {
 				$this->deleteSpecificPage($deleteId, $forceHardDelete);
 			}
 		} else {
-			$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, htmlspecialchars($res), '', FlashMessage::ERROR, TRUE);
-			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+			/** @var FlashMessage $flashMessage */
+			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($res), '', FlashMessage::ERROR, TRUE);
+			/** @var $flashMessageService FlashMessageService */
+			$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$flashMessageService->getMessageQueueByIdentifier()->addMessage($flashMessage);
 
@@ -4885,6 +4914,7 @@ class DataHandler {
 						)
 					)
 				);
+				/** @var DataHandler $dataHandler */
 				$dataHandler = GeneralUtility::makeInstance(__CLASS__);
 				$dataHandler->stripslashes_values = FALSE;
 				$dataHandler->neverHideAtCopy = TRUE;
@@ -5105,7 +5135,7 @@ class DataHandler {
 	 * @param int $id Record uid to versionize
 	 * @param string $label Version label
 	 * @param bool $delete If TRUE, the version is created to delete the record.
-	 * @return int Returns the id of the new version (if any)
+	 * @return int|NULL Returns the id of the new version (if any)
 	 * @see copyRecord()
 	 */
 	public function versionizeRecord($table, $id, $label, $delete = FALSE) {
@@ -5186,6 +5216,7 @@ class DataHandler {
 		} elseif ($this->enableLogging) {
 			$this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, 1);
 		}
+		return NULL;
 	}
 
 	/**
@@ -5408,7 +5439,7 @@ class DataHandler {
 	 * @param string $value Field value
 	 * @param int $MM_localUid UID of local record (for MM relations - might need to change if support for FlexForms should be done!)
 	 * @param string $table Table name
-	 * @return array Returns array of items ready to implode for field content.
+	 * @return array|NULL Returns array of items ready to implode for field content.
 	 * @see remapListedDBRecords()
 	 */
 	public function remapListedDBRecords_procDBRefs($conf, $value, $MM_localUid, $table) {
@@ -5468,6 +5499,7 @@ class DataHandler {
 				return $vArray;
 			}
 		}
+		return NULL;
 	}
 
 	/**
@@ -5503,6 +5535,7 @@ class DataHandler {
 				if ($inlineType == 'field') {
 					$dbAnalysis->writeForeignField($conf, $uid, $theUidToUpdate);
 				}
+				$thePidToUpdate = NULL;
 				// If the current field is set on a page record, update the pid of related child records:
 				if ($table == 'pages') {
 					$thePidToUpdate = $theUidToUpdate;
@@ -5823,7 +5856,7 @@ class DataHandler {
 	 *
 	 * @param string $table Record table
 	 * @param int $id Record UID
-	 * @param array $data Record data
+	 * @param array|bool $data Record data
 	 * @param array $hookObjectsArr Hook objects
 	 * @return bool Returns TRUE if the user may update the record given by $table and $id
 	 */
@@ -5990,6 +6023,7 @@ class DataHandler {
 				return $this->databaseConnection->sql_num_rows($mres);
 			}
 		}
+		return FALSE;
 	}
 
 	/**
@@ -6219,7 +6253,7 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param array $row Input row
-	 * @return array Output array
+	 * @return array|NULL Output array
 	 */
 	public function getRecordPropertiesFromRow($table, $row) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -6233,6 +6267,7 @@ class DataHandler {
 			);
 			return $out;
 		}
+		return NULL;
 	}
 
 	/**
@@ -6272,6 +6307,7 @@ class DataHandler {
 					// Update reference index:
 					$this->updateRefIndex($table, $id);
 					if ($this->enableLogging) {
+						$newRow = array();
 						if ($this->checkStoredRecords) {
 							$newRow = $this->checkStoredRecord($table, $id, $fieldArray, 2);
 						}
@@ -6304,7 +6340,7 @@ class DataHandler {
 	 * @param bool $newVersion Set to TRUE if new version is created.
 	 * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
 	 * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
-	 * @return int Returns ID on success.
+	 * @return int|NULL Returns ID on success.
 	 */
 	public function insertDB($table, $id, $fieldArray, $newVersion = FALSE, $suggestedUid = 0, $dontSetNewIdIndex = FALSE) {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && isset($fieldArray['pid'])) {
@@ -6337,6 +6373,7 @@ class DataHandler {
 						$this->substNEWwithIDs[$NEW_id] = $id;
 						$this->substNEWwithIDs_table[$NEW_id] = $table;
 					}
+					$newRow = array();
 					// Checking the record is properly saved and writing to log
 					if ($this->enableLogging && $this->checkStoredRecords) {
 						$newRow = $this->checkStoredRecord($table, $id, $fieldArray, 1);
@@ -6363,6 +6400,7 @@ class DataHandler {
 				}
 			}
 		}
+		return NULL;
 	}
 
 	/**
@@ -6372,7 +6410,7 @@ class DataHandler {
 	 * @param int $id Record uid
 	 * @param array $fieldArray Array of field=>value pairs to insert/update
 	 * @param string $action Action, for logging only.
-	 * @return array Selected row
+	 * @return array|NULL Selected row
 	 * @see insertDB(), updateDB()
 	 */
 	public function checkStoredRecord($table, $id, $fieldArray, $action) {
@@ -6404,6 +6442,7 @@ class DataHandler {
 			}
 			$this->databaseConnection->sql_free_result($res);
 		}
+		return NULL;
 	}
 
 	/**
@@ -6456,7 +6495,7 @@ class DataHandler {
 	 * @param string $table Table name
 	 * @param int $uid Uid of record to find sorting number for. May be zero in case of new.
 	 * @param int $pid Positioning PID, either >=0 (pointing to page in which case we find sorting number for first record in page) or <0 (pointing to record in which case to find next sorting number after this record)
-	 * @return int|array|bool Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
+	 * @return int|array|bool|NULL Returns integer if PID is >=0, otherwise an array with PID and sorting number. Possibly FALSE in case of error.
 	 */
 	public function getSortNumber($table, $uid, $pid) {
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
@@ -6536,6 +6575,7 @@ class DataHandler {
 				}
 			}
 		}
+		return NULL;
 	}
 
 	/**
@@ -6546,7 +6586,7 @@ class DataHandler {
 	 * @param int $pid Pid in which to resort records.
 	 * @param string $sortRow Sorting row
 	 * @param int $return_SortNumber_After_This_Uid Uid of record from $table in this $pid and for which the return value will be set to a free sorting number after that record. This is used to return a sortingValue if the list is resorted because of inserting records inside the list and not in the top
-	 * @return int If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
+	 * @return int|NULL If $return_SortNumber_After_This_Uid is set, will contain usable sorting number after that record if found (otherwise 0)
 	 * @access private
 	 * @see getSortNumber()
 	 */
@@ -6573,6 +6613,7 @@ class DataHandler {
 			$this->databaseConnection->sql_free_result($res);
 			return $returnVal;
 		}
+		return NULL;
 	}
 
 	/**
@@ -6914,13 +6955,14 @@ class DataHandler {
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Record uid
-	 * @return int PID value (unless the record did not exist in which case FALSE)
+	 * @return int|FALSE PID value (unless the record did not exist in which case FALSE is returned)
 	 */
 	public function getPID($table, $uid) {
 		$res_tmp = $this->databaseConnection->exec_SELECTquery('pid', $table, 'uid=' . (int)$uid);
 		if ($row = $this->databaseConnection->sql_fetch_assoc($res_tmp)) {
 			return $row['pid'];
 		}
+		return FALSE;
 	}
 
 	/**
@@ -7571,6 +7613,7 @@ class DataHandler {
 		while ($row = $this->databaseConnection->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
 			$msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
+			/** @var FlashMessage $flashMessage */
 			$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($msg), '', FlashMessage::ERROR, TRUE);
 			/** @var $flashMessageService FlashMessageService */
 			$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
@@ -7876,9 +7919,11 @@ class DataHandler {
 
 	/**
 	 * Gets the resourceFactory
+	 *
 	 * @return ResourceFactory
 	 */
 	protected function getResourceFactory() {
-		return \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+		return ResourceFactory::getInstance();
 	}
+
 }
