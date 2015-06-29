@@ -553,7 +553,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 				// make sure to update the hidden field value when modifying the select value
 				FormEngine.updateHiddenFieldValueFromSelect($listFieldEl, FormEngine.getFieldElement(fieldName));
 				FormEngine.legacyFieldChangedCb();
-				if (typeof FormEngine.Validation !== 'undefinied' && typeof FormEngine.Validation.validate === 'function') {
+				if (typeof FormEngine.Validation !== 'undefined' && typeof FormEngine.Validation.validate === 'function') {
 					FormEngine.Validation.validate();
 				}
 			}
