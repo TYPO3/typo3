@@ -211,7 +211,7 @@ class AddController extends AbstractWizardController {
 			$redirectUrl = BackendUtility::getModuleUrl('record_edit', array(
 				'returnEditConf' => 1,
 				'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
-				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				'returnUrl' => GeneralUtility::removeXSS(GeneralUtility::getIndpEnv('REQUEST_URI'))
 			));
 			HttpUtility::redirect($redirectUrl);
 		}
