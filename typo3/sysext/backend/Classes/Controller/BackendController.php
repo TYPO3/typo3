@@ -240,7 +240,7 @@ class BackendController {
 		$view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 
 		// Render the TYPO3 logo in the left corner
-		$logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: 'gfx/typo3-topbar@2x.png';
+		$logoUrl = $GLOBALS['TBE_STYLES']['logo'] ?: 'sysext/backend/Resources/Public/Images/typo3-topbar@2x.png';
 		$logoPath = GeneralUtility::resolveBackPath(PATH_typo3 . $logoUrl);
 		list($logoWidth, $logoHeight) = @getimagesize($logoPath);
 

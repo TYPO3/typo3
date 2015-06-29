@@ -1941,7 +1941,7 @@ function jumpToUrl(URL) {
 	* @return string
 	*/
 	protected function getBackendFavicon() {
-		return IconUtility::skinImg($this->backPath, 'gfx/favicon.ico', '', 1);
+		return IconUtility::skinImg($this->backPath, 'sysext/backend/Resources/Public/Icons/favicon.ico', '', 1);
 	}
 
 }

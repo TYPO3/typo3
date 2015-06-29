@@ -33,7 +33,7 @@ class LogoView {
 	 */
 	public function __construct() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$this->logo = 'gfx/typo3-topbar@2x.png';
+		$this->logo = 'sysext/backend/Resources/Public/Images/typo3-topbar@2x.png';
 	}
 
 	/**

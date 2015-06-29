@@ -815,7 +815,7 @@ class ExtensionManagementUtility {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$defaultModuleConfiguration = array(
 			'access' => 'admin',
-			'icon' => 'gfx/typo3.png',
+			'icon' => 'sysext/backend/Resources/Public/Images/Logo.png',
 			'labels' => '',
 			'extRelPath' => self::extRelPath($extensionKey) . 'Classes/'
 		);
