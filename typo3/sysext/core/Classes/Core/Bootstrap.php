@@ -397,7 +397,9 @@ class Bootstrap {
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
 		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
 		$packageManager->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
-		$packageManager->injectDependencyResolver(Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class));
+		$dependencyResolver = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class);
+		$dependencyResolver->injectDependencyOrderingService(Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class));
+		$packageManager->injectDependencyResolver($dependencyResolver);
 		$packageManager->initialize($this);
 		Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
 		return $this;
