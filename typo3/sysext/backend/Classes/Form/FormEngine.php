@@ -1283,9 +1283,6 @@ class FormEngine {
 			';
 
 			$out .= '
-			TBE_EDITOR.images.req.src = "' . IconUtility::skinImg('', 'gfx/required_h.gif', '', 1) . '";
-			TBE_EDITOR.images.clear.src = "clear.gif";
-
 			TBE_EDITOR.formname = "' . $formname . '";
 			TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
 			TBE_EDITOR.backPath = "";

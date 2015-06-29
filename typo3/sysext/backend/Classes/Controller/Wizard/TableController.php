@@ -196,7 +196,7 @@ class TableController extends AbstractWizardController {
 			// Save & Close
 			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />';
 			// Reload
-			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . IconUtility::skinImg($this->doc->backPath, 'gfx/refresh_n.gif') . ' title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '" />';
+			$buttons['reload'] = '<button class="c-inputButton" name="_refresh">' . IconUtility::getSpriteIcon('actions-system-refresh', array('title' => $this->getLanguageService()->getLL('forms_refresh', TRUE))) . '</button>';
 		}
 		return $buttons;
 	}

@@ -391,7 +391,7 @@ class DatabaseIntegrityView extends BaseScriptClass {
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!GeneralUtility::inList($admin->lostPagesList, $data['pid'])) {
-							$lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '"><img src="' . $GLOBALS['BACK_PATH'] . 'gfx/required_h.gif" width="10" height="10" title="' . $lang->getLL('fixLostRecord') . '"></a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+							$lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '">' . IconUtility::getSpriteIcon('status-dialog-error', array('title' => $lang->getLL('fixLostRecord'))) . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
 						} else {
 							$lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
 						}
