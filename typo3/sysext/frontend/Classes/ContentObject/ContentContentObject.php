@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Contains CONTENT class object.
@@ -35,12 +38,13 @@ class ContentContentObject extends AbstractContentObject {
 			return '';
 		}
 
+		$frontendController = $this->getFrontendController();
 		$theValue = '';
-		$originalRec = $GLOBALS['TSFE']->currentRecord;
+		$originalRec = $frontendController->currentRecord;
 		// If the currentRecord is set, we register, that this record has invoked this function.
 		// It's should not be allowed to do this again then!!
 		if ($originalRec) {
-			++$GLOBALS['TSFE']->recordRegister[$originalRec];
+			++$frontendController->recordRegister[$originalRec];
 		}
 		$conf['table'] = isset($conf['table.']) ? trim($this->cObj->stdWrap($conf['table'], $conf['table.'])) : trim($conf['table']);
 		$renderObjName = $conf['renderObj'] ?: '<' . $conf['table'];
@@ -67,27 +71,34 @@ class ContentContentObject extends AbstractContentObject {
 		}
 		$again = FALSE;
 		$tmpValue = '';
+		$cobjValue = '';
+		$databaseConnection = $this->getDatabaseConnection();
 		do {
 			$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
-			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-				$GLOBALS['TT']->setTSlogMessage($error, 3);
+			if ($error = $databaseConnection->sql_error()) {
+				$this->getTimeTracker()->setTSlogMessage($error, 3);
 			} else {
-				$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-				$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
+				$this->cObj->currentRecordTotal = $databaseConnection->sql_num_rows($res);
+				$this->getTimeTracker()->setTSlogMessage('NUMROWS: ' . $databaseConnection->sql_num_rows($res));
 				/** @var $cObj ContentObjectRenderer */
 				$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 				$this->cObj->currentRecordNumber = 0;
 				$cobjValue = '';
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				while (($row = $databaseConnection->sql_fetch_assoc($res)) !== FALSE) {
 					// Versioning preview:
-					$GLOBALS['TSFE']->sys_page->versionOL($conf['table'], $row, TRUE);
+					$frontendController->sys_page->versionOL($conf['table'], $row, TRUE);
 					// Language overlay:
-					if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
+					if (is_array($row) && $frontendController->sys_language_contentOL) {
 						if ($conf['table'] == 'pages') {
-							$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
+							$row = $frontendController->sys_page->getPageOverlay($row);
 						} else {
-							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+							$row = $frontendController->sys_page->getRecordOverlay(
+								$conf['table'],
+								$row,
+								$frontendController->sys_language_content,
+								$frontendController->sys_language_contentOL
+							);
 						}
 					}
 					// Might be unset in the sys_language_contentOL
@@ -99,10 +110,10 @@ class ContentContentObject extends AbstractContentObject {
 								$_procObj->modifyDBRow($row, $conf['table']);
 							}
 						}
-						if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
+						if (!$frontendController->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
 							$this->cObj->currentRecordNumber++;
 							$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-							$GLOBALS['TSFE']->currentRecord = $conf['table'] . ':' . $row['uid'];
+							$frontendController->currentRecord = $conf['table'] . ':' . $row['uid'];
 							$this->cObj->lastChanged($row['tstamp']);
 							$cObj->start($row, $conf['table']);
 							$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
@@ -110,7 +121,7 @@ class ContentContentObject extends AbstractContentObject {
 						}
 					}
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$databaseConnection->sql_free_result($res);
 			}
 			if ($slideCollectReverse) {
 				$theValue = $cobjValue . $theValue;
@@ -140,11 +151,38 @@ class ContentContentObject extends AbstractContentObject {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
 		// Restore
-		$GLOBALS['TSFE']->currentRecord = $originalRec;
+		$frontendController->currentRecord = $originalRec;
 		if ($originalRec) {
-			--$GLOBALS['TSFE']->recordRegister[$originalRec];
+			--$frontendController->recordRegister[$originalRec];
 		}
 		return $theValue;
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * Returns the frontend controller
+	 *
+	 * @return TypoScriptFrontendController
+	 */
+	protected function getFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * Returns Time Tracker
+	 *
+	 * @return TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
 	}
 
 }
