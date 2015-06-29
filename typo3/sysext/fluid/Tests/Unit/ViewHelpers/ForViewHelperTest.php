@@ -403,7 +403,7 @@ class ForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelp
 
 		$viewHelperNode = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fixtures\ConstraintSyntaxTreeNode($this->templateVariableContainer);
 
-		$mockItems = $this->getMockBuilder(\ArrayObject::class)->setMethods(['count'])->disableOriginalConstructor()->getMock();
+		$mockItems = $this->getMock('ArrayObject', array('count'), array(), '', FALSE);
 		$mockItems->expects($this->never())->method('count');
 		$this->arguments['each'] = $mockItems;
 		$this->arguments['as'] = 'innerVariable';
