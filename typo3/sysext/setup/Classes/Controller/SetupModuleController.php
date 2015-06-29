@@ -533,7 +533,7 @@ class SetupModuleController {
 			switch ($type) {
 				case 'text':
 				case 'email':
-				case 'password': {
+				case 'password':
 					$noAutocomplete = '';
 					if ($type === 'password') {
 						$value = '';
@@ -547,8 +547,7 @@ class SetupModuleController {
 						$more .
 						' />';
 					break;
-				}
-				case 'check': {
+				case 'check':
 					$html = $label . '<div class="checkbox"><label><input id="field_' . $fieldName . '"
 						type="checkbox"
 						name="data' . $dataAdd . '[' . $fieldName . ']"' .
@@ -557,8 +556,7 @@ class SetupModuleController {
 						' /></label></div>';
 					$label = '';
 					break;
-				}
-				case 'select': {
+				case 'select':
 					if ($config['itemsProcFunc']) {
 						$html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 					} else {
@@ -571,12 +569,10 @@ class SetupModuleController {
 						$html .= '</select>';
 					}
 					break;
-				}
-				case 'user': {
+				case 'user':
 					$html = GeneralUtility::callUserFunction($config['userFunc'], $config, $this, '');
 					break;
-				}
-				case 'button': {
+				case 'button':
 					if ($config['onClick']) {
 						$onClick = $config['onClick'];
 						if ($config['onClickLabels']) {
@@ -590,7 +586,6 @@ class SetupModuleController {
 							onclick="' . $onClick . '" />';
 					}
 					break;
-				}
 				default:
 					$html = '';
 			}
