@@ -15,6 +15,11 @@ matrix:
 
 sudo: false
 
+addons:
+  apt:
+    packages:
+      - parallel
+
 cache:
   directories:
     - $HOME/.composer/cache
@@ -41,7 +46,6 @@ notifications:
     on_failure: always
 
 before_script:
-  - mkdir parallel && cd parallel && wget http://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2 && tar xvf parallel-latest.tar.bz2 -C . --strip-components=1 && ./configure && make && cd ..
   - if [ -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]; then echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [ -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]; then echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - rm -rf typo3/sysext/compatibility6
@@ -62,13 +66,13 @@ script:
         export typo3DatabaseHost="localhost";
         export typo3DatabaseUsername="root";
         export typo3DatabasePassword="";
-        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | ./parallel/src/parallel --gnu --will-cite 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
     fi
   - >
     if [[ "$PHP_LINT" == "yes" ]]; then
         echo;
         echo "Running php lint";
-        find typo3/ -name \*.php -not -path "typo3/contrib/vendor/*" | ./parallel/src/parallel --gnu --will-cite php -d display_errors=stderr -l {} > /dev/null \;
+        find typo3/ -name \*.php -not -path "typo3/contrib/vendor/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
     fi
   - >
     if [[ "$XLF_CHECK" == "yes" ]]; then
