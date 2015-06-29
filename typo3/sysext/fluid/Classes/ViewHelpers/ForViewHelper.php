@@ -98,11 +98,13 @@ class ForViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper 
 			}
 			$arguments['each'] = array_reverse($arguments['each']);
 		}
-		$iterationData = array(
-			'index' => 0,
-			'cycle' => 1,
-			'total' => count($arguments['each'])
-		);
+		if ($arguments['iteration'] !== NULL) {
+			$iterationData = array(
+				'index' => 0,
+				'cycle' => 1,
+				'total' => count($arguments['each'])
+			);
+		}
 
 		$output = '';
 		foreach ($arguments['each'] as $keyValue => $singleElement) {
