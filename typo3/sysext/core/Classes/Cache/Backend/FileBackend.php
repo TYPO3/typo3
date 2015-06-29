@@ -237,7 +237,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 		if (file_exists($pathAndFilename) === FALSE) {
 			return FALSE;
 		}
-		if (unlink($pathAndFilename) === FALSE) {
+		if (@unlink($pathAndFilename) === FALSE) {
 			return FALSE;
 		}
 		return TRUE;
