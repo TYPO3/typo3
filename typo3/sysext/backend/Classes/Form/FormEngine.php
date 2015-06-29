@@ -206,6 +206,16 @@ class FormEngine {
 	protected $nodeFactory;
 
 	/**
+	 * Array with requireJS modules, use module name as key, the value could be callback code.
+	 * Use NULL as value if no callback is used.
+	 *
+	 * @var array
+	 */
+	protected $requireJsModules = array(
+		'TYPO3/CMS/Backend/FormEngineValidation' => NULL
+	);
+
+	/**
 	 * Constructor function, setting internal variables, loading the styles used.
 	 *
 	 */
@@ -351,6 +361,36 @@ class FormEngine {
 		}
 		foreach ($resultArray['additionalJavaScriptSubmit'] as $element) {
 			$this->additionalJS_submit[] = $element;
+		}
+		if (!empty($resultArray['requireJsModules'])) {
+			foreach ($resultArray['requireJsModules'] as $module) {
+				$moduleName = NULL;
+				$callback = NULL;
+				if (is_string($module)) {
+					// if $module is a string, no callback
+					$moduleName = $module;
+					$callback = NULL;
+				} elseif (is_array($module)) {
+					// if $module is an array, callback is possible
+					foreach ($module as $key => $value) {
+						$moduleName = $key;
+						$callback = $value;
+						break;
+					}
+				}
+				if ($moduleName !== NULL) {
+					if (!empty($this->requireJsModules[$moduleName]) && $callback !== NULL) {
+						$existingValue = $this->requireJsModules[$moduleName];
+						if (!is_array($existingValue)) {
+							$existingValue = array($existingValue);
+						}
+						$existingValue[] = $callback;
+						$this->requireJsModules[$moduleName] = $existingValue;
+					} else {
+						$this->requireJsModules[$moduleName] = $callback;
+					}
+				}
+			}
 		}
 		$this->extJSCODE = $this->extJSCODE . LF . $resultArray['extJSCODE'];
 		$this->inlineData = $resultArray['inlineData'];
@@ -504,13 +544,7 @@ class FormEngine {
 			return $this->getErrorMessageForAJAX('Access denied');
 		}
 
-		// @todo: Refactor this mess ... see other methods like getMainFields, too
-		$this->additionalJS_post = $childArray['additionalJavaScriptPost'];
-		$this->additionalJS_submit = $childArray['additionalJavaScriptSubmit'];
-		$this->extJSCODE = $childArray['extJSCODE'];
-		$this->inlineData = $childArray['inlineData'];
-		$this->hiddenFieldAccum = $childArray['additionalHiddenFields'];
-		$this->additionalCode_pre = $childArray['additionalHeadTags'];
+		$this->mergeResult($childArray);
 
 		$jsonArray = array(
 			'data' => $childArray['html'],
@@ -632,13 +666,7 @@ class FormEngine {
 			return $this->getErrorMessageForAJAX('Access denied');
 		}
 
-		// @todo: Refactor this mess ... see other methods like getMainFields, too
-		$this->additionalJS_post = $childArray['additionalJavaScriptPost'];
-		$this->additionalJS_submit = $childArray['additionalJavaScriptSubmit'];
-		$this->extJSCODE = $childArray['extJSCODE'];
-		$this->inlineData = $childArray['inlineData'];
-		$this->hiddenFieldAccum = $childArray['additionalHiddenFields'];
-		$this->additionalCode_pre = $childArray['additionalHeadTags'];
+		$this->mergeResult($childArray);
 
 		$jsonArray = array(
 			'data' => $childArray['html'],
@@ -767,13 +795,7 @@ class FormEngine {
 				array_unshift($jsonArray['scriptCall'], 'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records') . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', json.data);');
 			}
 
-			// @todo: Refactor this mess ... see other methods like getMainFields, too
-			$this->additionalJS_post = $resultArray['additionalJavaScriptPost'];
-			$this->additionalJS_submit = $resultArray['additionalJavaScriptSubmit'];
-			$this->extJSCODE = $resultArray['extJSCODE'];
-			$this->inlineData = $resultArray['inlineData'];
-			$this->hiddenFieldAccum = $resultArray['additionalHiddenFields'];
-			$this->additionalCode_pre = $resultArray['additionalHeadTags'];
+			$this->mergeResult($resultArray);
 
 			$jsonArray = $this->getInlineAjaxCommonScriptCalls($jsonArray, $parent['config'], $inlineFirstPid);
 		}
@@ -975,6 +997,23 @@ class FormEngine {
 		// @todo: this is done by JSBottom() already?!
 		if ($this->extJSCODE) {
 			$jsonArray['scriptCall'][] = $this->extJSCODE;
+		}
+
+		// require js handling
+		foreach ($this->requireJsModules as $moduleName => $callbacks) {
+			if (!is_array($callbacks)) {
+				$callbacks = array($callbacks);
+			}
+			foreach ($callbacks as $callback) {
+				$inlineCodeKey = $moduleName;
+				$javaScriptCode = 'require(["' . $moduleName . '"]';
+				if ($callback !== NULL) {
+					$inlineCodeKey .= sha1($callback);
+					$javaScriptCode .= ', ' . $callback;
+				}
+				$javaScriptCode .= ');';
+				$jsonArray['scriptCall'][] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
+			}
 		}
 		return $jsonArray;
 	}
@@ -1191,10 +1230,17 @@ class FormEngine {
 			}
 			$pageRenderer = $this->getPageRenderer();
 			// load the main module for FormEngine with all important JS functions
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngine', 'function(FormEngine) {
+			$this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 				FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('browser')) . ');
-			}');
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
+			}';
+			foreach ($this->requireJsModules as $moduleName => $callbacks) {
+				if (!is_array($callbacks)) {
+					$callbacks = array($callbacks);
+				}
+				foreach ($callbacks as $callback) {
+					$pageRenderer->loadRequireJsModule($moduleName, $callback);
+				}
+			}
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
@@ -1223,7 +1269,6 @@ class FormEngine {
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineFlexForm');
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
 

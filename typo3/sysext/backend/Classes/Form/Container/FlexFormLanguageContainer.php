@@ -112,6 +112,7 @@ class FlexFormLanguageContainer extends AbstractContainer {
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
 			}
 		}
+		$resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
 
 		return $resultArray;
 	}

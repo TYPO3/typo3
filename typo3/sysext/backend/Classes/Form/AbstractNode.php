@@ -60,6 +60,8 @@ abstract class AbstractNode implements NodeInterface {
 			'additionalJavaScriptSubmit' => array(),
 			'additionalHiddenFields' => array(),
 			'additionalHeadTags' => array(),
+			// can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
+			'requireJsModules' => array(),
 			'extJSCODE' => '',
 			'inlineData' => array(),
 			'html' => '',
@@ -91,6 +93,11 @@ abstract class AbstractNode implements NodeInterface {
 		}
 		foreach ($childReturn['additionalHeadTags'] as $value) {
 			$existing['additionalHeadTags'][] = $value;
+		}
+		if (!empty($childReturn['requireJsModules'])) {
+			foreach ($childReturn['requireJsModules'] as $module) {
+				$existing['requireJsModules'][] = $module;
+			}
 		}
 		if (!empty($childReturn['inlineData'])) {
 			$existingInlineData = $existing['inlineData'];
