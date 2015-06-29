@@ -21,13 +21,13 @@
 			<trans-unit id="cleanerTaskDescriptionDays">
 				<source>Older than %d days(s)</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskErrorPeriod" xml:space="preserver">
+			<trans-unit id="cleanerTaskErrorPeriod">
 				<source>The period has to be an integer and greater than zero.</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskErrorTCAempty" xml:space="preserver">
+			<trans-unit id="cleanerTaskErrorTCAempty">
 				<source>You have to select at least one table.</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskErrorTCANotSet" xml:space="preserver">
+			<trans-unit id="cleanerTaskErrorTCANotSet">
 				<source>The table "%s" is not in the TCA.</source>
 			</trans-unit>
 		</body>
