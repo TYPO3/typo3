@@ -1266,7 +1266,6 @@ class FormEngine {
 
 			// @todo: remove scriptaclous once suggest & flex form foo is moved to RequireJS, see #55575
 			$pageRenderer->loadScriptaculous();
-			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/tceforms.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
