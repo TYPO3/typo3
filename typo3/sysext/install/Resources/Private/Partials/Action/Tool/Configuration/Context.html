@@ -1,6 +1,6 @@
 <div class="toggleGroup">
 	<div class="toggleButton">
-		<h4>Development / Production settings</h4>
+		<h4>Debug settings</h4>
 	</div>
 
 	<div class="toggleData" style="display:none">
@@ -8,9 +8,9 @@
 			<p>
 				In this panel it is possible to select a configuration preset which optimizes multiple settings
 				to be suited best for production or development environments.
-				The "Production" preset configures your TYPO3 installation for maximum performance
+				The "Live" preset configures your TYPO3 installation for maximum performance
 				and suppresses debug and error messages, so that nothing is disclosed to website visitors.
-				The "Development" preset enables most debug and error messages which is helpful during development.
+				The "Debug" preset enables most debug and error messages which is helpful during development.
 				As a third option it is possible to manually customize each setting for specific needs.
 			</p>
 			<f:for each="{feature.presetsOrderedByPriority}" as="preset">

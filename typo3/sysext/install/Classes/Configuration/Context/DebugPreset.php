@@ -17,14 +17,14 @@ namespace TYPO3\CMS\Install\Configuration\Context;
 use TYPO3\CMS\Install\Configuration;
 
 /**
- * Production preset
+ * Debug preset
  */
-class ProductionPreset extends Configuration\AbstractPreset {
+class DebugPreset extends Configuration\AbstractPreset {
 
 	/**
 	 * @var string Name of preset
 	 */
-	protected $name = 'Production';
+	protected $name = 'Debug';
 
 	/**
 	 * @var int Priority of preset
@@ -35,18 +35,20 @@ class ProductionPreset extends Configuration\AbstractPreset {
 	 * @var array Configuration values handled by this preset
 	 */
 	protected $configurationValues = array(
-		'BE/debug' => FALSE,
-		'FE/debug' => FALSE,
-		'SYS/devIPmask' => '',
-		'SYS/displayErrors' => 0,
-		'SYS/enableDeprecationLog' => FALSE,
-		'SYS/sqlDebug' => 0,
-		'SYS/systemLogLevel' => 2,
-		'SYS/clearCacheSystem' => FALSE,
+		'BE/debug' => TRUE,
+		'FE/debug' => TRUE,
+		'SYS/devIPmask' => '*',
+		'SYS/displayErrors' => 1,
+		'SYS/enableDeprecationLog' => 'file',
+		'SYS/sqlDebug' => 1,
+		'SYS/systemLogLevel' => 0,
+		// E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED | E_USER_DEPRECATED
+		'SYS/exceptionalErrors' => 28674,
+		'SYS/clearCacheSystem' => TRUE,
 	);
 
 	/**
-	 * Production preset is always available
+	 * Development preset is always available
 	 *
 	 * @return bool TRUE if mbstring PHP module is loaded
 	 */
@@ -55,7 +57,7 @@ class ProductionPreset extends Configuration\AbstractPreset {
 	}
 
 	/**
-	 * If context is set to production, priority
+	 * If context is set to development, priority
 	 * of this preset is raised.
 	 *
 	 * @return int Priority of preset
@@ -63,7 +65,7 @@ class ProductionPreset extends Configuration\AbstractPreset {
 	public function getPriority() {
 		$context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
 		$priority = $this->priority;
-		if ($context->isProduction()) {
+		if ($context->isDevelopment()) {
 			$priority = $priority + 20;
 		}
 		return $priority;
