@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Package;
 
 use TYPO3\CMS\Core\Compatibility\LoadedExtensionArrayElement;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -819,7 +820,8 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		GeneralUtility::writeFile($this->packageStatesPathAndFilename, $packageStatesCode, TRUE);
 
 		$this->initializeCompatibilityLoadedExtArray();
-		\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($this->packageStatesPathAndFilename);
+
+		GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($this->packageStatesPathAndFilename);
 	}
 
 	/**

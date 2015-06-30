@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Core\Configuration;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\OpcodeCacheUtility;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 
 /**
  * Handle loading and writing of global and local (instance specific)
@@ -315,7 +315,7 @@ class ConfigurationManager {
 			TRUE
 		);
 
-		OpcodeCacheUtility::clearAllActive($localConfigurationFile);
+		GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($localConfigurationFile);
 
 		return $result;
 	}

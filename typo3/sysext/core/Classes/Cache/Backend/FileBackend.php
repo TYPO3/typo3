@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 
 /**
  * A caching backend which stores cache entries in files
@@ -166,7 +168,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 			throw new \TYPO3\CMS\Core\Cache\Exception('The cache file "' . $cacheEntryPathAndFilename . '" could not be written.', 1222361632);
 		}
 		if ($this->cacheEntryFileExtension === '.php') {
-			\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($cacheEntryPathAndFilename);
+			GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($cacheEntryPathAndFilename);
 		}
 	}
 

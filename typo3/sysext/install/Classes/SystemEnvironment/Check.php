@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Status;
 
 /**
@@ -873,7 +875,7 @@ class Check {
 	protected function checkSomePhpOpcodeCacheIsLoaded() {
 		// Link to our wiki page, so we can update opcode cache issue information independent of TYPO3 CMS releases.
 		$wikiLink = 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.';
-		$opcodeCaches = \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::getAllActive();
+		$opcodeCaches = GeneralUtility::makeInstance(OpcodeCacheService::class)->getAllActive();
 		if (count($opcodeCaches) === 0) {
 			// Set status to notice. It needs to be notice so email won't be triggered.
 			$status = new Status\NoticeStatus();

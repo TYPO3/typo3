@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Utility;
+namespace TYPO3\CMS\Core\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,27 +22,17 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * @author Alexander Opitz <opitz@pluspol-interactive.de>
  */
-class OpcodeCacheUtility {
+class OpcodeCacheService {
 
 	/**
-	 * All supported cache types
-	 * @var array|null
+	 * Returns all supported and active opcaches
+	 *
+	 * @return array Array filled with supported and active opcaches
 	 */
-	static protected $supportedCaches = NULL;
-
-	/**
-	 * Holds all currently active caches
-	 * @var array|null
-	 */
-	static protected $activeCaches = NULL;
-
-	/**
-	 * Initialize the cache properties
-	 */
-	static protected function initialize() {
+	public function getAllActive() {
 		$xcVersion = phpversion('xcache');
 
-		static::$supportedCaches = array(
+		$supportedCaches = array(
 			// The ZendOpcache aka OPcache since PHP 5.5
 			// http://php.net/manual/de/book.opcache.php
 			'OPcache' => array(
@@ -95,13 +85,13 @@ class OpcodeCacheUtility {
 			),
 		);
 
-		static::$activeCaches = array();
-		// Cache the active ones
-		foreach (static::$supportedCaches as $opcodeCache => $properties) {
+		$activeCaches = array();
+		foreach ($supportedCaches as $opcodeCache => $properties) {
 			if ($properties['active']) {
-				static::$activeCaches[$opcodeCache] = $properties;
+				$activeCaches[$opcodeCache] = $properties;
 			}
 		}
+		return $activeCaches;
 	}
 
 	/**
@@ -111,23 +101,11 @@ class OpcodeCacheUtility {
 	 *
 	 * @return void
 	 */
-	static public function clearAllActive($fileAbsPath = NULL) {
-		foreach (static::getAllActive() as $properties) {
+	public function clearAllActive($fileAbsPath = NULL) {
+		foreach ($this->getAllActive() as $properties) {
 			$callback = $properties['clearCallback'];
 			$callback($fileAbsPath);
 		}
-	}
-
-	/**
-	 * Returns all supported and active opcaches
-	 *
-	 * @return array Array filled with supported and active opcaches
-	 */
-	static public function getAllActive() {
-		if (static::$activeCaches === NULL) {
-			static::initialize();
-		}
-		return static::$activeCaches;
 	}
 
 }

@@ -10,6 +10,9 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A caching backend which stores cache entries in files, but does not support or
  * care about expiry times and tags.
@@ -243,7 +246,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		$cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename);
 		if ($this->cacheEntryFileExtension === '.php') {
-			\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive($cacheEntryPathAndFilename);
+			GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($cacheEntryPathAndFilename);
 		}
 	}
 

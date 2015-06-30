@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\OpcodeCacheUtility;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 
 /**
  * Handle important actions
@@ -67,6 +67,8 @@ class ImportantActions extends Action\AbstractAction {
 
 		$operatingSystem = TYPO3_OS === 'WIN' ? 'Windows' : 'Unix';
 
+		$opcodeCacheService = GeneralUtility::makeInstance(OpcodeCacheService::class);
+
 		/** @var \TYPO3\CMS\Install\Service\CoreUpdateService $coreUpdateService */
 		$coreUpdateService = $this->objectManager->get(\TYPO3\CMS\Install\Service\CoreUpdateService::class);
 		$this->view
@@ -82,7 +84,7 @@ class ImportantActions extends Action\AbstractAction {
 			->assign('extensionCompatibilityTesterProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTester.txt')
 			->assign('extensionCompatibilityTesterErrorProtocolFile', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3temp/ExtensionCompatibilityTesterErrors.json')
 			->assign('extensionCompatibilityTesterMessages', $this->getExtensionCompatibilityTesterMessages())
-			->assign('listOfOpcodeCaches', OpcodeCacheUtility::getAllActive());
+			->assign('listOfOpcodeCaches', $opcodeCacheService->getAllActive());
 
 		return $this->view->render();
 	}
@@ -162,8 +164,7 @@ class ImportantActions extends Action\AbstractAction {
 	 * @return \TYPO3\CMS\Install\Status\StatusInterface
 	 */
 	protected function clearOpcodeCache() {
-		/** @var \TYPO3\CMS\Install\Service\ClearCacheService $clearCacheService */
-		OpcodeCacheUtility::clearAllActive();
+		GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
 		$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);
 		$message->setTitle('Successfully cleared all available opcode caches');
 		return $message;

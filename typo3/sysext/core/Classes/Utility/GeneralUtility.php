@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Utility;
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -2819,7 +2820,9 @@ Connection: close
 		if (is_dir($directory)) {
 			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove', TRUE) . '/';
 			if (rename($directory, $temporaryDirectory)) {
-				$flushOpcodeCache && OpcodeCacheUtility::clearAllActive($directory);
+				if ($flushOpcodeCache) {
+					GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);
+				}
 				if ($keepOriginalDirectory) {
 					self::mkdir($directory);
 				}
