@@ -14,6 +14,10 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\IndexedSearch\Indexer;
+use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
+
 /**
  * Index search abstraction to search through the index
  *
@@ -26,42 +30,94 @@ class IndexSearchRepository {
 	/**
 	 * Indexer object
 	 *
-	 * @var \TYPO3\CMS\IndexedSearch\Indexer
+	 * @var Indexer
 	 */
 	protected $indexerObj;
 
+	/**
+	 * External Parsers
+	 *
+	 * @var array
+	 */
 	protected $externalParsers = array();
 
+	/**
+	 * Frontend User Group List
+	 *
+	 * @var string
+	 */
 	protected $frontendUserGroupList = '';
 
-	// formally known as $this->piVars['sections']
+	/**
+	 * Sections
+	 * formally known as $this->piVars['sections']
+	 *
+	 * @var string
+	 */
 	protected $sections = NULL;
 
-	// formally known as $this->piVars['type']
+	/**
+	 * Search type
+	 * formally known as $this->piVars['type']
+	 *
+	 * @var string
+	 */
 	protected $searchType = NULL;
 
-	// formally known as $this->piVars['lang']
+	/**
+	 * Language uid
+	 * formally known as $this->piVars['lang']
+	 *
+	 * @var int
+	 */
 	protected $languageUid = NULL;
 
-	// formally known as $this->piVars['media']
+	/**
+	 * Media type
+	 * formally known as $this->piVars['media']
+	 *
+	 * @var int
+	 */
 	protected $mediaType = NULL;
 
-	// formally known as $this->piVars['sort_order']
+	/**
+	 * Sort order
+	 * formally known as $this->piVars['sort_order']
+	 *
+	 * @var string
+	 */
 	protected $sortOrder = NULL;
 
-	// formally known as $this->piVars['desc']
+	/**
+	 * Descending sort order flag
+	 * formally known as $this->piVars['desc']
+	 *
+	 * @var bool
+	 */
 	protected $descendingSortOrderFlag = NULL;
 
-	// formally known as $this->piVars['pointer']
+	/**
+	 * Result page pointer
+	 * formally known as $this->piVars['pointer']
+	 *
+	 * @var int
+	 */
 	protected $resultpagePointer = 0;
 
-	// formally known as $this->piVars['result']
+	/**
+	 * Number of results
+	 * formally known as $this->piVars['result']
+	 *
+	 * @var int
+	 */
 	protected $numberOfResults = 10;
 
 	/**
 	 * list of all root pages that will be used
 	 * If this value is set to less than zero (eg. -1) searching will happen
 	 * in ALL of the page tree with no regard to branches at all.
+	 *
+	 * @var string
 	 */
 	protected $searchRootPageIdList;
 
@@ -73,39 +129,55 @@ class IndexSearchRepository {
 	 */
 	protected $joinPagesForQuery = FALSE;
 
-	// Select clauses for individual words,
-	// will be filled during the search
+	/**
+	 * Select clauses for individual words, will be filled during the search
+	 *
+	 * @var array
+	 */
 	protected $wSelClauses = array();
 
-	// formally known as $conf['search.']['exactCount']
-	// Continue counting and checking of results even if we are sure
-	// they are not displayed in this request. This will slow down your
-	// page rendering, but it allows precise search result counters.
-	// enabled through settings.exactCount
+	/**
+	 * Flag for exact search count
+	 * formally known as $conf['search.']['exactCount']
+	 *
+	 * Continue counting and checking of results even if we are sure
+	 * they are not displayed in this request. This will slow down your
+	 * page rendering, but it allows precise search result counters.
+	 * enabled through settings.exactCount
+	 *
+	 * @var bool
+	 */
 	protected $useExactCount = FALSE;
 
-	// formally known as $this->conf['show.']['forbiddenRecords']
-	// enabled through settings.displayForbiddenRecords
+	/**
+	 * Display forbidden records
+	 * formally known as $this->conf['show.']['forbiddenRecords']
+	 *
+	 * enabled through settings.displayForbiddenRecords
+	 *
+	 * @var bool
+	 */
 	protected $displayForbiddenRecords = FALSE;
 
 	// constants to help where to use wildcards in SQL like queries
 	const WILDCARD_LEFT = 1;
 	const WILDCARD_RIGHT = 2;
+
 	/**
 	 * initialize all options that are necessary for the search
 	 *
 	 * @param array $settings the extbase plugin settings
 	 * @param array $searchData the search data
 	 * @param array $externalParsers
-	 * @param mixed $searchRootPageIdList
+	 * @param string $searchRootPageIdList
 	 * @return void
 	 */
 	public function initialize($settings, $searchData, $externalParsers, $searchRootPageIdList) {
 		// Initialize the indexer-class - just to use a few function (for making hashes)
-		$this->indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
+		$this->indexerObj = GeneralUtility::makeInstance(Indexer::class);
 		$this->externalParsers = $externalParsers;
 		$this->searchRootPageIdList = $searchRootPageIdList;
-		$this->frontendUserGroupList = $GLOBALS['TSFE']->gr_list;
+		$this->frontendUserGroupList = $this->getTypoScriptFrontendController()->gr_list;
 		// Should we use joinPagesForQuery instead of long lists of uids?
 		if ($settings['searchSkipExtendToSubpagesChecking']) {
 			$this->joinPagesForQuery = 1;
@@ -137,17 +209,17 @@ class IndexSearchRepository {
 	 */
 	public function doSearch($searchWords, $freeIndexUid = -1) {
 		// Getting SQL result pointer:
-		$GLOBALS['TT']->push('Searching result');
+		$this->getTimeTracker()->push('Searching result');
 		if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
 			$res = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
 		} else {
 			$res = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);
 		}
-		$GLOBALS['TT']->pull();
+		$this->getTimeTracker()->pull();
 		// Organize and process result:
 		if ($res) {
 			// Total search-result count
-			$count = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			$count = $this->getDatabaseConnection()->sql_num_rows($res);
 			// The pointer is set to the result page that is currently being viewed
 			$pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->numberOfResults));
 			// Initialize result accumulation variables:
@@ -164,7 +236,7 @@ class IndexSearchRepository {
 			// Now, traverse result and put the rows to be displayed into an array
 			// Each row should contain the fields from 'ISEC.*, IP.*' combined
 			// + artificial fields "show_resume" (bool) and "result_number" (counter)
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 				// Set first row
 				if (!$c) {
 					$firstRow = $row;
@@ -207,6 +279,9 @@ class IndexSearchRepository {
 					$count--;
 				}
 			}
+
+			$this->getDatabaseConnection()->sql_free_result($res);
+
 			return array(
 				'resultRows' => $resultRows,
 				'firstRow' => $firstRow,
@@ -223,7 +298,7 @@ class IndexSearchRepository {
 	 *
 	 * @param array $searchWords Search words
 	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return bool|pointer
+	 * @return bool|\mysqli_result
 	 */
 	protected function getResultRows_SQLpointer($searchWords, $freeIndexUid = -1) {
 		// This SEARCHES for the searchwords in $searchWords AND returns a
@@ -232,9 +307,9 @@ class IndexSearchRepository {
 		// Perform SQL Search / collection of result rows array:
 		if ($list) {
 			// Do the search:
-			$GLOBALS['TT']->push('execFinalQuery');
+			$this->getTimeTracker()->push('execFinalQuery');
 			$res = $this->execFinalQuery($list, $freeIndexUid);
-			$GLOBALS['TT']->pull();
+			$this->getTimeTracker()->pull();
 			return $res;
 		} else {
 			return FALSE;
@@ -267,8 +342,7 @@ class IndexSearchRepository {
 			if (strstr($sWord, ' ')) {
 				$theType = 20;
 			}
-			$GLOBALS['TT']->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
-			$res = '';
+			$this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
 			$wSel = '';
 			// Perform search for word:
 			switch ($theType) {
@@ -289,9 +363,9 @@ class IndexSearchRepository {
 					/**
 					* Indexer object
 					*
-					* @var \TYPO3\CMS\IndexedSearch\Indexer
+					* @var Indexer
 					*/
-					$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
+					$indexerObj = GeneralUtility::makeInstance(Indexer::class);
 					// Perform metaphone search
 					$storeMetaphoneInfoAsWords = !$this->isTableUsed('index_words');
 					$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
@@ -317,10 +391,10 @@ class IndexSearchRepository {
 			if ($res) {
 				// Get phash list by searching for it:
 				$phashList = array();
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 					$phashList[] = $row['phash'];
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				$this->getDatabaseConnection()->sql_free_result($res);
 				// Here the phash list are merged with the existing result based on whether we are dealing with OR, NOT or AND operations.
 				if ($c) {
 					switch ($v['oper']) {
@@ -339,7 +413,7 @@ class IndexSearchRepository {
 					$totalHashList = $phashList;
 				}
 			}
-			$GLOBALS['TT']->pull();
+			$this->getTimeTracker()->pull();
 			$c++;
 		}
 		return implode(',', $totalHashList);
@@ -353,13 +427,12 @@ class IndexSearchRepository {
 	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function execPHashListQuery($wordSel, $additionalWhereClause = '') {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTquery('IR.phash', 'index_words IW,
-						index_rel IR,
-						index_section ISEC', $wordSel . '
-						AND IW.wid=IR.wid
-						AND ISEC.phash=IR.phash
-						' . $this->sectionTableWhere() . '
-						' . $additionalWhereClause, 'IR.phash');
+		return $this->getDatabaseConnection()->exec_SELECTquery(
+			'IR.phash',
+			'index_words IW, index_rel IR, index_section ISEC',
+			$wordSel . ' AND IW.wid=IR.wid AND ISEC.phash=IR.phash' . $this->sectionTableWhere() . $additionalWhereClause,
+			'IR.phash'
+		);
 	}
 
 	/**
@@ -372,9 +445,8 @@ class IndexSearchRepository {
 	protected function searchWord($sWord, $mode) {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
 		$wildcard_right = $mode & self::WILDCARD_RIGHT ? '%' : '';
-		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
-		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
-		return $res;
+		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $this->getDatabaseConnection()->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
+		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
 	/**
@@ -385,8 +457,7 @@ class IndexSearchRepository {
 	 */
 	protected function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . $this->md5inthash($sWord);
-		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
-		return $res;
+		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
 	/**
@@ -396,21 +467,25 @@ class IndexSearchRepository {
 	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function searchSentence($sWord) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_fulltext') . '%\' AND
-						ISEC.phash = IFT.phash
-						' . $this->sectionTableWhere(), 'ISEC.phash');
-		return $res;
+		return $this->getDatabaseConnection()->exec_SELECTquery(
+			'ISEC.phash',
+			'index_section ISEC, index_fulltext IFT',
+			'IFT.fulltextdata LIKE \'%' . $this->getDatabaseConnection()->quoteStr($sWord, 'index_fulltext')
+				. '%\' AND ISEC.phash = IFT.phash'
+				. $this->sectionTableWhere(),
+			'ISEC.phash'
+		);
 	}
 
 	/**
 	 * Search for a metaphone word
 	 *
 	 * @param string $sWord the search word
-	 * @return void
+	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
-		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
+		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
 	/**
@@ -425,18 +500,18 @@ class IndexSearchRepository {
 			$whereClause = ' AND ISEC.rl0 IN (' . $this->searchRootPageIdList . ') ';
 		}
 		if (substr($this->sections, 0, 4) == 'rl1_') {
-			$list = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', substr($this->sections, 4)));
+			$list = implode(',', GeneralUtility::intExplode(',', substr($this->sections, 4)));
 			$whereClause .= ' AND ISEC.rl1 IN (' . $list . ')';
 			$match = TRUE;
 		} elseif (substr($this->sections, 0, 4) == 'rl2_') {
-			$list = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', substr($this->sections, 4)));
+			$list = implode(',', GeneralUtility::intExplode(',', substr($this->sections, 4)));
 			$whereClause .= ' AND ISEC.rl2 IN (' . $list . ')';
 			$match = TRUE;
 		} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'])) {
 			// Traversing user configured fields to see if any of those are used to limit search to a section:
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'] as $fieldName => $rootLineLevel) {
 				if (substr($this->sections, 0, strlen($fieldName) + 1) == $fieldName . '_') {
-					$list = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', substr($this->sections, strlen($fieldName) + 1)));
+					$list = implode(',', GeneralUtility::intExplode(',', substr($this->sections, strlen($fieldName) + 1)));
 					$whereClause .= ' AND ISEC.' . $fieldName . ' IN (' . $list . ')';
 					$match = TRUE;
 					break;
@@ -447,7 +522,7 @@ class IndexSearchRepository {
 		if (!$match) {
 			switch ((string)$this->sections) {
 				case '-1':
-					$whereClause .= ' AND ISEC.page_id=' . $GLOBALS['TSFE']->id;
+					$whereClause .= ' AND ISEC.page_id=' . $this->getTypoScriptFrontendController()->id;
 					break;
 				case '-2':
 					$whereClause .= ' AND ISEC.rl2=0';
@@ -466,15 +541,14 @@ class IndexSearchRepository {
 	 * @return string AND statement for selection of media type
 	 */
 	public function mediaTypeWhere() {
-		$whereClause = '';
 		switch ($this->mediaType) {
 			case '0':
 				// '0' => 'Kun TYPO3 sider',
-				$whereClause = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				$whereClause = ' AND IP.item_type=' . $this->getDatabaseConnection()->fullQuoteStr('0', 'index_phash');
 				break;
 			case '-2':
 				// All external documents
-				$whereClause = ' AND IP.item_type!=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('0', 'index_phash');
+				$whereClause = ' AND IP.item_type!=' . $this->getDatabaseConnection()->fullQuoteStr('0', 'index_phash');
 				break;
 			case FALSE:
 
@@ -483,7 +557,7 @@ class IndexSearchRepository {
 				$whereClause = '';
 				break;
 			default:
-				$whereClause = ' AND IP.item_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->mediaType, 'index_phash');
+				$whereClause = ' AND IP.item_type=' . $this->getDatabaseConnection()->fullQuoteStr($this->mediaType, 'index_phash');
 		}
 		return $whereClause;
 	}
@@ -498,35 +572,36 @@ class IndexSearchRepository {
 		if ($this->languageUid >= 0) {
 			return ' AND IP.sys_language_uid=' . (int)$this->languageUid;
 		}
+		return '';
 	}
 
 	/**
 	 * Where-clause for free index-uid value.
 	 *
-	 * @param int Free Index UID value to limit search to.
+	 * @param int $freeIndexUid Free Index UID value to limit search to.
 	 * @return string WHERE SQL clause part.
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
 		$freeIndexUid = (int)$freeIndexUid;
 		if ($freeIndexUid >= 0) {
 			// First, look if the freeIndexUid is a meta configuration:
-			$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . $freeIndexUid . $this->enableFields('index_config'));
+			$indexCfgRec = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . $freeIndexUid . $this->enableFields('index_config'));
 			if (is_array($indexCfgRec)) {
-				$refs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
+				$refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
 				// Default value to protect against empty array.
 				$list = array(-99);
 				foreach ($refs as $ref) {
-					list($table, $uid) = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $ref, 2);
+					list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
 					$uid = (int)$uid;
 					switch ($table) {
 						case 'index_config':
-							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . $uid . $this->enableFields('index_config'));
+							$idxRec = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . $uid . $this->enableFields('index_config'));
 							if ($idxRec) {
 								$list[] = $uid;
 							}
 							break;
 						case 'pages':
-							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid=' . $uid . $this->enableFields('index_config'));
+							$indexCfgRecordsFromPid = $this->getDatabaseConnection()->exec_SELECTgetRows('uid', 'index_config', 'pid=' . $uid . $this->enableFields('index_config'));
 							foreach ($indexCfgRecordsFromPid as $idxRec) {
 								$list[] = $idxRec['uid'];
 							}
@@ -539,6 +614,7 @@ class IndexSearchRepository {
 			}
 			return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
 		}
+		return '';
 	}
 
 	/**
@@ -552,7 +628,6 @@ class IndexSearchRepository {
 		// Setting up methods of filtering results
 		// based on page types, access, etc.
 		$page_join = '';
-		$page_where = '';
 		// Indexing configuration clause:
 		$freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
 		// Calling hook for alternative creation of page ID list
@@ -572,10 +647,10 @@ class IndexSearchRepository {
 			// Collecting all pages IDs in which to search;
 			// filtering out ALL pages that are not accessible due to enableFields.
 			// Does NOT look for "no_search" field!
-			$siteIdNumbers = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->searchRootPageIdList);
+			$siteIdNumbers = GeneralUtility::intExplode(',', $this->searchRootPageIdList);
 			$pageIdList = array();
 			foreach ($siteIdNumbers as $rootId) {
-				$pageIdList[] = $GLOBALS['TSFE']->cObj->getTreeList(-1 * $rootId, 9999);
+				$pageIdList[] = $this->getTypoScriptFrontendController()->cObj->getTreeList(-1 * $rootId, 9999);
 			}
 			$page_where = 'ISEC.page_id IN (' . implode(',', $pageIdList) . ')';
 		} else {
@@ -586,7 +661,7 @@ class IndexSearchRepository {
 		// If any of the ranking sortings are selected, we must make a
 		// join with the word/rel-table again, because we need to
 		// calculate ranking based on all search-words found.
-		if (substr($this->sortOrder, 0, 5) == 'rank_') {
+		if (substr($this->sortOrder, 0, 5) === 'rank_') {
 			switch ($this->sortOrder) {
 				case 'rank_flag':
 					// This gives priority to word-position (max-value) so that words in title, keywords, description counts more than in content.
@@ -613,7 +688,7 @@ class IndexSearchRepository {
 			}
 			// So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
 			$wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$res = $this->getDatabaseConnection()->exec_SELECTquery(
 				'ISEC.*, IP.*, ' . $grsel,
 				'index_words IW,
 					index_rel IR,
@@ -644,7 +719,7 @@ class IndexSearchRepository {
 					$orderBy = 'IP.item_mtime' . $this->getDescendingSortOrderFlag();
 					break;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.*, IP.*', 'index_phash IP,index_section ISEC' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . $this->languageWhere() . $freeIndexUidClause . '
+			$res = $this->getDatabaseConnection()->exec_SELECTquery('ISEC.*, IP.*', 'index_phash IP,index_section ISEC' . $page_join, 'IP.phash IN (' . $list . ') ' . $this->mediaTypeWhere() . $this->languageWhere() . $freeIndexUidClause . '
 							AND IP.phash = ISEC.phash AND ' . $page_where, 'IP.phash,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2 ,ISEC.page_id,ISEC.uniqid,IP.phash_grouping,IP.data_filename ,IP.data_page_id ,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,IP.cHashParams,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', $orderBy);
 		}
 		return $res;
@@ -673,11 +748,11 @@ class IndexSearchRepository {
 			// So, selecting for the grlist records belonging to the parent phash-row where the current users gr_list exists will help us to know.
 			// If this is NOT found, there is still a theoretical possibility that another user accessible page would display a link, so maybe the resume of such a document here may be unjustified hidden. But better safe than sorry.
 			if ($this->isTableUsed('index_grlist')) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash_t3'] . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
+				$res = $this->getDatabaseConnection()->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash_t3'] . ' AND gr_list=' . $this->getDatabaseConnection()->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
 			} else {
 				$res = FALSE;
 			}
-			if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+			if ($res && $this->getDatabaseConnection()->sql_num_rows($res)) {
 				return TRUE;
 			} else {
 				return FALSE;
@@ -687,11 +762,11 @@ class IndexSearchRepository {
 			if ((string)$row['gr_list'] !== (string)$this->frontendUserGroupList) {
 				// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
 				if ($this->isTableUsed('index_grlist')) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash'] . ' AND gr_list=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
+					$res = $this->getDatabaseConnection()->exec_SELECTquery('phash', 'index_grlist', 'phash=' . (int)$row['phash'] . ' AND gr_list=' . $this->getDatabaseConnection()->fullQuoteStr($this->frontendUserGroupList, 'index_grlist'));
 				} else {
 					$res = FALSE;
 				}
-				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+				if ($res && $this->getDatabaseConnection()->sql_num_rows($res)) {
 					return TRUE;
 				} else {
 					return FALSE;
@@ -728,23 +803,24 @@ class IndexSearchRepository {
 	 * Simply calls \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() BUT will send the show_hidden flag along!
 	 * This means this function will work in conjunction with the preview facilities of the frontend engine/Admin Panel.
 	 *
-	 * @param string The table for which to get the where clause
-	 * @param bool If set, then you want NOT to filter out hidden records. Otherwise hidden record are filtered based on the current preview settings.
+	 * @param string $table The table for which to get the where clause
 	 * @return string The part of the where clause on the form " AND [fieldname]=0 AND ...". Eg. " AND hidden=0 AND starttime < 123345567
 	 * @see \TYPO3\CMS\Frontend\Page\PageRepository::enableFields()
 	 */
 	protected function enableFields($table) {
-		return $GLOBALS['TSFE']->sys_page->enableFields($table, $table == 'pages' ? $GLOBALS['TSFE']->showHiddenPage : $GLOBALS['TSFE']->showHiddenRecords);
+		return $this->getTypoScriptFrontendController()->sys_page->enableFields($table, $table === 'pages' ? $this->getTypoScriptFrontendController()->showHiddenPage : $this->getTypoScriptFrontendController()->showHiddenRecords);
 	}
 
 	/**
 	 * Returns if an item type is a multipage item type
 	 *
-	 * @param string Item type
+	 * @param string $itemType Item type
 	 * @return bool TRUE if multipage capable
 	 */
 	protected function multiplePagesType($itemType) {
-		return is_object($this->externalParsers[$itemType]) && $this->externalParsers[$itemType]->isMultiplePageExtension($itemType);
+		/** @var \TYPO3\CMS\IndexedSearch\FileContentParser $fileContentParser */
+		$fileContentParser = $this->externalParsers[$itemType];
+		return is_object($fileContentParser) && $fileContentParser->isMultiplePageExtension($itemType);
 	}
 
 	/**
@@ -757,7 +833,7 @@ class IndexSearchRepository {
 	 * @return int Integer intepretation of the md5 hash of input string.
 	 */
 	protected function md5inthash($str) {
-		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($str);
+		return IndexedSearchUtility::md5inthash($str);
 	}
 
 	/**
@@ -769,7 +845,7 @@ class IndexSearchRepository {
 	 * @return bool TRUE if given tables are enabled
 	 */
 	protected function isTableUsed($table_list) {
-		return \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed($table_list);
+		return IndexedSearchUtility::isTableUsed($table_list);
 	}
 
 	/**
@@ -781,12 +857,13 @@ class IndexSearchRepository {
 	public function hookRequest($functionName) {
 		// Hook: menuConfig_preProcessModMenu
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]) {
-			$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
+			$hookObj = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
 			if (method_exists($hookObj, $functionName)) {
 				$hookObj->pObj = $this;
 				return $hookObj;
 			}
 		}
+		return NULL;
 	}
 
 	/**
@@ -805,7 +882,7 @@ class IndexSearchRepository {
 	 * @return int[]
 	 */
 	public function getSearchRootPageIdList() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->searchRootPageIdList);
+		return GeneralUtility::intExplode(',', $this->searchRootPageIdList);
 	}
 
 	/**
@@ -816,5 +893,28 @@ class IndexSearchRepository {
 	 */
 	public function getJoinPagesForQuery() {
 		return $this->joinPagesForQuery;
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\TimeTracker\TimeTracker
+	 */
+	protected function getTimeTracker() {
+		return $GLOBALS['TT'];
 	}
 }
