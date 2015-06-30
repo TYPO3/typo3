@@ -81,7 +81,7 @@ class ActionController extends AbstractController {
 	 * @return void
 	 */
 	public function installExtensionWithoutSystemDependencyCheckAction($extensionKey) {
-		$this->managementService->setSkipSystemDependencyCheck(TRUE);
+		$this->managementService->setSkipDependencyCheck(TRUE);
 		$this->forward('toggleExtensionInstallationState', NULL, NULL, array('extensionKey' => $extensionKey));
 	}
 

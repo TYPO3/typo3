@@ -70,7 +70,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var bool
 	 */
-	protected $skipSystemDependencyCheck = FALSE;
+	protected $skipDependencyCheck = FALSE;
 
 	/**
 	 * @param string $extensionKey
@@ -124,10 +124,10 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Enables or disables the dependency check for system environment (PHP, TYPO3) before extension installation
 	 *
-	 * @param bool $skipSystemDependencyCheck
+	 * @param bool $skipDependencyCheck
 	 */
-	public function setSkipSystemDependencyCheck($skipSystemDependencyCheck) {
-		$this->skipSystemDependencyCheck = $skipSystemDependencyCheck;
+	public function setSkipDependencyCheck($skipDependencyCheck) {
+		$this->skipDependencyCheck = $skipDependencyCheck;
 	}
 
 	/**
@@ -223,7 +223,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool Returns TRUE if all dependencies can be resolved, otherwise FALSE
 	 */
 	protected function checkDependencies(Extension $extension) {
-		$this->dependencyUtility->setSkipSystemDependencyCheck($this->skipSystemDependencyCheck);
+		$this->dependencyUtility->setSkipDependencyCheck($this->skipDependencyCheck);
 		$this->dependencyUtility->checkDependencies($extension);
 
 		return !$this->dependencyUtility->hasDependencyErrors();
@@ -323,7 +323,7 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	public function getAndResolveDependencies(Extension $extension) {
-		$this->dependencyUtility->setSkipSystemDependencyCheck($this->skipSystemDependencyCheck);
+		$this->dependencyUtility->setSkipDependencyCheck($this->skipDependencyCheck);
 		$this->dependencyUtility->checkDependencies($extension);
 		$installQueue = $this->downloadQueue->getExtensionInstallStorage();
 		if (is_array($installQueue) && !empty($installQueue)) {
