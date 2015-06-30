@@ -3,51 +3,11 @@
 	<file t3:id="1415814864" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="labels.username">
-				<source>Username</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.openId">
-				<source>OpenID</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.password">
-				<source>Password</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.interface">
-				<source>Interface</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.previous">
-				<source>Previous</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.next">
-				<source>Next</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.submitLogin">
-				<source>Login</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
 			<trans-unit id="labels.submitLogout">
 				<source>Log Out</source>
 			</trans-unit>
-			<trans-unit id="labels.donate">
-				<source>Donate</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
 			<trans-unit id="labels.whatIsOpenId">
 				<source>What is OpenId?</source>
-			</trans-unit>
-			<trans-unit id="labels.switchToOpenId">
-				<source>Switch to OpenID</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="labels.switchToDefault">
-				<source>Switch to default login</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="availableInterfaces">
 				<source>Backend,Front End,Traditional Backend</source>
@@ -76,10 +36,6 @@
 			<trans-unit id="clear">
 				<source>Clear this field!</source>
 			</trans-unit>
-			<trans-unit id="login_process">
-				<source>Verifying Login Data ...</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
 			<trans-unit id="warning.incompatibleBrowserHeadline">
 				<source>Unsupported Browser</source>
 			</trans-unit>
@@ -95,28 +51,8 @@
 			<trans-unit id="error.login">
 				<source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
 			</trans-unit>
-			<trans-unit id="error.login.title">
-				<source>Your login attempt did not succeed</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="error.login.description">
-				<source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="error.javascript">
-				<source>Activate JavaScript, please!</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
-			<trans-unit id="error.cookies">
-				<source>Activate Cookies, please!</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
 			<trans-unit id="error.cookies_ignore">
 				<source>Ignore!</source>
-			</trans-unit>
-			<trans-unit id="error.capslock">
-				<source>Attention: Caps lock enabled!</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="error.furtherInformation">
 				<source>For more information or further help click here</source>
@@ -127,10 +63,6 @@
 			<trans-unit id="no.warranty">
 				<source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</source>
 			</trans-unit>
-			<trans-unit id="typo3.logo">
-				<source>TYPO3 logo</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
 			<trans-unit id="typo3.cms">
 				<source>TYPO3 CMS</source>
 			</trans-unit>
@@ -139,10 +71,6 @@
 			</trans-unit>
 			<trans-unit id="copyright">
 				<source>Copyright</source>
-			</trans-unit>
-			<trans-unit id="copyright.link">
-				<source>More about TYPO3</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="extension.copyright">
 				<source>Extensions are copyright of their respective owners.</source>

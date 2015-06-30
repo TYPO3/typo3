@@ -69,19 +69,11 @@
 			<trans-unit id="status_missingFiles">
 				<source>Files flagged as missing</source>
 			</trans-unit>
-			<trans-unit id="status_contentAdapterActive" deprecated="since CMS 7, remove with CMS 8">
-				<source>Content Adapter is active</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
-			</trans-unit>
 			<trans-unit id="status_missingFilesCount">
 				<source>%1$s files</source>
 			</trans-unit>
 			<trans-unit id="status_missingFilesMessage">
 				<source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
-			</trans-unit>
-			<trans-unit id="status_contentAdapterActiveMessage" deprecated="since CMS 7, remove with CMS 8">
-				<source>The Install Tool option [FE][activateContentAdapter] is active to provide compatibility with TypoScript from TYPO3 4.x regarding file handling. This has quite an impact on the performance of frontend rendering. Change TypoScript to support FAL in handling files and disable the setting to increase performance.</source>
-				<note from="developer">This label is deprecated (not used anymore) since CMS 7</note>
 			</trans-unit>
 			<trans-unit id="status_memcachedConfiguration">
 				<source>Memcached Configuration</source>
