@@ -38,6 +38,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $installUtility;
 
 	/**
+	 * Initialize method - loads language file
+	 */
+	public function initializeObject() {
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_tools_em.xlf');
+	}
+
+	/**
 	 * Unpack an extension in t3x data format and write files
 	 *
 	 * @param array $extensionData
