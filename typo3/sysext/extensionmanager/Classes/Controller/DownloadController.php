@@ -128,7 +128,7 @@ class DownloadController extends AbstractController {
 	 * @throws \Exception
 	 */
 	public function installExtensionWithoutSystemDependencyCheckAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
-		$this->managementService->setSkipSystemDependencyCheck(TRUE);
+		$this->managementService->setSkipDependencyCheck(TRUE);
 		$this->forward('installFromTer', NULL, NULL, array('extension' => $extension, 'downloadPath' => 'Local'));
 	}
 
