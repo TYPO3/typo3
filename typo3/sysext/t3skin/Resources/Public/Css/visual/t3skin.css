@@ -9976,6 +9976,11 @@ span.spinner {
   height: 16px;
   background-image: url('../../../../images/spinner/f1f1f1.gif');
 }
+span.checkbox-spinner {
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 4px;
+}
 .nav-tabs {
   border-radius: 2px 2px 0 0;
   background-color: #ededed;

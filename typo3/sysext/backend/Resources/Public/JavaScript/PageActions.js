@@ -24,7 +24,11 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			}
 		},
 		identifier: {
-			$pageTitle: $('h1')
+			hiddenElements: '.t3js-hidden-record'
+		},
+		elements: {
+			$pageTitle: null,
+			$showHiddenElementsCheckbox: null
 		}
 	};
 
@@ -41,11 +45,46 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			e.preventDefault();
 			PageActions.editPageTitle();
 		});
-		PageActions.identifier.$pageTitle
+		PageActions.elements.$pageTitle
 			.on('dblclick', PageActions.editPageTitle)
 			.on('mouseover', function() { $editActionLink.removeClass('hidden'); })
 			.on('mouseout', function() { $editActionLink.addClass('hidden'); })
 			.append($editActionLink);
+	};
+
+	PageActions.initializeElements = function() {
+		PageActions.elements.$pageTitle = $('h1');
+		PageActions.elements.$showHiddenElementsCheckbox = $('#checkTt_content_showHidden');
+	};
+
+	/**
+	 * Initialize events
+	 */
+	PageActions.initializeEvents = function() {
+		PageActions.elements.$showHiddenElementsCheckbox.on('change', PageActions.toggleContentElementVisibility);
+	};
+
+	/**
+	 * Toggles the "Show hidden content elements" checkbox
+	 */
+	PageActions.toggleContentElementVisibility = function() {
+		var $me = $(this),
+			$hiddenElements = $(PageActions.identifier.hiddenElements);
+
+		// show a spinner to show activity
+		var $spinner = $('<span />', {class: 'checkbox-spinner fa fa-circle-o-notch fa-spin'});
+		$me.hide().after($spinner);
+
+		if ($me.prop('checked')) {
+			$hiddenElements.slideDown();
+		} else {
+			$hiddenElements.slideUp();
+		}
+
+		top.TYPO3.Storage.Persistent.set('moduleData.web_layout.tt_content_showHidden', $me.prop('checked') ? 1 : 0).done(function() {
+			$spinner.remove();
+			$me.show();
+		});
 	};
 
 	/**
@@ -70,13 +109,13 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			$inputField = $inputFieldWrap.find('input');
 
 		$inputFieldWrap.find('[data-action=cancel]').on('click', function() {
-			$inputFieldWrap.replaceWith(PageActions.identifier.$pageTitle);
+			$inputFieldWrap.replaceWith(PageActions.elements.$pageTitle);
 			PageActions.initializePageTitleRenaming();
 		});
 
 		$inputFieldWrap.find('[data-action=submit]').on('click', function() {
 			var newPageTitle = $.trim($inputField.val());
-			if (newPageTitle !== '' && PageActions.identifier.$pageTitle.text() !== newPageTitle) {
+			if (newPageTitle !== '' && PageActions.elements.$pageTitle.text() !== newPageTitle) {
 				PageActions.saveChanges($inputField);
 			} else {
 				$inputFieldWrap.find('[data-action=cancel]').trigger('click');
@@ -89,7 +128,7 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			return false;
 		});
 
-		var $h1 = PageActions.identifier.$pageTitle;
+		var $h1 = PageActions.elements.$pageTitle;
 		$h1.children().last().remove();
 		$h1.replaceWith($inputFieldWrap);
 		$inputField.val($h1.text()).focus();
@@ -153,7 +192,7 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 		require(['TYPO3/CMS/Backend/AjaxDataHandler'], function(DataHandler) {
 			DataHandler.process(parameters).done(function(result) {
 				$inputFieldWrap.find('[data-action=cancel]').trigger('click');
-				PageActions.identifier.$pageTitle.text($field.val());
+				PageActions.elements.$pageTitle.text($field.val());
 				PageActions.initializePageTitleRenaming();
 				top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
 			}).fail(function() {
@@ -162,8 +201,10 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 		});
 	};
 
-	return function() {
-		TYPO3.PageActions = PageActions;
-		return PageActions;
-	}();
+	$(document).ready(function() {
+		PageActions.initializeElements();
+		PageActions.initializeEvents();
+	});
+
+	return PageActions;
 });

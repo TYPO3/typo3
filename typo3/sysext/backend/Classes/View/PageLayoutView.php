@@ -391,7 +391,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Initialize:
 		$RTE = $this->getBackendUser()->isRTE();
 		$lMarg = 1;
-		$showHidden = $this->tt_contentConfig['showHidden'] ? '' : BackendUtility::BEenableFields('tt_content');
 		$pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), TRUE));
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getPageLayoutController()->doc->getPageRenderer();
@@ -447,7 +446,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$head = array();
 
 				// Select content records per column
-				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showHidden . $showLanguage);
+				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showLanguage);
 				// For each column, render the content into a variable:
 				foreach ($cList as $key) {
 					if (!$lP) {
@@ -507,9 +506,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 								. $this->tt_content_drawItem($row, $isRTE) . '</div>';
 							$singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div>'
 								. $this->tt_content_drawFooter($row);
-							$statusHidden = $this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '';
+							$isDisabled = $this->isDisabled('tt_content', $row);
+							$statusHidden = $isDisabled ? ' t3-page-ce-hidden t3js-hidden-record' : '';
+							$displayNone = !$this->tt_contentConfig['showHidden'] && $isDisabled ? ' style="display: none;"' : '';
 							$singleElementHTML = '<div class="t3-page-ce t3js-page-ce t3js-page-ce-sortable ' . $statusHidden . '" id="element-tt_content-'
-								. $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '">' . $singleElementHTML . '</div>';
+								. $row['uid'] . '" data-table="tt_content" data-uid="' . $row['uid'] . '"' . $displayNone . '>' . $singleElementHTML . '</div>';
+
 							if ($this->tt_contentConfig['languageMode']) {
 								$singleElementHTML .= '<div class="t3-page-ce t3js-page-ce">';
 							}
@@ -757,7 +759,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					</tr>';
 
 				// Select content records per column
-				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('tt_content', $id, array_values($cList), $showHidden . $showLanguage);
+				$contentRecordsPerColumn = $this->getContentRecordsPerColumn('tt_content', $id, array_values($cList), $showLanguage);
 				// Traverse columns to display top-on-top
 				foreach ($cList as $counter => $key) {
 					$c = 0;

@@ -911,11 +911,11 @@ class PageLayoutController {
 		$q_count = $this->getNumberOfHiddenElements();
 
 		$h_func_b = '<div class="checkbox">' .
-			'<label for="checkTt_content_showHidden">' .
-			BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
-			(!$q_count ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', TRUE) . '</span>') : $lang->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
-			'</label>' .
-			'</div>';
+					'<label for="checkTt_content_showHidden">' .
+					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
+					(!$q_count ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', TRUE) . '</span>') : $lang->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
+					'</label>' .
+					'</div>';
 
 		// Add the function menus to bottom:
 		$content .= $this->doc->section('', $h_func_b, 0, 0);
@@ -980,12 +980,13 @@ class PageLayoutController {
 			if (!isset($dbList->externalTables[$table])) {
 				$q_count = $this->getNumberOfHiddenElements();
 
-				$h_func_b = '<div class="checkbox">' .
-					'<label for="checkTt_content_showHidden">' .
-					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
-					(!$q_count ? ('<span class="text-muted">' . $this->getLanguageService()->getLL('hiddenCE') . '</span>') : $this->getLanguageService()->getLL('hiddenCE') . ' (' . $q_count . ')') .
-					'</label>' .
-					'</div>';
+				$h_func_b =
+					'<div class="checkbox">'
+						. '<label for="checkTt_content_showHidden">'
+							. '<input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />'
+							. $this->getLanguageService()->getLL('hiddenCE', TRUE) . ' (<span class="t3js-hidden-counter">' . $q_count . '</span>)'
+						. '</label>'
+					. '</div>';
 
 				// Boolean: Display up/down arrows and edit icons for tt_content records
 				$dbList->tt_contentConfig['showCommands'] = 1;
