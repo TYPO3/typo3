@@ -132,6 +132,24 @@ class QueryResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function countCountsQueryResultDirectlyIfAlreadyInitialized() {
+		$this->mockPersistenceManager->expects($this->never())->method('getObjectCountByQuery');
+		$this->queryResult->toArray();
+		$this->assertEquals(2, $this->queryResult->count());
+	}
+
+	/**
+	 * @test
+	 */
+	public function countOnlyCallsGetObjectCountByQueryOnPersistenceManagerOnce() {
+		$this->mockPersistenceManager->expects($this->once())->method('getObjectCountByQuery')->will($this->returnValue(2));
+		$this->queryResult->count();
+		$this->assertEquals(2, $this->queryResult->count());
+	}
+
+	/**
+	 * @test
+	 */
 	public function iteratorMethodsAreCorrectlyImplemented() {
 		$array1 = array('foo' => 'Foo1', 'bar' => 'Bar1');
 		$array2 = array('foo' => 'Foo2', 'bar' => 'Bar2');
