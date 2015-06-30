@@ -873,7 +873,7 @@ class ExtendedTemplateService extends TemplateService
         // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
         if ((int)$id) {
             $addC = $template_uid ? ' AND uid=' . (int)$template_uid : '';
-            $where = 'pid=' . (int)$id . $addC . ' ' . $this->whereClause;
+            $where = 'pid=' . (int)$id . $addC . BackendUtility::deleteClause('sys_template');
             $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', $where, '', 'sorting', '1');
             $row = $this->getDatabaseConnection()->sql_fetch_assoc($res);
             BackendUtility::workspaceOL('sys_template', $row);
@@ -895,7 +895,14 @@ class ExtendedTemplateService extends TemplateService
         }
 
         // Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
-        $res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'sys_template', 'pid=' . (int)$id . ' ' . $this->whereClause, '', 'sorting');
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
+            '*',
+            'sys_template',
+            'pid=' . (int)$id
+                . BackendUtility::deleteClause('sys_template'),
+            '',
+            'sorting'
+        );
 
         $outRes = array();
         while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {

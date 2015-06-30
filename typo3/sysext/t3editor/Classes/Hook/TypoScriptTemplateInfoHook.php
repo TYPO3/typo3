@@ -103,7 +103,8 @@ class TypoScriptTemplateInfoHook
             // Do not log time-performance information
             $tmpl->tt_track = 0;
             $tmpl->init();
-            // Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+            // Get the first template record on the page, which might be hidden as well
+            // (for instance the TypoScript constant editor is persisting to the first template)
             $tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
             $existTemplate = is_array($tplRow);
             if ($existTemplate) {
