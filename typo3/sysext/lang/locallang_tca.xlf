@@ -486,9 +486,6 @@
 			<trans-unit id="sys_file.size">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="sys_file.identifier">
-				<source>Identifier</source>
-			</trans-unit>
 			<trans-unit id="sys_file.usage_count">
 				<source>Usage Count</source>
 			</trans-unit>

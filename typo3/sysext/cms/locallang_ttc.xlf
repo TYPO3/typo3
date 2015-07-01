@@ -237,9 +237,6 @@
 			<trans-unit id="image_noRows">
 				<source>No Rows:</source>
 			</trans-unit>
-			<trans-unit id="image_noRows_formlabel">
-				<source>Horizontal Rows</source>
-			</trans-unit>
 			<trans-unit id="image_noRows.I.0">
 				<source>Deactivate</source>
 			</trans-unit>
@@ -1058,9 +1055,6 @@
 			</trans-unit>
 			<trans-unit id="tabs.script">
 				<source>Script</source>
-			</trans-unit>
-			<trans-unit id="tabs.media">
-				<source>Media</source>
 			</trans-unit>
 			<trans-unit id="tabs.images">
 				<source>Images</source>

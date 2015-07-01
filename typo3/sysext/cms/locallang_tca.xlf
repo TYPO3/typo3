@@ -30,9 +30,6 @@
 			<trans-unit id="pages.palettes.editorial">
 				<source>Editorial</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract">
-				<source>Abstract</source>
-			</trans-unit>
 			<trans-unit id="pages.palettes.layout">
 				<source>Page Layout</source>
 			</trans-unit>

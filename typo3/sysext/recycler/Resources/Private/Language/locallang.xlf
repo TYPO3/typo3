@@ -108,9 +108,6 @@
 			<trans-unit id="table.header.tstamp">
 				<source>Last edit</source>
 			</trans-unit>
-			<trans-unit id="table.header.actions">
-				<source>Actions</source>
-			</trans-unit>
 			<trans-unit id="table.header.crdate">
 				<source>Created on</source>
 			</trans-unit>

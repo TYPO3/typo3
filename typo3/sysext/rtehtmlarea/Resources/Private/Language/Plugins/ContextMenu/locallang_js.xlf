@@ -72,9 +72,6 @@
 			<trans-unit id="Please confirm remove">
 				<source>Please confirm that you want to remove this element:</source>
 			</trans-unit>
-			<trans-unit id="Remove this node from the document">
-				<source>Removes this node from the document</source>
-			</trans-unit>
 			<trans-unit id="How did you get here? (Please report!)">
 				<source>How did you get here? (Please report!)</source>
 			</trans-unit>
