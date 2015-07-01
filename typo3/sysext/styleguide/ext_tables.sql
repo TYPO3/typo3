@@ -210,8 +210,6 @@ CREATE TABLE tx_styleguide_forms (
 
 	t3editor_1 text,
 	t3editor_2 text,
-	t3editor_3 text,
-	t3editor_4 text,
 	t3editor_5 text,
 	t3editor_6 text,
 

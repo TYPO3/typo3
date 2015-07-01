@@ -2289,53 +2289,6 @@ return array(
 				'rows' => 7,
 			),
 		),
-		't3editor_3' => array(
-			'exclude' => 1,
-			'label' => 'T3EDITOR: 3 old wizard configuration, deprecated',
-			'config' => array(
-				'type' => 'text',
-				'cols' => 20,
-				'rows' => 3,
-				'wizards' => array(
-					't3editor' => array(
-						'type' => 'userFunc',
-						'userFunc' => \TYPO3\CMS\T3editor\FormWizard::class . '->main',
-						'title' => 't3editor',
-						'icon' => 'wizard_table.gif',
-						'module' => array(
-							'name' => 'wizard_table'
-						),
-						'params' => array(
-							'format' => 'html',
-							'style' => 'width:98%; height: 60%;'
-						),
-					),
-				),
-			),
-		),
-		't3editor_4' => array(
-			'exclude' => 1,
-			'label' => 'T3EDITOR: 4 Enabled on type 0 only, old wizard configuration, deprecated',
-			'config' => array(
-				'type' => 'text',
-				'wizards' => array(
-					't3editor' => array(
-						'enableByTypeConfig' => 1,
-						'type' => 'userFunc',
-						'userFunc' => \TYPO3\CMS\T3editor\FormWizard::class . '->main',
-						'title' => 't3editor',
-						'icon' => 'wizard_table.gif',
-						'module' => array(
-							'name' => 'wizard_table'
-						),
-						'params' => array(
-							'format' => 'html',
-							'style' => 'width:98%; height: 60%;'
-						),
-					),
-				),
-			),
-		),
 		't3editor_5' => array(
 			'exclude' => 1,
 			'label' => 'T3EDITOR: 5 In inline child',
@@ -2613,7 +2566,7 @@ return array(
 			inline_1, inline_2, inline_3,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 			rte_1, rte_2, rte_3, rte_4,
-			t3editor_1, t3editor_2, t3editor_3, t3editor_4, t3editor_5, t3editor_6,
+			t3editor_1, t3editor_2, t3editor_5, t3editor_6,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 			system_11,
 			',
@@ -2667,7 +2620,7 @@ return array(
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,
-					t3editor_1, t3editor_2, t3editor_3, t3editor_4;;;nowrap:wizards[t3editor], t3editor_5, t3editor_6,
+					t3editor_1, t3editor_2, t3editor_5, t3editor_6,
 				--div--;Access Rights,
 					system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
 					system_11,
@@ -2686,7 +2639,7 @@ return array(
 				--div--;Type,
 					type_field,
 				--div--;t3editor,
-					t3editor_2;T3EDITOR: 2 Should be usual text field, t3editor_4;T3EDITOR: 4 Should be usual text field,
+					t3editor_2;T3EDITOR: 2 Should be usual text field,
 			',
 		),
 	),
