@@ -67,20 +67,27 @@ if (TYPO3_OS !== 'WIN') {
 	);
 }
 
+// Save any previous option array for table garbage collection task
+// to temporary variable so it can be pre-populated by other
+// extensions and LocalConfiguration/AdditionalConfiguration
+$garbageCollectionTaskOptions = array();
+if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options'])) {
+	$garbageCollectionTaskOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options'];
+}
+// Initialize tables sub-array if not set already
+if (!is_array($garbageCollectionTaskOptions['tables'])) {
+	$garbageCollectionTaskOptions['tables'] = array();
+}
 // Add table garbage collection task
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask'] = array(
 	'extension' => $_EXTKEY,
 	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:tableGarbageCollection.name',
 	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xlf:tableGarbageCollection.description',
-	'additionalFields' => 'TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionAdditionalFieldProvider'
+	'additionalFields' => 'TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionAdditionalFieldProvider',
+	'options' => $garbageCollectionTaskOptions
 );
-// Initialize option array of table garbage collection task if not already done by some other extension or localconf.php
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options'] = array();
-}
-if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options']['tables'])) {
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options']['tables'] = array();
-}
+unset($garbageCollectionTaskOptions);
+
 // Register sys_log and sys_history table in table garbage collection task
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options']['tables']['sys_log'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\TableGarbageCollectionTask']['options']['tables']['sys_log'] = array(
