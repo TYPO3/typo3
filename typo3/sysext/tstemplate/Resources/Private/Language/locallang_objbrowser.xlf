@@ -72,9 +72,6 @@
 			<trans-unit id="addKey" xml:space="preserve">
 				<source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
 			</trans-unit>
-			<trans-unit id="removeKey" xml:space="preserve">
-				<source>&lt;b&gt;Remove key&lt;/b&gt;&lt;/a&gt; "%s" from Object List</source>
-			</trans-unit>
 			<trans-unit id="back" xml:space="preserve">
 				<source>&lt; Back</source>
 			</trans-unit>

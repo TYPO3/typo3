@@ -237,9 +237,6 @@
 			<trans-unit id="image_noRows" xml:space="preserve">
 				<source>No Rows:</source>
 			</trans-unit>
-			<trans-unit id="image_noRows_formlabel" xml:space="preserve">
-				<source>Horizontal Rows</source>
-			</trans-unit>
 			<trans-unit id="image_noRows.I.0" xml:space="preserve">
 				<source>Deactivate</source>
 			</trans-unit>
@@ -1058,9 +1055,6 @@
 			</trans-unit>
 			<trans-unit id="tabs.script" xml:space="preserve">
 				<source>Script</source>
-			</trans-unit>
-			<trans-unit id="tabs.media" xml:space="preserve">
-				<source>Media</source>
 			</trans-unit>
 			<trans-unit id="tabs.images" xml:space="preserve">
 				<source>Images</source>

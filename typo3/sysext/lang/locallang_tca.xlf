@@ -480,9 +480,6 @@
 			<trans-unit id="sys_file.size" xml:space="preserve">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="sys_file.identifier" xml:space="preserve">
-				<source>Identifier</source>
-			</trans-unit>
 			<trans-unit id="sys_file.usage_count" xml:space="preserve">
 				<source>Usage Count</source>
 			</trans-unit>
