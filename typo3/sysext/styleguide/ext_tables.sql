@@ -260,6 +260,8 @@ CREATE TABLE tx_styleguide_required (
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
 
+	notrequired_1 text,
+
 	input_1 text NOT NULL,
 	input_2 text NOT NULL,
 	input_3 text NOT NULL,
