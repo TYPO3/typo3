@@ -213,6 +213,7 @@ class Bootstrap {
 	 *
 	 * @param \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\Composer\ClassAliasLoader $classLoader an instance of the class loader
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function initializeClassLoader($classLoader) {
 		$this->setEarlyInstance(\Composer\Autoload\ClassLoader::class, $classLoader);
@@ -227,6 +228,7 @@ class Bootstrap {
 	 * used to see if a redirect to the install tool is needed
 	 *
 	 * @return bool TRUE when the essential configuration is available, otherwise FALSE
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function checkIfEssentialConfigurationExists() {
 		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -249,6 +251,7 @@ class Bootstrap {
 	 *
 	 * @param string $requestHandler class which implements the request handler interface
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function registerRequestHandlerImplementation($requestHandler) {
 		$this->availableRequestHandlers[] = $requestHandler;
@@ -291,6 +294,7 @@ class Bootstrap {
 	 * @param string $objectName Object name, as later used by the Object Manager
 	 * @param object $instance The instance to register
 	 * @return void
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function setEarlyInstance($objectName, $instance) {
 		$this->earlyInstances[$objectName] = $instance;
@@ -302,6 +306,7 @@ class Bootstrap {
 	 * @param string $objectName Object name of the registered instance
 	 * @return object
 	 * @throws \TYPO3\CMS\Core\Exception
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function getEarlyInstance($objectName) {
 		if (!isset($this->earlyInstances[$objectName])) {
@@ -314,6 +319,7 @@ class Bootstrap {
 	 * Returns all registered early instances indexed by object name
 	 *
 	 * @return array
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function getEarlyInstances() {
 		return $this->earlyInstances;
@@ -440,6 +446,7 @@ class Bootstrap {
 	 * Since makeInstance relies on the object configuration, we create it here with new instead.
 	 *
 	 * @return Bootstrap
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function populateLocalConfiguration() {
 		try {
