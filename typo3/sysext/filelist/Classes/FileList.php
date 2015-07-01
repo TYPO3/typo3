@@ -866,6 +866,7 @@ class FileList extends AbstractRecordList {
 	public function makeEdit($fileOrFolderObject) {
 		$cells = array();
 		$fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
+
 		// Edit file content (if editable)
 		if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
 			$url = BackendUtility::getModuleUrl('file_edit', array('target' => $fullIdentifier));
@@ -885,6 +886,14 @@ class FileList extends AbstractRecordList {
 		} else {
 			$cells['view'] = $this->spaceIcon;
 		}
+
+		// replace file
+		if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
+			$url = BackendUtility::getModuleUrl('file_replace', array('target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid()));
+			$replaceOnClick = 'top.content.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
+			$cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.replace') . '">' . IconUtility::getSpriteIcon('actions-edit-replace') . '</a>';
+		}
+
 		// rename the file
 		if ($fileOrFolderObject->checkActionPermission('rename')) {
 			$url = BackendUtility::getModuleUrl('file_rename', array('target' => $fullIdentifier));

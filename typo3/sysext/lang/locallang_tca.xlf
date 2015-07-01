@@ -99,6 +99,9 @@
 			<trans-unit id="be_users.file_permissions.files_rename">
 				<source>Files: Rename</source>
 			</trans-unit>
+			<trans-unit id="be_groups.file_permissions.files_replace">
+				<source>Files: Replace</source>
+			</trans-unit>
 			<trans-unit id="be_users.file_permissions.files_move">
 				<source>Files: Move</source>
 			</trans-unit>

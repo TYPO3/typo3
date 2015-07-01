@@ -245,6 +245,9 @@ class ExtendedFileUtility extends BasicFileUtility {
 							case 'upload':
 								$result[$action][] = $this->func_upload($cmdArr);
 								break;
+							case 'replace':
+								$result[$action][] = $this->replaceFile($cmdArr);
+								break;
 							case 'unzip':
 								$result[$action][] = $this->func_unzip($cmdArr);
 								break;
@@ -952,6 +955,8 @@ class ExtendedFileUtility extends BasicFileUtility {
 				$resultObjects[] = $fileObject;
 				$this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
 				$this->writelog(1, 0, 1, 'Uploading file "%s" to "%s"', array($fileInfo['name'], $targetFolderObject->getIdentifier()));
+			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException $e) {
+				$this->writelog(1, 1, 107, 'You are not allowed to override "%s"!', array($fileInfo['name']));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {
 				$this->writelog(1, 2, 106, 'The upload has failed, no uploaded file found!', '');
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
@@ -1022,6 +1027,70 @@ class ExtendedFileUtility extends BasicFileUtility {
 			$this->writelog(7, 1, 100, 'File "%s" or destination "%s" was not within your mountpoints!', array($theFile, $theDest));
 			return FALSE;
 		}
+	}
+
+	/**
+	 * Replaces a file on the filesystem and changes the identifier of the persisted file object in sys_file if keepFilename
+	 * is not checked. If keepFilename is checked, only the file content will be replaced.
+	 *
+	 * @param array $cmdArr
+	 * @return array|bool
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidFileException
+	 */
+	protected function replaceFile(array $cmdArr) {
+		if (!$this->isInit) {
+			return FALSE;
+		}
+
+		$uploadPosition = $cmdArr['data'];
+		$fileInfo = $_FILES['replace_' . $uploadPosition];
+		if (empty($fileInfo['name'])) {
+			$this->writelog(1, 2, 108, 'No file was uploaded for replacing!', '');
+			return FALSE;
+		}
+
+		$keepFileName = ($cmdArr['keepFilename'] == 1) ? TRUE : FALSE;
+		$resultObjects = array();
+
+		try {
+			$fileObjectToReplace = $this->getFileObject($cmdArr['uid']);
+			$folder = $fileObjectToReplace->getParentFolder();
+			$resourceStorage = $fileObjectToReplace->getStorage();
+
+			$fileObject = $resourceStorage->addUploadedFile($fileInfo, $folder, $fileObjectToReplace->getName(), 'replace');
+
+			// Check if there is a file that is going to be uploaded that has a different name as the replacing one
+			// but exists in that folder as well.
+			// rename to another name, but check if the name is already given
+			if ($keepFileName === FALSE) {
+				// if a file with the same name already exists, we need to change it to _01 etc.
+				// if the file does not exist, we can do a simple rename
+				$resourceStorage->moveFile($fileObject, $folder, $fileInfo['name'], 'renameNewFile');
+			}
+
+			$resultObjects[] = $fileObject;
+			$this->internalUploadMap[$uploadPosition] = $fileObject->getCombinedIdentifier();
+
+			$this->writelog(1, 0, 1, 'Replacing file "%s" to "%s"', array($fileInfo['name'], $fileObjectToReplace->getIdentifier()));
+		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException $e) {
+			$this->writelog(1, 1, 107, 'You are not allowed to override "%s"!', array($fileInfo['name']));
+		} catch (\TYPO3\CMS\Core\Resource\Exception\UploadException $e) {
+			$this->writelog(1, 2, 106, 'The upload has failed, no uploaded file found!', '');
+		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
+			$this->writelog(1, 1, 105, 'You are not allowed to upload files!', '');
+		} catch (\TYPO3\CMS\Core\Resource\Exception\UploadSizeException $e) {
+			$this->writelog(1, 1, 104, 'The uploaded file "%s" exceeds the size-limit', array($fileInfo['name']));
+		} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException $e) {
+			$this->writelog(1, 1, 103, 'Destination path "%s" was not within your mountpoints!', array($fileObjectToReplace->getIdentifier()));
+		} catch (\TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException $e) {
+			$this->writelog(1, 1, 102, 'Extension of file name "%s" is not allowed in "%s"!', array($fileInfo['name'], $fileObjectToReplace->getIdentifier()));
+		} catch (\TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException $e) {
+			$this->writelog(1, 1, 101, 'No unique filename available in "%s"!', array($fileObjectToReplace->getIdentifier()));
+		} catch (\RuntimeException $e) {
+			throw $e;
+		}
+		return $resultObjects;
 	}
 
 	/**

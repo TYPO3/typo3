@@ -46,6 +46,7 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-paste-after' => 'fa-clipboard',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date' => 'fa-calendar',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-rename' => 'fa-quote-right',
+		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-replace' => 'fa-retweet',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-undo' => 'fa-undo',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide' => 'fa-toggle-off warning',
 		't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload' => 'fa-upload',

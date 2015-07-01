@@ -557,11 +557,11 @@ class ResourceStorage implements ResourceStorageInterface {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
-		if (in_array($action, array('read', 'copy', 'move'), TRUE)) {
+		if (in_array($action, array('read', 'copy', 'move', 'replace'), TRUE)) {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
-		if (in_array($action, array('add', 'write', 'move', 'rename', 'unzip', 'delete'), TRUE)) {
+		if (in_array($action, array('add', 'write', 'move', 'rename', 'replace', 'unzip', 'delete'), TRUE)) {
 			$isWriteCheck = TRUE;
 		}
 		// Check 3: Does the user have the right to perform the action?
@@ -780,6 +780,25 @@ class ResourceStorage implements ResourceStorageInterface {
 		}
 		if (!$this->checkFileExtensionPermission($file->getName())) {
 			throw new Exception\IllegalFileExtensionException('You are not allowed to edit a file with extension "' . $file->getExtension() . '"', 1366711933);
+		}
+	}
+
+	/**
+	 * Assure replace permission for given file.
+	 *
+	 * @param FileInterface $file
+	 * @return void
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientFolderWritePermissionsException
+	 */
+	protected function assureFileReplacePermissions(FileInterface $file) {
+		// Check if user is allowed to replace the file and $file is writable
+		if (!$this->checkFileActionPermission('replace', $file)) {
+			throw new Exception\InsufficientFileWritePermissionsException('Replacing file "' . $file->getIdentifier() . '" is not allowed.', 1436899571);
+		}
+		// Check if parentFolder is writable for the user
+		if (!$this->checkFolderActionPermission('write', $file->getParentFolder())) {
+			throw new Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $file->getIdentifier() . '"', 1436899572);
 		}
 	}
 
@@ -1737,7 +1756,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @throws \InvalidArgumentException
 	 */
 	public function replaceFile(FileInterface $file, $localFilePath) {
-		$this->assureFileWritePermissions($file);
+		$this->assureFileReplacePermissions($file);
 		if (!$this->checkFileExtensionPermission($localFilePath)) {
 			throw new Exception\IllegalFileExtensionException('Source file extension not allowed.', 1378132239);
 		}
@@ -1745,12 +1764,12 @@ class ResourceStorage implements ResourceStorageInterface {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
 		}
 		$this->emitPreFileReplaceSignal($file, $localFilePath);
-		$result = $this->driver->replaceFile($file->getIdentifier(), $localFilePath);
+		$this->driver->replaceFile($file->getIdentifier(), $localFilePath);
 		if ($file instanceof File) {
 			$this->getIndexer()->updateIndexEntry($file);
 		}
 		$this->emitPostFileReplaceSignal($file, $localFilePath);
-		return $result;
+		return $file;
 	}
 
 	/**
@@ -1770,6 +1789,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($targetFileName === NULL) {
 			$targetFileName = $uploadedFileData['name'];
 		}
+		$targetFileName = $this->driver->sanitizeFileName($targetFileName);
 
 		$this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileData['size']);
 		if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode === 'replace') {

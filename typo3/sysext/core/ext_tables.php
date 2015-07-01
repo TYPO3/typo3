@@ -215,6 +215,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-edit-merge-localization',
 	'actions-edit-pick-date',
 	'actions-edit-rename',
+	'actions-edit-replace',
 	'actions-edit-restore',
 	'actions-edit-undelete-edit',
 	'actions-edit-undo',
