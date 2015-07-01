@@ -2614,7 +2614,7 @@ return array(
 					--palette--;Palettes 3;palettes_3,
 					--palette--;;palettes_4,
 					--palette--;Palettes 5;palettes_5,
-					palette_6_1;Field with palette below;palettes_6,
+					palette_6_1;Field with palette below, --palette--;;palettes_6,
 				--div--;Wizards,
 					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
 				--div--;RTE,
