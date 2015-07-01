@@ -38,6 +38,14 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * (depending on the current time)
  * </output>
  *
+ * <code title="Relative date with given time">
+ * <f:format.date format="Y" base="{dateObject}">-1 year</f:format.date>
+ * </code>
+ * <output>
+ * 2016
+ * (assuming dateObject is in 2017)
+ * </output>
+ *
  * <code title="strtotime string">
  * <f:format.date format="d.m.Y - H:i:s">+1 week 2 days 4 hours 2 seconds</f:format.date>
  * </code>
@@ -84,16 +92,18 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 *
 	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
 	 * @param string $format Format String which is taken to format the Date/Time
+	 * @param mixed $base A base time (a DateTime object or a string) used if $date is a relative date specification. Defaults to current time.
 	 *
 	 * @return string Formatted date
 	 * @throws Exception
 	 * @api
 	 */
-	public function render($date = NULL, $format = '') {
+	public function render($date = NULL, $format = '', $base = NULL) {
 		return static::renderStatic(
 			array(
 				'date' => $date,
-				'format' => $format
+				'format' => $format,
+				'base' => $base
 			),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext
@@ -102,7 +112,7 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 
 	/**
 	 * @param array $arguments
-	 * @param callable $renderChildrenClosure
+	 * @param \Closure $renderChildrenClosure
 	 * @param RenderingContextInterface $renderingContext
 	 *
 	 * @return string
@@ -111,6 +121,7 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		$date = $arguments['date'];
 		$format = $arguments['format'];
+		$base = $arguments['base'] === NULL ? time() : $arguments['base'];
 		if ($format === '') {
 			$format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
 		}
@@ -123,11 +134,9 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 		}
 		if (!$date instanceof \DateTime) {
 			try {
-				if (MathUtility::canBeInterpretedAsInteger($date)) {
-					$date = new \DateTime('@' . $date);
-				} else {
-					$date = new \DateTime($date);
-				}
+				$base = $base instanceof \DateTime ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $base);
+				$dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
+				$date = new \DateTime('@' . $dateTimestamp);
 				$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 			} catch (\Exception $exception) {
 				throw new Exception('"' . $date . '" could not be parsed by \DateTime constructor.', 1241722579);

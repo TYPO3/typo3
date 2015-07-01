@@ -25,7 +25,7 @@ class DateViewHelperTest extends UnitTestCase {
 	protected $backupLocales = array();
 
 	/**
-	 * @var DateViewHelper
+	 * @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $subject;
 
@@ -143,6 +143,33 @@ class DateViewHelperTest extends UnitTestCase {
 		$this->subject->expects($this->never())->method('renderChildren');
 		$actualResult = $this->subject->render('1980-12-12');
 		$this->assertEquals('1980-12-12', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function baseArgumentIsConsideredForRelativeDate() {
+		$this->subject->expects($this->never())->method('renderChildren');
+		$actualResult = $this->subject->render('-1 year', 'Y', '2017-01-01');
+		$this->assertEquals('2016', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function baseArgumentAsDateTimeIsConsideredForRelativeDate() {
+		$this->subject->expects($this->never())->method('renderChildren');
+		$actualResult = $this->subject->render('-1 year', 'Y', new \DateTime('2017-01-01'));
+		$this->assertEquals('2016', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function baseArgumentDoesNotAffectAbsoluteTime() {
+		$this->subject->expects($this->never())->method('renderChildren');
+		$actualResult = $this->subject->render('@1435784732', 'Y', 1485907200); // somewhere in 2017
+		$this->assertEquals('2015', $actualResult);
 	}
 
 	/**
