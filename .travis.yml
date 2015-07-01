@@ -1,6 +1,7 @@
 language: php
 
 matrix:
+  fast_finish: true
   allow_failures:
     - php: 5.6
   include:
@@ -13,6 +14,17 @@ matrix:
 env:
   global:
     secure: NGVAI0ayw2h9pB2bi2u9AkfV1OKa2LCrGXNtxAvQhFxKW28qmeOUehFuacxpvCI5fA8Ae7oVo2Ba0vcpb5a3uJry1lMpxcn9Ic+voB7SwlCuL6Rx/vntPkYUH+58cC3t40yHKArCUE9KCJA6znNCaZ7MyG6dWHgry0cvAjVOQzE=
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+addons:
+  apt:
+    packages:
+      - parallel
 
 services:
   - memcached
@@ -39,8 +51,6 @@ before_script:
   - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - chmod a+x typo3/sysext/core/Build/Scripts/*
-  - sudo apt-get install parallel
-  - composer self-update
   - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
   - composer install
 
