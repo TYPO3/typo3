@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -430,6 +431,7 @@ class InlineRecordContainer extends AbstractContainer {
 		$tcaTableCtrl = &$GLOBALS['TCA'][$foreign_table]['ctrl'];
 		$tcaTableCols = &$GLOBALS['TCA'][$foreign_table]['columns'];
 		$isPagesTable = $foreign_table === 'pages';
+		$isSysFileReferenceTable = $foreign_table === 'sys_file_reference';
 		$isOnSymmetricSide = RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
 		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$isOnSymmetricSide && $config['foreign_sortby'] || $isOnSymmetricSide && $config['symmetric_sortby'];
 		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
@@ -527,7 +529,9 @@ class InlineRecordContainer extends AbstractContainer {
 				}
 			}
 			// "Delete" link:
-			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & Permission::PAGE_DELETE || !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT)) {
+			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & Permission::PAGE_DELETE
+					|| !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT
+					|| $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)) {
 				$onClick = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');';
 				$cells['delete'] = '
 					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">
@@ -622,8 +626,14 @@ class InlineRecordContainer extends AbstractContainer {
 					// Are we allowed to create new subpages?
 					$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_NEW);
 				} else {
-					// Are we allowed to edit content on this page?
-					$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
+					// Are we allowed to edit the page?
+					if ($table === 'sys_file_reference' && $this->isMediaOnPages($theUid)) {
+						$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_EDIT);
+					}
+					if (!$hasAccess) {
+						// Are we allowed to edit content on this page?
+						$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
+					}
 				}
 			} else {
 				$hasAccess = TRUE;
@@ -640,7 +650,12 @@ class InlineRecordContainer extends AbstractContainer {
 				} else {
 					// Fetching pid-record first.
 					$CALC_PERMS = $backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-					$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
+					if ($table === 'sys_file_reference' && $this->isMediaOnPages($theUid)) {
+						$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_EDIT);
+					}
+					if (!$hasAccess) {
+						$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
+					}
 				}
 				// Check internals regarding access
 				$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
@@ -726,6 +741,20 @@ class InlineRecordContainer extends AbstractContainer {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Check if the record is a media element on a page.
+	 *
+	 * @param string $theUid Uid of the sys_file_reference record to be checked
+	 * @return bool TRUE if the record has media in the column 'fieldname' and pages in the column 'tablenames'
+	 */
+	protected function isMediaOnPages($theUid) {
+		if (StringUtility::beginsWith($theUid, 'NEW')) {
+			return TRUE;
+		}
+		$row = BackendUtility::getRecord('sys_file_reference', $theUid);
+		return ($row['fieldname'] === 'media') && ($row['tablenames'] === 'pages');
 	}
 
 	/**

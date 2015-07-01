@@ -5982,7 +5982,15 @@ class DataHandler {
 		}
 
 		$res = FALSE;
-		$pageExists = (bool)$this->doesRecordExist('pages', $pid, ($insertTable === 'pages' ? $this->pMap['new'] : $this->pMap['editcontent']));
+		if ($insertTable === 'pages') {
+			$perms = $this->pMap['new'];
+		// @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
+		} elseif (($insertTable === 'sys_file_reference') && array_key_exists('pages', $this->datamap)) {
+			$perms = $this->pMap['edit'];
+		} else {
+			$perms = $this->pMap['editcontent'];
+		}
+		$pageExists = (bool)$this->doesRecordExist('pages', $pid, $perms);
 		// If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
 		if ($pageExists || $pid === 0 && ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($insertTable))) {
 			// Check permissions
@@ -6061,7 +6069,11 @@ class DataHandler {
 
 					case 'new':
 						// This holds it all in case the record is not page!!
+					if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
+						$perms = 'edit';
+					} else {
 						$perms = 'editcontent';
+					}
 						break;
 				}
 			}
