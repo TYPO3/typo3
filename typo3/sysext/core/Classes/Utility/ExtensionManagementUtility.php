@@ -146,7 +146,8 @@ class ExtensionManagementUtility {
 			throw new \BadFunctionCallException('TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!', 1365429673);
 		}
 		$relativePathToSiteRoot = self::siteRelPath($key);
-		if (substr($relativePathToSiteRoot, 0, $typo3MainDirLength = strlen(TYPO3_mainDir)) === TYPO3_mainDir) {
+		$typo3MainDirLength = strlen(TYPO3_mainDir);
+		if (substr($relativePathToSiteRoot, 0, $typo3MainDirLength) === TYPO3_mainDir) {
 			$relativePathToSiteRoot = substr($relativePathToSiteRoot, $typo3MainDirLength);
 		} else {
 			$relativePathToSiteRoot = '../' . $relativePathToSiteRoot;

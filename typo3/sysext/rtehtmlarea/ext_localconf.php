@@ -1,9 +1,6 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// Registering the RTE object
-$GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg']['rtehtmlarea'] = array('objRef' => \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase::class);
-
 // Register FormEngine node type resolver hook to render RTE in FormEngine if enabled
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeResolver'][1433167475] = array(
 	'nodeName' => 'text',
@@ -69,7 +66,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['MicrodataSchem
 // Inline Elements configuration
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline'] = array();
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline']['objectReference'] = \TYPO3\CMS\Rtehtmlarea\Extension\DefaultInline::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['DefaultInline']['addIconsToSkin'] = 1;
 if ($_EXTCONF['enableInlineElements']) {
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['InlineElements'] = array();
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['InlineElements']['objectReference'] = \TYPO3\CMS\Rtehtmlarea\Extension\InlineElements::class;

@@ -33,7 +33,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/SpellChecker',
 		configurePlugin: function(editor) {
 			this.pageTSconfiguration = this.editorConfiguration.buttons.spellcheck;
 			this.contentISOLanguage = this.pageTSconfiguration.contentISOLanguage;
-			this.contentCharset = this.pageTSconfiguration.contentCharset;
+			this.contentCharset = 'utf-8';
 			this.spellCheckerMode = this.pageTSconfiguration.spellCheckerMode;
 			this.enablePersonalDicts = this.pageTSconfiguration.enablePersonalDicts;
 			this.userUid = this.editorConfiguration.userUid;

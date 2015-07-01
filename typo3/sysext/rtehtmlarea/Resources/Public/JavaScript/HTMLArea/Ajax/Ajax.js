@@ -78,7 +78,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Ajax/Ajax',
 		postData: function (url, data, callback, scope) {
 			var success = false,
 				self = this;
-			data.charset = this.editor.config.typo3ContentCharset ? this.editor.config.typo3ContentCharset : 'utf-8';
+			data.charset = 'utf-8';
 			var params = '';
 			for (var parameter in data) {
 				params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(data[parameter]);

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -1545,19 +1546,43 @@ class DataHandler {
 					}
 					$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
 					$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $table, $vconf['field'], $theTypeString);
-					// Get RTE object, draw form and set flag:
-					$RTEobj = BackendUtility::RTEgetObj();
-					if (is_object($RTEobj)) {
-						$fieldArray[$vconf['field']] = $RTEobj->transformContent('db', $fieldArray[$vconf['field']], $table, $vconf['field'], $currentRecord, $vconf['spec'], $thisConfig, '', $currentRecord['pid']);
-					} else {
-						debug('NO RTE OBJECT FOUND!');
-					}
+					$fieldArray[$vconf['field']] = $this->transformRichtextContentToDatabase(
+						$fieldArray[$vconf['field']], $table, $vconf['field'], $vconf['spec'], $thisConfig, $currentRecord['pid']
+					);
 				}
 			}
 		}
 		// Return fieldArray
 		return $fieldArray;
 	}
+
+	/**
+	 * Performs transformation of content from richtext element to database.
+	 *
+	 * @param string $value Value to transform.
+	 * @param string $table The table name
+	 * @param string $field The field name
+	 * @param array $defaultExtras Default extras configuration of this field - typically "richtext:rte_transform[mode=ts_css]"
+	 * @param array $thisConfig Configuration for RTEs; A mix between TSconfig and others. Configuration for additional transformation information
+	 * @param int $pid PID value of record (true parent page id)
+	 * @return string Transformed content
+	 */
+	protected function transformRichtextContentToDatabase($value, $table, $field, $defaultExtras, $thisConfig, $pid) {
+		if ($defaultExtras['rte_transform']) {
+			$parameters = BackendUtility::getSpecConfParametersFromArray($defaultExtras['rte_transform']['parameters']);
+			// There must be a mode set for transformation, this is typically 'ts_css'
+			if ($parameters['mode']) {
+				// Initialize transformation:
+				$parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
+				$parseHTML->init($table . ':' . $field, $pid);
+				$parseHTML->setRelPath('');
+				// Perform transformation:
+				$value = $parseHTML->RTE_transform($value, $defaultExtras, 'db', $thisConfig);
+			}
+		}
+		return $value;
+	}
+
 
 	/*********************************************
 	 *
@@ -3011,13 +3036,9 @@ class DataHandler {
 										// Find, thisConfig:
 										$RTEsetup = $this->BE_USER->getTSConfig('RTE', BackendUtility::getPagesTSconfig($CVtscPID));
 										$thisConfig = BackendUtility::RTEsetup($RTEsetup['properties'], $CVtable, $recFieldName, $theTypeString);
-										// Get RTE object, draw form and set flag:
-										$RTEobj = BackendUtility::RTEgetObj();
-										if (is_object($RTEobj)) {
-											$res['value'] = $RTEobj->transformContent('db', $res['value'], $CVtable, $recFieldName, $this->checkValue_currentRecord, $specConf, $thisConfig, '', $CVrealPid);
-										} else {
-											debug('NO RTE OBJECT FOUND!');
-										}
+										$res['value'] = $this->transformRichtextContentToDatabase(
+											$res['value'], $CVtable, $recFieldName, $specConf, $thisConfig, $CVrealPid
+										);
 									}
 								}
 							}

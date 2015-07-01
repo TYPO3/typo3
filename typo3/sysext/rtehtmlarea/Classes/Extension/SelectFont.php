@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * SelectFont extension for htmlArea RTE
@@ -87,55 +86,49 @@ class SelectFont extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		$enabled = parent::main($parentObject) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['allowStyleAttribute'];
-		if ($this->htmlAreaRTE->is_FE()) {
-			$this->RTEProperties = $this->htmlAreaRTE->RTEsetup;
-		} else {
-			$this->RTEProperties = $this->htmlAreaRTE->RTEsetup['properties'];
-		}
+	public function main(array $configuration) {
+		$enabled = parent::main($configuration) && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['allowStyleAttribute'];
+		$this->RTEProperties = $this->configuration['RTEsetup']['properties'];
 		return $enabled;
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$pluginButtonsArray = GeneralUtility::trimExplode(',', $this->pluginButtons);
 		// Process Page TSConfig configuration for each button
 		foreach ($pluginButtonsArray as $buttonId) {
 			if (in_array($buttonId, $this->toolbar)) {
-				$registerRTEinJavascriptString .= $this->buildJSFontItemsConfig($rteNumberPlaceholder, $buttonId);
+				$jsArray[] = $this->buildJSFontItemsConfig($buttonId);
 			}
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 	/**
 	 * Return Javascript configuration of font faces
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @param string $buttonId: button id
 	 * @return string Javascript configuration of font faces
 	 */
-	protected function buildJSFontItemsConfig($rteNumberPlaceholder, $buttonId) {
-		$configureRTEInJavascriptString = '';
+	protected function buildJSFontItemsConfig($buttonId) {
+		$jsArray = array();
 		$hideItems = '';
 		$addItems = array();
 		// Getting removal and addition configuration
-		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.'][$buttonId . '.'])) {
-			if ($this->thisConfig['buttons.'][$buttonId . '.']['removeItems']) {
-				$hideItems = $this->thisConfig['buttons.'][$buttonId . '.']['removeItems'];
+		if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.'][$buttonId . '.'])) {
+			if ($this->configuration['thisConfig']['buttons.'][$buttonId . '.']['removeItems']) {
+				$hideItems = $this->configuration['thisConfig']['buttons.'][$buttonId . '.']['removeItems'];
 			}
-			if ($this->thisConfig['buttons.'][$buttonId . '.']['addItems']) {
-				$addItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.'][$buttonId . '.']['addItems']), TRUE);
+			if ($this->configuration['thisConfig']['buttons.'][$buttonId . '.']['addItems']) {
+				$addItems = GeneralUtility::trimExplode(',', $this->cleanList($this->configuration['thisConfig']['buttons.'][$buttonId . '.']['addItems']), TRUE);
 			}
 		}
 		$languageService = $this->getLanguageService();
@@ -155,7 +148,7 @@ class SelectFont extends RteHtmlAreaApi {
 			foreach ($this->defaultFont[$buttonId] as $name => $value) {
 				if (!GeneralUtility::inList($hideItems, strval(($index + 1)))) {
 					$label = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/SelectFont/locallang.xlf:' . $name) ?: $name;
-					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($value));
+					$items[$name] = array($label, $this->cleanList($value));
 				}
 				$index++;
 			}
@@ -165,33 +158,28 @@ class SelectFont extends RteHtmlAreaApi {
 			foreach ($this->RTEProperties[$buttonId == 'fontstyle' ? 'fonts.' : 'fontSizes.'] as $name => $conf) {
 				$name = substr($name, 0, -1);
 				if (in_array($name, $addItems)) {
-					$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'], 0);
-					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($conf['value']));
+					$label = $this->getPageConfigLabel($conf['name']);
+					$items[$name] = array($label, $this->cleanList($conf['value']));
 				}
 			}
 		}
 		// Seting default item
-		if ($this->thisConfig['buttons.'][$buttonId . '.']['defaultItem'] && $items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']]) {
-			$items['none'] = array($items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']][0], 'none');
-			unset($items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']]);
+		if ($this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem'] && $items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']]) {
+			$items['none'] = array($items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']][0], 'none');
+			unset($items[$this->configuration['thisConfig']['buttons.'][$buttonId . '.']['defaultItem']]);
 		}
 		// Setting the JS list of options
 		$itemsJSArray = array();
 		foreach ($items as $name => $option) {
 			$itemsJSArray[] = array('text' => $option[0], 'value' => $option[1]);
 		}
-		if ($this->htmlAreaRTE->is_FE()) {
-			$GLOBALS['TSFE']->csConvObj->convArray($itemsJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-		}
 		$itemsJSArray = json_encode(array('options' => $itemsJSArray));
 		// Adding to button JS configuration
-		if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($buttonId . '.')])) {
-			$configureRTEInJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . ' = new Object();';
+		if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($buttonId . '.')])) {
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $buttonId . ' = new Object();';
 		}
-		$configureRTEInJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $buttonId . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile($buttonId . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $itemsJSArray) . '";';
-		return $configureRTEInJavascriptString;
+		$jsArray[] = 'RTEarea[editornumber].buttons.' . $buttonId . '.dataUrl = "' . $this->writeTemporaryFile($buttonId . '_' . $this->configuration['contentLanguageUid'], 'js', $itemsJSArray) . '";';
+		return implode(LF, $jsArray);
 	}
 
 }

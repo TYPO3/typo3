@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * Definition List plugin for htmlArea RTE
@@ -58,20 +57,20 @@ class DefinitionList extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		return (parent::main($parentObject) && $this->htmlAreaRTE->isPluginEnabled('BlockElements'));
+	public function main(array $configuration) {
+		return parent::main($configuration)
+			&& isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['BlockElements']);
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
+	public function buildJavascriptConfiguration() {
 		return '';
 	}
 

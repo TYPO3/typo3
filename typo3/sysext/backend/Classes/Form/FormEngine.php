@@ -432,7 +432,6 @@ class FormEngine {
 			'inlineStructure' => $this->inlineStackProcessor->getStructure(),
 			'overruleTypesArray' => array(),
 			'hiddenFieldListArray' => $this->hiddenFieldListArr,
-			'isAjaxContext' => FALSE,
 			'flexFormFieldIdentifierPrefix' => 'ID',
 			'nodeFactory' => $this->nodeFactory,
 		);
@@ -535,7 +534,6 @@ class FormEngine {
 		$options['inlineRelatedRecordToRender'] = $record;
 		$options['inlineRelatedRecordConfig'] = $config;
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
-		$options['isAjaxContext'] = TRUE;
 
 		$options['renderType'] = 'inlineRecordContainer';
 		$childArray = $this->nodeFactory->create($options)->render();
@@ -657,7 +655,6 @@ class FormEngine {
 		$options['inlineRelatedRecordToRender'] = $record;
 		$options['inlineRelatedRecordConfig'] = $config;
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
-		$options['isAjaxContext'] = TRUE;
 
 		$options['renderType'] = 'inlineRecordContainer';
 		$childArray = $this->nodeFactory->create($options)->render();
@@ -756,7 +753,6 @@ class FormEngine {
 				$options['inlineRelatedRecordToRender'] = $row;
 				$options['inlineRelatedRecordConfig'] = $parent['config'];
 				$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
-				$options['isAjaxContext'] = TRUE;
 
 				$options['renderType'] = 'inlineRecordContainer';
 				$childArray = $this->nodeFactory->create($options)->render();
@@ -1026,7 +1022,7 @@ class FormEngine {
 	 */
 	protected function getInlineHeadTags() {
 		$headTags = array();
-		$headDataRaw = $this->JStop() . $this->getJavaScriptAndStyleSheetsOfPageRenderer();
+		$headDataRaw = $this->JStop() . $this->getJavaScriptOfPageRenderer();
 		if ($headDataRaw) {
 			// Create instance of the HTML parser:
 			$parseObj = GeneralUtility::makeInstance(HtmlParser::class);
@@ -1035,7 +1031,10 @@ class FormEngine {
 			// Removes leading spaces of a multi-line string:
 			$headDataRaw = trim(preg_replace('/(^|\\r|\\n)( |\\t)+/', '$1', $headDataRaw));
 			// Get script and link tags:
-			$tags = array_merge($parseObj->getAllParts($parseObj->splitTags('link', $headDataRaw)), $parseObj->getAllParts($parseObj->splitIntoBlock('script', $headDataRaw)));
+			$tags = array_merge(
+				$parseObj->getAllParts($parseObj->splitTags('link', $headDataRaw)),
+				$parseObj->getAllParts($parseObj->splitIntoBlock('script', $headDataRaw))
+			);
 			foreach ($tags as $tagData) {
 				$tagAttributes = $parseObj->get_tag_attributes($parseObj->getFirstTag($tagData), TRUE);
 				$headTags[] = array(
@@ -1057,13 +1056,12 @@ class FormEngine {
 	 * @return string
 	 * @todo: aaaargs ...
 	 */
-	protected function getJavaScriptAndStyleSheetsOfPageRenderer() {
+	protected function getJavaScriptOfPageRenderer() {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = clone $GLOBALS['SOBE']->doc->getPageRenderer();
 		$pageRenderer->setCharSet($this->getLanguageService()->charSet);
 		$pageRenderer->setTemplateFile('EXT:backend/Resources/Private/Templates/helper_javascript_css.html');
-		$javaScriptAndStyleSheets = $pageRenderer->render();
-		return $javaScriptAndStyleSheets;
+		return $pageRenderer->render();
 	}
 
 	/**
@@ -1202,12 +1200,8 @@ class FormEngine {
 	 */
 	public function JStop() {
 		$out = '';
-		// Additional top HTML:
 		if (!empty($this->additionalCode_pre)) {
-			$out .= implode('
-
-				<!-- NEXT: -->
-			', $this->additionalCode_pre);
+			$out = implode(LF, $this->additionalCode_pre) . LF;
 		}
 		return $out;
 	}
@@ -1244,6 +1238,8 @@ class FormEngine {
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
+			// rtehtmlarea needs extjs quick tips (?)
+			$pageRenderer->enableExtJSQuickTips();
 			$beUserAuth = $this->getBackendUserAuthentication();
 			// Make textareas resizable and flexible ("autogrow" in height)
 			$textareaSettings = array(

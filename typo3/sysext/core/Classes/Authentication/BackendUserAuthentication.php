@@ -27,7 +27,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  * functions for the authentication process of backend users.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @internal
  */
 class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {
 
@@ -156,12 +155,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * @var bool
 	 */
 	public $userTS_dontGetCached = FALSE;
-
-	/**
-	 * RTE availability errors collected.
-	 * @var array
-	 */
-	public $RTE_errors = array();
 
 	/**
 	 * Contains last error message
@@ -545,26 +538,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-	 * Returns TRUE if the RTE (Rich Text Editor) can be enabled for the user
-	 * Strictly this is not permissions being checked but rather a series of settings like
-	 * a loaded extension, browser/client type and a configuration option in ->uc[edit_RTE]
-	 * The reasons for a FALSE return can be found in $this->RTE_errors
+	 * Returns TRUE if the RTE (Rich Text Editor) is enabled for the user.
 	 *
 	 * @return bool
 	 */
 	public function isRTE() {
-		// Start:
-		$this->RTE_errors = array();
-		if (!$this->uc['edit_RTE']) {
-			$this->RTE_errors[] = 'RTE is not enabled for user!';
-		}
-		// Acquire RTE object:
-		$RTE = BackendUtility::RTEgetObj();
-		if (!is_object($RTE)) {
-			$this->RTE_errors = array_merge($this->RTE_errors, $RTE);
-		}
-
-		return empty($this->RTE_errors);
+		return (bool)$this->uc['edit_RTE'];
 	}
 
 	/**

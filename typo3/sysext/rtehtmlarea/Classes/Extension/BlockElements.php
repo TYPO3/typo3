@@ -95,15 +95,13 @@ class BlockElements extends RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		if (in_array('formatblock', $this->toolbar)) {
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.'])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.formatblock = new Object();';
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.']['formatblock.'])) {
+				$jsArray[] = 'RTEarea[editornumber].buttons.formatblock = new Object();';
 			}
 			// Default block elements
 			$hideItems = array();
@@ -113,32 +111,28 @@ class BlockElements extends RteHtmlAreaApi {
 			$prefixLabelWithTag = FALSE;
 			$postfixLabelWithTag = FALSE;
 			// Processing PageTSConfig
-			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) {
+			if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['formatblock.'])) {
 				// Removing elements
-				if ($this->thisConfig['buttons.']['formatblock.']['removeItems']) {
-					if ($this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formatblock.']['removeItems']) == '*') {
-						$hideItems = array_diff(array_keys($defaultBlockElements), array('none'));
-					} else {
-						$hideItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), TRUE);
-					}
+				if ($this->configuration['thisConfig']['buttons.']['formatblock.']['removeItems']) {
+					$hideItems = GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['removeItems'])), TRUE);
 				}
 				// Adding elements
-				if ($this->thisConfig['buttons.']['formatblock.']['addItems']) {
-					$addItems = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['addItems'])), TRUE);
+				if ($this->configuration['thisConfig']['buttons.']['formatblock.']['addItems']) {
+					$addItems = GeneralUtility::trimExplode(',', $this->cleanList(GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['addItems'])), TRUE);
 				}
 				// Restriction clause
-				if ($this->thisConfig['buttons.']['formatblock.']['restrictToItems']) {
-					$restrictTo = GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList('none,' . GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['restrictToItems'])), TRUE);
+				if ($this->configuration['thisConfig']['buttons.']['formatblock.']['restrictToItems']) {
+					$restrictTo = GeneralUtility::trimExplode(',', $this->cleanList('none,' . GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['restrictToItems'])), TRUE);
 				}
 				// Elements order
-				if ($this->thisConfig['buttons.']['formatblock.']['orderItems']) {
-					$blockElementsOrder = 'none,' . GeneralUtility::strtolower($this->thisConfig['buttons.']['formatblock.']['orderItems']);
+				if ($this->configuration['thisConfig']['buttons.']['formatblock.']['orderItems']) {
+					$blockElementsOrder = 'none,' . GeneralUtility::strtolower($this->configuration['thisConfig']['buttons.']['formatblock.']['orderItems']);
 				}
-				$prefixLabelWithTag = $this->thisConfig['buttons.']['formatblock.']['prefixLabelWithTag'] ? TRUE : $prefixLabelWithTag;
-				$postfixLabelWithTag = $this->thisConfig['buttons.']['formatblock.']['postfixLabelWithTag'] ? TRUE : $postfixLabelWithTag;
+				$prefixLabelWithTag = $this->configuration['thisConfig']['buttons.']['formatblock.']['prefixLabelWithTag'] ? TRUE : $prefixLabelWithTag;
+				$postfixLabelWithTag = $this->configuration['thisConfig']['buttons.']['formatblock.']['postfixLabelWithTag'] ? TRUE : $postfixLabelWithTag;
 			}
 			// Adding custom items
-			$blockElementsOrder = array_merge(GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), TRUE), $addItems);
+			$blockElementsOrder = array_merge(GeneralUtility::trimExplode(',', $this->cleanList($blockElementsOrder), TRUE), $addItems);
 			// Add div element if indent is configured in the toolbar
 			if (in_array('indent', $this->toolbar) || in_array('outdent', $this->toolbar)) {
 				$blockElementsOrder = array_merge($blockElementsOrder, array('div'));
@@ -156,8 +150,8 @@ class BlockElements extends RteHtmlAreaApi {
 			// Localizing the options
 			$blockElementsOptions = array();
 			$labels = array();
-			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.']) && is_array($this->thisConfig['buttons.']['formatblock.']['items.'])) {
-				$labels = $this->thisConfig['buttons.']['formatblock.']['items.'];
+			if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['formatblock.']) && is_array($this->configuration['thisConfig']['buttons.']['formatblock.']['items.'])) {
+				$labels = $this->configuration['thisConfig']['buttons.']['formatblock.']['items.'];
 			}
 			foreach ($blockElementsOrder as $item) {
 				$blockElementsOptions[$item] = $this->getLanguageService()->sL(
@@ -165,13 +159,13 @@ class BlockElements extends RteHtmlAreaApi {
 				);
 				// Getting custom labels
 				if (is_array($labels[$item . '.']) && $labels[$item . '.']['label']) {
-					$blockElementsOptions[$item] = $this->htmlAreaRTE->getPageConfigLabel($labels[$item . '.']['label'], 0);
+					$blockElementsOptions[$item] = $this->getPageConfigLabel($labels[$item . '.']['label']);
 				}
 				$blockElementsOptions[$item] = ($prefixLabelWithTag && $item != 'none' ? $item . ' - ' : '') . $blockElementsOptions[$item] . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $item : '');
 			}
 			$first = array_shift($blockElementsOptions);
 			// Sorting the options
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.']) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.']['formatblock.']) || !$this->configuration['thisConfig']['buttons.']['formatblock.']['orderItems']) {
 				asort($blockElementsOptions);
 			}
 			// Generating the javascript options
@@ -180,13 +174,9 @@ class BlockElements extends RteHtmlAreaApi {
 			foreach ($blockElementsOptions as $item => $label) {
 				$JSBlockElements[] = array($label, $item);
 			}
-			if ($this->htmlAreaRTE->is_FE()) {
-				$GLOBALS['TSFE']->csConvObj->convArray($JSBlockElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
-			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
+			$jsArray[] = 'RTEarea[editornumber].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 }

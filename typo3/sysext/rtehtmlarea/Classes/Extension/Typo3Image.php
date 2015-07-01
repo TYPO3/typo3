@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * TYPO3 Image plugin for htmlArea RTE
@@ -52,36 +51,35 @@ class Typo3Image extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		$enabled = parent::main($parentObject);
+	public function main(array $configuration) {
 		// Check if this should be enabled based on extension configuration and Page TSConfig
 		// The 'Minimal' and 'Typical' default configurations include Page TSConfig that removes images on the way to the database
-		$enabled = $enabled && !($this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0' && $this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1') && !$this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled'];
-		return $enabled;
+		return parent::main($configuration)
+			&& !(
+				$this->configuration['thisConfig']['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0'
+				&& $this->configuration['thisConfig']['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1'
+			)
+			&& !$this->configuration['thisConfig']['buttons.']['image.']['TYPO3Browser.']['disabled'];
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$button = 'image';
 		if (in_array($button, $this->toolbar)) {
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . ']["buttons"]["' . $button . '"] = new Object();';
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+				$jsArray[] = 'RTEarea[editornumber]["buttons"]["' . $button . '"] = new Object();';
 			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.pathImageModule = ' .
-				GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_select_image')) . ';';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.pathImageModule = ' .GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_select_image')) . ';';
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 }

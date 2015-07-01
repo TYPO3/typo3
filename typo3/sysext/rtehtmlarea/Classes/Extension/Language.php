@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  * The TYPO3 project - inspiring people to share!
  */
 
+use SJBR\StaticInfoTables\Utility\LocalizationUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Language plugin for htmlArea RTE
@@ -55,28 +57,26 @@ class Language extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
+	public function main(array $configuration) {
 		if (!ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			$this->pluginButtons = GeneralUtility::rmFromList('language', $this->pluginButtons);
 		}
-		return parent::main($parentObject);
+		return parent::main($configuration);
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
+	public function buildJavascriptConfiguration() {
 		$button = 'language';
-		$registerRTEinJavascriptString = '';
-		if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
+		$jsArray = array();
+		if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
 		}
 		$languages = array(
 			'none' => $this->getLanguageService()->sL(
@@ -89,9 +89,8 @@ class Language extends RteHtmlAreaApi {
 			$languagesJSArray[] = array('text' => $key, 'value' => $value);
 		}
 		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
-		$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile($button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
-		return $registerRTEinJavascriptString;
+		$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.dataUrl = "' . $this->writeTemporaryFile($button . '_' . $this->configuration['contentLanguageUid'], 'js', $languagesJSArray) . '";';
+		return implode(LF, $jsArray);
 	}
 
 	/**
@@ -102,27 +101,32 @@ class Language extends RteHtmlAreaApi {
 	 *
 	 * @return array An array of names of languages
 	 */
-	public function getLanguages() {
+	protected function getLanguages() {
+		$databaseConnection = $this->getDatabaseConnection();
 		$nameArray = array();
 		if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			$where = '1=1';
 			$table = 'static_languages';
-			$lang = \SJBR\StaticInfoTables\Utility\LocalizationUtility::getCurrentLanguage();
-			$titleFields = \SJBR\StaticInfoTables\Utility\LocalizationUtility::getLabelFields($table, $lang);
+			$lang = LocalizationUtility::getCurrentLanguage();
+			$titleFields = LocalizationUtility::getLabelFields($table, $lang);
 			$prefixedTitleFields = array();
 			foreach ($titleFields as $titleField) {
 				$prefixedTitleFields[] = $table . '.' . $titleField;
 			}
 			$labelFields = implode(',', $prefixedTitleFields);
 			// Restrict to certain languages
-			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
-				$languageList = implode('\',\'', GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
+			if (is_array($this->configuration['thisConfig']['buttons.']) && is_array($this->configuration['thisConfig']['buttons.']['language.']) && isset($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems'])) {
+				$languageList = implode('\',\'', GeneralUtility::trimExplode(',', $databaseConnection->fullQuoteStr(strtoupper($this->configuration['thisConfig']['buttons.']['language.']['restrictToItems']), $table)));
 				$where .= ' AND ' . $table . '.lg_iso_2 IN (' . $languageList . ')';
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($table . '.lg_iso_2,' . $table . '.lg_country_iso_2,' . $labelFields, $table, $where . ' AND lg_constructed = 0 ' . ($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table)));
-			$prefixLabelWithCode = (bool)$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'];
-			$postfixLabelWithCode = (bool)$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'];
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$res = $databaseConnection->exec_SELECTquery(
+				$table . '.lg_iso_2,' . $table . '.lg_country_iso_2,' . $labelFields,
+				$table,
+				$where . ' AND lg_constructed = 0 ' . BackendUtility::BEenableFields($table) . BackendUtility::deleteClause($table)
+			);
+			$prefixLabelWithCode = (bool)$this->configuration['thisConfig']['buttons.']['language.']['prefixLabelWithCode'];
+			$postfixLabelWithCode = (bool)$this->configuration['thisConfig']['buttons.']['language.']['postfixLabelWithCode'];
+			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
 				$code = strtolower($row['lg_iso_2']) . ($row['lg_country_iso_2'] ? '-' . strtoupper($row['lg_country_iso_2']) : '');
 				foreach ($titleFields as $titleField) {
 					if ($row[$titleField]) {
@@ -131,7 +135,7 @@ class Language extends RteHtmlAreaApi {
 					}
 				}
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$databaseConnection->sql_free_result($res);
 			uasort($nameArray, 'strcoll');
 		}
 		return $nameArray;
@@ -149,6 +153,13 @@ class Language extends RteHtmlAreaApi {
 		} else {
 			return $show;
 		}
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

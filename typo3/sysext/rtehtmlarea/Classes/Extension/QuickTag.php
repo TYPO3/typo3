@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * CharacterMap plugin for htmlArea RTE

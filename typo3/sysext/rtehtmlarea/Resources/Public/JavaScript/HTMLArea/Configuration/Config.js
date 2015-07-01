@@ -24,8 +24,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Configuration/Config',
 	 */
 	var Config = function (editorId) {
 		this.editorId = editorId;
-			// if the site is secure, create a secure iframe
-		this.useHTTPS = false;
 			// for Mozilla
 		this.useCSS = false;
 		this.enableMozillaExtension = true;

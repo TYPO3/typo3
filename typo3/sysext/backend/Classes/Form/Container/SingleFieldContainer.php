@@ -75,6 +75,7 @@ class SingleFieldContainer extends AbstractContainer {
 		if (
 			$parameterArray['fieldConf']['exclude'] && !$backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
 			|| $parameterArray['fieldConf']['config']['type'] === 'passthrough'
+			// @todo: Drop option "showIfRTE" ?
 			|| !$backendUser->isRTE() && $parameterArray['fieldConf']['config']['showIfRTE']
 			|| $GLOBALS['TCA'][$table]['ctrl']['languageField'] && !$parameterArray['fieldConf']['l10n_display'] && $parameterArray['fieldConf']['l10n_mode'] === 'exclude' && ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0)
 			|| $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $this->globalOptions['localizationMode'] && $this->globalOptions['localizationMode'] !== $parameterArray['fieldConf']['l10n_cat']

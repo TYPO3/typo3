@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * Default Clean extension for htmlArea RTE
@@ -51,31 +50,30 @@ class DefaultClean extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && !is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
+	public function main(array $configuration) {
+		return parent::main($configuration)
+			&& $this->configuration['thisConfig']['enableWordClean']
+			&& !is_array($this->configuration['thisConfig']['enableWordClean.']['HTMLparser.']);
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$button = 'cleanword';
 		if (in_array($button, $this->toolbar)) {
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+				$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = {"hotKey" : "' . ($this->thisConfig['enableWordClean.']['hotKey'] ? $this->thisConfig['enableWordClean.']['hotKey'] : '0') . '"};';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = {"hotKey" : "' . ($this->configuration['thisConfig']['enableWordClean.']['hotKey'] ? $this->configuration['thisConfig']['enableWordClean.']['hotKey'] : '0') . '"};';
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 	/**

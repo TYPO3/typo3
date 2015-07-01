@@ -42,12 +42,6 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea',
 			if (!HTMLArea.isReady) {
 				// Apply global configuration settings
 				Util.apply(HtmlArea, RTEarea[0]);
-				if (!HtmlArea.editorSkin) {
-					HtmlArea.editorSkin = HtmlArea.editorUrl + 'Resources/Public/Css/Skin/';
-				}
-				if (typeof HtmlArea.editedContentCSS !== 'string' || HtmlArea.editedContentCSS === '') {
-					HtmlArea.editedContentCSS = HtmlArea.editorSkin + 'htmlarea-edited-content.css';
-				}
 				HTMLArea.isReady = true;
 				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor url set to: ' + HtmlArea.editorUrl, 'info');
 				HtmlArea.appendToLog('', 'HTMLArea', 'init', 'Editor content skin CSS set to: ' + HtmlArea.editedContentCSS, 'info');

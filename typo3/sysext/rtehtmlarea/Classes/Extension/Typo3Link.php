@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * TYPO3Link plugin for htmlArea RTE
@@ -53,44 +52,34 @@ class Typo3Link extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		$enabled = parent::main($parentObject);
+	public function main(array $configuration) {
 		// Check if this should be enabled based on Page TSConfig
-		return $enabled && !$this->thisConfig['buttons.']['link.']['TYPO3Browser.']['disabled'];
+		return parent::main($configuration)
+			&& !$this->configuration['thisConfig']['buttons.']['link.']['TYPO3Browser.']['disabled'];
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins, in this case, JS configuration of block elements
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$button = 'link';
 		if (in_array($button, $this->toolbar)) {
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+				$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.pathLinkModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_browse_links')) . ';';
-			if ($this->htmlAreaRTE->is_FE()) {
-				$RTEProperties = $this->htmlAreaRTE->RTEsetup;
-			} else {
-				$RTEProperties = $this->htmlAreaRTE->RTEsetup['properties'];
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.pathLinkModule = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('rtehtmlarea_wizard_browse_links')) . ';';
+			if (is_array($this->configuration['RTEsetup']['properties']['classesAnchor.'])) {
+				$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.classesAnchorUrl = "' . $this->writeTemporaryFile('classesAnchor_' . $this->configuration['contentLanguageUid'], 'js', $this->buildJSClassesAnchorArray()) . '";';
 			}
-			if (is_array($RTEProperties['classesAnchor.'])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.classesAnchorUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('classesAnchor_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSClassesAnchorArray()) . '";';
-			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.additionalAttributes = "data-htmlarea-external' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '') . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.additionalAttributes = "data-htmlarea-external' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '') . '";';
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 	/**
@@ -99,9 +88,9 @@ class Typo3Link extends RteHtmlAreaApi {
 	 * @return string classesAnchor array definition
 	 */
 	public function buildJSClassesAnchorArray() {
-		$JSClassesAnchorArray .= 'HTMLArea.classesAnchorSetup = [ ' . LF;
+		$JSClassesAnchorArray = 'HTMLArea.classesAnchorSetup = [ ' . LF;
 		$classesAnchorIndex = 0;
-		foreach ($this->htmlAreaRTE->RTEsetup['properties']['classesAnchor.'] as $label => $conf) {
+		foreach ($this->configuration['RTEsetup']['properties']['classesAnchor.'] as $label => $conf) {
 			if (is_array($conf) && $conf['class']) {
 				$JSClassesAnchorArray .= ($classesAnchorIndex++ ? ',' : '') . ' { ' . LF;
 				$index = 0;
@@ -110,15 +99,15 @@ class Typo3Link extends RteHtmlAreaApi {
 					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'type : "' . str_replace('"', '', str_replace('\'', '', $conf['type'])) . '"' . LF;
 				}
 				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
-					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'image : "' . $this->htmlAreaRTE->siteURL . GeneralUtility::resolveBackPath((TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))))) . '"' . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'image : "' . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . GeneralUtility::resolveBackPath((TYPO3_mainDir . $this->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))))) . '"' . LF;
 				}
 				$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'addIconAfterLink : ' . ($conf['addIconAfterLink'] ? 'true' : 'false') . LF;
 				if (trim($conf['altText'])) {
-					$string = $this->htmlAreaRTE->getLLContent(trim($conf['altText']));
+					$string = GeneralUtility::quoteJSvalue($this->getLanguageService()->sL(trim($conf['altText'])));
 					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'altText : ' . str_replace('"', '\\"', str_replace('\\\'', '\'', $string)) . LF;
 				}
 				if (trim($conf['titleText'])) {
-					$string = $this->htmlAreaRTE->getLLContent(trim($conf['titleText']));
+					$string = GeneralUtility::quoteJSvalue($this->getLanguageService()->sL(trim($conf['titleText'])));
 					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'titleText : ' . str_replace('"', '\\"', str_replace('\\\'', '\'', $string)) . LF;
 				}
 				if (trim($conf['target'])) {

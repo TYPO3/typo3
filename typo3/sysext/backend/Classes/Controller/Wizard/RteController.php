@@ -143,12 +143,6 @@ class RteController extends AbstractWizardController {
 			$formEngine = GeneralUtility::makeInstance(FormEngine::class);
 			// SPECIAL: Disables all wizards - we are NOT going to need them.
 			$formEngine->disableWizards = 1;
-			// Initialize style for RTE object:
-			// Getting reference to the RTE object used to render the field!
-			$RTEObject = BackendUtility::RTEgetObj();
-			if ($RTEObject->ID === 'rte') {
-				$RTEObject->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';
-			}
 			// Fetching content of record:
 			/** @var DataPreprocessor $dataPreprocessor */
 			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);

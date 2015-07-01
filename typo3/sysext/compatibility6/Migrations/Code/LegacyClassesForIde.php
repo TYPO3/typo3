@@ -369,11 +369,6 @@ interface t3lib_localRecordListGetTableHook extends \TYPO3\CMS\Backend\RecordLis
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-abstract class t3lib_rteapi extends \TYPO3\CMS\Backend\Rte\AbstractRte {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class extDirect_dataProvider_BackendLiveSearch extends \TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect\LiveSearchDataProvider {}
 
 /**
@@ -5775,11 +5770,6 @@ class tx_rtehtmlarea_pageTree extends \TYPO3\CMS\Rtehtmlarea\PageTree {}
  * @deprecated since 6.0, removed since 7.0
  */
 class tx_rtehtmlarea_api extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_rtehtmlarea_base extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {}
 
 /**
  * @deprecated since 6.0, removed since 7.0

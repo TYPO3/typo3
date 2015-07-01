@@ -75,9 +75,6 @@
 			<trans-unit id="about">
 				<source>About this editor</source>
 			</trans-unit>
-			<trans-unit id="showhelp">
-				<source>Help using editor</source>
-			</trans-unit>
 			<trans-unit id="textindicator">
 				<source>Current style</source>
 			</trans-unit>

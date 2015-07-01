@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * Copy Paste plugin for htmlArea RTE
@@ -64,14 +63,14 @@ class CopyPaste extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		$enabled = parent::main($parentObject);
+	public function main(array $configuration) {
+		$enabled = parent::main($configuration);
 		// Hiding some buttons
-		if ($enabled && is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']])) {
-			$this->pluginButtons = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE), $this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']]));
+		if ($enabled && is_array($this->hideButtonsFromClient[$this->configuration['client']['browser']])) {
+			$this->pluginButtons = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE), $this->hideButtonsFromClient[$this->configuration['client']['browser']]));
 		}
 		// Force enabling the plugin even if no button remains in the tool bar, so that hot keys still are enabled
 		$this->pluginAddsButtons = FALSE;
@@ -86,8 +85,8 @@ class CopyPaste extends RteHtmlAreaApi {
 	 */
 	public function applyToolbarConstraints($show) {
 		// Remove some buttons
-		if (is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']])) {
-			return array_diff($show, $this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']]);
+		if (is_array($this->hideButtonsFromClient[$this->configuration['client']['browser']])) {
+			return array_diff($show, $this->hideButtonsFromClient[$this->configuration['client']['browser']]);
 		} else {
 			return $show;
 		}

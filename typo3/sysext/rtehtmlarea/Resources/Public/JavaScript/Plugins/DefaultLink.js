@@ -33,7 +33,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 		configurePlugin: function (editor) {
 			this.baseURL = this.editorConfiguration.baseURL;
 			this.pageTSConfiguration = this.editorConfiguration.buttons.link;
-			this.stripBaseUrl = this.pageTSConfiguration && this.pageTSConfiguration.stripBaseUrl && this.pageTSConfiguration.stripBaseUrl;
 			this.showTarget = !(this.pageTSConfiguration && this.pageTSConfiguration.targetSelector && this.pageTSConfiguration.targetSelector.disabled);
 
 			/**
@@ -101,9 +100,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 		 * This function gets called when the editor is generated
 		 */
 		onGenerate: function () {
-			if (UserAgent.isIE) {
-				this.editor.iframe.getHtmlRenderer().stripBaseUrl = this.stripBaseUrl;
-			}
 		},
 		/*
 		 * This function gets called when the button was pressed.
@@ -139,7 +135,7 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 						};
 					} else {
 						this.parameters = {
-							href:	(UserAgent.isIE && this.stripBaseUrl) ? this.stripBaseURL(this.link.href) : this.link.getAttribute('href'),
+							href:	this.link.getAttribute('href'),
 							title:	this.link.title,
 							target:	this.link.target
 						};
@@ -356,24 +352,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/DefaultLink',
 				this.editor.getSelection().selectNode(this.link);
 			}
 			this.editor.getSelection().execCommand('Unlink', false, '');
-		},
-		/*
-		 * IE makes relative links absolute. This function reverts this conversion.
-		 *
-		 * @param	string		url: the url
-		 *
-		 * @return	string		the url stripped out of the baseurl
-		 */
-		stripBaseURL: function (url) {
-			var baseurl = this.baseURL;
-				// strip to last directory in case baseurl points to a file
-			baseurl = baseurl.replace(/[^\/]+$/, '');
-			var basere = new RegExp(baseurl);
-			url = url.replace(basere, '');
-				// strip host-part of URL which is added by MSIE to links relative to server root
-			baseurl = baseurl.replace(/^(https?:\/\/[^\/]+)(.*)$/, "$1");
-			basere = new RegExp(baseurl);
-			return url.replace(basere, '');
 		},
 		/*
 		 * This function gets called when the toolbar is updated

@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
@@ -48,10 +49,9 @@ class AboutEditor extends RteHtmlAreaApi {
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
+	public function buildJavascriptConfiguration() {
 		return '';
 	}
 

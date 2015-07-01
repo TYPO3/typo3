@@ -810,7 +810,7 @@ class BackendUtility {
 	 * Note: This method is very similar to \TYPO3\CMS\Backend\Form\FormEngine::getRTypeNum(),
 	 * however, it has two differences:
 	 * 1) The method in TCEForms also takes care of localization (which is difficult to do here as the whole infrastructure for language overlays is only in TCEforms).
-	 * 2) The $rec array looks different in TCEForms, as in there it's not the raw record but the \TYPO3\CMS\Backend\Form\DataPreprocessor version of it, which changes e.g. how "select"
+	 * 2) The $row array looks different in TCEForms, as in there it's not the raw record but the \TYPO3\CMS\Backend\Form\DataPreprocessor version of it, which changes e.g. how "select"
 	 * and "group" field values are stored, which makes different processing of the "foreign pointer field" type field variant necessary.
 	 *
 	 * @param string $table Table name present in TCA
@@ -867,7 +867,7 @@ class BackendUtility {
 
 	/**
 	 * Parses "defaultExtras" of $GLOBALS['TCA'] columns config section to an array.
-	 * Elements are splitted by ":" and within those parts, parameters are splitted by "|".
+	 * Elements are split by ":" and within those parts, parameters are split by "|".
 	 *
 	 * See unit tests for details.
 	 *
@@ -3568,8 +3568,7 @@ class BackendUtility {
 	 * @internal
 	 */
 	static public function getPidForModTSconfig($table, $uid, $pid) {
-		$retVal = $table == 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
-		return $retVal;
+		return $table === 'pages' && MathUtility::canBeInterpretedAsInteger($uid) ? $uid : $pid;
 	}
 
 	/**
@@ -3605,7 +3604,8 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param int $uid Record uid
 	 * @param int $pid Record pid
-	 * @return array Array of two ints; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID, second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
+	 * @return array Array of two ints; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID,
+	 * second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
 	 * @internal
 	 * @see \TYPO3\CMS\Core\DataHandling\DataHandler::setHistory(), \TYPO3\CMS\Core\DataHandling\DataHandler::process_datamap()
 	 */
@@ -3660,7 +3660,8 @@ class BackendUtility {
 	}
 
 	/**
-	 * Returns overlayered RTE setup from an array with TSconfig. Used in TCEforms and TCEmain
+	 * Returns processed RTE setup from an array with TSconfig.
+	 * Merges table and type specific RTE configuration into 'default.'
 	 *
 	 * @param array $RTEprop The properties of Page TSconfig in the key "RTE.
 	 * @param string $table Table name
@@ -3687,8 +3688,10 @@ class BackendUtility {
 	 * Usage: $RTEobj = BackendUtility::RTEgetObj();
 	 *
 	 * @return mixed If available, returns RTE object, otherwise an array of messages from possible RTEs
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function RTEgetObj() {
+		GeneralUtility::logDeprecatedFunction();
 		// If no RTE object has been set previously, try to create it:
 		if (!isset($GLOBALS['T3_VAR']['RTEobj'])) {
 			// Set the object string to blank by default:

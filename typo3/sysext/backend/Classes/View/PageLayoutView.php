@@ -2045,7 +2045,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			return FALSE;
 		}
 		$p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']])) {
+		if (isset($specConf['richtext'])) {
 			BackendUtility::fixVersioningPid($table, $row);
 			list($tscPID, $thePidValue) = BackendUtility::getTSCpid($table, $row['uid'], $row['pid']);
 			// If the pid-value is not negative (that is, a pid could NOT be fetched)

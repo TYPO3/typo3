@@ -303,7 +303,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 		 * Resize the framework to its initial size
 		 */
 		resizeFramework: function () {
-			var frameworkHeight = this.fullScreen ? Typo3.getWindowSize().height - 25 : parseInt(this.textAreaInitialSize.height) + this.toolbar.getHeight() - this.statusBar.getHeight();
+			var frameworkHeight = this.fullScreen ? Typo3.getWindowSize().height - 50 : parseInt(this.textAreaInitialSize.height) + this.toolbar.getHeight() - this.statusBar.getHeight();
 			if (this.textAreaInitialSize.width.indexOf('%') === -1) {
 				// Width is specified in pixels
 				// Initial framework sizing
@@ -378,7 +378,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Editor/Framework',
 			} else {
 				var self = this;
 				window.setTimeout(function () {
-					self.onIframeReady();	
+					self.onIframeReady();
 				}, 50);
 			}
 		},

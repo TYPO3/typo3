@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Extension;
  */
 
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * Copy as Plain Text extension for htmlArea RTE
@@ -51,33 +50,31 @@ class Plaintext extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
+	public function main(array $configuration) {
 		// Opera has no onPaste event to handle
-		return parent::main($parentObject) && $this->htmlAreaRTE->client['browser'] != 'opera';
+		return parent::main($configuration)
+			&& $this->configuration['client']['browser'] !== 'opera';
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$button = 'pastebehaviour';
 		// Get current TYPO3 User Setting, if available
 		if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+				$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.current = "' . (isset($GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour']) ? $GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour'] : 'plainText') . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.current = "' . (isset($GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour']) ? $GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour'] : 'plainText') . '";';
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 	/**

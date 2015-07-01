@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
-use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase;
 
 /**
  * Spell Checker plugin for htmlArea RTE
@@ -60,20 +59,25 @@ class Spellchecker extends RteHtmlAreaApi {
 	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		return parent::main($parentObject) && ExtensionManagementUtility::isLoaded('static_info_tables') && !in_array($this->htmlAreaRTE->language, GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['plugins'][$pluginName]['noSpellCheckLanguages'])) && ($this->htmlAreaRTE->contentCharset == 'iso-8859-1' || $this->htmlAreaRTE->contentCharset == 'utf-8');
+	public function main(array $configuration) {
+		return parent::main($configuration)
+			&& ExtensionManagementUtility::isLoaded('static_info_tables')
+			&& !in_array(
+				$this->configuration['language'],
+				GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['SpellChecker']['noSpellCheckLanguages'])
+			);
 	}
 
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$button = 'spellcheck';
 		// Set the SpellChecker mode
 		$spellCheckerMode = isset($GLOBALS['BE_USER']->userTS['options.']['HTMLAreaPspellMode']) ? trim($GLOBALS['BE_USER']->userTS['options.']['HTMLAreaPspellMode']) : 'normal';
@@ -81,26 +85,20 @@ class Spellchecker extends RteHtmlAreaApi {
 			$spellCheckerMode = 'normal';
 		}
 		// Set the use of personal dictionary
-		$enablePersonalDicts = $this->thisConfig['buttons.'][$button . '.']['enablePersonalDictionaries'] ? (isset($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) && $GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts'] ? TRUE : FALSE) : FALSE;
-		if ($this->htmlAreaRTE->is_FE()) {
-			$enablePersonalDicts = FALSE;
-		}
-		$registerRTEinJavascriptString = '';
+		$enablePersonalDicts = $this->configuration['thisConfig']['buttons.'][$button . '.']['enablePersonalDictionaries'] ? (isset($GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts']) && $GLOBALS['BE_USER']->userTS['options.']['enablePersonalDicts'] ? TRUE : FALSE) : FALSE;
 		if (in_array($button, $this->toolbar)) {
-			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
+			if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+				$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.contentTypo3Language = "' . $this->htmlAreaRTE->contentTypo3Language . '";
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.contentISOLanguage = "' . $this->htmlAreaRTE->contentISOLanguage . '";
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.contentCharset = "' . $this->htmlAreaRTE->contentCharset . '";
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.spellCheckerMode = "' . $spellCheckerMode . '";
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') . ';';
-			$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . '.path = "' . ($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : BackendUtility::getAjaxUrl('rtehtmlarea::spellchecker')) . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.contentTypo3Language = "' . $this->configuration['contentTypo3Language'] . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.contentISOLanguage = "' . $this->configuration['contentISOLanguage'] . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.spellCheckerMode = "' . $spellCheckerMode . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') . ';';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.path = "' . ($this->isFrontend() || $this->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : BackendUtility::getAjaxUrl('rtehtmlarea::spellchecker')) . '";';
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
+
+
 
 }

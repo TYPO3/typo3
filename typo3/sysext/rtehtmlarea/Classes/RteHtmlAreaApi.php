@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Rtehtmlarea;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 
 /**
  * API for extending htmlArea RTE
@@ -46,28 +48,7 @@ abstract class RteHtmlAreaApi {
 	protected $relativePathToSkin = '';
 
 	/**
-	 * Reference to the invoking object
-	 *
-	 * @var RteHtmlAreaBase
-	 */
-	protected $htmlAreaRTE;
-
-	/**
-	 * The extension key of the RTE
-	 *
-	 * @var string
-	 */
-	protected $rteExtensionKey;
-
-	/**
-	 * Reference to RTE PageTSConfig
-	 *
-	 * @var array
-	 */
-	protected $thisConfig;
-
-	/**
-	 * Reference to RTE toolbar array
+	 * Toolbar array
 	 *
 	 * @var array
 	 */
@@ -116,70 +97,45 @@ abstract class RteHtmlAreaApi {
 	protected $requiredPlugins = '';
 
 	/**
+	 * Configuration array with settings given down from calling class
+	 *
+	 * @var array
+	 */
+	protected $configuration;
+
+	/**
 	 * Returns TRUE if the plugin is available and correctly initialized
 	 *
-	 * @param RteHtmlAreaBase $parentObject parent object
+	 * @param array $configuration Configuration array given from calling object down to the single plugins
 	 * @return bool TRUE if this plugin object should be made available in the current environment and is correctly initialized
 	 */
-	public function main($parentObject) {
-		$this->htmlAreaRTE = $parentObject;
-		$this->rteExtensionKey = &$this->htmlAreaRTE->ID;
-		$this->thisConfig = &$this->htmlAreaRTE->thisConfig;
-		$this->toolbar = &$this->htmlAreaRTE->toolbar;
+	public function main(array $configuration) {
+		$this->configuration = $configuration;
 		// Set the value of this boolean based on the initial value of $this->pluginButtons
 		$this->pluginAddsButtons = !empty($this->pluginButtons);
 		// Check if the plugin should be disabled in frontend
-		if ($this->htmlAreaRTE->is_FE() && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['disableInFE']) {
+		if ($this->isFrontend() && $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins'][$this->pluginName]['disableInFE']) {
 			return FALSE;
 		}
 		return TRUE;
 	}
 
 	/**
-	 * Returns a modified toolbar order string
-	 *
-	 * @return string a modified tollbar order list
-	 */
-	public function addButtonsToToolbar() {
-		//Add only buttons not yet in the default toolbar order
-		$addButtons = implode(',', array_diff(GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE), GeneralUtility::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, TRUE)));
-		return ($addButtons ? 'bar,' . $addButtons . ',linebreak,' : '') . $this->htmlAreaRTE->defaultToolbarOrder;
-	}
-
-	/**
-	 * Returns the path to the skin component (button icons) that should be added to linked stylesheets
-	 *
-	 * @return string path to the skin (css) file
-	 */
-	public function getPathToSkin() {
-		if (
-			isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin'])
-			&& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->rteExtensionKey]['plugins'][$this->pluginName]['addIconsToSkin']
-		) {
-			return $this->relativePathToSkin;
-		} else {
-			return '';
-		}
-	}
-
-	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
-	 * @param string $rteNumberPlaceholder A dummy string for JS arrays
 	 * @return string JS configuration for registered plugins
 	 */
-	public function buildJavascriptConfiguration($rteNumberPlaceholder) {
-		$registerRTEinJavascriptString = '';
+	public function buildJavascriptConfiguration() {
+		$jsArray = array();
 		$pluginButtons = GeneralUtility::trimExplode(',', $this->pluginButtons, TRUE);
 		foreach ($pluginButtons as $button) {
 			if (in_array($button, $this->toolbar)) {
-				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-					$registerRTEinJavascriptString .= '
-			RTEarea[' . $rteNumberPlaceholder . '].buttons.' . $button . ' = new Object();';
+				if (!is_array($this->configuration['thisConfig']['buttons.']) || !is_array($this->configuration['thisConfig']['buttons.'][($button . '.')])) {
+					$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . ' = new Object();';
 				}
 			}
 		}
-		return $registerRTEinJavascriptString;
+		return implode(LF, $jsArray);
 	}
 
 	/**
@@ -246,16 +202,124 @@ abstract class RteHtmlAreaApi {
 	}
 
 	/**
+	 * Set toolbal
+	 *
+	 * @param array $toolbar
+	 */
+	public function setToolbar(array $toolbar) {
+		$this->toolbar = $toolbar;
+	}
+
+	/**
+	 * Clean list
+	 *
+	 * @param string $str
+	 * @return string
+	 */
+	protected function cleanList($str) {
+		if (strstr($str, '*')) {
+			$str = '*';
+		} else {
+			$str = implode(',', array_unique(GeneralUtility::trimExplode(',', $str, TRUE)));
+		}
+		return $str;
+	}
+
+	/**
+	 * Resolve a label and do some funny quoting.
+	 *
+	 * @param string $string Given label name
+	 * @return string Resolved label
+	 */
+	protected function getPageConfigLabel($string) {
+		$label = $this->getLanguageService()->sL(trim($string));
+		// @todo: find out why this is done and if it could be substituted with quoteJSvalue
+		$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
+		return $label;
+	}
+
+	/**
+	 * Return TRUE if we are in the FE, but not in the FE editing feature of BE.
+	 *
+	 * @return bool
+	 */
+	protected function isFrontend() {
+		return is_object($GLOBALS['TSFE'])
+			&& !$this->isFrontendEditActive()
+			&& TYPO3_MODE == 'FE';
+	}
+
+	/**
+	 * Checks whether frontend editing is active.
+	 *
+	 * @return bool
+	 */
+	protected function isFrontendEditActive() {
+		return is_object($GLOBALS['TSFE'])
+			&& $GLOBALS['TSFE']->beUserLogin
+			&& $GLOBALS['BE_USER']->frontendEdit instanceof FrontendEditingController;
+	}
+
+	/**
+	 * Make a file name relative to the PATH_site or to the PATH_typo3
+	 *
+	 * @param string $filename: a file name of the form EXT:.... or relative to the PATH_site
+	 * @return string the file name relative to the PATH_site if in frontend or relative to the PATH_typo3 if in backend
+	 */
+	protected function getFullFileName($filename) {
+		if (substr($filename, 0, 4) === 'EXT:') {
+			// extension
+			list($extKey, $local) = explode('/', substr($filename, 4), 2);
+			$newFilename = '';
+			if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
+				$newFilename = ($this->isFrontend() || $this->isFrontendEditActive()
+						? ExtensionManagementUtility::siteRelPath($extKey)
+						: ExtensionManagementUtility::extRelPath($extKey))
+					. $local;
+			}
+		} else {
+			$path = ($this->isFrontend() || $this->isFrontendEditActive() ? '' : '../');
+			$newFilename = $path . ($filename[0] === '/' ? substr($filename, 1) : $filename);
+		}
+		return GeneralUtility::resolveBackPath($newFilename);
+	}
+
+	/**
+	 * Writes contents in a file in typo3temp and returns the file name
+	 *
+	 * @param string $label: A label to insert at the beginning of the name of the file
+	 * @param string $fileExtension: The file extension of the file, defaulting to 'js'
+	 * @param string $contents: The contents to write into the file
+	 * @return string The name of the file written to typo3temp
+	 * @throws \RuntimeException If writing to file failed
+	 */
+	protected function writeTemporaryFile($label, $fileExtension = 'js', $contents = '') {
+		$relativeFilename = 'typo3temp/rtehtmlarea_' . str_replace('-', '_', $label) . '_' . GeneralUtility::shortMD5($contents, 20) . '.' . $fileExtension;
+		$destination = PATH_site . $relativeFilename;
+		if (!file_exists($destination)) {
+			$minifiedJavaScript = '';
+			if ($fileExtension === 'js' && $contents !== '') {
+				$minifiedJavaScript = GeneralUtility::minifyJavaScript($contents);
+			}
+			$failure = GeneralUtility::writeFileToTypo3tempDir($destination, $minifiedJavaScript ? $minifiedJavaScript : $contents);
+			if ($failure) {
+				throw new \RuntimeException($failure, 1294585668);
+			}
+		}
+		if (isset($GLOBALS['TSFE'])) {
+			$fileName = $relativeFilename;
+		} else {
+			$fileName = '../' . $relativeFilename;
+		}
+		return GeneralUtility::resolveBackPath($fileName);
+	}
+
+	/**
 	 * Get language service, instantiate if not there, yet
 	 *
 	 * @return LanguageService
 	 */
 	protected function getLanguageService() {
-		if (isset($GLOBALS['LANG'])) {
-			return $GLOBALS['LANG'];
-		} else {
-			return GeneralUtility::makeInstance(LanguageService::class);
-		}
+		return $GLOBALS['LANG'];
 	}
-
 }
