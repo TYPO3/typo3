@@ -52,7 +52,8 @@ class Application implements ApplicationInterface {
 		\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
 
 		$this->bootstrap = Bootstrap::getInstance()
-			->initializeClassLoader($classLoader);
+			->initializeClassLoader($classLoader)
+			->baseSetup($this->entryPointPath);
 
 		foreach ($this->availableRequestHandlers as $requestHandler) {
 			$this->bootstrap->registerRequestHandlerImplementation($requestHandler);
