@@ -655,6 +655,7 @@ class InlineElement {
 		$tcaTableCtrl = &$GLOBALS['TCA'][$foreign_table]['ctrl'];
 		$tcaTableCols = &$GLOBALS['TCA'][$foreign_table]['columns'];
 		$isPagesTable = $foreign_table == 'pages' ? TRUE : FALSE;
+		$isSysFileReferenceTable = $foreign_table === 'sys_file_reference';
 		$isOnSymmetricSide = RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
 		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$isOnSymmetricSide && $config['foreign_sortby'] || $isOnSymmetricSide && $config['symmetric_sortby'] ? TRUE : FALSE;
 		$nameObject = $this->inlineNames['object'];
@@ -662,6 +663,7 @@ class InlineElement {
 		$nameObjectFtId = $nameObjectFt . self::Structure_Separator . $rec['uid'];
 		$calcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::readPageAccess($rec['pid'], $GLOBALS['BE_USER']->getPagePermsClause(1)));
 		// If the listed table is 'pages' we have to request the permission settings for each page:
+		$localCalcPerms = FALSE;
 		if ($isPagesTable) {
 			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $rec['uid']));
 		}
@@ -718,7 +720,10 @@ class InlineElement {
 				$cells['sort.down'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="sortingDown" ' . $style . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE))) . '</a>';
 			}
 			// "Delete" link:
-			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4 || !$isPagesTable && $calcPerms & 16)) {
+			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & 4
+				|| !$isPagesTable && $calcPerms & 16
+				|| $isSysFileReferenceTable && $calcPerms & 2)) {
+
 				$onClick = 'inline.deleteRecord(\'' . $nameObjectFtId . '\');';
 				$cells['delete'] = '<a href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '</a>';
 			}
@@ -2118,6 +2123,14 @@ class InlineElement {
 				} else {
 					// Are we allowed to edit content on this page?
 					$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
+					// Are we allowed to edit the page?
+					if ($table === 'sys_file_reference' && $this->isMediaOnPages($theUid)) {
+						$hasAccess = (bool)($CALC_PERMS & 2);
+					}
+					if (!$hasAccess) {
+						// Are we allowed to edit content on this page?
+						$hasAccess = (bool)($CALC_PERMS & 16);
+					}
 				}
 			} else {
 				$hasAccess = 1;
@@ -2134,7 +2147,12 @@ class InlineElement {
 				} else {
 					// Fetching pid-record first.
 					$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-					$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
+					if ($table === 'sys_file_reference' && $this->isMediaOnPages($theUid)) {
+						$hasAccess = (bool)($CALC_PERMS & 2);
+					}
+					if (!$hasAccess) {
+						$hasAccess = (bool)($CALC_PERMS & 16);
+					}
 				}
 				// Check internals regarding access:
 				$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
@@ -2655,6 +2673,20 @@ class InlineElement {
 		}
 
 		return $flexFormParts;
+	}
+
+	/**
+	 * Check if the record is a media element on a page.
+	 *
+	 * @param string $theUid Uid of the sys_file_reference record to be checked
+	 * @return bool TRUE if the record has media in the column 'fieldname' and pages in the column 'tablenames'
+	 */
+	protected function isMediaOnPages($theUid) {
+		if (strpos($theUid, 'NEW') === 0) {
+			return TRUE;
+		}
+		$row = BackendUtility::getRecord('sys_file_reference', $theUid);
+		return ($row['fieldname'] === 'media') && ($row['tablenames'] === 'pages');
 	}
 
 	/**
