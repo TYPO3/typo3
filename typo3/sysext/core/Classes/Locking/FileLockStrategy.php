@@ -155,7 +155,14 @@ class FileLockStrategy implements LockingStrategyInterface {
 			// to protect files against other PHP scripts running in parallel threads of the same server instance!
 			return 0;
 		}
-		$capabilities = self::LOCK_CAPABILITY_EXCLUSIVE | self::LOCK_CAPABILITY_SHARED | self::LOCK_CAPABILITY_NOBLOCK;
+		$capabilities = self::LOCK_CAPABILITY_EXCLUSIVE | self::LOCK_CAPABILITY_SHARED;
+		if (TYPO3_OS !== 'WIN'
+			|| version_compare(PHP_VERSION, '5.5.22', '>') && version_compare(PHP_VERSION, '5.6.0', '<')
+			|| version_compare(PHP_VERSION, '5.6.6', '>')
+		) {
+			$capabilities |= self::LOCK_CAPABILITY_NOBLOCK;
+		}
+
 		return $capabilities;
 	}
 
