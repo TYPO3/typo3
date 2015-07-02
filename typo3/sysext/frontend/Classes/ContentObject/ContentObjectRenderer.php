@@ -4691,46 +4691,56 @@ class ContentObjectRenderer {
 		if ($conf['token'] === '') {
 			return $value;
 		}
-		$conf['max'] = isset($conf['max.']) ? (int)$this->stdWrap($conf['max'], $conf['max.']) : (int)$conf['max'];
-		$conf['min'] = isset($conf['min.']) ? (int)$this->stdWrap($conf['min'], $conf['min.']) : (int)$conf['min'];
 		$valArr = explode($conf['token'], $value);
+
+		// return value directly by returnKey. No further processing
 		if (!empty($valArr) && (MathUtility::canBeInterpretedAsInteger($conf['returnKey']) || $conf['returnKey.'])) {
 			$key = isset($conf['returnKey.']) ? (int)$this->stdWrap($conf['returnKey'], $conf['returnKey.']) : (int)$conf['returnKey'];
-			$content = isset($valArr[$key]) ? $valArr[$key] : '';
-		} else {
-			// calculate splitCount
-			$splitCount = count($valArr);
-			$max = isset($conf['max.']) ? $this->stdWrap($conf['max'], $conf['max.']) : $conf['max'];
-			if ($max && $splitCount > $max) {
-				$splitCount = $max;
+			return isset($valArr[$key]) ? $valArr[$key] : '';
+		}
+
+		// return the amount of elements. No further processing
+		if (!empty($valArr) && ($conf['returnCount'] || $conf['returnCount.'])) {
+			$returnCount = isset($conf['returnCount.']) ? (bool)$this->stdWrap($conf['returnCount'], $conf['returnCount.']) : (bool)$conf['returnCount'];
+			return $returnCount ? count($valArr) : 0;
+		}
+
+		// start further processing of the values
+		$conf['max'] = isset($conf['max.']) ? (int)$this->stdWrap($conf['max'], $conf['max.']) : (int)$conf['max'];
+		$conf['min'] = isset($conf['min.']) ? (int)$this->stdWrap($conf['min'], $conf['min.']) : (int)$conf['min'];
+
+		// calculate splitCount
+		$splitCount = count($valArr);
+		$max = isset($conf['max.']) ? $this->stdWrap($conf['max'], $conf['max.']) : $conf['max'];
+		if ($max && $splitCount > $max) {
+			$splitCount = $max;
+		}
+		$min = isset($conf['min.']) ? $this->stdWrap($conf['min'], $conf['min.']) : $conf['min'];
+		if ($min && $splitCount < $min) {
+			$splitCount = $min;
+		}
+		$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+		$cObjNum = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : $conf['cObjNum'];
+		$splitArr = array();
+		if ($wrap || $cObjNum) {
+			$splitArr['wrap'] = $wrap;
+			$splitArr['cObjNum'] = $cObjNum;
+			$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $splitCount);
+		}
+		$content = '';
+		for ($a = 0; $a < $splitCount; $a++) {
+			$GLOBALS['TSFE']->register['SPLIT_COUNT'] = $a;
+			$value = '' . $valArr[$a];
+			$this->data[$this->currentValKey] = $value;
+			if ($splitArr[$a]['cObjNum']) {
+				$objName = (int)$splitArr[$a]['cObjNum'];
+				$value = isset($conf[$objName . '.']) ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.']) : $this->cObjGet($conf[$objName . '.'], $objName . '.');
 			}
-			$min = isset($conf['min.']) ? $this->stdWrap($conf['min'], $conf['min.']) : $conf['min'];
-			if ($min && $splitCount < $min) {
-				$splitCount = $min;
+			$wrap = isset($splitArr[$a]['wrap.']) ? $this->stdWrap($splitArr[$a]['wrap'], $splitArr[$a]['wrap.']) : $splitArr[$a]['wrap'];
+			if ($wrap) {
+				$value = $this->wrap($value, $wrap);
 			}
-			$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
-			$cObjNum = isset($conf['cObjNum.']) ? $this->stdWrap($conf['cObjNum'], $conf['cObjNum.']) : $conf['cObjNum'];
-			if ($wrap || $cObjNum) {
-				$splitArr = array();
-				$splitArr['wrap'] = $wrap;
-				$splitArr['cObjNum'] = $cObjNum;
-				$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $splitCount);
-			}
-			$content = '';
-			for ($a = 0; $a < $splitCount; $a++) {
-				$GLOBALS['TSFE']->register['SPLIT_COUNT'] = $a;
-				$value = '' . $valArr[$a];
-				$this->data[$this->currentValKey] = $value;
-				if ($splitArr[$a]['cObjNum']) {
-					$objName = (int)$splitArr[$a]['cObjNum'];
-					$value = isset($conf[$objName . '.']) ? $this->stdWrap($this->cObjGet($conf[$objName . '.'], $objName . '.'), $conf[$objName . '.']) : $this->cObjGet($conf[$objName . '.'], $objName . '.');
-				}
-				$wrap = isset($splitArr[$a]['wrap.']) ? $this->stdWrap($splitArr[$a]['wrap'], $splitArr[$a]['wrap.']) : $splitArr[$a]['wrap'];
-				if ($wrap) {
-					$value = $this->wrap($value, $wrap);
-				}
-				$content .= $value;
-			}
+			$content .= $value;
 		}
 		return $content;
 	}

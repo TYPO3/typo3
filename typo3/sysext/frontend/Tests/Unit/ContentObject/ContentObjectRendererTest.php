@@ -3549,4 +3549,20 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
 	}
 
+	/**
+	 * @test
+	 */
+	public function stdWrap_splitObjReturnsCount() {
+		$conf = array(
+			'token' => ',',
+			'returnCount' => 1
+		);
+		$expectedResult = 5;
+		$amountOfEntries = $this->subject->splitObj('1, 2, 3, 4, 5', $conf);
+		$this->assertSame(
+			$expectedResult,
+			$amountOfEntries
+		);
+	}
+
 }
