@@ -464,7 +464,7 @@ class LoginController {
 			reset($this->loginProviders);
 			$loginProvider = key($this->loginProviders);
 		}
-		setcookie('be_lastLoginProvider', $loginProvider);
+		setcookie('be_lastLoginProvider', $loginProvider, $GLOBALS['EXEC_TIME'] + 7776000); // 90 days
 		return $loginProvider;
 	}
 
