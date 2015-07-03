@@ -17,15 +17,17 @@ if (isset($_GET['login_status'])) {
 	$_POST['login_status'] = $_GET['login_status'];
 }
 
-define('TYPO3_MOD_PATH', 'sysext/openid/');
-define('TYPO3_MODE', 'BE');
-require '../../sysext/core/Classes/Core/Bootstrap.php';
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->run('typo3/');
+call_user_func(function() {
+	define('TYPO3_MOD_PATH', 'sysext/openid/');
 
-/** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
-$beUser = $GLOBALS['BE_USER'];
-if ($beUser->user['uid']) {
-	\TYPO3\CMS\Core\Utility\GeneralUtility::cleanOutputBuffers();
-	$backendURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
-	\TYPO3\CMS\Core\Utility\HttpUtility::redirect($backendURL);
-}
+	$classLoader = require __DIR__ . '/../../contrib/vendor/autoload.php';
+	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
+		/** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser */
+		$beUser = $GLOBALS['BE_USER'];
+		if ($beUser->user['uid']) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::cleanOutputBuffers();
+			$backendURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
+			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($backendURL);
+		}
+	});
+});
