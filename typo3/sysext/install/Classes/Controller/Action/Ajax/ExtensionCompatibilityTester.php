@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Load Extensions
@@ -65,7 +66,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 */
 	protected function executeAction() {
 		register_shutdown_function(array($this, 'logError'));
-		$getVars = Utility\GeneralUtility::_GET('install');
+		$getVars = GeneralUtility::_GET('install');
 		if (isset($getVars['extensionCompatibilityTester']) && isset($getVars['extensionCompatibilityTester']['forceCheck']) && ($getVars['extensionCompatibilityTester']['forceCheck'] == 1)) {
 			$this->deleteProtocolFile();
 		}
@@ -113,8 +114,8 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 * @return array
 	 */
 	protected function getExtensionsToExclude() {
-		$exclude = Utility\GeneralUtility::getUrl($this->protocolFile);
-		return Utility\GeneralUtility::trimExplode(',', (string)$exclude);
+		$exclude = GeneralUtility::getUrl($this->protocolFile);
+		return GeneralUtility::trimExplode(',', (string)$exclude);
 	}
 
 	/**
@@ -131,7 +132,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 			$this->loadExtLocalconfForExtension($extensionKey, $extension);
 			$this->removeCurrentExtensionFromFile($extensionKey);
 		}
-		Utility\ExtensionManagementUtility::loadBaseTca(FALSE);
+		ExtensionManagementUtility::loadBaseTca(FALSE);
 		foreach ($extensions as $extensionKey => $extension) {
 			$this->writeCurrentExtensionToFile($extensionKey);
 			$this->loadExtTablesForExtension($extensionKey, $extension);
@@ -161,7 +162,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 			// and are explicitly set in cached file as well
 			$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
 			require $extension['ext_tables.php'];
-			Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+			ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
 		}
 	}
 
@@ -196,9 +197,9 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 * @return void
 	 */
 	protected function writeCurrentExtensionToFile($extensionKey) {
-		$incompatibleExtensions = array_filter(Utility\GeneralUtility::trimExplode(',', (string)Utility\GeneralUtility::getUrl($this->protocolFile)));
+		$incompatibleExtensions = array_filter(GeneralUtility::trimExplode(',', (string)GeneralUtility::getUrl($this->protocolFile)));
 		$incompatibleExtensions = array_merge($incompatibleExtensions, array($extensionKey));
-		Utility\GeneralUtility::writeFile($this->protocolFile, implode(', ', $incompatibleExtensions));
+		GeneralUtility::writeFile($this->protocolFile, implode(', ', $incompatibleExtensions));
 		$this->logError = TRUE;
 	}
 
@@ -209,11 +210,11 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 	 * @return void
 	 */
 	protected function removeCurrentExtensionFromFile($extensionKey) {
-		$extensionsInFile = array_filter(Utility\GeneralUtility::trimExplode(',', (string)Utility\GeneralUtility::getUrl($this->protocolFile)));
+		$extensionsInFile = array_filter(GeneralUtility::trimExplode(',', (string)GeneralUtility::getUrl($this->protocolFile)));
 		$extensionsByKey = array_flip($extensionsInFile);
 		unset($extensionsByKey[$extensionKey]);
 		$extensionsForFile = array_flip($extensionsByKey);
-		Utility\GeneralUtility::writeFile($this->protocolFile, implode(', ', $extensionsForFile));
+		GeneralUtility::writeFile($this->protocolFile, implode(', ', $extensionsForFile));
 		$this->logError = FALSE;
 	}
 
@@ -233,7 +234,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 		$errors = array();
 
 		if (file_exists($this->errorProtocolFile)) {
-			$errors = json_decode(Utility\GeneralUtility::getUrl($this->errorProtocolFile));
+			$errors = json_decode(GeneralUtility::getUrl($this->errorProtocolFile));
 		}
 		switch ($lastError['type']) {
 			case E_ERROR:
@@ -254,7 +255,7 @@ class ExtensionCompatibilityTester extends AbstractAjaxAction {
 		}
 		$errors[] = $lastError;
 
-		Utility\GeneralUtility::writeFile($this->errorProtocolFile, json_encode($errors));
+		GeneralUtility::writeFile($this->errorProtocolFile, json_encode($errors));
 	}
 
 }

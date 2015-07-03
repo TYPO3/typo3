@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This class encapsulates bootstrap related methods.
@@ -204,7 +206,7 @@ class Bootstrap {
 		if (!self::$usesComposerClassLoading) {
 			ClassLoadingInformation::registerClassLoadingInformation();
 		}
-		Utility\GeneralUtility::presetApplicationContext($this->applicationContext);
+		GeneralUtility::presetApplicationContext($this->applicationContext);
 		return $this;
 	}
 
@@ -270,7 +272,7 @@ class Bootstrap {
 	public function resolveRequestHandler() {
 		$suitableRequestHandlers = array();
 		foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
-			$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($requestHandlerClassName, $this);
+			$requestHandler = GeneralUtility::makeInstance($requestHandlerClassName, $this);
 			if ($requestHandler->canHandleRequest()) {
 				$priority = $requestHandler->getPriority();
 				if (isset($suitableRequestHandlers[$priority])) {
@@ -373,13 +375,13 @@ class Bootstrap {
 		/** @var \TYPO3\CMS\Core\Package\PackageManager $packageManager */
 		$packageManager = new $packageManagerClassName();
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
-		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+		ExtensionManagementUtility::setPackageManager($packageManager);
 		$packageManager->injectCoreCache($this->getEarlyInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_core'));
-		$dependencyResolver = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class);
-		$dependencyResolver->injectDependencyOrderingService(Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class));
+		$dependencyResolver = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\DependencyResolver::class);
+		$dependencyResolver->injectDependencyOrderingService(GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class));
 		$packageManager->injectDependencyResolver($dependencyResolver);
 		$packageManager->initialize($this);
-		Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
+		GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Package\PackageManager::class, $packageManager);
 		return $this;
 	}
 
@@ -422,7 +424,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadTypo3LoadedExtAndExtLocalconf($allowCaching = TRUE) {
-		Utility\ExtensionManagementUtility::loadExtLocalconf($allowCaching);
+		ExtensionManagementUtility::loadExtLocalconf($allowCaching);
 		return $this;
 	}
 
@@ -507,31 +509,31 @@ class Bootstrap {
 	 */
 	protected function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
+			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.PageTree.DataProvider',
 				\TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider::class
 			);
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
+			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.PageTree.Commands',
 				\TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeCommands::class
 			);
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
+			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.PageTree.ContextMenuDataProvider',
 				\TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class
 			);
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
+			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.LiveSearchActions.ExtDirect',
 				\TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect\LiveSearchDataProvider::class,
 				'web_list',
 				'user,group'
 			);
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
+			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.ExtDirectStateProvider.ExtDirect',
 				\TYPO3\CMS\Backend\InterfaceState\ExtDirect\DataProvider::class
 			);
-			Utility\ExtensionManagementUtility::registerExtDirectComponent(
+			ExtensionManagementUtility::registerExtDirectComponent(
 				'TYPO3.Components.DragAndDrop.CommandController',
-				Utility\ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:' . \TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands::class
+				ExtensionManagementUtility::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:' . \TYPO3\CMS\Backend\View\PageLayout\ExtDirect\ExtdirectPageCommands::class
 			);
 		}
 		return $this;
@@ -557,7 +559,7 @@ class Bootstrap {
 	protected function transferDeprecatedCurlSettings() {
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) && empty($GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'])) {
 			$curlProxy = rtrim(preg_replace('#^https?://#', '', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']), '/');
-			$proxyParts = Utility\GeneralUtility::revExplode(':', $curlProxy, 2);
+			$proxyParts = GeneralUtility::revExplode(':', $curlProxy, 2);
 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_host'] = $proxyParts[0];
 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_port'] = $proxyParts[1];
 		}
@@ -579,14 +581,14 @@ class Bootstrap {
 	 */
 	protected function setCacheHashOptions() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] = array(
-			'cachedParametersWhiteList' => Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashOnlyForParameters'], TRUE),
-			'excludedParameters' => Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'], TRUE),
-			'requireCacheHashPresenceParameters' => Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'], TRUE)
+			'cachedParametersWhiteList' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashOnlyForParameters'], TRUE),
+			'excludedParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParameters'], TRUE),
+			'requireCacheHashPresenceParameters' => GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashRequiredParameters'], TRUE)
 		);
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty']) === '*') {
 			$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludeAllEmptyParameters'] = TRUE;
 		} else {
-			$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParametersIfEmpty'] = Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty'], TRUE);
+			$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParametersIfEmpty'] = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['cHashExcludedParametersIfEmpty'], TRUE);
 		}
 		return $this;
 	}
@@ -657,7 +659,7 @@ class Bootstrap {
 	protected function configureExceptionHandling() {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['exceptionalErrors'];
-		$doesIpMatch = Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+		$doesIpMatch = GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
 		$displayErrors = (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'];
 		// Turn error logging on/off.
 		if ($displayErrors !== -1) {
@@ -724,7 +726,7 @@ class Bootstrap {
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'] !== $this->activeErrorHandlerClassName) {
 					$this->activeErrorHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandler'];
 					// Register an error handler for the given errorHandlerErrors
-					$errorHandler = Utility\GeneralUtility::makeInstance($this->activeErrorHandlerClassName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors']);
+					$errorHandler = GeneralUtility::makeInstance($this->activeErrorHandlerClassName, $GLOBALS['TYPO3_CONF_VARS']['SYS']['errorHandlerErrors']);
 					// Set errors which will be converted in an exception
 					$errorHandler->setExceptionalErrors($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionalErrors']);
 				}
@@ -735,7 +737,7 @@ class Bootstrap {
 			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] !== $this->activeExceptionHandlerClassName) {
 				$this->activeExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'];
 				// Registering the exception handler is done in the constructor
-				Utility\GeneralUtility::makeInstance($this->activeExceptionHandlerClassName);
+				GeneralUtility::makeInstance($this->activeExceptionHandlerClassName);
 			}
 		} elseif (!empty($this->activeExceptionHandlerClassName)) {
 			// Restore exception handler in case extensions have unset the configuration in ext_localconf.php
@@ -798,7 +800,7 @@ class Bootstrap {
 	 */
 	public function initializeTypo3DbGlobal() {
 		/** @var $databaseConnection \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$databaseConnection = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+		$databaseConnection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$databaseConnection->setDatabaseName(TYPO3_db);
 		$databaseConnection->setDatabaseUsername(TYPO3_db_username);
 		$databaseConnection->setDatabasePassword(TYPO3_db_password);
@@ -835,7 +837,7 @@ class Bootstrap {
 		}
 
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'])) {
-			$commandsAfterConnect = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
+			$commandsAfterConnect = GeneralUtility::trimExplode(
 				LF,
 				str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']),
 				TRUE
@@ -864,7 +866,7 @@ class Bootstrap {
 			throw new \RuntimeException('TYPO3 Backend locked: Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] . '".', 1294586847);
 		}
 		if (@is_file(PATH_typo3conf . 'LOCK_BACKEND') && $forceProceeding === FALSE) {
-			$fileContent = Utility\GeneralUtility::getUrl(PATH_typo3conf . 'LOCK_BACKEND');
+			$fileContent = GeneralUtility::getUrl(PATH_typo3conf . 'LOCK_BACKEND');
 			if ($fileContent) {
 				header('Location: ' . $fileContent);
 			} else {
@@ -885,7 +887,7 @@ class Bootstrap {
 	 */
 	public function checkBackendIpOrDie() {
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
-			if (!Utility\GeneralUtility::cmpIP(Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
+			if (!GeneralUtility::cmpIP(GeneralUtility::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
 				throw new \RuntimeException('TYPO3 Backend access denied: The IP address of your client does not match the list of allowed IP addresses.', 1389265900);
 			}
 		}
@@ -908,16 +910,16 @@ class Bootstrap {
 				$sslPortSuffix = '';
 			}
 			if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 3) {
-				$requestStr = substr(Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
-				if ($requestStr === 'index.php' && !Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-					list(, $url) = explode('://', Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 2);
+				$requestStr = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
+				if ($requestStr === 'index.php' && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+					list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
 					die;
 				}
-			} elseif (!Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+			} elseif (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 2) {
-					list(, $url) = explode('://', Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
+					list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
 					die;
@@ -969,8 +971,8 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function loadExtensionTables($allowCaching = TRUE) {
-		Utility\ExtensionManagementUtility::loadBaseTca($allowCaching);
-		Utility\ExtensionManagementUtility::loadExtTables($allowCaching);
+		ExtensionManagementUtility::loadBaseTca($allowCaching);
+		ExtensionManagementUtility::loadExtTables($allowCaching);
 		$this->executeExtTablesAdditionalFile();
 		$this->runExtTablesPostProcessingHooks();
 		return $this;
@@ -998,7 +1000,7 @@ class Bootstrap {
 		// Load additional ext tables script if the file exists
 		$extTablesFile = PATH_typo3conf . TYPO3_extTableDef_script;
 		if (file_exists($extTablesFile) && is_file($extTablesFile)) {
-			Utility\GeneralUtility::deprecationLog(
+			GeneralUtility::deprecationLog(
 				'Using typo3conf/' . TYPO3_extTableDef_script . ' is deprecated and will be removed with TYPO3 CMS 8. Please move your TCA overrides'
 				. ' to Configuration/TCA/Overrides of your project specific extension, or slot the signal "tcaIsBeingBuilt" for further processing.'
 			);
@@ -1016,7 +1018,7 @@ class Bootstrap {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] as $classReference) {
 				/** @var $hookObject \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface */
-				$hookObject = Utility\GeneralUtility::getUserObj($classReference);
+				$hookObject = GeneralUtility::getUserObj($classReference);
 				if (!$hookObject instanceof \TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface) {
 					throw new \UnexpectedValueException(
 						'$hookObject "' . $classReference . '" must implement interface TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
@@ -1047,7 +1049,7 @@ class Bootstrap {
 	 */
 	public function initializeBackendUser() {
 		/** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-		$backendUser = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+		$backendUser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
 		$backendUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 		$backendUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
 		$backendUser->auth_timeout_field = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
@@ -1082,7 +1084,7 @@ class Bootstrap {
 	 */
 	public function initializeLanguageObject() {
 		/** @var $GLOBALS['LANG'] \TYPO3\CMS\Lang\LanguageService */
-		$GLOBALS['LANG'] = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+		$GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
 		$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
 		return $this;
 	}
@@ -1106,7 +1108,7 @@ class Bootstrap {
 	 */
 	public function initializeOutputCompression() {
 		if (extension_loaded('zlib') && $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']) {
-			if (Utility\MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'])) {
+			if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'])) {
 				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
 			}
 			ob_start('ob_gzhandler');
@@ -1149,7 +1151,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function initializeBackendTemplate() {
-		$GLOBALS['TBE_TEMPLATE'] = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$GLOBALS['TBE_TEMPLATE'] = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		return $this;
 	}
 

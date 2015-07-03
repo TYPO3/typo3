@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Install\Tests\Unit\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
@@ -35,7 +36,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		// Package manager is mocked in some tests. Backup the original one here to re-inject it to
 		// ExtensionManagementUtility in tearDown() again. makeInstance() is allowed to be used here
 		// since the PackageManager is registered as singleton by bootstrap.
-		$this->backupPackageManager = Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$this->backupPackageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
 	}
 
 	/**
@@ -44,7 +45,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * @return void
 	 */
 	protected function tearDown() {
-		Utility\ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
+		ExtensionManagementUtility::setPackageManager($this->backupPackageManager);
 		if (file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt')) {
 			unlink(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt');
 		}
@@ -113,7 +114,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 */
 	public function deleteProtocolFileDeletesFile() {
 		$extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, array('dummy'), array());
-		Utility\GeneralUtility::writeFile(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt', 'foobar');
+		GeneralUtility::writeFile(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt', 'foobar');
 		$extensionCompatibilityTesterMock->_call('deleteProtocolFile');
 		$this->assertFalse(file_exists(PATH_site . 'typo3temp/ExtensionCompatibilityTester.txt'));
 	}
@@ -129,7 +130,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		// not trigger unwanted side effects.
 		$packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', FALSE);
 		$packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
-		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+		ExtensionManagementUtility::setPackageManager($packageManager);
 
 		$extension = array(
 			'demo1' => array(
@@ -151,7 +152,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		// not trigger unwanted side effects.
 		$packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', FALSE);
 		$packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
-		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+		ExtensionManagementUtility::setPackageManager($packageManager);
 
 		$extension = array(
 			'demo1' => array(
@@ -190,7 +191,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 		// not trigger unwanted side effects.
 		$packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', FALSE);
 		$packageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue(array()));
-		Utility\ExtensionManagementUtility::setPackageManager($packageManager);
+		ExtensionManagementUtility::setPackageManager($packageManager);
 
 		$extension = array(
 			'demo1' => array(
@@ -253,7 +254,7 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 */
 	public function removeCurrentExtensionFromFileRemovesGivenExtension($extensionToRemove, $extensions, $expectedExtensions) {
 		$extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, array('dummy'), array());
-		Utility\GeneralUtility::writeFile($extensionCompatibilityTesterMock->_get('protocolFile'), $extensions);
+		GeneralUtility::writeFile($extensionCompatibilityTesterMock->_get('protocolFile'), $extensions);
 		$extensionCompatibilityTesterMock->_call('removeCurrentExtensionFromFile', $extensionToRemove);
 
 		$fileContent = file_get_contents($extensionCompatibilityTesterMock->_get('protocolFile'));

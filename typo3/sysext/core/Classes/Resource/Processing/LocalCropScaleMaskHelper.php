@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Resource\Processing;
  */
 
 use TYPO3\CMS\Core\Resource;
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
@@ -61,7 +61,7 @@ class LocalCropScaleMaskHelper {
 
 		$originalFileName = $sourceFile->getForLocalProcessing(FALSE);
 		/** @var $gifBuilder GifBuilder */
-		$gifBuilder = Utility\GeneralUtility::makeInstance(GifBuilder::class);
+		$gifBuilder = GeneralUtility::makeInstance(GifBuilder::class);
 		$gifBuilder->init();
 		$gifBuilder->absPrefix = PATH_site;
 
@@ -86,7 +86,7 @@ class LocalCropScaleMaskHelper {
 			}
 
 			$im = $gifBuilder->imageCreateFromFile($originalFileName);
-			$croppedImage = Utility\GeneralUtility::tempnam('crop_', '.' . $sourceFile->getExtension());
+			$croppedImage = GeneralUtility::tempnam('crop_', '.' . $sourceFile->getExtension());
 			$gifBuilder->crop($im, ['crop' => $crop]);
 			if ($gifBuilder->ImageWrite($im, $croppedImage)) {
 				$originalFileName = $croppedImage;
@@ -197,7 +197,7 @@ class LocalCropScaleMaskHelper {
 
 		// Cleanup temp file if it isn't used as result
 		if ($croppedImage && ($result === NULL || $croppedImage !== $result['filePath'])) {
-			Utility\GeneralUtility::unlink_tempfile($croppedImage);
+			GeneralUtility::unlink_tempfile($croppedImage);
 		}
 
 		return $result;

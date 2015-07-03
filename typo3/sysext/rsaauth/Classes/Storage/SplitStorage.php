@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  */
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This class contains a "split" storage for the data. It keeps part of the data
@@ -52,7 +52,7 @@ class SplitStorage extends AbstractStorage {
 	public function get() {
 		$result = NULL;
 		list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
-		if (Utility\MathUtility::canBeInterpretedAsInteger($keyId)) {
+		if (MathUtility::canBeInterpretedAsInteger($keyId)) {
 			// Remove expired keys (more than 30 minutes old)
 			$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 			// Get our value
@@ -75,7 +75,7 @@ class SplitStorage extends AbstractStorage {
 		if ($key == NULL) {
 			// Remove existing key
 			list($keyId) = $_SESSION['tx_rsaauth_key'];
-			if (Utility\MathUtility::canBeInterpretedAsInteger($keyId)) {
+			if (MathUtility::canBeInterpretedAsInteger($keyId)) {
 				$this->databaseConnection->exec_DELETEquery('tx_rsaauth_keys', 'uid=' . $keyId);
 				unset($_SESSION['tx_rsaauth_key']);
 			}

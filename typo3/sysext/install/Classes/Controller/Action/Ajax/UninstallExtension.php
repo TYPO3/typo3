@@ -14,7 +14,8 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Uninstall Extensions
@@ -35,13 +36,13 @@ class UninstallExtension extends AbstractAjaxAction {
 	 * @return string "OK" on success, the error message otherwise
 	 */
 	protected function executeAction() {
-		$getVars = Utility\GeneralUtility::_GET('install');
+		$getVars = GeneralUtility::_GET('install');
 		if (isset($getVars['uninstallExtension']) && isset($getVars['uninstallExtension']['extensions'])) {
-			$extensionsToUninstall = Utility\GeneralUtility::trimExplode(',', $getVars['uninstallExtension']['extensions']);
+			$extensionsToUninstall = GeneralUtility::trimExplode(',', $getVars['uninstallExtension']['extensions']);
 			foreach ($extensionsToUninstall as $extension) {
-				if (Utility\ExtensionManagementUtility::isLoaded($extension)) {
+				if (ExtensionManagementUtility::isLoaded($extension)) {
 					try {
-						Utility\ExtensionManagementUtility::unloadExtension($extension);
+						ExtensionManagementUtility::unloadExtension($extension);
 					} catch (\Exception $e) {
 						return $e->getMessage();
 					}
