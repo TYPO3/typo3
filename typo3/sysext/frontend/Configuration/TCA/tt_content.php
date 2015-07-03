@@ -471,8 +471,8 @@ return array(
 				'max' => '4',
 				'eval' => 'int',
 				'range' => array(
-					'upper' => '999',
-					'lower' => '25'
+					'upper' => 1999,
+					'lower' => 0,
 				),
 				'default' => 0
 			)
@@ -486,8 +486,8 @@ return array(
 				'max' => '4',
 				'eval' => 'int',
 				'range' => array(
-					'upper' => '700',
-					'lower' => '25'
+					'upper' => 1999,
+					'lower' => 0,
 				),
 				'default' => 0
 			)

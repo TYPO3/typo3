@@ -38,9 +38,9 @@ function evalFunc() {
 	this.ltrim = evalFunc_ltrim;
 	this.btrim = evalFunc_btrim;
 	var today = new Date();
- 	this.lastYear = this.getYear(today);
- 	this.lastDate = this.getDate(today);
- 	this.lastTime = 0;
+	this.lastYear = this.getYear(today);
+	this.lastDate = this.getDate(today);
+	this.lastTime = 0;
 	this.refDate = today;
 	this.isInString = '';
 	this.USmode = 0;
@@ -101,7 +101,7 @@ function evalFunc_caseSwitch(type,inVal) {
 					newString+=theChar;
 				}
 			}
-		break;
+			break;
 		case "is_in":
 			if (this.isInString) {
 				for (var a=0;a<theVal.length;a++) {
@@ -111,16 +111,16 @@ function evalFunc_caseSwitch(type,inVal) {
 					}
 				}
 			} else {newString = theVal;}
-		break;
+			break;
 		case "nospace":
 			newString = this.noSpace(theVal);
-		break;
+			break;
 		case "upper":
 			newString = theVal.toUpperCase();
-		break;
+			break;
 		case "lower":
 			newString = theVal.toLowerCase();
-		break;
+			break;
 		default:
 			return inVal;
 	}
@@ -164,7 +164,7 @@ function evalFunc_parseDouble(value) {
 	var dec = parts.pop();
 	theVal = Number(parts.join("") + "." + dec);
 	if (negative) {
-	    theVal *= -1;
+		theVal *= -1;
 	}
 	theVal = theVal.toFixed(2);
 
@@ -272,31 +272,31 @@ function evalFunc_input(type,inVal) {
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				case "+":
 				case "-":
 					if (this.lastTime == 0) {
 						this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(today), 0);
 					}
 					if (values.valPol[1]) {
-						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
+						add = this.pol(values.valPol[1], this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				default:
 					var index = value.indexOf(' ');
 					if (index!=-1) {
-						var dateVal = this.input("date",value.substr(index,value.length));
-							// set refDate so that evalFunc_input on time will work with correct DST information
+						var dateVal = this.input("date", value.substr(index,value.length));
+						// set refDate so that evalFunc_input on time will work with correct DST information
 						this.refDate = new Date(dateVal*1000);
-						this.lastTime = dateVal + this.input("time",value.substr(0,index));
+						this.lastTime = dateVal + this.input("time", value.substr(0,index));
 					} else	{
-							// only date, no time
+						// only date, no time
 						this.lastTime = this.input("date", value);
 					}
 			}
 			this.lastTime+=add*24*60*60;
 			return this.lastTime;
-		break;
+			break;
 		case "year":
 			switch (theCmd) {
 				case "d":
@@ -306,13 +306,13 @@ function evalFunc_input(type,inVal) {
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				case "+":
 				case "-":
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				default:
 					if (values.valPol[2]) {
 						add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
@@ -329,7 +329,7 @@ function evalFunc_input(type,inVal) {
 			}
 			this.lastYear+=add;
 			return this.lastYear;
-		break;
+			break;
 		case "date":
 			switch (theCmd) {
 				case "d":
@@ -339,13 +339,13 @@ function evalFunc_input(type,inVal) {
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				case "+":
 				case "-":
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				default:
 					var index = 4;
 					if (values.valPol[index]) {
@@ -372,12 +372,12 @@ function evalFunc_input(type,inVal) {
 
 					var theTime = new Date(parseInt(year), parseInt(month)-1, parseInt(day));
 
-						// Substract timezone offset from client
+					// Substract timezone offset from client
 					this.lastDate = this.convertClientTimestampToUTC(this.getTimestamp(theTime), 0);
 			}
 			this.lastDate+=add*24*60*60;
 			return this.lastDate;
-		break;
+			break;
 		case "time":
 		case "timesec":
 			switch (theCmd) {
@@ -388,7 +388,7 @@ function evalFunc_input(type,inVal) {
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				case "+":
 				case "-":
 					if (this.lastTime == 0) {
@@ -397,7 +397,7 @@ function evalFunc_input(type,inVal) {
 					if (values.valPol[1]) {
 						add = this.pol(values.valPol[1],this.parseInt(values.values[1]));
 					}
-				break;
+					break;
 				default:
 					var index = (type=="timesec")?4:3;
 					if (values.valPol[index]) {
@@ -419,13 +419,13 @@ function evalFunc_input(type,inVal) {
 
 					var theTime = new Date(this.getYear(this.refDate), this.refDate.getUTCMonth(), this.refDate.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
 
-						// Substract timezone offset from client
+					// Substract timezone offset from client
 					this.lastTime = this.convertClientTimestampToUTC(this.getTimestamp(theTime), 1);
 			}
 			this.lastTime+=add*60;
 			if (this.lastTime<0) {this.lastTime+=24*60*60;}
 			return this.lastTime;
-		break;
+			break;
 		default:
 			return value;
 	}
@@ -441,11 +441,11 @@ function evalFunc_output(type,value,FObj) {
 			} else {
 				theString = theTime.getUTCDate()+'-'+(theTime.getUTCMonth()+1)+'-'+this.getYear(theTime);
 			}
-		break;
+			break;
 		case "datetime":
 			if (!parseInt(value))	{return '';}
 			theString = this.output("time",value)+' '+this.output("date",value);
-		break;
+			break;
 		case "time":
 		case "timesec":
 			if (!parseInt(value))	{return '';}
@@ -454,13 +454,13 @@ function evalFunc_output(type,value,FObj) {
 			var m = theTime.getUTCMinutes();
 			var s = theTime.getUTCSeconds();
 			theString = h+':'+((m<10)?'0':'')+m + ((type=="timesec")?':'+((s<10)?'0':'')+s:'');
-		break;
+			break;
 		case "password":
 			theString = (value)	? TS.passwordDummy : "";
-		break;
+			break;
 		case "int":
 			theString = (FObj.checkbox && value==FObj.checkboxValue)?'':value;
-		break;
+			break;
 		default:
 			theString = value;
 	}
@@ -512,10 +512,10 @@ function evalFunc_convertClientTimestampToUTC(timestamp, timeonly) {
 	var timeObj = new Date(timestamp*1000);
 	timeObj.setTime((timestamp - timeObj.getTimezoneOffset()*60)*1000);
 	if (timeonly) {
-			// only seconds since midnight
+		// only seconds since midnight
 		return this.getTime(timeObj);
 	} else	{
-			// seconds since the "unix-epoch"
+		// seconds since the "unix-epoch"
 		return this.getTimestamp(timeObj);
 	}
 }

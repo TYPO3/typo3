@@ -153,6 +153,22 @@ abstract class AbstractNode implements NodeInterface {
 	 */
 	protected function getValidationDataAsJsonString(array $config) {
 		$validationRules = array();
+		if (!empty($config['eval'])) {
+			$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
+			unset($config['eval']);
+			foreach ($evalList as $evalType) {
+				$validationRules[] = array(
+					'type' => $evalType,
+					'config' => $config
+				);
+			}
+		}
+		if (!empty($config['range'])) {
+			$validationRules[] = array(
+				'type' => 'range',
+				'config' => $config['range']
+			);
+		}
 		if (!empty($config['maxitems']) || !empty($config['minitems'])) {
 			$minItems = (isset($config['minitems'])) ? (int)$config['minitems'] : 0;
 			$maxItems = (isset($config['maxitems'])) ? (int)$config['maxitems'] : 10000;

@@ -211,9 +211,7 @@ class FormEngine {
 	 *
 	 * @var array
 	 */
-	protected $requireJsModules = array(
-		'TYPO3/CMS/Backend/FormEngineValidation' => NULL
-	);
+	protected $requireJsModules = array();
 
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
@@ -1227,6 +1225,11 @@ class FormEngine {
 			$this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 				FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('browser')) . ');
 			}';
+			$this->requireJsModules['TYPO3/CMS/Backend/FormEngineValidation'] = 'function(FormEngineValidation) {
+				FormEngineValidation.setUsMode(' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ');
+				FormEngineValidation.registerReady();
+			}';
+
 			foreach ($this->requireJsModules as $moduleName => $callbacks) {
 				if (!is_array($callbacks)) {
 					$callbacks = array($callbacks);
@@ -1247,7 +1250,6 @@ class FormEngine {
 			);
 			$pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
 
-			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
 			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
 			// Needed for FormEngine manipulation (date picker)
@@ -1290,8 +1292,6 @@ class FormEngine {
 			TBE_EDITOR.labels.refresh_login = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login')) . ';
 			TBE_EDITOR.labels.onChangeAlert = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.onChangeAlert')) . ';
 			TBE_EDITOR.labels.remainingCharacters = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remainingCharacters')) . ';
-			evalFunc.USmode = ' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . ';
-
 			TBE_EDITOR.customEvalFunctions = {};
 
 			';

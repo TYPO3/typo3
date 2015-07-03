@@ -150,6 +150,8 @@ var TBE_EDITOR = {
 
 		// modify the "field has changed" info by adding a class to the container element (based on palette or main field)
 		var $formField = TYPO3.jQuery('[name="' + el + '"]');
+		var $humanReadableField = TYPO3.jQuery('[name="' + el + '_hr"]');
+		$humanReadableField.triggerHandler('change');
 		var $paletteField = $formField.closest('.t3js-formengine-palette-field');
 		$paletteField.addClass('has-change');
 
@@ -347,8 +349,8 @@ function typoSetup	() {
 	this.passwordDummy = '********';
 	this.decimalSign = '.';
 }
+// @todo: maybe obsolete, need a deeper check
 var TS = new typoSetup();
-var evalFunc = new evalFunc();
 
 // backwards compatibility for extensions
 var TBE_EDITOR_setHiddenContent = TBE_EDITOR.setHiddenContent;
@@ -439,6 +441,15 @@ var typo3form = {
 		}
 	}
 };
+
+// @TODO: This function is a copy from jsfunc.evalfield.js
+// @TODO: Remove it later, after TBE_EDITOR is not used anymore.
+function evalFunc_dummy (evallist,is_in,checkbox,checkboxValue) {
+	this.evallist = evallist;
+	this.is_in = is_in;
+	this.checkboxValue = checkboxValue;
+	this.checkbox = checkbox;
+}
 
 // backwards compatibility for extensions
 var typo3FormFieldSet = typo3form.fieldSet;

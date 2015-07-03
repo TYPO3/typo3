@@ -618,7 +618,9 @@ class ElementBrowser {
 						} else {
 							field.value = input;
 						}
-						field.onchange();
+						if (typeof field.onchange === \'function\') {
+							field.onchange();
+						}
 						' . $update . '
 					}
 				}

@@ -153,20 +153,25 @@ class InputElement extends AbstractFormElement {
 					}
 			}
 		}
-		$paramsList = GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ',' . GeneralUtility::quoteJSvalue(implode(',', $evalList)) . ',' . GeneralUtility::quoteJSvalue(trim($config['is_in'])) . ',' . ($config['checkbox'] ? 1 : 0) . ',' . GeneralUtility::quoteJSvalue($config['checkbox']);
-		$parameterArray['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'), $parameterArray['fieldChangeFunc']);
-
+		$paramsList = array(
+			'field' => $parameterArray['itemFormElName'],
+			'evalList' => implode(',', $evalList),
+			'is_in' => trim($config['is_in']),
+			'checkbox' => ($config['checkbox'] ? 1 : 0),
+			'checkboxValue' => $config['checkbox'],
+		);
 		// set classes
 		$classes[] = 'form-control';
 		$classes[] = 't3js-clearable';
 		$classes[] = 'hasDefaultValue';
 
 		// calculate attributes
+		$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
+		$attributes['data-formengine-input-params'] = json_encode($paramsList);
 		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
 		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
 		$attributes['value'] = '';
 		$attributes['maxlength'] = $config['max'] ?: 256;
-		$attributes['onchange'] = implode('', $parameterArray['fieldChangeFunc']);
 
 		if (!empty($styles)) {
 			$attributes['style'] = implode(' ', $styles);
@@ -178,29 +183,25 @@ class InputElement extends AbstractFormElement {
 			$attributes['maxlength'] = (int)$config['max'];
 		}
 
+		// This is the EDITABLE form field.
+		$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
+		if (!empty($placeholderValue)) {
+			$attributes['placeholder'] = trim($languageService->sL($placeholderValue));
+		}
+
 		// Build the attribute string
 		$attributeString = '';
 		foreach ($attributes as $attributeName => $attributeValue) {
 			$attributeString .= ' ' . $attributeName . '="' . htmlspecialchars($attributeValue) . '"';
 		}
 
-		// This is the EDITABLE form field.
-		$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
-		$placeholderAttribute = '';
-		if (!empty($placeholderValue)) {
-			$placeholderAttribute = ' placeholder="' . htmlspecialchars(trim($languageService->sL($placeholderValue))) . '" ';
-		}
-
 		$html = '
 			<input type="text"'
 				. $attributeString
-				. $placeholderAttribute
 				. $parameterArray['onFocus'] . ' />';
 
 		// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$html .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
-
-		$resultArray['extJSCODE'] = 'typo3form.fieldSet(' . $paramsList . ');';
 
 		// Going through all custom evaluations configured for this field
 		// @todo: Similar to above code!
