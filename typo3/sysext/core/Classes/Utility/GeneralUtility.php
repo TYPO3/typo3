@@ -2778,7 +2778,7 @@ Connection: close
 		if (file_exists($path)) {
 			$OK = TRUE;
 			if (!is_link($path) && is_dir($path)) {
-				if ($removeNonEmpty == TRUE && ($handle = opendir($path))) {
+				if ($removeNonEmpty == TRUE && ($handle = @opendir($path))) {
 					while ($OK && FALSE !== ($file = readdir($handle))) {
 						if ($file == '.' || $file == '..') {
 							continue;
@@ -2791,14 +2791,14 @@ Connection: close
 					$OK = @rmdir($path);
 				}
 			} elseif (is_link($path) && is_dir($path) && TYPO3_OS === 'WIN') {
-				$OK = rmdir($path);
+				$OK = @rmdir($path);
 			} else {
 				// If $path is a file, simply remove it
-				$OK = unlink($path);
+				$OK = @unlink($path);
 			}
 			clearstatcache();
 		} elseif (is_link($path)) {
-			$OK = unlink($path);
+			$OK = @unlink($path);
 			clearstatcache();
 		}
 		return $OK;
