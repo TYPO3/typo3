@@ -105,6 +105,8 @@ class ActionController extends AbstractController {
 			);
 		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+		} catch (\TYPO3\CMS\Core\Package\Exception $e) {
+			$this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 
 		return '';
