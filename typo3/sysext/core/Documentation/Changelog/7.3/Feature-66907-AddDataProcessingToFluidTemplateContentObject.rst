@@ -6,7 +6,8 @@ Description
 ===========
 
 cObject FLUIDTEMPLATE has been extended with ``dataProcessing``. This setting can be used to add one or multiple processors to
-manipulate the ``$data`` variable of the currently rendered content object, like tt_content or page.
+manipulate data of the currently rendered content object, like tt_content or page, and fill a key/value store that will be passed
+as variables to the Fluid template, where every key of the key/value store will be available as variable in the Fluid template.
 
 - dataProcessing = array of class references by full namespace
 

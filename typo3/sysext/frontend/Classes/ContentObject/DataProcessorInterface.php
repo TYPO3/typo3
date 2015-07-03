@@ -14,26 +14,25 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\View\StandaloneView;
-
 /**
- * Interface for data processor classes with the FLUIDTEMPLATE content object
+ * Interface for data processor classes processing data from
+ * ContentObjectRenderer, used e.g. with the FLUIDTEMPLATE content object
  */
-interface FluidTemplateDataProcessorInterface {
+interface DataProcessorInterface {
 
 	/**
-	 * Process data passed to the FLUIDTEMPLATE content object
+	 * Process content object data
 	 *
-	 * @param array $data The data of the content element or page
+	 * @param ContentObjectRenderer $cObj The data of the content element or page
 	 * @param array $processorConfiguration The configuration of this processor
-	 * @param array $configuration The configuration of FLUIDTEMPLATE
-	 * @param \TYPO3\CMS\Fluid\View\StandaloneView $view The view
-	 * @return void
+	 * @param array $contentObjectConfiguration The configuration of Content Object
+	 * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
+	 * @return array the processed data as key/value store
 	 */
 	public function process(
-		array &$data,
+		ContentObjectRenderer $cObj,
+		array $contentObjectConfiguration,
 		array $processorConfiguration,
-		array $configuration,
-		StandaloneView $view
+		array $processedData
 	);
 }

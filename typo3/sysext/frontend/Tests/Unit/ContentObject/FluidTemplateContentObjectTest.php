@@ -615,9 +615,9 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->method('cObjGetSingle')
 			->will($this->returnValue('foo'));
 		$this->standaloneView
-			->expects($this->at(1))
-			->method('assign')
-			->with('aVar', 'foo');
+			->expects($this->once())
+			->method('assignMultiple')
+			->with(array('aVar' => 'foo', 'data' => array(), 'current' => NULL));
 		$this->subject->render($configuration);
 	}
 
@@ -628,9 +628,9 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 		$this->addMockViewToSubject();
 		$this->contentObjectRenderer->data = array('foo');
 		$this->standaloneView
-			->expects($this->at(1))
-			->method('assign')
-			->with('data', array('foo'));
+			->expects($this->once())
+			->method('assignMultiple')
+			->with(array('data' => array('foo'), 'current' => NULL));
 		$this->subject->render(array());
 	}
 
@@ -640,11 +640,11 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	public function renderAssignsContentObjectRendererCurrentValueToView() {
 		$this->addMockViewToSubject();
 		$this->contentObjectRenderer->data = array('currentKey' => 'currentValue');
-		$this->contentObjectRenderer->currentValKey= 'currentKey';
+		$this->contentObjectRenderer->currentValKey = 'currentKey';
 		$this->standaloneView
-			->expects($this->at(2))
-			->method('assign')
-			->with('current', 'currentValue');
+			->expects($this->once())
+			->method('assignMultiple')
+			->with(array('data' => array('currentKey' => 'currentValue'), 'current' => 'currentValue'));
 		$this->subject->render(array());
 	}
 
