@@ -1011,7 +1011,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 							$name .= $this->renderTaskProgressBar($progress);
 						}
 						if (!empty($additionalInformation)) {
-							$name .= '<div class="additional-information"><span title="' . htmlspecialchars($additionalInformation) . '">[' . GeneralUtility::fixed_lgd_cs(htmlspecialchars($additionalInformation), (int)$this->getBackendUser()->uc['titleLen']) . ']</span></div>';
+							$name .= '<div class="additional-information">' . nl2br(htmlspecialchars($additionalInformation)) . '</div>';
 						}
 						// Check if task currently has a running execution
 						if (!empty($schedulerRecord['serialized_executions'])) {
@@ -1098,17 +1098,17 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						}
 						// Format the execution status,
 						// including failure feedback, if any
+						$taskDesc = '';
 						if ($schedulerRecord['description'] !== '') {
-							$taskName = '<span title="' . htmlspecialchars($schedulerRecord['description']) . '">' . $name . '</span>';
-						} else {
-							$taskName = $name;
+							$taskDesc = '<span class="description">' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '</span>';
 						}
+						$taskName = '<span class="name">' . $name . '</span>';
 
 						$table[] =
 							'<tr class="' . ($showAsDisabled ? 'disabled' : '') . '">'
 								. '<td>' . $startExecutionElement . '</td>'
 								. '<td class="right">' . $schedulerRecord['uid'] . '</td>'
-								. '<td>' . $taskName . ' ' . $this->makeStatusLabel($labels) . '</td>'
+								. '<td>' . $this->makeStatusLabel($labels) . $taskName . $taskDesc . '</td>'
 								. '<td>' . $execType . '</td>'
 								. '<td>' . $frequency . '</td>'
 								. '<td>' . $multiple . '</td>'
@@ -1139,7 +1139,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 			$this->getDatabaseConnection()->sql_free_result($res);
 
-			$this->view->assign('table', '<div class="table-fit"><table class="table table-striped table-hover">' . implode(LF, $table) . '</table></div>');
+			$this->view->assign('table', '<table class="table table-striped table-hover">' . implode(LF, $table) . '</table>');
 
 			// Server date time
 			$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
@@ -1161,7 +1161,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			if (empty($label['text'])) {
 				continue;
 			}
-			$htmlLabels[] = '<span class="label label-' . $label['class'] . '" title="' . htmlspecialchars($label['description']) . '">' . $label['text'] . '</span>';
+			$htmlLabels[] = '<span class="label label-' . htmlspecialchars($label['class']) . ' pull-right" title="' . htmlspecialchars($label['description']) . '">' . htmlspecialchars($label['text']) . '</span>';
 		}
 
 		return implode('&nbsp;', $htmlLabels);

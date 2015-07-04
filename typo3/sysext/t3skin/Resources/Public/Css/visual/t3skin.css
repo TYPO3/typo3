@@ -12346,6 +12346,17 @@ iframe {
 .query-builder .indent {
   padding-left: 20px;
 }
+.tx_scheduler_mod1 .table td {
+  vertical-align: top;
+}
+.tx_scheduler_mod1 .table span.name {
+  display: block;
+}
+.tx_scheduler_mod1 .table span.description {
+  font-style: italic;
+  white-space: normal;
+  color: #737373;
+}
 .t3-grid-table {
   border-collapse: separate;
   border-spacing: 10px 0;
