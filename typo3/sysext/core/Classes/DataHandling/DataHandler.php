@@ -4622,6 +4622,14 @@ class DataHandler
                     } else {
                         $translateToMsg = @sprintf($TSConfig['translateToMessage'], $langRec['title']);
                     }
+                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'])) {
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processTranslateToClass'] as $classRef) {
+                            $hookObj = GeneralUtility::getUserObj($classRef);
+                            if (method_exists($hookObj, 'processTranslateTo_copyAction')) {
+                                $hookObj->processTranslateTo_copyAction($row[$fN], $langRec, $this);
+                            }
+                        }
+                    }
                     $overrideValues[$fN] = '[' . $translateToMsg . '] ' . $row[$fN];
                 }
             } elseif (
