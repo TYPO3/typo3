@@ -845,6 +845,28 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Reloads a package and its information
+	 *
+	 * @param string $packageKey
+	 * @throws Exception\InvalidPackageStateException if the package isn't available
+	 * @throws Exception\InvalidPackageKeyException if an invalid package key was passed
+	 * @throws Exception\InvalidPackagePathException if an invalid package path was passed
+	 * @throws Exception\InvalidPackageManifestException if no extension configuration file could be found
+	 */
+	public function reloadPackageInformation($packageKey) {
+		if (!$this->isPackageAvailable($packageKey)) {
+			throw new Exception\InvalidPackageStateException('Package "' . $packageKey . '" is not registered.', 1436201329);
+		}
+
+		/** @var PackageInterface $package */
+		$package = $this->packages[$packageKey];
+		$packagePath = $package->getPackagePath();
+		$newPackage = new Package($this, $packageKey, $packagePath);
+		$this->packages[$packageKey] = $newPackage;
+		unset($package);
+	}
+
+	/**
 	 * Scans all sub directories of the specified directory and collects the package keys of packages it finds.
 	 *
 	 * The return of the array is to make this method usable in array_merge.

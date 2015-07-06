@@ -268,6 +268,22 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Reloads the package information, if the package is already registered
+	 *
+	 * @param string $extensionKey
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException if the package isn't available
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException if an invalid package key was passed
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException if an invalid package path was passed
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException if no extension configuration file could be found
+	 */
+	public function reloadPackageInformation($extensionKey) {
+		if ($this->packageManager->isPackageAvailable($extensionKey)) {
+			$this->reloadOpcache();
+			$this->packageManager->reloadPackageInformation($extensionKey);
+		}
+	}
+
+	/**
 	 * Fetch additional information for an extension key
 	 *
 	 * @param string $extensionKey
@@ -368,9 +384,16 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function reloadCaches() {
-		GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+		$this->reloadOpcache();
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadExtLocalconf(FALSE);
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->loadExtensionTables(FALSE);
+	}
+
+	/**
+	 * Reloads PHP opcache
+	 */
+	protected function reloadOpcache() {
+		GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
 	}
 
 	/**

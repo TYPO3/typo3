@@ -211,7 +211,8 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'extractFilesArrayFromExtensionData',
 			'extractDirectoriesFromExtensionData',
 			'createDirectoriesForExtensionFiles',
-			'writeExtensionFiles'
+			'writeExtensionFiles',
+			'reloadPackageInformation',
 		));
 		$fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue(array()));
 		$fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue(array()));
@@ -277,12 +278,14 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'extractFilesArrayFromExtensionData',
 			'extractDirectoriesFromExtensionData',
 			'createDirectoriesForExtensionFiles',
-			'writeExtensionFiles'
+			'writeExtensionFiles',
+			'reloadPackageInformation',
 		));
 		$fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue($files));
 		$fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue($directories));
 		$fileHandlerMock->expects($this->once())->method('createDirectoriesForExtensionFiles')->with($directories);
 		$fileHandlerMock->expects($this->once())->method('writeExtensionFiles')->with($cleanedFiles);
+		$fileHandlerMock->expects($this->once())->method('reloadPackageInformation')->with('test');
 		$fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
 	}
 

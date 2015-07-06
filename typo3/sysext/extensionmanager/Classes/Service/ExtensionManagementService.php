@@ -229,6 +229,17 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @param string $extensionKey
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageStateException if the package isn't available
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageKeyException if an invalid package key was passed
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackagePathException if an invalid package path was passed
+	 * @throws \TYPO3\CMS\Core\Package\Exception\InvalidPackageManifestException if no extension configuration file could be found
+	 */
+	public function reloadPackageInformation($extensionKey) {
+		$this->installUtility->reloadPackageInformation($extensionKey);
+	}
+
+	/**
 	 * Download an extension
 	 *
 	 * @param Extension $extension

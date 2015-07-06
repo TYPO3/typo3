@@ -204,6 +204,7 @@ class UploadExtensionFileController extends AbstractController {
 	 * @return bool
 	 */
 	public function activateExtension($extensionKey) {
+		$this->managementService->reloadPackageInformation($extensionKey);
 		$extension = $this->managementService->getExtension($extensionKey);
 		return is_array($this->managementService->installExtension($extension));
 	}

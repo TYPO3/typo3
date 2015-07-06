@@ -84,6 +84,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->createDirectoriesForExtensionFiles($directories, $extensionDir);
 		$this->writeExtensionFiles($files, $extensionDir);
 		$this->writeEmConfToFile($extensionData, $extensionDir, $extension);
+		$this->reloadPackageInformation($extensionData['extKey']);
 	}
 
 	/**
@@ -516,6 +517,13 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		readfile($fileName);
 		unlink($fileName);
 		die;
+	}
+
+	/**
+	 * @param string $extensionKey
+	 */
+	protected function reloadPackageInformation($extensionKey) {
+		$this->installUtility->reloadPackageInformation($extensionKey);
 	}
 
 }
