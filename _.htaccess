@@ -254,10 +254,8 @@ AddDefaultCharset utf-8
 	# Enable URL rewriting
 	RewriteEngine On
 
-	# Using mod_rewrite in .htaccess files without knowing the RewriteBase
-	RewriteBase /
-
-	# Store the current location in an environment variable CWD
+	# Store the current location in an environment variable CWD to use
+	# mod_rewrite in .htaccess files without knowing the RewriteBase
 	RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
 	RewriteRule ^.*$ - [E=CWD:%2]
 
