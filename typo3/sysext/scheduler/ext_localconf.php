@@ -65,8 +65,8 @@ if (TYPO3_OS !== 'WIN') {
 // to temporary variable so it can be pre-populated by other
 // extensions and LocalConfiguration/AdditionalConfiguration
 $garbageCollectionTaskOptions = array();
-if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options'])) {
-	$garbageCollectionTaskOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options'];
+if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options'])) {
+	$garbageCollectionTaskOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options'];
 }
 // Initialize tables sub-array if not set already
 if (!is_array($garbageCollectionTaskOptions['tables'])) {
