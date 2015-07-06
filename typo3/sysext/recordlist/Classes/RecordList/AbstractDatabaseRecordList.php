@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -320,6 +321,17 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 	protected $overrideUrlParameters = array();
 
 	/**
+	 * Array with before/after setting for tables
+	 * Structure:
+	 * 'tableName' => [
+	 *    'before' => ['A', ...]
+	 *    'after' => []
+	 *  ]
+	 * @var array[]
+	 */
+	protected $tableDisplayOrder = [];
+
+	/**
 	 * Initializes the list generation
 	 *
 	 * @param int $id Page id for which the list is rendered. Must be >= 0
@@ -417,64 +429,88 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 		// Set page record in header
 		$this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
 		$hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
-		// Traverse the TCA table array:
-		foreach ($GLOBALS['TCA'] as $tableName => $value) {
+
+		$backendUser = $this->getBackendUserAuthentication();
+
+		// pre-process tables and add sorting instructions
+		$tableNames = array_flip(array_keys($GLOBALS['TCA']));
+		foreach ($tableNames as $tableName => &$config) {
+			$hideTable = FALSE;
+
 			// Checking if the table should be rendered:
 			// Checks that we see only permitted/requested tables:
-			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || GeneralUtility::inList($this->tableList, $tableName)) && $this->getBackendUserAuthentication()->check('tables_select', $tableName)) {
+			if ($this->table && $tableName !== $this->table
+				|| $this->tableList && !GeneralUtility::inList($this->tableList, $tableName)
+				|| !$backendUser->check('tables_select', $tableName)
+			) {
+				$hideTable = TRUE;
+			}
+
+			if (!$hideTable) {
 				// Don't show table if hidden by TCA ctrl section
-				$hideTable = $GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ? TRUE : FALSE;
 				// Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-				if (in_array($tableName, $hideTablesArray)) {
-					$hideTable = TRUE;
-				}
+				$hideTable = $hideTable || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable']) || in_array($tableName, $hideTablesArray, TRUE);
 				// Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
 				if (isset($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'])) {
-					$hideTable = $this->tableTSconfigOverTCA[$tableName . '.']['hideTable'] ? TRUE : FALSE;
+					$hideTable = (bool)$this->tableTSconfigOverTCA[$tableName . '.']['hideTable'];
 				}
-				if ($hideTable) {
+			}
+			if ($hideTable) {
+				unset($tableNames[$tableName]);
+			} else {
+				if (isset($this->tableDisplayOrder[$tableName])) {
+					// Copy display order information
+					$tableNames[$tableName] = $this->tableDisplayOrder[$tableName];
+				} else {
+					$tableNames[$tableName] = [];
+				}
+			}
+		}
+		unset($config);
+
+		$orderedTableNames = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($tableNames);
+
+		$db = $this->getDatabaseConnection();
+		foreach ($orderedTableNames as $tableName => $_) {
+			// check if we are in single- or multi-table mode
+			if ($this->table) {
+				$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] : $this->itemsLimitSingleTable;
+			} else {
+				// if there are no records in table continue current foreach
+				$firstRow = $db->exec_SELECTgetSingleRow(
+					'uid',
+					$tableName,
+					$this->pidSelect . BackendUtility::deleteClause($tableName) . BackendUtility::versioningPlaceholderClause($tableName)
+				);
+				if ($firstRow === FALSE) {
 					continue;
 				}
-				// check if we are in single- or multi-table mode
-				if ($this->table) {
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'] : $this->itemsLimitSingleTable;
-				} else {
-					// if there are no records in table continue current foreach
-					$firstRow = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-						'uid',
-						$tableName,
-						$this->pidSelect . BackendUtility::deleteClause($tableName) . BackendUtility::versioningPlaceholderClause($tableName)
-					);
-					if ($firstRow === FALSE) {
-						continue;
-					}
-					$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'] : $this->itemsLimitPerTable;
-				}
-				if ($this->showLimit) {
-					$this->iLimit = $this->showLimit;
-				}
-				// Setting fields to select:
-				if ($this->allFields) {
-					$fields = $this->makeFieldList($tableName);
-					$fields[] = 'tstamp';
-					$fields[] = 'crdate';
-					$fields[] = '_PATH_';
-					$fields[] = '_CONTROL_';
-					if (is_array($this->setFields[$tableName])) {
-						$fields = array_intersect($fields, $this->setFields[$tableName]);
-					} else {
-						$fields = array();
-					}
+				$this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']) ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'] : $this->itemsLimitPerTable;
+			}
+			if ($this->showLimit) {
+				$this->iLimit = $this->showLimit;
+			}
+			// Setting fields to select:
+			if ($this->allFields) {
+				$fields = $this->makeFieldList($tableName);
+				$fields[] = 'tstamp';
+				$fields[] = 'crdate';
+				$fields[] = '_PATH_';
+				$fields[] = '_CONTROL_';
+				if (is_array($this->setFields[$tableName])) {
+					$fields = array_intersect($fields, $this->setFields[$tableName]);
 				} else {
 					$fields = array();
 				}
-				// Find ID to use (might be different for "versioning_followPages" tables)
-				if ($this->searchLevels === 0) {
-					$this->pidSelect = 'pid=' . (int)$this->id;
-				}
-				// Finally, render the list:
-				$this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
+			} else {
+				$fields = array();
 			}
+			// Find ID to use (might be different for "versioning_followPages" tables)
+			if ($this->searchLevels === 0) {
+				$this->pidSelect = 'pid=' . (int)$this->id;
+			}
+			// Finally, render the list:
+			$this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
 		}
 	}
 
@@ -1029,6 +1065,38 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 	 */
 	public function setOverrideUrlParameters(array $urlParameters) {
 		$this->overrideUrlParameters = $urlParameters;
+	}
+
+	/**
+	 * Set table display order information
+	 *
+	 * Structure of $orderInformation:
+	 *   'tableName' => [
+	 *      'before' => // comma-separated string list or array of table names
+	 *      'after' => // comma-separated string list or array of table names
+	 * ]
+	 *
+	 * @param array $orderInformation
+	 * @throws \UnexpectedValueException
+	 */
+	public function setTableDisplayOrder(array $orderInformation) {
+		foreach ($orderInformation as $tableName => &$configuration) {
+			if (isset($configuration['before'])) {
+				if (is_string($configuration['before'])) {
+					$configuration['before'] = GeneralUtility::trimExplode(',', $configuration['before'], TRUE);
+				} elseif (!is_array($configuration['before'])) {
+					throw new \UnexpectedValueException('The specified "before" order configuration for table "' . $tableName . '" is invalid.', 1436195933);
+				}
+			}
+			if (isset($configuration['after'])) {
+				if (is_string($configuration['after'])) {
+					$configuration['after'] = GeneralUtility::trimExplode(',', $configuration['after'], TRUE);
+				} elseif (!is_array($configuration['after'])) {
+					throw new \UnexpectedValueException('The specified "after" order configuration for table "' . $tableName . '" is invalid.', 1436195934);
+				}
+			}
+		}
+		$this->tableDisplayOrder = $orderInformation;
 	}
 
 	/**

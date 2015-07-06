@@ -584,6 +584,20 @@ return array(
 		'defaultPageTSconfig' => 'mod.web_list.enableDisplayBigControlPanel=selectable
 			mod.web_list.enableClipBoard=selectable
 			mod.web_list.enableLocalizationView=selectable
+			mod.web_list.tableDisplayOrder {
+				be_users.after = be_groups
+				sys_filemounts.after = be_users
+				sys_file_storage.after = sys_filemounts
+				sys_language.after = sys_file_storage
+				pages_language_overlay.before = pages
+				fe_users.after = fe_groups
+				fe_users.before = pages
+				sys_template.after = pages
+				backend_layout.after = pages
+				sys_domain.after = sys_template
+				tt_content.after = pages,backend_layout,sys_template
+				sys_category.after = tt_content
+			}
 			mod.wizards.newRecord.pages.show.pageInside=1
 			mod.wizards.newRecord.pages.show.pageAfter=1
 			mod.wizards.newRecord.pages.show.pageSelectPosition=1

@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -322,6 +323,10 @@ class RecordList {
 		$dblist->modTSconfig = $this->modTSconfig;
 		$clickTitleMode = trim($this->modTSconfig['properties']['clickTitleMode']);
 		$dblist->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
+		if (isset($this->modTSconfig['properties']['tableDisplayOrder.'])) {
+			$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+			$dblist->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['properties']['tableDisplayOrder.']));
+		}
 		// Clipboard is initialized:
 		// Start clipboard
 		$dblist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
