@@ -166,7 +166,7 @@ class PreparedStatement {
 		$this->parameters = array();
 
 		// Test if named placeholders are used
-		if ($this->hasNamedPlaceholders($query) || count($precompiledQueryParts) > 0) {
+		if ($this->hasNamedPlaceholders($query) || !empty($precompiledQueryParts)) {
 			$this->statement = NULL;
 		} else {
 			// Only question mark placeholders are used

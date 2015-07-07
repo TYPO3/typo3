@@ -360,7 +360,7 @@ class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implem
 	protected function findCacheFilesByIdentifier($entryIdentifier) {
 		$pattern = $this->cacheDirectory . $entryIdentifier;
 		$filesFound = glob($pattern);
-		if ($filesFound === FALSE || count($filesFound) === 0) {
+		if ($filesFound === FALSE || empty($filesFound)) {
 			return FALSE;
 		}
 		return $filesFound;

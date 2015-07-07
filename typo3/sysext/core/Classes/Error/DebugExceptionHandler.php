@@ -199,7 +199,8 @@ Uncaught TYPO3 Exception ' . $exceptionCodeNumber . $exception->getMessage() . L
 			$phpFile = @file($filePathAndName);
 			if (is_array($phpFile)) {
 				$startLine = $lineNumber > 2 ? $lineNumber - 2 : 1;
-				$endLine = $lineNumber < count($phpFile) - 2 ? $lineNumber + 3 : count($phpFile) + 1;
+				$phpFileCount = count($phpFile);
+				$endLine = $lineNumber < $phpFileCount - 2 ? $lineNumber + 3 : $phpFileCount + 1;
 				if ($endLine > $startLine) {
 					$codeSnippet = '<br /><span style="font-size:10px;">' . $filePathAndName . ':</span><br /><pre>';
 					for ($line = $startLine; $line < $endLine; $line++) {

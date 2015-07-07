@@ -512,7 +512,7 @@ class FrontendEditingController {
 			$perms = $GLOBALS['BE_USER']->calcPerms($GLOBALS['TSFE']->page);
 			if ($table == 'pages') {
 				// Rootpage
-				if (count($GLOBALS['TSFE']->config['rootLine']) == 1) {
+				if (count($GLOBALS['TSFE']->config['rootLine']) === 1) {
 					unset($allow['move']);
 					unset($allow['hide']);
 					unset($allow['delete']);

@@ -504,7 +504,7 @@ abstract class AbstractConditionMatcher {
 	 */
 	protected function getVariableCommon(array $vars) {
 		$value = NULL;
-		if (count($vars) == 1) {
+		if (count($vars) === 1) {
 			$value = $this->getGlobal($vars[0]);
 		} else {
 			$splitAgain = explode('|', $vars[1], 2);

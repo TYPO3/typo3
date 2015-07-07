@@ -1144,7 +1144,7 @@ class ExtendedTemplateService extends TemplateService {
 					}
 					$label = $this->getLanguageService()->sL($params['label']);
 					$label_parts = explode(':', $label, 2);
-					if (count($label_parts) == 2) {
+					if (count($label_parts) === 2) {
 						$head = trim($label_parts[0]);
 						$body = trim($label_parts[1]);
 					} else {
@@ -1405,7 +1405,7 @@ class ExtendedTemplateService extends TemplateService {
 		if (isset($this->objReg[$key])) {
 			$lineNum = $this->objReg[$key];
 			$parts = explode('=', $this->raw[$lineNum], 2);
-			if (count($parts) == 2) {
+			if (count($parts) === 2) {
 				$parts[1] = $theValue;
 			}
 			$this->raw[$lineNum] = implode($parts, '=');

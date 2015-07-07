@@ -2989,7 +2989,7 @@ class DataHandler {
 										if (substr($ik, 0, 3) == 'ID-') {
 											$newIndexCounter++;
 											// Set mapping index
-											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && count($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
+											$this->newIndexMap[$ik] = (is_array($dataValues_current[$key]['el']) && !empty($dataValues_current[$key]['el']) ? max(array_keys($dataValues_current[$key]['el'])) : 0) + $newIndexCounter;
 											// Transfer values
 											$dataValues[$key]['el'][$this->newIndexMap[$ik]] = $dataValues[$key]['el'][$ik];
 											// Unset original

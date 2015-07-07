@@ -586,7 +586,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					}
 				}
 				// Only if href, target, class and tile are the only attributes, we can alter the link!
-				if (!count($attribArray_copy)) {
+				if (empty($attribArray_copy)) {
 					// Quoting class and title attributes if they contain spaces
 					$attribArray['class'] = preg_match('/ /', $attribArray['class']) ? '"' . $attribArray['class'] . '"' : $attribArray['class'];
 					$attribArray['title'] = preg_match('/ /', $attribArray['title']) ? '"' . $attribArray['title'] . '"' : $attribArray['title'];

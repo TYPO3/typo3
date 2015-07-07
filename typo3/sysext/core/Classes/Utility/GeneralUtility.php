@@ -371,11 +371,11 @@ class GeneralUtility {
 	 */
 	static public function cmpIPv4($baseIP, $list) {
 		$IPpartsReq = explode('.', $baseIP);
-		if (count($IPpartsReq) == 4) {
+		if (count($IPpartsReq) === 4) {
 			$values = self::trimExplode(',', $list, TRUE);
 			foreach ($values as $test) {
 				$testList = explode('/', $test);
-				if (count($testList) == 2) {
+				if (count($testList) === 2) {
 					list($test, $mask) = $testList;
 				} else {
 					$mask = FALSE;
@@ -422,7 +422,7 @@ class GeneralUtility {
 		$values = self::trimExplode(',', $list, TRUE);
 		foreach ($values as $test) {
 			$testList = explode('/', $test);
-			if (count($testList) == 2) {
+			if (count($testList) === 2) {
 				list($test, $mask) = $testList;
 			} else {
 				$mask = FALSE;
@@ -502,7 +502,7 @@ class GeneralUtility {
 		}
 		// Count 2 if if address has hidden zero blocks
 		$chunks = explode('::', $address);
-		if (count($chunks) == 2) {
+		if (count($chunks) === 2) {
 			$chunksLeft = explode(':', $chunks[0]);
 			$chunksRight = explode(':', $chunks[1]);
 			$left = count($chunksLeft);
@@ -622,7 +622,9 @@ class GeneralUtility {
 		foreach ($values as $test) {
 			$hostNameParts = explode('.', $test);
 			// To match hostNameParts can only be shorter (in case of wildcards) or equal
-			if (count($hostNameParts) > count($baseHostNameParts)) {
+			$hostNamePartsCount = count($hostNameParts);
+			$baseHostNamePartsCount = count($baseHostNameParts);
+			if ($hostNamePartsCount > $baseHostNamePartsCount) {
 				continue;
 			}
 			$yes = TRUE;
@@ -632,10 +634,10 @@ class GeneralUtility {
 					// Wildcard valid for one or more hostname-parts
 					$wildcardStart = $index + 1;
 					// Wildcard as last/only part always matches, otherwise perform recursive checks
-					if ($wildcardStart < count($hostNameParts)) {
+					if ($wildcardStart < $hostNamePartsCount) {
 						$wildcardMatched = FALSE;
 						$tempHostName = implode('.', array_slice($hostNameParts, $index + 1));
-						while ($wildcardStart < count($baseHostNameParts) && !$wildcardMatched) {
+						while ($wildcardStart < $baseHostNamePartsCount && !$wildcardMatched) {
 							$tempBaseHostName = implode('.', array_slice($baseHostNameParts, $wildcardStart));
 							$wildcardMatched = self::cmpFQDN($tempBaseHostName, $tempHostName);
 							$wildcardStart++;
@@ -858,7 +860,7 @@ class GeneralUtility {
 	 */
 	static public function dirname($path) {
 		$p = self::revExplode('/', $path, 2);
-		return count($p) == 2 ? $p[0] : '';
+		return count($p) === 2 ? $p[0] : '';
 	}
 
 	/**
@@ -4133,7 +4135,7 @@ Connection: close
 		}
 		// Call function or method:
 		$parts = explode('->', $funcRef);
-		if (count($parts) == 2) {
+		if (count($parts) === 2) {
 			// Class
 			// Check if class/method exists:
 			if (class_exists($parts[0])) {

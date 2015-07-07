@@ -464,7 +464,7 @@ class RelationHandler {
 					return $a['id'] < $b['id'] ? -1 : 1;
 				}
 			);
-		} elseif (count($this->tableArray) == 1) {
+		} elseif (count($this->tableArray) === 1) {
 			reset($this->tableArray);
 			$table = key($this->tableArray);
 			$uidList = implode(',', current($this->tableArray));
