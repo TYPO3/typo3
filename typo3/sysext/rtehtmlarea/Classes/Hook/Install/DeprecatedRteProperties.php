@@ -127,7 +127,7 @@ class DeprecatedRteProperties extends AbstractUpdate {
 		}
 		if ($pagesCount) {
 			$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
-			if (count($updateablePages)) {
+			if (!empty($updateablePages)) {
 				$replacementProperties = '';
 				foreach ($this->replacementRteProperties as $deprecatedProperty => $replacementProperty) {
 					$replacementProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . $replacementProperty . '</td></tr>' . LF;
@@ -170,7 +170,7 @@ class DeprecatedRteProperties extends AbstractUpdate {
 			$pagesCount = count($pages);
 			if ($pagesCount) {
 				$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
-				if (count($updateablePages)) {
+				if (!empty($updateablePages)) {
 					$this->updatePages($updateablePages, $dbQueries, $customMessages);
 					// If the update was successful
 					if (empty($customMessages)) {
@@ -178,7 +178,7 @@ class DeprecatedRteProperties extends AbstractUpdate {
 						if (count($updateablePages) === $pagesCount) {
 							$pagesAfter = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
 							if (empty($customMessages)) {
-								if (count($pagesAfter)) {
+								if (!empty($pagesAfter)) {
 									$customMessages = 'Some deprecated Page TSconfig properties were found. However, the wizard was unable to automatically replace all the deprecated properties found. Some properties will have to be replaced manually.';
 								}
 							}

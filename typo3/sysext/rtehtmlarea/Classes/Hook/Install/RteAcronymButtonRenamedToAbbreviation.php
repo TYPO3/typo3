@@ -48,7 +48,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate {
 		}
 		if ($pagesCount) {
 			$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
-			if (count($updateablePages)) {
+			if (!empty($updateablePages)) {
 				$description .= '<p>This wizard will perform automatic replacement of the string "acronym" by the string "abbreviation" on the Page TSconfig of <strong>' . strval(count($updateablePages)) . '&nbsp;pages</strong> (including deleted and hidden):</p>' . LF;
 			}
 			$result = TRUE;
@@ -81,7 +81,7 @@ class RteAcronymButtonRenamedToAbbreviation extends AbstractUpdate {
 			$pagesCount = count($pages);
 			if ($pagesCount) {
 				$updateablePages = $this->findUpdateablePagesWithDeprecatedRteProperties($pages);
-				if (count($updateablePages)) {
+				if (!empty($updateablePages)) {
 					$this->updatePages($updateablePages, $dbQueries, $customMessages);
 					// If the update was successful
 					if (empty($customMessages)) {

@@ -87,7 +87,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 			}
 		}
 		// Assemble result array
-		if (count($elements)) {
+		if (!empty($elements)) {
 			$retVal = array(
 				'content' => implode('', $imgTags),
 				'elements' => $elements

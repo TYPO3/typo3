@@ -734,7 +734,7 @@ class RichTextElement extends AbstractFormElement {
 		$jsArray[] = 'RTEarea[editornumber].keepButtonGroupTogether = ' . (trim($this->processedRteConfiguration['keepButtonGroupTogether']) ? 'true;' : 'false;');
 		$jsArray[] = 'RTEarea[editornumber].disablePCexamples = ' . (trim($this->processedRteConfiguration['disablePCexamples']) ? 'true;' : 'false;');
 		$jsArray[] = 'RTEarea[editornumber].showTagFreeClasses = ' . (trim($this->processedRteConfiguration['showTagFreeClasses']) ? 'true;' : 'false;');
-		$jsArray[] = 'RTEarea[editornumber].tceformsNested = ' . (count($this->globalOptions) ? json_encode($this->globalOptions['tabAndInlineStack']) : '[]') . ';';
+		$jsArray[] = 'RTEarea[editornumber].tceformsNested = ' . (!empty($this->globalOptions) ? json_encode($this->globalOptions['tabAndInlineStack']) : '[]') . ';';
 		$jsArray[] = 'RTEarea[editornumber].dialogueWindows = new Object();';
 		if (isset($this->processedRteConfiguration['dialogueWindows.']['defaultPositionFromTop'])) {
 			$jsArray[] = 'RTEarea[editornumber].dialogueWindows.positionFromTop = ' . (int)$this->processedRteConfiguration['dialogueWindows.']['defaultPositionFromTop'] . ';';

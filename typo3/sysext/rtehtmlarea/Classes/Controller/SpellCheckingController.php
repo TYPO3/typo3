@@ -172,7 +172,7 @@ class SpellCheckingController {
 		if ($restrictToDictionaries) {
 			$dictionaryArray = array_intersect($dictionaryArray, GeneralUtility::trimExplode(',', $restrictToDictionaries, 1));
 		}
-		if (!count($dictionaryArray)) {
+		if (empty($dictionaryArray)) {
 			$dictionaryArray[] = 'en';
 		}
 		$this->dictionary = GeneralUtility::_POST('dictionary');

@@ -53,7 +53,7 @@ class StatusReportConflictsCheckHook implements StatusProviderInterface {
 				}
 			}
 		}
-		if (count($conflictingExtensions)) {
+		if (!empty($conflictingExtensions)) {
 			$value = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_statusreport.xlf:keys')
 				. ' ' . implode(', ', $conflictingExtensions);
 			$message = $languageService->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_statusreport.xlf:uninstall');
