@@ -176,7 +176,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setTo() {
 		$validEmails = $this->filterValidEmails($this->typoScript['recipientEmail']);
-		if (count($validEmails)) {
+		if (!empty($validEmails)) {
 			$this->mailMessage->setTo($validEmails);
 		}
 	}
@@ -190,7 +190,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setCc() {
 		$validEmails = $this->filterValidEmails($this->typoScript['ccEmail']);
-		if (count($validEmails)) {
+		if (!empty($validEmails)) {
 			$this->mailMessage->setCc($validEmails);
 		}
 	}

@@ -132,7 +132,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$typoscriptParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 				$oldArguments = $arguments;
 				list($class, $arguments) = $typoscriptParser->getVal($key, $this->frontendController->tmpl->setup);
-				if (is_array($oldArguments) && count($oldArguments)) {
+				if (is_array($oldArguments) && !empty($oldArguments)) {
 					$arguments = array_replace_recursive($arguments, $oldArguments);
 				}
 				$this->timeTracker->incStackPointer();

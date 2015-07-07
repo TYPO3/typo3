@@ -237,7 +237,7 @@ class CrawlerHook {
 			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $cfgRec['table2index'], 'pid = ' . $pid . '
 							AND uid > ' . (int)$session_data['uid'] . BackendUtility::deleteClause($cfgRec['table2index']) . BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
 			// Traverse:
-			if (count($recs)) {
+			if (!empty($recs)) {
 				foreach ($recs as $r) {
 					// Index single record:
 					$this->indexSingleRecord($r, $cfgRec, $rl);
@@ -376,7 +376,7 @@ class CrawlerHook {
 		$downloadUrls = array();
 		// Dummy.
 		// Submit URLs:
-		if (count($res)) {
+		if (!empty($res)) {
 			foreach ($res as $paramSetKey => $vv) {
 				$urlList = $pObj->urlListFromUrlArray($vv, $pageRow, $GLOBALS['EXEC_TIME'], 30, 1, 0, $duplicateTrack, $downloadUrls, array('tx_indexedsearch_reindex'));
 			}
@@ -386,7 +386,7 @@ class CrawlerHook {
 			// Subpages selected
 			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', 'pid = ' . $pageUid . BackendUtility::deleteClause('pages'));
 			// Traverse subpages and add to queue:
-			if (count($recs)) {
+			if (!empty($recs)) {
 				foreach ($recs as $r) {
 					$this->instanceCounter++;
 					$url = 'pages:' . $r['uid'] . ': ' . $r['title'];
@@ -637,7 +637,7 @@ class CrawlerHook {
 	public function deleteFromIndex($id) {
 		// Lookup old phash rows:
 		$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_section', 'page_id=' . (int)$id);
-		if (count($oldPhashRows)) {
+		if (!empty($oldPhashRows)) {
 			$pHashesToDelete = array();
 			foreach ($oldPhashRows as $pHashRow) {
 				$pHashesToDelete[] = $pHashRow['phash'];
@@ -684,7 +684,7 @@ class CrawlerHook {
 	 */
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $pObj) {
 		// Check if any fields are actually updated:
-		if (count($fieldArray)) {
+		if (!empty($fieldArray)) {
 			// Translate new ids.
 			if ($status == 'new') {
 				$id = $pObj->substNEWwithIDs[$id];

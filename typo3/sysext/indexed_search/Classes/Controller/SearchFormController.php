@@ -671,7 +671,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$this->internal['res_count'] = $resData['count'];
 				$this->internal['results_at_a_time'] = $this->piVars['results'];
 				$this->internal['maxPages'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['search.']['page_links'], 1, 100, 10);
-				$addString = $resData['count'] && $this->piVars['group'] == 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL((count($this->resultSections) > 1 ? 'inNsections' : 'inNsection')), count($this->resultSections)) : '';
+				$resultSectionsCount = count($this->resultSections);
+				$addString = $resData['count'] && $this->piVars['group'] == 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL(($resultSectionsCount > 1 ? 'inNsections' : 'inNsection')), $resultSectionsCount) : '';
 				$browseBox1 = $this->pi_list_browseresults(1, $addString, $this->printResultSectionLinks(), $freeIndexUid);
 				$browseBox2 = $this->pi_list_browseresults(0, '', '', $freeIndexUid);
 			}
@@ -753,9 +754,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 						} else {
 							$sectionTitleLinked = htmlspecialchars($sectionName);
 						}
-						$this->resultSections[$id] = array($sectionName, count($resultRows));
+						$resultRowsCount = count($resultRows);
+						$this->resultSections[$id] = array($sectionName, $resultRowsCount);
 						// Add content header:
-						$content .= $this->makeSectionHeader($id, $sectionTitleLinked, count($resultRows));
+						$content .= $this->makeSectionHeader($id, $sectionTitleLinked, $resultRowsCount);
 						// Render result rows:
 						$resultlist = '';
 						foreach ($resultRows as $row) {
@@ -1484,7 +1486,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return 	string
 	 */
 	public function printResultSectionLinks() {
-		if (count($this->resultSections)) {
+		if (!empty($this->resultSections)) {
 			$lines = array();
 			$html = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS###');
 			$item = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS_LINK###');
@@ -2087,7 +2089,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string <img> tag if access is limited.
 	 */
 	public function makeAccessIndication($id) {
-		if (is_array($this->fe_groups_required[$id]) && count($this->fe_groups_required[$id])) {
+		if (is_array($this->fe_groups_required[$id]) && !empty($this->fe_groups_required[$id])) {
 			return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', TRUE), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
 		}
 	}
@@ -2121,15 +2123,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$this->getPathFromPageId($id);
 		}
 		// If external domain, then link to that:
-		if (count($this->domain_records[$id])) {
+		if (!empty($this->domain_records[$id])) {
 			reset($this->domain_records[$id]);
 			$firstDom = current($this->domain_records[$id]);
 			$scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
 			$addParams = '';
-			if (is_array($urlParameters)) {
-				if (count($urlParameters)) {
-					$addParams .= GeneralUtility::implodeArrayForUrl('', $urlParameters);
-				}
+			if (is_array($urlParameters) && !empty($urlParameters)) {
+				$addParams .= GeneralUtility::implodeArrayForUrl('', $urlParameters);
 			}
 			if ($target = $this->conf['search.']['detect_sys_domain_records.']['target']) {
 				$target = ' target="' . $target . '"';
@@ -2182,7 +2182,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$rl = $this->getRootLine($id, $pathMP);
 			$hitRoot = 0;
 			$path = '';
-			if (is_array($rl) && count($rl)) {
+			if (is_array($rl) && !empty($rl)) {
 				foreach ($rl as $k => $v) {
 					// Check fe_user
 					if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {

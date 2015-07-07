@@ -1822,16 +1822,17 @@ class Indexer {
 	 */
 	public function checkWordList($wordListArray) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_words')) {
-			if (count($wordListArray)) {
+			if (!empty($wordListArray)) {
 				$phashArray = array();
 				foreach ($wordListArray as $value) {
 					$phashArray[] = (int)$value['hash'];
 				}
 				$cwl = implode(',', $phashArray);
 				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('baseword', 'index_words', 'wid IN (' . $cwl . ')');
-				if ($count != count($wordListArray)) {
+				$wordListArrayCount = count($wordListArray);
+				if ($count !== $wordListArrayCount) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('baseword', 'index_words', 'wid IN (' . $cwl . ')');
-					$this->log_setTSlogMessage('Inserting words: ' . (count($wordListArray) - $count), 1);
+					$this->log_setTSlogMessage('Inserting words: ' . ($wordListArrayCount - $count), 1);
 					while (FALSE != ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 						unset($wordListArray[$row['baseword']]);
 					}

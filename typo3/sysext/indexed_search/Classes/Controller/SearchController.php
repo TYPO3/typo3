@@ -272,7 +272,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			if ($resultData['count']) {
 				// could we get this in the view?
 				if ($this->searchData['group'] == 'sections' && $freeIndexUid <= 0) {
-					$result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . (count($this->resultSections) > 1 ? 'inNsections' : 'inNsection'), 'indexed_search'), count($this->resultSections));
+					$resultSectionsCount = count($this->resultSections);
+					$result['sectionText'] = sprintf(LocalizationUtility::translate('result.' . ($resultSectionsCount > 1 ? 'inNsections' : 'inNsection'), 'indexed_search'), $resultSectionsCount);
 				}
 			}
 		}
@@ -345,11 +346,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					$onclick = 'document.forms[\'tx_indexedsearch\'][\'tx_indexedsearch_pi2[search][_sections]\'].value=' . GeneralUtility::quoteJSvalue($theRLid) . ';document.forms[\'tx_indexedsearch\'].submit();return false;';
 					$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
 				}
-				$this->resultSections[$id] = array($sectionName, count($resultRows));
+				$resultRowsCount = count($resultRows);
+				$this->resultSections[$id] = array($sectionName, $resultRowsCount);
 				// Add section header
 				$finalResultRows[] = array(
 					'isSectionHeader' => TRUE,
-					'numResultRows' => count($resultRows),
+					'numResultRows' => $resultRowsCount,
 					'sectionId' => $id,
 					'sectionTitle' => $sectionTitleLinked
 				);
@@ -443,7 +445,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				'sys_language_uid' => $row['sys_language_uid']
 			));
 			// check if the access is restricted
-			if (is_array($this->requiredFrontendUsergroups[$pathId]) && count($this->requiredFrontendUsergroups[$pathId])) {
+			if (is_array($this->requiredFrontendUsergroups[$pathId]) && !empty($this->requiredFrontendUsergroups[$pathId])) {
 				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search')
 					. 'pi/res/locked.gif" width="12" height="15" vspace="5" title="'
 					. sprintf(LocalizationUtility::translate('result.memberGroups', 'indexed_search'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId])))
@@ -857,14 +859,14 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->view->assign('allSearchTypes', $allSearchTypes);
 			$allDefaultOperands = $this->getAllAvailableOperandsOptions();
 			$this->view->assign('allDefaultOperands', $allDefaultOperands);
-			$showTypeSearch = count($allSearchTypes) || count($allDefaultOperands);
+			$showTypeSearch = !empty($allSearchTypes) || !empty($allDefaultOperands);
 			$this->view->assign('showTypeSearch', $showTypeSearch);
 			// "Search in"
 			$allMediaTypes = $this->getAllAvailableMediaTypesOptions();
 			$this->view->assign('allMediaTypes', $allMediaTypes);
 			$allLanguageUids = $this->getAllAvailableLanguageOptions();
 			$this->view->assign('allLanguageUids', $allLanguageUids);
-			$showMediaAndLanguageSearch = count($allMediaTypes) || count($allLanguageUids);
+			$showMediaAndLanguageSearch = !empty($allMediaTypes) || !empty($allLanguageUids);
 			$this->view->assign('showMediaAndLanguageSearch', $showMediaAndLanguageSearch);
 			// Sections
 			$allSections = $this->getAllAvailableSectionsOptions();
@@ -877,7 +879,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->view->assign('allSortOrders', $allSortOrders);
 			$allSortDescendings = $this->getAllAvailableSortDescendingOptions();
 			$this->view->assign('allSortDescendings', $allSortDescendings);
-			$showSortOrders = count($allSortOrders) || count($allSortDescendings);
+			$showSortOrders = !empty($allSortOrders) || !empty($allSortDescendings);
 			$this->view->assign('showSortOrders', $showSortOrders);
 			// Limits
 			$allNumberOfResults = $this->getAllAvailableNumberOfResultsOptions();
@@ -955,7 +957,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 			foreach ($this->externalParsers as $extension => $obj) {
 				// Skip unwanted extensions
-				if (count($additionalMedia) && !in_array($extension, $additionalMedia)) {
+				if (!empty($additionalMedia) && !in_array($extension, $additionalMedia)) {
 					continue;
 				}
 				if ($name = $obj->searchTypeMediaTitle($extension)) {
@@ -1205,14 +1207,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		}
 		$target = '';
 		// If external domain, then link to that:
-		if (count($this->domainRecords[$pageUid])) {
+		if (!empty($this->domainRecords[$pageUid])) {
 			$scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
 			$firstDomain = reset($this->domainRecords[$pageUid]);
 			$additionalParams = '';
-			if (is_array($urlParameters)) {
-				if (count($urlParameters)) {
-					$additionalParams = GeneralUtility::implodeArrayForUrl('', $urlParameters);
-				}
+			if (is_array($urlParameters) && !empty($urlParameters)) {
+				$additionalParams = GeneralUtility::implodeArrayForUrl('', $urlParameters);
 			}
 			$uri = $scheme . $firstDomain . '/index.php?id=' . $pageUid . $additionalParams;
 			if ($target = $this->settings['detectDomainRecords.']['target']) {
@@ -1259,7 +1259,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$this->domainRecords[$id] = array();
 			$rl = $GLOBALS['TSFE']->sys_page->getRootLine($id, $pathMP);
 			$path = '';
-			if (is_array($rl) && count($rl)) {
+			if (is_array($rl) && !empty($rl)) {
 				foreach ($rl as $k => $v) {
 					// Check fe_user
 					if ($v['fe_group'] && ($v['uid'] == $id || $v['extendToSubpages'])) {

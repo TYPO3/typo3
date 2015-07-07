@@ -308,11 +308,12 @@ class AdministrationRepository {
 	 */
 	protected function addAdditionalInformation(array &$row) {
 		$grListRec = $this->getGrlistRecord($row['phash']);
+		$unserializedCHashParams = unserialize($row['cHashParams']);
 
 		$row['numberOfWords'] = $this->getNumberOfWords($row['phash']);
 		$row['numberOfSections'] = $this->getNumberOfSections($row['phash']);
 		$row['numberOfFulltext'] = $this->getNumberOfFulltextRecords($row['phash']);
-		$row['cHashParams'] = count(unserialize($row['cHashParams'])) ? unserialize($row['cHashParams']) : '';
+		$row['cHashParams'] = !empty($unserializedCHashParams) ? $unserializedCHashParams : '';
 		$row['grList'] = $grListRec;
 	}
 
