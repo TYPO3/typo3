@@ -175,14 +175,7 @@ class DependencyResolver {
 		foreach ($packageStateConfiguration as $packageKey => $packageConfiguration) {
 			/** @var Package $package */
 			$package = $packageManager->getPackage($packageKey);
-			if (
-				$package instanceof Package
-				&& (
-					$package->isPartOfFactoryDefault()
-					|| $package->isPartOfMinimalUsableSystem()
-					|| strpos($packageConfiguration['packagePath'], self::SYSEXT_FOLDER) === 0
-				)
-			) {
+			if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
 				$frameworkPackageKeys[] = $packageKey;
 			}
 		}

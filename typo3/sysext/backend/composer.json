@@ -19,7 +19,10 @@
 				"partOfFactoryDefault": true,
 				"partOfMinimalUsableSystem": true
 			}
-		}
+		},
+		"class-alias-maps": [
+			"Migrations/Code/ClassAliasMap.php"
+		]
 	},
 	"autoload": {
 		"psr-4": {

@@ -1,6 +1,6 @@
 {
-	"name": "typo3/cms-form",
-	"type": "typo3-cms-framework",
+	"name": "typo3/cms-compatibility6",
+	"type": "typo3-cms-extension",
 	"description": "TYPO3 Core",
 	"homepage": "http://typo3.org",
 	"license": ["GPL-2.0+"],
@@ -10,26 +10,16 @@
 		"typo3/cms-core": "*"
 	},
 	"replace": {
-		"form": "*"
+		"compatibility6": "*"
 	},
 	"extra": {
-		"typo3/cms": {
-			"Package": {
-				"partOfFactoryDefault": true
-			}
-		},
 		"class-alias-maps": [
 			"Migrations/Code/ClassAliasMap.php"
 		]
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\CMS\\Form\\": "Classes/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"TYPO3\\CMS\\Form\\Tests\\": "Tests/"
+			"TYPO3\\CMS\\Compatibility6\\": "Classes/"
 		}
 	}
 }

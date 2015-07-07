@@ -60,7 +60,9 @@
 		},
 		"class-alias-maps": [
 			"typo3/sysext/core/Migrations/Code/ClassAliasMap.php",
-			"typo3/sysext/form/Migrations/Code/ClassAliasMap.php"
+			"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
+			"typo3/sysext/form/Migrations/Code/ClassAliasMap.php",
+			"typo3/sysext/rtehtmlarea/Migrations/Code/ClassAliasMap.php"
 		]
 	},
 	"replace": {
@@ -151,7 +153,6 @@
 			"TYPO3\\CMS\\Lang\\": "typo3/sysext/lang/Classes/",
 			"TYPO3\\CMS\\Linkvalidator\\": "typo3/sysext/linkvalidator/Classes/",
 			"TYPO3\\CMS\\Lowlevel\\": "typo3/sysext/lowlevel/Classes/",
-			"TYPO3\\CMS\\Mediace\\": "typo3/sysext/mediace/Classes/",
 			"TYPO3\\CMS\\Opendocs\\": "typo3/sysext/opendocs/Classes/",
 			"TYPO3\\CMS\\Openid\\": "typo3/sysext/openid/Classes/",
 			"TYPO3\\CMS\\Recordlist\\": "typo3/sysext/recordlist/Classes/",
