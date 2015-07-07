@@ -59,9 +59,7 @@
 			"dev-master": "7.x-dev"
 		},
 		"class-alias-maps": [
-			"typo3/sysext/backend/Migrations/Code/ClassAliasMap.php",
-			"typo3/sysext/form/Migrations/Code/ClassAliasMap.php",
-			"typo3/sysext/rtehtmlarea/Migrations/Code/ClassAliasMap.php"
+			"typo3/sysext/form/Migrations/Code/ClassAliasMap.php"
 		]
 	},
 	"replace": {
