@@ -763,7 +763,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
         $parentUid = $parentObject->getUid();
-        if ($parentObject->_getProperty('_localizedUid') !== null) {
+        if (!empty($parentObject->_getProperty('_localizedUid'))) {
             $parentUid = $parentObject->_getProperty('_localizedUid');
         }
         $row = [
@@ -935,7 +935,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $row['uid'] = $object->getUid();
         if ($dataMap->getLanguageIdColumnName() !== null) {
             $row[$dataMap->getLanguageIdColumnName()] = (int)$object->_getProperty('_languageUid');
-            if ($object->_getProperty('_localizedUid') !== null) {
+            if (!empty($object->_getProperty('_localizedUid'))) {
                 $row['uid'] = $object->_getProperty('_localizedUid');
             }
         }
