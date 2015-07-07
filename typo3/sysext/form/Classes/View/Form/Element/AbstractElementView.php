@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Form\View\Form\Element;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
+use TYPO3\CMS\Form\ObjectFactory;
 use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
@@ -338,7 +339,7 @@ abstract class AbstractElementView {
 	protected function createAdditional($class) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\View\\Form\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
-		return GeneralUtility::makeInstance($className, $this->model);
+		return ObjectFactory::createFormObject($className, $this->model);
 	}
 
 	/**

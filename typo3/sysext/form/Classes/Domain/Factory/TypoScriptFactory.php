@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
+use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Typoscript factory for form
@@ -184,7 +185,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Element\\' . ucfirst($class) . 'Element';
 		}
 		/* @var $object AbstractElement */
-		$object = GeneralUtility::makeInstance($className);
+		$object = ObjectFactory::createFormObject($className);
 		if ($object->getElementType() === AbstractElement::ELEMENT_TYPE_CONTENT) {
 			$object->setData($arguments['cObj'], $arguments['cObj.']);
 		} elseif ($object->getElementType() === AbstractElement::ELEMENT_TYPE_PLAIN) {

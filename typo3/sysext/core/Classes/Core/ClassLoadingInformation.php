@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use Composer\Autoload\ClassLoader as ComposerClassLoader;
+use Helhum\ClassAliasLoader\Composer\ClassAliasLoader;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -82,7 +83,7 @@ class ClassLoadingInformation {
 		if (file_exists($dynamicClassAliasMapFile)) {
 			$classAliasMap = require $dynamicClassAliasMapFile;
 			if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
-				$composerClassLoader->addAliasMap($classAliasMap);
+				self::getClassAliasLoader($composerClassLoader)->addAliasMap($classAliasMap);
 			}
 		}
 
@@ -118,9 +119,9 @@ class ClassLoadingInformation {
 		foreach ($classInformation['psr-4'] as $prefix => $paths) {
 			$composerClassLoader->setPsr4($prefix, $paths);
 		}
-		if (is_callable(array($composerClassLoader, 'addAliasMap'))) {
-			$aliasMap = ClassLoadingInformationGenerator::buildClassAliasMapForPackage($package);
-			$composerClassLoader->addAliasMap($aliasMap);
+		$classAliasMap = ClassLoadingInformationGenerator::buildClassAliasMapForPackage($package);
+		if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
+			self::getClassAliasLoader($composerClassLoader)->addAliasMap($classAliasMap);
 		}
 	}
 
@@ -156,6 +157,24 @@ class ClassLoadingInformation {
 	 */
 	static protected function getClassLoader() {
 		return Bootstrap::getInstance()->getEarlyInstance(ComposerClassLoader::class);
+	}
+
+	/**
+	 * Internal method calling the bootstrap to fetch the composer class loader
+	 *
+	 * @param ClassAliasLoader|ComposerClassLoader $composerClassLoader
+	 * @return ClassAliasLoader
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	static protected function getClassAliasLoader($composerClassLoader) {
+		if ($composerClassLoader instanceof ClassAliasLoader) {
+			return $composerClassLoader;
+		}
+		$aliasLoader = new ClassAliasLoader($composerClassLoader);
+		$aliasLoader->register(TRUE);
+		Bootstrap::getInstance()->setEarlyInstance(ComposerClassLoader::class, $aliasLoader);
+
+		return $aliasLoader;
 	}
 
 }

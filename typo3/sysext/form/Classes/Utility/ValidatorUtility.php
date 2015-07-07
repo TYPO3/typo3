@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\ObjectFactory;
 use TYPO3\CMS\Form\Validation\AbstractValidator;
 
 /**
@@ -71,7 +72,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function createRule($class, $arguments = array()) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Validation\\' . ucfirst($class) . 'Validator';
-		$rule = GeneralUtility::makeInstance($className, $arguments);
+		$rule = ObjectFactory::createFormObject($className, $arguments);
 		return $rule;
 	}
 

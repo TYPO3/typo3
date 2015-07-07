@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Static methods for filtering
@@ -104,9 +105,9 @@ class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Filter\\' . ucfirst($class) . 'Filter';
 		if (is_null($arguments)) {
-			$filter = GeneralUtility::makeInstance($className);
+			$filter = ObjectFactory::createFormObject($className);
 		} else {
-			$filter = GeneralUtility::makeInstance($className, $arguments);
+			$filter = ObjectFactory::createFormObject($className, $arguments);
 		}
 		return $filter;
 	}

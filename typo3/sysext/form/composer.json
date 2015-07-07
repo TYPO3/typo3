@@ -17,10 +17,7 @@
 			"Package": {
 				"partOfFactoryDefault": true
 			}
-		},
-		"class-alias-maps": [
-			"Migrations/Code/ClassAliasMap.php"
-		]
+		}
 	},
 	"autoload": {
 		"psr-4": {

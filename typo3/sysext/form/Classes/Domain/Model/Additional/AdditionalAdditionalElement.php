@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Additional elements for FORM object
@@ -39,7 +40,7 @@ class AdditionalAdditionalElement {
 	public function addAdditional($class, $type, $value) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Additional\\' . ucfirst($class) . 'AdditionalElement';
-		$this->additional[$class] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $type, $value);
+		$this->additional[$class] = ObjectFactory::createFormObject($className, $type, $value);
 		return $this;
 	}
 
