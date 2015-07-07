@@ -24,8 +24,8 @@ interface DataProcessorInterface {
 	 * Process content object data
 	 *
 	 * @param ContentObjectRenderer $cObj The data of the content element or page
-	 * @param array $processorConfiguration The configuration of this processor
 	 * @param array $contentObjectConfiguration The configuration of Content Object
+	 * @param array $processorConfiguration The configuration of this processor
 	 * @param array $processedData Key/value store of processed data (e.g. to be passed to a Fluid View)
 	 * @return array the processed data as key/value store
 	 */
