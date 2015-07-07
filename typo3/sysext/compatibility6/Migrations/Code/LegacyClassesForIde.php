@@ -42,6 +42,11 @@ class clickMenu extends \TYPO3\CMS\Backend\ClickMenu\ClickMenu {}
 class t3lib_cli extends \TYPO3\CMS\Core\Controller\CommandLineController {}
 
 /**
+ * @deprecated since TYPO3 CMS 6.0, will be removed in TYPO3 CMS 8
+ */
+class t3lib_extMgm extends TYPO3\CMS\Core\Utility\ExtensionManagementUtility {}
+
+/**
  * @deprecated since 6.0, removed since 7.0
  */
 class t3lib_clipboard extends \TYPO3\CMS\Backend\Clipboard\Clipboard {}

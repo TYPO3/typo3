@@ -21,6 +21,7 @@ return array(
 	't3lib_contextmenu_pagetree_DataProvider' => \TYPO3\CMS\Backend\ContextMenu\Pagetree\ContextMenuDataProvider::class,
 	't3lib_contextmenu_pagetree_extdirect_ContextMenu' => \TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect\ContextMenuConfiguration::class,
 	't3lib_contextmenu_renderer_Abstract' => \TYPO3\CMS\Backend\ContextMenu\Renderer\AbstractContextMenuRenderer::class,
+	't3lib_extMgm' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::class,
 	'TYPO3backend' => \TYPO3\CMS\Backend\Controller\BackendController::class,
 	'SC_wizard_backend_layout' => \TYPO3\CMS\Backend\Controller\BackendLayoutWizardController::class,
 	'SC_alt_clickmenu' => \TYPO3\CMS\Backend\Controller\ClickMenuController::class,
