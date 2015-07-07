@@ -417,7 +417,7 @@ abstract class AbstractTask {
 				$runningExecutions = unserialize($row['serialized_executions']);
 				// Remove the selected execution
 				unset($runningExecutions[$executionID]);
-				if (count($runningExecutions) > 0) {
+				if (!empty($runningExecutions)) {
 					// Re-serialize the updated executions list (if necessary)
 					$runningExecutionsSerialized = serialize($runningExecutions);
 				} else {

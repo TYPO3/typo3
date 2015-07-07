@@ -197,19 +197,18 @@ class MassActionHandler extends AbstractHandler {
 			$tce->start(array(), $limitedCmd);
 			$tce->process_cmdmap();
 			$errors = $tce->errorLog;
-			if (count($errors) > 0) {
+			if (!empty($errors)) {
 				throw new \Exception(implode(', ', $errors));
-			} else {
-				// Unset processed records
-				foreach ($limitedCmd as $table => $recs) {
-					foreach ($recs as $key => $value) {
-						$recordsProcessed++;
-						unset($processData[$table][$key]);
-					}
-				}
-				$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', $processData);
-				$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_processed', $recordsProcessed);
 			}
+			// Unset processed records
+			foreach ($limitedCmd as $table => $recs) {
+				foreach ($recs as $key => $value) {
+					$recordsProcessed++;
+					unset($processData[$table][$key]);
+				}
+			}
+			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', $processData);
+			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_processed', $recordsProcessed);
 		}
 		return $recordsProcessed;
 	}

@@ -223,9 +223,10 @@ class NormalizeCommand {
 			$rangeArray[$fieldNumber] = (int)$fieldValue;
 		}
 
-		if (count($rangeArray) === 1) {
+		$rangeArrayCount = count($rangeArray);
+		if ($rangeArrayCount === 1) {
 			$resultList = $rangeArray[0];
-		} elseif (count($rangeArray) === 2) {
+		} elseif ($rangeArrayCount === 2) {
 			$left = $rangeArray[0];
 			$right = $rangeArray[1];
 			if ($left > $right) {
@@ -257,7 +258,8 @@ class NormalizeCommand {
 			throw new \InvalidArgumentException('Unable to convert step values.', 1291234987);
 		}
 		$stepValuesAndStepArray = explode('/', $stepExpression);
-		if (count($stepValuesAndStepArray) < 1 || count($stepValuesAndStepArray) > 2) {
+		$stepValuesAndStepArrayCount = count($stepValuesAndStepArray);
+		if ($stepValuesAndStepArrayCount < 1 || $stepValuesAndStepArrayCount > 2) {
 			throw new \InvalidArgumentException('Unable to convert step values: Multiple slashes found.', 1291242168);
 		}
 		$left = $stepValuesAndStepArray[0];
@@ -287,7 +289,7 @@ class NormalizeCommand {
 			}
 			$currentStep--;
 		}
-		if (count($validValues) === 0) {
+		if (empty($validValues)) {
 			throw new \InvalidArgumentException('Unable to convert step values: Result value list is empty.', 1291414959);
 		}
 		return implode(',', $validValues);

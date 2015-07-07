@@ -303,7 +303,7 @@ class CommandMap {
 				$extendedCommandMap[$elementTable][$elementIds[0]]['version'] = array_merge($properties, array('swapWith' => $elementIds[1]));
 			}
 		}
-		if (count($elementList) > 0) {
+		if (!empty($elementList)) {
 			$this->remove($table, $liveId, 'version');
 			$this->mergeToBottom($extendedCommandMap);
 		}
@@ -329,7 +329,7 @@ class CommandMap {
 				$dependency->addElement($elementTable, $elementIds[1], array('liveId' => $elementIds[0], 'properties' => array_merge($properties, array('swapWith' => $elementIds[1]))));
 			}
 		}
-		if (count($elementList) === 0) {
+		if (empty($elementList)) {
 			$dependency->addElement($table, $properties['swapWith'], array('liveId' => $liveId, 'properties' => $properties));
 		}
 	}
@@ -500,7 +500,7 @@ class CommandMap {
 			// Gets the difference (intersection) between elements that were submitted by the user
 			// and the evaluation of all dependent records that should be used for this action instead:
 			$intersectingElements = array_intersect_key($dependentElements, $elementsToBeVersioned);
-			if (count($intersectingElements) > 0) {
+			if (!empty($intersectingElements)) {
 				// If at least one element intersects but not all, throw away all elements of the depdendent structure:
 				if (count($intersectingElements) !== count($dependentElements) && $this->workspacesConsiderReferences === FALSE) {
 					$this->purgeWithErrorMessage($intersectingElements, $scope);

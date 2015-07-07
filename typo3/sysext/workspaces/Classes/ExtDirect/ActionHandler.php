@@ -399,7 +399,7 @@ class ActionHandler extends AbstractHandler {
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($stageId) === FALSE) {
 			throw new \InvalidArgumentException('Missing "stageId" in $parameters array.', 1319488194);
 		}
-		if (!is_object($parameters->affects) || count($parameters->affects) == 0) {
+		if (!is_object($parameters->affects) || empty($parameters->affects)) {
 			throw new \InvalidArgumentException('Missing "affected items" in $parameters array.', 1319488195);
 		}
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $stageId);
@@ -778,15 +778,15 @@ class ActionHandler extends AbstractHandler {
 		list(, $previousStage) = $stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 		$toolbarButtons = array(
 			'feToolbarButtonNextStage' => array(
-				'visible' => is_array($nextStage) && count($nextStage) > 0,
+				'visible' => is_array($nextStage) && !empty($nextStage),
 				'text' => $nextStage['title']
 			),
 			'feToolbarButtonPreviousStage' => array(
-				'visible' => is_array($previousStage) && count($previousStage),
+				'visible' => is_array($previousStage) && !empty($previousStage),
 				'text' => $previousStage['title']
 			),
 			'feToolbarButtonDiscardStage' => array(
-				'visible' => is_array($nextStage) && count($nextStage) > 0 || is_array($previousStage) && count($previousStage) > 0,
+				'visible' => is_array($nextStage) && !empty($nextStage) || is_array($previousStage) && !empty($previousStage),
 				'text' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:label_doaction_discard', TRUE)
 			)
 		);

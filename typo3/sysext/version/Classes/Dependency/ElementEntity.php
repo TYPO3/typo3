@@ -274,7 +274,7 @@ class ElementEntity {
 	 * @return bool
 	 */
 	public function hasReferences() {
-		return count($this->getChildren()) > 0 || count($this->getParents()) > 0;
+		return !empty($this->getChildren()) || !empty($this->getParents());
 	}
 
 	/**
@@ -285,7 +285,7 @@ class ElementEntity {
 	public function getOuterMostParent() {
 		if (!isset($this->outerMostParent)) {
 			$parents = $this->getParents();
-			if (count($parents) === 0) {
+			if (empty($parents)) {
 				$this->outerMostParent = $this;
 			} else {
 				$this->outerMostParent = FALSE;

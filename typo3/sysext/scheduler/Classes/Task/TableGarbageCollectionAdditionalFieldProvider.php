@@ -100,7 +100,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 			$options[] = '<option value="" selected="selected"></option>';
 		}
 		foreach ($tableConfiguration as $tableName => $configuration) {
-			if ($parentObject->CMD === 'add' && count($options) === 0) {
+			if ($parentObject->CMD === 'add' && empty($options)) {
 				// Select first table by default if adding a new task
 				$options[] = '<option value="' . $tableName . '" selected="selected">' . $tableName . '</option>';
 			} elseif ($task->table === $tableName) {

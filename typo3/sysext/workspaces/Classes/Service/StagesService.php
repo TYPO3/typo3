@@ -547,7 +547,7 @@ class StagesService {
 		$requiredGroups = GeneralUtility::intExplode(',', $grList, TRUE);
 		$existingGroups = array_keys($this->userGroups);
 		$missingGroups = array_diff($requiredGroups, $existingGroups);
-		if (count($missingGroups) > 0) {
+		if (!empty($missingGroups)) {
 			$this->fetchGroupsFromDB($missingGroups);
 		}
 		// Traversing records in the correct order

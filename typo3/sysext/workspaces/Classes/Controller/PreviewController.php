@@ -167,7 +167,7 @@ class PreviewController extends AbstractController {
 	 * @return bool
 	 */
 	protected function isInvalidStage($stageArray) {
-		return !(is_array($stageArray) && count($stageArray) > 0);
+		return !(is_array($stageArray) && !empty($stageArray));
 	}
 
 	/**

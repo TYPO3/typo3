@@ -314,7 +314,7 @@ class DataHandlerHook {
 		} elseif ($destRes == 1 && $WSversion['uid']) {
 			$workspaceAccessBlocked['dest2'] = 'Could not insert other versions in destination PID ';
 		}
-		if (!count($workspaceAccessBlocked)) {
+		if (empty($workspaceAccessBlocked)) {
 			// If the move operation is done on a versioned record, which is
 			// NOT new/deleted placeholder and versioningWS is in version 2, then...
 			if ($WSversion['uid'] && !$recIsNewVersion && BackendUtility::isTableMovePlaceholderAware($table)) {
@@ -444,7 +444,7 @@ class DataHandlerHook {
 					$newStage = 'Unknown state change!?';
 			}
 		}
-		if (count($notificationAlternativeRecipients) == 0) {
+		if (empty($notificationAlternativeRecipients)) {
 			// Compile list of recipients:
 			$emails = array();
 			switch ((int)$stat['stagechg_notification']) {
@@ -494,7 +494,7 @@ class DataHandlerHook {
 			$emails = $notificationAlternativeRecipients;
 		}
 		// prepare and then send the emails
-		if (count($emails)) {
+		if (!empty($emails)) {
 			// Path to record is found:
 			list($elementTable, $elementUid) = explode(':', $elementName);
 			$elementUid = (int)$elementUid;
@@ -911,7 +911,9 @@ class DataHandlerHook {
 				unlink($lockFileName);
 			}
 		}
-		if (!count($sqlErrors)) {
+		if (!empty($sqlErrors)) {
+			$tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
+		} else {
 			// Register swapped ids for later remapping:
 			$this->remappedIds[$table][$id] = $swapWith;
 			$this->remappedIds[$table][$swapWith] = $id;
@@ -984,8 +986,6 @@ class DataHandlerHook {
 			$refIndexObj->setWorkspaceId(0);
 			$refIndexObj->updateRefIndexTable($table, $id);
 			$refIndexObj->updateRefIndexTable($table, $swapWith);
-		} else {
-			$tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
 		}
 	}
 

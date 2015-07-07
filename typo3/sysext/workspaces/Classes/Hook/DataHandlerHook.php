@@ -97,7 +97,7 @@ class DataHandlerHook {
 				}
 			}
 		}
-		if (count($command)) {
+		if (!empty($command)) {
 			$tceMain = $this->getTceMain();
 			$tceMain->start(array(), $command);
 			$tceMain->process_cmdmap();

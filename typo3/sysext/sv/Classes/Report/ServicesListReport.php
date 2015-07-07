@@ -170,7 +170,7 @@ class ServicesListReport implements ReportInterface {
 	protected function renderExecutablesSearchPathList() {
 		$searchPaths = CommandUtility::getPaths(TRUE);
 		$content = '<h3>' . $this->getLanguageService()->getLL('search_paths') . '</h3>';
-		if (count($searchPaths) === 0) {
+		if (empty($searchPaths)) {
 			$content .= '<p>' . $this->getLanguageService()->getLL('no_search_paths') . '</p>';
 		} else {
 			$content .= '

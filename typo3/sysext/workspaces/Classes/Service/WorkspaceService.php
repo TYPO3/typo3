@@ -47,7 +47,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// add custom workspaces (selecting all, filtering by BE_USER check):
 		$customWorkspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, title, adminusers, members', 'sys_workspace', 'pid = 0' . BackendUtility::deleteClause('sys_workspace'), '', 'title');
-		if (count($customWorkspaces)) {
+		if (!empty($customWorkspaces)) {
 			foreach ($customWorkspaces as $workspace) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
 					$availableWorkspaces[$workspace['uid']] = $workspace['title'];
@@ -218,7 +218,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 					$recs = array_merge($recs, $moveRecs);
 				}
 				$recs = $this->filterPermittedElements($recs, $table);
-				if (count($recs)) {
+				if (!empty($recs)) {
 					$output[$table] = $recs;
 				}
 			}

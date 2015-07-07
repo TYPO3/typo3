@@ -252,7 +252,7 @@ class GridDataService {
 	protected function getDataArray($start, $limit) {
 		$dataArrayPart = array();
 		$dataArrayCount = count($this->dataArray);
-		$end = ($start + $limit < count($this->dataArray) ? $start + $limit : $dataArrayCount);
+		$end = ($start + $limit < $dataArrayCount ? $start + $limit : $dataArrayCount);
 
 		// Ensure that there are numerical indexes
 		$this->dataArray = array_values(($this->dataArray));

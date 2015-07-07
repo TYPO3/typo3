@@ -166,7 +166,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 			// - Make sure to remove fe/be cookies (temporarily);
 			// BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData)) {
-				if (!count(GeneralUtility::_POST())) {
+				if (empty(GeneralUtility::_POST())) {
 					// Unserialize configuration:
 					$previewConfig = unserialize($previewData['config']);
 					// For full workspace preview we only ADD a get variable

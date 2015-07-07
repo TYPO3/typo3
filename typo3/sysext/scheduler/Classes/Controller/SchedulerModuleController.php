@@ -435,7 +435,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected function infoScreenAction() {
 		$registeredClasses = $this->getRegisteredClasses();
 		// No classes available, display information message
-		if (count($registeredClasses) == 0) {
+		if (empty($registeredClasses)) {
 			$this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'InfoScreenNoClasses.html');
 			return $this->view->render();
 		}
@@ -620,7 +620,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
 		// If some data was already submitted, use it to override
 		// existing data
-		if (count($this->submittedData) > 0) {
+		if (!empty($this->submittedData)) {
 			\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($taskInfo, $this->submittedData);
 		}
 
@@ -842,7 +842,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$this->scheduler->scheduleNextSchedulerRunUsingAtDaemon();
 		}
 		// Continue if some elements have been chosen for execution
-		if (isset($this->submittedData['execute']) && count($this->submittedData['execute']) > 0) {
+		if (isset($this->submittedData['execute']) && !empty($this->submittedData['execute'])) {
 			// Get list of registered classes
 			$registeredClasses = $this->getRegisteredClasses();
 			// Loop on all selected tasks
@@ -1517,7 +1517,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		);
 		if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden') {
 			$buttons['reload'] = '<a href="' . htmlspecialchars($this->moduleUri) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
-			if ($this->MOD_SETTINGS['function'] === 'scheduler' && count($this->getRegisteredClasses())) {
+			if ($this->MOD_SETTINGS['function'] === 'scheduler' && !empty($this->getRegisteredClasses())) {
 				$link = $this->moduleUri . '&CMD=add';
 				$image = IconUtility::getSpriteIcon('actions-document-new', array('alt' => $this->getLanguageService()->getLL('action.add')));
 				$buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' . 'title="' . $this->getLanguageService()->getLL('action.add') . '">' . $image . '</a>';
