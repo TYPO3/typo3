@@ -61,7 +61,7 @@ class FalStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			}
 		}
 
-		if (count($storages)) {
+		if (!empty($storages)) {
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
 				'sys_file',

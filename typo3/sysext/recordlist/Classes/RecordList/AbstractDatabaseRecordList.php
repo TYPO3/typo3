@@ -667,7 +667,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 		if ($this->searchString) {
 			$result = ' AND 0=1';
 			$searchableFields = $this->getSearchFields($table);
-			if (count($searchableFields) > 0) {
+			if (!empty($searchableFields)) {
 				if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
 					$whereParts = array(
 						'uid=' . $this->searchString
@@ -716,7 +716,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 					}
 				}
 				// If search-fields were defined (and there always are) we create the query:
-				if (count($whereParts)) {
+				if (!empty($whereParts)) {
 					$result = ' AND (' . implode(' OR ', $whereParts) . ')';
 				}
 			}

@@ -99,7 +99,7 @@ class ExtensionManagerConfigurationUtility {
 	protected function renderMessage() {
 		$message = '';
 		// If there are problems, render them into an unordered list
-		if (count($this->problems) > 0) {
+		if (!empty($this->problems)) {
 			$message = '<ul><li>###PROBLEMS###</li></ul>';
 			$message = str_replace('###PROBLEMS###', implode('<br />&nbsp;</li><li>', $this->problems), $message);
 			if ($this->errorType > FlashMessage::OK) {

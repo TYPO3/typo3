@@ -92,15 +92,15 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		if (is_array($conf['flashvars.']) && is_array($typeConf['mapping.']['flashvars.'])) {
 			ArrayUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
 		}
-		$flashvars = 'var flashvars = ' . (count($conf['flashvars.']) ? json_encode($conf['flashvars.']) : '{}') . ';';
+		$flashvars = 'var flashvars = ' . (!empty($conf['flashvars.']) ? json_encode($conf['flashvars.']) : '{}') . ';';
 		if (is_array($conf['params.']) && is_array($typeConf['mapping.']['params.'])) {
 			ArrayUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 		}
-		$params = 'var params = ' . (count($conf['params.']) ? json_encode($conf['params.']) : '{}') . ';';
+		$params = 'var params = ' . (!empty($conf['params.']) ? json_encode($conf['params.']) : '{}') . ';';
 		if (is_array($conf['attributes.']) && is_array($typeConf['attributes.']['params.'])) {
 			ArrayUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
-		$attributes = 'var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
+		$attributes = 'var attributes = ' . (!empty($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
 		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
 		if (!$flashVersion) {
 			$flashVersion = '9';

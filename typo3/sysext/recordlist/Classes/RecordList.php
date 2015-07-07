@@ -355,7 +355,7 @@ class RecordList {
 			// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd == 'delete') {
 				$items = $dblist->clipObj->cleanUpCBC(GeneralUtility::_POST('CBC'), $this->cmd_table, 1);
-				if (count($items)) {
+				if (!empty($items)) {
 					$cmd = array();
 					foreach ($items as $iK => $value) {
 						$iKParts = explode('|', $iK);

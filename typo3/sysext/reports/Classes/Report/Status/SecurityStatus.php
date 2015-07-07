@@ -158,7 +158,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	protected function isMemcachedUsed() {
 		$memcachedUsed = FALSE;
 		$memcachedServers = $this->getConfiguredMemcachedServers();
-		if (count($memcachedServers)) {
+		if (!empty($memcachedServers)) {
 			$memcachedUsed = TRUE;
 		}
 		return $memcachedUsed;

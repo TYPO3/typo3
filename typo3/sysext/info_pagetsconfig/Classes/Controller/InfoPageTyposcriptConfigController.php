@@ -124,7 +124,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 						';
 					}
 				}
-				if (count($pUids)) {
+				if (!empty($pUids)) {
 					$params = '&edit[pages][' . implode(',', $pUids) . ']=edit&columnsOnly=TSconfig';
 					$onclickUrl = BackendUtility::editOnClick($params);
 					$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
@@ -253,7 +253,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 		$currentElement = current($rootlineArray);
 		$hierarchicArray[$currentElement['uid']] = htmlspecialchars($currentElement['title']);
 		array_shift($rootlineArray);
-		if (count($rootlineArray)) {
+		if (!empty($rootlineArray)) {
 			if (!isset($hierarchicArray[($currentElement['uid'] . '.')])) {
 				$hierarchicArray[$currentElement['uid'] . '.'] = array();
 			}

@@ -79,7 +79,7 @@ class LanguageRepository {
 	 * @return \TYPO3\CMS\Lang\Domain\Model\Language[] The language objects
 	 */
 	public function findAll() {
-		if (!count($this->languages)) {
+		if (empty($this->languages)) {
 			$languages = $this->locales->getLanguages();
 			array_shift($languages);
 			foreach ($languages as $locale => $language) {
@@ -135,7 +135,7 @@ class LanguageRepository {
 		foreach ($languages as $language) {
 			$dependencies = array_merge($dependencies, $this->locales->getLocaleDependencies($language));
 		}
-		if (count($dependencies)) {
+		if (!empty($dependencies)) {
 			$languages = array_unique(array_merge($languages, $dependencies));
 		}
 		$dir = count($languages) - count($this->selectedLocales);
@@ -145,7 +145,7 @@ class LanguageRepository {
 			array('availableLanguages' => $languages)
 		);
 		return array(
-			'success' => count($diff) > 0,
+			'success' => !empty($diff),
 			'dir' => $dir,
 			'diff' => array_values($diff),
 			'languages' => $languages

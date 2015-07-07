@@ -109,7 +109,7 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 				$missingPhpModules[] = $module;
 			}
 		}
-		if (count($missingPhpModules) > 0) {
+		if (!empty($missingPhpModules)) {
 			$value = $GLOBALS['LANG']->getLL('status_phpModulesMissing');
 			$message = sprintf($GLOBALS['LANG']->getLL('status_phpModulesList'), implode(', ', $missingPhpModules));
 			$message .= ' ' . $GLOBALS['LANG']->getLL('status_phpModulesInfo');

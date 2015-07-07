@@ -93,7 +93,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		$openDocuments = $this->openDocs;
 		$recentDocuments = $this->recentDocs;
 		$entries = array();
-		if (count($openDocuments)) {
+		if (!empty($openDocuments)) {
 			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('open_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
@@ -103,7 +103,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			$entries[] = '<li class="divider"></li>';
 		}
 		// If there are "recent documents" in the list, add them
-		if (count($recentDocuments)) {
+		if (!empty($recentDocuments)) {
 			$entries[] = '<li class="dropdown-header">' . $languageService->getLL('recent_docs', TRUE) . '</li>';
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
@@ -111,7 +111,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 				$entries[] = $this->renderMenuEntry($recentDocument, $md5sum, TRUE, $i == 1);
 			}
 		}
-		if (count($entries)) {
+		if (!empty($entries)) {
 			$content = '<ul class="dropdown-list">' . implode('', $entries) . '</ul>';
 		} else {
 			$content = '<p>' . $languageService->getLL('no_docs', TRUE) . '</p>';

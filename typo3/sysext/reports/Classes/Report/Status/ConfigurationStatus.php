@@ -94,7 +94,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	protected function isMemcachedUsed() {
 		$memcachedUsed = FALSE;
 		$memcachedServers = $this->getConfiguredMemcachedServers();
-		if (count($memcachedServers)) {
+		if (!empty($memcachedServers)) {
 			$memcachedUsed = TRUE;
 		}
 		return $memcachedUsed;
@@ -159,7 +159,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 				}
 			}
 		}
-		if (count($failedConnections)) {
+		if (!empty($failedConnections)) {
 			$value = $GLOBALS['LANG']->getLL('status_connectionFailed');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';

@@ -260,7 +260,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// Paste
 			if ($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) {
 				$elFromTable = $this->clipObj->elFromTable('');
-				if (count($elFromTable)) {
+				if (!empty($elFromTable)) {
 					$onClick = htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable)));
 					$buttons['paste'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('', $this->id))
 						. '" onclick="' . $onClick . '" title="' . $lang->getLL('clip_paste', TRUE) . '">'
@@ -880,7 +880,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					// If there are elements on the clipboard for this table, then display the
 					// "paste into" icon:
 					$elFromTable = $this->clipObj->elFromTable($table);
-					if (count($elFromTable)) {
+					if (!empty($elFromTable)) {
 						$href = htmlspecialchars($this->clipObj->pasteUrl($table, $this->id));
 						$onClick = htmlspecialchars('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable));
 						$cells['pasteAfter'] = '<a class="btn btn-default" href="' . $href . '" onclick="' . $onClick
@@ -1508,7 +1508,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		}
 		// Now, looking for selected elements from the current table:
 		$elFromTable = $this->clipObj->elFromTable($table);
-		if (count($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+		if (!empty($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
 			// IF elements are found and they can be individually ordered, then add a "paste after" icon:
 			$cells['pasteAfter'] = $isL10nOverlay
 				? $this->spaceIcon
@@ -1519,7 +1519,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		}
 		// Now, looking for elements in general:
 		$elFromTable = $this->clipObj->elFromTable('');
-		if ($table == 'pages' && count($elFromTable)) {
+		if ($table == 'pages' && !empty($elFromTable)) {
 			$cells['pasteInto'] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid']))
 				. '" onclick="' . htmlspecialchars('return ' . $this->clipObj->confirmMsg($table, $row, 'into', $elFromTable))
 				. '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', TRUE) . '">'
@@ -1758,11 +1758,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 */
 	public function showNewRecLink($table) {
 		// No deny/allow tables are set:
-		if (!count($this->allowedNewTables) && !count($this->deniedNewTables)) {
+		if (empty($this->allowedNewTables) && empty($this->deniedNewTables)) {
 			return TRUE;
 		}
 		return !in_array($table, $this->deniedNewTables)
-			&& (!count($this->allowedNewTables) || in_array($table, $this->allowedNewTables));
+			&& (empty($this->allowedNewTables) || in_array($table, $this->allowedNewTables));
 	}
 
 	/**

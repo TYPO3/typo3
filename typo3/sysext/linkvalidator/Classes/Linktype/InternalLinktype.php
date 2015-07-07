@@ -298,7 +298,7 @@ class InternalLinktype extends AbstractLinktype {
 		$domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
 		$rootLine = BackendUtility::BEgetRootLine($row['record_pid']);
 		// checks alternate domains
-		if (count($rootLine) > 0) {
+		if (!empty($rootLine)) {
 			$protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
 			$domainRecord = BackendUtility::firstDomainRecord($rootLine);
 			if (!empty($domainRecord)) {

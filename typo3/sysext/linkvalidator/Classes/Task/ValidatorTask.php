@@ -331,7 +331,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		$modTs = BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
 		$parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
 		$parseObj->parse($this->configuration);
-		if (count($parseObj->errors) > 0) {
+		if (!empty($parseObj->errors)) {
 			$parseErrorMessage = $this->getLanguageService()->sL('LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf:tasks.error.invalidTSconfig') . '<br />';
 			foreach ($parseObj->errors as $errorInfo) {
 				$parseErrorMessage .= $errorInfo[0] . '<br />';

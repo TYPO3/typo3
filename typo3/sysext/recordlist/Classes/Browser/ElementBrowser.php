@@ -397,7 +397,7 @@ class ElementBrowser {
 		// CurrentUrl - the current link url must be passed around if it exists
 		if ($this->mode === 'wizard') {
 			$currentValues = GeneralUtility::trimExplode(LF, trim($this->P['currentValue']));
-			if (count($currentValues) > 0) {
+			if (!empty($currentValues)) {
 				$currentValue = array_pop($currentValues);
 			} else {
 				$currentValue = '';

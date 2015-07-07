@@ -364,7 +364,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		}
 		// Configure audio description
 		if ($conf['type'] == 'video') {
-			if (is_array($conf['audioSources']) && count($conf['audioSources'])) {
+			if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
 				// Add videoJS audio description toggle
 				$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/audio-description.js'));
 			}
@@ -374,11 +374,11 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			}
 		}
 		// Assemble Flowplayer configuration
-		if (count($conf['videoflashvars'])) {
+		if (!empty($conf['videoflashvars'])) {
 			$flowplayerVideoConfig = array_merge_recursive($flowplayerVideoConfig, array('clip' => $conf['videoflashvars']));
 		}
 		$flowplayerVideoJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerVideoConfig));
-		if (count($conf['audioflashvars'])) {
+		if (!empty($conf['audioflashvars'])) {
 			$flowplayerAudioConfig = array_merge_recursive($flowplayerAudioConfig, array('clip' => $conf['audioflashvars']));
 		}
 		$flowplayerAudioJsonConfig = str_replace(array('"true"', '"false"'), array('true', 'false'), json_encode($flowplayerAudioConfig));
@@ -475,7 +475,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					$videoJsOptions[$videoJsOption] = $conf['params.'][$videoJsOption];
 				}
 			}
-			$videoJsOptions = count($videoJsOptions) ? json_encode($videoJsOptions) : '{}';
+			$videoJsOptions = !empty($videoJsOptions) ? json_encode($videoJsOptions) : '{}';
 			// videoJS setup and videoJS listeners for audio description synchronisation
 			if ($audioSources || isset($conf['audioFallback'])) {
 				$videoJsSetup = '
@@ -502,7 +502,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				if ($conf['preferFlashOverHtml5']) {
 					$videoTagAssembly = '';
 					// Create "source" elements
-					if (is_array($conf['sources']) && count($conf['sources'])) {
+					if (is_array($conf['sources']) && !empty($conf['sources'])) {
 						foreach ($conf['sources'] as $source) {
 							$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 							$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
@@ -567,7 +567,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		var ' . $replaceElementIdString . '_videoTag = document.createElement(\'video\');
 		var ' . $replaceElementIdString . '_video_box = document.getElementById("' . $replaceElementIdString . '_video");
 		if (' . $replaceElementIdString . '_video_box) {
-			if (!' . $replaceElementIdString . '_videoTag || !' . $replaceElementIdString . '_videoTag.canPlayType || !(' . (count($supported) ? implode(' || ', $supported) : 'false') . ')) {
+			if (!' . $replaceElementIdString . '_videoTag || !' . $replaceElementIdString . '_videoTag.canPlayType || !(' . (!empty($supported) ? implode(' || ', $supported) : 'false') . ')) {
 					// Avoid showing an empty video element
 				if (document.getElementById("' . $replaceElementIdString . '_video_js")) {
 					document.getElementById("' . $replaceElementIdString . '_video_js").style.display = "none";
@@ -594,7 +594,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			if ($conf['preferFlashOverHtml5']) {
 				$audioTagAssembly = '';
 				// Create "source" elements
-				if (is_array($conf['audioSources']) && count($conf['audioSources'])) {
+				if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
 					foreach ($conf['audioSources'] as $source) {
 						$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
@@ -647,7 +647,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		var ' . $replaceElementIdString . '_audioTag = document.createElement(\'audio\');
 		var ' . $replaceElementIdString . '_audio_box = document.getElementById("' . $replaceElementIdString . '_audio_box");
 		if (' . $replaceElementIdString . '_audio_box) {
-			if (!' . $replaceElementIdString . '_audioTag || !' . $replaceElementIdString . '_audioTag.canPlayType || !(' . (count($supported) ? implode(' || ', $supported) : 'false') . ')) {
+			if (!' . $replaceElementIdString . '_audioTag || !' . $replaceElementIdString . '_audioTag.canPlayType || !(' . (!empty($supported) ? implode(' || ', $supported) : 'false') . ')) {
 					// Avoid showing an empty audio element
 				if (document.getElementById("' . $replaceElementIdString . '_audio_element")) {
 					document.getElementById("' . $replaceElementIdString . '_audio_element").style.display = "none";
