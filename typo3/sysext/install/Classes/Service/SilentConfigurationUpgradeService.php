@@ -268,7 +268,7 @@ class SilentConfigurationUpgradeService {
 				$changedValues['GFX/gdlib'] = 0;
 			}
 		}
-		if (count($changedValues) > 0) {
+		if (!empty($changedValues)) {
 			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
 			$this->throwRedirectException();
 		}
@@ -330,7 +330,7 @@ class SilentConfigurationUpgradeService {
 				$changedValues['GFX/thumbnails'] = 0;
 			}
 		}
-		if (count($changedValues) > 0) {
+		if (!empty($changedValues)) {
 			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
 			$this->throwRedirectException();
 		}
@@ -376,7 +376,7 @@ class SilentConfigurationUpgradeService {
 				}
 			}
 		}
-		if (count($changedValues) > 0) {
+		if (!empty($changedValues)) {
 			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
 			$this->throwRedirectException();
 		}

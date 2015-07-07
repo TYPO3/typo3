@@ -81,12 +81,12 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 				$pageRenderer->enableExtJsDebug();
 			}
 		}
-		if (is_array($addCssFiles) && count($addCssFiles) > 0) {
+		if (is_array($addCssFiles) && !empty($addCssFiles)) {
 			foreach ($addCssFiles as $addCssFile) {
 				$pageRenderer->addCssFile($addCssFile);
 			}
 		}
-		if (is_array($addJsFiles) && count($addJsFiles) > 0) {
+		if (is_array($addJsFiles) && !empty($addJsFiles)) {
 			foreach ($addJsFiles as $addJsFile) {
 				$pageRenderer->addJsFile($addJsFile);
 			}

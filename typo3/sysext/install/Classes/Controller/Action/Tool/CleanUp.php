@@ -133,7 +133,7 @@ class CleanUp extends Action\AbstractAction {
 				$clearedTables[] = $tableName;
 			}
 		}
-		if (count($clearedTables)) {
+		if (!empty($clearedTables)) {
 			/** @var OkStatus $message */
 			$message = $this->objectManager->get(OkStatus::class);
 			$message->setTitle('Cleared tables');

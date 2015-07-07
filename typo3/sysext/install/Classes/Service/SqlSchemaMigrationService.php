@@ -152,7 +152,7 @@ class SqlSchemaMigrationService {
 	 */
 	public function getCollationForCharset($charset) {
 		// Load character sets, if not cached already
-		if (!count($this->character_sets)) {
+		if (empty($this->character_sets)) {
 			if (method_exists($GLOBALS['TYPO3_DB'], 'admin_get_charsets')) {
 				$this->character_sets = $GLOBALS['TYPO3_DB']->admin_get_charsets();
 			} else {
@@ -224,7 +224,7 @@ class SqlSchemaMigrationService {
 			}
 		}
 		// Compile key information:
-		if (count($tempKeys)) {
+		if (!empty($tempKeys)) {
 			foreach ($tempKeys as $table => $keyInf) {
 				foreach ($keyInf as $kName => $index) {
 					ksort($index);
@@ -413,7 +413,7 @@ class SqlSchemaMigrationService {
 									if ($fN == 'CLEAR') {
 										// Truncate table must happen later, not now
 										// Valid values for CLEAR: 1=only clear if keys are missing, 2=clear anyway (force)
-										if (count($info['keys']) || $fV == 2) {
+										if (!empty($info['keys']) || $fV == 2) {
 											$clear_table = TRUE;
 										}
 										continue;
@@ -428,7 +428,7 @@ class SqlSchemaMigrationService {
 							$statement = 'TRUNCATE TABLE ' . $table . ';';
 							$statements['clear_table'][md5($statement)] = $statement;
 						}
-						if (count($extras)) {
+						if (!empty($extras)) {
 							$statement = 'ALTER TABLE ' . $table . ' ' . implode(' ', $extras) . ';';
 							$statements['change'][md5($statement)] = $statement;
 							$statements['change_currentValue'][md5($statement)] = implode(' ', $extras_currentValue);
@@ -621,7 +621,7 @@ class SqlSchemaMigrationService {
 				}
 			}
 		}
-		if (count($result) > 0) {
+		if (!empty($result)) {
 			return $result;
 		} else {
 			return TRUE;

@@ -287,13 +287,13 @@ class UpgradeWizard extends Action\AbstractAction {
 		$currentTableDefinition = $sqlHandler->getFieldDefinitions_database();
 		$updateTableDefinition = $sqlHandler->getDatabaseExtra($neededTableDefinition, $currentTableDefinition);
 		$updateStatements = $sqlHandler->getUpdateSuggestions($updateTableDefinition);
-		if (isset($updateStatements['create_table']) && count($updateStatements['create_table']) > 0) {
+		if (isset($updateStatements['create_table']) && !empty($updateStatements['create_table'])) {
 			$sqlHandler->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
 		}
-		if (isset($updateStatements['add']) && count($updateStatements['add']) > 0) {
+		if (isset($updateStatements['add']) && !empty($updateStatements['add'])) {
 			$sqlHandler->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
 		}
-		if (isset($updateStatements['change']) && count($updateStatements['change']) > 0) {
+		if (isset($updateStatements['change']) && !empty($updateStatements['change'])) {
 			$sqlHandler->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
 		}
 	}

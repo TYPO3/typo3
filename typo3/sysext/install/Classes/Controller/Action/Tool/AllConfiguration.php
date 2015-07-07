@@ -172,7 +172,7 @@ class AllConfiguration extends Action\AbstractAction {
 					}
 				}
 			}
-			if (count($statusObjects)) {
+			if (!empty($statusObjects)) {
 				/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 				$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 				$configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationPathValuePairs);

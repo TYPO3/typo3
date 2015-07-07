@@ -60,7 +60,7 @@ class Configuration extends Action\AbstractAction {
 	protected function activate() {
 		$configurationValues = $this->featureManager->getConfigurationForSelectedFeaturePresets($this->postValues['values']);
 
-		if (count($configurationValues) > 0) {
+		if (!empty($configurationValues)) {
 			$this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 			/** @var $message \TYPO3\CMS\Install\Status\StatusInterface */
 			$message = $this->objectManager->get(\TYPO3\CMS\Install\Status\OkStatus::class);

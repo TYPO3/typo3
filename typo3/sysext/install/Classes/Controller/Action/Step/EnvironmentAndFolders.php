@@ -109,10 +109,7 @@ class EnvironmentAndFolders extends AbstractStepAction {
 		$structureErrors = $statusUtility->filterBySeverity($structureMessages, 'error');
 		$this->view->assign('structureErrors', $structureErrors);
 
-		if (count($environmentStatus['error']) > 0
-			|| count($environmentStatus['warning']) > 0
-			|| count($structureErrors) > 0
-		) {
+		if (!empty($environmentStatus['error']) || !empty($environmentStatus['warning']) || !empty($structureErrors)) {
 			$this->view->assign('errorsOrWarningsFromStatus', TRUE);
 		}
 		$this->assignSteps();

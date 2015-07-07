@@ -397,7 +397,7 @@ class StepController extends AbstractController {
 			}
 			$action->setController('step');
 			$action->setAction('environmentAndFolders');
-			if (count($errorMessagesFromExecute) > 0) {
+			if (!empty($errorMessagesFromExecute)) {
 				$action->setMessages($errorMessagesFromExecute);
 			}
 			$this->output($action->handle());

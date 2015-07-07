@@ -79,7 +79,7 @@ class DatabaseData extends AbstractStepAction {
 	public function needsExecution() {
 		$result = FALSE;
 		$existingTables = $this->getDatabaseConnection()->admin_get_tables();
-		if (count($existingTables) === 0) {
+		if (empty($existingTables)) {
 			$result = TRUE;
 		}
 		return $result;

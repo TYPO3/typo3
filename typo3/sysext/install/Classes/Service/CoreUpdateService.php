@@ -166,7 +166,7 @@ class CoreUpdateService {
 		$folderStructureFacade = $this->objectManager->get(DefaultFactory::class)->getStructure();
 		$folderStructureErrors = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'error');
 		$folderStructureWarnings = $statusUtility->filterBySeverity($folderStructureFacade->getStatus(), 'warning');
-		if (count($folderStructureErrors) > 0 || count($folderStructureWarnings) > 0) {
+		if (!empty($folderStructureErrors) || !empty($folderStructureWarnings)) {
 			$success = FALSE;
 			/** @var $message StatusInterface */
 			$message = $this->objectManager->get(ErrorStatus::class);

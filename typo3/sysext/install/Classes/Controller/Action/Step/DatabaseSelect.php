@@ -70,7 +70,7 @@ class DatabaseSelect extends AbstractStepAction {
 			$this->databaseConnection->sql_select_db();
 			$existingTables = $this->databaseConnection->admin_get_tables();
 			$isInitialInstallation = $configurationManager->getConfigurationValueByPath('SYS/isInitialInstallationInProgress');
-			if (!$isInitialInstallation || count($existingTables) === 0) {
+			if (!$isInitialInstallation || empty($existingTables)) {
 				$localConfigurationPathValuePairs['DB/database'] = $postValues['existing'];
 			}
 		} else {

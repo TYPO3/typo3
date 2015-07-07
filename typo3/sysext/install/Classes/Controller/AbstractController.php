@@ -102,7 +102,7 @@ class AbstractController {
 	protected function checkSessionToken() {
 		$postValues = $this->getPostValues();
 		$tokenOk = FALSE;
-		if (count($postValues) > 0) {
+		if (!empty($postValues)) {
 			// A token must be given as soon as there is POST data
 			if (isset($postValues['token'])) {
 				/** @var $formProtection \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection */
