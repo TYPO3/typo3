@@ -398,7 +398,7 @@ class IconUtility {
 							$white = ImageColorAllocate($im, 255, 255, 255);
 							imagestring($im, 1, 1, 1, $user, $white);
 						}
-						$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_group.gif');
+						$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_group.gif');
 						if ($ol_im < 0) {
 							return $iconfile;
 						}
@@ -409,19 +409,19 @@ class IconUtility {
 						unset($ol_im);
 						switch ($mode) {
 							case 'deleted':
-								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_deleted.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_deleted.gif');
 								break;
 							case 'futuretiming':
-								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_timing.gif');
 								break;
 							case 'timing':
-								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_timing.gif');
 								break;
 							case 'hiddentiming':
-								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden_timing.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_hidden_timing.gif');
 								break;
 							case 'no_icon_found':
-								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_no_icon_found.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_no_icon_found.gif');
 								break;
 							case 'disabled':
 								// is already greyed - nothing more
@@ -430,7 +430,7 @@ class IconUtility {
 							case 'hidden':
 
 							default:
-								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_hidden.gif');
 						}
 						if ($ol_im < 0) {
 							return $iconfile;
@@ -441,7 +441,7 @@ class IconUtility {
 					}
 					// Protect-section icon:
 					if ($protectSection) {
-						$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_sub5.gif');
+						$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/overlay_sub5.gif');
 						if ($ol_im < 0) {
 							return $iconfile;
 						}
@@ -456,7 +456,7 @@ class IconUtility {
 					return $iconfile;
 				}
 			} else {
-				return $GLOBALS['BACK_PATH'] . 'gfx/default.gif';
+				return $GLOBALS['BACK_PATH'] . 'typo3/sysext/backend/Resources/Public/Images/Overlay/default.gif';
 			}
 		}
 	}

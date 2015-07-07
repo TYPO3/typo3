@@ -11281,7 +11281,7 @@ a.badge-danger:focus {
   display: inline-block;
   position: relative;
   vertical-align: middle;
-  background-image: url('../../../../../../gfx/icon_fatalerror.gif');
+  background-image: url('../../../icons/gfx/icon_fatalerror.gif');
   background-repeat: no-repeat;
   margin-right: 2px;
   width: 16px;
