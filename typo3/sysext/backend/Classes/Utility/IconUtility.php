@@ -366,10 +366,7 @@ class IconUtility {
 		$iconFileName = 'icon_' . GeneralUtility::shortMD5(($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection)) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
 		$mainpath = '../typo3temp/' . $iconFileName;
 		$path = PATH_site . 'typo3temp/' . $iconFileName;
-		if (file_exists(PATH_typo3 . 'icons/' . $iconFileName)) {
-			// Returns if found in typo3/icons/
-			return 'icons/' . $iconFileName;
-		} elseif (file_exists($path)) {
+		if (file_exists($path)) {
 			// Returns if found in ../typo3temp/icons/
 			return $mainpath;
 		} else {
