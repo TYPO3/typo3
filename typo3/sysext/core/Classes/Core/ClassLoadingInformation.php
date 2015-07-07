@@ -64,11 +64,13 @@ class ClassLoadingInformation {
 	 */
 	static public function writeClassLoadingInformation() {
 		self::ensureAutoloadInfoDirExists();
-		$classInfoFiles = ClassLoadingInformationGenerator::buildAutoloadInformationFiles();
+		/** @var ClassLoadingInformationGenerator  $generator */
+		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class);
+		$classInfoFiles = $generator->buildAutoloadInformationFiles();
 		GeneralUtility::writeFile(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
 		GeneralUtility::writeFile(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
 
-		$classAliasMapFile = ClassLoadingInformationGenerator::buildClassAliasMapFile();
+		$classAliasMapFile = $generator->buildClassAliasMapFile();
 		GeneralUtility::writeFile(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
 	}
 
@@ -114,12 +116,16 @@ class ClassLoadingInformation {
 	 */
 	static public function registerTransientClassLoadingInformationForPackage(PackageInterface $package) {
 		$composerClassLoader = static::getClassLoader();
-		$classInformation = ClassLoadingInformationGenerator::buildClassLoadingInformationForPackage($package);
+
+		/** @var ClassLoadingInformationGenerator  $generator */
+		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class);
+
+		$classInformation = $generator->buildClassLoadingInformationForPackage($package);
 		$composerClassLoader->addClassMap($classInformation['classMap']);
 		foreach ($classInformation['psr-4'] as $prefix => $paths) {
 			$composerClassLoader->setPsr4($prefix, $paths);
 		}
-		$classAliasMap = ClassLoadingInformationGenerator::buildClassAliasMapForPackage($package);
+		$classAliasMap = $generator->buildClassAliasMapForPackage($package);
 		if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
 			self::getClassAliasLoader($composerClassLoader)->addAliasMap($classAliasMap);
 		}

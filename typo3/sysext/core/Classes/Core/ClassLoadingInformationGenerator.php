@@ -39,7 +39,7 @@ class ClassLoadingInformationGenerator {
 	 * @param bool $useRelativePaths If set to TRUE, make the path relative to the current TYPO3 instance (PATH_site)
 	 * @return array
 	 */
-	static public function buildClassLoadingInformationForPackage(PackageInterface $package, $useRelativePaths = FALSE) {
+	public function buildClassLoadingInformationForPackage(PackageInterface $package, $useRelativePaths = FALSE) {
 		$classMap = array();
 		$psr4 = array();
 		$packagePath = $package->getPackagePath();
@@ -52,7 +52,7 @@ class ClassLoadingInformationGenerator {
 					foreach ($psr4manifest as $namespacePrefix => $path) {
 						$namespacePath = $packagePath . $path;
 						if ($useRelativePaths) {
-							$psr4[$namespacePrefix] = self::makePathRelative($namespacePath, realpath($namespacePath));
+							$psr4[$namespacePrefix] = $this->makePathRelative($namespacePath, realpath($namespacePath));
 						} else {
 							$psr4[$namespacePrefix] = $namespacePath;
 						}
@@ -64,6 +64,12 @@ class ClassLoadingInformationGenerator {
 		}
 
 		foreach (ClassMapGenerator::createMap($packagePath) as $class => $path) {
+			if ($this->isIgnoredPath($packagePath, $path)) {
+				continue;
+			}
+			if ($this->isIgnoredClassName($class)) {
+				continue;
+			}
 			if ($useRelativePaths) {
 				$classMap[$class] = self::makePathRelative($packagePath, $path);
 			} else {
@@ -75,13 +81,45 @@ class ClassLoadingInformationGenerator {
 	}
 
 	/**
+	 * Check if the class path should be ignored.
+	 * Currently only tests folders are ignored.
+	 *
+	 * @param string $packagePath
+	 * @param string $path
+	 * @return bool
+	 */
+	protected function isIgnoredPath($packagePath, $path) {
+		if (stripos($this->makePathRelative($packagePath, $path, FALSE), 'tests') !== FALSE) {
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Check if class name should be ignored.
+	 * Currently all classes with suffix "Test" and "Fixture" will be ignored
+	 *
+	 * @param string $className
+	 * @return bool
+	 */
+	protected function isIgnoredClassName($className) {
+		foreach (array('test', 'fixture') as $suffix) {
+			if (strtolower(substr($className, 0 - strlen($suffix))) === $suffix) {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
+	/**
 	 * Returns class alias map for given package
 	 *
 	 * @param PackageInterface $package The package to generate the class alias info for
 	 * @throws \TYPO3\CMS\Core\Error\Exception
 	 * @return array
 	 */
-	static public function buildClassAliasMapForPackage(PackageInterface $package) {
+	public function buildClassAliasMapForPackage(PackageInterface $package) {
 		$aliasToClassNameMapping = array();
 		$classNameToAliasMapping = array();
 		$possibleClassAliasFile = $package->getPackagePath() . 'Migrations/Code/ClassAliasMap.php';
@@ -105,7 +143,7 @@ class ClassLoadingInformationGenerator {
 	 * @return string[]
 	 * @internal
 	 */
-	static public function buildAutoloadInformationFiles() {
+	public function buildAutoloadInformationFiles() {
 		// Ensure that for each re-build, the packages are fetched again from the package manager
 		self::$activeExtensionPackages = NULL;
 
@@ -121,7 +159,7 @@ return array(
 EOF;
 		$classMap = array();
 		$psr4 = array();
-		foreach (self::getActiveExtensionPackages() as $package) {
+		foreach ($this->getActiveExtensionPackages() as $package) {
 			$classLoadingInformation = self::buildClassLoadingInformationForPackage($package, TRUE);
 			$classMap = array_merge($classMap, $classLoadingInformation['classMap']);
 			$psr4 = array_merge($psr4, $classLoadingInformation['psr-4']);
@@ -147,13 +185,18 @@ EOF;
 	 *
 	 * @param string $packagePath
 	 * @param string $realPathOfClassFile
+	 * @param bool $relativeToRoot
 	 * @return string
 	 */
-	static protected function makePathRelative($packagePath, $realPathOfClassFile) {
+	protected function makePathRelative($packagePath, $realPathOfClassFile, $relativeToRoot = TRUE) {
 		$realPathOfClassFile = GeneralUtility::fixWindowsFilePath($realPathOfClassFile);
-		$classesRealPath = GeneralUtility::fixWindowsFilePath(realpath($packagePath));
-		$relativeClassesPath = rtrim(PathUtility::stripPathSitePrefix($packagePath), '/');
-		$relativePathToClassFile = $relativeClassesPath . '/' . ltrim(substr($realPathOfClassFile, strlen($classesRealPath)), '/');
+		$packageRealPath = GeneralUtility::fixWindowsFilePath(realpath($packagePath));
+		$relativePackagePath = rtrim(PathUtility::stripPathSitePrefix($packagePath), '/');
+		if ($relativeToRoot) {
+			$relativePathToClassFile = $relativePackagePath . '/' . ltrim(substr($realPathOfClassFile, strlen($packageRealPath)), '/');
+		} else {
+			$relativePathToClassFile = ltrim(substr($realPathOfClassFile, strlen($packageRealPath)), '/');
+		}
 
 		return $relativePathToClassFile;
 	}
@@ -164,7 +207,7 @@ EOF;
 	 * @param string $relativePathToClassFile
 	 * @return string
 	 */
-	static protected function getPathCode($relativePathToClassFile) {
+	protected function getPathCode($relativePathToClassFile) {
 		return '$typo3InstallDir . ' . var_export($relativePathToClassFile, TRUE);
 	}
 
@@ -175,7 +218,7 @@ EOF;
 	 * @throws \Exception
 	 * @internal
 	 */
-	static public function buildClassAliasMapFile() {
+	public function buildClassAliasMapFile() {
 		$aliasToClassNameMapping = array();
 		$classNameToAliasMapping = array();
 		foreach (self::getActiveExtensionPackages() as $package) {
@@ -198,7 +241,7 @@ EOF;
 	 *
 	 * @return PackageInterface[]
 	 */
-	static protected function getActiveExtensionPackages() {
+	protected function getActiveExtensionPackages() {
 		if (self::$activeExtensionPackages === NULL) {
 			self::$activeExtensionPackages = array();
 			foreach (self::getPackageManager()->getActivePackages() as $package) {
@@ -219,7 +262,7 @@ EOF;
 	 * @param PackageInterface $package
 	 * @return bool
 	 */
-	static protected function isFrameworkPackage(PackageInterface $package) {
+	protected function isFrameworkPackage(PackageInterface $package) {
 		return $package->getValueFromComposerManifest('type') === 'typo3-cms-framework';
 	}
 
@@ -227,7 +270,7 @@ EOF;
 	 * @return PackageManager
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
-	static protected function getPackageManager() {
+	protected function getPackageManager() {
 		return Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
 	}
 
