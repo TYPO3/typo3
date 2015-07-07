@@ -353,7 +353,7 @@ class Indexer {
 	public function init() {
 		// Initializing:
 		$this->cHashParams = $this->conf['cHash_array'];
-		if (is_array($this->cHashParams) && count($this->cHashParams)) {
+		if (is_array($this->cHashParams) && !empty($this->cHashParams)) {
 			if ($this->conf['cHash']) {
 				// Add this so that URL's come out right...
 				$this->cHashParams['cHash'] = $this->conf['cHash'];

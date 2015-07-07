@@ -242,7 +242,7 @@ class DocumentationService {
 	 */
 	protected function parsePackagesXML($string) {
 		$data = json_decode(json_encode((array)simplexml_load_string($string)), TRUE);
-		if (count($data) != 2) {
+		if (count($data) !== 2) {
 			throw new \TYPO3\CMS\Documentation\Exception\XmlParser('Error in XML parser while decoding packages XML file.', 1374222437);
 		}
 

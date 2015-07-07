@@ -764,7 +764,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				$typeParts = GeneralUtility::trimExplode('=', $fParts[0]);
 				$confData['type'] = trim(strtolower(end($typeParts)));
 				if ($confData['type']) {
-					if (count($typeParts) == 1) {
+					if (count($typeParts) === 1) {
 						$confData['fieldname'] = substr(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', trim($parts[0]))), 0, 30);
 						// Attachment names...
 						if ($confData['type'] == 'file') {

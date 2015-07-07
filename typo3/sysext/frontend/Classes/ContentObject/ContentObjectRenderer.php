@@ -4204,7 +4204,6 @@ class ContentObjectRenderer {
 				if ($tagName !== NULL) {
 					// Seek for the closing (or opening) tag.
 					$seekingTagName = '';
-					$countSplittedContent = count($splittedContent);
 					for ($seekingOffset = $offset + 2; $seekingOffset < $countSplittedContent; $seekingOffset = $seekingOffset + 2) {
 						preg_match($chars < 0 ? $openingTagRegEx : $closingTagRegEx, $splittedContent[$seekingOffset], $matches);
 						$seekingTagName = isset($matches[1]) ? $matches[1] : NULL;
@@ -6720,7 +6719,7 @@ class ContentObjectRenderer {
 						// If two PIDs matches and this is NOT the site root, start accumulation of MP data (on the next level):
 						// (The check for site root is done so links to branches outsite the site but sharing the site roots PID
 						// is NOT detected as within the branch!)
-						if ($tCR_data['pid'] == $invTmplRLRec['pid'] && count($inverseTmplRootline) != $rlKey + 1) {
+						if ($tCR_data['pid'] == $invTmplRLRec['pid'] && count($inverseTmplRootline) !== $rlKey + 1) {
 							$startMPaccu = TRUE;
 						}
 					}
@@ -6914,7 +6913,7 @@ class ContentObjectRenderer {
 	public function callUserFunction($funcName, $conf, $content) {
 		// Split parts
 		$parts = explode('->', $funcName);
-		if (count($parts) == 2) {
+		if (count($parts) === 2) {
 			// Class
 			// Check whether class is available and try to reload includeLibs if possible:
 			if ($this->isClassAvailable($parts[0], $conf)) {
@@ -7057,7 +7056,7 @@ class ContentObjectRenderer {
 			$labels = str_replace('"', '', $labels);
 		}
 		$labelArr = explode('|', $labels);
-		if (count($labelArr) == 4) {
+		if (count($labelArr) === 4) {
 			$labelArr = array_merge($labelArr, $labelArr);
 		}
 		$absSeconds = abs($seconds);
@@ -8041,7 +8040,7 @@ class ContentObjectRenderer {
 				$listArr[] = -1;
 				$enableFieldsIgnore['pid'] = TRUE;
 			}
-			if (count($listArr)) {
+			if (!empty($listArr)) {
 				$query .= ' AND ' . $table . '.pid IN (' . implode(',', array_map('intval', $listArr)) . ')';
 				$pid_uid_flag++;
 			} else {

@@ -276,14 +276,15 @@ class DebuggerUtility {
 				$dump .= '<span class="debug-filtered">max depth</span>';
 			}
 		} elseif ($level > 1 && !$object instanceof \DateTime && !$plainText) {
-			if (($object instanceof \Countable && count($object) === 0) || empty($classReflection->getProperties())) {
+			if (($object instanceof \Countable && empty($object)) || empty($classReflection->getProperties())) {
 				$dump = '<span>' . $dump . '</span>';
 			} else {
 				$dump = '<input type="checkbox" id="' . spl_object_hash($object) . '" /><span class="debug-header">' . $dump . '</span>';
 			}
 		}
 		if ($object instanceof \Countable) {
-			$dump .= count($object) > 0 ? ' (' . count($object) . ' items)' : ' (empty)';
+			$objectCount = count($object);
+			$dump .= $objectCount > 0 ? ' (' . $objectCount . ' items)' : ' (empty)';
 		}
 		if ($object instanceof \DateTime) {
 			$dump .= ' (' . $object->format(\DateTime::RFC3339) . ', ' . $object->getTimestamp() . ')';

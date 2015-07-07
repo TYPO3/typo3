@@ -60,7 +60,7 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 		$this->emitPackagesMayHaveChangedSignal();
 		$packages = $packageManager->getAvailablePackages();
 		$this->outputLine((sprintf('Updating language packs of all activated extensions for locales "%s"', implode(', ', $locales))));
-		$this->output->progressStart(count($locales)*count($packages));
+		$this->output->progressStart(count($locales) * count($packages));
 		foreach ($locales as $locale) {
 			/** @var PackageInterface $package */
 			foreach ($packages as $package) {

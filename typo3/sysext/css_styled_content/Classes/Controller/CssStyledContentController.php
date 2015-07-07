@@ -994,7 +994,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					}
 					$this->frontendController->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
 					// Close this row at the end (colCount), or the last row at the final end
-					if ($separateRows && $i + 1 == count($imgsTag)) {
+					if ($separateRows && $i + 1 === count($imgsTag)) {
 						// Close the very last row with either normal configuration or lastRow stdWrap
 						$allRows .= $this->cObj->stdWrap(
 							$thisRow,

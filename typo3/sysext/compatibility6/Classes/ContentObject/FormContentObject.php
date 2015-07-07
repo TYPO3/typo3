@@ -146,7 +146,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				}
 				$typeParts = explode('=', $fParts[0]);
 				$confData['type'] = trim(strtolower(end($typeParts)));
-				if (count($typeParts) == 1) {
+				if (count($typeParts) === 1) {
 					$confData['fieldname'] = $this->cleanFormName($parts[0]);
 					if (strtolower(preg_replace('/[^[:alnum:]]/', '', $confData['fieldname'])) == 'email') {
 						$confData['fieldname'] = 'email';

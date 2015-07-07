@@ -3363,9 +3363,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						case 'CASE':
 							if (isset($sqlPartArray[$k]['case_field'])) {
 								$fieldArray = explode('.', $sqlPartArray[$k]['case_field']);
-								if (count($fieldArray) == 1 && is_array($this->mapping[$defaultTableKey]['mapFieldNames']) && isset($this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]])) {
+								$fieldArrayCount = count($fieldArray);
+								if ($fieldArrayCount === 1 && is_array($this->mapping[$defaultTableKey]['mapFieldNames']) && isset($this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]])) {
 									$sqlPartArray[$k]['case_field'] = $this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]];
-								} elseif (count($fieldArray) == 2) {
+								} elseif ($fieldArrayCount === 2) {
 									// Map the external table
 									$table = $fieldArray[0];
 									$tableKey = $this->getMappingKey($table);
@@ -3421,10 +3422,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// Mapping field name in SQL-functions like MIN(), MAX() or SUM()
 					if ($this->mapping[$t]['mapFieldNames']) {
 						$fieldArray = explode('.', $sqlPartArray[$k]['func_content']);
-						if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+						$fieldArrayCount = count($fieldArray);
+						if ($fieldArrayCount === 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
 							$sqlPartArray[$k]['func_content'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
-						} elseif (count($fieldArray) == 2) {
+						} elseif ($fieldArrayCount === 2) {
 							// Map the external table
 							$table = $fieldArray[0];
 							$tableKey = $this->getMappingKey($table);
@@ -3469,9 +3471,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// this is a very simplistic check, beware
 					if (!is_numeric($sqlPartArray[$k]['value'][0]) && !isset($sqlPartArray[$k]['value'][1])) {
 						$fieldArray = explode('.', $sqlPartArray[$k]['value'][0]);
-						if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+						$fieldArrayCount = count($fieldArray);
+						if ($fieldArrayCount === 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
 							$sqlPartArray[$k]['value'][0] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
-						} elseif (count($fieldArray) == 2) {
+						} elseif ($fieldArrayCount === 2) {
 							// Map the external table
 							$table = $fieldArray[0];
 							$tableKey = $this->getMappingKey($table);
