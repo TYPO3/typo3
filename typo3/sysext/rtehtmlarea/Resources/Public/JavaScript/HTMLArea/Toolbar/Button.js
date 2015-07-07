@@ -109,7 +109,7 @@ define('TYPO3/CMS/Rtehtmlarea/HTMLArea/Toolbar/Button',
 		 * Add properties and function to set button active or not depending on current selection
 		 */
 		inactive: true,
-		activeClass: 'btn-active',
+		activeClass: 'active',
 		setInactive: function (inactive) {
 			this.inactive = inactive;
 			return inactive ? Dom.removeClass(this.el, this.activeClass) : Dom.addClass(this.el, this.activeClass);

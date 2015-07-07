@@ -67,8 +67,8 @@
 .htmlarea .btn-toolbar .btn-sm:hover {
 	background-color: #dcdcdc;
 }
-.htmlarea .btn-toolbar .btn-active,
-.htmlarea-context-menu .btn-active {
+.htmlarea .btn-toolbar .active,
+.htmlarea-context-menu .active {
 	border-style: solid;
 	border-width: 1px;
 	border-color: #C5C5D5 #C5C5D5 #C5C5D5 #C5C5D5;
