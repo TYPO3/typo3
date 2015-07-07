@@ -559,7 +559,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 
 					$pasteP = array('colPos' => $key, 'sys_language_uid' => $lP);
-					$editParam = $this->doEdit && count($rowArr)
+					$editParam = $this->doEdit && !empty($rowArr)
 						? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
 						: '';
 					$head[$key] .= $this->tt_content_drawColHeader($colTitle, $editParam, $newP, $pasteP);
@@ -826,7 +826,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							<td></td>
 							<td valign="top" colspan="3">' . $this->tt_content_drawColHeader(
 								BackendUtility::getProcessedValue('tt_content', 'colPos', $key),
-								$this->doEdit && count($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : '',
+								$this->doEdit && !empty($rowArr) ? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc : '',
 								$newP,
 								$pasteP
 							) . $theNewButton . '<br /></td>

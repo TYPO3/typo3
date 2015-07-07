@@ -170,9 +170,10 @@ class FormDataTraverser {
 		}
 
 		$relatedRow = FALSE;
-		if (count($possibleUids) === 1) {
+		$possibleUidsCount = count($possibleUids);
+		if ($possibleUidsCount === 1) {
 			$relatedRow = $this->getRecordRow($possibleUids[0]);
-		} elseif (count($possibleUids) > 1) {
+		} elseif ($possibleUidsCount > 1) {
 			$relatedRow = $this->getMatchingRecordRowByTranslation($possibleUids, $fieldConfig);
 		}
 

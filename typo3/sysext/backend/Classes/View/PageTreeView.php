@@ -162,7 +162,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$PM = substr($PM, 0, $PMpos);
 		}
 		$PM = explode('_', $PM);
-		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX && is_array($PM) && count($PM) == 4 && $PM[2] != 0) {
+		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX && is_array($PM) && count($PM) === 4 && $PM[2] != 0) {
 			if ($PM[1]) {
 				$expandedPageUid = $PM[2];
 				$ajaxOutput = '';

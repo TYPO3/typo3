@@ -421,7 +421,7 @@ class Clipboard {
 				}
 			}
 		}
-		if (!count($lines)) {
+		if (empty($lines)) {
 			$lines[] = '
 								<tr>
 									<td class="col-icon"></td>
@@ -878,7 +878,7 @@ class Clipboard {
 	 * @return bool TRUE if elements exist.
 	 */
 	public function isElements() {
-		return is_array($this->clipData[$this->current]['el']) && count($this->clipData[$this->current]['el']);
+		return is_array($this->clipData[$this->current]['el']) && !empty($this->clipData[$this->current]['el']);
 	}
 
 	/*****************************************

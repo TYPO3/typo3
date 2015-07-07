@@ -614,7 +614,7 @@ abstract class AbstractTreeView {
 		// must update the stored positions in the tree):
 		// 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
 		$PM = explode('_', GeneralUtility::_GP('PM'));
-		if (count($PM) == 4 && $PM[3] == $this->treeName) {
+		if (count($PM) === 4 && $PM[3] == $this->treeName) {
 			if (isset($this->MOUNTS[$PM[0]])) {
 				// set
 				if ($PM[1]) {

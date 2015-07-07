@@ -172,7 +172,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		}
 		$shortcutMenu[] = '</ul>';
 
-		if (count($shortcutMenu) == 2) {
+		if (count($shortcutMenu) === 2) {
 			// No shortcuts added yet, show a small help message how to add shortcuts
 			$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
 			$icon = IconUtility::getSpriteIcon('actions-system-shortcut-new', array(

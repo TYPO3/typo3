@@ -912,7 +912,7 @@ class BackendUtility {
 		if (is_array($pArr)) {
 			foreach ($pArr as $k => $v) {
 				$parts = explode('=', $v, 2);
-				if (count($parts) == 2) {
+				if (count($parts) === 2) {
 					$out[trim($parts[0])] = trim($parts[1]);
 				} else {
 					$out[$k] = $v;
@@ -963,7 +963,7 @@ class BackendUtility {
 				// Up to two pointer fields can be specified in a comma separated list.
 				$pointerFields = GeneralUtility::trimExplode(',', $ds_pointerField);
 				// If we have two pointer fields, the array keys should contain both field values separated by comma. The asterisk "*" catches all values. For backwards compatibility, it's also possible to specify only the value of the first defined ds_pointerField.
-				if (count($pointerFields) == 2) {
+				if (count($pointerFields) === 2) {
 					if ($ds_array[$row[$pointerFields[0]] . ',' . $row[$pointerFields[1]]]) {
 						// Check if we have a DS for the combination of both pointer fields values
 						$srcPointer = $row[$pointerFields[0]] . ',' . $row[$pointerFields[1]];
@@ -2329,7 +2329,7 @@ class BackendUtility {
 				}
 				break;
 			case 'check':
-				if (!is_array($theColConf['items']) || count($theColConf['items']) == 1) {
+				if (!is_array($theColConf['items']) || count($theColConf['items']) === 1) {
 					$l = $value ? $lang->sL('LLL:EXT:lang/locallang_common.xlf:yes') : $lang->sL('LLL:EXT:lang/locallang_common.xlf:no');
 				} else {
 					$lA = array();
@@ -2812,7 +2812,7 @@ class BackendUtility {
 			// Traverse the view order, match first occurrence:
 			$languageOrder = GeneralUtility::intExplode(',', $viewLanguageOrder);
 			foreach ($languageOrder as $langUid) {
-				if (is_array($allowedLanguages) && count($allowedLanguages)) {
+				if (is_array($allowedLanguages) && !empty($allowedLanguages)) {
 					// Choose if set.
 					if (isset($allowedLanguages[$langUid])) {
 						$suffix = '&L=' . $langUid;
@@ -4212,7 +4212,7 @@ class BackendUtility {
 						. ' AND A.t3ver_wsid=' . (int)$workspace . ' AND ' . $joinStatement
 						. self::deleteClause($tableName, 'A') . self::deleteClause($tableName, 'B')
 				);
-				if (!is_array($output[$tableName]) || !count($output[$tableName])) {
+				if (!is_array($output[$tableName]) || empty($output[$tableName])) {
 					unset($output[$tableName]);
 				}
 			}

@@ -1065,7 +1065,7 @@ class PageLayoutController {
 			$content .= $this->doc->sectionEnd();
 		}
 		// Making search form:
-		if (!$this->modTSconfig['properties']['disableSearchBox'] && count($tableOutput)) {
+		if (!$this->modTSconfig['properties']['disableSearchBox'] && !empty($tableOutput)) {
 			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
 			$this->markers['SEARCHBOX'] = $dbList->getSearchBox(0);
 		}

@@ -259,7 +259,7 @@ class GroupElement extends AbstractFormElement {
 						'name' => htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.allTables'))
 					);
 				} elseif ($allowed) {
-					$onlySingleTableAllowed = count($allowed) == 1;
+					$onlySingleTableAllowed = count($allowed) === 1;
 					foreach ($allowed as $allowedTable) {
 						$allowedTables[] = array(
 							'name' => htmlspecialchars($languageService->sL($GLOBALS['TCA'][$allowedTable]['ctrl']['title'])),

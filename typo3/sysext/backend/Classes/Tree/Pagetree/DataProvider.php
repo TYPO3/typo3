@@ -196,7 +196,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		/** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
 		$nodeCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
 		$records = $this->getSubpages(-1, $searchFilter);
-		if (!is_array($records) || !count($records)) {
+		if (!is_array($records) || empty($records)) {
 			return $nodeCollection;
 		} elseif (count($records) > 500) {
 			return $nodeCollection;
