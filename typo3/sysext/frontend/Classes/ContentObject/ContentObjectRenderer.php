@@ -7838,13 +7838,14 @@ class ContentObjectRenderer {
 	 * Executes a SELECT query for records from $table and with conditions based on the configuration in the $conf array
 	 * and overlays with translation and version if available
 	 *
-	 * @param array $configuration The TypoScript configuration properties
+	 * @param string $tableName the name of the TCA database table
+	 * @param array $queryConfiguration The TypoScript configuration properties, see .select in TypoScript reference
 	 * @return array The records
 	 */
-	public function getRecords(array $configuration) {
+	public function getRecords($tableName, array $queryConfiguration) {
 		$records = [];
 
-		$res = $this->exec_getQuery($configuration['table'], $configuration['select.']);
+		$res = $this->exec_getQuery($tableName, $queryConfiguration);
 
 		if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
 			$GLOBALS['TT']->setTSlogMessage($error, 3);
@@ -7853,15 +7854,15 @@ class ContentObjectRenderer {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 
 				// Versioning preview:
-				$GLOBALS['TSFE']->sys_page->versionOL($configuration['table'], $row, TRUE);
+				$GLOBALS['TSFE']->sys_page->versionOL($tableName, $row, TRUE);
 
 				// Language overlay:
 				if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
-					if ($configuration['table'] === 'pages') {
+					if ($tableName === 'pages') {
 						$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 					} else {
 						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay(
-							$configuration['table'],
+							$tableName,
 							$row,
 							$GLOBALS['TSFE']->sys_language_content,
 							$GLOBALS['TSFE']->sys_language_contentOL

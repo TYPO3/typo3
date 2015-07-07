@@ -68,7 +68,7 @@ class ContentContentObject extends AbstractContentObject {
 		$cobjValue = '';
 
 		do {
-			$records = $this->cObj->getRecords($conf);
+			$records = $this->cObj->getRecords($conf['table'], $conf['select.']);
 			if (!empty($records)) {
 				$this->cObj->currentRecordTotal = count($records);
 				$this->getTimeTracker()->setTSlogMessage('NUMROWS: ' .  count($records));
