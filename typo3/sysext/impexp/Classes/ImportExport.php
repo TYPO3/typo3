@@ -3731,7 +3731,8 @@ class ImportExport {
 				$this->error($pInfo['ref'] . ' was recursive...');
 				continue;
 			}
-			$Iprepend = '';
+			$spriteIconName = 'status-status-checked';
+			$spriteIconClass = '';
 			$staticFixed = FALSE;
 			$record = NULL;
 			if ($uid > 0) {
@@ -3739,7 +3740,7 @@ class ImportExport {
 				if (!is_array($record)) {
 					if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
 						$pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
-						$Iprepend = '_static';
+						$spriteIconClass = 'text-info';
 						$staticFixed = TRUE;
 					} else {
 						$doesRE = $this->doesRecordExist($table, $uid);
@@ -3747,7 +3748,8 @@ class ImportExport {
 						$pInfo['title'] = htmlspecialchars($pInfo['ref']);
 						$pInfo['title'] = '<span title="' . htmlspecialchars($lostPath) . '">' . $pInfo['title'] . '</span>';
 						$pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : ' (Path: ' . $lostPath . ')');
-						$Iprepend = '_lost';
+						$spriteIconClass = 'text-danger';
+						$spriteIconName = 'status-dialog-warning';
 					}
 				} else {
 					$pInfo['title'] = htmlspecialchars($record['title']);
@@ -3758,7 +3760,10 @@ class ImportExport {
 				$pInfo['title'] = htmlspecialchars('FIXED: ' . $pInfo['ref']);
 				$staticFixed = TRUE;
 			}
-			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/rel_db' . $Iprepend . '.gif'), 'width="13" height="12"') . ' align="top" title="' . htmlspecialchars($pInfo['ref']) . '" alt="" />';
+
+			$spriteIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($spriteIconName, array('class' => $spriteIconClass, 'title' => $pInfo['ref']));
+
+			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $spriteIcon;
 			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
 			$pInfo['type'] = 'rel';
 			if (!$staticFixed || $this->showStaticRelations) {
