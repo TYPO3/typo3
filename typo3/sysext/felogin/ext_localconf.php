@@ -25,8 +25,8 @@ if (TYPO3_MODE === 'BE') {
 	mod.wizards.newContentElement.wizardItems.forms {
 		elements.login {
 			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/login_form.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_login_description
+			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_title
+			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_login_description
 			tt_content_defValues {
 				CType = login
 			}

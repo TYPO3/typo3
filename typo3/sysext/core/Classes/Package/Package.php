@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A Package representing the details of an extension and/or a composer package
  * Adapted from FLOW for TYPO3 CMS
@@ -270,6 +272,12 @@ class Package implements PackageInterface {
 						continue;
 					}
 					$packageKey = $this->packageManager->getPackageKeyFromComposerName($requirement);
+					// dynamically migrate 'cms' dependency to 'core' dependency
+					// see also \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::convertDependenciesToObjects
+					if ($packageKey === 'cms') {
+						GeneralUtility::deprecationLog('Extension "' . $this->packageKey . '" defines a dependency on ext:cms, which has been removed. Please remove the dependency.');
+						$packageKey = 'core';
+					}
 					$constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_DEPENDS, $packageKey);
 					$this->packageMetaData->addConstraint($constraint);
 				}

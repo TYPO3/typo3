@@ -292,7 +292,7 @@ class NewRecordController {
 		if (!$this->pagesOnly) {
 			// New page
 			if ($this->showNewRecLink('pages')) {
-				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:cms/layout/locallang.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
 			}
 			// CSH
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular');
@@ -413,7 +413,7 @@ class NewRecordController {
 						$thisTitle = '';
 						// Create new link for record:
 						$newLink = $this->linkWrap($newRecordIcon . $lang->sL($v['ctrl']['title'], TRUE), $table, $this->id);
-						// If the table is 'tt_content' (from "cms" extension), create link to wizard
+						// If the table is 'tt_content', create link to wizard
 						if ($table == 'tt_content') {
 							$groupName = $lang->getLL('createNewContent');
 							$rowContent = $newContentIcon . '<strong>' . $lang->getLL('createNewContent') . '</strong><ul>';

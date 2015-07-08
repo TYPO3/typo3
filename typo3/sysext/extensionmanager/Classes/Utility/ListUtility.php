@@ -65,8 +65,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns the list of available, but not necessarily loaded extensions
 	 *
-	 * @return array Array with two sub-arrays, list array (all extensions with info) and category index
-	 * @see getInstExtList()
+	 * @return array[] All extensions with info
 	 */
 	public function getAvailableExtensions() {
 		$this->emitPackagesMayHaveChangedSignal();

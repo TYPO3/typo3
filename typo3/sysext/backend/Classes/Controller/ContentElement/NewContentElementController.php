@@ -127,7 +127,7 @@ class NewContentElementController {
 		$lang = $this->getLanguageService();
 		$lang->includeLLFile('EXT:lang/locallang_misc.xlf');
 		$LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
-		$lang->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xlf');
+		$lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf');
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
 		$GLOBALS['LOCAL_LANG'] = $LOCAL_LANG_orig;
 

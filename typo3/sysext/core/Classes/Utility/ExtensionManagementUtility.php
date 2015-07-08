@@ -469,7 +469,7 @@ class ExtensionManagementUtility {
 	 * - $table = 'tt_content'
 	 * - $field = 'CType'
 	 * - $item = array(
-	 * 'LLL:EXT:cms/locallang_ttc.xlf:CType.I.10',
+	 * 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.10',
 	 * 'login',
 	 * 'i/tt_content_login.gif',
 	 * ),
@@ -1044,7 +1044,7 @@ class ExtensionManagementUtility {
 	/**
 	 * Adds a reference to a locallang file with $GLOBALS['TCA_DESCR'] labels
 	 * FOR USE IN ext_tables.php FILES
-	 * eg. \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xlf'); for the pages table or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.php'); for the Web > Page module.
+	 * eg. \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/locallang_csh_pages.xlf'); for the pages table or \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:frontend/Resources/Private/Language/locallang_csh_weblayout.xlf'); for the Web > Page module.
 	 *
 	 * @param string $tca_descr_key Description key. Typically a database table (like "pages") but for applications can be other strings, but prefixed with "_MOD_")
 	 * @param string $file_ref File reference to locallang file, eg. "EXT:lang/locallang_csh_pages.xlf" (or ".xml")
@@ -1257,7 +1257,6 @@ class ExtensionManagementUtility {
 	/**************************************
 	 *
 	 *	 Adding FRONTEND features
-	 *	 (related specifically to "cms" extension)
 	 *
 	 ***************************************/
 	/**
@@ -1654,7 +1653,7 @@ tt_content.' . $key . $suffix . ' {
 	 * the file should return an array with content of a specific table.
 	 *
 	 * @return void
-	 * @see Extension core, cms, extensionmanager and others for examples.
+	 * @see Extension core, extensionmanager and others for examples.
 	 */
 	static protected function buildBaseTcaFromSingleFiles() {
 		$GLOBALS['TCA'] = array();

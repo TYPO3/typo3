@@ -6,7 +6,7 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'sortby' => 'sorting',
-		'title' => 'LLL:EXT:cms/locallang_tca.xlf:sys_domain',
+		'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain',
 		'iconfile' => 'domain.gif',
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
@@ -21,7 +21,7 @@ return array(
 	),
 	'columns' => array(
 		'domainName' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_domain.domainName',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.domainName',
 			'config' => array(
 				'type' => 'input',
 				'size' => '35',
@@ -31,7 +31,7 @@ return array(
 			)
 		),
 		'redirectTo' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_domain.redirectTo',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectTo',
 			'config' => array(
 				'type' => 'input',
 				'size' => '35',
@@ -43,14 +43,14 @@ return array(
 		),
 		'redirectHttpStatusCode' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_domain.redirectHttpStatusCode',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:cms/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.301', '301'),
-					array('LLL:EXT:cms/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.302', '302'),
-					array('LLL:EXT:cms/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.303', '303'),
-					array('LLL:EXT:cms/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.307', '307')
+					array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.301', '301'),
+					array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.302', '302'),
+					array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.303', '303'),
+					array('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.redirectHttpStatusCode.307', '307')
 				),
 				'size' => 1,
 				'maxitems' => 1
@@ -65,7 +65,7 @@ return array(
 			)
 		),
 		'prepend_params' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_domain.prepend_params',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.prepend_params',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -73,7 +73,7 @@ return array(
 			)
 		),
 		'forced' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:sys_domain.forced',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_domain.forced',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',

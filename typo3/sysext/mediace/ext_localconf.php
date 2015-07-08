@@ -13,8 +13,8 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects']['QTOBJECT']   = \TYPO3\CMS\M
 	mod.wizards.newContentElement.wizardItems {
 		special.elements.media {
 			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/multimedia.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_media_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:special_media_description
+			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_media_title
+			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_media_description
 			tt_content_defValues.CType = media
 		}
 		special.show := addToList(media)

@@ -4345,7 +4345,7 @@ class BackendUtility {
 	}
 
 	/**
-	 * Creates ADMCMD parameters for the "viewpage" extension / "cms" frontend
+	 * Creates ADMCMD parameters for the "viewpage" extension / frontend
 	 *
 	 * @param array $pageInfo Page record
 	 * @return string Query-parameters

@@ -47,9 +47,9 @@ Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickst
 The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:cms/cshimages/pagemodule_13.png,
-EXT:cms/cshimages/pagemodule_14.png,
-EXT:cms/cshimages/pagemodule_15.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_13.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_14.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_15.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -71,7 +71,7 @@ These buttons are direct links to the History/Undo function (1), Create new cont
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_quickEdit.image">
-				<source>EXT:cms/cshimages/pagemodule_5.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="quickEdit.image_descr">
@@ -90,7 +90,7 @@ xMOD_csh_corebe:new_ce</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_quickEdit_selElement.image">
-				<source>EXT:cms/cshimages/pagemodule_4.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="quickEdit_selElement.image_descr">
@@ -122,7 +122,7 @@ xMOD_csh_corebe:new_ce</source>
 You can also see the subtitle, keywords and descriptions. This information is often used on websites for meta data or searching.</source>
 			</trans-unit>
 			<trans-unit id="_columns_3.image">
-				<source>EXT:cms/cshimages/pagemodule_9.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language_list.alttitle">
@@ -135,10 +135,10 @@ You can also see the subtitle, keywords and descriptions. This information is of
 				<source>sys_language</source>
 			</trans-unit>
 			<trans-unit id="_language_list.image" xml:space="preserve">
-				<source>EXT:cms/cshimages/pagemodule_6.png,
-EXT:cms/cshimages/pagemodule_7.png,
-EXT:cms/cshimages/pagemodule_11.png,
-EXT:cms/cshimages/pagemodule_10.png,</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_6.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_7.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_11.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagemodule_10.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language_list.image_descr" xml:space="preserve">
@@ -163,7 +163,7 @@ Click the icon of a content element if you wish to access the context menu of th
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_columns_single.image">
-				<source>EXT:cms/cshimages/pagemodule_1.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="columns_single.image_descr">
@@ -180,7 +180,7 @@ Click the icon of a content element if you wish to access the context menu of th
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_columns_multi.image">
-				<source>EXT:cms/cshimages/pagemodule_12.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_12.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="columns_multi.image_descr">
@@ -200,7 +200,7 @@ xMOD_csh_corebe:new_ce,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_button_panel.image">
-				<source>EXT:cms/cshimages/pagemodule_2.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagemodule_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>

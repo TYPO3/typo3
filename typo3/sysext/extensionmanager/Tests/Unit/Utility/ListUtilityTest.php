@@ -37,7 +37,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				->expects($this->any())
 				->method('getActivePackages')
 				->will($this->returnValue(array(
-					'cms' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
 					'lang' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
 					'news' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
 					'saltedpasswords' => $this->getMock(\TYPO3\CMS\Core\Package::class, array(), array(), '', FALSE),
@@ -53,14 +52,12 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return array(
 			'same extension lists' => array(
 				array(
-					'cms' => array(),
 					'lang' => array(),
 					'news' => array(),
 					'saltedpasswords' => array(),
 					'rsaauth' => array()
 				),
 				array(
-					'cms' => array('installed' => TRUE),
 					'lang' => array('installed' => TRUE),
 					'news' => array('installed' => TRUE),
 					'saltedpasswords' => array('installed' => TRUE),
@@ -69,14 +66,12 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'different extension lists' => array(
 				array(
-					'cms' => array(),
 					'lang' => array(),
 					'news' => array(),
 					'saltedpasswords' => array(),
 					'rsaauth' => array()
 				),
 				array(
-					'cms' => array('installed' => TRUE),
 					'lang' => array('installed' => TRUE),
 					'news' => array('installed' => TRUE),
 					'saltedpasswords' => array('installed' => TRUE),
@@ -85,7 +80,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'different extension lists - set2' => array(
 				array(
-					'cms' => array(),
 					'lang' => array(),
 					'news' => array(),
 					'saltedpasswords' => array(),
@@ -93,7 +87,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'em' => array()
 				),
 				array(
-					'cms' => array('installed' => TRUE),
 					'lang' => array('installed' => TRUE),
 					'news' => array('installed' => TRUE),
 					'saltedpasswords' => array('installed' => TRUE),
@@ -103,7 +96,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'different extension lists - set3' => array(
 				array(
-					'cms' => array(),
 					'lang' => array(),
 					'fluid' => array(),
 					'news' => array(),
@@ -112,7 +104,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'em' => array()
 				),
 				array(
-					'cms' => array('installed' => TRUE),
 					'lang' => array('installed' => TRUE),
 					'fluid' => array(),
 					'news' => array('installed' => TRUE),
@@ -142,7 +133,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return array(
 			'simple key value array emconf' => array(
 				array(
-					'cms' => array('test' => 'test2'),
 					'lang' => array('property1' => 'oldvalue'),
 					'news' => array(),
 					'saltedpasswords' => array(),
@@ -152,7 +142,6 @@ class ListUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'property1' => 'property value1'
 				),
 				array(
-					'cms' => array('test' => 'test2', 'property1' => 'property value1'),
 					'lang' => array('property1' => 'oldvalue'),
 					'news' => array('property1' => 'property value1'),
 					'saltedpasswords' => array('property1' => 'property value1'),

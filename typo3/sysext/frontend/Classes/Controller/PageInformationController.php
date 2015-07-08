@@ -33,9 +33,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	public function modMenu() {
 		return array(
 			'pages' => array(
-				0 => $GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_0'),
-				2 => $GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_2'),
-				1 => $GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:pages_1')
+				0 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_0'),
+				2 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_2'),
+				1 => $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:pages_1')
 			),
 			'depth' => array(
 				0 => $GLOBALS['LANG']->getLL('depth_0'),
@@ -70,7 +70,7 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->start($this->pObj->id, 'pages', 0);
 		$dblist->generateList();
 		// CSH
-		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->sL('LLL:EXT:cms/web_info/locallang.xlf:page_title'));
+		$theOutput = $this->pObj->doc->header($GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:page_title'));
 		$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />') . $h_func . $dblist->HTMLcode, 0, 1);
 		// Additional footer content
 		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];

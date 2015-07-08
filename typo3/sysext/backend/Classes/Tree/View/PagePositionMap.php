@@ -395,7 +395,7 @@ class PagePositionMap {
 		$count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
 		$backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $pid, $this);
 		if (isset($backendLayout['__config']['backend_layout.'])) {
-			$GLOBALS['LANG']->includeLLFile('EXT:cms/layout/locallang.xlf');
+			$GLOBALS['LANG']->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 			$table = '<div class="table-fit"><table class="table table-condensed table-bordered table-vertical-top">';
 			$colCount = (int)$backendLayout['__config']['backend_layout.']['colCount'];
 			$rowCount = (int)$backendLayout['__config']['backend_layout.']['rowCount'];

@@ -9,7 +9,7 @@ $tca = array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_UNKNOWN => array(
 			'showitem' => '
 				fileinfo, title, description, alternative, keywords, caption, download_name,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
@@ -20,7 +20,7 @@ $tca = array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
 			'showitem' => '
 				fileinfo, title, description, alternative, keywords, caption, download_name,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
@@ -32,7 +32,7 @@ $tca = array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
 			'showitem' => '
 				fileinfo, title, description, alternative, keywords, caption, download_name,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10 ,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
@@ -45,7 +45,7 @@ $tca = array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
 			'showitem' => '
 				fileinfo, title, description, alternative, keywords, caption, download_name,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
@@ -56,7 +56,7 @@ $tca = array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
 			'showitem' => '
 				fileinfo, title, description, alternative, keywords, caption, download_name,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,
@@ -67,7 +67,7 @@ $tca = array(
 		TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
 			'showitem' => '
 				fileinfo, title, description, alternative, keywords, caption, download_name,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					--palette--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:palette.visibility;10,
 					fe_groups,
 				--div--;LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:tabs.metadata,

@@ -13,7 +13,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['media'] = 'tt_content_mm.gif
 // Register new CType in item list just before "menu"
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType',
 	array(
-		'LLL:EXT:cms/locallang_ttc.xlf:CType.I.7',
+		'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.7',
 		'multimedia',
 		'i/tt_content_mm.gif'
 	),
@@ -21,7 +21,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['media'] = 'tt_content_mm.gif
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType',
 	array(
-		'LLL:EXT:cms/locallang_ttc.xlf:CType.I.18',
+		'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.18',
 		'media',
 		'i/tt_content_mm.gif'
 	),
@@ -31,7 +31,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['media'] = 'tt_content_mm.gif
 // Add new field
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', array(
 	'multimedia' => array(
-		'label' => 'LLL:EXT:cms/locallang_ttc.xlf:multimedia',
+		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:multimedia',
 		'config' => array(
 			'type' => 'group',
 			'internal_type' => 'file',
@@ -47,30 +47,30 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['media'] = 'tt_content_mm.gif
 
 // add type definition and palette
 $GLOBALS['TCA']['tt_content']['types']['multimedia'] = array(
-	'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.media,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.multimediafiles;multimediafiles,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
+	'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.media,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.multimediafiles;multimediafiles,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended'
 );
 $GLOBALS['TCA']['tt_content']['types']['media'] = array(
-	'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.media,
+	'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.media,
 			pi_flexform,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.frames;frames,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.visibility;visibility,
-			--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.behaviour,
-			bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.media_formlabel,
-		--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended'
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.visibility;visibility,
+			--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.behaviour,
+			bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.media_formlabel,
+		--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended'
 );
 $baseDefaultExtrasOfBodytext = '';
 if (!empty($GLOBALS['TCA']['tt_content']['columns']['bodytext']['defaultExtras'])) {
@@ -85,7 +85,7 @@ if (!is_array($GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides'
 $GLOBALS['TCA']['tt_content']['types']['media']['columnsOverrides']['bodytext']['defaultExtras'] = $baseDefaultExtrasOfBodytext . 'richtext:rte_transform[mode=ts_css]';
 
 $GLOBALS['TCA']['tt_content']['palettes']['multimediafiles'] = array(
-	'showitem' => 'multimedia;LLL:EXT:cms/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:cms/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel',
+	'showitem' => 'multimedia;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:multimedia_formlabel, bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.multimedia_formlabel',
 );
 if (!is_array($GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides'])) {
 	$GLOBALS['TCA']['tt_content']['types']['multimedia']['columnsOverrides'] = array();

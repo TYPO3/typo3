@@ -52,8 +52,8 @@ if (TYPO3_MODE === 'FE') {
 mod.wizards.newContentElement.wizardItems.forms {
 	elements.mailform {
 		icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/mailform.gif
-		title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_title
-		description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_mail_description
+		title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_title
+		description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_description
 		tt_content_defValues {
 			CType = mailform
 			bodytext (
@@ -92,8 +92,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php'][
 mod.wizards.newContentElement.wizardItems.forms {
 	elements.search {
 		icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/searchform.gif
-		title = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_title
-		description = LLL:EXT:cms/layout/locallang_db_new_content_el.xlf:forms_search_description
+		title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_search_title
+		description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_search_description
 		tt_content_defValues.CType = search
 	}
 	show :=addToList(search)

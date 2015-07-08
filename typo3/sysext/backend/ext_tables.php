@@ -124,7 +124,7 @@ if (TYPO3_MODE === 'BE') {
 				'tabs_images' => array(
 					'tab' => '../../Resources/Public/Icons/module-page.png',
 				),
-				'll_ref' => 'LLL:EXT:cms/layout/locallang_mod.xlf',
+				'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
 			),
 		)
 	);

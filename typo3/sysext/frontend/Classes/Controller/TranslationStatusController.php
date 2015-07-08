@@ -59,7 +59,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 	 * @return string Output HTML for the module.
 	 */
 	public function main() {
-		$theOutput = $this->pObj->doc->header($this->getLanguageService()->sL('LLL:EXT:cms/web_info/locallang.xlf:lang_title'));
+		$theOutput = $this->pObj->doc->header($this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_title'));
 		if ($this->pObj->id) {
 			// Depth selector:
 			$h_func = BackendUtility::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
@@ -116,7 +116,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				$GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($data['HTML'], 'pages', $data['row']['uid']) .
 				'<a href="#" onclick="' . htmlspecialchars(
 					'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=0"); return false;'
-				) . '" title="' . $lang->sL('LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editPage') . '">' .
+				) . '" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPage') . '">' .
 				htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['title'], $titleLen)) .
 				'</a>' .
 				((string)$data['row']['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]' : '') .
@@ -125,7 +125,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			// "View page" link is created:
 			$viewPageLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(
 					$data['row']['uid'], $GLOBALS['BACK_PATH'], '', '', '', '&L=###LANG_UID###')
-				) . '" title="' . $lang->sL('LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_viewPage') . '">' .
+				) . '" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
 				IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			$status = $data['row']['l18n_cfg'] & 1 ? 'danger' : 'success';
 			// Create links:
@@ -134,16 +134,16 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$params = '&edit[pages][' . $editUid . ']=edit';
 			$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 				. '" title="' . $lang->sL(
-					'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editDefaultLanguagePage'
+					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
 				) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 			$info .= str_replace('###LANG_UID###', '0', $viewPageLink);
 			$info .= '&nbsp;';
-			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $lang->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.1', TRUE) . '">D</span>' : '&nbsp;';
-			$info .= GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $lang->sL('LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg.I.2', TRUE) . '">N</span>' : '&nbsp;';
+			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1', TRUE) . '">D</span>' : '&nbsp;';
+			$info .= GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.2', TRUE) . '">N</span>' : '&nbsp;';
 			// Put into cell:
 			$tCells[] = '<td class="' . $status . ' col-border-left">' . $info . '</td>';
 			$tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
-					'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_CEcount'
+					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
 				) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], 0) . '</td>';
 			$modSharedTSconfig = BackendUtility::getModTSconfig($data['row']['uid'], 'mod.SHARED');
 			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], TRUE) : array();
@@ -165,13 +165,13 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 							) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(
 								GeneralUtility::fixed_lgd_cs($row['nav_title'], $titleLen)
 							) . '</em>]' : '') . ($row['_COUNT'] > 1 ? '<div>' . $lang->sL(
-								'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_badThingThereAre'
+								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_badThingThereAre'
 							) . '</div>' : '');
 						$tCells[] = '<td class="' . $status . ' col-border-left">' .
 							'<a href="#" onclick="' . htmlspecialchars(
 								'top.loadEditId(' . (int)$data['row']['uid'] . ',"&SET[language]=' . $langRow['uid'] . '"); return false;'
 							) . '" title="' . $lang->sL(
-								'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editPageLang'
+								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageLang'
 							) . '">' . $info . '</a></td>';
 						// Edit whole record:
 						$info = '';
@@ -179,12 +179,12 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 						$params = '&edit[pages_language_overlay][' . $editUid . ']=edit';
 						$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $lang->sL(
-								'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editLanguageOverlayRecord'
+								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
 							) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
 						$tCells[] = '<td class="' . $status . '">' . $info . '</td>';
 						$tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
-								'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_CEcount'
+								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_CEcount'
 							) . '" align="center">' . $this->getContentElementCount($data['row']['uid'], $langRow['uid']) . '</td>';
 					} else {
 						if (in_array($langRow['uid'], $disableLanguages)) {
@@ -216,18 +216,18 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		}
 		// Put together HEADER:
 		$tCells = array();
-		$tCells[] = '<td>' . $lang->sL('LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_page') . ':</td>';
+		$tCells[] = '<td>' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . ':</td>';
 		if (is_array($langRecUids[0])) {
 			$params = '&edit[pages][' . implode(',', $langRecUids[0]) . ']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
 			$editIco = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 				. '" title="' . $lang->sL(
-					'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editPageProperties'
+					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageProperties'
 				) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		} else {
 			$editIco = '';
 		}
 		$tCells[] = '<td class="col-border-left" colspan="2">' . $lang->sL(
-				'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_default'
+				'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_default'
 			) . ':' . $editIco . '</td>';
 		foreach ($languages as $langRow) {
 			if ($this->pObj->MOD_SETTINGS['lang'] == 0 || (int)$this->pObj->MOD_SETTINGS['lang'] === (int)$langRow['uid']) {
@@ -240,7 +240,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 						']=edit&columnsOnly=title,nav_title,hidden';
 					$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 						. '" title="' . $lang->sL(
-							'LLL:EXT:cms/web_info/locallang.xlf:lang_renderl10n_editLangOverlays'
+							'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLangOverlays'
 						) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 				} else {
 					$tCells[] = '<td>&nbsp;</td>';
@@ -252,7 +252,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$langRow['uid'];
 				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 					. '" title="' . $lang->sL(
-						'LLL:EXT:cms/web_info/locallang.xlf:lang_getlangsta_createNewTranslationHeaders'
+						'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
 					) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a></td>';
 			}
 		}

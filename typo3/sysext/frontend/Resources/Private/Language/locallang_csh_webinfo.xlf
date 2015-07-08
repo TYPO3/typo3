@@ -17,7 +17,7 @@ _MOD_web_info:stat</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_pagetree_overview.image">
-				<source>EXT:cms/cshimages/pagetree_overview_1.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="pagetree_overview.image_descr">
@@ -43,9 +43,9 @@ _MOD_web_info:pagetree_overview</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_func_0.image" xml:space="preserve">
-				<source>EXT:cms/cshimages/pagetree_overview_4.png,
-EXT:cms/cshimages/pagetree_overview_8.png,
-EXT:cms/cshimages/pagetree_overview_9.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_4.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_8.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_0.image_descr" xml:space="preserve">
@@ -70,7 +70,7 @@ pages:php_tree_stop</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_func_1.image">
-				<source>EXT:cms/cshimages/pagetree_overview_6.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_6.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_1.image_descr">
@@ -89,8 +89,8 @@ pages:TSconfig</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_func_2.image" xml:space="preserve">
-				<source>EXT:cms/cshimages/pagetree_overview_5.png,
-EXT:cms/cshimages/pagetree_overview_7.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_5.png,
+EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="func_2.image_descr" xml:space="preserve">
@@ -107,7 +107,7 @@ Here you see the "TSconfig" column. The overview exposes that these two pages in
 				<source>&lt;b&gt;Notice:&lt;/b&gt; This function requires the extension "Simple hit statistics" (sys_stat) to be installed. Also you must configure TypoScript to register page hits in the statistics database table.</source>
 			</trans-unit>
 			<trans-unit id="_stat.image">
-				<source>EXT:cms/cshimages/pagetree_overview_3.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.details" xml:space="preserve">
@@ -129,8 +129,8 @@ The problem basically is that "&amp;L=xx" is different from internal "sys_langua
 Finally, the number found in each column tells you how many content elements are found in the specified language.</source>
 			</trans-unit>
 			<trans-unit id="_lang.image" xml:space="preserve">
-				<source>EXT:cms/cshimages/localizationoverview.png,
-EXT:cms/cshimages/localizationoverview1.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/localizationoverview.png,
+EXT:frontend/Resources/Public/Images/cshimages/localizationoverview1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.image_descr" xml:space="preserve">
@@ -159,7 +159,7 @@ This will show statistics for only pages that have a Template Record (with Root-
 Will show the total number of page hits/sessions within main sections of a website. A "main section" is all subpages to a page on the first level of a website (defined by a Template Record with the Root flag set)</source>
 			</trans-unit>
 			<trans-unit id="_func_hits.image">
-				<source>EXT:cms/cshimages/pagetree_overview_2.png</source>
+				<source>EXT:frontend/Resources/Public/Images/cshimages/pagetree_overview_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="lang.alttitle">

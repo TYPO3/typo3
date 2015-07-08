@@ -3,7 +3,7 @@ return array(
 	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:cms/locallang_tca.xlf:pages_language_overlay',
+		'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages_language_overlay',
 		'versioningWS' => TRUE,
 		'versioning_followPages' => TRUE,
 		'origUid' => 't3_origuid',
@@ -33,13 +33,13 @@ return array(
 		'doktype' => $GLOBALS['TCA']['pages']['columns']['doktype'],
 		'hidden' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:pages.hidden',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden',
 			'config' => array(
 				'type' => 'check',
 				'default' => '0',
 				'items' => array(
 					'1' => array(
-						'0' => 'LLL:EXT:cms/locallang_tca.xlf:pages.hidden_checkbox_1_formlabel'
+						'0' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_checkbox_1_formlabel'
 					)
 				)
 			)
@@ -155,7 +155,7 @@ return array(
 		),
 		'url' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:pages.url',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url',
 			'config' => array(
 				'type' => 'input',
 				'size' => '23',
@@ -192,7 +192,7 @@ return array(
 		),
 		'shortcut_mode' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_mode',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode',
 			'config' => array(
 				'type' => 'select',
 				'items' => $GLOBALS['TCA']['pages']['columns']['shortcut_mode']['config']['items'],
@@ -222,94 +222,94 @@ return array(
 	'types' => array(
 		// normal
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.abstract;abstract,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.metatags;metatags,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.editorial;editorial,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.media;media,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.metadata,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.metatags;metatags,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.resources,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.media;media,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
 		),
 		// external URL
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.external;external,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.abstract;abstract,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.editorial;editorial,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.media;media,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.external;external,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.metadata,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.resources,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.media;media,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
 		),
 		// shortcut
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.shortcut;shortcut,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.shortcutpage;shortcutpage,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.abstract;abstract,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.editorial;editorial,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.media;media,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.shortcut;shortcut,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.shortcutpage;shortcutpage,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.metadata,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.resources,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.media;media,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 				'
 		),
 		// mount page
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;title,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.metadata,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.abstract;abstract,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.editorial;editorial,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.media;media,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;title,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.metadata,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.resources,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.media;media,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
 		),
 		// spacer
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;titleonly,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.access;access,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;titleonly,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.access;access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 			'
 		),
 		// sysfolder
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;titleonly,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.resources,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.media;media,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;titleonly,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.resources,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.media;media,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
 		),
 		// trash
 		(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.standard;standard,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.title;titleonly,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.access,
-					--palette--;LLL:EXT:cms/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:pages.tabs.extended,
+			'showitem' => '--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.title;titleonly,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.palettes.visibility;hiddenonly,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.extended,
 		'
 		)
 	),
@@ -318,43 +318,43 @@ return array(
 			'showitem' => 'author,author_email',
 		),
 		'standard' => array(
-			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid',
+			'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid',
 		),
 		'shortcut' => array(
-			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid, shortcut_mode;LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_mode_formlabel',
+			'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid, shortcut_mode;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode_formlabel',
 		),
 		'shortcutpage' => array(
-			'showitem' => 'shortcut;LLL:EXT:cms/locallang_tca.xlf:pages.shortcut_formlabel',
+			'showitem' => 'shortcut;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_formlabel',
 		),
 		'external' => array(
-			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid, urltype;LLL:EXT:cms/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:cms/locallang_tca.xlf:pages.url_formlabel',
+			'showitem' => 'doktype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype_formlabel, sys_language_uid, urltype;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.urltype_formlabel, url;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.url_formlabel',
 		),
 		'title' => array(
-			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:cms/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:cms/locallang_tca.xlf:pages.subtitle_formlabel',
+			'showitem' => 'title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.subtitle_formlabel',
 		),
 		'titleonly' => array(
-			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xlf:pages.title_formlabel',
+			'showitem' => 'title;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.title_formlabel',
 		),
 		'hiddenonly' => array(
-			'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xlf:pages.hidden_formlabel',
+			'showitem' => 'hidden;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.hidden_formlabel',
 		),
 		'access' => array(
-			'showitem' => 'starttime;LLL:EXT:cms/locallang_tca.xlf:pages.starttime_formlabel, endtime;LLL:EXT:cms/locallang_tca.xlf:pages.endtime_formlabel',
+			'showitem' => 'starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.starttime_formlabel, endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.endtime_formlabel',
 		),
 		'abstract' => array(
-			'showitem' => 'abstract;LLL:EXT:cms/locallang_tca.xlf:pages.abstract_formlabel',
+			'showitem' => 'abstract;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.abstract_formlabel',
 		),
 		'metatags' => array(
-			'showitem' => 'keywords;LLL:EXT:cms/locallang_tca.xlf:pages.keywords_formlabel, --linebreak--, description;LLL:EXT:cms/locallang_tca.xlf:pages.description_formlabel',
+			'showitem' => 'keywords;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.keywords_formlabel, --linebreak--, description;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.description_formlabel',
 		),
 		'editorial' => array(
-			'showitem' => 'author;LLL:EXT:cms/locallang_tca.xlf:pages.author_formlabel, author_email;LLL:EXT:cms/locallang_tca.xlf:pages.author_email_formlabel',
+			'showitem' => 'author;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.author_formlabel, author_email;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.author_email_formlabel',
 		),
 		'language' => array(
-			'showitem' => 'l18n_cfg;LLL:EXT:cms/locallang_tca.xlf:pages.l18n_cfg_formlabel',
+			'showitem' => 'l18n_cfg;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg_formlabel',
 		),
 		'media' => array(
-			'showitem' => 'media;LLL:EXT:cms/locallang_tca.xlf:pages.media_formlabel',
+			'showitem' => 'media;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.media_formlabel',
 		),
 	),
 );

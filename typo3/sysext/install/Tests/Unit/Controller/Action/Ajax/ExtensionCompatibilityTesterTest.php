@@ -57,12 +57,11 @@ class ExtensionCompatibilityTesterTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 */
 	public function getExtensionsToLoadGetsExtensionsWithoutExcluded() {
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
-			'cms' => '',
 			'news' => '',
 			'info' => ''
 		);
 		$extensionCompatibilityTesterMock = $this->getAccessibleMock(\TYPO3\CMS\Install\Controller\Action\Ajax\ExtensionCompatibilityTester::class, array('getExtensionsToExclude'), array());
-		$extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToExclude')->will($this->returnValue(array('cms', 'info')));
+		$extensionCompatibilityTesterMock->expects($this->once())->method('getExtensionsToExclude')->will($this->returnValue(array('info')));
 		$result = $extensionCompatibilityTesterMock->_call('getExtensionsToLoad');
 		$this->assertEquals(array('news' => ''), $result);
 	}

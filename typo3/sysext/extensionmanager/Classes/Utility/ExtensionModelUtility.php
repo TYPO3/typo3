@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Utility for dealing with extension model related helper functions
  *
@@ -75,7 +77,9 @@ class ExtensionModelUtility {
 					/** @var $dependencyObject \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency */
 					$dependencyObject = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class);
 					$dependencyObject->setType($dependencyType);
-					$dependencyObject->setIdentifier($dependency);
+					// dynamically migrate 'cms' dependency to 'core' dependency
+					// see also \TYPO3\CMS\Core\Package\Package::getPackageMetaData
+					$dependencyObject->setIdentifier($dependency === 'cms' ? 'core' : $dependency);
 					$dependencyObject->setLowestVersion($lowest);
 					$dependencyObject->setHighestVersion($highest);
 					$dependenciesObject->attach($dependencyObject);

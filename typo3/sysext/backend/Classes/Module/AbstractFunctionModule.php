@@ -46,14 +46,14 @@ use TYPO3\CMS\Lang\LanguageService;
  * comment above.
  *
  * EXAMPLE: One level.
- * This can be seen in the extension 'cms' where the info module have a
+ * This can be seen in the extension 'frontend' where the info module have a
  * function added. In 'ext_tables.php' this is done by this function call:
  *
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
  * 'web_info',
  * \TYPO3\CMS\Frontend\Controller\PageInformationController::class,
  * NULL,
- * 'LLL:EXT:cms/locallang_tca.xlf:mod_tx_cms_webinfo_page'
+ * 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:mod_tx_cms_webinfo_page'
  * );
  *
  * EXAMPLE: Two levels.

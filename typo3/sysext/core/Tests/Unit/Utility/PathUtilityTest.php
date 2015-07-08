@@ -158,7 +158,7 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'stddb/'
 			),
 			array(
-				PATH_site . 'typo3/sysext/cms/',
+				PATH_site . 'typo3/sysext/frontend/',
 				PATH_site . 't3lib/utility/',
 				'../../../t3lib/utility/'
 			),

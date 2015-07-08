@@ -381,7 +381,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				foreach ($labels as $label) {
 					$localizedLabels[$label] = $GLOBALS['LANG']->getLL($label);
 				}
-				$localizedLabels['image_zoom'] = $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.xlf:image_zoom', TRUE);
+				$localizedLabels['image_zoom'] = $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom', TRUE);
 				$JScode = '
 					require(["TYPO3/CMS/Rtehtmlarea/Modules/SelectImage"], function(SelectImage) {
 						SelectImage.editorNo = "' . $this->editorNo . '";

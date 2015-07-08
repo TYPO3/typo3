@@ -96,7 +96,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @param bool $skipSpecialDependencyCheck
+	 * @param bool $skipDependencyCheck
 	 * @return void
 	 */
 	public function setSkipDependencyCheck($skipDependencyCheck) {
@@ -315,7 +315,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws Exception\UnresolvedDependencyException
 	 */
 	protected function getExtensionFromRepository($extensionKey, Dependency $dependency) {
-		if (!$this->getExtensionFromInExtensionRepository($extensionKey, $dependency)) {
+		if (!$this->getExtensionFromInExtensionRepository($extensionKey)) {
 			$this->getExtensionFromTer($extensionKey, $dependency);
 		}
 	}
@@ -509,6 +509,10 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		);
 	}
 
+	/**
+	 * @param string $extensionKey
+	 * @return array
+	 */
 	public function findInstalledExtensionsThatDependOnMe($extensionKey) {
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$dependentExtensions = array();

@@ -297,7 +297,7 @@ class PageLayoutController {
 	 * @return void
 	 */
 	public function init() {
-		$this->getLanguageService()->includeLLFile('EXT:cms/layout/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
 		// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];

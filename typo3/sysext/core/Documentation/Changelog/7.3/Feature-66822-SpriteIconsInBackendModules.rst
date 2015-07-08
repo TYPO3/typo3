@@ -25,7 +25,7 @@ Registering a module can now look like this (as an example the "Page" module):
 				'icon' => 'module-web',
 			),
 			'labels' => array(
-				'll_ref' => 'LLL:EXT:cms/layout/locallang_mod.xlf',
+				'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
 			),
 		)
 	);

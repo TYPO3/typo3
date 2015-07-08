@@ -46,7 +46,6 @@ class FunctionalTestCaseBootstrapUtility {
 		'core',
 		'backend',
 		'frontend',
-		'cms',
 		'lang',
 		'extbase',
 		'install',

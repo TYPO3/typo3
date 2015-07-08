@@ -124,7 +124,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		} else {
 			$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
 			if (trim($row['nav_title']) !== '') {
-				$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_tca.xlf:pages.nav_title', TRUE) . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title . '</span>';
+				$title = '<span title="' . $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title', TRUE) . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title . '</span>';
 			}
 			$title = trim($row['title']) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : $title;
 		}

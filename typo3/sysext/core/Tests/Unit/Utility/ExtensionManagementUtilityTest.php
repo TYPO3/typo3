@@ -101,13 +101,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function isLoadedReturnsTrueIfExtensionIsLoaded() {
-		$this->assertTrue(ExtensionManagementUtility::isLoaded('cms'));
-	}
-
-	/**
-	 * @test
-	 */
 	public function isLoadedReturnsFalseIfExtensionIsNotLoadedAndExitIsDisabled() {
 		$this->assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar'), FALSE));
 	}

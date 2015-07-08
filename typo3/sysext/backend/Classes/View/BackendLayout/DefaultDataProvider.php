@@ -80,7 +80,7 @@ class DefaultDataProvider implements DataProviderInterface {
 	protected function createDefaultBackendLayout() {
 		return BackendLayout::create(
 			'default',
-			'LLL:EXT:cms/locallang_tca.xlf:pages.backend_layout.default',
+			'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.backend_layout.default',
 			\TYPO3\CMS\Backend\View\BackendLayoutView::getDefaultColumnLayout()
 		);
 	}

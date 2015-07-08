@@ -7,7 +7,7 @@ return array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'fe_cruser_id' => 'fe_cruser_id',
-		'title' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users',
+		'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users',
 		'delete' => 'deleted',
 		'enablecolumns' => array(
 			'disabled' => 'disable',
@@ -25,7 +25,7 @@ return array(
 	),
 	'columns' => array(
 		'username' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.username',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.username',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -34,7 +34,7 @@ return array(
 			)
 		),
 		'password' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.password',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.password',
 			'config' => array(
 				'type' => 'input',
 				'size' => '10',
@@ -43,7 +43,7 @@ return array(
 			)
 		),
 		'usergroup' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.usergroup',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.usergroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
@@ -56,7 +56,7 @@ return array(
 		),
 		'lockToDomain' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_users.lockToDomain',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -276,10 +276,10 @@ return array(
 		'0' => array(
 			'showitem' => '
 				disable, username, password, usergroup, lastlogin,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.personelData, company, --palette--;;1, name, --palette--;;2, address, zip, city, country, telephone, fax, email, www, image,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.options, lockToDomain, TSconfig,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.access, starttime, endtime,
-				--div--;LLL:EXT:cms/locallang_tca.xlf:fe_users.tabs.extended
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.personelData, company, --palette--;;1, name, --palette--;;2, address, zip, city, country, telephone, fax, email, www, image,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.options, lockToDomain, TSconfig,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.access, starttime, endtime,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.tabs.extended
 			',
 		),
 	),

@@ -11,7 +11,7 @@ return array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'title' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups',
+		'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups',
 		'typeicon_classes' => array(
 			'default' => 'status-user-group-frontend'
 		),
@@ -31,7 +31,7 @@ return array(
 			)
 		),
 		'title' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups.title',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -41,7 +41,7 @@ return array(
 		),
 		'subgroup' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups.subgroup',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.subgroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
@@ -55,7 +55,7 @@ return array(
 		),
 		'lockToDomain' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.xlf:fe_groups.lockToDomain',
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -86,8 +86,8 @@ return array(
 	'types' => array(
 		'0' => array('showitem' => '
 			hidden,title,description,subgroup,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.options, lockToDomain, TSconfig,
-			--div--;LLL:EXT:cms/locallang_tca.xlf:fe_groups.tabs.extended
+			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.tabs.options, lockToDomain, TSconfig,
+			--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_groups.tabs.extended
 		')
 	)
 );
