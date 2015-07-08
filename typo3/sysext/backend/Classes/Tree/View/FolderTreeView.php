@@ -99,9 +99,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
 	 */
 	public function PMicon(\TYPO3\CMS\Core\Resource\Folder $folderObject, $subFolderCounter, $totalSubFolders, $nextCount, $isExpanded) {
-		$PM = $nextCount ? ($isExpanded ? 'minus' : 'plus') : 'join';
-		$BTM = $subFolderCounter == $totalSubFolders ? 'bottom' : '';
-		$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
+		$icon = '';
 		if ($nextCount) {
 			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isExpanded, $folderObject);
 			$icon = $this->PMiconATagWrap($icon, $cmd, !$isExpanded);
@@ -137,7 +135,7 @@ class FolderTreeView extends AbstractTreeView {
 			$scopeData = serialize($this->scope);
 			$scopeHash = GeneralUtility::hmac($scopeData);
 			$js = htmlspecialchars('Tree.load(' . GeneralUtility::quoteJSvalue($cmd) . ', ' . (int)$isExpand . ', this, ' . GeneralUtility::quoteJSvalue($scopeData) . ', ' . GeneralUtility::quoteJSvalue($scopeHash) . ');');
-			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
+			return '<a class="list-tree-control' . (!$isExpand ? ' list-tree-control-open' : ' list-tree-control-closed') . '" onclick="' . $js . '"><i class="fa"></i></a>';
 		} else {
 			return $icon;
 		}
@@ -245,11 +243,6 @@ class FolderTreeView extends AbstractTreeView {
 			$this->getBrowseableTreeForStorage($storageObject);
 			// Add tree:
 			$treeItems = array_merge($treeItems, $this->tree);
-			// if this is an AJAX call, don't run through all mounts, only
-			// show the expansion of the current one, not the rest of the mounts
-			if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-
-			}
 		}
 		return $this->printTree($treeItems);
 	}
@@ -294,18 +287,14 @@ class FolderTreeView extends AbstractTreeView {
 			// Set PM icon:
 			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isOpen, $rootLevelFolder);
 			if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($rootLevelFolder) === 0) {
-				$rootIcon = 'blank';
-			} elseif (!$isOpen) {
-				$rootIcon = 'plusonly';
+				$firstHtml = '';
 			} else {
-				$rootIcon = 'minusonly';
-			}
-			$icon = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . $rootIcon . '.gif')) . ' alt="" />';
-			// Only link icon if storage is browseable
-			if (in_array($rootIcon, array('minusonly', 'plusonly'))) {
-				$firstHtml = $this->PM_ATagWrap($icon, $cmd);
-			} else {
-				$firstHtml = $icon;
+				// Only show and link icon if storage is browseable
+				$link = '';
+				if ($this->thisScript) {
+					$link = ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"';
+				}
+				$firstHtml = '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
 			}
 			// Mark a storage which is not online, as offline
 			// maybe someday there will be a special icon for this
@@ -443,7 +432,7 @@ class FolderTreeView extends AbstractTreeView {
 
 		$out = '
 			<!-- TYPO3 folder tree structure. -->
-			<ul class="tree" id="treeRoot">
+			<ul id="treeRoot" class="list-tree">
 		';
 		// Evaluate AJAX request
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
@@ -471,21 +460,16 @@ class FolderTreeView extends AbstractTreeView {
 			// If this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
 			if ($treeItem['isFirst'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
-				$itemHTML = '<ul>
-';
+				$itemHTML = '<ul class="list-tree">';
 			}
 			// Add CSS classes to the list item
 			if ($treeItem['hasSub']) {
-				$classAttr .= ' expanded';
-			}
-			if ($treeItem['isLast']) {
-				$classAttr .= ' last';
+				$classAttr .= ' list-tree-control-open';
 			}
 			$itemHTML .= '
-				<li id="' . $idAttr . '" ' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><div class="treeLinkItem">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLength), $folderObject, $treeItem['bank']) . '</div>';
+				<li id="' . $idAttr . '" ' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLength), $folderObject, $treeItem['bank']) . '</span>';
 			if (!$treeItem['hasSub']) {
-				$itemHTML .= '</li>
-';
+				$itemHTML .= '</li>';
 			}
 			// We have to remember if this is the last one
 			// on level X so the last child on level X+1 closes the <ul>-tag
@@ -497,8 +481,7 @@ class FolderTreeView extends AbstractTreeView {
 			if ($treeItem['isLast'] && !$treeItem['hasSub'] && !$doCollapse && !($doExpand && $isExpandedFolderIdentifier)) {
 				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
 					$closeDepth[$i] = 0;
-					$itemHTML .= '</ul></li>
-';
+					$itemHTML .= '</ul></li>';
 				}
 			}
 			// Ajax request: collapse

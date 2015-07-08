@@ -46,9 +46,10 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param string $icon Icon HTML
 	 * @param mixed $cmd (See parent class)
 	 * @param mixed $bMark (See parent class)
+	 * @param bool $isOpen
 	 * @return string Icon HTML
 	 */
-	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
+	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = '') {
 		return $icon;
 	}
 

@@ -381,9 +381,8 @@ abstract class AbstractTreeView {
 			$this->ids = $curIds;
 			// Set PM icon for root of mount:
 			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
-			$icon = IconUtility::getSpriteIcon('treeline-' . ($isOpen ? 'minus' : 'plus') . 'only');
 
-			$firstHtml = $this->PM_ATagWrap($icon, $cmd);
+			$firstHtml = $this->PM_ATagWrap('', $cmd, '', $isOpen);
 			// Preparing rootRec for the mount
 			if ($uid) {
 				$rootRec = $this->getRecord($uid);
@@ -397,15 +396,13 @@ abstract class AbstractTreeView {
 				// In case it was swapped inside getRecord due to workspaces.
 				$uid = $rootRec['uid'];
 				// Add the root of the mount to ->tree
-				$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'bank' => $this->bank);
+				$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen, 'bank' => $this->bank);
 				// If the mount is expanded, go down:
 				if ($isOpen) {
-					// Set depth:
-					$depthD = IconUtility::getSpriteIcon('treeline-blank');
 					if ($this->addSelfId) {
 						$this->ids[] = $uid;
 					}
-					$this->getTree($uid, 999, $depthD, '', $rootRec['_SUBCSSCLASS']);
+					$this->getTree($uid, 999, '', '', $rootRec['_SUBCSSCLASS']);
 				}
 				// Add tree:
 				$treeArr = array_merge($treeArr, $this->tree);
@@ -426,27 +423,40 @@ abstract class AbstractTreeView {
 			$treeArr = $this->tree;
 		}
 		$out = '';
-		// put a table around it with IDs to access the rows from JS
-		// not a problem if you don't need it
-		// In XHTML there is no "name" attribute of <td> elements -
-		// but Mozilla will not be able to highlight rows if the name
-		// attribute is NOT there.
-		$out .= '
+		$closeDepth = array();
+		foreach ($treeArr as $treeItem) {
+			$classAttr = $treeItem['row']['_CSSCLASS'];
+			if ($treeItem['isFirst']) {
+				$out .= '<ul class="list-tree">';
+			}
 
-			<!--
-			  TYPO3 tree structure.
-			-->
-			<table cellpadding="0" cellspacing="0" border="0" id="typo3-tree">';
-		foreach ($treeArr as $k => $v) {
-			$idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($v['row']) . '_' . $v['bank']);
-			$out .= '
-				<tr>
-					<td id="' . $idAttr . '"' . ($v['row']['_CSSCLASS'] ? ' class="' . $v['row']['_CSSCLASS'] . '"' : '') . '>' . $v['HTML'] . $this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $v['bank']) . '</td>
-				</tr>
-			';
+			// Add CSS classes to the list item
+			if ($treeItem['hasSub']) {
+				$classAttr .= ' list-tree-control-open';
+			}
+
+			$idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($treeItem['row']) . '_' . $treeItem['bank']);
+			$out .= '<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>';
+
+			if (!$treeItem['hasSub']) {
+				$out .= '</li>';
+			}
+
+			// We have to remember if this is the last one
+			// on level X so the last child on level X+1 closes the <ul>-tag
+			if ($treeItem['isLast']) {
+				$closeDepth[$treeItem['invertedDepth']] = 1;
+			}
+			// If this is the last one and does not have subitems, we need to close
+			// the tree as long as the upper levels have last items too
+			if ($treeItem['isLast'] && !$treeItem['hasSub']) {
+				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
+					$closeDepth[$i] = 0;
+					$out .= '</ul></li>';
+				}
+			}
 		}
-		$out .= '
-			</table>';
+		$out = '<ul class="list-tree" id="treeRoot">' . $out . '</ul>';
 		return $out;
 	}
 
@@ -462,21 +472,19 @@ abstract class AbstractTreeView {
 	 * @param int $a The current entry number
 	 * @param int $c The total number of entries. If equal to $a, a "bottom" element is returned.
 	 * @param int $nextCount The number of sub-elements to the current element.
-	 * @param bool $exp The element was expanded to render subelements if this flag is set.
+	 * @param bool $isOpen The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
 	 */
-	public function PMicon($row, $a, $c, $nextCount, $exp) {
-		$PM = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
-		$BTM = $a == $c ? 'bottom' : '';
-		$icon = IconUtility::getSpriteIcon('treeline-' . $PM . $BTM);
+	public function PMicon($row, $a, $c, $nextCount, $isOpen) {
 		if ($nextCount) {
-			$cmd = $this->bank . '_' . ($exp ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
+			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
 			$bMark = $this->bank . '_' . $row['uid'];
-			$icon = $this->PM_ATagWrap($icon, $cmd, $bMark);
+			return $this->PM_ATagWrap('', $cmd, $bMark, $isOpen);
+		} else {
+			return '';
 		}
-		return $icon;
 	}
 
 	/**
@@ -485,17 +493,18 @@ abstract class AbstractTreeView {
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
 	 * @param bool $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
+	 * @param bool $isOpen
 	 * @return string Link-wrapped input string
 	 * @access private
 	 */
-	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
+	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
 		if ($this->thisScript) {
 			if ($bMark) {
 				$anchor = '#' . $bMark;
 				$name = ' name="' . $bMark . '"';
 			}
 			$aUrl = $this->getThisScript() . 'PM=' . $cmd . $anchor;
-			return '<a href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon . '</a>';
+			return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . ' href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
 		} else {
 			return $icon;
 		}
@@ -731,7 +740,6 @@ abstract class AbstractTreeView {
 			end($this->tree);
 			// Get the key for this space
 			$treeKey = key($this->tree);
-			$LN = $a == $c ? 'blank' : 'line';
 			// If records should be accumulated, do so
 			if ($this->setRecs) {
 				$this->recs[$row['uid']] = $row;
@@ -742,34 +750,35 @@ abstract class AbstractTreeView {
 			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ?: $row['uid'];
 
 			// Make a recursive call to the next level
-			$HTML_depthData = $depthData . IconUtility::getSpriteIcon('treeline-' . $LN);
-			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
-				$nextCount = $this->getTree($newID, $depth - 1, $this->makeHTML ? $HTML_depthData : '', $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
+			$hasSub = $this->expandNext($newID) && !$row['php_tree_stop'];
+			if ($depth > 1 && $hasSub) {
+				$nextCount = $this->getTree($newID, $depth - 1, '', '', $row['_SUBCSSCLASS']);
 				if (!empty($this->buffer_idH)) {
 					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
 				}
 				// Set "did expand" flag
-				$exp = 1;
+				$isOpen = 1;
 			} else {
 				$nextCount = $this->getCount($newID);
 				// Clear "did expand" flag
-				$exp = 0;
+				$isOpen = 0;
 			}
 			// Set HTML-icons, if any:
 			if ($this->makeHTML) {
-				$HTML = $depthData . $this->PMicon($row, $a, $c, $nextCount, $exp);
-				$HTML .= $this->wrapStop($this->getIcon($row), $row);
+				$HTML = $this->PMicon($row, $a, $c, $nextCount, $isOpen) . $this->wrapStop($this->getIcon($row), $row);
 			}
 			// Finally, add the row/HTML content to the ->tree array in the reserved key.
 			$this->tree[$treeKey] = array(
 				'row' => $row,
 				'HTML' => $HTML,
-				'HTML_depthData' => $this->makeHTML == 2 ? $HTML_depthData : '',
 				'invertedDepth' => $depth,
-				'blankLineCode' => $blankLineCode,
-				'bank' => $this->bank
+				'bank' => $this->bank,
+				'hasSub' => $nextCount && $hasSub,
+				'isFirst' => $a === 1,
+				'isLast' => $a === $c,
 			);
 		}
+
 		$this->getDataFree($res);
 		$this->buffer_idH = $idH;
 		return $c;
@@ -842,8 +851,7 @@ abstract class AbstractTreeView {
 			}
 			return $parentId;
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause, '', $this->orderByFields);
-			return $res;
+			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause, '', $this->orderByFields);
 		}
 	}
 
@@ -859,8 +867,7 @@ abstract class AbstractTreeView {
 		if (is_array($this->data)) {
 			return count($this->dataLookup[$res][$this->subLevelID]);
 		} else {
-			$c = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-			return $c;
+			return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		}
 	}
 

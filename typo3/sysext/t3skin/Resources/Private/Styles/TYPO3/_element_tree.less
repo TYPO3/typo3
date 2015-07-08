@@ -132,6 +132,29 @@ body#typo3-alt-db-navframe-php div.c-notice {
 	width: 95%;
 }
 
+/** CSS-based tree for Foldertree */
+ul#treeRoot {
+	li:last-child:before {
+		background-color: #ececec;
+	}
+
+	&:before {
+		border: 0;
+	}
+
+	> li:before {
+		border: 0;
+	}
+
+	> li {
+		border-left: 0;
+	}
+}
+
+// change background color for folder nav frame
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php ul#treeRoot li:last-child:before {
+	background-color: #f5f5f5;
+}
 //
 // Configuration trees, used in Admin Tools => Configuration
 //
@@ -157,9 +180,11 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 	padding: 0;
 }
 
-body#typo3-pagetree #typo3-inner-docbody,
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
+body#typo3-pagetree #typo3-inner-docbody {
 	padding: 0 0 10px 0;
+}
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
+	padding: 10px 0;
 }
 
 ul.tree {
@@ -300,8 +325,7 @@ ul.tree div.treeLinkItem span.dragIcon {
 	visibility: hidden;
 }
 
-#typo3-pagetree #typo3-docheader img,
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader img {
+#typo3-pagetree #typo3-docheader img {
 	margin: 2px;
 }
 

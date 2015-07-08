@@ -83,7 +83,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 * @return string Link-wrapped input string
 	 * @access private
 	 */
-	public function PM_ATagWrap($icon, $cmd, $bMark = '') {
+	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
 		$name = $anchor = '';
 		if ($bMark) {
 			$anchor = '#' . $bMark;

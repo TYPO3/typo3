@@ -45,32 +45,47 @@ class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
 			$treeArr = $this->tree;
 		}
 		$out = '';
-		$c = 0;
-		foreach ($treeArr as $k => $v) {
-			$c++;
-			$bgColorClass = ($c + 1) % 2 ? 'bgColor' : 'bgColor-10';
-			if ($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
-				$arrCol = '<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" /></td>';
-				$bgColorClass = 'bgColor4';
-			} else {
-				$arrCol = '<td></td>';
+		$closeDepth = array();
+		foreach ($treeArr as $treeItem) {
+
+			$classAttr = $treeItem['row']['_CSSCLASS'];
+			if ($treeItem['isFirst']) {
+				$out .= '<ul class="list-tree">';
 			}
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['row']['uid']) . ');';
-			$cEbullet = $this->ext_isLinkable($v['row']['doktype'], $v['row']['uid']) ? '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>' : '';
-			$out .= '
-				<tr class="' . $bgColorClass . '">
-					<td nowrap="nowrap"' . ($v['row']['_CSSCLASS'] ? ' class="' . $v['row']['_CSSCLASS'] . '"' : '') . '>' . $v['HTML'] . $this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $this->ext_pArrPages) . '</td>' . $arrCol . '<td>' . $cEbullet . '</td>
-				</tr>';
+
+			// Add CSS classes to the list item
+			if ($treeItem['hasSub']) {
+				$classAttr .= ' list-tree-control-open';
+			}
+
+			if ($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
+				$arrCol = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR pull-right" alt="" />';
+			} else {
+				$arrCol = '';
+			}
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="pull-right" onclick="' . htmlspecialchars($aOnClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>' : '';
+			$out .= '<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $this->ext_pArrPages) . $cEbullet . $arrCol . '</span>';
+
+			if (!$treeItem['hasSub']) {
+				$out .= '</li>';
+			}
+
+			// We have to remember if this is the last one
+			// on level X so the last child on level X+1 closes the <ul>-tag
+			if ($treeItem['isLast']) {
+				$closeDepth[$treeItem['invertedDepth']] = 1;
+			}
+			// If this is the last one and does not have subitems, we need to close
+			// the tree as long as the upper levels have last items too
+			if ($treeItem['isLast'] && !$treeItem['hasSub']) {
+				for ($i = $treeItem['invertedDepth']; $closeDepth[$i] == 1; $i++) {
+					$closeDepth[$i] = 0;
+					$out .= '</ul></li>';
+				}
+			}
 		}
-		$out = '
-
-
-			<!--
-				Navigation Page Tree:
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-tree">
-				' . $out . '
-			</table>';
+		$out = '<ul class="list-tree" id="treeRoot">' . $out . '</ul>';
 		return $out;
 	}
 

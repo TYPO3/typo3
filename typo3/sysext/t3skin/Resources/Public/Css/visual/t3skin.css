@@ -10865,6 +10865,22 @@ body#typo3-alt-db-navframe-php div.c-notice {
   padding: 5px 5px 5px 5px;
   width: 95%;
 }
+/** CSS-based tree for Foldertree */
+ul#treeRoot li:last-child:before {
+  background-color: #ececec;
+}
+ul#treeRoot:before {
+  border: 0;
+}
+ul#treeRoot > li:before {
+  border: 0;
+}
+ul#treeRoot > li {
+  border-left: 0;
+}
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php ul#treeRoot li:last-child:before {
+  background-color: #f5f5f5;
+}
 table.t3-tree-config {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
@@ -10879,9 +10895,11 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
   margin: 0;
   padding: 0;
 }
-body#typo3-pagetree #typo3-inner-docbody,
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
+body#typo3-pagetree #typo3-inner-docbody {
   padding: 0 0 10px 0;
+}
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
+  padding: 10px 0;
 }
 ul.tree {
   line-height: 12px;
@@ -10987,8 +11005,7 @@ ul.tree div.treeLinkItem span.dragIcon {
   cursor: pointer;
   visibility: hidden;
 }
-#typo3-pagetree #typo3-docheader img,
-#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader img {
+#typo3-pagetree #typo3-docheader img {
   margin: 2px;
 }
 .t3-icon-treeline {
