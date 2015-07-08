@@ -28,10 +28,12 @@ class DependencyOrderingServiceTest extends UnitTestCase {
 	 * @test
 	 * @dataProvider orderByDependenciesBuildsCorrectOrderDataProvider
 	 * @param array $items
+	 * @param string $beforeKey
+	 * @param string $afterKey
 	 * @param array $expectedOrderedItems
 	 */
 	public function orderByDependenciesBuildsCorrectOrder(array $items, $beforeKey, $afterKey, array $expectedOrderedItems) {
-		$orderedItems = (new DependencyOrderingService())->orderByDependencies($items);
+		$orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
 		$this->assertSame($expectedOrderedItems, $orderedItems);
 	}
 
@@ -48,8 +50,8 @@ class DependencyOrderingServiceTest extends UnitTestCase {
 				'before',
 				'after',
 				[ // $expectedOrderedItems
-					2 => [],
 					1 => [],
+					2 => [],
 				]
 			],
 			'ordered' => [
@@ -81,13 +83,13 @@ class DependencyOrderingServiceTest extends UnitTestCase {
 				'before',
 				'after',
 				[ // $expectedOrderedItems
-					3 => [
-						'otherProperty' => TRUE
-					],
 					2 => [
 						'before' => [ 1 ]
 					],
 					1 => [],
+					3 => [
+						'otherProperty' => TRUE
+					],
 				]
 			],
 			'reference to non-existing' => [

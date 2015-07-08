@@ -130,22 +130,41 @@ class DependencyOrderingService {
 	 * @throws \UnexpectedValueException
 	 */
 	public function calculateOrder(array $dependencyGraph) {
-		$rootIds = $this->findRootIds($dependencyGraph);
+		$rootIds = array_flip($this->findRootIds($dependencyGraph));
 
-		// This will contain our final result
+		// Add number of dependencies for each root node
+		foreach ($rootIds as $id => &$dependencies) {
+			$dependencies = count(array_filter($dependencyGraph[$id]));
+		}
+		unset($dependencies);
+
+		// This will contain our final result in reverse order,
+		// meaning a result of [A, B, C] equals "A after B after C"
 		$sortedIds = [];
 
-		// Walk through the graph
+		// Walk through the graph, level by level
 		while (!empty($rootIds)) {
-			$currentId = array_shift($rootIds);
+			ksort($rootIds);
+			// We take those with fewer dependencies first, to have them at the end of the list in the final result.
+			$minimum = PHP_INT_MAX;
+			$currentId = 0;
+			foreach ($rootIds as $id => $count) {
+				if ($count <= $minimum) {
+					$minimum = $count;
+					$currentId = $id;
+				}
+			}
+			unset($rootIds[$currentId]);
+
 			array_push($sortedIds, $currentId);
 
+			// Process the dependencies of the current node
 			foreach (array_filter($dependencyGraph[$currentId]) as $dependingId => $_) {
 				// Remove the edge to this dependency
 				$dependencyGraph[$currentId][$dependingId] = FALSE;
 				if (!$this->getIncomingEdgeCount($dependencyGraph, $dependingId)) {
-					// We found a new root, lets add it
-					array_unshift($rootIds, $dependingId);
+					// We found a new root, lets add it to the list
+					$rootIds[$dependingId] = count(array_filter($dependencyGraph[$dependingId]));
 				}
 			}
 		}
@@ -187,6 +206,9 @@ class DependencyOrderingService {
 
 	/**
 	 * Find all root nodes of a graph
+	 *
+	 * Root nodes are those, where nothing else depends on (they can be the last in the loading order).
+	 * If there are no dependencies at all, all nodes are root nodes.
 	 *
 	 * @param bool[][] $dependencyGraph
 	 * @return array List of identifiers which are root nodes

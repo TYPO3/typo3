@@ -39,3 +39,5 @@ Example usage:
 ``$sortedHooks`` will then contain the content of ``$hooks``, but sorted according to the dependencies.
 
 The ``DependencyOrderingService`` class also detects cycles in the dependencies and will throw an Exception in case conflicting dependencies were defined.
+
+In case the initial list does not specify a dependency for an item, those items will be put last in the final sorted list.
