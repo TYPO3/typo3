@@ -28,8 +28,7 @@ Managing Extensions | http://typo3.org/documentation/document-library/doc_core_i
 				<source>Loaded Extensions</source>
 			</trans-unit>
 			<trans-unit id="loaded.description" xml:space="preserve">
-				<source>"Loaded extensions" are currently running on the system. This list shows you which extensions are loaded and in which order.
-"Shy" extensions are also loaded but "hidden" in this list because they are system related and generally you should just leave them alone unless you know what you are doing.</source>
+				<source>"Loaded extensions" are currently running on the system. This list shows you which extensions are loaded and in which order.</source>
 			</trans-unit>
 			<trans-unit id="loaded.details" xml:space="preserve">
 				<source>The extensions in this list are shown in the order they are found in $TYPO3_CONF_VARS[EXT][extList].
@@ -235,17 +234,6 @@ Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</
 			<trans-unit id="makenew.image_descr">
 				<source>When the "Extension Repository Kickstarter" is enabled it adds itself in the menu of the Extension Manager. From here you will be able to start your new extensions. Before you do so you should register an extension key and enter a title and description as base data. From that point it is just clicking the "+" icons to add the various types of functionality you want. Finally you click "View result" to write the extension to the server.</source>
 			</trans-unit>
-			<trans-unit id="emconf_shy.alttitle">
-				<source>Shy</source>
-			</trans-unit>
-			<trans-unit id="emconf_shy.description">
-				<source>If set, the extension will normally be hidden in the EM because it might be a default extension or otherwise something which is not so important.</source>
-			</trans-unit>
-			<trans-unit id="emconf_shy.details" xml:space="preserve">
-				<source>Use this flag if an extension is of "rare interest" (which is not the same as un-important - just an extension not sought for very often...)
-It does not affect whether or not it's enabled. Only display in EM.
-Normally "shy" is set for all extensions loaded by default according to TYPO3_CONF_VARS.</source>
-			</trans-unit>
 			<trans-unit id="emconf_category.alttitle">
 				<source>Category</source>
 			</trans-unit>
@@ -346,15 +334,6 @@ True non-internal extensions are characterized by the fact that they could be wr
 			</trans-unit>
 			<trans-unit id="emconf_clearCacheOnLoad.description">
 				<source>If set, the EM will request the cache to be cleared when this extension is installed.</source>
-			</trans-unit>
-			<trans-unit id="emconf_modify_tables.alttitle">
-				<source>Existing tables modified</source>
-			</trans-unit>
-			<trans-unit id="emconf_modify_tables.description">
-				<source>List of tablenames which are only modified - not fully created - by this extension.</source>
-			</trans-unit>
-			<trans-unit id="emconf_modify_tables.details">
-				<source>Tables from this list found in the ext_tables.sql file of the extension</source>
 			</trans-unit>
 			<trans-unit id="emconf_doNotLoadInFE.alttitle">
 				<source>Load in frontend</source>

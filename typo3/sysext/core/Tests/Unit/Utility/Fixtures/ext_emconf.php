@@ -11,7 +11,6 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => '',
 	'author_company' => '',
 	'version' => '1.2.3',
-	'_md5_values_when_last_written' => '',
 	'constraints' => array(
 		'depends' => array(),
 		'conflicts' => array(),

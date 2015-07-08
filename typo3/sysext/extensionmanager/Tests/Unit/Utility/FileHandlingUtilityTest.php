@@ -412,7 +412,6 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'title' => 'Plugin cache engine',
 				'description' => 'Provides an interface to cache plugin content elements based on 4.3 caching framework',
 				'category' => 'Frontend',
-				'shy' => 0
 			)
 		);
 		$rootPath = $this->fakedExtensions[$extKey]['siteAbsPath'];
