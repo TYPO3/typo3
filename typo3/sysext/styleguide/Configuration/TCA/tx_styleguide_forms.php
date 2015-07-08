@@ -2324,30 +2324,6 @@ return array(
 													</config>
 												</TCEforms>
 											</t3editor_1>
-											<t3editor_2>
-												<TCEforms>
-													<label>T3EDITOR 2: Old wizard syntax</label>
-													<config>
-														<type>text</type>
-														<rows>7</rows>
-														<cols>30</cols>
-														<wizards>
-															<t3editor>
-																<type>userFunc</type>
-																<userFunc>TYPO3\CMS\T3editor\FormWizard->main</userFunc>
-																<title>t3editor</title>
-																<icon>wizard_table.gif</icon>
-																<module>
-																	<name>wizard_table</name>
-																</module>
-																<params>
-																	<format>html</format>
-																</params>
-															</t3editor>
-														</wizards>
-													</config>
-												</TCEforms>
-											</t3editor_2>
 										</el>
 									</ROOT>
 								</sGeneral>
