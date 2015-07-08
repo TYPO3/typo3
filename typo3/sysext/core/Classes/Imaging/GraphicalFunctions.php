@@ -2995,10 +2995,11 @@ class GraphicalFunctions {
 			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
 		}
 		// Creates the basis for the error image
+		$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Resources/Public/Images/';
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'])) {
-			$im = imagecreatefrompng(PATH_typo3 . 'gfx/notfound_thumb.png');
+			$im = imagecreatefrompng($basePath . 'NotFound.png');
 		} else {
-			$im = imagecreatefromgif(PATH_typo3 . 'gfx/notfound_thumb.gif');
+			$im = imagecreatefromgif($basePath . 'NotFound.gif');
 		}
 		// Sets background color and print color.
 		$white = imageColorAllocate($im, 255, 255, 255);
