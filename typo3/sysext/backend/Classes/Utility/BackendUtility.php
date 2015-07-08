@@ -3313,7 +3313,6 @@ class BackendUtility {
 	 * @param int $uid Record uid
 	 * @return array
 	 * @internal
-	 * @see class.db_layout.inc, alt_db_navframe.php, EditDocumentController, db_layout.php
 	 */
 	static public function isRecordLocked($table, $uid) {
 		if (!is_array($GLOBALS['LOCKED_RECORDS'])) {

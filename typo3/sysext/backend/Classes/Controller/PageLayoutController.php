@@ -942,7 +942,6 @@ class PageLayoutController {
 	 * @return string
 	 */
 	public function renderListContent() {
-		// Initialize list object (see "class.db_layout.inc"):
 		/** @var $dbList \TYPO3\CMS\Backend\View\PageLayoutView */
 		$dbList = GeneralUtility::makeInstance(PageLayoutView::class);
 		$dbList->backPath = $GLOBALS['BACK_PATH'];

@@ -11,7 +11,5 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define('TYPO3_MOD_PATH', 'sysext/openid/wizard/');
-
 $wizard = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Openid\Wizard::class);
 $wizard->main();

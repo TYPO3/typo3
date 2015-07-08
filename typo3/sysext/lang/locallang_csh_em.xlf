@@ -286,15 +286,6 @@ Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</
 			<trans-unit id="emconf_priority.description">
 				<source>This tells the EM to try to put the extensions as the very first in the list. Default is last.</source>
 			</trans-unit>
-			<trans-unit id="emconf_module.alttitle">
-				<source>Backend modules included</source>
-			</trans-unit>
-			<trans-unit id="emconf_module.description">
-				<source>If any subfolders to an extension contains backend modules, those foldernames should be listed here.</source>
-			</trans-unit>
-			<trans-unit id="emconf_module.details">
-				<source>It allows the EM to know about the existence of the module, which is important because the EM has to update the conf.php file of the module in order to set the correct TYPO3_MOD_PATH  constant.</source>
-			</trans-unit>
 			<trans-unit id="emconf_state.alttitle">
 				<source>Development state</source>
 			</trans-unit>
@@ -471,12 +462,6 @@ In effect you can therefore have, say, a "stable" version of an extension instal
 			</trans-unit>
 			<trans-unit id="emconf_locallang.description">
 				<source>Shows which files named "locallang.xlf" are present in the extension folder (recursive search). Such files are usually used to present an array $LOCAL_LANG with labels for the application in the system languages.</source>
-			</trans-unit>
-			<trans-unit id="emconf_moduleNames.alttitle">
-				<source>Backend Module names</source>
-			</trans-unit>
-			<trans-unit id="emconf_moduleNames.description">
-				<source>Shows which module names were found inside the extension.</source>
 			</trans-unit>
 			<trans-unit id="emconf_classNames.alttitle">
 				<source>PHP Class names</source>

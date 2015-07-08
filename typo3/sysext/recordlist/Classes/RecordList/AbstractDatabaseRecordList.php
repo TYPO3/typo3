@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Child class for rendering of Web > List (not the final class.
- * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
+ * Child class for rendering of Web > List (not the final class)
+ * Shared between Web>List and Web>Page
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList

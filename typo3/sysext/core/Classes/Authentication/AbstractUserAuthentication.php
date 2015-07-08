@@ -1290,12 +1290,11 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function getLoginFormData() {
 		$loginData = array();
+		$loginData['status'] = GeneralUtility::_GP($this->formfield_status);
 		if ($this->getMethodEnabled) {
-			$loginData['status'] = GeneralUtility::_GP($this->formfield_status);
 			$loginData['uname'] = GeneralUtility::_GP($this->formfield_uname);
 			$loginData['uident'] = GeneralUtility::_GP($this->formfield_uident);
 		} else {
-			$loginData['status'] = GeneralUtility::_POST($this->formfield_status);
 			$loginData['uname'] = GeneralUtility::_POST($this->formfield_uname);
 			$loginData['uident'] = GeneralUtility::_POST($this->formfield_uident);
 		}

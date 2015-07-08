@@ -17,7 +17,7 @@
  *
  * Listing database records from the tables configured in $GLOBALS['TCA'] as they are related to the current page or root.
  *
- * Notice: This module and Web>Page (db_layout.php) module has a special status since they
+ * Notice: This module and Web>Page module has a special status since they
  * are NOT located in their actual module directories (fx. mod/web/list/) but in the
  * backend root directory. This has some historical and practical causes.
  *

@@ -37,9 +37,3 @@ typo3/tce_db.php
 
 typo3/login_frameset.php
 ``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('login_frameset')``
-
-typo3/sysext/cms/layout/db_new_content_el.php
-``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('new_content_element')``
-
-typo3/sysext/cms/layout/db_layout.php
-``\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_layout')``

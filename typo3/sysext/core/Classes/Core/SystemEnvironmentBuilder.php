@@ -168,11 +168,6 @@ class SystemEnvironmentBuilder {
 		// Absolute path of the typo3 directory of the instance with trailing slash
 		// Example "/var/www/instance-name/htdocs/typo3/"
 		define('PATH_typo3', PATH_site . TYPO3_mainDir);
-		// Relative path (from the PATH_typo3) to a BE module NOT using mod.php dispatcher with trailing slash
-		// Example "sysext/perms/mod/" for an extension installed in typo3/sysext/
-		// Example "install/" for the install tool entry script
-		// Example "../typo3conf/ext/templavoila/mod2/ for an extension installed in typo3conf/ext/
-		define('PATH_typo3_mod', defined('TYPO3_MOD_PATH') ? TYPO3_MOD_PATH : '');
 		// Absolute path to the typo3conf directory with trailing slash
 		// Example "/var/www/instance-name/htdocs/typo3conf/"
 		define('PATH_typo3conf', PATH_site . 'typo3conf/');
@@ -370,70 +365,18 @@ class SystemEnvironmentBuilder {
 	/**
 	 * Calculate the document root part to the instance from PATH_thisScript
 	 *
-	 * There are two ways to hint correct calculation:
-	 * Either an explicit specified sub path or the defined constant TYPO3_MOD_PATH. Which one is
-	 * used depends on which entry script was called in the first place.
-	 *
 	 * We have two main scenarios for entry points:
 	 * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php sets $relativePathPart to
 	 * empty string to hint this code that the document root is identical to the directory the script is located at.
 	 * - An indirect include of any Backend related script (-> a backend module, the install tool, or scripts like ajax.php).
-	 * If in backend mode we distinguish two cases:
-	 * -- A backend module defines 'TYPO3_MOD_PATH': This is the case for "old" modules that are not called through
-	 * "mod.php" dispatcher, and in the install tool. The TYPO3_MOD_PATH defines the relative path to the typo3/
-	 * directory. This is taken as base to calculate the document root.
-	 * -- A Backend script that does not define 'TYPO3_MOD_PATH': This is the case for the mod.php dispatcher
-	 * and other entry scripts like 'cli_dispatch.phpsh' or 'ajax.php' that are located inside typo3/ directly. In
-	 * this case the Bootstrap->run() command sets 'typo3/' as $relativePathPart as base to calculate the document root.
+	 * - A Backend script: This is the case for the mod.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
+	 * or 'ajax.php' that are located inside typo3/ directly. In this case the Bootstrap->run() command sets
+	 * 'typo3/' as $relativePathPart as base to calculate the document root.
 	 *
-	 * This basically boils down to the following code:
-	 * If TYPO3_MOD_PATH is defined, subtract this 'local' part from the entry point directory, else use
-	 * $relativePathPart to subtract this from the the script entry point to find out the document root.
-	 *
-	 * @param string $relativePathPart Relative directory part from document root to script path if TYPO3_MOD_PATH is not used
+	 * @param string $relativePathPart Relative directory part from document root to script path
 	 * @return string Absolute path to document root of installation
 	 */
 	static protected function getPathSite($relativePathPart) {
-		// If end of path is not "typo3/" and TYPO3_MOD_PATH is given
-		if (defined('TYPO3_MOD_PATH')) {
-			return self::getPathSiteByTypo3ModulePath();
-		} else {
-			return self::getPathSiteByRelativePathPart($relativePathPart);
-		}
-	}
-
-	/**
-	 * Calculate document root by TYPO3_MOD_PATH
-	 *
-	 * TYPO3_MOD_PATH can have the following values:
-	 * - "sysext/extensionName/path/entryScript.php" -> extension is below 'docRoot'/typo3/sysext
-	 * - "ext/extensionName/path/entryScript.php" -> extension is below 'docRoot'/typo3/ext
-	 * - "../typo3conf/ext/extensionName/path/entryScript.php" -> extension is below 'docRoot'/typo3conf/ext
-	 * - "install/index.php" -> install tool in 'docRoot'/typo3/install/
-	 *
-	 * The method unifies the above and subtracts the calculated path part from PATH_thisScript
-	 *
-	 * @return string Absolute path to document root of installation
-	 */
-	static protected function getPathSiteByTypo3ModulePath() {
-		if (substr(TYPO3_MOD_PATH, 0, 7) === 'sysext/' || substr(TYPO3_MOD_PATH, 0, 4) === 'ext/' || substr(TYPO3_MOD_PATH, 0, 8) === 'install/') {
-			$pathPartRelativeToDocumentRoot = TYPO3_mainDir . TYPO3_MOD_PATH;
-		} elseif (substr(TYPO3_MOD_PATH, 0, strlen('../typo3conf/')) === '../typo3conf/') {
-			$pathPartRelativeToDocumentRoot = substr(TYPO3_MOD_PATH, 3);
-		} else {
-			static::dieWithMessage('Unable to determine TYPO3 document root.');
-		}
-		$entryScriptDirectory = self::getUnifiedDirectoryNameWithTrailingSlash(PATH_thisScript);
-		return substr($entryScriptDirectory, 0, -strlen($pathPartRelativeToDocumentRoot));
-	}
-
-	/**
-	 * Find out document root by subtracting $relativePathPart from PATH_thisScript
-	 *
-	 * @param string $relativePathPart Relative part of script from document root
-	 * @return string Absolute path to document root of installation
-	 */
-	static protected function getPathSiteByRelativePathPart($relativePathPart) {
 		$entryScriptDirectory = self::getUnifiedDirectoryNameWithTrailingSlash(PATH_thisScript);
 		if ($relativePathPart !== '') {
 			$pathSite = substr($entryScriptDirectory, 0, -strlen($relativePathPart));
