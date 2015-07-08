@@ -748,7 +748,7 @@ class RecordHistory {
 	 * @return string HTML output
 	 */
 	public function createRollbackLink($key, $alt = '', $type = 0) {
-		return $this->linkPage('<img ' . IconUtility::skinImg('', ('gfx/revert_' . $type . '.gif'), 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
+		return $this->linkPage('<img ' . IconUtility::skinImg('', ('sysext/backend/Resources/Public/Images/RecordHistory/revert_' . $type . '.gif'), 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
 	}
 
 	/**
