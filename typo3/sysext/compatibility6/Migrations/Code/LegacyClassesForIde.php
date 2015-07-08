@@ -284,11 +284,6 @@ class t3lib_TCEforms extends \TYPO3\CMS\Backend\Form\FormEngine {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_TCEforms_FE extends \TYPO3\CMS\Backend\Form\FrontendFormEngine {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 interface t3lib_TCEforms_dbFileIconsHook extends \TYPO3\CMS\Backend\Form\DatabaseFileIconsHookInterface {}
 
 /**
