@@ -101,6 +101,7 @@ class Check {
 			$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsPhar();
 			$statusArray[] = $this->checkSuhosinExecutorIncludeWhitelistContainsVfs();
 		}
+		$statusArray[] = $this->checkMaxInputVars();
 		$statusArray[] = $this->checkSomePhpOpcodeCacheIsLoaded();
 		$statusArray[] = $this->checkReflectionDocComment();
 		$statusArray[] = $this->checkSystemLocale();
@@ -572,6 +573,43 @@ class Check {
 			);
 		}
 
+		return $status;
+	}
+
+	/**
+	 * Get max_input_vars status
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkMaxInputVars() {
+		$recommendedMaxInputVars = 1500;
+		$minimumMaxInputVars = 1000;
+		$currentMaxInputVars = ini_get('max_input_vars');
+
+		if ($currentMaxInputVars < $minimumMaxInputVars) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP max_input_vars too low');
+			$status->setMessage(
+				'max_input_vars=' . $currentMaxInputVars . LF .
+				'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+				' (as the install tool does). It is highly recommended to raise this' .
+				' to at least ' . $recommendedMaxInputVars . ':' . LF .
+				'max_input_vars=' . $recommendedMaxInputVars
+			);
+		} elseif ($currentMaxInputVars < $recommendedMaxInputVars) {
+			$status = new Status\WarningStatus();
+			$status->setTitle('PHP max_input_vars very low');
+			$status->setMessage(
+				'max_input_vars=' . $currentMaxInputVars . LF .
+				'This setting can lead to lost information if submitting forms with lots of data in TYPO3 CMS' .
+				' (as the install tool does). It is highly recommended to raise this' .
+				' to at least ' . $recommendedMaxInputVars . ':' . LF .
+				'max_input_vars=' . $recommendedMaxInputVars
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP max_input_vars ok');
+		}
 		return $status;
 	}
 
