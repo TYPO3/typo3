@@ -220,14 +220,14 @@
 										<module>
 											<name>wizard_edit</name>
 										</module>
-										<icon>edit2.gif</icon>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif</icon>
 										<popup_onlyOpenIfSelected>1</popup_onlyOpenIfSelected>
 										<JSopenParams>height=350,width=580,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</edit>
 									<add>
 										<type>script</type>
 										<title>add</title>
-										<icon>add.gif</icon>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif</icon>
 										<module>
 											<name>wizard_add</name>
 										</module>
@@ -240,7 +240,7 @@
 									<list>
 										<type>script</type>
 										<title>liste</title>
-										<icon>list.gif</icon>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif</icon>
 										<module>
 											<name>wizard_list</name>
 										</module>
