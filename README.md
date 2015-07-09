@@ -67,10 +67,6 @@ started:
   installation instructions and information about upgrading an existing
   installation to the new version.
 
-* NEWS.md: An overview of changes that were made in this particular TYPO3
-  release. More in-depth information can be found in the corresponding
-  release announcements.
-
 ### Get more information
 
 * http://typo3.org is the main project website. It provides up to
