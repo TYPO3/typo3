@@ -53,13 +53,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public $pages_noEditColumns = 0;
 
 	/**
-	 * If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
-	 *
-	 * @var int
-	 */
-	public $option_showBigButtons = 1;
-
-	/**
 	 * If TRUE, new-wizards are linked to rather than the regular new-element list.
 	 *
 	 * @var int
@@ -160,13 +153,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @var array
 	 */
 	public $itemLabels = array();
-
-	/**
-	 * Used to store the RTE setup of a particular page
-	 *
-	 * @var array
-	 */
-	protected $rteSetup = array();
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
@@ -388,9 +374,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function getTable_tt_content($id) {
 		$this->initializeLanguages();
 		$this->initializeClipboard();
-		// Initialize:
-		$RTE = $this->getBackendUser()->isRTE();
-		$lMarg = 1;
 		$pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), TRUE));
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getPageLayoutController()->doc->getPageRenderer();
@@ -499,9 +482,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							TRUE,
 							!$this->tt_contentConfig['languageMode']
 						);
-						$isRTE = $RTE && $this->isRTEforField('tt_content', $row, 'bodytext');
 						$innerContent = '<div ' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . '>'
-							. $this->tt_content_drawItem($row, $isRTE) . '</div>';
+							. $this->tt_content_drawItem($row) . '</div>';
 						$singleElementHTML .= '<div class="t3-page-ce-body-inner">' . $innerContent . '</div>'
 							. $this->tt_content_drawFooter($row);
 						$isDisabled = $this->isDisabled('tt_content', $row);
@@ -735,68 +717,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$out .= BackendUtility::cshItem($this->descrTable, 'language_list');
 		}
 
-		// Add the big buttons to page:
-		if ($this->option_showBigButtons) {
-			$bArray = array();
-			if (!$this->getPageLayoutController()->current_sys_language) {
-				if ($this->ext_CALC_PERMS & Permission::PAGE_EDIT) {
-					$bArray[0] = $this->getPageLayoutController()->doc->t3Button(
-						BackendUtility::editOnClick('&edit[pages][' . $id . ']=edit'),
-						$this->getLanguageService()->getLL('editPageProperties')
-					);
-				}
-			} else {
-				if ($this->doEdit && $this->getBackendUser()->check('tables_modify', 'pages_language_overlay')) {
-					list($languageOverlayRecord) = BackendUtility::getRecordsByField(
-						'pages_language_overlay',
-						'pid',
-						$id,
-						'AND sys_language_uid=' . (int)$this->getPageLayoutController()->current_sys_language
-					);
-					$bArray[0] = $this->getPageLayoutController()->doc->t3Button(
-						BackendUtility::editOnClick('&edit[pages_language_overlay][' . $languageOverlayRecord['uid'] . ']=edit'),
-						$this->getLanguageService()->getLL('editPageProperties_curLang')
-					);
-				}
-			}
-			if ($this->ext_CALC_PERMS & Permission::PAGE_DELETE || $this->ext_CALC_PERMS & Permission::PAGE_EDIT) {
-				$bArray[1] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')])) . ';',
-					$this->getLanguageService()->getLL('move_page')
-				);
-			}
-			if ($this->ext_CALC_PERMS & Permission::PAGE_NEW) {
-				$parameters = [
-					'id' => $id,
-					'pagesOnly' => 1,
-					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-				];
-				$bArray[2] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', $parameters)) . ';',
-					$this->getLanguageService()->getLL('newPage2')
-				);
-			}
-			if ($this->doEdit && $this->ext_function == 1) {
-				$bArray[3] = $this->getPageLayoutController()->doc->t3Button(
-					'window.location.href='
-						. GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $id
-						. '&sys_language_uid=' . $this->getPageLayoutController()->current_sys_language
-						. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';',
-					$this->getLanguageService()->getLL('newPageContent2')
-				);
-			}
-			$out = '
-				<table border="0" cellpadding="4" cellspacing="0" class="typo3-page-buttons">
-					<tr>
-						<td>' . implode('</td>
-						<td>', $bArray) . '</td>
-						<td>' . BackendUtility::cshItem($this->descrTable, 'button_panel') . '</td>
-					</tr>
-				</table>
-				<br />
-				' . $out;
-		}
-		// Return content:
 		return $out;
 	}
 
@@ -1160,6 +1080,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param array $row Record array
 	 * @return string HTML of the footer
+	 * @throws \UnexpectedValueException
 	 */
 	protected function tt_content_drawFooter(array $row) {
 		$content = '';
@@ -1314,12 +1235,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	/**
 	 * Draws the preview content for a content element
 	 *
-	 * @param string $row Content element
-	 * @param bool $isRTE Set if the RTE link can be created.
+	 * @param array $row Content element
 	 * @return string HTML
 	 * @throws \UnexpectedValueException
 	 */
-	public function tt_content_drawItem($row, $isRTE = FALSE) {
+	public function tt_content_drawItem($row) {
 		$out = '';
 		$outHeader = '';
 		// Make header:
@@ -1473,10 +1393,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			<span class="exampleContent">' . $out . '</span>';
 		// Add header:
 		$out = $outHeader . $out;
-		// Add RTE button:
-		if ($isRTE) {
-			$out .= $this->linkRTEbutton($row);
-		}
 		// Return values:
 		if ($this->isDisabled('tt_content', $row)) {
 			return '<span class="text-muted">' . $out . '</span>';
@@ -1606,26 +1522,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Return link
 		return $onClick ? '<a href="#" onclick="' . htmlspecialchars($onClick)
 			. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $str . '</a>' . $addButton : $str;
-	}
-
-	/**
-	 * Adds a button to edit the row in RTE wizard
-	 *
-	 * @param array $row The row of tt_content element
-	 * @return string Button to click if you want to edit in RTE wizard.
-	 */
-	public function linkRTEbutton($row) {
-		$params = array();
-		$params['table'] = 'tt_content';
-		$params['uid'] = $row['uid'];
-		$params['pid'] = $row['pid'];
-		$params['field'] = 'bodytext';
-		$params['returnUrl'] = GeneralUtility::linkThisScript();
-		$RTEonClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_rte', array('P' => $params))) . ';return false;';
-		$addButton = $this->option_showBigButtons && $this->doEdit
-			? $this->getPageLayoutController()->doc->t3Button($RTEonClick, $this->getLanguageService()->getLL('editInRTE'))
-			: '';
-		return $addButton;
 	}
 
 	/**
@@ -1918,64 +1814,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 		}
 		return $allowedTableNames;
-	}
-
-	/**
-	 * Checking if the RTE is available/enabled for a certain table/field and if so, it returns TRUE.
-	 * Used to determine if the RTE button should be displayed.
-	 *
-	 * @param string $table Table name
-	 * @param array $row Record row (needed, if there are RTE dependencies based on other fields in the record)
-	 * @param string $field Field name
-	 * @return bool Returns TRUE if the rich text editor would be enabled/available for the field name specified.
-	 */
-	public function isRTEforField($table, $row, $field) {
-		$specConf = $this->getSpecConfForField($table, $row, $field);
-		if (empty($specConf)) {
-			return FALSE;
-		}
-		$p = BackendUtility::getSpecConfParametersFromArray($specConf['rte_transform']['parameters']);
-		if (isset($specConf['richtext'])) {
-			BackendUtility::fixVersioningPid($table, $row);
-			list($tscPID, $thePidValue) = BackendUtility::getTSCpid($table, $row['uid'], $row['pid']);
-			// If the pid-value is not negative (that is, a pid could NOT be fetched)
-			if ($thePidValue >= 0) {
-				if (!isset($this->rteSetup[$tscPID])) {
-					$this->rteSetup[$tscPID] = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($tscPID));
-				}
-				$RTEtypeVal = BackendUtility::getTCAtypeValue($table, $row);
-				$thisConfig = BackendUtility::RTEsetup($this->rteSetup[$tscPID]['properties'], $table, $field, $RTEtypeVal);
-				if (!$thisConfig['disabled']) {
-					return TRUE;
-				}
-			}
-		}
-		return FALSE;
-	}
-
-	/**
-	 * Returns "special" configuration from the "types" configuration in TCA for the record given by tablename/fieldname.
-	 * Used by isRTEforField() in the process of finding whether a field has RTE enabled or not.
-	 *
-	 * @param string $table Table name
-	 * @param array $row Record array
-	 * @param string $field Field name
-	 * @return array Spec. conf (if available)
-	 * @access private
-	 * @see isRTEforField()
-	 */
-	public function getSpecConfForField($table, $row, $field) {
-		// Get types-configuration for the record:
-		$types_fieldConfig = BackendUtility::getTCAtypes($table, $row);
-		// Find the given field and return the spec key value if found:
-		if (is_array($types_fieldConfig)) {
-			foreach ($types_fieldConfig as $vConf) {
-				if ($vConf['field'] == $field) {
-					return $vConf['spec'];
-				}
-			}
-		}
-		return array();
 	}
 
 	/*****************************************

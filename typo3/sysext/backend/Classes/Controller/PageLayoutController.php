@@ -957,7 +957,6 @@ class PageLayoutController {
 		$dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears');
 		$dbList->id = $this->id;
 		$dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
-		$dbList->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] === '0';
 		$dbList->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
 		$dbList->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
 		if (!$dbList->nextThree) {
