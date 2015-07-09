@@ -25,6 +25,13 @@ namespace TYPO3\CMS\Backend\Tree\View;
 class ElementBrowserFolderTreeView extends FolderTreeView {
 
 	/**
+	 * If file-drag mode is set, temp and recycler folders are filtered out.
+	 *
+	 * @var int
+	 */
+	public $ext_noTempRecyclerDirs = 0;
+
+	/**
 	 * @var int
 	 */
 	public $ext_IconMode = 1;
@@ -57,10 +64,10 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Object with information about the folder element. Contains keys like title, uid, path, _title
-	 * @return bool TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder
+	 * @return bool TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
 	 */
 	public function ext_isLinkable(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
-		if (strstr($folderObject->getIdentifier(), '_recycler_') || strstr($folderObject->getIdentifier(), '_temp_')) {
+		if ($this->ext_noTempRecyclerDirs && (substr($folderObject->getIdentifier(), -7) === '_temp_/' || substr($folderObject->getIdentifier(), -11) === '_recycler_/')) {
 			return FALSE;
 		} else {
 			return TRUE;

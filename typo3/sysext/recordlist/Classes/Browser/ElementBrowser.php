@@ -1539,8 +1539,8 @@ class ElementBrowser {
 		}
 		$noThumbs = $noThumbs ?: !$_MOD_SETTINGS['displayThumbs'];
 		// Create folder tree:
-		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView $folderTree */
-		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView::class);
+		/** @var \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView $folderTree */
+		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1610,8 +1610,8 @@ class ElementBrowser {
 			$createFolder = '';
 		}
 		// Create folder tree:
-		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView $folderTree */
-		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserFolderTreeView::class);
+		/** @var \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView $folderTree */
+		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree(FALSE);
