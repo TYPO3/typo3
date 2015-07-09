@@ -1012,7 +1012,6 @@ class PageLayoutController {
 				$dbList->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
 				// If the function menu is set to "Language":
 				if ($this->MOD_SETTINGS['function'] == 2) {
-					$dbList->tt_contentConfig['single'] = 0;
 					$dbList->tt_contentConfig['languageMode'] = 1;
 					$dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
 					$dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
