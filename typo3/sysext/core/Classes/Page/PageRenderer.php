@@ -297,7 +297,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @var string
 	 */
-	protected $jQueryPath = 'contrib/jquery/';
+	protected $jQueryPath = 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/';
 
 	// Internal flags for JS-libraries
 	/**
@@ -325,10 +325,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $availableLocalJqueryVersions = array(
-		'1.8.2',	// jquery version shipped with TYPO3 6.0, still available in the contrib/ directory
-		'1.9.1',
-		'1.11.0',
-		'1.11.1',
 		self::JQUERY_VERSION_LATEST
 	);
 
