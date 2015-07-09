@@ -3310,7 +3310,7 @@ class TypoScriptFrontendController {
 
 	/**
 	 * Determines to include custom or pagegen.php script
-	 * returns script-filename if a TypoScript (config) script is defined and should be include instead of pagegen.php
+	 * returns script-filename if a TypoScript (config) script is defined and should be included instead of pagegen.php
 	 *
 	 * @return string The relative filepath of "config.pageGenScript" if found and allowed
 	 */

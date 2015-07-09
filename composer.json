@@ -66,7 +66,6 @@
 		"typo3/cms-backend": "self.version",
 		"typo3/cms-belog": "self.version",
 		"typo3/cms-beuser": "self.version",
-		"typo3/cms-cms": "self.version",
 		"typo3/cms-context-help": "self.version",
 		"typo3/cms-core": "self.version",
 		"typo3/cms-cshmanual": "self.version",

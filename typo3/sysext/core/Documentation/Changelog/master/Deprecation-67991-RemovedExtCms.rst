@@ -1,19 +1,19 @@
-=================================
-Breaking: #67991 - Remove ext:cms
-=================================
+=====================================
+Deprecation: #67991 - Removed ext:cms
+=====================================
 
 Description
 ===========
 
-Extension ``cms`` was removed. Most functionality have been moved to extension ``frontend`` with version 6.0 already.
+Extension ``cms`` was removed. Most functionality has been moved to extension ``frontend`` with version 6.0 already.
 The rest of the files have now been moved to other extensions, extension ``cms`` does not exist anymore.
 
 
 Impact
 ======
 
-Language files from EXT:cms are moved to different places into the core. 3rd party extensions using one of the moved
-files doesn't show any translation anymore.
+Language files from EXT:cms are moved to different places into the core. ``LLL:EXT:cms/...`` references are
+rewritten dynamically to the new file locations, but this fallback layer is subject to be removed with CMS 8.
 
 Third party extensions that define a dependency to extension ``cms`` will get their dependency rewritten to ``core``
 on the fly during extension installation as a compatibility layer.
@@ -22,7 +22,7 @@ on the fly during extension installation as a compatibility layer.
 Affected Installations
 ======================
 
-All 3rd party extensions that uses language labels from extension ``cms`` or define a dependenty to extension ``cms``
+All 3rd party extensions using language labels from extension ``cms`` or defining a dependency to extension ``cms``
 in ``ext_emconf.php``.
 
 

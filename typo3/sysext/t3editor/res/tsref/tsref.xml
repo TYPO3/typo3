@@ -656,14 +656,14 @@ If this property is set, images are not allowed to be scaled up in size. This pa
 		</property>
 		<property name="pageGenScript" type="string">
 			<description><![CDATA[Alternative page generation script for applications using index_ts.php for initialization, caching, stating and so on. This script is included in the global scope of index_ts.php-script and thus you may include libraries here. Always use include_once for libraries.
-Remember not to output anything from such an included script. All content must be set into $TSFE->content. Take a look at typo3/sysext/cms/tslib/pagegen.php
+Remember not to output anything from such an included script. All content must be set into $TSFE->content. Take a look at \TYPO3\CMS\Frontend\Page\PageGenerator
 
 NOTE: This option is ignored if
 
 $TYPO3_CONF_VARS["FE"]["noPHPscriptInclude"]=1;
 
 is set in localconf.php.]]></description>
-			<default><![CDATA[typo3/sysext/cms/tslib/pagegen.php]]></default>
+			<default><![CDATA[typo3/sysext/frontend/Classes/Page/PageGenerator.php]]></default>
 		</property>
 		<property name="pageRendererTemplateFile" type="string">
 			<description><![CDATA[
