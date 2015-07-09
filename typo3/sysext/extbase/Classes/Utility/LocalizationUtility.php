@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Extbase\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+
 /**
  * Localization helper which should be used to fetch localized labels.
  *
@@ -81,7 +86,7 @@ class LocalizationUtility {
 	 */
 	static public function translate($key, $extensionName, $arguments = NULL) {
 		$value = NULL;
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
+		if (GeneralUtility::isFirstPartOfStr($key, 'LLL:')) {
 			$value = self::translateFileReference($key);
 		} else {
 			self::initializeLocalization($extensionName);
@@ -134,10 +139,10 @@ class LocalizationUtility {
 	 */
 	static protected function translateFileReference($key) {
 		if (TYPO3_MODE === 'FE') {
-			$value = $GLOBALS['TSFE']->sL($key);
+			$value = self::getTypoScriptFrontendController()->sL($key);
 			return $value !== FALSE ? $value : NULL;
 		} elseif (is_object($GLOBALS['LANG'])) {
-			$value = $GLOBALS['LANG']->sL($key);
+			$value = self::getLanguageService()->sL($key);
 			return $value !== '' ? $value : NULL;
 		} else {
 			return $key;
@@ -155,12 +160,12 @@ class LocalizationUtility {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
-		$locallangPathAndFilename = 'EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xlf';
+		$locallangPathAndFilename = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xlf';
 		self::setLanguageKeys();
-		$renderCharset = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet;
-		self::$LOCAL_LANG[$extensionName] = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
+		$renderCharset = TYPO3_MODE === 'FE' ? self::getTypoScriptFrontendController()->renderCharset : self::getLanguageService()->charSet;
+		self::$LOCAL_LANG[$extensionName] = GeneralUtility::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
 		foreach (self::$alternativeLanguageKeys as $language) {
-			$tempLL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, $language, $renderCharset);
+			$tempLL = GeneralUtility::readLLfile($locallangPathAndFilename, $language, $renderCharset);
 			if (self::$languageKey !== 'default' && isset($tempLL[$language])) {
 				self::$LOCAL_LANG[$extensionName][$language] = $tempLL[$language];
 			}
@@ -178,13 +183,13 @@ class LocalizationUtility {
 		self::$languageKey = 'default';
 		self::$alternativeLanguageKeys = array();
 		if (TYPO3_MODE === 'FE') {
-			if (isset($GLOBALS['TSFE']->config['config']['language'])) {
-				self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
-				if (isset($GLOBALS['TSFE']->config['config']['language_alt'])) {
-					self::$alternativeLanguageKeys[] = $GLOBALS['TSFE']->config['config']['language_alt'];
+			if (isset(self::getTypoScriptFrontendController()->config['config']['language'])) {
+				self::$languageKey = self::getTypoScriptFrontendController()->config['config']['language'];
+				if (isset(self::getTypoScriptFrontendController()->config['config']['language_alt'])) {
+					self::$alternativeLanguageKeys[] = self::getTypoScriptFrontendController()->config['config']['language_alt'];
 				} else {
 					/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
-					$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+					$locales = GeneralUtility::makeInstance(Locales::class);
 					if (in_array(self::$languageKey, $locales->getLocales())) {
 						foreach ($locales->getLocaleDependencies(self::$languageKey) as $language) {
 							self::$alternativeLanguageKeys[] = $language;
@@ -207,7 +212,7 @@ class LocalizationUtility {
 	 */
 	static protected function loadTypoScriptLabels($extensionName) {
 		$configurationManager = static::getConfigurationManager();
-		$frameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
+		$frameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName);
 		if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
 			return;
 		}
@@ -223,9 +228,9 @@ class LocalizationUtility {
 						self::$LOCAL_LANG_UNSET[$extensionName][$languageKey][$labelKey] = '';
 					}
 					if (is_object($GLOBALS['LANG'])) {
-						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['LANG']->csConvObj->charSetArray[$languageKey];
+						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = self::getLanguageService()->csConvObj->charSetArray[$languageKey];
 					} else {
-						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
+						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = self::getTypoScriptFrontendController()->csConvObj->charSetArray[$languageKey];
 					}
 				} elseif (is_array($labelValue)) {
 					$labelValue = self::flattenTypoScriptLabelArray($labelValue, $labelKey);
@@ -277,9 +282,9 @@ class LocalizationUtility {
 	 */
 	static protected function convertCharset($value, $charset) {
 		if (TYPO3_MODE === 'FE') {
-			return $GLOBALS['TSFE']->csConv($value, $charset);
+			return self::getTypoScriptFrontendController()->csConv($value, $charset);
 		} else {
-			$convertedValue = $GLOBALS['LANG']->csConvObj->conv($value, $GLOBALS['LANG']->csConvObj->parse_charset($charset), $GLOBALS['LANG']->charSet, 1);
+			$convertedValue = self::getLanguageService()->csConvObj->conv($value, self::getLanguageService()->csConvObj->parse_charset($charset), self::getLanguageService()->charSet, 1);
 			return $convertedValue !== NULL ? $convertedValue : $value;
 		}
 	}
@@ -293,10 +298,24 @@ class LocalizationUtility {
 		if (!is_null(static::$configurationManager)) {
 			return static::$configurationManager;
 		}
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		$configurationManager = $objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+		$configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
 		static::$configurationManager = $configurationManager;
 		return $configurationManager;
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	static protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Lang\LanguageService
+	 */
+	static protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
