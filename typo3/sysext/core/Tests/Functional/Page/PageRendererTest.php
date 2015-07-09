@@ -349,7 +349,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function loadExtJsInDebugLoadsDebugExtJs() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$subject->loadExtJS(TRUE, TRUE);
 		$subject->enableExtJsDebug();
 		$out = $subject->render();

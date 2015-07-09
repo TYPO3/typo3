@@ -281,7 +281,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var string
 	 */
-	protected $extJsPath = 'contrib/extjs/';
+	protected $extJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/extjs/';
 
 	/**
 	 * The local directory where one can find jQuery versions and plugins
