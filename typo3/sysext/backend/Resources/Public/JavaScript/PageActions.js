@@ -15,6 +15,8 @@
  * JavaScript implementations for page actions
  */
 define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
+	'use strict';
+
 	var PageActions = {
 		settings: {
 			pageId: 0,
@@ -29,14 +31,21 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 		elements: {
 			$pageTitle: null,
 			$showHiddenElementsCheckbox: null
-		}
+		},
+		documentIsReady: false
 	};
 
 	/**
 	 * Initialize page title renaming
 	 */
 	PageActions.initializePageTitleRenaming = function() {
-		if (!(PageActions.settings.pageId > 0 && PageActions.settings.canEditPage)) {
+		if (!PageActions.documentIsReady) {
+			$(document).ready(function() {
+				PageActions.initializePageTitleRenaming();
+			});
+			return;
+		}
+		if (PageActions.settings.pageId <= 0 || !PageActions.settings.canEditPage) {
 			return;
 		}
 
@@ -186,11 +195,12 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			recordUid = PageActions.settings.language.pageOverlayId;
 		}
 
-		parameters['data'] = {};
-		parameters['data'][pagesTable] = {};
-		parameters['data'][pagesTable][recordUid] = {title: $field.val()};
+		parameters.data = {};
+		parameters.data[pagesTable] = {};
+		parameters.data[pagesTable][recordUid] = {title: $field.val()};
+
 		require(['TYPO3/CMS/Backend/AjaxDataHandler'], function(DataHandler) {
-			DataHandler.process(parameters).done(function(result) {
+			DataHandler.process(parameters).done(function() {
 				$inputFieldWrap.find('[data-action=cancel]').trigger('click');
 				PageActions.elements.$pageTitle.text($field.val());
 				PageActions.initializePageTitleRenaming();
@@ -204,6 +214,7 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 	$(document).ready(function() {
 		PageActions.initializeElements();
 		PageActions.initializeEvents();
+		PageActions.documentIsReady = true;
 	});
 
 	return PageActions;
