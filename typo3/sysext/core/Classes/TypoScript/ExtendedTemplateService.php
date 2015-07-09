@@ -471,7 +471,7 @@ class ExtendedTemplateService extends TemplateService {
 							$ln = '';
 						}
 						if ($this->tsbrowser_searchKeys[$depth] & 4) {
-							$label = '<strong style="color: red;">' . $label . '</strong>';
+							$label = '<strong class="text-danger">' . $label . '</strong>';
 						}
 						// The key has matched the search string
 						$label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($ln) . '">' . $label . '</a>';
@@ -487,7 +487,7 @@ class ExtendedTemplateService extends TemplateService {
 					}
 					// The value has matched the search string
 					if ($this->tsbrowser_searchKeys[$depth] & 2) {
-						$HTML .= '&nbsp;=&nbsp;<strong style="color: red;">' . htmlspecialchars($theValue) . '</strong>';
+						$HTML .= '&nbsp;=&nbsp;<strong class="text-danger">' . htmlspecialchars($theValue) . '</strong>';
 					} else {
 						$HTML .= '&nbsp;=&nbsp;<strong>' . htmlspecialchars($theValue) . '</strong>';
 					}
@@ -820,10 +820,10 @@ class ExtendedTemplateService extends TemplateService {
 			$cArr[$k] = $lineNum . str_replace(' ', '&nbsp;', $v);
 			$firstChar = substr(trim($v), 0, 1);
 			if ($firstChar == '[') {
-				$cArr[$k] = '<strong style="color: green">' . $cArr[$k] . '</strong>';
+				$cArr[$k] = '<strong class="text-success">' . $cArr[$k] . '</strong>';
 			} elseif ($firstChar == '/' || $firstChar == '#') {
 				if ($comments) {
-					$cArr[$k] = '<span class="typo3-dimmed">' . $cArr[$k] . '</span>';
+					$cArr[$k] = '<span class="text-muted">' . $cArr[$k] . '</span>';
 				} else {
 					unset($cArr[$k]);
 				}
@@ -1318,7 +1318,7 @@ class ExtendedTemplateService extends TemplateService {
 					$constantEditRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $userTyposcriptID . '" '
 						. $userTyposcriptStyle . '>' . $deleteIconHTML . $p_field . $color . '</div>';
 					$constantLabel = '<dt class="typo3-tstemplate-ceditor-label">' . htmlspecialchars($head) . '</dt>';
-					$constantName = '<dt class="typo3-dimmed">[' . $params['name'] . ']</dt>';
+					$constantName = '<dt class="text-muted">[' . $params['name'] . ']</dt>';
 					$constantDescription = $body ? '<dd>' . htmlspecialchars($body) . '</dd>' : '';
 					$constantData = '<dd>' . $constantCheckbox . $constantEditRow . $constantDefaultRow . '</dd>';
 					$output .= '<a name="' . $raname . '"></a>' . $help['constants'][$params['name']];

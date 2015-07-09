@@ -200,7 +200,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), $this->formsWizard(), 0, 1);
 		} else {
-			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', 1) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', 1) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();

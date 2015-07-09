@@ -108,21 +108,4 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		return $title;
 	}
 
-	/**
-	 * Adds a red "+" to the input string, $str, if the field "php_tree_stop" in the $row (pages) is set
-	 *
-	 * @param string $str Input string, like a page title for the tree
-	 * @param array $row Record row with "php_tree_stop" field
-	 * @return string Modified string
-	 * @access private
-	 */
-	public function wrapStop($str, $row) {
-		if ($row['php_tree_stop']) {
-			$str .= '<span class="typo3-red">
-								<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a>
-							</span>';
-		}
-		return $str;
-	}
-
 }

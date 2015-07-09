@@ -910,7 +910,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					<th colspan="2">' . $this->lang->getLL('importdata_selectFileToImport', TRUE) . '</th>
 				</tr>';
 			$noCompressorAvailable = !$import->compress
-				? '<br /><span class="typo3-red">' . $this->lang->getLL('importdata_noteNoDecompressorAvailable', TRUE) . '</span>'
+				? '<br /><span class="text-danger">' . $this->lang->getLL('importdata_noteNoDecompressorAvailable', TRUE) . '</span>'
 				: '';
 			$row[] = '
 				<tr>
@@ -960,7 +960,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					<br/>
 					<input type="checkbox" name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1"'
 						. ($inData['force_all_UIDS'] ? ' checked="checked"' : '') . ' />
-					<label for="checkForce_all_UIDS"><span class="typo3-red">'
+					<label for="checkForce_all_UIDS"><span class="text-danger">'
 						. $this->lang->getLL('importdata_force_all_UIDS', TRUE) . '</span></label><br/>
 					<em>(' . $this->lang->getLL('importdata_force_all_UIDS_descr', TRUE) . ')</em>'
 				: '';
@@ -1042,7 +1042,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (GeneralUtility::_POST('_upload')) {
 					$noFileUploaded = $this->fileProcessor->internalUploadMap[1]
 						? $this->lang->getLL('importdata_success', TRUE) . ' ' . $this->uploadedFiles[0]->getName()
-						: '<span class="typo3-red">' . $this->lang->getLL('importdata_failureNoFileUploaded', TRUE) . '</span>';
+						: '<span class="text-danger">' . $this->lang->getLL('importdata_failureNoFileUploaded', TRUE) . '</span>';
 					$row[] = '<tr class="bgColor4">
 							<td>' . $this->lang->getLL('importdata_uploadStatus', TRUE) . '</td>
 							<td>' . $noFileUploaded . '</td>

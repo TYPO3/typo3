@@ -576,7 +576,7 @@ abstract class AbstractTreeView {
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {
-			$str .= '<span class="typo3-red"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a> </span>';
+			$str .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="text-danger">+</a> ';
 		}
 		return $str;
 	}

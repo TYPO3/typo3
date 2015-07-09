@@ -68,7 +68,7 @@ class FolderTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeVi
 				. '\');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
-			return '<span class="typo3-dimmed">' . $title . '</span>';
+			return '<span class="text-muted">' . $title . '</span>';
 		}
 	}
 

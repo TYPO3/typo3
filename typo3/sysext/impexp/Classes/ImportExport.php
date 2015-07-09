@@ -3408,7 +3408,7 @@ class ImportExport {
 						<td>' . $this->renderControls($r) . '</td>
 						<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
 						<td nowrap="nowrap">' . GeneralUtility::formatSize($r['size']) . '</td>
-						<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="typo3-red">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
+						<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
 						' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
 						' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
 						' . ($this->showDiff ? '<td>' . $r['showDiffContent'] . '</td>' : '') . '
@@ -3444,7 +3444,7 @@ class ImportExport {
 							<td>' . $this->renderControls($r) . '</td>
 							<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
 							<td nowrap="nowrap">' . GeneralUtility::formatSize($r['size']) . '</td>
-							<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="typo3-red">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
+							<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="text-danger">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
 							' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
 							' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
 							' . ($this->showDiff ? '<td>' . $r['showDiffContent'] . '</td>' : '') . '

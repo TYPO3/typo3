@@ -148,7 +148,7 @@ class TableController extends AbstractWizardController {
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), $this->tableWizard(), 0, 1);
 		} else {
-			$this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('table_title'), '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docHeader
 		$docHeaderButtons = $this->getButtons();

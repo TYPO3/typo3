@@ -49,7 +49,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 			$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
-			return '<span class="typo3-dimmed">' . $title . '</span>';
+			return '<span class="text-muted">' . $title . '</span>';
 		}
 	}
 

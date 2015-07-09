@@ -52,7 +52,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 			$aOnClick = 'return link_typo3Page(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($v['uid']) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
-			return '<span style="color: #666666;">' . $title . '</span>';
+			return '<span class="text-muted">' . $title . '</span>';
 		}
 	}
 

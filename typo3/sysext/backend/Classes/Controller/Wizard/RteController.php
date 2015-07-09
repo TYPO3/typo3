@@ -177,7 +177,7 @@ class RteController extends AbstractWizardController {
 			$this->content .= $formEngine->printNeededJSFunctions_top() . $formContent . $formEngine->printNeededJSFunctions();
 		} else {
 			// ERROR:
-			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="typo3-red">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docHeader
 		$docHeaderButtons = $this->getButtons();
