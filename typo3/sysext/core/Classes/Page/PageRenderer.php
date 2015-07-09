@@ -30,10 +30,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	const PART_COMPLETE = 0;
 	const PART_HEADER = 1;
 	const PART_FOOTER = 2;
-	// Available adapters for extJs
-	const EXTJS_ADAPTER_JQUERY = 'jquery';
-	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
-	const EXTJS_ADAPTER_YUI = 'yui';
 	// jQuery Core version that is shipped with TYPO3
 	const JQUERY_VERSION_LATEST = '1.11.2';
 	// jQuery namespace options
@@ -285,11 +281,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var string
 	 */
-	protected $extCorePath = 'contrib/extjs/';
-
-	/**
-	 * @var string
-	 */
 	protected $extJsPath = 'contrib/extjs/';
 
 	/**
@@ -374,27 +365,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var bool
 	 */
-	protected $addExtCore = FALSE;
-
-	/**
-	 * @var string
-	 */
-	protected $extJSadapter = 'ext/ext-base.js';
-
-	/**
-	 * @var bool
-	 */
 	protected $extDirectCodeAdded = FALSE;
 
 	/**
 	 * @var bool
 	 */
 	protected $enableExtJsDebug = FALSE;
-
-	/**
-	 * @var bool
-	 */
-	protected $enableExtCoreDebug = FALSE;
 
 	/**
 	 * @var bool
@@ -687,16 +663,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Sets Path for Ext Core library (relative to typo3 directory)
-	 *
-	 * @param string $path
-	 * @return void
-	 */
-	public function setExtCorePath($path) {
-		$this->extCorePath = $path;
-	}
-
-	/**
 	 * Sets Path for ExtJs library (relative to typo3 directory)
 	 *
 	 * @param string $path
@@ -849,7 +815,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->compressCss = FALSE;
 		$this->concatenateFiles = FALSE;
 		$this->removeLineBreaksFromTemplate = FALSE;
-		$this->enableExtCoreDebug = TRUE;
 		$this->enableExtJsDebug = TRUE;
 		$this->enableJqueryDebug = TRUE;
 	}
@@ -1047,15 +1012,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getScriptaculousPath() {
 		return $this->scriptaculousPath;
-	}
-
-	/**
-	 * Gets Path for Ext Core library (relative to typo3 directory)
-	 *
-	 * @return string
-	 */
-	public function getExtCorePath() {
-		return $this->extCorePath;
 	}
 
 	/**
@@ -1718,24 +1674,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param bool $css Flag, if set the ext-css will be loaded
 	 * @param bool $theme Flag, if set the ext-theme "grey" will be loaded
-	 * @param string $adapter Choose alternative adapter, possible values: yui, prototype, jquery
 	 * @return void
 	 */
-	public function loadExtJS($css = TRUE, $theme = TRUE, $adapter = '') {
-		if ($adapter) {
-			// Empty $adapter will always load the ext adapter
-			switch (GeneralUtility::strtolower(trim($adapter))) {
-				case self::EXTJS_ADAPTER_YUI:
-					$this->extJSadapter = 'yui/ext-yui-adapter.js';
-					break;
-				case self::EXTJS_ADAPTER_PROTOTYPE:
-					$this->extJSadapter = 'prototype/ext-prototype-adapter.js';
-					break;
-				case self::EXTJS_ADAPTER_JQUERY:
-					$this->extJSadapter = 'jquery/ext-jquery-adapter.js';
-					break;
-			}
-		}
+	public function loadExtJS($css = TRUE, $theme = TRUE) {
 		$this->addExtJS = TRUE;
 		$this->extJStheme = $theme;
 		$this->extJScss = $css;
@@ -1752,30 +1693,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Call function if you need the ExtCore library
-	 *
-	 * @return void
-	 */
-	public function loadExtCore() {
-		$this->addExtCore = TRUE;
-	}
-
-	/**
 	 * Call this function to load debug version of ExtJS. Use this for development only
 	 *
 	 * @return void
 	 */
 	public function enableExtJsDebug() {
 		$this->enableExtJsDebug = TRUE;
-	}
-
-	/**
-	 * Call this function to load debug version of ExtCore. Use this for development only
-	 *
-	 * @return void
-	 */
-	public function enableExtCoreDebug() {
-		$this->enableExtCoreDebug = TRUE;
 	}
 
 	/**
@@ -2166,15 +2089,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->scriptaculousPath . 'scriptaculous.js')) . '" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . 'scriptaculous.js']);
 		}
-		// Include extCore, but only if ExtJS is not included
-		if ($this->addExtCore && !$this->addExtJS) {
-			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js')) . '" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
-		}
 		// Include extJS
 		if ($this->addExtJS) {
 			// Use the base adapter all the time
-			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->extJsPath . 'adapter/' . ($this->enableExtJsDebug ? str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter))) . '" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->extJsPath . 'adapter/ext-base' . ($this->enableExtJsDebug ? '-debug' : '') . '.js')) . '" type="text/javascript"></script>' . LF;
 			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->extJsPath . 'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js')) . '" type="text/javascript"></script>' . LF;
 			// Add extJS localization
 			// Load standard ISO mapping and modify for use with ExtJS
@@ -2202,7 +2120,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
 		$inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
-		if ($this->addExtCore || $this->addExtJS) {
+		if ($this->addExtJS) {
 			// Set clear.gif, move it on top, add handler code
 			$code = '';
 			if (!empty($this->extOnReadyCode)) {

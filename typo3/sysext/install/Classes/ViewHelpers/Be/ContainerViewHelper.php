@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\Be;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true">your module content</f:be.container>
+ * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" enableExtJsDebug="true">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with proper head & body tags.
@@ -51,7 +51,6 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param string $scriptaculousModule additionales modules for scriptaculous
 	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
 	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
-	 * @param string $extJsAdapter load alternative adapter (ext-base is default adapter)
 	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param array $addCssFiles Custom CSS files to be loaded
 	 * @param array $addJsFiles Custom JavaScript files to be loaded
@@ -61,7 +60,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
+	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 
@@ -76,7 +75,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			$pageRenderer->loadScriptaculous($scriptaculousModule);
 		}
 		if ($loadExtJs) {
-			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme, $extJsAdapter);
+			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme);
 			if ($enableExtJsDebug) {
 				$pageRenderer->enableExtJsDebug();
 			}

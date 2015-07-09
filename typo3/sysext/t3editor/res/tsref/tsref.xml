@@ -5920,12 +5920,6 @@ javascriptLibs {
      # adds modules dragdrop and controls to Scriptaculous
    Scriptaculous.modules = dragdrop,controls
 
-     # include ExtCore
-   ExtCore = 1
-
-     # include ExtCore debug file (uncompressed)
-   ExtCore.debug = 1
-
      # includes ExtJS
    ExtJs = 1
 
@@ -5934,9 +5928,6 @@ javascriptLibs {
 
      # include default theme
    ExtJs.theme = 1
-
-    # load specific adapter (jquery|prototype|yui)
-   ExtJs.adapter = ...
 
      # initialize QuickTips
    ExtJs.quickTips = 1

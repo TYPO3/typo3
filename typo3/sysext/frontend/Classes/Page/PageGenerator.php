@@ -573,12 +573,6 @@ class PageGenerator {
 				$modules = $tsfe->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ?: '';
 				$pageRenderer->loadScriptaculous($modules);
 			}
-			if ($tsfe->pSetup['javascriptLibs.']['ExtCore']) {
-				$pageRenderer->loadExtCore();
-				if ($tsfe->pSetup['javascriptLibs.']['ExtCore.']['debug']) {
-					$pageRenderer->enableExtCoreDebug();
-				}
-			}
 			// Include jQuery into the page renderer
 			if (!empty($tsfe->pSetup['javascriptLibs.']['jQuery'])) {
 				$jQueryTS = $tsfe->pSetup['javascriptLibs.']['jQuery.'];
@@ -601,8 +595,7 @@ class PageGenerator {
 			if ($tsfe->pSetup['javascriptLibs.']['ExtJs']) {
 				$css = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
 				$theme = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
-				$adapter = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['adapter'] ?: '';
-				$pageRenderer->loadExtJs($css, $theme, $adapter);
+				$pageRenderer->loadExtJs($css, $theme);
 				if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
 					$pageRenderer->enableExtJsDebug();
 				}

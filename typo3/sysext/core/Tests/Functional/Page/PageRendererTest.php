@@ -91,9 +91,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$expectedJqueryRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedJqueryStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
 
-		$subject->loadExtJS(TRUE, TRUE, 'jquery');
-		$expectedExtJsRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#m';
-
 		$expectedBodyContent = $this->getUniqueId('ABCDE-');
 		$subject->setBodyContent($expectedBodyContent);
 
@@ -121,7 +118,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertContains($expectedScriptaculousSlider, $renderedString);
 		$this->assertRegExp($expectedJqueryRegExp, $renderedString);
 		$this->assertContains($expectedJqueryStatement, $renderedString);
-		$this->assertRegExp($expectedExtJsRegExp, $renderedString);
 		$this->assertContains($expectedBodyContent, $renderedString);
 	}
 
@@ -354,33 +350,8 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
 		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$subject->loadExtJS(TRUE, TRUE, 'jquery');
+		$subject->loadExtJS(TRUE, TRUE);
 		$subject->enableExtJsDebug();
-		$out = $subject->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * @test
-	 */
-	public function loadExtCoreLoadsExtCore() {
-		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
-
-		$expectedRegExp = '#<script src="contrib/extjs/ext-core\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$subject->loadExtCore();
-		$out = $subject->render();
-		$this->assertRegExp($expectedRegExp, $out);
-	}
-
-	/**
-	 * @test
-	 */
-	public function loadExtCoreInDebugLoadsDebugExtCore() {
-		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
-
-		$expectedRegExp = '#<script src="contrib/extjs/ext-core-debug\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$subject->loadExtCore();
-		$subject->enableExtCoreDebug();
 		$out = $subject->render();
 		$this->assertRegExp($expectedRegExp, $out);
 	}
