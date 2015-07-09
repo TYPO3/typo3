@@ -1815,7 +1815,7 @@ return array(
 					'delete' => TRUE,
 					'localize' => TRUE,
 				),
-				'createNewRelationLinkTitle' => "LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference",
+				'createNewRelationLinkTitle' => "LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference",
 				'behaviour' => array(
 					'localizationMode' => "select",
 					'localizeChildrenAtParentLocalization' => TRUE,
