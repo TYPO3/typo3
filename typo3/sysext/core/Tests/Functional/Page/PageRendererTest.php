@@ -88,7 +88,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$expectedScriptaculousSlider  = '<script src="sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/slider.js" type="text/javascript"></script>';
 
 		$subject->loadJquery();
-		$expectedJqueryRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedJqueryRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedJqueryStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
 
 		$subject->loadExtJS(TRUE, TRUE, 'jquery');
@@ -243,7 +243,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function loadJqueryRespectsGivenNamespace() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.MyNameSpace = jQuery.noConflict(true);';
 		$subject->loadJquery(NULL, NULL, 'MyNameSpace');
 		$out = $subject->render();
@@ -257,7 +257,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function loadJqueryWithDefaultNoConflictModeDoesNotSetNamespace() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'jQuery.noConflict();';
 		$subject->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
 		$out = $subject->render();
@@ -272,7 +272,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function loadJqueryWithNamespaceNoneDoesNotIncludeNoConflictHandling() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$subject->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE);
 		$out = $subject->render();
 		$this->assertRegExp($expectedRegExp, $out);
@@ -285,7 +285,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	public function loadJqueryLoadsTheLatestJqueryVersionInNoConflictModeUncompressedInDebugMode() {
 		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
 
-		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
 		$subject->loadJquery();
 		$subject->enableDebugMode();

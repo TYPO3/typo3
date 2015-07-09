@@ -1594,7 +1594,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
-				'jquery' => $this->backPath . 'contrib/jquery',
+				'jquery' => $this->backPath . rtrim($this->jQueryPath, '/'),
 				'datatables' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
 				'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
 				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment',
