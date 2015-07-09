@@ -856,6 +856,12 @@ class ElementBrowser {
 	 * @return string Modified content variable.
 	 */
 	public function main_rte($wiz = FALSE) {
+		// needs to be executed before doc->startPage()
+		if (in_array($this->act, array('file', 'folder'))) {
+			$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
+		} elseif ($this->act === 'page') {
+			$this->doc->getDragDropCode('pages');
+		}
 		// Starting content:
 		$content = $this->doc->startPage('RTE link');
 		// Add the FlashMessages if any
@@ -1255,9 +1261,6 @@ class ElementBrowser {
 			$files = $this->expandFolder($selectedFolder, $allowedExtensions);
 		}
 		// Create folder tree:
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
-		}');
 		$content .= '
 				<!--
 					Wrapper table for folder tree / file/folder list:
