@@ -2,7 +2,7 @@
 return array(
 	'ctrl' => array(
 		'title' => 'Form engine tests - inline expand inline_1 child 1',
-		'label' => 'input_1',
+		'label' => 'rte_1',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',

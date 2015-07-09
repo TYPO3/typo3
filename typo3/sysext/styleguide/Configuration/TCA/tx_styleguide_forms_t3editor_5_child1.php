@@ -2,7 +2,7 @@
 return array(
 	'ctrl' => array(
 		'title' => 'Form engine tests - t3editor_5 child 1',
-		'label' => 'text_1',
+		'label' => 't3editor_1',
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
