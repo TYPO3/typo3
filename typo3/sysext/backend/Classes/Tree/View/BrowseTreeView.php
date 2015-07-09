@@ -22,7 +22,50 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
  */
-class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
+class BrowseTreeView extends AbstractTreeView {
+
+	/**
+	 * @var array
+	 */
+	public $fieldArray = array(
+		'uid',
+		'pid',
+		'title',
+		'doktype',
+		'nav_title',
+		'mount_pid',
+		'php_tree_stop',
+		't3ver_id',
+		't3ver_state',
+		'hidden',
+		'starttime',
+		'endtime',
+		'fe_group',
+		'module',
+		'extendToSubpages',
+		'nav_hide',
+		't3ver_wsid',
+		't3ver_move_id',
+		'is_siteroot'
+	);
+
+	/**
+	 * override to use this treeName
+	 * @var string
+	 */
+	public $treeName = 'browsePages';
+
+	/**
+	 * override to use this table
+	 * @var string
+	 */
+	public $table = 'pages';
+
+	/**
+	 * override to use this domIdPrefix
+	 * @var string
+	 */
+	public $domIdPrefix = 'pages';
 
 	/**
 	 * Initialize, setting what is necessary for browsing pages.
@@ -42,10 +85,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		}
 		// This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
 		parent::init(' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1) . ' ' . $clause . $clauseExcludePidList, 'sorting');
-		$this->table = 'pages';
-		$this->setTreeName('browsePages');
-		$this->domIdPrefix = 'pages';
-		$this->iconName = '';
 		$this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		$this->MOUNTS = $GLOBALS['BE_USER']->returnWebmounts();
 		if ($pidList) {
@@ -53,8 +92,6 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 			$hideList = explode(',', $pidList);
 			$this->MOUNTS = array_diff($this->MOUNTS, $hideList);
 		}
-		$this->fieldArray = array_merge($this->fieldArray, array('doktype', 'php_tree_stop', 't3ver_id', 't3ver_state', 't3ver_wsid', 't3ver_move_id'));
-		$this->fieldArray = array_merge($this->fieldArray, array('hidden', 'starttime', 'endtime', 'fe_group', 'module', 'extendToSubpages', 'is_siteroot', 'nav_hide'));
 	}
 
 	/**

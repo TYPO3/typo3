@@ -27,7 +27,7 @@ use TYPO3\CMS\Lang\LanguageService;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
  */
-class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
+class FolderTreeView extends AbstractTreeView {
 
 	/**
 	 * The users' file Storages
@@ -60,15 +60,30 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	public $ext_noTempRecyclerDirs;
 
 	/**
+	 * override to not use a title attribute
+	 * @var string
+	 */
+	public $titleAttrib = '';
+
+	/**
+	 * override to use this treeName
+	 * does not need to be set in __construct()
+	 * @var string
+	 */
+	public $treeName = 'folder';
+
+	/**
+	 * override to use this domIdPrefix
+	 * @var string
+	 */
+	public $domIdPrefix = 'folder';
+
+	/**
 	 * Constructor function of the class
 	 */
 	public function __construct() {
 		parent::init();
 		$this->storages = $this->BE_USER->getFileStorages();
-		$this->treeName = 'folder';
-		// Don't apply any title
-		$this->titleAttrib = '';
-		$this->domIdPrefix = 'folder';
 	}
 
 	/**

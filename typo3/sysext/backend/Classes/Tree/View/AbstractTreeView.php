@@ -184,20 +184,6 @@ abstract class AbstractTreeView {
 	public $backPath;
 
 	/**
-	 * Icon file path.
-	 *
-	 * @var string
-	 */
-	public $iconPath = '';
-
-	/**
-	 * Icon file name for item icons.
-	 *
-	 * @var string
-	 */
-	public $iconName = 'default.gif';
-
-	/**
 	 * If TRUE, HTML code is also accumulated in ->tree array during rendering of the tree.
 	 * If 2, then also the icon prefix code (depthData) is stored
 	 *
@@ -322,8 +308,6 @@ abstract class AbstractTreeView {
 	public function init($clause = '', $orderByFields = '') {
 		// Setting BE_USER by default
 		$this->BE_USER = $GLOBALS['BE_USER'];
-		// Setting title attribute to use.
-		$this->titleAttrib = 'title';
 		// Setting backpath.
 		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting clause
@@ -337,23 +321,11 @@ abstract class AbstractTreeView {
 			// Dummy
 			$this->MOUNTS = array(0 => 0);
 		}
-		$this->setTreeName();
+		// Sets the tree name which is used to identify the tree, used for JavaScript and other things
+		$this->treeName = str_replace('_', '', $this->treeName ?: $this->table);
 		// Setting this to FALSE disables the use of array-trees by default
 		$this->data = FALSE;
 		$this->dataLookup = FALSE;
-	}
-
-	/**
-	 * Sets the tree name which is used to identify the tree
-	 * Used for JavaScript and other things
-	 *
-	 * @param string $treeName Default is the table name. Underscores are stripped.
-	 * @return void
-	 */
-	public function setTreeName($treeName = '') {
-		$this->treeName = $treeName ?: $this->treeName;
-		$this->treeName = $this->treeName ?: $this->table;
-		$this->treeName = str_replace('_', '', $this->treeName);
 	}
 
 	/**
@@ -657,20 +629,15 @@ abstract class AbstractTreeView {
 
 	/**
 	 * Get icon for the row.
-	 * If $this->iconPath and $this->iconName is set, try to get icon based on those values.
 	 *
 	 * @param array $row Item row.
 	 * @return string Image tag.
 	 */
 	public function getIcon($row) {
-		if ($this->iconPath && $this->iconName) {
-			$icon = '<img' . IconUtility::skinImg('', ($this->iconPath . $this->iconName), 'width="18" height="16"') . ' alt=""' . ($this->showDefaultTitleAttribute ? ' title="UID: ' . $row['uid'] . '"' : '') . ' />';
-		} else {
-			$icon = IconUtility::getSpriteIconForRecord($this->table, $row, array(
-				'title' => $this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row),
-				'class' => 'c-recIcon'
-			));
-		}
+		$icon = IconUtility::getSpriteIconForRecord($this->table, $row, array(
+			'title' => $this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row),
+			'class' => 'c-recIcon'
+		));
 		return $this->wrapIcon($icon, $row);
 	}
 

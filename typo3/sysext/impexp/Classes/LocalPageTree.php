@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Impexp;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
@@ -36,8 +37,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @return string Wrapped title
 	 */
 	public function wrapTitle($title, $v) {
-		$title = trim($title) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : htmlspecialchars($title);
-		return $title;
+		return trim($title) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : htmlspecialchars($title);
 	}
 
 	/**
@@ -64,15 +64,6 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	}
 
 	/**
-	 * Select permissions
-	 *
-	 * @return string SQL where clause
-	 */
-	public function permsC() {
-		return $this->BE_USER->getPagePermsClause(1);
-	}
-
-	/**
 	 * Tree rendering
 	 *
 	 * @param int $pid PID value
@@ -81,13 +72,9 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 */
 	public function ext_tree($pid, $clause = '') {
 		// Initialize:
-		$this->init(' AND ' . $this->permsC() . $clause);
+		$this->init(' AND ' . $this->BE_USER->getPagePermsClause(1) . $clause);
 		// Get stored tree structure:
 		$this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
-		// PM action:
-		$PM = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('_', \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('PM'));
-		// traverse mounts:
-		$titleLen = (int)$this->BE_USER->uc['titleLen'];
 		$treeArr = array();
 		$idx = 0;
 		// Set first:
@@ -97,24 +84,21 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$curIds = $this->ids;
 		$this->reset();
 		$this->ids = $curIds;
-		// Set PM icon:
-		$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $pid;
-		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
-		$firstHtml = $this->PM_ATagWrap($icon, $cmd);
+		$firstHtml = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
 		if ($pid > 0) {
 			$rootRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pid);
-			$firstHtml .= $this->wrapIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rootRec), $rootRec);
+			$firstHtml .= IconUtility::getSpriteIconForRecord('pages', $rootRec);
 		} else {
 			$rootRec = array(
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				'uid' => 0
 			);
-			$firstHtml .= $this->wrapIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-page-domain'), $rootRec);
+			$firstHtml .= $this->getRootIcon($rootRec);
 		}
 		$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec);
 		if ($isOpen) {
 			// Set depth:
-			$depthD = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' align="top" alt="" />';
+			$depthD = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' align="top" alt="" />';
 			if ($this->addSelfId) {
 				$this->ids[] = $pid;
 			}

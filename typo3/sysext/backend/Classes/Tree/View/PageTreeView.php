@@ -13,38 +13,48 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Generate a page-tree, non-browsable.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
  */
-class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
+class PageTreeView extends AbstractTreeView {
 
 	/**
 	 * @var array
 	 */
 	public $fieldArray = array(
 		'uid',
+		'pid',
 		'title',
 		'doktype',
 		'nav_title',
 		'mount_pid',
 		'php_tree_stop',
 		't3ver_id',
-		't3ver_state'
+		't3ver_state',
+		'hidden',
+		'starttime',
+		'endtime',
+		'fe_group',
+		'module',
+		'extendToSubpages',
+		'nav_hide'
 	);
 
 	/**
+	 * override to use this treeName
 	 * @var string
 	 */
-	public $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate,cruser_id';
+	public $treeName = 'pages';
 
 	/**
-	 * @var int
+	 * override to use this table
+	 * @var string
 	 */
-	public $setRecs = 0;
+	public $table = 'pages';
 
 	/**
 	 * Init function
@@ -56,17 +66,6 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function init($clause = '', $orderByFields = '') {
 		parent::init(' AND deleted=0 ' . $clause, 'sorting');
-		$this->fieldArray = array_merge($this->fieldArray, array(
-			'hidden',
-			'starttime',
-			'endtime',
-			'fe_group',
-			'module',
-			'extendToSubpages',
-			'nav_hide'
-		));
-		$this->table = 'pages';
-		$this->treeName = 'pages';
 	}
 
 	/**
@@ -93,10 +92,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @see AbstarctTreeView::PMicon()
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
-		$PM = 'join';
-		$BTM = $a == $c ? 'bottom' : '';
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('treeline-' . $PM . $BTM);
-		return $icon;
+		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('treeline-join' . ($a == $c ? 'bottom' : ''));
 	}
 
 	/**
