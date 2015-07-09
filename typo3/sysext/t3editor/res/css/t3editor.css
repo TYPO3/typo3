@@ -85,7 +85,7 @@ div.CodeMirror-line-numbers {
 	border: 1px solid gray;
 	position: relative;
 	background-color: #EFEFF4;
-	background-image: url('../../../../gfx/spinner.gif');
+	background-image: url('../../Resources/Public/Icons/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
 	margin-right: 10px;
@@ -95,7 +95,7 @@ div.CodeMirror-line-numbers {
 	position: absolute;
 	top: 0; left: 0;
 	background-color: #EFEFF4;
-	background-image: url('../../../../gfx/spinner.gif');
+	background-image: url('../../Resources/Public/Icons/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
 	z-index:200;
