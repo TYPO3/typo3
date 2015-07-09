@@ -48,11 +48,6 @@ class DatabaseIntegrityCheck {
 	public $perms_clause = '';
 
 	/**
-	 * @var int If set, genTree() generates HTML, that visualizes the tree.
-	 */
-	public $genTree_makeHTML = 0;
-
-	/**
 	 * @var array Will hold id/rec pairs from genTree()
 	 */
 	public $page_idArray = array();
@@ -61,11 +56,6 @@ class DatabaseIntegrityCheck {
 	 * @var array
 	 */
 	public $rec_idArray = array();
-
-	/**
-	 * @var string  Will hold the HTML-code visualising the tree. genTree()
-	 */
-	public $genTree_HTML = '';
 
 	/**
 	 * @var string
@@ -115,7 +105,7 @@ class DatabaseIntegrityCheck {
 	 * @param bool $versions Internal variable, don't set from outside!
 	 * @return void
 	 */
-	public function genTree($theID, $depthData, $versions = FALSE) {
+	public function genTree($theID, $depthData = '', $versions = FALSE) {
 		if ($versions) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count,hidden', 'pages', 'pid=-1 AND t3ver_oid=' . (int)$theID . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
 		} else {
@@ -123,24 +113,9 @@ class DatabaseIntegrityCheck {
 		}
 		// Traverse the records selected:
 		$a = 0;
-		$c = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			// Prepare the additional label used in the HTML output in case of versions:
-			if ($versions) {
-				$versionLabel = '[v1.' . $row['t3ver_id'] . '; WS#' . $row['t3ver_wsid'] . ']';
-			} else {
-				$versionLabel = '';
-			}
 			$a++;
 			$newID = $row['uid'];
-			// Build HTML output:
-			if ($this->genTree_makeHTML) {
-				$this->genTree_HTML .= LF . '<div><span class="text-nowrap">';
-				$PM = 'join';
-				$LN = $a == $c ? 'blank' : 'line';
-				$BTM = $a == $c ? 'bottom' : '';
-				$this->genTree_HTML .= $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row) . htmlspecialchars(($row['uid'] . ': ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($row['title']), 50))) . '</span></div>';
-			}
 			// Register various data for this item:
 			$this->page_idArray[$newID] = $row;
 			$this->recStats['all_valid']['pages'][$newID] = $newID;
@@ -157,21 +132,19 @@ class DatabaseIntegrityCheck {
 				$this->recStats['hidden']++;
 			}
 			$this->recStats['doktype'][$row['doktype']]++;
-			// Create the HTML code prefix for recursive call:
-			$genHTML = $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel;
 			// If all records should be shown, do so:
 			if ($this->genTree_includeRecords) {
 				foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 					if ($tableName != 'pages') {
-						$this->genTree_records($newID, $this->genTree_HTML ? $genHTML : '', $tableName);
+						$this->genTree_records($newID, '', $tableName);
 					}
 				}
 			}
 			// Add sub pages:
-			$this->genTree($newID, $this->genTree_HTML ? $genHTML : '');
+			$this->genTree($newID);
 			// If versions are included in the tree, add those now:
 			if ($this->genTree_includeVersions) {
-				$this->genTree($newID, $this->genTree_HTML ? $genHTML : '', TRUE);
+				$this->genTree($newID, '', TRUE);
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -179,12 +152,12 @@ class DatabaseIntegrityCheck {
 
 	/**
 	 * @param int $theID a pid (page-record id) from which to start making the tree
-	 * @param string $depthData HTML-code used when this function calls itself recursively.
+	 * @param string $_ Unused parameter
 	 * @param string $table Table to get the records from
 	 * @param bool $versions Internal variable, don't set from outside!
 	 * @return void
 	 */
-	public function genTree_records($theID, $depthData, $table = '', $versions = FALSE) {
+	public function genTree_records($theID, $_ = '', $table = '', $versions = FALSE) {
 		if ($versions) {
 			// Select all records from table pointing to this page:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -202,24 +175,9 @@ class DatabaseIntegrityCheck {
 		}
 		// Traverse selected:
 		$a = 0;
-		$c = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			// Prepare the additional label used in the HTML output in case of versions:
-			if ($versions) {
-				$versionLabel = '[v1.' . $row['t3ver_id'] . '; WS#' . $row['t3ver_wsid'] . ']';
-			} else {
-				$versionLabel = '';
-			}
 			$a++;
 			$newID = $row['uid'];
-			// Build HTML output:
-			if ($this->genTree_makeHTML) {
-				$this->genTree_HTML .= LF . '<div><span class="text-nowrap">';
-				$PM = 'join';
-				$LN = $a == $c ? 'blank' : 'line';
-				$BTM = $a == $c ? 'bottom' : '';
-				$this->genTree_HTML .= $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $table)) . htmlspecialchars(($row['uid'] . ': ' . BackendUtility::getRecordTitle($table, $row))) . '</span></div>';
-			}
 			// Register various data for this item:
 			$this->rec_idArray[$table][$newID] = $row;
 			$this->recStats['all_valid'][$table][$newID] = $newID;
@@ -231,8 +189,7 @@ class DatabaseIntegrityCheck {
 			}
 			// Select all versions of this record:
 			if ($this->genTree_includeVersions && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-				$genHTML = $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
-				$this->genTree_records($newID, $genHTML, $table, TRUE);
+				$this->genTree_records($newID, '', $table, TRUE);
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);

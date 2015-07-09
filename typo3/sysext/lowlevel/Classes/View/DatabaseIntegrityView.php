@@ -321,9 +321,8 @@ class DatabaseIntegrityView extends BaseScriptClass {
 
 		/** @var $admin DatabaseIntegrityCheck */
 		$admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-		$admin->genTree_makeHTML = 0;
 		$admin->backPath = $GLOBALS['BACK_PATH'];
-		$admin->genTree(0, '');
+		$admin->genTree(0);
 
 		// Pages stat
 		$pageStatistic = array(
@@ -365,7 +364,7 @@ class DatabaseIntegrityView extends BaseScriptClass {
 		if ($admin->fixLostRecord(GeneralUtility::_GET('fixLostRecords_table'), GeneralUtility::_GET('fixLostRecords_uid'))) {
 			$admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
 			$admin->backPath = $GLOBALS['BACK_PATH'];
-			$admin->genTree(0, '');
+			$admin->genTree(0);
 			$id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
 			$id_list = rtrim($id_list, ',');
 			$admin->lostRecords($id_list);
@@ -420,7 +419,6 @@ class DatabaseIntegrityView extends BaseScriptClass {
 	 */
 	public function func_relations() {
 		$admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-		$admin->genTree_makeHTML = 0;
 		$admin->backPath = $GLOBALS['BACK_PATH'];
 		$fkey_arrays = $admin->getGroupFields('');
 		$admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
