@@ -949,9 +949,9 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$theData = $this->headerFields($this->fieldArray, $table, $theData);
 		// Title row
 		$localizedTableTitle = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE);
-		$out .= '<tr class="t3-row-header">' . '<td nowrap="nowrap" class="col-icon"></td>'
-			. '<td nowrap="nowrap" colspan="' . (count($theData) - 2) . '"><span class="c-table">'
-			. $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td nowrap="nowrap" class="col-icon"></td>'
+		$out .= '<tr class="t3-row-header">' . '<th class="col-icon"></th>'
+			. '<th colspan="' . (count($theData) - 2) . '"><span class="c-table">'
+			. $localizedTableTitle . '</span> (' . $dbCount . ')</td>' . '<td class="col-icon"></td>'
 			. '</tr>';
 		// Column's titles
 		if ($this->doEdit) {
@@ -960,7 +960,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				. 'title="' . $this->getLanguageService()->getLL('new', TRUE) . '">'
 				. IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		}
-		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
+		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
 		// Render Items
 		$this->eCounter = $this->firstElementNumber;
 		while ($row = $this->getDatabase()->sql_fetch_assoc($result)) {
@@ -990,14 +990,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$this->eCounter++;
 			}
 		}
+		$this->getDatabase()->sql_free_result($result);
 		// Wrap it all in a table:
 		$out = '
 			<!--
 				Standard list of table "' . $table . '"
 			-->
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+			<div class="table-fit"><table class="table table-striped">
 				' . $out . '
-			</table>';
+			</table></div>';
 		return $out;
 	}
 
