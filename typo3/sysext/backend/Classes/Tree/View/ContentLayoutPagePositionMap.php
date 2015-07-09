@@ -84,7 +84,7 @@ class ContentLayoutPagePositionMap extends PagePositionMap {
 	 */
 	public function wrapRecordHeader($str, $row) {
 		if ($row['uid'] == $this->moveUid) {
-			return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/content_client.gif', 'width="7" height="10"') . ' alt="" />' . $str;
+			return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-current') . $str;
 		} else {
 			return $str;
 		}
