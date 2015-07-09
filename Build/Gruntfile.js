@@ -72,6 +72,11 @@ module.exports = function(grunt) {
 					'scriptaculous/sound.js': 'scriptaculous-bower/sound.js',
 					'scriptaculous/unittest.js': 'scriptaculous-bower/unittest.js',
 					/**
+					 * copy needed parts of jquery
+					 */
+					'jquery/jquery-1.11.3.js': 'jquery/dist/jquery.js',
+					'jquery/jquery-1.11.3.min.js': 'jquery/dist/jquery.min.js',
+					/**
 					 * copy needed parts of jquery-ui
 					 */
 					'jquery-ui/core.js': 'jquery-ui/ui/core.js',

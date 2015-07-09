@@ -29,6 +29,7 @@
   "dependencies": {
     "scriptaculous-bower": "1.9.0",
     "requirejs": "2.1.15",
+    "jquery": "1.11.3",
     "jquery-ui": "1.11.4",
     "eonasdan-bootstrap-datetimepicker": "4.7.14",
     "moment": "2.10.3",
