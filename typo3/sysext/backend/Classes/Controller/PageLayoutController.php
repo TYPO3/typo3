@@ -909,17 +909,18 @@ class PageLayoutController {
 		}
 		// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
+		if ($q_count) {
+			$h_func_b = '<div class="checkbox">' .
+				'<label for="checkTt_content_showHidden">' .
+				BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
+				(!$q_count ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', TRUE) . '</span>') : $lang->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
+				'</label>' .
+				'</div>';
 
-		$h_func_b = '<div class="checkbox">' .
-					'<label for="checkTt_content_showHidden">' .
-					BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], '', '', 'id="checkTt_content_showHidden"') .
-					(!$q_count ? ('<span class="text-muted">' . $lang->getLL('hiddenCE', TRUE) . '</span>') : $lang->getLL('hiddenCE', TRUE) . ' (' . $q_count . ')') .
-					'</label>' .
-					'</div>';
+			$content .= $this->doc->section('', $h_func_b, 0, 0);
+			$content .= $this->doc->spacer(10);
+		}
 
-		// Add the function menus to bottom:
-		$content .= $this->doc->section('', $h_func_b, 0, 0);
-		$content .= $this->doc->spacer(10);
 		// Select element matrix:
 		if ($this->eRParts[0] == 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
 			$posMap = GeneralUtility::makeInstance(ContentLayoutPagePositionMap::class);
@@ -978,14 +979,15 @@ class PageLayoutController {
 			if (!isset($dbList->externalTables[$table])) {
 				$q_count = $this->getNumberOfHiddenElements();
 
-				$h_func_b =
-					'<div class="checkbox">'
+				if ($q_count > 0) {
+					$h_func_b =
+						'<div class="checkbox">'
 						. '<label for="checkTt_content_showHidden">'
-							. '<input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />'
-							. $this->getLanguageService()->getLL('hiddenCE', TRUE) . ' (<span class="t3js-hidden-counter">' . $q_count . '</span>)'
+						. '<input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />'
+						. $this->getLanguageService()->getLL('hiddenCE', TRUE) . ' (<span class="t3js-hidden-counter">' . $q_count . '</span>)'
 						. '</label>'
-					. '</div>';
-
+						. '</div>';
+				}
 				// Boolean: Display up/down arrows and edit icons for tt_content records
 				$dbList->tt_contentConfig['showCommands'] = 1;
 				// Boolean: Display info-marks or not
