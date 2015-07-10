@@ -66,7 +66,7 @@ class FileCollector implements \Countable {
 	 *
 	 * @param array $fileUids
 	 */
-	public function addFiles($fileUids = array()) {
+	public function addFiles(array $fileUids = array()) {
 		if (!empty($fileUids)) {
 			foreach ($fileUids as $fileUid) {
 				try {
@@ -90,7 +90,7 @@ class FileCollector implements \Countable {
 	 * @param array $referenceRecord the record which is referencing the files
 	 * @return void
 	 */
-	public function addFilesFromRelation($relationTable, $relationField, $referenceRecord) {
+	public function addFilesFromRelation($relationTable, $relationField, array $referenceRecord) {
 		if (is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
 			$fileReferences = $GLOBALS['TSFE']->sys_page->getFileReferences($relationTable, $relationField, $referenceRecord);
 		} else {
@@ -108,12 +108,10 @@ class FileCollector implements \Countable {
 	 * @param array $fileReferenceUids
 	 * @return void
 	 */
-	public function addFileReferences($fileReferenceUids = array()) {
-		if (!empty($fileReferenceUids)) {
-			foreach ($fileReferenceUids as $fileReferenceUid) {
-				$fileObject = $this->getFileRepository()->findFileReferenceByUid($fileReferenceUid);
-				$this->addFileObject($fileObject);
-			}
+	public function addFileReferences(array $fileReferenceUids = array()) {
+		foreach ($fileReferenceUids as $fileReferenceUid) {
+			$fileObject = $this->getFileRepository()->findFileReferenceByUid($fileReferenceUid);
+			$this->addFileObject($fileObject);
 		}
 	}
 
@@ -123,11 +121,9 @@ class FileCollector implements \Countable {
 	 * @param array $fileCollectionUids The file collections uids
 	 * @return void
 	 */
-	public function addFilesFromFileCollections($fileCollectionUids = array()) {
-		if (!empty($fileCollectionUids)) {
-			foreach ($fileCollectionUids as $fileCollectionUid) {
-				$this->addFilesFromFileCollection($fileCollectionUid);
-			}
+	public function addFilesFromFileCollections(array $fileCollectionUids = array()) {
+		foreach ($fileCollectionUids as $fileCollectionUid) {
+			$this->addFilesFromFileCollection($fileCollectionUid);
 		}
 	}
 
@@ -164,11 +160,9 @@ class FileCollector implements \Countable {
 	 * @param array $folderIdentifiers The folder identifiers
 	 * @return void
 	 */
-	public function addFilesFromFolders($folderIdentifiers = array()) {
-		if (!empty($folderIdentifiers)) {
-			foreach ($folderIdentifiers as $folderIdentifier) {
-				$this->addFilesFromFolder($folderIdentifier);
-			}
+	public function addFilesFromFolders(array $folderIdentifiers = array()) {
+		foreach ($folderIdentifiers as $folderIdentifier) {
+			$this->addFilesFromFolder($folderIdentifier);
 		}
 	}
 

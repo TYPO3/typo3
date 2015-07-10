@@ -14,41 +14,46 @@ over processed data automatically.
 .. code-block:: typoscript
 
 	tt_content.image.20 = FLUIDTEMPLATE
-	tt_content.image.20.file = EXT:myextension/Resources/Private/Templates/ContentObjects/Image.html
-	tt_content.image.20.dataProcessing.10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+	tt_content.image.20 {
+		file = EXT:myextension/Resources/Private/Templates/ContentObjects/Image.html
 
-	# the field name where relations are set
-	# + stdWrap
-	tt_content.image.20.dataProcessing.10.references.fieldName = image
+		dataProcessing.10 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
+		dataProcessing.10 {
+			# the field name where relations are set
+			# + stdWrap
+			references.fieldName = image
 
-	# the table name where relations are put, defaults to the currently selected record from $cObj->getTable()
-	# + stdWrap
-	tt_content.image.20.dataProcessing.10.references.table = tt_content
+			# the table name where relations are put, defaults to the currently selected record from $cObj->getTable()
+			# + stdWrap
+			references.table = tt_content
 
-	# A list of sys_file UID records
-	# + stdWrap
-	tt_content.image.20.dataProcessing.10.files = 21,42
+			# A list of sys_file UID records
+			# + stdWrap
+			files = 21,42
 
-	# A list of File Collection UID records
-	# + stdWrap
-	tt_content.image.20.dataProcessing.10.collections = 13,14
+			# A list of File Collection UID records
+			# + stdWrap
+			collections = 13,14
 
-	# A list of FAL Folder identifiers
-	# + stdWrap
-	tt_content.image.20.dataProcessing.10.folders = 1:introduction/images/,1:introduction/posters/
+			# A list of FAL Folder identifiers
+			# + stdWrap
+			folders = 1:introduction/images/,1:introduction/posters/
 
-	# Property of which the files should be sorted after they have been accumulated + stdWrap
-	# can be any property of sys_file, sys_file_metadata
-	tt_content.image.20.dataProcessing.10.sorting = description
+			# Property of which the files should be sorted after they have been accumulated
+			# can be any property of sys_file, sys_file_metadata
+			# + stdWrap
+			sorting = description
 
-	# Can be "ascending", "descending" or "random", defaults to "ascending" if none given + stdWrap
-	tt_content.image.20.dataProcessing.10.sorting.direction = descending
+			# Can be "ascending", "descending" or "random", defaults to "ascending" if none given
+			# + stdWrap
+			sorting.direction = descending
 
-	# The target variable to be handed to the ContentObject again, can be used
-	# in Fluid e.g. to iterate over the objects. defaults to "files" when non given
-	# + stdWrap
-	tt_content.image.20.dataProcessing.10.as = myfiles
-
+			# The target variable to be handed to the ContentObject again, can be used
+			# in Fluid e.g. to iterate over the objects. defaults to "files" when not defined
+			# + stdWrap
+			as = myfiles
+		}
+	}
 
 In the Fluid template then iterate over the files:
 
