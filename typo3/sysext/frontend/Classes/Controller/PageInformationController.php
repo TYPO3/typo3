@@ -70,7 +70,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 		$dblist->start($this->pObj->id, 'pages', 0);
 		$dblist->generateList();
 		// CSH
-		$theOutput .= $this->pObj->doc->section('', BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />') . $h_func . $dblist->HTMLcode, 0, 1);
 		$theOutput .= $this->pObj->doc->section(
 			'',
 			BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />')
