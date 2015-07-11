@@ -68,15 +68,19 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		// Modify relative path to protocol with host if domain record is given
 		$protocolAndHost = '..';
 		if ($domainName) {
-			$protocol = 'http';
-			$page = (array)$sysPage->getPage($finalPageIdToShow);
-			if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-				$protocol = 'https';
+			// TCEMAIN.previewDomain can contain the protocol, check prevents double protocol URLs
+			if (strpos($domainName, '://') !== FALSE) {
+				$protocolAndHost = $domainName;
+			} else {
+				$protocol = 'http';
+				$page = (array)$sysPage->getPage($finalPageIdToShow);
+				if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+					$protocol = 'https';
+				}
+				$protocolAndHost = $protocol . '://' . $domainName;
 			}
-			$protocolAndHost = $protocol . '://' . $domainName;
 		}
-		$url = $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand;
-		return $url;
+		return $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand;
 	}
 
 	/**
