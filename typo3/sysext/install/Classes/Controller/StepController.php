@@ -47,9 +47,8 @@ class StepController extends AbstractController {
 		$this->initializeObjectManager();
 
 		$this->outputInstallToolNotEnabledMessageIfNeeded();
-		$this->migrateLocalconfToLocalConfigurationIfNeeded();
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
-		$this->migrateExtensionListToPackageStatesFile();
+		$this->recreatePackageStatesFileIfNotExisting();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
 		$this->executeSilentConfigurationUpgradesIfNeeded();
 		$this->initializeSession();
@@ -163,108 +162,9 @@ class StepController extends AbstractController {
 	}
 
 	/**
-	 * Migrate localconf.php to LocalConfiguration if needed. This is done early in
-	 * install tool to ease further handling.
-	 *
-	 * If typo3conf and typo3conf/localconf.php exist, but no typo3conf/LocalConfiguration,
-	 * create LocalConfiguration.php / AdditionalConfiguration.php from localconf.php
-	 * Might throw exception if typo3conf directory is not writable.
-	 *
-	 * @return void
-	 */
-	protected function migrateLocalconfToLocalConfigurationIfNeeded() {
-		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
-
-		$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
-		$localConfigurationFileExists = is_file($localConfigurationFileLocation);
-		$localConfFileLocation = PATH_typo3conf . 'localconf.php';
-		$localConfFileExists = is_file($localConfFileLocation);
-
-		if (is_dir(PATH_typo3conf) && $localConfFileExists && !$localConfigurationFileExists) {
-			$localConfContent = file($localConfFileLocation);
-
-			// Line array for the three categories: localConfiguration, db settings, additionalConfiguration
-			$typo3ConfigurationVariables = array();
-			$typo3DatabaseVariables = array();
-			$additionalConfiguration = array();
-			foreach ($localConfContent as $line) {
-				$line = trim($line);
-				$matches = array();
-				// Convert extList to array
-				if (
-					preg_match('/^\\$TYPO3_CONF_VARS\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1
-					|| preg_match('/^\\$GLOBALS\\[\'TYPO3_CONF_VARS\'\\]\\[\'EXT\'\\]\\[\'extList\'\\] *={1} *\'(.+)\';{1}/', $line, $matches) === 1
-				) {
-					$extListAsArray = GeneralUtility::trimExplode(',', $matches[1], TRUE);
-					$typo3ConfigurationVariables[] = '$TYPO3_CONF_VARS[\'EXT\'][\'extListArray\'] = ' . var_export($extListAsArray, TRUE) . ';';
-				} elseif (
-					preg_match('/^\\$TYPO3_CONF_VARS.+;{1}/', $line, $matches) === 1
-				) {
-					$typo3ConfigurationVariables[] = $matches[0];
-				} elseif (
-					preg_match('/^\\$GLOBALS\\[\'TYPO3_CONF_VARS\'\\].+;{1}/', $line, $matches) === 1
-				) {
-					$lineWithoutGlobals = str_replace('$GLOBALS[\'TYPO3_CONF_VARS\']', '$TYPO3_CONF_VARS', $matches[0]);
-					$typo3ConfigurationVariables[] = $lineWithoutGlobals;
-				} elseif (
-					preg_match('/^\\$typo_db.+;{1}/', $line, $matches) === 1
-				) {
-					eval($matches[0]);
-					if (isset($typo_db_host)) {
-						$typo3DatabaseVariables['host'] = $typo_db_host;
-					} elseif (isset($typo_db)) {
-						$typo3DatabaseVariables['database'] = $typo_db;
-					} elseif (isset($typo_db_username)) {
-						$typo3DatabaseVariables['username'] = $typo_db_username;
-					} elseif (isset($typo_db_password)) {
-						$typo3DatabaseVariables['password'] = $typo_db_password;
-					} elseif (isset($typo_db_extTableDef_script)) {
-						$typo3DatabaseVariables['extTablesDefinitionScript'] = $typo_db_extTableDef_script;
-					}
-					unset($typo_db_host, $typo_db, $typo_db_username, $typo_db_password, $typo_db_extTableDef_script);
-				} elseif (
-					$line !== '' && preg_match('/^\\/\\/.+|^#.+|^<\\?php$|^<\\?$|^\\?>$/', $line, $matches) === 0
-				) {
-					$additionalConfiguration[] = $line;
-				}
-			}
-
-			// Build new TYPO3_CONF_VARS array
-			$TYPO3_CONF_VARS = NULL;
-			// Issue #39434: Combining next two lines into one triggers a weird issue in some PHP versions
-			$evalData = implode(LF, $typo3ConfigurationVariables);
-			eval($evalData);
-
-			// Add db settings to array
-			$TYPO3_CONF_VARS['DB'] = $typo3DatabaseVariables;
-			$TYPO3_CONF_VARS = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($TYPO3_CONF_VARS);
-
-			// Write out new LocalConfiguration file
-			$configurationManager->writeLocalConfiguration($TYPO3_CONF_VARS);
-
-			// Write out new AdditionalConfiguration file
-			if (sizeof($additionalConfiguration) > 0) {
-				$configurationManager->writeAdditionalConfiguration($additionalConfiguration);
-			} else {
-				@unlink($configurationManager->getAdditionalConfigurationFileLocation());
-			}
-
-			// Move localconf.php to localconf.obsolete.php
-			rename($localConfFileLocation, PATH_site . 'typo3conf/localconf.obsolete.php');
-
-			// Perform a reload to self, so bootstrap now uses new LocalConfiguration.php
-			$this->redirect();
-		}
-	}
-
-	/**
 	 * Create PackageStates.php if missing and LocalConfiguration exists.
 	 *
-	 * This typically happens during upgrading from 6.1 or lower, all valid packages
-	 * from old EXT/extListArray will be marked active.
-	 *
-	 * It is also fired if PackageStates.php is deleted on a running 6.2 instance,
+	 * It is fired if PackageStates.php is deleted on a running instance,
 	 * all packages marked as "part of minimal system" are activated in this case.
 	 *
 	 * The step installer creates typo3conf/, LocalConfiguration and PackageStates in
@@ -274,7 +174,7 @@ class StepController extends AbstractController {
 	 * @throws \Exception
 	 * @return void
 	 */
-	protected function migrateExtensionListToPackageStatesFile() {
+	protected function recreatePackageStatesFileIfNotExisting() {
 		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
 		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$localConfigurationFileLocation = $configurationManager->getLocalConfigurationFileLocation();
@@ -305,20 +205,6 @@ class StepController extends AbstractController {
 					&& $package->isPartOfMinimalUsableSystem()
 				) {
 					$packageManager->activatePackage($package->getPackageKey());
-				}
-			}
-
-			// Activate all packages from LocalConfiguration EXT/extListArray if there is such an entry during upgrading.
-			$extensionsFromExtListArray = array();
-			try {
-				$extensionsFromExtListArray = $configurationManager->getLocalConfigurationValueByPath('EXT/extListArray');
-			} catch (\RuntimeException $exception) {
-			}
-			foreach ($extensionsFromExtListArray as $loadedExtension) {
-				try {
-					$packageManager->activatePackage($loadedExtension);
-				} catch (\TYPO3\CMS\Core\Package\Exception\UnknownPackageException $exception) {
-					// Skip unavailable packages silently
 				}
 			}
 
