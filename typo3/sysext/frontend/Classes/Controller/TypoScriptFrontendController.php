@@ -987,15 +987,6 @@ class TypoScriptFrontendController {
 		return $this->pageRenderer;
 	}
 
-	/**
-	 * This is needed for USER_INT processing
-	 *
-	 * @param PageRenderer $pageRenderer
-	 */
-	protected function setPageRenderer(PageRenderer $pageRenderer) {
-		$this->pageRenderer = $pageRenderer;
-	}
-
 	/********************************************
 	 *
 	 * Initializing, resolving page id
@@ -3394,7 +3385,8 @@ class TypoScriptFrontendController {
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
 			/** @var PageRenderer $pageRenderer */
 			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
-			$this->setPageRenderer($pageRenderer);
+			$this->pageRenderer = $pageRenderer;
+			GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
 		}
 
 		$this->recursivelyReplaceIntPlaceholdersInContent();
