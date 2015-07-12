@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -1077,9 +1078,9 @@ class TypoScriptFrontendController {
 	/**
 	 * This is needed for USER_INT processing
 	 *
-	 * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
+	 * @param PageRenderer $pageRenderer
 	 */
-	protected function setPageRenderer(\TYPO3\CMS\Core\Page\PageRenderer $pageRenderer) {
+	protected function setPageRenderer(PageRenderer $pageRenderer) {
 		$this->pageRenderer = $pageRenderer;
 	}
 
@@ -3632,7 +3633,8 @@ class TypoScriptFrontendController {
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
 			/** @var PageRenderer $pageRenderer */
 			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
-			$this->setPageRenderer($pageRenderer);
+			$this->pageRenderer = $pageRenderer;
+			GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer', $pageRenderer);
 		}
 
 		$this->recursivelyReplaceIntPlaceholdersInContent();
