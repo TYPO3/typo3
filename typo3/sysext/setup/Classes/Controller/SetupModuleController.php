@@ -538,6 +538,7 @@ class SetupModuleController {
 					if ($type === 'password') {
 						$value = '';
 						$noAutocomplete = 'autocomplete="off" ';
+						$more .= ' data-rsa-encryption=""';
 					}
 					$html = '<input id="field_' . $fieldName . '"
 						type="' . $type . '"

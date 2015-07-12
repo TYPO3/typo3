@@ -31,10 +31,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displ
 	FALSE
 );
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+	'RsaEncryption::getRsaPublicKey',
+	\TYPO3\CMS\Rsaauth\RsaEncryptionEncoder::class . '->getRsaPublicKeyAjaxHandler',
+	FALSE
+);
+
 // eID for FrontendLoginRsaPublicKey
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['FrontendLoginRsaPublicKey'] = 'EXT:rsaauth/Resources/PHP/FrontendLoginRsaPublicKey.php';
-
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess'][] = \TYPO3\CMS\Rsaauth\Hook\BackendHookForAjaxLogin::class . '->addRsaJsLibraries';
 
 \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class)->connect(
 	\TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider::class,

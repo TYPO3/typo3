@@ -197,10 +197,10 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			$('<p />').text(TYPO3.LLL.core.login_expired),
 			$('<form />', {id: 'beLoginRefresh', method: 'POST', action: TYPO3.settings.ajaxUrls['BackendLogin::login']}).append(
 				$('<div />', {class: 'form-group'}).append(
-					$('<input />', {type: 'password', name: 'p_field', autofocus: 'autofocus', class: 'form-control', placeholder: TYPO3.LLL.core.refresh_login_password})
+					$('<input />', {type: 'password', name: 'p_field', autofocus: 'autofocus', class: 'form-control', placeholder: TYPO3.LLL.core.refresh_login_password, 'data-rsa-encryption': 't3-loginrefres-userident'})
 				),
 				$('<input />', {type: 'hidden', name: 'username', value: TYPO3.configuration.username}),
-				$('<input />', {type: 'hidden', name: 'userident'})
+				$('<input />', {type: 'hidden', name: 'userident', id: 't3-loginrefres-userident'})
 			)
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
@@ -210,7 +210,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			})
 		);
 
-		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$loginForm).on('submit', LoginRefresh.triggerSubmitForm);
+		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$loginForm).on('submit', LoginRefresh.submitForm);
 
 		$('body').append(LoginRefresh.$loginForm);
 	};
@@ -296,56 +296,27 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 	};
 
 	/**
-	 * Triggers the form submit based on the security level.
-	 */
-	LoginRefresh.triggerSubmitForm = function(e) {
-		e.preventDefault();
-
-		switch (TYPO3.configuration.securityLevel) {
-			case 'rsa':
-				$.ajax({
-					url: TYPO3.settings.ajaxUrls['BackendLogin::getRsaPublicKey'],
-					method: 'GET',
-					data: {
-						skipSessionUpdate: 1
-					},
-					success: function(response) {
-						if (response.publicKeyModulus && response.exponent) {
-							LoginRefresh.submitForm(response);
-						}
-					}
-				});
-				break;
-			default:
-				LoginRefresh.submitForm();
-		}
-	};
-
-	/**
 	 * Creates additional data based on the security level and "submits" the form
 	 * via an AJAX request.
 	 */
-	LoginRefresh.submitForm = function(parameters) {
+	LoginRefresh.submitForm = function(event) {
+		event.preventDefault();
+
 		var $form = LoginRefresh.$loginForm.find('form'),
 			$passwordField = $form.find('input[name=p_field]'),
 			$useridentField = $form.find('input[name=userident]'),
 			passwordFieldValue = $passwordField.val();
 
-		if (passwordFieldValue === '') {
+		if (passwordFieldValue === '' && $useridentField.val() === '') {
 			top.TYPO3.Notification.error(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 			$passwordField.focus();
 			return;
 		}
 
-		if (TYPO3.configuration.securityLevel === 'rsa') {
-			var rsa = new RSAKey();
-			rsa.setPublic(parameters.publicKeyModulus, parameters.exponent);
-			var encryptedPassword = rsa.encrypt(passwordFieldValue);
-			$useridentField.val('rsa:' + hex2b64(encryptedPassword));
-		} else {
+		if (passwordFieldValue) {
 			$useridentField.val(passwordFieldValue);
+			$passwordField.val('');
 		}
-		$passwordField.val('');
 
 		var postData = {
 			login_status: 'login'

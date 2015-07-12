@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Rsaauth\Slot;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 
 /**
  * Class UsernamePasswordProviderSlot
@@ -27,21 +27,7 @@ class UsernamePasswordProviderSlot {
 	 * @param PageRenderer $pageRenderer
 	 */
 	public function getPageRenderer(PageRenderer $pageRenderer) {
-		$loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal';
-		if ($loginSecurityLevel === 'rsa') {
-			$javascriptPath = '../' . ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
-			$files = array(
-				'jsbn/jsbn.js',
-				'jsbn/prng4.js',
-				'jsbn/rng.js',
-				'jsbn/rsa.js',
-				'jsbn/base64.js'
-			);
-			foreach ($files as $file) {
-				$pageRenderer->addJsFile($javascriptPath . $file);
-			}
-
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Rsaauth/BackendLoginFormRsaEncryption');
-		}
+		$rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
+		$rsaEncryptionEncoder->enableRsaEncryption(TRUE);
 	}
 }

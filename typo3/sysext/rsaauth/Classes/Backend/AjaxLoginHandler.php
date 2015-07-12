@@ -24,21 +24,12 @@ class AjaxLoginHandler {
 	 *
 	 * @param array $parameters Parameters (not used)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $parent The calling parent AJAX object
-	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Please use RsaEncryption::getRsaPublicKey as ajax handler instead.
 	 */
 	public function getRsaPublicKey(array $parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $parent) {
-		$backend = BackendFactory::getBackend();
-		if ($backend !== NULL) {
-			$keyPair = $backend->createNewKeyPair();
-			$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
-			$storage->put($keyPair->getPrivateKey());
-			session_commit();
-			$parent->addContent('publicKeyModulus', $keyPair->getPublicKeyModulus());
-			$parent->addContent('exponent', sprintf('%x', $keyPair->getExponent()));
-			$parent->setContentFormat('json');
-		} else {
-			$parent->setError('No OpenSSL backend could be obtained for rsaauth.');
-		}
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		$rsaEncryptionEncoder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rsaauth\RsaEncryptionEncoder::class);
+		$rsaEncryptionEncoder->getRsaPublicKeyAjaxHandler($parameters, $parent);
 	}
 
 }

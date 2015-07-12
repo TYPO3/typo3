@@ -54,8 +54,10 @@ define('TYPO3/CMS/Backend/UserPassLogin', ['jquery', 'TYPO3/CMS/Backend/Login'],
 		"use strict";
 
 		var $passwordField = $(UserPassLogin.options.passwordField);
-		$(Login.options.useridentField).val($passwordField.val());
-		$passwordField.val('');
+		if ($passwordField.val()) {
+			$(Login.options.useridentField).val($passwordField.val());
+			$passwordField.val('');
+		}
 	};
 
 	/**

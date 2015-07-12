@@ -14,6 +14,10 @@ defined('TYPO3_MODE') or die();
  * The TYPO3 project - inspiring people to share!
  */
 
+\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+	'The generation of the RSA public key was moved to the ajax handler \'RsaEncryptionEncoder::getRsaPublicKey\'. Please use the rsaauth api to encrypt your form fields. This script will be removed in TYPO3 CMS 8.'
+);
+
 /** @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend $backend */
 $backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
 if ($backend !== NULL) {

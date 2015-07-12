@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Rsaauth\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rsaauth\RsaEncryptionDecoder;
+use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
+use TYPO3\CMS\Setup\Controller\SetupModuleController;
+
 /**
  * This class provides a hook to the login form to add extra javascript code
  * and supply a proper form tag.
@@ -23,68 +28,33 @@ namespace TYPO3\CMS\Rsaauth\Hook;
 class UserSetupHook {
 
 	/**
-	 * Decrypt the password fields if they are filled.
+	 * @var RsaEncryptionDecoder
+	 */
+	protected $rsaEncryptionDecoder = NULL;
+
+	/**
+	 * Decrypt all password fields which were encrypted.
 	 *
 	 * @param array $parameters Parameters to the script
-	 * @return void
 	 */
 	public function decryptPassword(array $parameters) {
 		if ($this->isRsaAvailable()) {
-			$be_user_data = &$parameters['be_user_data'];
-			if (substr($be_user_data['password'], 0, 4) === 'rsa:' && substr($be_user_data['password2'], 0, 4) === 'rsa:') {
-				$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
-				/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
-				$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
-				$key = $storage->get();
-				$password = $backend->decrypt($key, substr($be_user_data['password'], 4));
-				$password2 = $backend->decrypt($key, substr($be_user_data['password2'], 4));
-				$passwordCurrent = $backend->decrypt($key, substr($be_user_data['passwordCurrent'], 4));
-				$be_user_data['password'] = $password ?: $be_user_data['password'];
-				$be_user_data['password2'] = $password2 ?: $be_user_data['password2'];
-				$be_user_data['passwordCurrent'] = $passwordCurrent ?: $be_user_data['passwordCurrent'];
-			}
+			// Note: although $parameters is not passed by reference, the 'be_user_data' is a reference
+			$parameters['be_user_data'] = $this->getRsaEncryptionDecoder()->decrypt($parameters['be_user_data']);
 		}
 	}
 
 	/**
-	 * Provides form code and javascript for the user setup.
+	 * Includes rsa libraries
 	 *
 	 * @param array $parameters Parameters to the script
-	 * @param \TYPO3\CMS\Setup\Controller\SetupModuleController $userSetupObject Calling object: user setup module
-	 * @return string The code for the user setup
+	 * @param SetupModuleController $userSetupObject Calling object: user setup module
+	 * @return string
 	 */
-	public function getLoginScripts(array $parameters, \TYPO3\CMS\Setup\Controller\SetupModuleController $userSetupObject) {
-		$content = '';
-		if ($this->isRsaAvailable()) {
-			// If we can get the backend, we can proceed
-			$backend = \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend();
-			$javascriptPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('rsaauth') . 'Resources/Public/JavaScript/';
-			$files = array(
-				'jsbn/jsbn.js',
-				'jsbn/prng4.js',
-				'jsbn/rng.js',
-				'jsbn/rsa.js',
-				'jsbn/base64.js',
-				'rsaauth_min.js'
-			);
-			$content = '';
-			foreach ($files as $file) {
-				$content .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
-			}
-			// Generate a new key pair
-			$keyPair = $backend->createNewKeyPair();
-			// Save private key
-			$storage = \TYPO3\CMS\Rsaauth\Storage\StorageFactory::getStorage();
-			/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
-			$storage->put($keyPair->getPrivateKey());
-			// Add form tag
-			$form = '<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded" onsubmit="tx_rsaauth_encryptUserSetup();">';
-			// Add RSA hidden fields
-			$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
-			$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
-			$userSetupObject->doc->form = $form;
-		}
-		return $content;
+	public function getLoginScripts(array $parameters, SetupModuleController $userSetupObject) {
+		$rsaEncryptionEncoder = GeneralUtility::makeInstance(RsaEncryptionEncoder::class);
+		$rsaEncryptionEncoder->enableRsaEncryption(TRUE);
+		return '';
 	}
 
 	/**
@@ -93,7 +63,18 @@ class UserSetupHook {
 	 * @return bool
 	 */
 	protected function isRsaAvailable() {
-		return trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa' && \TYPO3\CMS\Rsaauth\Backend\BackendFactory::getBackend() !== NULL;
+		return trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa' && $this->getRsaEncryptionDecoder()->isAvailable();
+	}
+
+	/**
+	 * @return RsaEncryptionDecoder
+	 */
+	protected function getRsaEncryptionDecoder() {
+		if ($this->rsaEncryptionDecoder === NULL) {
+			$this->rsaEncryptionDecoder = GeneralUtility::makeInstance(RsaEncryptionDecoder::class);
+		}
+
+		return $this->rsaEncryptionDecoder;
 	}
 
 }
