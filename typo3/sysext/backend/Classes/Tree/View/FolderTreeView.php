@@ -133,16 +133,16 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function wrapIcon($icon, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		// Add title attribute to input icon tag
-		$theFolderIcon = $this->addTagAttributes($icon, $this->titleAttrib ? $this->titleAttrib . '="' . $this->getTitleAttrib($folderObject) . '"' : '');
+		$theFolderIcon = '';
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
 			// Check storage access to wrap with click menu
 			if (!$folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
-				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theFolderIcon, $folderObject->getCombinedIdentifier(), '', 0);
+				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
 			}
 		} elseif ($this->ext_IconMode === 'titlelink') {
 			$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($folderObject) . '\',this,\'' . $this->domIdPrefix . $this->getId($folderObject) . '\',' . $this->bank . ');';
-			$theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $theFolderIcon . '</a>';
+			$theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
 		}
 		return $theFolderIcon;
 	}

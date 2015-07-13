@@ -27,18 +27,6 @@ require __DIR__ . '/init.php';
  */
 class moveElementLocalPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 
-	/**
-	 * Inserting uid-information in title-text for an icon
-	 *
-	 * @param string $icon Icon image
-	 * @param array $row Item row
-	 * @return string Wrapping icon image.
-	 * @todo Define visibility
-	 */
-	public function wrapIcon($icon, $row) {
-		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
-	}
-
 }
 
 /**

@@ -127,11 +127,10 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
-		$content = $this->addTagAttributes($icon, ' title="id=' . $row['uid'] . '"');
 		if ($this->ext_showPageId) {
-			$content .= '[' . $row['uid'] . ']&nbsp;';
+			$icon .= '[' . $row['uid'] . ']&nbsp;';
 		}
-		return $content;
+		return $icon;
 	}
 
 }
