@@ -289,8 +289,9 @@ class Bootstrap {
 	 *
 	 * @return Bootstrap
 	 * @throws \TYPO3\CMS\Core\Exception
+	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function handleRequest() {
+	public function handleRequest() {
 		// Build the Request object
 		$request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
 

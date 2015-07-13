@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,10 +44,11 @@ class RequestHandler implements RequestHandlerInterface {
 	 * Handles an install tool request
 	 * Execute 'tool' or 'step' controller depending on install[controller] GET/POST parameter
 	 *
+	 * @param ServerRequestInterface $request
 	 * @return void
 	 */
-	public function handleRequest() {
-		$getPost = GeneralUtility::_GP('install');
+	public function handleRequest(ServerRequestInterface $request) {
+		$getPost = !empty($request->getQueryParams()['install']) ? $request->getQueryParams()['install'] : $request->getParsedBody()['install'];
 		switch ($getPost['controller']) {
 			case 'tool':
 				$controllerClassName = \TYPO3\CMS\Install\Controller\ToolController::class;
@@ -65,9 +67,10 @@ class RequestHandler implements RequestHandlerInterface {
 	 * please note that both checks are needed, as when in "failsafe" mode, the TYPO3_REQUESTTYPE is not
 	 * necessarily set at this point.
 	 *
+	 * @param ServerRequestInterface $request
 	 * @return bool Returns always TRUE
 	 */
-	public function canHandleRequest() {
+	public function canHandleRequest(ServerRequestInterface $request) {
 		return TRUE;
 	}
 
