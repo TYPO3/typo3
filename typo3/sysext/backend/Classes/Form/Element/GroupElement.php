@@ -324,13 +324,9 @@ class GroupElement extends AbstractFormElement {
 				break;
 		}
 		// Wizards:
-		$altItem = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 		if (!$disabled) {
 			$html = $this->renderWizards(
-				array(
-					$html,
-					$altItem
-				),
+				array($html),
 				$config['wizards'],
 				$table,
 				$row,

@@ -271,10 +271,7 @@ class RichTextElement extends AbstractFormElement {
 		$html = $this->getMainHtml();
 
 		$this->resultArray['html'] = $this->renderWizards(
-			array(
-				$html,
-				'<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />',
-			),
+			array($html),
 			$parameterArray['fieldConf']['config']['wizards'],
 			$table,
 			$row,

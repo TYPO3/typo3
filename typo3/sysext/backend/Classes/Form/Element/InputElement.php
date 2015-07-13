@@ -228,14 +228,9 @@ class InputElement extends AbstractFormElement {
 				</div>';
 		}
 
-		// Creating an alternative item without the JavaScript handlers.
-		$altItem = '
-			<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '_hr" value="" />
-			<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
-
 		// Wrap a wizard around the item?
 		$html = $this->renderWizards(
-			array($html, $altItem),
+			array($html),
 			$config['wizards'],
 			$table,
 			$row,

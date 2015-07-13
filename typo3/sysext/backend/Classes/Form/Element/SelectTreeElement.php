@@ -62,8 +62,7 @@ class SelectTreeElement extends AbstractFormElement {
 
 		// Wizards:
 		if (!$disabled) {
-			$altItem = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
-			$html = $this->renderWizards(array($html, $altItem), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
+			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
 		}
 		$resultArray['html'] = $html;
 		return $resultArray;

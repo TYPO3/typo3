@@ -92,8 +92,6 @@ class TextElement extends AbstractFormElement {
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist. Traditionally, this is where RTE configuration has been found.
 		$specialConfiguration = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		// Setting up the altItem form field, which is a hidden field containing the value
-		$altItem = '<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 		$html = '';
 
 		// Show message, if no RTE (field can only be edited with RTE!)
@@ -178,7 +176,7 @@ class TextElement extends AbstractFormElement {
 
 			// Wrap a wizard around the item?
 			$html = $this->renderWizards(
-				array($html, $altItem),
+				array($html),
 				$config['wizards'],
 				$table,
 				$row,
