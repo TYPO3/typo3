@@ -72,7 +72,6 @@ CREATE TABLE tx_styleguide_forms (
 	input_32 text NOT NULL,
 	input_33 text NOT NULL,
 	input_34 text NOT NULL,
-	input_35 text NOT NULL,
 	input_36 text NOT NULL,
 
 	text_1 text,

@@ -397,28 +397,6 @@ return array(
 				),
 			),
 		),
-		'input_35' => array(
-			'label' => 'INPUT: 35 Slider wizard, hideParent',
-			'config' => array(
-				'type' => 'input',
-				'eval' => 'trim,int',
-				'range' => array(
-					'lower' => -90,
-					'upper' => 90,
-				),
-				'wizards' => array(
-					'angle' => array(
-						'type' => 'slider',
-						'step' => 10,
-						'width' => 200,
-						'hideParent' => array(
-							// @TODO This shows a <p class="help-box" with the value again, issue of NoneElement in general
-							'format' => 'int',
-						),
-					),
-				),
-			),
-		),
 		'input_36' => array(
 			'exclude' => 1,
 			'label' => 'INPUT: 36 Slider wizard, default=14.5, step=0.5, width=150, eval=trim,double2',
@@ -2523,7 +2501,7 @@ return array(
 			input_1, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9, input_10,
 			input_11, input_12, input_13, input_14, input_15, input_16, input_18, input_19, input_20,
 			input_21, input_22, input_23, input_24, input_25, input_26, input_27, input_28, input_29, input_30,
-			input_32, input_33, input_34, input_35, input_36,
+			input_32, input_33, input_34, input_36,
 			text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9, text_10,
 			text_11, text_12, text_13,text_14, text_15,
 			checkbox_1, checkbox_2, checkbox_3, checkbox_4, checkbox_5, checkbox_6, checkbox_7, checkbox_8, checkbox_9, checkbox_10,
@@ -2557,7 +2535,7 @@ return array(
 					input_1, input_28, input_29, input_2, input_3, input_4, input_5, input_6, input_7, input_8, input_9,
 					input_27, input_10, input_11, input_12, input_13, input_14, input_15, input_16, input_18,
 					input_19, input_20, input_21, input_22, input_23, input_24, input_25, input_26, input_30,
-					input_32, input_33, input_34, input_35, input_36,
+					input_32, input_33, input_34, input_36,
 				--div--;Text,
 					text_1, text_2, text_3, text_4, text_5, text_6, text_8, text_9,
 					text_10, text_11, text_12, text_13, text_14, text_15,
