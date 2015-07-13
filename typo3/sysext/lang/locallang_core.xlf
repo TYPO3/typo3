@@ -1143,6 +1143,12 @@ Check also the following points:\n
 			<trans-unit id="error.invalidEmail">
 				<source>"%s" is not a valid e-mail address.</source>
 			</trans-unit>
+			<trans-unit id="error.backendUserGroupListTypeError.header">
+				<source>Possible misconfiguration detected</source>
+			</trans-unit>
+			<trans-unit id="error.backendUserGroupListTypeError.message">
+				<source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
