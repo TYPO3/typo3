@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:lang/Resources/Public/Images/module-lang.png',
+			'icon' => 'EXT:lang/Resources/Public/Icons/module-lang.svg',
 			'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);

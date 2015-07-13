@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'system_txschedulerM1',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-scheduler.png',
+					'tab' => '../Resources/Public/Icons/module-scheduler.svg',
 				),
 				'll_ref' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf',
 			),

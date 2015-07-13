@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 			'workspaces' => 'online,custom',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-filelist.png',
+					'tab' => '../Resources/Public/Icons/module-filelist.svg',
 				),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_file_list.xlf',
 			),

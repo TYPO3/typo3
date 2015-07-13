@@ -122,7 +122,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'web_layout',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../../Resources/Public/Icons/module-page.png',
+					'tab' => '../../Resources/Public/Icons/module-page.svg',
 				),
 				'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
 			),

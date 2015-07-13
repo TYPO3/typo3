@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 			'workspaces' => 'online',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-dbint.png',
+					'tab' => '../Resources/Public/Icons/module-dbint.svg',
 				),
 				'll_ref' => 'LLL:EXT:lowlevel/dbint/locallang_mod.xlf',
 			),
@@ -32,7 +32,7 @@ if (TYPO3_MODE === 'BE') {
 			'workspaces' => 'online',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-config.png',
+					'tab' => '../Resources/Public/Icons/module-config.svg',
 				),
 				'll_ref' => 'LLL:EXT:lowlevel/config/locallang_mod.xlf',
 			),

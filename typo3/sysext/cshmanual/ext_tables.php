@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'help_cshmanual',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-cshmanual.png',
+					'tab' => '../Resources/Public/Icons/module-cshmanual.svg',
 				),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_help_cshmanual.xlf',
 			),

@@ -12,7 +12,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'user,group',
-			'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.png',
+			'icon' => 'EXT:recycler/Resources/Public/Icons/module-recycler.svg',
 			'labels' => 'LLL:EXT:recycler/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);

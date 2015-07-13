@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:beuser/Resources/Public/Icons/module-beuser.png',
+			'icon' => 'EXT:beuser/Resources/Public/Icons/module-beuser.svg',
 			'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod.xlf'
 		)
 	);
@@ -30,7 +30,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'admin',
-			'icon' => 'EXT:beuser/Resources/Public/Icons/module-permission.png',
+			'icon' => 'EXT:beuser/Resources/Public/Icons/module-permission.svg',
 			'labels' => 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf',
 			'navigationComponentId' => 'typo3-pagetree'
 		)

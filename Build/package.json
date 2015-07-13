@@ -9,10 +9,11 @@
   "license": "GPL-2.0+",
   "devDependencies": {
     "grunt": "~0.4.5",
+    "grunt-bower-just-install": "0.0.3",
     "grunt-bowercopy": "^1.2.0",
+    "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-less": "~1.0.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-npm-install": "^0.2.0",
-    "grunt-bower-just-install": "0.0.3"
+    "grunt-npm-install": "^0.2.0"
   }
 }

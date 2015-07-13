@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'web_ts',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-tstemplate.png',
+					'tab' => '../Resources/Public/Icons/module-tstemplate.svg',
 				),
 				'll_ref' => 'LLL:EXT:tstemplate/ts/locallang_mod.xlf',
 			),

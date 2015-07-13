@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 		),
 		array(
 			'access' => 'admin',
-			'icon'   => 'EXT:indexed_search/Resources/Public/Icons/module-indexed_search.png',
+			'icon'   => 'EXT:indexed_search/Resources/Public/Icons/module-indexed_search.svg',
 			'labels' => 'LLL:EXT:indexed_search/mod/locallang_mod.xlf',
 		)
 	);

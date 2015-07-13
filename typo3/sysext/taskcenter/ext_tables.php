@@ -17,7 +17,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'user_task',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-taskcenter.png',
+					'tab' => '../Resources/Public/Icons/module-taskcenter.svg',
 				),
 				'll_ref' => 'LLL:EXT:taskcenter/task/locallang_mod.xlf',
 			),

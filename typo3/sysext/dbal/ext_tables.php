@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'tools_txdbalM1',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-dbal.png',
+					'tab' => '../Resources/Public/Icons/module-dbal.svg',
 				),
 				'll_ref' => 'LLL:EXT:dbal/mod1/locallang_mod.xlf',
 			),

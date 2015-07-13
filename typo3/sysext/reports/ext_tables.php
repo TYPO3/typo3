@@ -11,7 +11,7 @@ if (TYPO3_MODE === 'BE') {
 			'Report' => 'index,detail'
 		), array(
 			'access' => 'admin',
-			'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.png',
+			'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.svg',
 			'labels' => 'LLL:EXT:reports/Resources/Private/Language/locallang.xlf'
 		)
 	);

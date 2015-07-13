@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'web_func',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-func.png',
+					'tab' => '../Resources/Public/Icons/module-func.svg',
 				),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_web_func.xlf',
 			),

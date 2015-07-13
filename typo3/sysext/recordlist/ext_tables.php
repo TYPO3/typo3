@@ -17,7 +17,7 @@ if (TYPO3_MODE === 'BE') {
 			'name' => 'web_list',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-list.png',
+					'tab' => '../Resources/Public/Icons/module-list.svg',
 				),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_web_list.xlf',
 			),
