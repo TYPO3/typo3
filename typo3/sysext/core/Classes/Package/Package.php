@@ -111,6 +111,7 @@ class Package implements PackageInterface {
 			if (!$this->loadExtensionEmconf()) {
 				throw new Exception\InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
 			}
+			$this->mapExtensionManagerConfigurationToComposerManifest();
 		}
 		$this->loadFlagsFromComposerManifest();
 	}
@@ -201,7 +202,6 @@ class Package implements PackageInterface {
 			include $path;
 			if (is_array($EM_CONF[$_EXTKEY])) {
 				$this->extensionManagerConfiguration = $EM_CONF[$_EXTKEY];
-				$this->mapExtensionManagerConfigurationToComposerManifest();
 				return TRUE;
 			}
 		}
@@ -263,7 +263,16 @@ class Package implements PackageInterface {
 		if ($this->packageMetaData === NULL) {
 			$this->packageMetaData = new MetaData($this->getPackageKey());
 			$this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
-			$this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
+			$version = $this->getValueFromComposerManifest('version');
+			if ($version !== NULL) {
+				$this->packageMetaData->setVersion($version);
+			} else {
+				// As version is important within the core we need to make sure it is available
+				// Fetch it from ext_emconf.php
+				if ($this->loadExtensionEmconf()) {
+					$this->packageMetaData->setVersion($this->extensionManagerConfiguration['version']);
+				}
+			}
 			$requirements = $this->getValueFromComposerManifest('require');
 			if ($requirements !== NULL) {
 				foreach ($requirements as $requirement => $version) {
