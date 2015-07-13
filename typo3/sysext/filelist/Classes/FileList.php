@@ -929,6 +929,7 @@ class FileList extends AbstractRecordList {
 
 		// Hook for manipulating edit icons.
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
+			$cells['__fileOrFolderObject'] = $fileOrFolderObject;
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $classData) {
 				$hookObject = GeneralUtility::getUserObj($classData);
 				if (!$hookObject instanceof FileListEditIconHookInterface) {
@@ -939,6 +940,7 @@ class FileList extends AbstractRecordList {
 				}
 				$hookObject->manipulateEditIcons($cells, $this);
 			}
+			unset($cells['__fileOrFolderObject']);
 		}
 		// Compile items into a DIV-element:
 		return '<div class="btn-group">' . implode('', $cells) . '</div>';
