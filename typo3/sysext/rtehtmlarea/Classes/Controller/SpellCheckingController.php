@@ -14,12 +14,16 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ControllerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
  */
-class SpellCheckingController {
+class SpellCheckingController implements ControllerInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
@@ -141,12 +145,29 @@ class SpellCheckingController {
 	 */
 	public $xmlCharacterData = '';
 
+
+	/**
+	 * AJAX entry point
+	 *
+	 * @param array $ajaxParams
+	 * @return void
+	 * @throws \UnexpectedValueException
+	 */
+	public function main(array $ajaxParams) {
+		$this->processRequest($ajaxParams['request']);
+		header('Content-Type: text/html; charset=' . strtoupper($this->parserCharset));
+		echo $this->result;
+	}
+
 	/**
 	 * Main class of Spell Checker plugin for Typo3 CMS
 	 *
-	 * @return string content produced by the plugin
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface
+	 * @throws \InvalidArgumentException
+	 * @throws \UnexpectedValueException
 	 */
-	public function main() {
+	public function processRequest(ServerRequestInterface $request) {
 		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		// Setting start time
 		$time_start = microtime(TRUE);
@@ -311,7 +332,7 @@ class SpellCheckingController {
 				echo 'Bad parsing';
 			}
 			if (xml_get_error_code($parser)) {
-				throw new \UnexpectedException('Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser)), 1294585788);
+				throw new \UnexpectedValueException('Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser)), 1294585788);
 			}
 			xml_parser_free($parser);
 			if ($this->pspell_is_available && !$this->forceCommandMode) {
@@ -337,8 +358,10 @@ var selectedDictionary = "' . $this->dictionary . '";
 			$this->result .= '
 </body></html>';
 			// Outputting
-			header('Content-Type: text/html; charset=' . strtoupper($this->parserCharset));
-			echo $this->result;
+			$response = GeneralUtility::makeInstance(Response::class);
+			$response = $response->withHeader('Content-Type', 'text/html; charset=' . strtoupper($this->parserCharset));
+			$response->getBody()->write($this->result);
+			return $response;
 		}
 	}
 

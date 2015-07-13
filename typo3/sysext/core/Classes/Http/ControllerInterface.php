@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Http;
  */
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * An interface every controller should implement
@@ -28,10 +28,10 @@ interface ControllerInterface {
 	/**
 	 * Processes a typical request.
 	 *
-	 * @param RequestInterface $request The request object
+	 * @param ServerRequestInterface $request The request object
 	 * @return ResponseInterface $response The response, created by the controller
 	 * @api
 	 */
-	public function processRequest(RequestInterface $request);
+	public function processRequest(ServerRequestInterface $request);
 
 }

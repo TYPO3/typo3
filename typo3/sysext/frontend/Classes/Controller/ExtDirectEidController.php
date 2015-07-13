@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ControllerInterface;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
@@ -21,7 +24,7 @@ use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 /**
  * eID controller for ExtDirect
  */
-class ExtDirectEidController {
+class ExtDirectEidController implements ControllerInterface {
 
 	/**
 	 * Ajax Instance
@@ -34,11 +37,11 @@ class ExtDirectEidController {
 	 * Routes the given eID action to the related ExtDirect method with the necessary
 	 * ajax object.
 	 *
+	 * @param string $ajaxID
 	 * @return void
 	 */
-	public function routeAction() {
+	protected function routeAction($ajaxID) {
 		EidUtility::initLanguage();
-		$ajaxID = GeneralUtility::_GP('action');
 		$ajaxScript = $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['ExtDirect::' . $ajaxID]['callbackMethod'];
 		$this->ajaxObject = GeneralUtility::makeInstance(AjaxRequestHandler::class, 'ExtDirect::' . $ajaxID);
 		$parameters = array();
@@ -46,24 +49,21 @@ class ExtDirectEidController {
 	}
 
 	/**
-	 * Returns TRUE if the associated action in _GET is allowed.
-	 *
-	 * @return bool
-	 */
-	public function actionIsAllowed() {
-		if (!in_array(GeneralUtility::_GP('action'), array('route', 'getAPI'))) {
-			return FALSE;
-		}
-		return TRUE;
-	}
-
-	/**
 	 * Renders/Echoes the ajax output
 	 *
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface|NULL
+	 * @throws \InvalidArgumentException
 	 */
-	public function render() {
-		$this->ajaxObject->render();
+	public function processRequest(ServerRequestInterface $request) {
+		$action = isset($request->getParsedBody()['action'])
+			? $request->getParsedBody()['action']
+			: isset($request->getQueryParams()['action']) ? $request->getQueryParams()['action'] : '';
+		if (!in_array($action, array('route', 'getAPI'), TRUE)) {
+			return NULL;
+		}
+		$this->routeAction($action);
+		return $this->ajaxObject->render();
 	}
 
 }

@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Frontend\Http;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\ControllerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Frontend\Utility\EidUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -50,7 +52,6 @@ class EidRequestHandler implements RequestHandlerInterface {
 	 * @return NULL|\Psr\Http\Message\ResponseInterface
 	 */
 	public function handleRequest(ServerRequestInterface $request) {
-		$response = NULL;
 		// Timetracking started
 		$configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']);
 		if (empty($configuredCookieName)) {
@@ -76,9 +77,7 @@ class EidRequestHandler implements RequestHandlerInterface {
 
 		// Remove any output produced until now
 		$this->bootstrap->endOutputBufferingAndCleanPreviousOutput();
-		require EidUtility::getEidScriptPath();
-
-		return $response;
+		return $this->dispatch($request);
 	}
 
 	/**
@@ -88,7 +87,7 @@ class EidRequestHandler implements RequestHandlerInterface {
 	 * @return bool If the request is not an eID request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest(ServerRequestInterface $request) {
-		return $request->getQueryParams()['eID'] || $request->getParsedBody()['eID'];
+		return !empty($request->getQueryParams()['eID']) || !empty($request->getParsedBody()['eID']);
 	}
 
 	/**
@@ -99,6 +98,39 @@ class EidRequestHandler implements RequestHandlerInterface {
 	 */
 	public function getPriority() {
 		return 80;
+	}
+
+	/**
+	 * Dispatches the request to the corresponding eID class or eID script
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return NULL|\Psr\Http\Message\ResponseInterface
+	 * @throws Exception
+	 */
+	protected function dispatch($request) {
+		$eID = isset($request->getParsedBody()['eID'])
+			? $request->getParsedBody()['eID']
+			: isset($request->getQueryParams()['eID']) ? $request->getQueryParams()['eID'] : '';
+
+		if (empty($eID) || !isset($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID])) {
+			return GeneralUtility::makeInstance(Response::class)->withStatus(404, 'eID not registered');
+		}
+
+		$configuration = $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID];
+		if (class_exists($configuration)) {
+			$controller = GeneralUtility::makeInstance($configuration);
+			if (!$controller instanceof ControllerInterface) {
+				throw new Exception('The provided eID class "' . $configuration . '" does not implement "ControllerInterface".', 1436909478);
+			}
+			return $controller->processRequest($request);
+		}
+
+		$scriptPath = GeneralUtility::getFileAbsFileName($configuration);
+		if ($scriptPath === '') {
+			throw new Exception('Registered eID has invalid script path.', 1416391467);
+		}
+		include $scriptPath;
+		return NULL;
 	}
 
 }

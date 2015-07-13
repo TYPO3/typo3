@@ -87,7 +87,7 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 
 		// Instantiating the AJAX object
 		$ajaxObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, $ajaxID);
-		$ajaxParams = array();
+		$ajaxParams = array('request' => $request);
 
 		// Evaluating the arguments and calling the AJAX method/function
 		if (empty($ajaxID)) {
@@ -114,9 +114,7 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 		}
 
 		// Outputting the content (and setting the X-JSON-Header)
-		$ajaxObj->render();
-
-		return NULL;
+		return $ajaxObj->render();
 	}
 
 	/**

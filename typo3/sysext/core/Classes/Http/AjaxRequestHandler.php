@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to hold all the information about an AJAX call and send
@@ -169,66 +172,81 @@ class AjaxRequestHandler {
 	/**
 	 * Renders the AJAX call based on the $contentFormat variable and exits the request
 	 *
-	 * @return void
+	 * @return ResponseInterface|NULL
 	 */
 	public function render() {
 		if ($this->isError) {
-			$this->renderAsError();
-			die;
+			return $this->renderAsError();
 		}
 		switch ($this->contentFormat) {
 			case 'jsonhead':
 			case 'jsonbody':
 			case 'json':
-				$this->renderAsJSON();
+				return $this->renderAsJSON();
 				break;
 			case 'javascript':
-				$this->renderAsJavascript();
+				return $this->renderAsJavascript();
 				break;
 			case 'xml':
-				$this->renderAsXML();
+				return $this->renderAsXML();
 				break;
 			default:
-				$this->renderAsPlain();
+				return $this->renderAsPlain();
 		}
-		die;
 	}
 
 	/**
 	 * Renders the AJAX call in XML error style to handle with JS
 	 * the "responseXML" of the transport object will be filled with the error message then
 	 *
-	 * @return void
+	 * @return ResponseInterface
 	 */
 	protected function renderAsError() {
-		header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500 . ' (AJAX)');
-		header('Content-type: text/xml; charset=utf-8');
-		header('X-JSON: false');
-		die('<t3err>' . htmlspecialchars($this->errorMessage) . '</t3err>');
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response = $response
+			->withStatus(500, ' (AJAX)')
+			->withHeader('Content-type', 'text/xml; charset=utf-8')
+			->withHeader('X-JSON', 'false');
+
+		$response->getBody()->write('<t3err>' . htmlspecialchars($this->errorMessage) . '</t3err>');
+		return $response;
 	}
 
 	/**
 	 * Renders the AJAX call with text/html headers
 	 * the content will be available in the "responseText" value of the transport object
 	 *
-	 * @return void
+	 * @return ResponseInterface
+	 * @throws \InvalidArgumentException
 	 */
 	protected function renderAsPlain() {
-		header('Content-type: text/html; charset=utf-8');
-		header('X-JSON: true');
-		echo implode('', $this->content);
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response = $response
+			->withHeader('Content-type', 'text/html; charset=utf-8')
+			->withHeader('X-JSON', 'true');
+
+		$response->getBody()->write(implode('', $this->content));
+		return $response;
 	}
 
 	/**
 	 * Renders the AJAX call with text/xml headers
 	 * the content will be available in the "responseXML" value of the transport object
 	 *
-	 * @return void
+	 * @return ResponseInterface
+	 * @throws \InvalidArgumentException
 	 */
 	protected function renderAsXML() {
-		header('Content-type: text/xml; charset=utf-8');
-		header('X-JSON: true');
-		echo implode('', $this->content);
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response = $response
+			->withHeader('Content-type', 'text/xml; charset=utf-8')
+			->withHeader('X-JSON', 'true');
+
+		$response->getBody()->write(implode('', $this->content));
+		return $response;
 	}
 
 	/**
@@ -241,30 +259,37 @@ class AjaxRequestHandler {
 	 * - and in the xhr.responseText as a string (except when contentFormat = 'jsonhead')
 	 * you can evaluate this in JS with xhr.responseText.evalJSON();
 	 *
-	 * @return void
+	 * @return ResponseInterface
+	 * @throws \InvalidArgumentException
 	 */
 	protected function renderAsJSON() {
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
+
 		$content = json_encode($this->content);
-		header('Content-type: application/json; charset=utf-8');
 		// Bring content in xhr.responseText except when in "json head only" mode
 		if ($this->contentFormat === 'jsonhead') {
-			header('X-JSON: ' . $content);
+			$response = $response->withHeader('X-JSON', $content);
 		} else {
-			header('X-JSON: true');
-			echo $content;
+			$response = $response->withHeader('X-JSON', 'true');
+			$response->getBody()->write($content);
 		}
+		return $response;
 	}
 
 	/**
 	 * Renders the AJAX call as inline JSON inside a script tag. This is useful
 	 * when an iframe is used as the AJAX transport.
 	 *
-	 * @return void
+	 * @return ResponseInterface
+	 * @throws \InvalidArgumentException
 	 */
 	protected function renderAsJavascript() {
-		$content = str_replace('|', json_encode($this->content), $this->javascriptCallbackWrap);
-		header('Content-type: text/html; charset=utf-8');
-		echo $content;
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
+		$response->getBody()->write(str_replace('|', json_encode($this->content), $this->javascriptCallbackWrap));
+		return $response;
 	}
 
 }

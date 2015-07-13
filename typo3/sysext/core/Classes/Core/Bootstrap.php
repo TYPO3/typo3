@@ -245,7 +245,7 @@ class Bootstrap {
 	 * Be sure to always have the constants that are defined in $this->defineTypo3RequestTypes() are set,
 	 * so most RequestHandlers can check if they can handle the request.
 	 *
-	 * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\Console\Input\InputInterface $request
+	 * @param \Psr\Http\Message\ServerRequestInterface|\Symfony\Component\Console\Input\InputInterface $request
 	 * @return \TYPO3\CMS\Core\Http\RequestHandlerInterface|\TYPO3\CMS\Core\Console\RequestHandlerInterface
 	 * @throws \TYPO3\CMS\Core\Exception
 	 * @internal This is not a public API method, do not use in own extensions
@@ -253,6 +253,7 @@ class Bootstrap {
 	protected function resolveRequestHandler($request) {
 		$suitableRequestHandlers = array();
 		foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
+			/** @var \TYPO3\CMS\Core\Http\RequestHandlerInterface|\TYPO3\CMS\Core\Console\RequestHandlerInterface $requestHandler */
 			$requestHandler = GeneralUtility::makeInstance($requestHandlerClassName, $this);
 			if ($requestHandler->canHandleRequest($request)) {
 				$priority = $requestHandler->getPriority();
@@ -299,6 +300,8 @@ class Bootstrap {
 				foreach ($this->response->getHeaders() as $name => $values) {
 					header($name . ': ' . implode(', ', $values), FALSE);
 				}
+				// send the response type
+				header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() . ' ' . $this->response->getReasonPhrase());
 			}
 			echo $this->response->getBody()->__toString();
 		}

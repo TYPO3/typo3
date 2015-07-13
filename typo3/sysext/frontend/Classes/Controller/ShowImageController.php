@@ -14,20 +14,35 @@ namespace TYPO3\CMS\Frontend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\ControllerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
- * Script Class, generating the page output.
- * Instantiated in the bottom of this script.
+ * eID-Script "tx_cms_showpic"
+ *
+ * Shows a picture from FAL in enlarged format in a separate window.
+ * Picture file and settings is supplied by GET-parameters:
+ *
+ *  - file = fileUid or Combined Identifier
+ *  - encoded in an parameter Array (with weird format - see ContentObjectRenderer about ll. 1500)
+ *  - width, height = usual width an height, m/c supported
+ *  - frame
+ *  - bodyTag
+ *  - title
  */
-class ShowImageController {
+class ShowImageController implements ControllerInterface {
 
 	/**
-	 * Parameters loaded into these internal variables:
-	 *
+	 * @var \Psr\Http\Message\ServerRequestInterface
+	 */
+	protected $request;
+
+	/**
 	 * @var \TYPO3\CMS\Core\Resource\File
 	 */
 	protected $file;
@@ -43,16 +58,6 @@ class ShowImageController {
 	protected $height;
 
 	/**
-	 * @var string
-	 */
-	protected $sample;
-
-	/**
-	 * @var string
-	 */
-	protected $effects;
-
-	/**
 	 * @var int
 	 */
 	protected $frame;
@@ -60,17 +65,7 @@ class ShowImageController {
 	/**
 	 * @var string
 	 */
-	protected $hmac;
-
-	/**
-	 * @var string
-	 */
 	protected $bodyTag = '<body>';
-
-	/**
-	 * @var string
-	 */
-	protected $wrap = '|';
 
 	/**
 	 * @var string
@@ -102,27 +97,26 @@ EOF;
 	 * Init function, setting the input vars in the global space.
 	 *
 	 * @return void
+	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
 	 */
-	public function init() {
-		// Loading internal vars with the GET/POST parameters from outside:
-		$fileUid = GeneralUtility::_GP('file');
-		$this->frame = GeneralUtility::_GP('frame');
-		/* For backwards compatibility the HMAC is transported within the md5 param */
-		$this->hmac = GeneralUtility::_GP('md5');
-
-		$parametersArray = GeneralUtility::_GP('parameters');
+	public function initialize() {
+		$fileUid = isset($this->request->getQueryParams()['file']) ? $this->request->getQueryParams()['file'] : NULL;
+		$parametersArray = isset($this->request->getQueryParams()['parameters']) ? $this->request->getQueryParams()['parameters'] : NULL;
 
 		// If no file-param or parameters are given, we must exit
 		if (!$fileUid || !isset($parametersArray) || !is_array($parametersArray)) {
-			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_410);
+			throw new \InvalidArgumentException('No valid fileUid given');
 		}
 
 		// rebuild the parameter array and check if the HMAC is correct
 		$parametersEncoded = implode('', $parametersArray);
-		$hmac = GeneralUtility::hmac(implode('|', array($fileUid, $parametersEncoded)));
-		if ($hmac !== $this->hmac) {
-			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_410);
 
+		/* For backwards compatibility the HMAC is transported within the md5 param */
+		$hmacParameter = isset($this->request->getQueryParams()['md5']) ? $this->request->getQueryParams()['md5'] : NULL;
+		$hmac = GeneralUtility::hmac(implode('|', array($fileUid, $parametersEncoded)));
+		if ($hmac !== $hmacParameter) {
+			throw new \InvalidArgumentException('hash does not match');
 		}
 
 		// decode the parameters Array
@@ -131,15 +125,12 @@ EOF;
 			$this->{$parameterName} = $parameterValue;
 		}
 
-		try {
-			if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
-				$this->file = ResourceFactory::getInstance()->getFileObject((int)$fileUid);
-			} else {
-				$this->file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
-			}
-		} catch (\TYPO3\CMS\Core\Exception $e) {
-			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_404);
+		if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
+			$this->file = ResourceFactory::getInstance()->getFileObject((int)$fileUid);
+		} else {
+			$this->file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
 		}
+		$this->frame = isset($this->request->getQueryParams()['frame']) ? $this->request->getQueryParams()['frame'] : NULL;
 	}
 
 	/**
@@ -158,10 +149,6 @@ EOF;
 			'###height###' => $processedImage->getProperty('height')
 		);
 		$this->imageTag = str_replace(array_keys($imageTagMarkers), array_values($imageTagMarkers), $this->imageTag);
-		if ($this->wrap !== '|') {
-			$wrapParts = explode('|', $this->wrap, 2);
-			$this->imageTag = $wrapParts[0] . $this->imageTag . $wrapParts[1];
-		}
 		$markerArray = array(
 			'###TITLE###' => ($this->file->getProperty('title') ?: $this->title),
 			'###IMAGE###' => $this->imageTag,
@@ -169,7 +156,6 @@ EOF;
 		);
 
 		$this->content = str_replace(array_keys($markerArray), array_values($markerArray), $this->content);
-
 	}
 
 	/**
@@ -194,25 +180,30 @@ EOF;
 		);
 		return $this->file->process('Image.CropScaleMask', $processingConfiguration);
 	}
-	/**
-	 * Outputs the content from $this->content
-	 *
-	 * @return void
-	 */
-	public function printContent() {
-		echo $this->content;
-		HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_200);
-	}
 
 	/**
-	 * Execute
+	 * Fetches the content and builds a content file out of it
 	 *
-	 * @return void
+	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface
 	 */
-	public function execute() {
-		$this->init();
-		$this->main();
-		$this->printContent();
+	public function processRequest(ServerRequestInterface $request) {
+		$this->request = $request;
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+
+		try {
+			$this->initialize();
+			$this->main();
+			$response->getBody()->write($this->content);
+			return $response;
+		} catch (\InvalidArgumentException $e) {
+			// add a 410 "gone" if invalid parameters given
+			return $response->withStatus(410);
+		} catch (Exception $e) {
+			return $response->withStatus(404);
+		}
 	}
 
 }

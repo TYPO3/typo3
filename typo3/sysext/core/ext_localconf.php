@@ -65,7 +65,7 @@ if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
 
 unset($signalSlotDispatcher);
 
-$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = 'EXT:core/Resources/PHP/FileDumpEID.php';
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = \TYPO3\CMS\Core\Controller\FileDumpController::class;
 
 /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
 $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();

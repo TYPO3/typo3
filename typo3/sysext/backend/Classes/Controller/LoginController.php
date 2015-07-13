@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -124,13 +126,13 @@ class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	 * As this controller goes only through the main() method, it is rather simple for now
 	 * This will be split up in an abstract controller once proper routing/dispatcher is in place.
 	 *
-	 * @param \Psr\Http\Message\RequestInterface $request
+	 * @param ServerRequestInterface $request
 	 * @return \Psr\Http\Message\ResponseInterface $response
 	 */
-	public function processRequest(\Psr\Http\Message\RequestInterface $request) {
+	public function processRequest(ServerRequestInterface $request) {
 		$content = $this->main();
-		/** @var \TYPO3\CMS\Core\Http\Response $response */
-		$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($content);
 		return $response;
 	}
