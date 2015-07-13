@@ -6,8 +6,8 @@ Description
 ===========
 
 The shell scripts for checking and cleaning a TYPO3 installation for its integrity have been removed from the Core.
-They were previously located under ``typo3/cleaner_check.sh`` and ``typo3/cleaner_fix.sh``. The contents have been
-moved to the documentation for EXT:lowlevel in the respective README.md.
+They were previously located under :file:`typo3/cleaner_check.sh` and :file:`typo3/cleaner_fix.sh`. The contents have
+been moved to the documentation for EXT:lowlevel in the respective :file:`README.rst`.
 
 
 Impact
@@ -25,4 +25,5 @@ Any installation that uses the shell scripts above from the command line directl
 Migration
 =========
 
-If such a list is needed, create the files manually again in your system (outside your document root). The code can be found inside EXT:lowlevel/README.md.
+If such a list is needed, create the files manually again in your system (outside your document root). The code can be
+found inside :file:`EXT:lowlevel/README.rst`.
