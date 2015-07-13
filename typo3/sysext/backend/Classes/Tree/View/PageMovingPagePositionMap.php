@@ -32,7 +32,7 @@ class PageMovingPagePositionMap extends PagePositionMap {
 	 *
 	 * @var string
 	 */
-	protected $pageTreeClassName = MoveElementPageTreeView::class;
+	protected $pageTreeClassName = PageTreeView::class;
 
 	/**
 	 * Creates the onclick event for the insert-icons.

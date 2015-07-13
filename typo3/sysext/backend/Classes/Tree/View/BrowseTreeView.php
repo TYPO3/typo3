@@ -114,14 +114,13 @@ class BrowseTreeView extends AbstractTreeView {
 	 * @access private
 	 */
 	public function wrapIcon($icon, $row) {
-		// Add title attribute to input icon tag
-		$theIcon = $this->addTagAttributes($icon, $this->titleAttrib ? $this->titleAttrib . '="' . $this->getTitleAttrib($row) . '"' : '');
 		// Wrap icon in click-menu link.
+		$theIcon = '';
 		if (!$this->ext_IconMode) {
-			$theIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theIcon, $this->treeName, $this->getId($row), 0);
+			$theIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $this->treeName, $this->getId($row), 0);
 		} elseif ($this->ext_IconMode === 'titlelink') {
 			$aOnClick = 'return jumpTo(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $this->bank . ');';
-			$theIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $theIcon . '</a>';
+			$theIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
 		}
 		return $theIcon;
 	}

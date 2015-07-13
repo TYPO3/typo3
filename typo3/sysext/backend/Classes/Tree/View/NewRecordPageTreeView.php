@@ -21,17 +21,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
 class NewRecordPageTreeView extends PageTreeView {
 
 	/**
-	 * Inserting uid-information in title-text for an icon
-	 *
-	 * @param string $icon Icon image
-	 * @param array $row Item row
-	 * @return string Wrapping icon image.
-	 */
-	public function wrapIcon($icon, $row) {
-		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
-	}
-
-	/**
 	 * Determines whether to expand a branch or not.
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
 	 *

@@ -1253,7 +1253,6 @@ return array(
 	'Tx_Workspaces_Service_Workspaces' => \TYPO3\CMS\Workspaces\Service\WorkspaceService::class,
 	'Tx_Workspaces_Service_AutoPublishTask' => \TYPO3\CMS\Workspaces\Task\AutoPublishTask::class,
 	'Tx_Workspaces_Service_CleanupPreviewLinkTask' => \TYPO3\CMS\Workspaces\Task\CleanupPreviewLinkTask::class,
-	'moveElementLocalPageTree' => \TYPO3\CMS\Backend\Tree\View\MoveElementPageTreeView::class,
 	'ext_posMap_pages' => \TYPO3\CMS\Backend\Tree\View\PageMovingPagePositionMap::class,
 	'ext_posMap_tt_content' => \TYPO3\CMS\Backend\Tree\View\ContentMovingPagePositionMap::class,
 	'localPageTree' => \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView::class,

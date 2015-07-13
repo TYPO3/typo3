@@ -154,11 +154,10 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	 * @return string The processed icon input value.
 	 */
 	public function wrapIcon($icon, $row) {
-		$content = $this->addTagAttributes($icon, ' title="id=' . $row['uid'] . '"');
 		if ($this->ext_showPageId) {
-			$content .= '[' . $row['uid'] . ']&nbsp;';
+			$icon .= '[' . $row['uid'] . ']&nbsp;';
 		}
-		return $content;
+		return $icon;
 	}
 
 }

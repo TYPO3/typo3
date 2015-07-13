@@ -32,7 +32,7 @@ class ContentMovingPagePositionMap extends PagePositionMap {
 	 *
 	 * @var string
 	 */
-	protected $pageTreeClassName = MoveElementPageTreeView::class;
+	protected $pageTreeClassName = PageTreeView::class;
 
 	/**
 	 * Wrapping page title.
