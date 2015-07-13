@@ -1003,6 +1003,9 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="warning.install_enabled_cmd">
 				<source>Click to remove the file now!</source>
 			</trans-unit>
+			<trans-unit id="warning.install_trustedhosts">
+				<source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
+			</trans-unit>
 			<trans-unit id="warning.install_encryption">
 				<source>The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</source>
 			</trans-unit>

@@ -96,6 +96,9 @@
 			<trans-unit id="status_CreatedDirectoryPermissions.writable">
 				<source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
+			<trans-unit id="status_trustedHostsPattern">
+				<source>Trusted Hosts Pattern</source>
+			</trans-unit>
 			<trans-unit id="status_adminUserAccount">
 				<source>Admin User Account</source>
 			</trans-unit>

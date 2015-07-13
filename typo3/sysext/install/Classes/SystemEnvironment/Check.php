@@ -76,6 +76,7 @@ class Check {
 	public function getStatus() {
 		$statusArray = array();
 		$statusArray[] = $this->checkCurrentDirectoryIsInIncludePath();
+		$statusArray[] = $this->checkTrustedHostPattern();
 		$statusArray[] = $this->checkFileUploadEnabled();
 		$statusArray[] = $this->checkMaximumFileUploadSize();
 		$statusArray[] = $this->checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize();
@@ -143,6 +144,30 @@ class Check {
 			$status = new Status\OkStatus();
 			$status->setTitle('Current directory (./) is within PHP include path.');
 		}
+		return $status;
+	}
+
+	/**
+	 * Checks the status of the trusted hosts pattern check
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkTrustedHostPattern() {
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
+			$status = new Status\WarningStatus();
+			$status->setTitle('Trusted hosts pattern is insecure');
+			$status->setMessage('Trusted hosts pattern is configured to allow all header values. Check the pattern defined in Install Tool -> All configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).');
+		} else {
+			if (GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST'])) {
+				$status = new Status\OkStatus();
+				$status->setTitle('Trusted hosts pattern is configured to allow current host value.');
+			} else {
+				$status = new Status\ErrorStatus();
+				$status->setTitle('Trusted hosts pattern mismatch');
+				$status->setMessage('The trusted hosts pattern will be configured to allow all header values. This is because your $SERVER_NAME is "' . htmlspecialchars($_SERVER['SERVER_NAME']) . '" while your HTTP_HOST is "'. htmlspecialchars($_SERVER['HTTP_HOST']) . '". Check the pattern defined in Install Tool -> All configuration -> System -> trustedHostsPattern and adapt it to expected host value(s).');
+			}
+		}
+
 		return $status;
 	}
 

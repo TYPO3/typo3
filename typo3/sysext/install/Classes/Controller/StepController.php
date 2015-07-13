@@ -50,6 +50,7 @@ class StepController extends AbstractController {
 		$this->outputInstallToolPasswordNotSetMessageIfNeeded();
 		$this->recreatePackageStatesFileIfNotExisting();
 		$this->executeOrOutputFirstInstallStepIfNeeded();
+		$this->adjustTrustedHostsPatternIfNeeded();
 		$this->executeSilentConfigurationUpgradesIfNeeded();
 		$this->initializeSession();
 		$this->checkSessionToken();
@@ -292,6 +293,20 @@ class StepController extends AbstractController {
 		if ($wasExecuted) {
 			$this->redirect();
 		}
+	}
+
+	/**
+	 * Checks the trusted hosts pattern setting
+	 */
+	protected function adjustTrustedHostsPatternIfNeeded() {
+		if (GeneralUtility::hostHeaderValueMatchesTrustedHostsPattern($_SERVER['HTTP_HOST'])) {
+			return;
+		}
+
+		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+		$configurationManager->setLocalConfigurationValueByPath('SYS/trustedHostsPattern', '.*');
+		$this->redirect();
 	}
 
 	/**

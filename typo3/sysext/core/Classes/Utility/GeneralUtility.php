@@ -3512,6 +3512,7 @@ Connection: close
 	/**
 	 * Checks if the provided host header value matches the trusted hosts pattern.
 	 * If the pattern is not defined (which only can happen early in the bootstrap), deny any value.
+	 * The result is saved, so the check needs to be executed only once.
 	 *
 	 * @param string $hostHeaderValue HTTP_HOST header value as sent during the request (may include port)
 	 * @return bool
@@ -3532,23 +3533,38 @@ Connection: close
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
 			static::$allowHostHeaderValue = TRUE;
-		} elseif ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME) {
+		} else {
+			static::$allowHostHeaderValue = static::hostHeaderValueMatchesTrustedHostsPattern($hostHeaderValue);
+		}
+
+		return static::$allowHostHeaderValue;
+	}
+
+	/**
+	 * Checks if the provided host header value matches the trusted hosts pattern without any preprocessing.
+	 *
+	 * @param string $hostHeaderValue
+	 * @return bool
+	 * @internal
+	 */
+	static public function hostHeaderValueMatchesTrustedHostsPattern($hostHeaderValue) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === self::ENV_TRUSTED_HOSTS_PATTERN_SERVER_NAME) {
 			// Allow values that equal the server name
 			// Note that this is only secure if name base virtual host are configured correctly in the webserver
 			$defaultPort = self::getIndpEnv('TYPO3_SSL') ? '443' : '80';
 			$parsedHostValue = parse_url('http://' . $hostHeaderValue);
 			if (isset($parsedHostValue['port'])) {
-				static::$allowHostHeaderValue = (strtolower($parsedHostValue['host']) === strtolower($_SERVER['SERVER_NAME']) && (string)$parsedHostValue['port'] === $_SERVER['SERVER_PORT']);
+				$hostMatch = (strtolower($parsedHostValue['host']) === strtolower($_SERVER['SERVER_NAME']) && (string)$parsedHostValue['port'] === $_SERVER['SERVER_PORT']);
 			} else {
-				static::$allowHostHeaderValue = (strtolower($hostHeaderValue) === strtolower($_SERVER['SERVER_NAME']) && $defaultPort === $_SERVER['SERVER_PORT']);
+				$hostMatch = (strtolower($hostHeaderValue) === strtolower($_SERVER['SERVER_NAME']) && $defaultPort === $_SERVER['SERVER_PORT']);
 			}
 		} else {
 			// In case name based virtual hosts are not possible, we allow setting a trusted host pattern
 			// See https://typo3.org/teams/security/security-bulletins/typo3-core/typo3-core-sa-2014-001/ for further details
-			static::$allowHostHeaderValue = (bool)preg_match('/^' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] . '$/i', $hostHeaderValue);
+			$hostMatch = (bool)preg_match('/^' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] . '$/i', $hostHeaderValue);
 		}
 
-		return static::$allowHostHeaderValue;
+		return $hostMatch;
 	}
 
 	/**

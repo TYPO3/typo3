@@ -31,6 +31,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	 */
 	public function getStatus() {
 		$statuses = array(
+			'trustedHostsPattern' => $this->getTrustedHostsPatternStatus(),
 			'adminUserAccount' => $this->getAdminAccountStatus(),
 			'encryptionKeyEmpty' => $this->getEncryptionKeyStatus(),
 			'fileDenyPattern' => $this->getFileDenyPatternStatus(),
@@ -38,6 +39,24 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 			'saltedpasswords' => $this->getSaltedPasswordsStatus()
 		);
 		return $statuses;
+	}
+
+	/**
+	 * Checks if the trusted hosts pattern check is disabled.
+	 *
+	 * @return \TYPO3\CMS\Reports\Status An object representing whether the check is disabled
+	 */
+	protected function getTrustedHostsPatternStatus() {
+		$value = $GLOBALS['LANG']->getLL('status_ok');
+		$message = '';
+		$severity = \TYPO3\CMS\Reports\Status::OK;
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] === GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL) {
+			$value = $GLOBALS['LANG']->getLL('status_insecure');
+			$severity = \TYPO3\CMS\Reports\Status::ERROR;
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.install_trustedhosts');
+		}
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Reports\Status::class,
+			$GLOBALS['LANG']->getLL('status_trustedHostsPattern'), $value, $message, $severity);
 	}
 
 	/**
@@ -120,7 +139,6 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		if ($defaultParts !== $result) {
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = \TYPO3\CMS\Reports\Status::ERROR;
-			$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
 			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
 				'<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />');
 		}
