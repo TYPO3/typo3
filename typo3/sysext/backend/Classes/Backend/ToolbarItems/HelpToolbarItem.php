@@ -48,7 +48,7 @@ class HelpToolbarItem implements ToolbarItemInterface {
 	 * @return bool TRUE
 	 */
 	public function checkAccess() {
-		$result = $this->helpModuleMenu ? TRUE : FALSE;
+		$result = (bool)$this->helpModuleMenu;
 		return $result;
 	}
 

@@ -439,7 +439,7 @@ class SingleFieldContainer extends AbstractContainer {
 		} else {
 			$label = $GLOBALS['TCA'][$table]['ctrl']['label'];
 		}
-		return $level['config']['foreign_table'] === $table && $label == $field ? TRUE : FALSE;
+		return $level['config']['foreign_table'] === $table && $label === $field;
 	}
 
 	/**
@@ -578,7 +578,7 @@ class SingleFieldContainer extends AbstractContainer {
 			}
 		}
 		// Return the result for '%AND' (if nothing was checked, TRUE is returned)
-		return $localEntries == $localMatches ? TRUE : FALSE;
+		return $localEntries === $localMatches;
 	}
 
 	/**
@@ -588,7 +588,7 @@ class SingleFieldContainer extends AbstractContainer {
 	 * @return bool Returns TRUE, if the object is an associative array
 	 */
 	protected function isAssociativeArray($object) {
-		return is_array($object) && !empty($object) && array_keys($object) !== range(0, sizeof($object) - 1) ? TRUE : FALSE;
+		return is_array($object) && !empty($object) && array_keys($object) !== range(0, sizeof($object) - 1);
 	}
 
 	/**

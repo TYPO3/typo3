@@ -151,7 +151,7 @@ class ExtDirectApi {
 	 * @return string $javascriptNamespaces
 	 */
 	protected function getExtDirectApi(array $filterNamespaces) {
-		$noCache = GeneralUtility::_GET('no_cache') ? TRUE : FALSE;
+		$noCache = (bool)GeneralUtility::_GET('no_cache');
 		// Look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
 		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . GeneralUtility::getIndpEnv('HTTP_HOST'));

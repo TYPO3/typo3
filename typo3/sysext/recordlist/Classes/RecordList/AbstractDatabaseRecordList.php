@@ -357,7 +357,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 		$this->searchLevels = (int)$levels;
 		$this->showLimit = MathUtility::forceIntegerInRange($showLimit, 0, 10000);
 		// Setting GPvars:
-		$this->csvOutput = GeneralUtility::_GP('csv') ? TRUE : FALSE;
+		$this->csvOutput = (bool)GeneralUtility::_GP('csv');
 		$this->sortField = GeneralUtility::_GP('sortField');
 		$this->sortRev = GeneralUtility::_GP('sortRev');
 		$this->displayFields = GeneralUtility::_GP('displayFields');

@@ -424,7 +424,7 @@ class ActionHandler extends AbstractHandler {
 		return array(
 			'success' => TRUE,
 			// force refresh after publishing changes
-			'refreshLivePanel' => $parameters->stageId == -20 ? TRUE : FALSE
+			'refreshLivePanel' => $parameters->stageId == -20
 		);
 	}
 

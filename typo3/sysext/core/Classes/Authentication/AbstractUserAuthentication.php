@@ -618,7 +618,7 @@ abstract class AbstractUserAuthentication {
 		if (!$this->newSessionID) {
 			// Read user session
 			$authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
-			$haveSession = is_array($authInfo['userSession']) ? TRUE : FALSE;
+			$haveSession = is_array($authInfo['userSession']);
 		}
 		if ($this->writeDevLog) {
 			if ($haveSession) {
@@ -1004,7 +1004,7 @@ abstract class AbstractUserAuthentication {
 		$statement->execute(array(':ses_id' => $id));
 		$row = $statement->fetch(\TYPO3\CMS\Core\Database\PreparedStatement::FETCH_NUM);
 		$statement->free();
-		return $row[0] ? TRUE : FALSE;
+		return (bool)$row[0];
 	}
 
 	/**

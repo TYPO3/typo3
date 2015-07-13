@@ -47,7 +47,7 @@ class FlexFormLanguageContainer extends AbstractContainer {
 		$langDisabled = (bool)$flexFormDataStructureArray['meta']['langDisable'];
 		$flexFormRowData['meta']['currentLangId'] = array();
 		// Look up page language overlays
-		$checkPageLanguageOverlay = $this->getBackendUserAuthentication()->getTSConfigVal('options.checkPageLanguageOverlay') ? TRUE : FALSE;
+		$checkPageLanguageOverlay = (bool)$this->getBackendUserAuthentication()->getTSConfigVal('options.checkPageLanguageOverlay');
 		$pageOverlays = array();
 		if ($checkPageLanguageOverlay) {
 			$whereClause = 'pid=' . (int)$row['pid'] . BackendUtility::deleteClause('pages_language_overlay')

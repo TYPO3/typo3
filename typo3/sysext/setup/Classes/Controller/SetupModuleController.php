@@ -640,7 +640,7 @@ class SetupModuleController {
 					$localizedName = htmlspecialchars($name);
 				}
 				$localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
-				$available = is_dir(PATH_typo3conf . 'l10n/' . $locale) ? TRUE : FALSE;
+				$available = is_dir(PATH_typo3conf . 'l10n/' . $locale);
 				if ($available) {
 					$languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($this->getBackendUser()->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
 				}

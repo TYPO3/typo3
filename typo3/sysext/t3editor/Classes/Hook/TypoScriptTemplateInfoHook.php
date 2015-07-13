@@ -104,7 +104,7 @@ class TypoScriptTemplateInfoHook {
 			$tmpl->init();
 			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 			$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
-			$existTemplate = is_array($tplRow) ? TRUE : FALSE;
+			$existTemplate = is_array($tplRow);
 			if ($existTemplate) {
 				$saveId = $tplRow['_ORIG_uid'] ?: $tplRow['uid'];
 				// Update template ?

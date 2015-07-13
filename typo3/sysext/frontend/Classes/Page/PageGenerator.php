@@ -458,7 +458,7 @@ class PageGenerator {
 								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
-							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), $cssFileConfig['forceOnTop'] ? TRUE : FALSE, '');
+							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop'], '');
 						} else {
 							$pageRenderer->addCssFile(
 								$ss,
@@ -466,9 +466,9 @@ class PageGenerator {
 								$cssFileConfig['media'] ?: 'all',
 								$cssFileConfig['title'] ?: '',
 								empty($cssFileConfig['disableCompression']),
-								$cssFileConfig['forceOnTop'] ? TRUE : FALSE,
+								(bool)$cssFileConfig['forceOnTop'],
 								$cssFileConfig['allWrap'],
-								$cssFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+								(bool)$cssFileConfig['excludeFromConcatenation'],
 								$cssFileConfig['allWrap.']['splitChar']
 							);
 							unset($cssFileConfig);
@@ -491,7 +491,7 @@ class PageGenerator {
 								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = GeneralUtility::dirname(GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
-							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), $cssFileConfig['forceOnTop'] ? TRUE : FALSE, '');
+							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($cssFileConfig['media']) . ';', empty($cssFileConfig['disableCompression']), (bool)$cssFileConfig['forceOnTop'], '');
 						} else {
 							$pageRenderer->addCssLibrary(
 								$ss,
@@ -499,9 +499,9 @@ class PageGenerator {
 								$cssFileConfig['media'] ?: 'all',
 								$cssFileConfig['title'] ?: '',
 								empty($cssFileConfig['disableCompression']),
-								$cssFileConfig['forceOnTop'] ? TRUE : FALSE,
+								(bool)$cssFileConfig['forceOnTop'],
 								$cssFileConfig['allWrap'],
-								$cssFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+								(bool)$cssFileConfig['excludeFromConcatenation'],
 								$cssFileConfig['allWrap.']['splitChar']
 							);
 							unset($cssFileConfig);
@@ -593,8 +593,8 @@ class PageGenerator {
 				$pageRenderer->loadJQuery($version, $source, $namespace);
 			}
 			if ($tsfe->pSetup['javascriptLibs.']['ExtJs']) {
-				$css = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
-				$theme = $tsfe->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
+				$css = (bool)$tsfe->pSetup['javascriptLibs.']['ExtJs.']['css'];
+				$theme = (bool)$tsfe->pSetup['javascriptLibs.']['ExtJs.']['theme'];
 				$pageRenderer->loadExtJs($css, $theme);
 				if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
 					$pageRenderer->enableExtJsDebug();
@@ -637,11 +637,11 @@ class PageGenerator {
 							$ss,
 							$type,
 							empty($jsFileConfig['disableCompression']),
-							$jsFileConfig['forceOnTop'] ? TRUE : FALSE,
+							(bool)$jsFileConfig['forceOnTop'],
 							$jsFileConfig['allWrap'],
-							$jsFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+							(bool)$jsFileConfig['excludeFromConcatenation'],
 							$jsFileConfig['allWrap.']['splitChar'],
-							$jsFileConfig['async'] ? TRUE : FALSE,
+							(bool)$jsFileConfig['async'],
 							$jsFileConfig['integrity']
 						);
 						unset($jsFileConfig);
@@ -667,11 +667,11 @@ class PageGenerator {
 							$ss,
 							$type,
 							empty($jsFileConfig['disableCompression']),
-							$jsFileConfig['forceOnTop'] ? TRUE : FALSE,
+							(bool)$jsFileConfig['forceOnTop'],
 							$jsFileConfig['allWrap'],
-							$jsFileConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+							(bool)$jsFileConfig['excludeFromConcatenation'],
 							$jsFileConfig['allWrap.']['splitChar'],
-							$jsFileConfig['async'] ? TRUE : FALSE,
+							(bool)$jsFileConfig['async'],
 							$jsFileConfig['integrity']
 						);
 						unset($jsFileConfig);
@@ -697,11 +697,11 @@ class PageGenerator {
 							$ss,
 							$type,
 							empty($jsConfig['disableCompression']),
-							$jsConfig['forceOnTop'] ? TRUE : FALSE,
+							(bool)$jsConfig['forceOnTop'],
 							$jsConfig['allWrap'],
-							$jsConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+							(bool)$jsConfig['excludeFromConcatenation'],
 							$jsConfig['allWrap.']['splitChar'],
-							$jsConfig['async'] ? TRUE : FALSE,
+							(bool)$jsConfig['async'],
 							$jsConfig['integrity']
 						);
 						unset($jsConfig);
@@ -726,11 +726,11 @@ class PageGenerator {
 							$ss,
 							$type,
 							empty($jsConfig['disableCompression']),
-							$jsConfig['forceOnTop'] ? TRUE : FALSE,
+							(bool)$jsConfig['forceOnTop'],
 							$jsConfig['allWrap'],
-							$jsConfig['excludeFromConcatenation'] ? TRUE : FALSE,
+							(bool)$jsConfig['excludeFromConcatenation'],
 							$jsConfig['allWrap.']['splitChar'],
-							$jsConfig['async'] ? TRUE : FALSE,
+							(bool)$jsConfig['async'],
 							$jsConfig['integrity']
 						);
 						unset($jsConfig);

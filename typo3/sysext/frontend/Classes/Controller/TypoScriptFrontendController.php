@@ -3621,7 +3621,7 @@ class TypoScriptFrontendController {
 				header(
 					trim($options['header']),
 					// "replace existing headers" is turned on by default, unless turned off
-					($options['replace'] === '0' ? FALSE : TRUE),
+					($options['replace'] !== '0'),
 					((int)$options['httpResponseCode'] ?: NULL)
 				);
 			}

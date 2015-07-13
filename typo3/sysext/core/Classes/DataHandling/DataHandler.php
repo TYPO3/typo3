@@ -3112,7 +3112,7 @@ class DataHandler {
 		// IRRE with a pointer field (database normalization):
 		if ($tcaFieldConf['foreign_field']) {
 			// if the record was imported, sorting was also imported, so skip this
-			$skipSorting = $this->callFromImpExp ? TRUE : FALSE;
+			$skipSorting = (bool)$this->callFromImpExp;
 			// update record in intermediate table (sorting & pointer uid to parent record)
 			$dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
 			$newValue = $keepTranslation ? 0 : $dbAnalysis->countItems(FALSE);
@@ -6107,7 +6107,7 @@ class DataHandler {
 	 */
 	public function tableReadOnly($table) {
 		// Returns TRUE if table is readonly
-		return $GLOBALS['TCA'][$table]['ctrl']['readOnly'] ? TRUE : FALSE;
+		return (bool)$GLOBALS['TCA'][$table]['ctrl']['readOnly'];
 	}
 
 	/**
@@ -6118,7 +6118,7 @@ class DataHandler {
 	 */
 	public function tableAdminOnly($table) {
 		// Returns TRUE if table is admin-only
-		return $GLOBALS['TCA'][$table]['ctrl']['adminOnly'] ? TRUE : FALSE;
+		return (bool)$GLOBALS['TCA'][$table]['ctrl']['adminOnly'];
 	}
 
 	/**

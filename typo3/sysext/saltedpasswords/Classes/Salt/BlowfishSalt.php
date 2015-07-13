@@ -246,7 +246,7 @@ class BlowfishSalt extends Md5Salt {
 	 */
 	public function isValidSaltedPW($saltedPW) {
 		$isValid = FALSE;
-		$isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting())) ? TRUE : FALSE;
+		$isValid = !strncmp($this->getSetting(), $saltedPW, strlen($this->getSetting()));
 		if ($isValid) {
 			$isValid = $this->isValidSalt($saltedPW);
 		}

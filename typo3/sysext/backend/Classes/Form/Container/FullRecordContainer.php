@@ -77,7 +77,7 @@ class FullRecordContainer extends AbstractContainer {
 			array_unshift($fieldsArray, '--div--;LLL:EXT:lang/locallang_core.xlf:labels.generalTab');
 		}
 		// If first tab has no label definition, add "general" label
-		$firstTabHasLabel = count(GeneralUtility::trimExplode(';',  $fieldsArray[0])) > 1 ? TRUE : FALSE;
+		$firstTabHasLabel = count(GeneralUtility::trimExplode(';',  $fieldsArray[0])) > 1;
 		if (!$firstTabHasLabel) {
 			$fieldsArray[0] = '--div--;LLL:EXT:lang/locallang_core.xlf:labels.generalTab';
 		}

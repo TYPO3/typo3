@@ -229,7 +229,7 @@ class Bootstrap {
 	public function checkIfEssentialConfigurationExists() {
 		$configurationManager = new \TYPO3\CMS\Core\Configuration\ConfigurationManager;
 		$this->setEarlyInstance(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class, $configurationManager);
-		return (!file_exists($configurationManager->getLocalConfigurationFileLocation()) || !file_exists(PATH_typo3conf . 'PackageStates.php')) ? FALSE : TRUE;
+		return file_exists($configurationManager->getLocalConfigurationFileLocation()) && file_exists(PATH_typo3conf . 'PackageStates.php');
 	}
 
 	/**

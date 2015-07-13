@@ -88,7 +88,7 @@ class EidRequestHandler implements RequestHandlerInterface {
 	 * @return bool If the request is not an eID request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest(ServerRequestInterface $request) {
-		return $request->getQueryParams()['eID'] || $request->getParsedBody()['eID'] ? TRUE : FALSE;
+		return $request->getQueryParams()['eID'] || $request->getParsedBody()['eID'];
 	}
 
 	/**

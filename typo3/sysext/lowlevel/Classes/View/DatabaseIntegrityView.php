@@ -271,7 +271,7 @@ class DatabaseIntegrityView extends BaseScriptClass {
 		$this->view->assign('PATH_typo3', PATH_typo3);
 
 		if (GeneralUtility::_GP('_update') || GeneralUtility::_GP('_check')) {
-			$testOnly = GeneralUtility::_GP('_check') ? TRUE : FALSE;
+			$testOnly = (bool)GeneralUtility::_GP('_check');
 			// Call the functionality
 			$refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
 			list(,$bodyContent) = $refIndexObj->updateIndex($testOnly);

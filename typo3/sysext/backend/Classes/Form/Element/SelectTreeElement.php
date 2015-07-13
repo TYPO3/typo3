@@ -144,8 +144,8 @@ class SelectTreeElement extends AbstractFormElement {
 		$width = 280;
 		$appearance = $PA['fieldConf']['config']['treeConfig']['appearance'];
 		if (is_array($appearance)) {
-			$header = $appearance['showHeader'] ? TRUE : FALSE;
-			$expanded = $appearance['expandAll'] === TRUE;
+			$header = (bool)$appearance['showHeader'];
+			$expanded = (bool)$appearance['expandAll'];
 			if (isset($appearance['width'])) {
 				$width = (int)$appearance['width'];
 			}

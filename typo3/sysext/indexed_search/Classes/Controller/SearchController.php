@@ -149,7 +149,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		}
 		// Indexer configuration from Extension Manager interface:
 		$this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
-		$this->enableMetaphoneSearch = $this->indexerConfig['enableMetaphoneSearch'] ? TRUE : FALSE;
+		$this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
 		$this->initializeExternalParsers();
 		// If "_sections" is set, this value overrides any existing value.
 		if ($searchData['_sections']) {

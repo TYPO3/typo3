@@ -526,7 +526,7 @@ class CrawlerHook {
 		// (Re)-Indexing a row from a table:
 		$indexerObj = GeneralUtility::makeInstance(\TYPO3\CMS\IndexedSearch\Indexer::class);
 		parse_str(str_replace('###UID###', $r['uid'], $cfgRec['get_params']), $GETparams);
-		$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, $cfgRec['chashcalc'] ? TRUE : FALSE);
+		$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, (bool)$cfgRec['chashcalc']);
 		$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 		$indexerObj->forceIndexing = TRUE;
 		$theContent = '';

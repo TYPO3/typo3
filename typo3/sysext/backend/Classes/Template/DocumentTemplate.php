@@ -1883,7 +1883,7 @@ function jumpToUrl(URL) {
 	 */
 	public function collapseableSection($title, $html, $id, $saveStatePointer = '') {
 		GeneralUtility::logDeprecatedFunction();
-		$hasSave = $saveStatePointer ? TRUE : FALSE;
+		$hasSave = (bool)$saveStatePointer;
 		$collapsedStyle = ($collapsedClass = '');
 		if ($hasSave) {
 			/** @var $userSettingsController \TYPO3\CMS\Backend\Controller\UserSettingsController */

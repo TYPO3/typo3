@@ -114,12 +114,11 @@ class Request implements RequestInterface {
 	 * Sets the dispatched flag
 	 *
 	 * @param bool $flag If this request has been dispatched
-	 *
 	 * @return void
 	 * @api
 	 */
 	public function setDispatched($flag) {
-		$this->dispatched = $flag ? TRUE : FALSE;
+		$this->dispatched = (bool)$flag;
 	}
 
 	/**

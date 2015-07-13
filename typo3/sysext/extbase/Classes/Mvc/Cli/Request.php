@@ -98,7 +98,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @return void
 	 */
 	public function setDispatched($flag) {
-		$this->dispatched = $flag ? TRUE : FALSE;
+		$this->dispatched = (bool)$flag;
 	}
 
 	/**

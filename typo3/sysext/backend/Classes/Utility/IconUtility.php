@@ -182,7 +182,7 @@ class IconUtility {
 		$deleted = FALSE;
 		// Set, if a page-record (only pages!) has the extend-to-subpages flag set.
 		$protectSection = FALSE;
-		$noIconFound = $row['_NO_ICON_FOUND'] ? TRUE : FALSE;
+		$noIconFound = (bool)$row['_NO_ICON_FOUND'];
 		// + $shaded which is also boolean!
 		// Icon state based on "enableFields":
 		if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
@@ -939,8 +939,8 @@ class IconUtility {
 			'fe_group' => FALSE,
 			'deleted' => FALSE,
 			'protectedSection' => FALSE,
-			'nav_hide' => $row['nav_hide'] ? TRUE : FALSE,
-			'noIconFound' => $row['_NO_ICON_FOUND'] ? TRUE : FALSE
+			'nav_hide' => (bool)$row['nav_hide'],
+			'noIconFound' => (bool)$row['_NO_ICON_FOUND']
 		);
 		// Icon state based on "enableFields":
 		if (is_array($tcaCtrl['enablecolumns'])) {

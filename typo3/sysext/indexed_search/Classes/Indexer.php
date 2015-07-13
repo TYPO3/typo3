@@ -369,8 +369,8 @@ class Indexer {
 		$this->maxExternalFiles = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->indexerConfig['maxExternalFiles'], 0, 1000, 5);
 		$this->flagBitMask = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->indexerConfig['flagBitMask'], 0, 255);
 		// Workaround: If the extension configuration was not updated yet, the value is not existing
-		$this->enableMetaphoneSearch = isset($this->indexerConfig['enableMetaphoneSearch']) ? ($this->indexerConfig['enableMetaphoneSearch'] ? TRUE : FALSE) : TRUE;
-		$this->storeMetaphoneInfoAsWords = \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_words') ? FALSE : ($this->enableMetaphoneSearch ? TRUE : FALSE);
+		$this->enableMetaphoneSearch = !isset($this->indexerConfig['enableMetaphoneSearch']) || $this->indexerConfig['enableMetaphoneSearch'];
+		$this->storeMetaphoneInfoAsWords = !\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_words') && $this->enableMetaphoneSearch;
 		// Initialize external document parsers:
 		// Example configuration, see ext_localconf.php of this file!
 		if ($this->conf['index_externals']) {

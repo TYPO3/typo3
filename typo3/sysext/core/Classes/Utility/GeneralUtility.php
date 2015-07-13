@@ -3456,7 +3456,7 @@ Connection: close
 				if (self::cmpIP($_SERVER['REMOTE_ADDR'], $proxySSL)) {
 					$retVal = TRUE;
 				} else {
-					$retVal = $_SERVER['SSL_SESSION_ID'] || strtolower($_SERVER['HTTPS']) === 'on' || (string)$_SERVER['HTTPS'] === '1' ? TRUE : FALSE;
+					$retVal = $_SERVER['SSL_SESSION_ID'] || strtolower($_SERVER['HTTPS']) === 'on' || (string)$_SERVER['HTTPS'] === '1';
 				}
 				break;
 			case '_ARRAY':
@@ -3949,11 +3949,7 @@ Connection: close
 	 * @return bool TRUE if the page should be hidden
 	 */
 	static public function hideIfNotTranslated($l18n_cfg_fieldValue) {
-		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault']) {
-			return $l18n_cfg_fieldValue & 2 ? FALSE : TRUE;
-		} else {
-			return $l18n_cfg_fieldValue & 2 ? TRUE : FALSE;
-		}
+		return $GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] XOR ($l18n_cfg_fieldValue & 2);
 	}
 
 	/**
@@ -3964,7 +3960,7 @@ Connection: close
 	 * @return bool
 	 */
 	static public function hideIfDefaultLanguage($localizationConfiguration) {
-		return $localizationConfiguration & 1;
+		return (bool)($localizationConfiguration & 1);
 	}
 
 	/**

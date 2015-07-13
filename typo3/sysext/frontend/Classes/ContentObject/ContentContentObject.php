@@ -59,13 +59,10 @@ class ContentContentObject extends AbstractContentObject {
 			$slideCollect = 0;
 		}
 		$slideCollectReverse = isset($conf['slide.']['collectReverse.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.']) : (int)$conf['slide.']['collectReverse'];
-		$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
-		$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.']) ? (int)$this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.']) : (int)$conf['slide.']['collectFuzzy'];
-		if ($slideCollectFuzzy) {
-			$slideCollectFuzzy = TRUE;
-		} else {
-			$slideCollectFuzzy = FALSE;
-		}
+		$slideCollectReverse = (bool)$slideCollectReverse;
+		$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.'])
+			? (bool)$this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.'])
+			: (bool)$conf['slide.']['collectFuzzy'];
 		if (!$slideCollect) {
 			$slideCollectFuzzy = TRUE;
 		}

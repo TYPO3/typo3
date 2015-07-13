@@ -41,7 +41,7 @@ class EidUtility {
 	 * @return bool
 	 */
 	static public function isEidRequest() {
-		return GeneralUtility::_GP('eID') ? TRUE : FALSE;
+		return (bool)GeneralUtility::_GP('eID');
 	}
 
 	/**

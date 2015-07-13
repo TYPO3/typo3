@@ -119,7 +119,7 @@ class InlineRecordContainer extends AbstractContainer {
 			// Get configuration:
 			$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
 			$expandAll = isset($config['appearance']['collapseAll']) && !$config['appearance']['collapseAll'];
-			$ajaxLoad = isset($config['appearance']['ajaxLoad']) && !$config['appearance']['ajaxLoad'] ? FALSE : TRUE;
+			$ajaxLoad = !isset($config['appearance']['ajaxLoad']) || $config['appearance']['ajaxLoad'];
 			if ($isNewRecord) {
 				// Show this record expanded or collapsed
 				$isExpanded = $expandAll || (!$collapseAll ? 1 : 0);
@@ -429,9 +429,9 @@ class InlineRecordContainer extends AbstractContainer {
 		$isParentExisting = MathUtility::canBeInterpretedAsInteger($parentUid);
 		$tcaTableCtrl = &$GLOBALS['TCA'][$foreign_table]['ctrl'];
 		$tcaTableCols = &$GLOBALS['TCA'][$foreign_table]['columns'];
-		$isPagesTable = $foreign_table == 'pages' ? TRUE : FALSE;
+		$isPagesTable = $foreign_table === 'pages';
 		$isOnSymmetricSide = RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
-		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$isOnSymmetricSide && $config['foreign_sortby'] || $isOnSymmetricSide && $config['symmetric_sortby'] ? TRUE : FALSE;
+		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$isOnSymmetricSide && $config['foreign_sortby'] || $isOnSymmetricSide && $config['symmetric_sortby'];
 		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
 		$nameObjectFt = $nameObject . '-' . $foreign_table;
 		$nameObjectFtId = $nameObjectFt . '-' . $rec['uid'];

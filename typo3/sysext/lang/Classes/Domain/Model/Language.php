@@ -116,7 +116,7 @@ class Language extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function setSelected($selected) {
-		$this->selected = $selected ? TRUE : FALSE;
+		$this->selected = (bool)$selected;
 	}
 
 	/**
