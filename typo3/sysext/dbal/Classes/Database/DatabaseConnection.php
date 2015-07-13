@@ -2497,7 +2497,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		if (!$ret) {
 			GeneralUtility::sysLog(
 				'Could not select MySQL database ' . $databaseName . ': ' . $this->sql_error(),
-				'Core',
+				'core',
 				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
 		}
@@ -2973,7 +2973,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					if ($link->set_charset($this->connectionCharset) === FALSE) {
 						GeneralUtility::sysLog(
 							'Error setting connection charset to "' . $this->connectionCharset . '"',
-							'Core',
+							'core',
 							GeneralUtility::SYSLOG_SEVERITY_ERROR
 						);
 					}
@@ -2987,7 +2987,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							if ($this->query($command) === FALSE) {
 								GeneralUtility::sysLog(
 									'Could not initialize DB connection with query "' . $command . '": ' . $this->sql_error(),
-									'Core',
+									'core',
 									GeneralUtility::SYSLOG_SEVERITY_ERROR
 								);
 							}
@@ -2998,7 +2998,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 					$output = TRUE;
 				} else {
-					GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+					GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'core', GeneralUtility::SYSLOG_SEVERITY_FATAL);
 				}
 				break;
 			case 'adodb':
@@ -3028,7 +3028,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 				if (!$this->handlerInstance[$handlerKey]->isConnected()) {
 					$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . ((string)$cfgArray['config']['password'] !== '' ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
-					GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+					GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'core', GeneralUtility::SYSLOG_SEVERITY_FATAL);
 					error_log('DBAL error: Connection to ' . $dsn . ' failed. Maybe PHP doesn\'t support the database?');
 					$output = FALSE;
 				} else {

@@ -580,7 +580,7 @@ class TypoScriptParser {
 				} else {
 					GeneralUtility::sysLog(
 						'Missing function definition for ' . $modifierName . ' on TypoScript',
-						'Core',
+						'core',
 						GeneralUtility::SYSLOG_SEVERITY_WARNING
 					);
 				}
@@ -780,7 +780,7 @@ class TypoScriptParser {
 	static public function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE, $parentFilenameOrPath = '') {
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
-			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			if ($returnFiles) {
 				return array(
 					'typoscript' => '',
@@ -978,7 +978,7 @@ class TypoScriptParser {
 	 * @static
 	 */
 	static protected function typoscriptIncludeError($error) {
-		GeneralUtility::sysLog($error, 'Core', 2);
+		GeneralUtility::sysLog($error, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 		return "\n###\n### ERROR: " . $error . "\n###\n\n";
 	}
 
@@ -1010,7 +1010,7 @@ class TypoScriptParser {
 	 */
 	static public function extractIncludes($string, $cycle_counter = 1, array $extractedFileNames = array(), $parentFilenameOrPath = '') {
 		if ($cycle_counter > 10) {
-			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			GeneralUtility::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			return '
 ###
 ### ERROR: Recursion!

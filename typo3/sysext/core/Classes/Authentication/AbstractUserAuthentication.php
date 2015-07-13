@@ -506,7 +506,7 @@ abstract class AbstractUserAuthentication {
 				$match = array();
 				$matchCnt = @preg_match($cookieDomain, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === FALSE) {
-					GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}
@@ -860,7 +860,7 @@ abstract class AbstractUserAuthentication {
 		$inserted = (bool)$this->db->exec_INSERTquery($this->session_table, $insertFields);
 		if (!$inserted) {
 			$message = 'Session data could not be written to DB. Error: ' . $this->db->sql_error();
-			GeneralUtility::sysLog($message, 'Core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			GeneralUtility::sysLog($message, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			if ($this->writeDevLog) {
 				GeneralUtility::devLog($message, \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, 2);
 			}

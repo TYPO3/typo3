@@ -216,7 +216,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 				throw new \TYPO3\CMS\Core\Cache\Exception('Could not set data to memcache server.', 1275830266);
 			}
 		} catch (\Exception $exception) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Memcache: could not set value. Reason: ' . $exception->getMessage(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Memcache: could not set value. Reason: ' . $exception->getMessage(), 'core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 		}
 	}
 

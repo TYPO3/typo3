@@ -176,7 +176,7 @@ class Task extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @param \Exception $e
 	 */
 	protected function logException(\Exception $e) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, 3);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($e->getMessage(), $this->commandIdentifier, \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 	}
 
 }

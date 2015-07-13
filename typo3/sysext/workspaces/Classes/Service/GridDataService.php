@@ -363,7 +363,11 @@ class GridDataService {
 					// Do nothing
 			}
 		} else {
-			GeneralUtility::sysLog('Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
+			GeneralUtility::sysLog(
+				'Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.',
+				'workspaces',
+				GeneralUtility::SYSLOG_SEVERITY_ERROR
+			);
 		}
 		// Suggested slot method:
 		// methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, $sortColumn, $sortDirection)

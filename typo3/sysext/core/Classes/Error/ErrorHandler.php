@@ -107,26 +107,27 @@ class ErrorHandler implements ErrorHandlerInterface {
 					$severity = 0;
 			}
 			$logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
+			$message = $logTitle . ': ' . $message;
 			// Write error message to the configured syslogs,
 			// see: $TYPO3_CONF_VARS['SYS']['systemLog']
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting']) {
-				GeneralUtility::sysLog($message, $logTitle, $severity);
+				GeneralUtility::sysLog($message, 'core', $severity + 1);
 			}
 			// Write error message to devlog extension(s),
 			// see: $TYPO3_CONF_VARS['SYS']['enable_errorDLOG']
 			if (TYPO3_ERROR_DLOG) {
-				GeneralUtility::devLog($message, $logTitle, $severity + 1);
+				GeneralUtility::devLog($message, 'core', $severity + 1);
 			}
 			// Write error message to TSlog (admin panel)
 			if (is_object($GLOBALS['TT'])) {
-				$GLOBALS['TT']->setTSlogMessage($logTitle . ': ' . $message, $severity + 1);
+				$GLOBALS['TT']->setTSlogMessage($message, $severity + 1);
 			}
 			// Write error message to sys_log table (ext: belog, Tools->Log)
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
 				// Silently catch in case an error occurs before a database connection exists,
 				// but DatabaseConnection fails to connect.
 				try {
-					$this->writeLog($logTitle . ': ' . $message, $severity);
+					$this->writeLog($message, $severity);
 				} catch (\Exception $e) {
 				}
 			}

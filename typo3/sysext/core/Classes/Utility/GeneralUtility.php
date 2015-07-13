@@ -3832,7 +3832,7 @@ Connection: close
 			}
 		}
 		if (!empty($url) && empty($sanitizedUrl)) {
-			self::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'Core', self::SYSLOG_SEVERITY_NOTICE);
+			self::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'core', self::SYSLOG_SEVERITY_NOTICE);
 		}
 		return $sanitizedUrl;
 	}

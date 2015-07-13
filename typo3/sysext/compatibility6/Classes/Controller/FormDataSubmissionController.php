@@ -278,7 +278,7 @@ class FormDataSubmissionController {
 				$autoRespondChecksum = $valueList['auto_respond_checksum'];
 				$correctHmacChecksum = GeneralUtility::hmac($this->autoRespondMessage, 'content_form');
 				if ($autoRespondChecksum !== $correctHmacChecksum) {
-					GeneralUtility::sysLog('Possible misuse of DataSubmissionController auto respond method. Subject: ' . $valueList['subject'], 'Core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					GeneralUtility::sysLog('Possible misuse of DataSubmissionController auto respond method. Subject: ' . $valueList['subject'], 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 					return;
 				} else {
 					$this->autoRespondMessage = $this->sanitizeHeaderString($this->autoRespondMessage);
@@ -319,7 +319,7 @@ class FormDataSubmissionController {
 						'Error in uploaded file in DataSubmissionController: temporary file "' .
 							$_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' .
 							$_FILES[$variableName]['error'],
-						'Core',
+						'core',
 						GeneralUtility::SYSLOG_SEVERITY_ERROR
 					);
 					continue;
@@ -329,7 +329,7 @@ class FormDataSubmissionController {
 					GeneralUtility::sysLog(
 						'Possible abuse of DataSubmissionController: temporary file "' . $_FILES[$variableName]['tmp_name'] .
 							'" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.',
-						'Core',
+						'core',
 						GeneralUtility::SYSLOG_SEVERITY_ERROR
 					);
 					continue;
@@ -358,7 +358,7 @@ class FormDataSubmissionController {
 			// is not worth the trouble
 			// Log dirty header lines
 			if ($this->dirtyHeaders) {
-				GeneralUtility::sysLog('Possible misuse of DataSubmissionController: see TYPO3 devLog', 'Core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+				GeneralUtility::sysLog('Possible misuse of DataSubmissionController: see TYPO3 devLog', 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
 					GeneralUtility::devLog('DataSubmissionController: ' . GeneralUtility::arrayToLogString($this->dirtyHeaders, '', 200), 'Core', 3);
 				}

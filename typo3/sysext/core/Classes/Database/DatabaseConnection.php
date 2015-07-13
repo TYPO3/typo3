@@ -1202,7 +1202,7 @@ class DatabaseConnection {
 			if ($this->link->set_charset($this->connectionCharset) === FALSE) {
 				GeneralUtility::sysLog(
 					'Error setting connection charset to "' . $this->connectionCharset . '"',
-					'Core',
+					'core',
 					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
 			}
@@ -1211,7 +1211,7 @@ class DatabaseConnection {
 				if ($this->query($command) === FALSE) {
 					GeneralUtility::sysLog(
 						'Could not initialize DB connection with query "' . $command . '": ' . $this->sql_error(),
-						'Core',
+						'core',
 						GeneralUtility::SYSLOG_SEVERITY_ERROR
 					);
 				}
@@ -1224,7 +1224,7 @@ class DatabaseConnection {
 			$this->link = NULL;
 			GeneralUtility::sysLog(
 				'Could not connect to MySQL server ' . $host . ' with user ' . $this->databaseUsername . ': ' . $error_msg,
-				'Core',
+				'core',
 				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
 		}
@@ -1246,7 +1246,7 @@ class DatabaseConnection {
 				$this->sql_query($query);
 				GeneralUtility::sysLog(
 					'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
-					'Core',
+					'core',
 					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
 			}
@@ -1267,7 +1267,7 @@ class DatabaseConnection {
 		if (!$ret) {
 			GeneralUtility::sysLog(
 				'Could not select MySQL database ' . $this->databaseName . ': ' . $this->sql_error(),
-				'Core',
+				'core',
 				GeneralUtility::SYSLOG_SEVERITY_FATAL
 			);
 		}
@@ -1617,7 +1617,7 @@ class DatabaseConnection {
 		if ($sessionResult === FALSE) {
 			GeneralUtility::sysLog(
 				'Error while retrieving the current charset session variables from the database: ' . $this->sql_error(),
-				'Core',
+				'core',
 				GeneralUtility::SYSLOG_SEVERITY_ERROR
 			);
 			throw new \RuntimeException(
@@ -1647,7 +1647,7 @@ class DatabaseConnection {
 			if (empty($charsetVariables[$variableName])) {
 				GeneralUtility::sysLog(
 					'A required session variable is missing in the current MySQL connection: ' . $variableName,
-					'Core',
+					'core',
 					GeneralUtility::SYSLOG_SEVERITY_ERROR
 				);
 				throw new \RuntimeException(
@@ -1765,7 +1765,7 @@ class DatabaseConnection {
 		$msg .= ': function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'], (strlen(PATH_site) + 2)) . ' in line ' . $trace[0]['line'];
 		GeneralUtility::sysLog(
 			$msg . '. Use a devLog extension to get more details.',
-			'Core/t3lib_db',
+			'core',
 			GeneralUtility::SYSLOG_SEVERITY_ERROR
 		);
 		// Send to devLog if enabled
