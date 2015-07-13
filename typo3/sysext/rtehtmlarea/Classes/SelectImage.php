@@ -132,17 +132,17 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		}');
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
 			SelectImage.editorNo = ' . GeneralUtility::quoteJSvalue($this->editorNo) . ';
 			SelectImage.act = ' . GeneralUtility::quoteJSvalue(($this->act ?: reset($this->allowedItems))) . ';
 			SelectImage.sys_language_content = ' . GeneralUtility::quoteJSvalue($this->sys_language_content) . ';
 			SelectImage.RTEtsConfigParams = ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
 			SelectImage.bparams = ' . GeneralUtility::quoteJSvalue($this->bparams) . ';
 		}');
-		$this->doc->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		$this->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
 	}
 

@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Extension class for "template" - used in the context of frontend editing.
  */
@@ -22,11 +25,13 @@ class FrontendDocumentTemplate extends DocumentTemplate {
 	/**
 	 * Gets instance of PageRenderer
 	 *
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 * @return PageRenderer
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getPageRenderer() {
+		GeneralUtility::logDeprecatedFunction();
 		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		}
 		return $this->pageRenderer;
 	}

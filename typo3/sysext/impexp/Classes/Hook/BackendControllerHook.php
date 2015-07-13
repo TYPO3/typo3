@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Impexp\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class adds import export related JavaScript to the backend
@@ -28,7 +30,14 @@ class BackendControllerHook {
 	 * @return void
 	 */
 	public function addJavaScript(array $configuration, \TYPO3\CMS\Backend\Controller\BackendController $backendController) {
-		$backendController->getPageRenderer()->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
+		$this->getPageRenderer()->addInlineSetting('ImportExport', 'moduleUrl', BackendUtility::getModuleUrl('xMOD_tximpexp'));
+	}
+
+	/**
+	 * @return PageRenderer
+	 */
+	protected function getPageRenderer() {
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 }

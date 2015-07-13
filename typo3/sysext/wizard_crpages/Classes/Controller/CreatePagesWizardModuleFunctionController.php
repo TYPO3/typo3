@@ -163,13 +163,11 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 						<input class="btn btn-default" type="reset" value="' . $this->getLanguageService()->getLL('wiz_newPages_lReset') . '" />
 					</div>';
 
-				/** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
-				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-				$pageRenderer->loadJquery();
-				$pageRenderer->loadRequireJsModule('TYPO3/CMS/WizardCrpages/WizardCreatePages');
+				$this->getPageRenderer()->loadJquery();
+				$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/WizardCrpages/WizardCreatePages');
 				// Add inline code
 				$inlineJavaScriptCode = 'var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;';
-				$pageRenderer->addJsInlineCode('wizard_crpages', $inlineJavaScriptCode);
+				$this->getPageRenderer()->addJsInlineCode('wizard_crpages', $inlineJavaScriptCode);
 			}
 		} else {
 			$theCode .= GeneralUtility::makeInstance(FlashMessage::class, '', $this->getLanguageService()->getLL('wiz_newPages_errorMsg1'), FlashMessage::ERROR)->render();

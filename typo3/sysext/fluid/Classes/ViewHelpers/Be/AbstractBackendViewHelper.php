@@ -22,6 +22,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  *                                                                        */
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -50,4 +51,21 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper {
 		return $doc;
 	}
 
+	/**
+	 * Gets instance of PageRenderer if exists or create a new one.
+	 * Saves instance in viewHelperVariableContainer
+	 *
+	 * @return PageRenderer
+	 */
+	public function getPageRenderer() {
+		if ($this->viewHelperVariableContainer->exists(AbstractBackendViewHelper::class, 'PageRenderer')) {
+			$pageRenderer = $this->viewHelperVariableContainer->get(AbstractBackendViewHelper::class, 'PageRenderer');
+		} else {
+			/** @var $doc DocumentTemplate */
+			$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+			$this->viewHelperVariableContainer->add(AbstractBackendViewHelper::class, 'PageRenderer', $pageRenderer);
+		}
+
+		return $pageRenderer;
+	}
 }

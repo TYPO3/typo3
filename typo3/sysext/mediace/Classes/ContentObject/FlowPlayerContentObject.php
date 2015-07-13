@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Mediace\ContentObject;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains FlowPlayer class object.
@@ -207,8 +208,6 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$params = ($prefix = '');
 		if ($GLOBALS['TSFE']->baseUrl) {
 			$prefix = $GLOBALS['TSFE']->baseUrl;
@@ -224,16 +223,16 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$type = isset($conf['type.']) ? $this->cObj->stdWrap($conf['type'], $conf['type.']) : $conf['type'];
 		$typeConf = $conf[$type . '.'];
 		// Add Flowplayer js-file
-		$pageRenderer->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.13.min.js'));
+		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.13.min.js'));
 		// Add Flowpayer css for exprss install
-		$pageRenderer->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
+		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
 		// Add videoJS js-file
-		$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/video.js'));
+		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/video.js'));
 		// Add videoJS css-file
-		$pageRenderer->addCssFile($this->getPathToLibrary('videojs/video-js/video-js.css'));
+		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('videojs/video-js/video-js.css'));
 		// Add extended videoJS control bar
-		$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.js'));
-		$pageRenderer->addCssFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.css'));
+		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.js'));
+		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('videojs/video-js/controls/control-bar.css'));
 		// Build Flash configuration
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		if (!$player) {
@@ -315,7 +314,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Hook for manipulating the conf array, it's needed for some players like flowplayer
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'] as $classRef) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($classRef, $conf, $this);
+				GeneralUtility::callUserFunction($classRef, $conf, $this);
 			}
 		}
 		// Flowplayer config
@@ -333,7 +332,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$videoSources = '';
 		if (is_array($conf['sources'])) {
 			foreach ($conf['sources'] as $source) {
-				$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
+				$fileinfo = GeneralUtility::split_fileref($source);
 				$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
 				$videoSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
 			}
@@ -342,7 +341,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$audioSources = '';
 		if (is_array($conf['audioSources'])) {
 			foreach ($conf['audioSources'] as $source) {
-				$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
+				$fileinfo = GeneralUtility::split_fileref($source);
 				$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
 				$audioSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
 			}
@@ -352,7 +351,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			// Assemble captions track tag
 			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '" default>' . LF;
 			// Add videoJS extension for captions
-			$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/captions.js'));
+			$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/captions.js'));
 			// Flowplayer captions
 			$conf['videoflashvars']['captionUrl'] = $conf['caption'];
 			// Flowplayer captions plugin configuration
@@ -366,7 +365,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		if ($conf['type'] == 'video') {
 			if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
 				// Add videoJS audio description toggle
-				$pageRenderer->addJsFile($this->getPathToLibrary('videojs/video-js/controls/audio-description.js'));
+				$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/controls/audio-description.js'));
 			}
 			if (isset($conf['audioFallback'])) {
 				// Audio description flowplayer config (remove controls)
@@ -504,7 +503,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					// Create "source" elements
 					if (is_array($conf['sources']) && !empty($conf['sources'])) {
 						foreach ($conf['sources'] as $source) {
-							$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
+							$fileinfo = GeneralUtility::split_fileref($source);
 							$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
 							$videoTagAssembly .= '
 			' . $replaceElementIdString . '_video_js.appendChild($f.extend(document.createElement("source"), {
@@ -557,7 +556,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					// Test whether the browser supports any of types of the provided sources
 					$supported = array();
 					foreach ($conf['sources'] as $source) {
-						$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
+						$fileinfo = GeneralUtility::split_fileref($source);
 						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
 						$supported[] = $replaceElementIdString . '_videoTag.canPlayType("' . $mimeType . '") != ""';
 					}
@@ -596,7 +595,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				// Create "source" elements
 				if (is_array($conf['audioSources']) && !empty($conf['audioSources'])) {
 					foreach ($conf['audioSources'] as $source) {
-						$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
+						$fileinfo = GeneralUtility::split_fileref($source);
 						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
 						$audioTagAssembly .= '
 		' . $replaceElementIdString . '_audio_element.appendChild($f.extend(document.createElement("source"), {
@@ -637,7 +636,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				// Test whether the browser supports any of types of the provided sources
 				$supported = array();
 				foreach ($conf['audioSources'] as $source) {
-					$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
+					$fileinfo = GeneralUtility::split_fileref($source);
 					$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
 					$supported[] = $replaceElementIdString . '_audioTag.canPlayType("' . $mimeType . '") != ""';
 				}
@@ -714,7 +713,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		if ($jsInlineCode) {
 			$jsInlineCode = 'VideoJS.DOMReady(function(){' . $jsInlineCode . LF . '});';
 		}
-		$pageRenderer->addJsInlineCode($replaceElementIdString, $jsInlineCode);
+		$this->getPageRenderer()->addJsInlineCode($replaceElementIdString, $jsInlineCode);
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}

@@ -51,7 +51,7 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 
 		$typeConf = $conf[$type . '.'];
 		// Add QTobject js-file
-		$GLOBALS['TSFE']->getPageRenderer()->addJsFile($this->getPathToLibrary('flashmedia/qtobject/qtobject.js'));
+		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('flashmedia/qtobject/qtobject.js'));
 		$replaceElementIdString = str_replace('.', '', uniqid('mmqt', TRUE));
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;

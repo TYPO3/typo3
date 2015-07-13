@@ -14,12 +14,13 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
@@ -87,14 +88,16 @@ class BackendController {
 	protected $moduleLoader;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
+	 * @var PageRenderer
 	 */
 	protected $pageRenderer;
 
 	/**
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 * @return PageRenderer
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getPageRenderer() {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->pageRenderer;
 	}
 
@@ -109,7 +112,7 @@ class BackendController {
 		// Initializes the backend modules structure for use later.
 		$this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-		$this->pageRenderer = $this->getDocumentTemplate()->getPageRenderer();
+		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$this->pageRenderer->loadExtJS();
 		// included for the module menu JavaScript, please note that this is subject to change
 		$this->pageRenderer->loadJquery();

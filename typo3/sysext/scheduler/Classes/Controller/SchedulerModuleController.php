@@ -14,14 +14,15 @@ namespace TYPO3\CMS\Scheduler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
@@ -67,11 +68,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @var \TYPO3\CMS\Scheduler\Scheduler Local scheduler instance
 	 */
 	protected $scheduler;
-
-	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
-	 */
-	protected $pageRenderer;
 
 	/**
 	 * @var string
@@ -125,8 +121,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->doc->backPath = $this->backPath;
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->bodyTagAdditions = 'class="tx_scheduler_mod1"';
-
-		$this->pageRenderer = $this->doc->getPageRenderer();
 
 		// Create scheduler instance
 		$this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
@@ -647,9 +641,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 
 		// Load necessary JavaScript
-		$this->pageRenderer->loadJquery();
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+		$this->getPageRenderer()->loadJquery();
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
 
 		// Start rendering the add/edit form
 		$this->view->assign('uid', htmlspecialchars($this->submittedData['uid']));
@@ -921,8 +915,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$this->view->setTemplatePathAndFilename($this->backendTemplatePath . 'ListTasksNoTasks.html');
 			return $this->view->render();
 		} else {
-			$this->pageRenderer->loadJquery();
-			$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
+			$this->getPageRenderer()->loadJquery();
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
 			$table = array();
 			// Header row
 			$table[] =

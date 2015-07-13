@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Recycler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -176,11 +177,9 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	/**
 	 * Returns current PageRenderer
 	 *
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 * @return PageRenderer
 	 */
 	protected function getPageRenderer() {
-		/** @var  \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
-		$documentTemplate = $GLOBALS['TBE_TEMPLATE'];
-		return $documentTemplate->getPageRenderer();
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 }

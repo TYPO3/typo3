@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -262,12 +263,10 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 	/**
 	 * Returns current PageRenderer
 	 *
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 * @return PageRenderer
 	 */
 	protected function getPageRenderer() {
-		/** @var  \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
-		$documentTemplate = $GLOBALS['TBE_TEMPLATE'];
-		return $documentTemplate->getPageRenderer();
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 	/**

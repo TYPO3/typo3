@@ -17,10 +17,13 @@ namespace TYPO3\CMS\Recordlist\Browser;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
@@ -32,8 +35,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Lang\LanguageService;
@@ -249,6 +250,11 @@ class ElementBrowser {
 	public $fileProcessor;
 
 	/**
+	 * @var PageRenderer
+	 */
+	protected $pageRenderer = NULL;
+
+	/**
 	 * Sets the script url depending on being a module or script request
 	 */
 	protected function determineScriptUrl() {
@@ -363,8 +369,8 @@ class ElementBrowser {
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree');
 	}
 
 	/**
@@ -2615,6 +2621,17 @@ class ElementBrowser {
 	 */
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return PageRenderer
+	 */
+	protected function getPageRenderer() {
+		if ($this->pageRenderer === NULL) {
+			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		}
+
+		return $this->pageRenderer;
 	}
 
 }

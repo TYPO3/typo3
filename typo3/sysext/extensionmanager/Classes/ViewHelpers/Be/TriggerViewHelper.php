@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
 
 /**
@@ -43,8 +44,7 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	public function render($triggers = array()) {
-		$doc = $this->getDocInstance();
-		$pageRenderer = $doc->getPageRenderer();
+		$pageRenderer = $this->getPageRenderer();
 		// Handle triggers
 		if (!empty($triggers[AbstractController::TRIGGER_RefreshModuleMenu])) {
 			$pageRenderer->addJsInlineCode(
@@ -53,6 +53,13 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
 			);
 		}
 		return '';
+	}
+
+	/**
+	 * @return PageRenderer
+	 */
+	protected function getPageRenderer() {
+		return $this->objectManager->get(PageRenderer::class);
 	}
 
 }

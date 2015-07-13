@@ -168,7 +168,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$this->initialize();
 
 		// Localization
-		$this->doc->getPageRenderer()->addInlineLanguageLabelFile(
+		$this->getPageRenderer()->addInlineLanguageLabelFile(
 			ExtensionManagementUtility::extPath('linkvalidator', 'Resources/Private/Language/Module/locallang.xlf')
 		);
 
@@ -238,8 +238,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		}
 
 		$this->doc->addStyleSheet('module', 'sysext/linkvalidator/Resources/Public/Styles/styles.css');
-		$this->doc->getPageRenderer()->loadJquery();
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
+		$this->getPageRenderer()->loadJquery();
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Linkvalidator/Linkvalidator');
 
 		// Don't access in workspace
 		if ($this->getBackendUser()->workspace !== 0) {

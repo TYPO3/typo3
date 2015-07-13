@@ -71,8 +71,8 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeCsh = TRUE, $includeRequireJsModules = NULL) {
+		$pageRenderer = $this->getPageRenderer();
 		$doc = $this->getDocInstance();
-		$pageRenderer = $doc->getPageRenderer();
 		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
 
 		// Load various standard libraries

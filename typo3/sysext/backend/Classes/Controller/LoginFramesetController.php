@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class, putting the frameset together.
@@ -40,7 +41,7 @@ class LoginFramesetController {
 		$this->getDocumentTemplate()->startPage($title);
 
 		// Create the frameset for the window
-		$this->content = $this->getDocumentTemplate()->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
+		$this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
 				<frame name="dummy" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
@@ -64,6 +65,13 @@ class LoginFramesetController {
 	 */
 	protected function getDocumentTemplate() {
 		return $GLOBALS['TBE_TEMPLATE'];
+	}
+
+	/**
+	 * @return PageRenderer
+	 */
+	protected function getPageRenderer() {
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 }

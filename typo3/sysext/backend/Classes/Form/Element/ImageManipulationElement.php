@@ -14,15 +14,15 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\FormEngine;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Generation of image manipulation TCEform element
@@ -133,8 +133,8 @@ class ImageManipulationElement extends AbstractFormElement {
 
 			$content .= $this->getImageManipulationInfoTable($parameterArray['itemFormElValue']);
 
-			/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
+			/** @var $pageRenderer PageRenderer */
+			$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 			$pageRenderer->loadRequireJsModule(
 				'TYPO3/CMS/Backend/ImageManipulation',
 				'function(ImageManipulation){ImageManipulation.initializeTrigger()}' // Initialize after load

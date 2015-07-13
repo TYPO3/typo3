@@ -978,6 +978,7 @@ class TypoScriptFrontendController {
 	 * Gets instance of PageRenderer
 	 *
 	 * @return PageRenderer
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This method will become protected then.
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {

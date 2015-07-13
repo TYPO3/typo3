@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Viewpage\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller for viewing the frontend
@@ -31,7 +33,8 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 */
 	public function initializeAction() {
 		$GLOBALS['LANG']->includeLLFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
-		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
+		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		$pageRenderer->addInlineLanguageLabelFile('EXT:viewpage/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
@@ -50,12 +53,12 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return string
 	 */
 	protected function getTargetUrl() {
-		$pageIdToShow = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		$pageIdToShow = (int)GeneralUtility::_GP('id');
 		$adminCommand = $this->getAdminCommand($pageIdToShow);
 		$domainName = $this->getDomainName($pageIdToShow);
 		// Mount point overlay: Set new target page id and mp parameter
 		/** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
-		$sysPage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$sysPage = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\PageRepository::class);
 		$sysPage->init(FALSE);
 		$mountPointMpParameter = '';
 		$finalPageIdToShow = $pageIdToShow;
@@ -74,7 +77,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 			} else {
 				$protocol = 'http';
 				$page = (array)$sysPage->getPage($finalPageIdToShow);
-				if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+				if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 					$protocol = 'https';
 				}
 				$protocolAndHost = $protocol . '://' . $domainName;
@@ -139,7 +142,7 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @return array
 	 */
 	protected function getPreviewFrameWidths() {
-		$pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		$pageId = (int)GeneralUtility::_GP('id');
 		$modTSconfig = BackendUtility::getModTSconfig($pageId, 'mod.web_view');
 		$widths = array(
 			'100%|100%' => $GLOBALS['LANG']->getLL('autoSize')

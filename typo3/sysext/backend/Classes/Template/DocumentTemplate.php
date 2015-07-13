@@ -352,7 +352,7 @@ function jumpToUrl(URL) {
 	public $hasDocheader = TRUE;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Page\PageRenderer
+	 * @var PageRenderer
 	 */
 	protected $pageRenderer;
 
@@ -436,11 +436,12 @@ function jumpToUrl(URL) {
 	/**
 	 * Gets instance of PageRenderer configured with the current language, file references and debug settings
 	 *
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 * @return PageRenderer
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This method will become protected then.
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
 			$this->pageRenderer->enableConcatenateFiles();
 			$this->pageRenderer->enableCompressCss();
@@ -1579,7 +1580,7 @@ function jumpToUrl(URL) {
 	 * @return string
 	 */
 	public function getDynamicTabMenu(array $menuItems, $identString, $defaultTabIndex = 1, $collapseable = FALSE, $wrapContent = TRUE, $storeLastActiveTab = TRUE) {
-		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tabs');
 		$templatePathAndFileName = 'EXT:backend/Resources/Private/Templates/DocumentTemplate/' . ($collapseable ? 'Collapse.html' : 'Tabs.html');
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
 		$view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templatePathAndFileName));

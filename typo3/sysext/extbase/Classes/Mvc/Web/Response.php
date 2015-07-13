@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -238,15 +238,8 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 		}
 		if ($this->request->isCached()) {
 			/** @var PageRenderer $pageRenderer */
-			$pageRenderer = NULL;
-			if ($this->environmentService->isEnvironmentInFrontendMode()) {
-				$pageRenderer = $this->getTypoScriptFrontendController()->getPageRenderer();
-			} elseif ($this->environmentService->isEnvironmentInBackendMode()) {
-				$pageRenderer = $this->getDocumentTemplate()->getPageRenderer();
-			}
-			if ($pageRenderer !== NULL) {
-				$pageRenderer->addHeaderData($additionalHeaderData);
-			}
+			$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+			$pageRenderer->addHeaderData($additionalHeaderData);
 		} else {
 			$this->additionalHeaderData[] = $additionalHeaderData;
 		}
@@ -294,13 +287,6 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 */
 	protected function getTypoScriptFrontendController() {
 		return $GLOBALS['TSFE'];
-	}
-
-	/**
-	 * @return DocumentTemplate
-	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

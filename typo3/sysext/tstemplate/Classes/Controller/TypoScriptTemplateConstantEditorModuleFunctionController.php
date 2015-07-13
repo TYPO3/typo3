@@ -124,7 +124,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
 			$tplRow = $this->getTemplateRow();
 			$theConstants = $this->getConstants();
 
-			$this->pObj->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Tstemplate/ConstantEditor');
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Tstemplate/ConstantEditor');
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 			// Update template ?
 			if (GeneralUtility::_POST('submit') || MathUtility::canBeInterpretedAsInteger(GeneralUtility::_POST('submit_x')) && MathUtility::canBeInterpretedAsInteger(GeneralUtility::_POST('submit_y'))) {

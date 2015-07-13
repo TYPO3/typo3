@@ -22,15 +22,12 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Form\Container\FullRecordContainer;
-use TYPO3\CMS\Backend\Form\Container\SoloFieldContainer;
-use TYPO3\CMS\Backend\Form\Container\InlineRecordContainer;
-use TYPO3\CMS\Backend\Form\Container\ListOfFieldsContainer;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * This is form engine - Class for creating the backend editing forms.
@@ -212,6 +209,11 @@ class FormEngine {
 	 * @var array
 	 */
 	protected $requireJsModules = array();
+
+	/**
+	 * @var PageRenderer
+	 */
+	protected $pageRenderer = NULL;
 
 	/**
 	 * Constructor function, setting internal variables, loading the styles used.
@@ -1055,8 +1057,8 @@ class FormEngine {
 	 * @todo: aaaargs ...
 	 */
 	protected function getJavaScriptOfPageRenderer() {
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = clone $GLOBALS['SOBE']->doc->getPageRenderer();
+		/** @var $pageRenderer PageRenderer */
+		$pageRenderer = clone $this->getPageRenderer();
 		$pageRenderer->setCharSet($this->getLanguageService()->charSet);
 		$pageRenderer->setTemplateFile('EXT:backend/Resources/Private/Templates/helper_javascript_css.html');
 		return $pageRenderer->render();
@@ -1220,7 +1222,6 @@ class FormEngine {
 			if ($this->loadMD5_JS) {
 				$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
 			}
-			$pageRenderer = $this->getPageRenderer();
 			// load the main module for FormEngine with all important JS functions
 			$this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
 				FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('browser')) . ');
@@ -1235,26 +1236,26 @@ class FormEngine {
 					$callbacks = array($callbacks);
 				}
 				foreach ($callbacks as $callback) {
-					$pageRenderer->loadRequireJsModule($moduleName, $callback);
+					$this->getPageRenderer()->loadRequireJsModule($moduleName, $callback);
 				}
 			}
-			$pageRenderer->loadPrototype();
-			$pageRenderer->loadJquery();
-			$pageRenderer->loadExtJS();
+			$this->getPageRenderer()->loadPrototype();
+			$this->getPageRenderer()->loadJquery();
+			$this->getPageRenderer()->loadExtJS();
 			// rtehtmlarea needs extjs quick tips (?)
-			$pageRenderer->enableExtJSQuickTips();
+			$this->getPageRenderer()->enableExtJSQuickTips();
 			$beUserAuth = $this->getBackendUserAuthentication();
 			// Make textareas resizable and flexible ("autogrow" in height)
 			$textareaSettings = array(
 				'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible']
 			);
-			$pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
+			$this->getPageRenderer()->addInlineSettingArray('Textarea', $textareaSettings);
 
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
 			// Needed for FormEngine manipulation (date picker)
 			$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
-			$pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+			$this->getPageRenderer()->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
 			// support placeholders for IE9 and lower
 			$clientInfo = GeneralUtility::clientInfo();
@@ -1263,13 +1264,13 @@ class FormEngine {
 			}
 
 			// @todo: remove scriptaclous once suggest & flex form foo is moved to RequireJS, see #55575
-			$pageRenderer->loadScriptaculous();
+			$this->getPageRenderer()->loadScriptaculous();
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
-			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
 
-			$pageRenderer->addInlineLanguagelabelFile(
+			$this->getPageRenderer()->addInlineLanguagelabelFile(
 				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 				'file_upload'
 			);
@@ -1327,15 +1328,12 @@ class FormEngine {
 	 * @return string
 	 */
 	public function printNeededJSFunctions() {
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
-		$pageRenderer = $this->getControllerDocumentTemplate()->getPageRenderer();
-
 		// set variables to be accessible for JS
-		$pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
-		$pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
+		$this->getPageRenderer()->addInlineSetting('FormEngine', 'formName', 'editform');
+		$this->getPageRenderer()->addInlineSetting('FormEngine', 'backPath', '');
 
 		// Integrate JS functions for the element browser if such fields or IRRE fields were processed
-		$pageRenderer->addInlineSetting('FormEngine', 'legacyFieldChangedCb', 'function() { ' . $this->TBE_EDITOR_fieldChanged_func . ' };');
+		$this->getPageRenderer()->addInlineSetting('FormEngine', 'legacyFieldChangedCb', 'function() { ' . $this->TBE_EDITOR_fieldChanged_func . ' };');
 
 		return $this->JSbottom('editform');
 	}
@@ -1467,7 +1465,11 @@ class FormEngine {
 	 * @return \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected function getPageRenderer() {
-		return $this->getControllerDocumentTemplate()->getPageRenderer();
+		if ($this->pageRenderer === NULL) {
+			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		}
+
+		return $this->pageRenderer;
 	}
 
 }

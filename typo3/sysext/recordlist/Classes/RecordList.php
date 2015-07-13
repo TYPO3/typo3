@@ -16,14 +16,15 @@ namespace TYPO3\CMS\Recordlist;
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Lang\LanguageService;
@@ -182,6 +183,11 @@ class RecordList {
 	public $body = '';
 
 	/**
+	 * @var PageRenderer
+	 */
+	protected $pageRenderer = NULL;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -216,7 +222,7 @@ class RecordList {
 		$this->menuConfig();
 		// Store session data
 		$backendUser->setAndSaveSessionData(RecordList::class, $sessionData);
-		$this->getDocumentTemplate()->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
+		$this->getPageRenderer()->addInlineLanguageLabelFile('EXT:lang/locallang_mod_web_list.xlf');
 	}
 
 	/**
@@ -266,14 +272,14 @@ class RecordList {
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
 		$calcPerms = $backendUser->calcPerms($this->pageinfo);
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
 			PageActions.setPageId(' . (int)$this->id . ');
 			PageActions.setCanEditPage(' . ($calcPerms & Permission::PAGE_EDIT && !empty($this->id) ? 'true' : 'false') . ');
 			PageActions.initializePageTitleRenaming();
 		}');
-		$this->doc->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
 		// Apply predefined values for hidden checkboxes
 		// Set predefined value for DisplayBigControlPanel:
 		if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'activated') {
@@ -568,10 +574,14 @@ class RecordList {
 	}
 
 	/**
-	 * @return DocumentTemplate
+	 * @return PageRenderer
 	 */
-	protected function getDocumentTemplate() {
-		return $GLOBALS['TBE_TEMPLATE'];
+	protected function getPageRenderer() {
+		if ($this->pageRenderer === NULL) {
+			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		}
+
+		return $this->pageRenderer;
 	}
 
 }

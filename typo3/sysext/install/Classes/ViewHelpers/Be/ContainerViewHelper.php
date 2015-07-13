@@ -62,7 +62,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 */
 	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
 		$doc = $this->getDocInstance();
-		$pageRenderer = $doc->getPageRenderer();
+		$pageRenderer = $this->getPageRenderer();
 
 		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
 		if ($enableClickMenu) {

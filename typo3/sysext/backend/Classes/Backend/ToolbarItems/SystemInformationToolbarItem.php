@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use \TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -89,8 +90,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 		$this->standaloneView = GeneralUtility::makeInstance(StandaloneView::class);
 		$this->standaloneView->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/ToolbarMenu/' . static::TOOLBAR_MENU_TEMPLATE);
 
-		$pageRenderer = $this->getPageRenderer();
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
+		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
 	}
 
 	/**
@@ -350,12 +350,10 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	/**
 	 * Returns current PageRenderer
 	 *
-	 * @return \TYPO3\CMS\Core\Page\PageRenderer
+	 * @return PageRenderer
 	 */
 	protected function getPageRenderer() {
-		/** @var \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate */
-		$documentTemplate = $GLOBALS['TBE_TEMPLATE'];
-		return $documentTemplate->getPageRenderer();
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 	/**

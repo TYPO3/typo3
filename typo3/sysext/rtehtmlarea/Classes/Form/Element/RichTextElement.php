@@ -1357,7 +1357,7 @@ class RichTextElement extends AbstractFormElement {
 	 * @return PageRenderer
 	 */
 	protected function getPageRenderer() {
-		return $GLOBALS['SOBE']->doc->getPageRenderer();
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 }

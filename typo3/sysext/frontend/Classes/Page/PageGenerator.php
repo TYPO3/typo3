@@ -157,12 +157,12 @@ class PageGenerator {
 					$tsfe->xhtmlVersion = 200;
 					break;
 				default:
-					$tsfe->getPageRenderer()->setRenderXhtml(FALSE);
+					static::getPageRenderer()->setRenderXhtml(FALSE);
 					$tsfe->xhtmlDoctype = '';
 					$tsfe->xhtmlVersion = 0;
 			}
 		} else {
-			$tsfe->getPageRenderer()->setRenderXhtml(FALSE);
+			static::getPageRenderer()->setRenderXhtml(FALSE);
 		}
 	}
 
@@ -236,7 +236,7 @@ class PageGenerator {
 		/** @var TimeTracker $timeTracker */
 		$timeTracker = $GLOBALS['TT'];
 
-		$pageRenderer = $tsfe->getPageRenderer();
+		$pageRenderer = static::getPageRenderer();
 		if ($tsfe->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
@@ -1125,7 +1125,7 @@ class PageGenerator {
 			$titleTagContent = $tsfe->cObj->stdWrap($titleTagContent, $tsfe->config['config']['pageTitle.']);
 		}
 		if ($titleTagContent !== '' && (int)$tsfe->config['config']['noPageTitle'] !== self::NO_PAGE_TITLE) {
-			$tsfe->getPageRenderer()->setTitle($titleTagContent);
+			static::getPageRenderer()->setTitle($titleTagContent);
 		}
 	}
 
@@ -1201,5 +1201,12 @@ class PageGenerator {
 			}
 			$tsfe->sWordRegEx = rtrim($tsfe->sWordRegEx, '|');
 		}
+	}
+
+	/**
+	 * @return PageRenderer
+	 */
+	static protected function getPageRenderer() {
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 }

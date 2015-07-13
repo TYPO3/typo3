@@ -13,6 +13,8 @@ namespace TYPO3\CMS\T3editor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -163,8 +165,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 		$path_t3e = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3editor');
 		$path_codemirror = 'contrib/codemirror/js/';
 		// Include needed javascript-frameworks
-		$pageRenderer = $doc->getPageRenderer();
-		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
+		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadPrototype();
 		$pageRenderer->loadScriptaculous();
 		// Include editor-css
@@ -379,6 +380,13 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$ajaxObj->setContent($result);
 		$ajaxObj->setContentFormat('jsonbody');
+	}
+
+	/**
+	 * @return PageRenderer
+	 */
+	protected function getPageRenderer() {
+		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 }
