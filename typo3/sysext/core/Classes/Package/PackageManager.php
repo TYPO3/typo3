@@ -448,6 +448,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				$this->unregisterPackageByPackageKey($packageKey);
 				$packageStatesHasChanged = TRUE;
 				continue;
+			} catch (Exception\InvalidPackageManifestException $exception) {
+				$this->unregisterPackageByPackageKey($packageKey);
+				$packageStatesHasChanged = TRUE;
+				continue;
 			}
 
 			$this->registerPackage($package, FALSE);
