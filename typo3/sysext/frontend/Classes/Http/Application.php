@@ -62,6 +62,8 @@ class Application implements ApplicationInterface {
 		foreach ($this->availableRequestHandlers as $requestHandler) {
 			$this->bootstrap->registerRequestHandlerImplementation($requestHandler);
 		}
+
+		$this->bootstrap->configure();
 	}
 
 	/**
@@ -71,7 +73,7 @@ class Application implements ApplicationInterface {
 	 * @return void
 	 */
 	public function run(callable $execute = NULL) {
-		$this->bootstrap->run();
+		$this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
 		if ($execute !== NULL) {
 			if ($execute instanceof \Closure) {

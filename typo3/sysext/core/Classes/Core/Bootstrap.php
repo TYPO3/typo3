@@ -74,7 +74,7 @@ class Bootstrap {
 
 	/**
 	 * A list of all registered request handlers, see the Application class / entry points for the registration
-	 * @var RequestHandlerInterface[]
+	 * @var \TYPO3\CMS\Core\Http\RequestHandlerInterface[]|\TYPO3\CMS\Core\Console\RequestHandlerInterface[]
 	 */
 	protected $availableRequestHandlers = array();
 
@@ -164,14 +164,13 @@ class Bootstrap {
 
 	/**
 	 * Main entry point called at every request usually from Global scope. Checks if everything is correct,
-	 * and sets up the base request information for a regular request, then
-	 * resolves the RequestHandler which handles the request.
+	 * and loads the Configuration.
 	 *
 	 * Make sure that the baseSetup() is called before and the class loader is present
 	 *
 	 * @return Bootstrap
 	 */
-	public function run() {
+	public function configure() {
 		$this->startOutputBuffering()
 			->loadConfigurationAndInitialize()
 			->loadTypo3LoadedExtAndExtLocalconf(TRUE)
@@ -179,8 +178,7 @@ class Bootstrap {
 			->setFinalCachingFrameworkCacheConfiguration()
 			->defineLoggingAndExceptionConstants()
 			->unsetReservedGlobalVariables()
-			->initializeTypo3DbGlobal()
-			->handleRequest();
+			->initializeTypo3DbGlobal();
 
 		return $this;
 	}
@@ -259,12 +257,12 @@ class Bootstrap {
 	 * Be sure to always have the constants that are defined in $this->defineTypo3RequestTypes() are set,
 	 * so most RequestHandlers can check if they can handle the request.
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return RequestHandlerInterface
+	 * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\Console\Input\InputInterface $request
+	 * @return \TYPO3\CMS\Core\Http\RequestHandlerInterface|\TYPO3\CMS\Core\Console\RequestHandlerInterface
 	 * @throws \TYPO3\CMS\Core\Exception
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	protected function resolveRequestHandler(\Psr\Http\Message\ServerRequestInterface $request) {
+	protected function resolveRequestHandler($request) {
 		$suitableRequestHandlers = array();
 		foreach ($this->availableRequestHandlers as $requestHandlerClassName) {
 			$requestHandler = GeneralUtility::makeInstance($requestHandlerClassName, $this);
@@ -287,13 +285,12 @@ class Bootstrap {
 	 * Builds a Request instance from the current process, and then resolves the request
 	 * through the request handlers depending on Frontend, Backend, CLI etc.
 	 *
+	 * @param \Psr\Http\Message\RequestInterface|\Symfony\Component\Console\Input\InputInterface $request
 	 * @return Bootstrap
 	 * @throws \TYPO3\CMS\Core\Exception
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
-	public function handleRequest() {
-		// Build the Request object
-		$request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
+	public function handleRequest($request) {
 
 		// Resolve request handler that were registered based on the Application
 		$requestHandler = $this->resolveRequestHandler($request);

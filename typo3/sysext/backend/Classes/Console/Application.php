@@ -58,6 +58,8 @@ class Application implements ApplicationInterface {
 		foreach ($this->availableRequestHandlers as $requestHandler) {
 			$this->bootstrap->registerRequestHandlerImplementation($requestHandler);
 		}
+
+		$this->bootstrap->configure();
 	}
 
 	/**
@@ -67,7 +69,7 @@ class Application implements ApplicationInterface {
 	 * @return void
 	 */
 	public function run(callable $execute = NULL) {
-		$this->bootstrap->run();
+		$this->bootstrap->handleRequest(new \Symfony\Component\Console\Input\ArgvInput());
 
 		if ($execute !== NULL) {
 			if ($execute instanceof \Closure) {

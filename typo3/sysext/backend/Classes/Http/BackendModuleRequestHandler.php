@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,7 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Handles the request for backend modules and wizards
  */
-class BackendModuleRequestHandler implements \TYPO3\CMS\Core\Core\RequestHandlerInterface {
+class BackendModuleRequestHandler implements RequestHandlerInterface {
 
 	/**
 	 * @var Bootstrap

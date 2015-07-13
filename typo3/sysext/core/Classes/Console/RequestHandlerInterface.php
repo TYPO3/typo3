@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Core;
+namespace TYPO3\CMS\Core\Console;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,10 +13,11 @@ namespace TYPO3\CMS\Core\Core;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * The interface for a request handler
- * see RequestHandler in EXT:backend/Classes/Http/ and EXT:frontend/Classes/Http
+ * The interface for a request handler for a console-based application
  *
  * @api
  */
@@ -25,20 +26,20 @@ interface RequestHandlerInterface {
 	/**
 	 * Handles a raw request
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return NULL|\Psr\Http\Message\ResponseInterface
+	 * @param InputInterface $request
+	 * @return NULL|OutputInterface
 	 * @api
 	 */
-	public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request);
+	public function handleRequest(InputInterface $request);
 
 	/**
 	 * Checks if the request handler can handle the given request.
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @param InputInterface $request
 	 * @return bool TRUE if it can handle the request, otherwise FALSE
 	 * @api
 	 */
-	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request);
+	public function canHandleRequest(InputInterface $request);
 
 	/**
 	 * Returns the priority - how eager the handler is to actually handle the

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Http;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -84,7 +84,7 @@ class RequestHandler implements RequestHandlerInterface {
 	/**
 	 * This request handler can handle any backend request (but not CLI).
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @param \Psr\Http\Message\ServerRequestInterface|\TYPO3\CMS\Core\Console\Request $request
 	 * @return bool If the request is not a CLI script, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request) {

@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Frontend\Http;
 
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;

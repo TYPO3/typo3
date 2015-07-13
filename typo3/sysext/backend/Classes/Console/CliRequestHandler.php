@@ -14,9 +14,8 @@ namespace TYPO3\CMS\Backend\Console;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\Console\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -45,10 +44,10 @@ class CliRequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles any commandline request
 	 *
-	 * @param ServerRequestInterface $request
+	 * @param \Symfony\Component\Console\Input\InputInterface $request
 	 * @return void
 	 */
-	public function handleRequest(ServerRequestInterface $request) {
+	public function handleRequest(\Symfony\Component\Console\Input\InputInterface $request) {
 		$commandLineKey = $this->getCommandLineKeyOrDie();
 		$commandLineScript = $this->getIncludeScriptByCommandLineKey($commandLineKey);
 
@@ -137,12 +136,12 @@ class CliRequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * This request handler can handle any CLI request .
+	 * This request handler can handle any CLI request.
 	 *
-	 * @param ServerRequestInterface $request
+	 * @param \Symfony\Component\Console\Input\InputInterface $request
 	 * @return bool If the request is a CLI request, TRUE otherwise FALSE
 	 */
-	public function canHandleRequest(ServerRequestInterface $request) {
+	public function canHandleRequest(\Symfony\Component\Console\Input\InputInterface $request) {
 		return defined('TYPO3_cliMode') && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
 	}
 

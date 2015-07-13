@@ -125,7 +125,7 @@ class ServerRequestFactory {
 	 * Create and return an UploadedFile instance from a $_FILES specification.
 	 *
 	 * If the specification represents an array of values, this method will
-	 * delegate to normalizeNestedFileSpec() and return that return value.
+	 * recursively resolve uploaded files.
 	 *
 	 * @param array $value $_FILES structure
 	 * @return UploadedFileInterface[]|UploadedFileInterface

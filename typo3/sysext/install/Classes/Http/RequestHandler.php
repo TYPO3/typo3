@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Install\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
