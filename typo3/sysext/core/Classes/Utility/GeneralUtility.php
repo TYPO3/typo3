@@ -3559,11 +3559,13 @@ Connection: close
 	 * We accept this risk to have the install tool always available.
 	 * Also CLI needs to be allowed as unfortunately AbstractUserAuthentication::getAuthInfoArray()
 	 * accesses HTTP_HOST without reason on CLI
+	 * Additionally, allows requests when no REQUESTTYPE is set, which can happen quite early in the
+	 * Bootstrap. See Application.php in EXT:backend/Classes/Http/.
 	 *
 	 * @return bool
 	 */
 	static protected function isInternalRequestType() {
-		return (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI));
+		return (!defined('TYPO3_REQUESTTYPE') || (defined('TYPO3_REQUESTTYPE') && TYPO3_REQUESTTYPE & (TYPO3_REQUESTTYPE_INSTALL | TYPO3_REQUESTTYPE_CLI)));
 	}
 
 	/**

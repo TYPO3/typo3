@@ -20,9 +20,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Base class for all AJAX-related calls for the TYPO3 Backend run through typo3/ajax.php.
+ * AJAX dispatcher
+ *
+ * Main entry point for AJAX calls in the TYPO3 Backend. Based on ?ajaxId of the outside application.
  * Before doing the basic BE-related set up of this request (see the additional calls on $this->bootstrap inside
  * handleRequest()), some AJAX-calls can be made without a valid user, which is determined here.
+ * See $GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'] and the Core APIs on how to register an AJAX call in the TYPO3 Backend.
  *
  * Due to legacy reasons, the actual logic is in EXT:core/Http/AjaxRequestHandler which will eventually
  * be moved into this class.
@@ -117,13 +120,14 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * This request handler can handle any backend request coming from ajax.php
+	 * This request handler can handle any backend request coming from ajax.php or having
+	 * a ajaxID as parameter (see Application.php in EXT:backend)
 	 *
 	 * @param ServerRequestInterface $request
 	 * @return bool If the request is an AJAX backend request, TRUE otherwise FALSE
 	 */
 	public function canHandleRequest(ServerRequestInterface $request) {
-		return TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX;
+		return $request->getAttribute('isAjaxRequest', FALSE);
 	}
 
 	/**

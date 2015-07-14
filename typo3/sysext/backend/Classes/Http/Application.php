@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Http;
  */
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
@@ -31,6 +31,11 @@ class Application implements ApplicationInterface {
 	 * @var string
 	 */
 	protected $entryPointPath = 'typo3/';
+
+	/**
+	 * @var \Psr\Http\Message\ServerRequestInterface
+	 */
+	protected $request;
 
 	/**
 	 * All available request handlers that can handle backend requests (non-CLI)
@@ -66,6 +71,12 @@ class Application implements ApplicationInterface {
 			$this->bootstrap->registerRequestHandlerImplementation($requestHandler);
 		}
 
+		$this->request = \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals();
+		// see below when this option is set
+		if ($GLOBALS['TYPO3_AJAX']) {
+			$this->request = $this->request->withAttribute('isAjaxRequest', TRUE);
+		}
+
 		$this->bootstrap->configure();
 	}
 
@@ -76,7 +87,7 @@ class Application implements ApplicationInterface {
 	 * @return void
 	 */
 	public function run(callable $execute = NULL) {
-		$this->bootstrap->handleRequest(\TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
+		$this->bootstrap->handleRequest($this->request);
 
 		if ($execute !== NULL) {
 			if ($execute instanceof \Closure) {
@@ -99,14 +110,13 @@ class Application implements ApplicationInterface {
 	 * Define values that are based on the current script
 	 */
 	protected function defineAdditionalEntryPointRelatedConstants() {
-		$currentScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+		$currentScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
 
-		// activate "AJAX" handler when called via ajax.php
-		if (substr($currentScript, -15) === '/typo3/ajax.php') {
+		// activate "AJAX" handler when called with the GET variable ajaxID
+		if (GeneralUtility::_GET('ajaxID') !== NULL) {
 			$GLOBALS['TYPO3_AJAX'] = TRUE;
-		}
-		// allow backend login to work
-		if (substr($currentScript, -16) === '/typo3/index.php') {
+		} elseif (substr($currentScript, -16) === '/typo3/index.php') {
+			// allow backend login to work
 			define('TYPO3_PROCEED_IF_NO_USER', 1);
 		}
 	}

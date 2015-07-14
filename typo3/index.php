@@ -13,7 +13,7 @@
  */
 
 /**
- * Login-screen of TYPO3.
+ * Main entry point for all backend-related scripts.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
