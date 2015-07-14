@@ -296,6 +296,7 @@ return array(
 					'lower' => 2,
 					'upper' => 7,
 				),
+				'default' => 3,
 			),
 		),
 		'input_28' => array(
