@@ -355,7 +355,7 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'url params are encoded' => array(
 				array('tx_ext1' => 'param with spaces and \\ %<>& /'),
 				'L,tx_ext1',
-				'&tx_ext1=param%20with%20spaces%20and%20%20%25%3C%3E%26%20%2F'
+				'&tx_ext1=param%20with%20spaces%20and%20%5C%20%25%3C%3E%26%20%2F'
 			),
 		);
 	}

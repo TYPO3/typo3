@@ -71,7 +71,6 @@ class SystemEnvironmentBuilder {
 		self::defineBaseConstants();
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
-		self::handleMagicQuotesGpc();
 		self::initializeGlobalVariables();
 		self::initializeGlobalTimeTrackingVariables();
 		self::initializeBasicErrorReporting();
@@ -187,20 +186,6 @@ class SystemEnvironmentBuilder {
 				. '* A symlink "typo3_src" pointing to the TYPO3 CMS core.' . LF
 				. '* A symlink "typo3" - the backend entry point - pointing to "typo3_src/typo3"' . LF
 				. '* A symlink "index.php" - the frontend entry point - points to "typo3_src/index.php"');
-		}
-	}
-
-	/**
-	 * Compatibility layer for magic quotes
-	 *
-	 * @return void
-	 */
-	static protected function handleMagicQuotesGpc() {
-		if (!get_magic_quotes_gpc()) {
-			GeneralUtility::addSlashesOnArray($_GET);
-			GeneralUtility::addSlashesOnArray($_POST);
-			$GLOBALS['HTTP_GET_VARS'] = $_GET;
-			$GLOBALS['HTTP_POST_VARS'] = $_POST;
 		}
 	}
 

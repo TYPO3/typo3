@@ -119,12 +119,13 @@ class GeneralUtility {
 	 * But the clean solution is that quotes are never escaped and that is what the functions below offers.
 	 * Eventually TYPO3 should provide this in the global space as well.
 	 * In the transitional phase (or forever..?) we need to encourage EVERY to read and write GET/POST vars through the API functions below.
+	 * This functionality was previously needed to normalize between magic quotes logic, which was removed from PHP 5.4,
+	 * so these methods are still in use, but not tackle the slash problem anymore.
 	 *
 	 *************************/
 	/**
 	 * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
-	 * Strips slashes from all output, both strings and arrays.
-	 * To enhancement security in your scripts, please consider using \TYPO3\CMS\Core\Utility\GeneralUtility::_GET or \TYPO3\CMS\Core\Utility\GeneralUtility::_POST if you already
+	 * To enhance security in your scripts, please consider using GeneralUtility::_GET or GeneralUtility::_POST if you already
 	 * know by which method your data is arriving to the scripts!
 	 *
 	 * @param string $var GET/POST var to return
@@ -135,12 +136,9 @@ class GeneralUtility {
 			return;
 		}
 		$value = isset($_POST[$var]) ? $_POST[$var] : $_GET[$var];
-		if (isset($value)) {
-			if (is_array($value)) {
-				self::stripSlashesOnArray($value);
-			} else {
-				$value = stripslashes($value);
-			}
+		// This is there for backwards-compatibility, in order to avoid NULL
+		if (isset($value) && !is_array($value)) {
+			$value = (string)$value;
 		}
 		return $value;
 	}
@@ -156,13 +154,13 @@ class GeneralUtility {
 		$getParameter = isset($_GET[$parameter]) && is_array($_GET[$parameter]) ? $_GET[$parameter] : array();
 		$mergedParameters = $getParameter;
 		ArrayUtility::mergeRecursiveWithOverrule($mergedParameters, $postParameter);
-		self::stripSlashesOnArray($mergedParameters);
 		return $mergedParameters;
 	}
 
 	/**
 	 * Returns the global $_GET array (or value from) normalized to contain un-escaped values.
 	 * ALWAYS use this API function to acquire the GET variables!
+	 * This function was previously used to normalize between magic quotes logic, which was removed from PHP 5.5
 	 *
 	 * @param string $var Optional pointer to value in GET array (basically name of GET var)
 	 * @return mixed If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself. In any case *slashes are stipped from the output!*
@@ -170,13 +168,9 @@ class GeneralUtility {
 	 */
 	static public function _GET($var = NULL) {
 		$value = $var === NULL ? $_GET : (empty($var) ? NULL : $_GET[$var]);
-		// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
-		if (isset($value)) {
-			if (is_array($value)) {
-				self::stripSlashesOnArray($value);
-			} else {
-				$value = stripslashes($value);
-			}
+		// This is there for backwards-compatibility, in order to avoid NULL
+		if (isset($value) && !is_array($value)) {
+			$value = (string)$value;
 		}
 		return $value;
 	}
@@ -191,13 +185,9 @@ class GeneralUtility {
 	 */
 	static public function _POST($var = NULL) {
 		$value = $var === NULL ? $_POST : (empty($var) ? NULL : $_POST[$var]);
-		// Removes slashes since TYPO3 has added them regardless of magic_quotes setting.
-		if (isset($value)) {
-			if (is_array($value)) {
-				self::stripSlashesOnArray($value);
-			} else {
-				$value = stripslashes($value);
-			}
+		// This is there for backwards-compatibility, in order to avoid NULL
+		if (isset($value) && !is_array($value)) {
+			$value = (string)$value;
 		}
 		return $value;
 	}
@@ -210,13 +200,6 @@ class GeneralUtility {
 	 * @return void
 	 */
 	static public function _GETset($inputGet, $key = '') {
-		// Adds slashes since TYPO3 standard currently is that slashes
-		// must be applied (regardless of magic_quotes setting)
-		if (is_array($inputGet)) {
-			self::addSlashesOnArray($inputGet);
-		} else {
-			$inputGet = addslashes($inputGet);
-		}
 		if ($key != '') {
 			if (strpos($key, '|') !== FALSE) {
 				$pieces = explode('|', $key);
@@ -1621,9 +1604,11 @@ class GeneralUtility {
 	 * Twin-function to stripSlashesOnArray
 	 *
 	 * @param array $theArray Multidimensional input array, (REFERENCE!)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return array
 	 */
 	static public function addSlashesOnArray(array &$theArray) {
+		self::logDeprecatedFunction();
 		foreach ($theArray as &$value) {
 			if (is_array($value)) {
 				self::addSlashesOnArray($value);
@@ -1642,6 +1627,7 @@ class GeneralUtility {
 	 * Twin-function to addSlashesOnArray
 	 *
 	 * @param array $theArray Multidimensional input array, (REFERENCE!)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return array
 	 */
 	static public function stripSlashesOnArray(array &$theArray) {
@@ -1662,8 +1648,10 @@ class GeneralUtility {
 	 * @param array $arr Multidimensional input array
 	 * @param string $cmd "add" or "strip", depending on usage you wish.
 	 * @return array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function slashArray(array $arr, $cmd) {
+		self::logDeprecatedFunction();
 		if ($cmd == 'strip') {
 			self::stripSlashesOnArray($arr);
 		}

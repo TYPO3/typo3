@@ -87,14 +87,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return array(
 			'No key parameter' => array(NULL, array(), array(), NULL),
 			'Key not found' => array('cake', array(), array(), NULL),
-			'Value only in GET' => array('cake', array('cake' => 'li\\e'), array(), 'lie'),
-			'Value only in POST' => array('cake', array(), array('cake' => 'l\\ie'), 'lie'),
-			'Value from POST preferred over GET' => array('cake', array('cake' => 'is a'), array('cake' => '\\lie'), 'lie'),
+			'Value only in GET' => array('cake', array('cake' => 'li\\e'), array(), 'li\\e'),
+			'Value only in POST' => array('cake', array(), array('cake' => 'l\\ie'), 'l\\ie'),
+			'Value from POST preferred over GET' => array('cake', array('cake' => 'is a'), array('cake' => '\\lie'), '\\lie'),
 			'Value can be an array' => array(
 				'cake',
 				array('cake' => array('is a' => 'l\\ie')),
 				array(),
-				array('is a' => 'lie')
+				array('is a' => 'l\\ie')
 			)
 		);
 	}
@@ -143,9 +143,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getAndPostDataProvider() {
 		return array(
 			'Requested input data doesn\'t exist' => array('cake', array(), NULL),
-			'No key will return entire input data' => array(NULL, array('cake' => 'l\\ie'), array('cake' => 'lie')),
-			'Can retrieve specific input' => array('cake', array('cake' => 'li\\e', 'foo'), 'lie'),
-			'Can retrieve nested input data' => array('cake', array('cake' => array('is a' => 'l\\ie')), array('is a' => 'lie'))
+			'No key will return entire input data' => array(NULL, array('cake' => 'l\\ie'), array('cake' => 'l\\ie')),
+			'Can retrieve specific input' => array('cake', array('cake' => 'l\\ie', 'foo'), 'l\\ie'),
+			'Can retrieve nested input data' => array('cake', array('cake' => array('is a' => 'l\\ie')), array('is a' => 'l\\ie'))
 		);
 	}
 
@@ -188,7 +188,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getSetDataProvider() {
 		return array(
 			'No input data used without target key' => array(NULL, NULL, array()),
-			'No input data used with target key' => array(NULL, 'cake', array('cake' => '')),
+			'No input data used with target key' => array('', 'cake', array('cake' => '')),
 			'No target key used with string input data' => array('data', NULL, array()),
 			'No target key used with array input data' => array(array('cake' => 'lie'), NULL, array('cake' => 'lie')),
 			'Target key and string input data' => array('lie', 'cake', array('cake' => 'lie')),

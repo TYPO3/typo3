@@ -270,7 +270,7 @@ class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'word with regex chars' => array(
 				array('A \\ word with / a bunch of [] regex () chars .*'),
 				FALSE,
-				'A  word with \\/ a bunch of \\[\\] regex \\(\\) chars \\.\\*',
+				'A \\\\ word with \\/ a bunch of \\[\\] regex \\(\\) chars \\.\\*',
 			),
 		);
 	}
