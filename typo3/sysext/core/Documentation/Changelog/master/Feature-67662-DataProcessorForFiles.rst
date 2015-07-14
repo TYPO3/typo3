@@ -58,6 +58,7 @@ over processed data automatically.
 In the Fluid template then iterate over the files:
 
 .. code-block:: html
+
 	<ul>
 	<f:for each="{myfiles}" as="file">
 		<li><a href="{file.publicUrl}">{file.name}</a></li>
