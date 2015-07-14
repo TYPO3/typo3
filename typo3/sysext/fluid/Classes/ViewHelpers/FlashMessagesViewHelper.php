@@ -77,6 +77,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * </dl>
  * </output>
  *
+ * <code title="Using a specific queue">
+ * <f:flashMessages queueIdentifier="myQueue" />
+ * </code>
+ *
  * @api
  */
 class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
@@ -110,6 +114,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
+		$this->registerArgument('queueIdentifier', 'string', 'Flash-message queue to use', FALSE);
 	}
 
 	/**
@@ -124,7 +129,8 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 	 * @api
 	 */
 	public function render($renderMode = NULL, $as = NULL) {
-		$flashMessages = $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+		$queueIdentifier = isset($this->arguments['queueIdentifier']) ? $this->arguments['queueIdentifier'] : NULL;
+		$flashMessages = $this->controllerContext->getFlashMessageQueue($queueIdentifier)->getAllMessagesAndFlush();
 		if ($flashMessages === NULL || count($flashMessages) === 0) {
 			return '';
 		}

@@ -27,6 +27,11 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 	protected $mockTagBuilder;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue
+	 */
+	protected $mockFlashMessagingQueue;
+
+	/**
 	 * Sets up this test case
 	 *
 	 * @return void
@@ -35,6 +40,7 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 		/** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue|\PHPUnit_Framework_MockObject_MockObject $mockFlashMessagingQueue */
 		$mockFlashMessagingQueue = $this->getMock(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class, array('getAllMessagesAndFlush'), array('foo'));
 		$mockFlashMessagingQueue->expects($this->once())->method('getAllMessagesAndFlush')->will($this->returnValue(array()));
+		$this->mockFlashMessagingQueue = $mockFlashMessagingQueue;
 
 		$mockControllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', FALSE);
 		$mockControllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($mockFlashMessagingQueue));
@@ -50,6 +56,21 @@ class FlashMessagesViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelper
 	 * @test
 	 */
 	public function renderReturnsEmptyStringIfNoFlashMessagesAreInQueue() {
+		$this->assertEmpty($this->viewHelper->render());
+	}
+
+	/**
+	 * @test
+	 */
+	public function fetchMessagesFromSpecificQueue() {
+		$queueIdentifier = 'myQueue';
+
+		$mockControllerContext = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class, array(), array(), '', FALSE);
+		$mockControllerContext->expects($this->once())->method('getFlashMessageQueue')->with($queueIdentifier)->will($this->returnValue($this->mockFlashMessagingQueue));
+
+		$this->viewHelper->_set('controllerContext', $mockControllerContext);
+		$this->viewHelper->setArguments(array('queueIdentifier' => $queueIdentifier));
+
 		$this->assertEmpty($this->viewHelper->render());
 	}
 

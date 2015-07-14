@@ -43,9 +43,9 @@ class ControllerContext {
 	protected $uriBuilder;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+	 * @var string
 	 */
-	protected $flashMessageQueue;
+	protected $flashMessageQueueDefaultIdentifier;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
@@ -148,17 +148,19 @@ class ControllerContext {
 	}
 
 	/**
+	 * @param string $identifier Queue-identifier
 	 * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
 	 * @api
 	 */
-	public function getFlashMessageQueue() {
-		if (!$this->flashMessageQueue instanceof \TYPO3\CMS\Core\Messaging\FlashMessageQueue) {
-			$this->flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier(
-				'extbase.flashmessages.' . $this->extensionService->getPluginNamespace($this->request->getControllerExtensionName(), $this->request->getPluginName())
-			);
+	public function getFlashMessageQueue($identifier = NULL) {
+		if ($identifier === NULL) {
+			if ($this->flashMessageQueueDefaultIdentifier === NULL) {
+				// cache the default-identifier for performance-reasons
+				$this->flashMessageQueueDefaultIdentifier = 'extbase.flashmessages.' . $this->extensionService->getPluginNamespace($this->request->getControllerExtensionName(), $this->request->getPluginName());
+			}
+			$identifier = $this->flashMessageQueueDefaultIdentifier;
 		}
-
-		return $this->flashMessageQueue;
+		return $this->flashMessageService->getMessageQueueByIdentifier($identifier);
 	}
 
 }
