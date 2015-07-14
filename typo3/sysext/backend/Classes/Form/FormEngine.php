@@ -1231,31 +1231,32 @@ class FormEngine {
 				FormEngineValidation.registerReady();
 			}';
 
+			$pageRenderer = $this->getPageRenderer();
 			foreach ($this->requireJsModules as $moduleName => $callbacks) {
 				if (!is_array($callbacks)) {
 					$callbacks = array($callbacks);
 				}
 				foreach ($callbacks as $callback) {
-					$this->getPageRenderer()->loadRequireJsModule($moduleName, $callback);
+					$pageRenderer->loadRequireJsModule($moduleName, $callback);
 				}
 			}
-			$this->getPageRenderer()->loadPrototype();
-			$this->getPageRenderer()->loadJquery();
-			$this->getPageRenderer()->loadExtJS();
+			$pageRenderer->loadPrototype();
+			$pageRenderer->loadJquery();
+			$pageRenderer->loadExtJS();
 			// rtehtmlarea needs extjs quick tips (?)
-			$this->getPageRenderer()->enableExtJSQuickTips();
+			$pageRenderer->enableExtJSQuickTips();
 			$beUserAuth = $this->getBackendUserAuthentication();
 			// Make textareas resizable and flexible ("autogrow" in height)
 			$textareaSettings = array(
 				'autosize'  => (bool)$beUserAuth->uc['resizeTextareas_Flexible']
 			);
-			$this->getPageRenderer()->addInlineSettingArray('Textarea', $textareaSettings);
+			$pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
 
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
-			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ValueSlider');
 			// Needed for FormEngine manipulation (date picker)
 			$dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? array('MM-DD-YYYY', 'HH:mm MM-DD-YYYY') : array('DD-MM-YYYY', 'HH:mm DD-MM-YYYY'));
-			$this->getPageRenderer()->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+			$pageRenderer->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
 
 			// support placeholders for IE9 and lower
 			$clientInfo = GeneralUtility::clientInfo();
@@ -1264,13 +1265,13 @@ class FormEngine {
 			}
 
 			// @todo: remove scriptaclous once suggest & flex form foo is moved to RequireJS, see #55575
-			$this->getPageRenderer()->loadScriptaculous();
+			$pageRenderer->loadScriptaculous();
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.tceforms_suggest.js');
 
-			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
-			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
+			$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
 
-			$this->getPageRenderer()->addInlineLanguagelabelFile(
+			$pageRenderer->addInlineLanguagelabelFile(
 				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 				'file_upload'
 			);
@@ -1329,11 +1330,12 @@ class FormEngine {
 	 */
 	public function printNeededJSFunctions() {
 		// set variables to be accessible for JS
-		$this->getPageRenderer()->addInlineSetting('FormEngine', 'formName', 'editform');
-		$this->getPageRenderer()->addInlineSetting('FormEngine', 'backPath', '');
+		$pageRenderer = $this->getPageRenderer();
+		$pageRenderer->addInlineSetting('FormEngine', 'formName', 'editform');
+		$pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
 
 		// Integrate JS functions for the element browser if such fields or IRRE fields were processed
-		$this->getPageRenderer()->addInlineSetting('FormEngine', 'legacyFieldChangedCb', 'function() { ' . $this->TBE_EDITOR_fieldChanged_func . ' };');
+		$pageRenderer->addInlineSetting('FormEngine', 'legacyFieldChangedCb', 'function() { ' . $this->TBE_EDITOR_fieldChanged_func . ' };');
 
 		return $this->JSbottom('editform');
 	}

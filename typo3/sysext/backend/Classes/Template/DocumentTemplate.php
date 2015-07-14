@@ -354,7 +354,7 @@ function jumpToUrl(URL) {
 	/**
 	 * @var PageRenderer
 	 */
-	protected $pageRenderer;
+	protected $pageRenderer = NULL;
 
 	/**
 	 * Alternative template file
@@ -385,7 +385,7 @@ function jumpToUrl(URL) {
 	 */
 	public function __construct() {
 		// Initializes the page rendering object:
-		$this->getPageRenderer();
+		$this->initPageRenderer();
 
 		// load Legacy CSS Support
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyCssClasses');
@@ -434,37 +434,47 @@ function jumpToUrl(URL) {
 	}
 
 	/**
-	 * Gets instance of PageRenderer configured with the current language, file references and debug settings
-	 *
-	 * @return PageRenderer
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This method will become protected then.
+	 * Initializes the page renderer object
 	 */
-	public function getPageRenderer() {
-		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
-			$this->pageRenderer->enableConcatenateFiles();
-			$this->pageRenderer->enableCompressCss();
-			$this->pageRenderer->enableCompressJavascript();
-			// Add all JavaScript files defined in $this->jsFiles to the PageRenderer
-			foreach ($this->jsFilesNoConcatenation as $file) {
-				$this->pageRenderer->addJsFile(
-					$GLOBALS['BACK_PATH'] . $file,
-					'text/javascript',
-					TRUE,
-					FALSE,
-					'',
-					TRUE
-				);
-			}
-			// Add all JavaScript files defined in $this->jsFiles to the PageRenderer
-			foreach ($this->jsFiles as $file) {
-				$this->pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . $file);
-			}
+	protected function initPageRenderer() {
+		if ($this->pageRenderer !== NULL) {
+			return;
+		}
+		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+		$this->pageRenderer->enableConcatenateFiles();
+		$this->pageRenderer->enableCompressCss();
+		$this->pageRenderer->enableCompressJavascript();
+		// Add all JavaScript files defined in $this->jsFiles to the PageRenderer
+		foreach ($this->jsFilesNoConcatenation as $file) {
+			$this->pageRenderer->addJsFile(
+				$GLOBALS['BACK_PATH'] . $file,
+				'text/javascript',
+				TRUE,
+				FALSE,
+				'',
+				TRUE
+			);
+		}
+		// Add all JavaScript files defined in $this->jsFiles to the PageRenderer
+		foreach ($this->jsFiles as $file) {
+			$this->pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . $file);
 		}
 		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1) {
 			$this->pageRenderer->enableDebugMode();
 		}
+	}
+
+	/**
+	 * Gets instance of PageRenderer configured with the current language, file references and debug settings
+	 *
+	 * @return PageRenderer
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.
+	 */
+	public function getPageRenderer() {
+		GeneralUtility::logDeprecatedFunction();
+		$this->initPageRenderer();
+
 		return $this->pageRenderer;
 	}
 

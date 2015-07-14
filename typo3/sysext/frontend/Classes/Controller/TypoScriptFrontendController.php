@@ -798,7 +798,7 @@ class TypoScriptFrontendController {
 	/**
 	 * @var PageRenderer
 	 */
-	protected $pageRenderer;
+	protected $pageRenderer = NULL;
 
 	/**
 	 * The page cache object, use this to save pages to the cache and to
@@ -890,6 +890,7 @@ class TypoScriptFrontendController {
 		$this->clientInfo = GeneralUtility::clientInfo();
 		$this->uniqueString = md5(microtime());
 		$this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
+		$this->initPageRenderer();
 		// Call post processing function for constructor:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-PostProc'])) {
 			$_params = array('pObj' => &$this);
@@ -899,6 +900,18 @@ class TypoScriptFrontendController {
 		}
 		$this->cacheHash = GeneralUtility::makeInstance(CacheHashCalculator::class);
 		$this->initCaches();
+	}
+
+	/**
+	 * Initializes the page renderer object
+	 */
+	protected function initPageRenderer() {
+		if ($this->pageRenderer !== NULL) {
+			return;
+		}
+		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		$this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
+		$this->pageRenderer->setBackPath(TYPO3_mainDir);
 	}
 
 	/**
@@ -978,14 +991,12 @@ class TypoScriptFrontendController {
 	 * Gets instance of PageRenderer
 	 *
 	 * @return PageRenderer
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This method will become protected then.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.
 	 */
 	public function getPageRenderer() {
-		if (!isset($this->pageRenderer)) {
-			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-			$this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
-			$this->pageRenderer->setBackPath(TYPO3_mainDir);
-		}
+		GeneralUtility::logDeprecatedFunction();
+		$this->initPageRenderer();
+
 		return $this->pageRenderer;
 	}
 
@@ -2529,7 +2540,7 @@ class TypoScriptFrontendController {
 					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
 						$file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
 						if ($file) {
-							$this->getPageRenderer()->setTemplateFile($file);
+							$this->pageRenderer->setTemplateFile($file);
 						}
 					}
 				}
@@ -3387,7 +3398,9 @@ class TypoScriptFrontendController {
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
 		$this->divSection = '';
-		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
+		if (empty($this->config['INTincScript_ext']['pageRenderer'])) {
+			$this->initPageRenderer();
+		} else {
 			/** @var PageRenderer $pageRenderer */
 			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
 			$this->pageRenderer = $pageRenderer;
@@ -3410,7 +3423,7 @@ class TypoScriptFrontendController {
 				$this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'),
 				$this->convOutputCharset($this->divSection, 'TDS'),
 			),
-			$this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
+			$this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
 		);
 		// Replace again, because header and footer data and page renderer replacements may introduce additional placeholders (see #44825)
 		$this->recursivelyReplaceIntPlaceholdersInContent();
@@ -4464,7 +4477,7 @@ class TypoScriptFrontendController {
 		$this->languageDependencies = array();
 		// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ?: 'default';
-		$this->getPageRenderer()->setLanguage($this->lang);
+		$this->pageRenderer->setLanguage($this->lang);
 
 		// Finding the requested language in this list based
 		// on the $lang key being inputted to this function.

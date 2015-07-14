@@ -55,11 +55,4 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
 		return '';
 	}
 
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return $this->objectManager->get(PageRenderer::class);
-	}
-
 }
