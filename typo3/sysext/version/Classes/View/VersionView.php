@@ -61,7 +61,7 @@ class VersionView {
 				$onChange = 'window.location.href=this.options[this.selectedIndex].value;';
 				// Controls:
 				if ($id == $onlineId) {
-					$controls = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', TRUE) . '</strong>';
+					$controls = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', TRUE) . '</strong>';
 				} elseif (!$noAction) {
 					$href = $GLOBALS['TBE_TEMPLATE']->issueCommand(
 						'&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap',

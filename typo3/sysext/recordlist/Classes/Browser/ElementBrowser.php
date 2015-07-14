@@ -1611,16 +1611,14 @@ class ElementBrowser {
 			while ($row = $db->sql_fetch_assoc($res)) {
 				$c++;
 				$icon = IconUtility::getSpriteIconForRecord('tt_content', $row);
+				$selected = '';
 				if ($this->curUrlInfo['act'] == 'page' && $this->curUrlInfo['cElement'] == $row['uid']) {
-					$arrCol = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')
-						. ' class="c-blinkArrowL" alt="" />';
-				} else {
-					$arrCol = '';
+					$selected = ' class="bg-success"';
 				}
 				// Putting list element HTML together:
 				$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $cc ? 'bottom' : '')
 						. '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol
-					. '<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">'
+					. '<a href="#"' . $selected . ' onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">'
 					. $icon . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a><br />';
 				// Finding internal anchor points:
 				if (GeneralUtility::inList('text,textpic', $row['CType'])) {
@@ -1784,14 +1782,13 @@ class ElementBrowser {
 		$titleLen = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
 		$folderIcon = IconUtility::getSpriteIconForResource($folder);
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
-		$picon = '<a href="#" title="' . htmlspecialchars($folder->getIdentifier()) . '" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
-			. $folderIcon . '</a>';
+		$selected = '';
 		if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
-			$out .= '<img'
-				. IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')
-				. ' class="c-blinkArrowL" alt="" />';
+			$selected = ' class="bg-success"';
 		}
-		$out .= $picon . '<br />';
+		$out .= '<a href="#"' . $selected . ' title="' . htmlspecialchars($folder->getIdentifier()) . '" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
+			. $folderIcon . '</a><br />';
+
 		// Get files from the folder:
 		if ($renderFolders) {
 			$items = $folder->getSubfolders();
@@ -1820,14 +1817,11 @@ class ElementBrowser {
 				$icon = IconUtility::getSpriteIconForResource($fileOrFolderObject, array('title' => $fileOrFolderObject->getName() . $size));
 				$itemUid = 'file:' . $fileIdentifier;
 			}
-			// If the listed file turns out to be the CURRENT file, then show blinking arrow:
+			$selected = '';
 			if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder')
 				&& $currentIdentifier == $fileIdentifier
 			) {
-				$arrCol = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif',
-						'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
-			} else {
-				$arrCol = '';
+				$selected = ' class="bg-success"';
 			}
 			// Put it all together for the file element:
 			$out .=
@@ -1837,7 +1831,7 @@ class ElementBrowser {
 						('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'),
 						'width="18" height="16"'
 					) . ' alt="" />' . $arrCol .
-				'<a href="#" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">' .
+				'<a href="#"' . $selected . ' title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">' .
 					$icon .
 					htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
 				'</a><br />';
