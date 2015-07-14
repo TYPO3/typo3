@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Plugin;
  */
 
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -982,12 +983,15 @@ class AbstractPlugin {
 	 */
 	public function pi_loadLL() {
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
+			/** @var $languageFactory LocalizationFactory */
+			$languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+
 			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xlf';
 			// Read the strings in the required charset (since TYPO3 4.2)
-			$this->LOCAL_LANG = GeneralUtility::readLLfile($basePath, $this->LLkey, $this->frontendController->renderCharset);
+			$this->LOCAL_LANG = $languageFactory->getParsedData($basePath, $this->LLkey, $this->frontendController->renderCharset);
 			$alternativeLanguageKeys = GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
 			foreach ($alternativeLanguageKeys as $languageKey) {
-				$tempLL = GeneralUtility::readLLfile($basePath, $languageKey);
+				$tempLL = $languageFactory->getParsedData($basePath, $languageKey);
 				if ($this->LLkey !== 'default' && isset($tempLL[$languageKey])) {
 					$this->LOCAL_LANG[$languageKey] = $tempLL[$languageKey];
 				}

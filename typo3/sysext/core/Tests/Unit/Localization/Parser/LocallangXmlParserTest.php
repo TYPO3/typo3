@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser.
@@ -118,8 +119,14 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canOverrideLlxml() {
+		/** @var $factory LocalizationFactory */
+		$factory = new LocalizationFactory;
+
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][self::getFixtureFilePath('locallang.xml')][] = self::getFixtureFilePath('locallang_override.xml');
-		$LOCAL_LANG = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'default'), \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallang.xml'), 'md5'));
+		$LOCAL_LANG = array_merge(
+			$factory->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default'),
+			$factory->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5')
+		);
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
 		$this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
 		$expectedLabels = array(
@@ -142,7 +149,10 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	public function numericKeysDataProvider() {
-		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallangNumericKeys.xml'), 'default');
+		/** @var $factory LocalizationFactory */
+		$factory = new LocalizationFactory;
+
+		$LOCAL_LANG = $factory->getParsedData(self::getFixtureFilePath('locallangNumericKeys.xml'), 'default');
 		$translations = array();
 
 		foreach ($LOCAL_LANG['default'] as $key => $labelData) {
@@ -157,7 +167,10 @@ class LocallangXmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider numericKeysDataProvider
 	 */
 	public function canTranslateNumericKeys($key, $expectedResult) {
-		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(self::getFixtureFilePath('locallangNumericKeys.xml'), 'fr');
+		/** @var $factory LocalizationFactory */
+		$factory = new LocalizationFactory;
+
+		$LOCAL_LANG = $factory->getParsedData(self::getFixtureFilePath('locallangNumericKeys.xml'), 'fr');
 
 		$this->assertEquals($expectedResult, $LOCAL_LANG['fr'][$key][0]['target']);
 	}

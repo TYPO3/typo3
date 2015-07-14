@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Page;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -2507,6 +2508,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
 	protected function readLLfile($fileRef, $errorMode = 0) {
+		/** @var $languageFactory LocalizationFactory */
+		$languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+
 		if ($this->lang !== 'default') {
 			$languages = array_reverse($this->languageDependencies);
 			// At least we need to have English
@@ -2519,7 +2523,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 		$localLanguage = array();
 		foreach ($languages as $language) {
-			$tempLL = GeneralUtility::readLLfile($fileRef, $language, $this->charSet, $errorMode);
+			$tempLL = $languageFactory->getParsedData($fileRef, $language, $this->charSet, $errorMode);
+
 			$localLanguage['default'] = $tempLL['default'];
 			if (!isset($localLanguage[$this->lang])) {
 				$localLanguage[$this->lang] = $localLanguage['default'];

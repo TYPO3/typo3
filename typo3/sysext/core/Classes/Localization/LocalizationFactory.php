@@ -77,7 +77,25 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
 	 * @return array|boolean
 	 */
-	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
+	public function getParsedData($fileReference, $languageKey, $charset = '', $errorMode = 0, $isLocalizationOverride = FALSE) {
+		// @deprecated since CMS 7, will be removed with CMS 8
+		// this is a fallback to convert references to old 'cms' locallang files to the new location
+		if (strpos($fileReference, 'EXT:cms') === 0) {
+			$mapping = [
+				'cms/web_info/loallang.xlf' => 'frontend/Resources/Private/Language/locallang_webinfo.xlf',
+				'cms/locallang_ttc.xlf' => 'frontend/Resources/Private/Language/locallang_ttc.xlf',
+				'cms/locallang_tca.xlf' => 'frontend/Resources/Private/Language/locallang_tca.xlf',
+				'cms/layout/locallang_db_new_content_el.xlf' => 'backend/Resources/Private/Language/locallang_db_new_content_el.xlf',
+				'cms/layout/locallang.xlf' => 'backend/Resources/Private/Language/locallang_layout.xlf',
+				'cms/layout/locallang_mod.xlf' => 'backend/Resources/Private/Language/locallang_mod.xlf',
+				'cms/locallang_csh_webinfo.xlf' => 'frontend/Resources/Private/Language/locallang_csh_webinfo.xlf',
+				'cms/locallang_csh_weblayout.xlf' => 'frontend/Resources/Private/Language/locallang_csh_weblayout.xlf',
+			];
+			$filePath = substr($fileReference, 4);
+			GeneralUtility::deprecationLog('There is a reference to "' . $fileReference . '", which has been moved to "EXT:' . $mapping[$filePath] . '". This fallback will be removed with CMS 8.');
+			$fileReference = 'EXT:' . $mapping[$filePath];
+		}
+
 		try {
 			$hash = md5($fileReference . $languageKey . $charset);
 			$this->errorMode = $errorMode;

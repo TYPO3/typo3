@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Lang;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -97,7 +98,7 @@ class LanguageService {
 	/**
 	 * instance of the parser factory
 	 *
-	 * @var \TYPO3\CMS\Core\Localization\LocalizationFactory
+	 * @var LocalizationFactory
 	 */
 	public $parserFactory;
 
@@ -124,7 +125,7 @@ class LanguageService {
 		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		$this->charSetArray = $this->csConvObj->charSetArray;
 		// Initialize the parser factory object
-		$this->parserFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LocalizationFactory::class);
+		$this->parserFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
 		// Find the requested language in this list based
 		// on the $lang key being inputted to this function.
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
@@ -146,7 +147,7 @@ class LanguageService {
 	/**
 	 * Gets the parser factory.
 	 *
-	 * @return \TYPO3\CMS\Core\Localization\LocalizationFactory
+	 * @return LocalizationFactory
 	 */
 	public function getParserFactory() {
 		return $this->parserFactory;
@@ -413,7 +414,7 @@ class LanguageService {
 		}
 		$localLanguage = array();
 		foreach ($languages as $language) {
-			$tempLL = GeneralUtility::readLLfile($fileRef, $language, $this->charSet);
+			$tempLL = $this->parserFactory->getParsedData($fileRef, $language, $this->charSet);
 			$localLanguage['default'] = $tempLL['default'];
 			if (!isset($localLanguage[$this->lang])) {
 				$localLanguage[$this->lang] = $localLanguage['default'];

@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\ServiceUnavailableException;
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Locker;
 use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
@@ -4406,6 +4407,9 @@ class TypoScriptFrontendController {
 	 * @return array Returns the $LOCAL_LANG array found in the file. If no array found, returns empty array.
 	 */
 	public function readLLfile($fileRef) {
+		/** @var $languageFactory LocalizationFactory */
+		$languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+
 		if ($this->lang !== 'default') {
 			$languages = array_reverse($this->languageDependencies);
 			// At least we need to have English
@@ -4418,7 +4422,7 @@ class TypoScriptFrontendController {
 
 		$localLanguage = array();
 		foreach ($languages as $language) {
-			$tempLL = GeneralUtility::readLLfile($fileRef, $language, $this->renderCharset);
+			$tempLL = $languageFactory->getParsedData($fileRef, $language, $this->renderCharset);
 			$localLanguage['default'] = $tempLL['default'];
 			if (!isset($localLanguage[$this->lang])) {
 				$localLanguage[$this->lang] = $localLanguage['default'];

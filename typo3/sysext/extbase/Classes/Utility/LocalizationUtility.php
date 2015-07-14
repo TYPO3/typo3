@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Utility;
  */
 
 use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -163,9 +164,13 @@ class LocalizationUtility {
 		$locallangPathAndFilename = 'EXT:' . GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xlf';
 		self::setLanguageKeys();
 		$renderCharset = TYPO3_MODE === 'FE' ? self::getTypoScriptFrontendController()->renderCharset : self::getLanguageService()->charSet;
-		self::$LOCAL_LANG[$extensionName] = GeneralUtility::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
+
+		/** @var $languageFactory LocalizationFactory */
+		$languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+
+		self::$LOCAL_LANG[$extensionName] = $languageFactory->getParsedData($locallangPathAndFilename, self::$languageKey, $renderCharset);
 		foreach (self::$alternativeLanguageKeys as $language) {
-			$tempLL = GeneralUtility::readLLfile($locallangPathAndFilename, $language, $renderCharset);
+			$tempLL = $languageFactory->getParsedData($locallangPathAndFilename, $language, $renderCharset);
 			if (self::$languageKey !== 'default' && isset($tempLL[$language])) {
 				self::$LOCAL_LANG[$extensionName][$language] = $tempLL[$language];
 			}

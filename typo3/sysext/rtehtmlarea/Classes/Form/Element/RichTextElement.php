@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rtehtmlarea\Form\Element;
 
 use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
@@ -1042,7 +1043,9 @@ class RichTextElement extends AbstractFormElement {
 	 * @return array Label keys and values
 	 */
 	protected function getMergedLabelsFromFile($fileName) {
-		$localizationArray = GeneralUtility::readLLfile($fileName, $this->language, 'utf-8', 1);
+		/** @var $languageFactory LocalizationFactory */
+		$languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+		$localizationArray = $languageFactory->getParsedData($fileName, $this->language, 'utf-8', 1);
 		if (is_array($localizationArray) && !empty($localizationArray)) {
 			if (!empty($localizationArray[$this->language])) {
 				$finalLocalLang = $localizationArray['default'];

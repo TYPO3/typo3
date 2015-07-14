@@ -2369,44 +2369,6 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('\'' . $expected . '\'', GeneralUtility::quoteJSvalue($input));
 	}
 
-	//////////////////////////////////
-	// Tests concerning readLLfile
-	//////////////////////////////////
-	/**
-	 * @test
-	 */
-	public function readLLfileHandlesLocallangXMLOverride() {
-		$unique = 'locallangXMLOverrideTest' . substr($this->getUniqueId(), 0, 10);
-		$xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-			<T3locallang>
-				<data type="array">
-					<languageKey index="default" type="array">
-						<label index="buttons.logout">EXIT</label>
-					</languageKey>
-				</data>
-			</T3locallang>';
-		$file = PATH_site . 'typo3temp/' . $unique . '.xml';
-		GeneralUtility::writeFileToTypo3tempDir($file, $xml);
-		// Make sure there is no cached version of the label
-		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
-		// Get default value
-		$defaultLL = GeneralUtility::readLLfile('EXT:lang/locallang_core.xlf', 'default');
-		// Clear language cache again
-		GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('l10n')->flush();
-		// Set override file
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xlf'][$unique] = $file;
-		/** @var $store \TYPO3\CMS\Core\Localization\LanguageStore */
-		$store = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageStore::class);
-		$store->flushData('EXT:lang/locallang_core.xlf');
-		// Get override value
-		$overrideLL = GeneralUtility::readLLfile('EXT:lang/locallang_core.xlf', 'default');
-		// Clean up again
-		unlink($file);
-		$this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
-		$this->assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);
-		$this->assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
-	}
-
 	///////////////////////////////
 	// Tests concerning _GETset()
 	///////////////////////////////

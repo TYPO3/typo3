@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Localization\LocalizationFactory;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Localization\Parser\XliffParser.
@@ -110,9 +111,15 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canOverrideXliff() {
+		/** @var $factory LocalizationFactory */
+		$factory = new LocalizationFactory;
+
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override'];
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
-		$LOCAL_LANG = array_merge(\TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($this->xliffFileNames['locallang'], 'default'), \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($this->xliffFileNames['locallang'], 'fr'));
+		$LOCAL_LANG = array_merge(
+			$factory->getParsedData($this->xliffFileNames['locallang'], 'default'),
+			$factory->getParsedData($this->xliffFileNames['locallang'], 'fr')
+		);
 		$this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
 		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
 		$expectedLabels = array(
@@ -141,8 +148,11 @@ class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canOverrideXliffWithFrenchOnly() {
+		/** @var $factory LocalizationFactory */
+		$factory = new LocalizationFactory;
+
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
-		$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($this->xliffFileNames['locallang'], 'fr');
+		$LOCAL_LANG = $factory->getParsedData($this->xliffFileNames['locallang'], 'fr');
 		$this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
 		$expectedLabels = array(
 			'label1' => 'Ceci est mon 1er libellé',
