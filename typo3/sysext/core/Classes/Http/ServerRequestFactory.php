@@ -110,7 +110,10 @@ class ServerRequestFactory {
 				$normalizedFileUploads[$key] = $value;
 			} elseif (is_array($value)) {
 				if (isset($value['tmp_name'])) {
-					$normalizedFileUploads[$key] = self::createUploadedFile($value);
+					$uploadedFiles = self::createUploadedFile($value);
+					if ($uploadedFiles) {
+						$normalizedFileUploads[$key] = $uploadedFiles;
+					}
 				} else {
 					$normalizedFileUploads[$key] = self::normalizeUploadedFiles($value);
 				}
@@ -128,7 +131,7 @@ class ServerRequestFactory {
 	 * recursively resolve uploaded files.
 	 *
 	 * @param array $value $_FILES structure
-	 * @return UploadedFileInterface[]|UploadedFileInterface
+	 * @return UploadedFileInterface[]|UploadedFileInterface|NULL
 	 */
 	protected static function createUploadedFile(array $value) {
 		if (is_array($value['tmp_name'])) {
@@ -141,12 +144,16 @@ class ServerRequestFactory {
 					'name'     => $value['name'][$key],
 					'type'     => $value['type'][$key]
 				);
-				$files[$key] = self::createUploadedFile($data);
+				$result = self::createUploadedFile($data);
+				if ($result) {
+					$files[$key] = $result;
+				}
 			}
 			return $files;
-		} else {
+		} elseif (!empty($value['tmp_name'])) {
 			return new UploadedFile($value['tmp_name'], $value['size'], $value['error'], $value['name'], $value['type']);
 		}
+		return NULL;
 	}
 
 }

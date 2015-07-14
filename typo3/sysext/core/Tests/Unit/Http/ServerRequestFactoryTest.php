@@ -81,4 +81,37 @@ class ServerRequestFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0] instanceof UploadedFile);
 	}
 
+	/**
+	 * @test
+	 */
+	public function uploadedFilesAreNotCreatedForEmptyFilesArray() {
+		$_SERVER['HTTP_HOST'] = 'localhost';
+		$_SERVER['REQUEST_URI'] = '/index.php';
+		$_FILES = array();
+
+		$uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
+
+		$this->assertEmpty($uploadedFiles);
+	}
+
+	/**
+	 * @test
+	 */
+	public function uploadedFilesAreNotCreatedIfTmpNameIsEmpty() {
+		$_SERVER['HTTP_HOST'] = 'localhost';
+		$_SERVER['REQUEST_URI'] = '/index.php';
+		$_FILES = array(
+			'tx_uploadexample_piexample' => array(
+				'name' => '',
+				'tmp_name' => '',
+				'error' => 4,
+				'size' => 0,
+			),
+		);
+
+		$uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
+
+		$this->assertEmpty($uploadedFiles);
+	}
+
 }
