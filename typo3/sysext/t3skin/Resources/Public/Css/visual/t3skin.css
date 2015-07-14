@@ -10850,6 +10850,9 @@ body#imp-exp-mod ul#treeRoot > li:first-child {
 body#imp-exp-mod ul#treeRoot ul li:last-child:before {
   background-color: #f1f1f1;
 }
+ul#flatTreeRoot li:last-child:before {
+  background-color: #f1f1f1;
+}
 table.t3-tree-config {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);

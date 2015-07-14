@@ -1603,7 +1603,7 @@ class ElementBrowser {
 			$db = $this->getDatabaseConnection();
 			$picon = IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
 			$picon .= BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE);
-			$out .= $picon . '<br />';
+			$out .= $picon . '<ul class="list-tree" id="flatTreeRoot">';
 			// Look up tt_content elements from the expanded page:
 			$res = $db->exec_SELECTquery(
 				'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
@@ -1624,28 +1624,11 @@ class ElementBrowser {
 					$selected = ' class="bg-success"';
 				}
 				// Putting list element HTML together:
-				$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $cc ? 'bottom' : '')
-						. '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol
+				$out .= '<li>'
 					. '<a href="#"' . $selected . ' onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">'
-					. $icon . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a><br />';
-				// Finding internal anchor points:
-				if (GeneralUtility::inList('text,textpic', $row['CType'])) {
-					$split = preg_split('/(<a[^>]+name=[\'"]?([^"\'>[:space:]]+)[\'"]?[^>]*>)/i', $row['bodytext'], -1, PREG_SPLIT_DELIM_CAPTURE);
-					foreach ($split as $skey => $sval) {
-						if ($skey % 3 == 2) {
-							// Putting list element HTML together:
-							$sval = substr($sval, 0, 100);
-							$out .= '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/line.gif',
-									'width="18" height="16"') . ' alt="" />'
-								. '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join'
-									. ($skey + 3 > count($split) ? 'bottom' : '') . '.gif'), 'width="18" height="16"')
-									. ' alt="" />' . '<a href="#" onclick="return link_typo3Page(' . GeneralUtility::quoteJSvalue($expPageId)
-									. ',' . GeneralUtility::quoteJSvalue('#' . $sval) . ');">' . htmlspecialchars((' <A> ' . $sval))
-									. '</a><br />';
-						}
-					}
-				}
+					. $icon . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a></li>';
 			}
+			$out .= '</ul>';
 		}
 		return $out;
 	}
