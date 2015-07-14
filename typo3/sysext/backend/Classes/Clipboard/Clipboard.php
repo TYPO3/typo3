@@ -268,9 +268,11 @@ class Clipboard {
 		if (!$this->fileMode && $elementCount) {
 			$optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars(('window.location.href=' . GeneralUtility::quoteJSvalue($this->editUrl() . '&returnUrl=') . '+top.rawurlencode(window.location.href);')) . '">' . $this->clLabel('edit', 'rm') . '</a></li>';
 		}
+
 		$deleteLink = '';
-		// Delete:
+		$menuSelector = '';
 		if ($elementCount) {
+			// Delete:
 			$deleteLink = '<a class="btn btn-danger" href="' . htmlspecialchars($removeAllUrl) . '#clip_head">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:buttons.clear', TRUE))) . '</a>';
 			if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
 				$js = '
@@ -282,9 +284,9 @@ class Clipboard {
 				$js = ' window.location.href=' . GeneralUtility::quoteJSvalue($this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=') . '+top.rawurlencode(window.location.href); ';
 			}
 			$optionArray[] = '<li><a href="#" onclick="' . htmlspecialchars($js) . '">' . $this->clLabel('delete', 'rm') . '</a></li>';
-		}
 
-		$menuSelector = '
+			// menuSelector
+			$menuSelector = '
 			<div class="btn-group">
 				<button class="btn btn-default dropdown-toggle" type="button" id="menuSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					' . $this->clLabel('menu', 'rm') . '
@@ -295,6 +297,7 @@ class Clipboard {
 				</ul>
 			</div>
 			';
+		}
 
 		$out[] = '
 			<tr>
