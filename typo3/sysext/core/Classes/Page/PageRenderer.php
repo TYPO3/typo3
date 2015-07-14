@@ -1547,6 +1547,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 		// load all paths to map to package names / namespaces
 		if (empty($this->requireJsConfig)) {
+			// In order to avoid browser caching of JS files, adding a GET parameter to the files loaded via requireJS
+			if (GeneralUtility::getApplicationContext()->isDevelopment()) {
+				$this->requireJsConfig['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
+			} else {
+				$this->requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::shortMD5(TYPO3_version . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+			}
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
