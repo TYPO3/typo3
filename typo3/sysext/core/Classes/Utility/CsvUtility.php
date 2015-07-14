@@ -22,26 +22,26 @@ class CsvUtility {
 	/**
 	 * Convert a string, formatted as CSV, into an multidimensional array
 	 *
+	 * This cannot be done by str_getcsv, since it's impossible to handle enclosed cells with a line feed in it
+	 *
 	 * @param string $input The CSV input
 	 * @param string $fieldDelimiter The field delimiter
 	 * @param string $fieldEnclosure The field enclosure
-	 * @param string $rowDelimiter The row delimiter
 	 * @param int $maximumColumns The maximum amount of columns
 	 * @return array
 	 */
-	static public function csvToArray($input, $fieldDelimiter = ',', $fieldEnclosure = '"', $rowDelimiter = LF, $maximumColumns = 0) {
+	static public function csvToArray($input, $fieldDelimiter = ',', $fieldEnclosure = '"', $maximumColumns = 0) {
 		$multiArray = array();
 		$maximumCellCount = 0;
 
-		// explode() would not work with enclosed newlines
-		$rows = str_getcsv($input, $rowDelimiter);
-
-		foreach ($rows as $row) {
-			$cells = str_getcsv($row, $fieldDelimiter, $fieldEnclosure);
-
-			$maximumCellCount = max(count($cells), $maximumCellCount);
-
-			$multiArray[] = $cells;
+		if (($handle = fopen('php://memory', 'r+')) !== FALSE) {
+			fwrite($handle, $input);
+			rewind($handle);
+			while (($cells = fgetcsv($handle, 0, $fieldDelimiter, $fieldEnclosure)) !== FALSE) {
+				$maximumCellCount = max(count($cells), $maximumCellCount);
+				$multiArray[] = $cells;
+			}
+			fclose($handle);
 		}
 
 		if ($maximumColumns > $maximumCellCount) {

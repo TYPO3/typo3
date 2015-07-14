@@ -29,8 +29,7 @@ class CsvUtilityTest extends UnitTestCase {
 			'Valid data' => array(
 				'input'  => 'Column A, Column B, Column C' . LF . 'Value, Value2, Value 3',
 				'fieldDelimiter' => ',',
-				'fieldEnclosure' => '',
-				'rowDelimiter' => LF,
+				'fieldEnclosure' => '"',
 				'maximumColumns' => 0,
 				'expectedResult' => array(
 					array('Column A', ' Column B', ' Column C'),
@@ -42,7 +41,6 @@ class CsvUtilityTest extends UnitTestCase {
 				'input'  => '"Column A", "Column B", "Column C"' . LF . '"Value", "Value2", "Value 3"',
 				'fieldDelimiter' => ',',
 				'fieldEnclosure' => '"',
-				'rowDelimiter' => LF,
 				'maximumColumns' => 0,
 				'expectedResult' => array(
 					array('Column A', 'Column B', 'Column C'),
@@ -54,7 +52,6 @@ class CsvUtilityTest extends UnitTestCase {
 				'input'  => '"Column A"; "Column B"; "Column C"' . LF . '"Value"; "Value2"; "Value 3"',
 				'fieldDelimiter' => ';',
 				'fieldEnclosure' => '"',
-				'rowDelimiter' => LF,
 				'maximumColumns' => 0,
 				'expectedResult' => array(
 					array('Column A', 'Column B', 'Column C'),
@@ -66,7 +63,6 @@ class CsvUtilityTest extends UnitTestCase {
 				'input'  => '"Column A"; "Column B"; "Column C"; "Column D"' . LF . '"Value"; "Value2"; "Value 3"',
 				'fieldDelimiter' => ';',
 				'fieldEnclosure' => '"',
-				'rowDelimiter' => LF,
 				'maximumColumns' => 2,
 				'expectedResult' => array(
 					array('Column A', 'Column B'),
@@ -78,23 +74,10 @@ class CsvUtilityTest extends UnitTestCase {
 				'input'  => '"Column A", "Column B", "Column C"' . LF . '"Value", "Value2", "Value 3"',
 				'fieldDelimiter' => ';',
 				'fieldEnclosure' => '"',
-				'rowDelimiter' => LF,
 				'maximumColumns' => 0,
 				'expectedResult' => array(
 					array('Column A, "Column B", "Column C"'),
 					array('Value, "Value2", "Value 3"')
-				)
-			),
-
-			'Data with comma as field delimiter and semicolons as row delimiter' => array(
-				'input'  => '"Column A", "Column B", "Column C";"Value", "Value2", "Value 3"',
-				'fieldDelimiter' => ',',
-				'fieldEnclosure' => '"',
-				'rowDelimiter' => ';',
-				'maximumColumns' => 0,
-				'expectedResult' => array(
-					array('Column A', 'Column B', 'Column C'),
-					array('Value', 'Value2', 'Value 3')
 				)
 			)
 		);
@@ -104,7 +87,7 @@ class CsvUtilityTest extends UnitTestCase {
 	 * @dataProvider csvToArrayDataProvider
 	 * @test
 	 */
-	public function csvToArraySplitsAsExpected($input, $fieldDelimiter, $fieldEnclosure, $rowDelimiter, $maximumColumns, $expectedResult) {
-		$this->assertEquals($expectedResult, CsvUtility::csvToArray($input, $fieldDelimiter, $fieldEnclosure, $rowDelimiter, $maximumColumns));
+	public function csvToArraySplitsAsExpected($input, $fieldDelimiter, $fieldEnclosure, $maximumColumns, $expectedResult) {
+		$this->assertEquals($expectedResult, CsvUtility::csvToArray($input, $fieldDelimiter, $fieldEnclosure, $maximumColumns));
 	}
 }

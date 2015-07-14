@@ -91,14 +91,10 @@ class CommaSeparatedValueProcessor implements DataProcessorInterface {
 		// Set the field enclosure which is " by default
 		$fieldEnclosure = $cObj->stdWrapValue('fieldEnclosure', $processorConfiguration, '"');
 
-		// Set the row delimiter which is "LF" by default
-		$rowDelimiter = $cObj->stdWrapValue('rowDelimiter', $processorConfiguration, LF);
-
 		$processedData[$targetVariableName] = CsvUtility::csvToArray(
 			$originalValue,
 			$fieldDelimiter,
 			$fieldEnclosure,
-			$rowDelimiter,
 			(int)$maximumColumns
 		);
 
