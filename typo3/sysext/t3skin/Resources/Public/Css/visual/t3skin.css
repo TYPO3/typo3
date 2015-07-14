@@ -10844,6 +10844,12 @@ ul#treeRoot > li {
 body#ext-backend-Modules-FileSystemNavigationFrame-index-php ul#treeRoot li:last-child:before {
   background-color: #f5f5f5;
 }
+body#imp-exp-mod ul#treeRoot > li:first-child {
+  padding-left: 0;
+}
+body#imp-exp-mod ul#treeRoot ul li:last-child:before {
+  background-color: #f1f1f1;
+}
 table.t3-tree-config {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);

@@ -1019,7 +1019,7 @@ return array(
 	'tx_impexp_clickmenu' => \TYPO3\CMS\Impexp\Clickmenu::class,
 	'SC_mod_tools_log_index' => \TYPO3\CMS\Impexp\Controller\ImportExportController::class,
 	'tx_impexp' => \TYPO3\CMS\Impexp\ImportExport::class,
-	'tx_impexp_localPageTree' => \TYPO3\CMS\Impexp\LocalPageTree::class,
+	'tx_impexp_localPageTree' => \TYPO3\CMS\Impexp\View\ExportPageTreeView::class,
 	'tx_impexp_task' => \TYPO3\CMS\Impexp\Task\ImportExportTask::class,
 	'Tx_IndexedSearch_Domain_Repository_IndexSearchRepository' => \TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository::class,
 	'tx_indexedsearch_files' => \TYPO3\CMS\IndexedSearch\Hook\CrawlerFilesHook::class,

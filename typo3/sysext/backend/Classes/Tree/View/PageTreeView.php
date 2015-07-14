@@ -86,13 +86,13 @@ class PageTreeView extends AbstractTreeView {
 	 * @param int $a The current entry number
 	 * @param int $c The total number of entries. If equal to $a, a 'bottom' element is returned.
 	 * @param int $nextCount The number of sub-elements to the current element.
-	 * @param bool $exp The element was expanded to render subelements if this flag is set.
+	 * @param bool $isExpand The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
-	 * @see AbstarctTreeView::PMicon()
+	 * @see AbstractTreeView::PMicon()
 	 */
-	public function PMicon($row, $a, $c, $nextCount, $exp) {
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('treeline-join' . ($a == $c ? 'bottom' : ''));
+	public function PMicon($row, $a, $c, $nextCount, $isExpand) {
+		return '<i class="fa"></i>';
 	}
 
 	/**

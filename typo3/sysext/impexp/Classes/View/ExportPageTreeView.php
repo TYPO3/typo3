@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Impexp;
+namespace TYPO3\CMS\Impexp\View;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
+class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 
 	/**
 	 * Initialization
@@ -85,25 +85,23 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$curIds = $this->ids;
 		$this->reset();
 		$this->ids = $curIds;
-		$firstHtml = '<img' . IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
 		if ($pid > 0) {
 			$rootRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pid);
-			$firstHtml .= IconUtility::getSpriteIconForRecord('pages', $rootRec);
+			$firstHtml = IconUtility::getSpriteIconForRecord('pages', $rootRec);
 		} else {
 			$rootRec = array(
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				'uid' => 0
 			);
-			$firstHtml .= $this->getRootIcon($rootRec);
+			$firstHtml = $this->getRootIcon($rootRec);
 		}
-		$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec);
+		$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen);
 		if ($isOpen) {
 			// Set depth:
-			$depthD = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' align="top" alt="" />';
 			if ($this->addSelfId) {
 				$this->ids[] = $pid;
 			}
-			$this->getTree($pid, 999, $depthD);
+			$this->getTree($pid, 999, '');
 			$idH = array();
 			$idH[$pid]['uid'] = $pid;
 			if (!empty($this->buffer_idH)) {
@@ -112,8 +110,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$this->buffer_idH = $idH;
 		}
 		// Add tree:
-		$treeArr = array_merge($treeArr, $this->tree);
-		return $treeArr;
+		return array_merge($treeArr, $this->tree);
 	}
 
 }

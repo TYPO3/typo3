@@ -5079,7 +5079,7 @@ class tx_impexp extends \TYPO3\CMS\Impexp\ImportExport {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_impexp_localPageTree extends \TYPO3\CMS\Impexp\LocalPageTree {}
+class tx_impexp_localPageTree extends \TYPO3\CMS\Impexp\View\ExportPageTreeView {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
