@@ -667,7 +667,6 @@ class ExtendedTemplateService extends TemplateService {
 			$row = $arr[$key];
 			$LN = $a == $c ? 'blank' : 'line';
 			$BTM = $a == $c ? 'top' : '';
-			$PM = 'join';
 			$HTML .= $depthData;
 			$alttext = '[' . $row['templateID'] . ']';
 			$alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
@@ -690,7 +689,7 @@ class ExtendedTemplateService extends TemplateService {
 				$A_B = '';
 				$A_E = '';
 			}
-			$HTML .= ($first ? '' : IconUtility::getSpriteIcon('treeline-' . $PM . $BTM)) . $icon . $A_B
+			$HTML .= ($first ? '' : '<span class="treeline-icon treeline-icon-join' . $BTM . '"></span>') . $icon . $A_B
 				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
 				. $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
@@ -704,7 +703,7 @@ class ExtendedTemplateService extends TemplateService {
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper) {
-				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : IconUtility::getSpriteIcon('treeline-' . $LN)), $keyArray);
+				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);
 			}
 		}
 		return $keyArray;

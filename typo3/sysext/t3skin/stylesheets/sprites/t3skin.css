@@ -1,57 +1,46 @@
 
 .t3-icon-actions {
-	background-image: url('../../images/sprites/t3skin.png?1427061024') !important;
+	background-image: url('../../images/sprites/t3skin.png?1436912180') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .backgroundsize .t3-icon-actions {
-	background-image: url('../../images/sprites/t3skin@x2.png?1427061024') !important;
-	background-size:322px 534px;
+	background-image: url('../../images/sprites/t3skin@x2.png?1436912180') !important;
+	background-size:322px 435px;
 }
 
 .t3-icon-apps {
-	background-image: url('../../images/sprites/t3skin.png?1427061024') !important;
+	background-image: url('../../images/sprites/t3skin.png?1436912180') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .backgroundsize .t3-icon-apps {
-	background-image: url('../../images/sprites/t3skin@x2.png?1427061024') !important;
-	background-size:322px 534px;
+	background-image: url('../../images/sprites/t3skin@x2.png?1436912180') !important;
+	background-size:322px 435px;
 }
 
 .t3-icon-mimetypes {
-	background-image: url('../../images/sprites/t3skin.png?1427061024') !important;
+	background-image: url('../../images/sprites/t3skin.png?1436912180') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .backgroundsize .t3-icon-mimetypes {
-	background-image: url('../../images/sprites/t3skin@x2.png?1427061024') !important;
-	background-size:322px 534px;
+	background-image: url('../../images/sprites/t3skin@x2.png?1436912180') !important;
+	background-size:322px 435px;
 }
 
 .t3-icon-status {
-	background-image: url('../../images/sprites/t3skin.png?1427061024') !important;
+	background-image: url('../../images/sprites/t3skin.png?1436912180') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .backgroundsize .t3-icon-status {
-	background-image: url('../../images/sprites/t3skin@x2.png?1427061024') !important;
-	background-size:322px 534px;
-}
-
-.t3-icon-treeline {
-	background-image: url('../../images/sprites/t3skin.png?1427061024') !important;
-	height: 16px;
-	width: 16px;
-}
-
-.backgroundsize .t3-icon-treeline {
-	background-image: url('../../images/sprites/t3skin@x2.png?1427061024') !important;
-	background-size:322px 534px;
+	background-image: url('../../images/sprites/t3skin@x2.png?1436912180') !important;
+	background-size:322px 435px;
 }
 .t3-icon-document-close {
 	background-position: -0px -0px !important;
@@ -230,7 +219,7 @@
 
 }
 .t3-icon-input-clear {
-	background-position: -0px -516px !important;
+	background-position: -0px -420px !important;
 	height: 13px;
 	width: 13px;
 
@@ -244,7 +233,7 @@
 
 }
 .t3-icon-markstate {
-	background-position: -0px -476px !important;
+	background-position: -0px -380px !important;
 	height: 14px;
 	width: 14px;
 
@@ -278,7 +267,7 @@
 
 }
 .t3-icon-move-move {
-	background-position: -0px -503px !important;
+	background-position: -0px -407px !important;
 	height: 11px;
 
 }
@@ -419,7 +408,7 @@
 
 }
 .t3-icon-unmarkstate {
-	background-position: -16px -476px !important;
+	background-position: -16px -380px !important;
 	height: 14px;
 	width: 14px;
 
@@ -573,13 +562,13 @@
 
 }
 .t3-icon-irre-collapsed {
-	background-position: -0px -492px !important;
+	background-position: -0px -396px !important;
 	height: 9px;
 	width: 9px;
 
 }
 .t3-icon-irre-expanded {
-	background-position: -11px -492px !important;
+	background-position: -11px -396px !important;
 	height: 9px;
 	width: 9px;
 
@@ -653,7 +642,7 @@
 
 }
 .t3-icon-pagetree-folder-contains-shop {
-	background-position: -0px -440px !important;
+	background-position: -0px -344px !important;
 	width: 18px;
 
 }
@@ -974,12 +963,12 @@
 
 }
 .t3-icon-x-sys_category {
-	background-position: -20px -440px !important;
+	background-position: -20px -344px !important;
 	width: 18px;
 
 }
 .t3-icon-x-sys_language {
-	background-position: -0px -458px !important;
+	background-position: -0px -362px !important;
 	width: 18px;
 
 }
@@ -1345,83 +1334,5 @@
 }
 .t3-icon-warning-lock {
 	background-position: -18px -306px !important;
-
-}
-.t3-icon-blank {
-	background-position: -0px -531px !important;
-	height: 1px;
-	width: 1px;
-
-}
-.t3-icon-join {
-	background-position: -0px -344px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-joinbottom {
-	background-position: -20px -344px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-jointop {
-	background-position: -40px -344px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-line {
-	background-position: -60px -344px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-minus {
-	background-position: -0px -376px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-minusbottom {
-	background-position: -20px -376px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-minusonly {
-	background-position: -40px -376px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-minustop {
-	background-position: -60px -376px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-plus {
-	background-position: -0px -408px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-plusbottom {
-	background-position: -20px -408px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-plusonly {
-	background-position: -40px -408px !important;
-	height: 30px;
-	width: 18px;
-
-}
-.t3-icon-stopper {
-	background-position: -60px -408px !important;
-	height: 30px;
-	width: 18px;
 
 }

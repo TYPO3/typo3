@@ -10,7 +10,7 @@
 // Trees Variables
 //
 @tree-indentation: 0.5em;
-@tree-border: @navigation-border;
+@tree-border: #666666;
 
 
 //
@@ -86,6 +86,62 @@
 	}
 	&.list-tree-control-closed > .fa:before {
 		content: "\f0da";
+	}
+}
+
+
+//
+// Treeline Icons
+//
+.treeline-icon {
+	position: relative;
+	display: block;
+	float: left;
+	margin-top: -6px;
+	margin-bottom: -6px;
+	margin-right: 2px;
+	padding: 0;
+	height: 31px;
+	width: 16px;
+	white-space: nowrap;
+	overflow: hidden;
+	&:after,
+	&:before {
+		position: absolute;
+		content: '';
+		left: 50%;
+	}
+	&:before {
+		top: 0;
+		height: 100%;
+		width: 2px;
+		margin-left: -1px;
+		border-left: 1px dotted @tree-border;
+	}
+	&:after {
+		border-top: 1px dotted @tree-border;
+		height: 2px;
+		width: 100%;
+		top: 50%;
+		margin-top: -1px;
+	}
+}
+.treeline-icon-jointop:before {
+	top: 50%;
+}
+.treeline-icon-joinbottom:before {
+	top: -50%;
+}
+.treeline-icon-line:after {
+	display: none;
+}
+.treeline-icon-blank {
+	display: none;
+}
+.treeline-icon-clear {
+	&:before,
+	&:after {
+		display: none;
 	}
 }
 
@@ -345,18 +401,6 @@ ul.tree div.treeLinkItem span.dragIcon {
 	margin: 2px;
 }
 
-// Sprite icons for tree lines. Single lines need 6px padding. Can also be used directly inside .table
-
-.t3-icon-treeline {
-	display: block;
-	float: left;
-	margin-top: -6px;
-	margin-bottom: -6px;
-	padding: 0;
-	height: 30px;
-	white-space: nowrap;
-	overflow: hidden;
-}
 
 //
 // Tree

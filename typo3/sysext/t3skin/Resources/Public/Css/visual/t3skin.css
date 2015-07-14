@@ -10740,7 +10740,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   bottom: 1em;
   left: 0;
   margin-bottom: -2px;
-  border-left: 1px dotted #c3c3c3;
+  border-left: 1px dotted #666666;
 }
 .list-tree li {
   margin: 0;
@@ -10763,7 +10763,7 @@ a.list-tree li.active > .list-tree-group a:focus {
   display: block;
   width: 0.8em;
   height: 0;
-  border-top: 1px dotted #c3c3c3;
+  border-top: 1px dotted #666666;
   margin-top: -2px;
   position: absolute;
   top: 1em;
@@ -10795,6 +10795,55 @@ a.list-tree li.active > .list-tree-group a:focus {
 }
 .list-tree-control.list-tree-control-closed > .fa:before {
   content: "\f0da";
+}
+.treeline-icon {
+  position: relative;
+  display: block;
+  float: left;
+  margin-top: -6px;
+  margin-bottom: -6px;
+  margin-right: 2px;
+  padding: 0;
+  height: 31px;
+  width: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.treeline-icon:after,
+.treeline-icon:before {
+  position: absolute;
+  content: '';
+  left: 50%;
+}
+.treeline-icon:before {
+  top: 0;
+  height: 100%;
+  width: 2px;
+  margin-left: -1px;
+  border-left: 1px dotted #666666;
+}
+.treeline-icon:after {
+  border-top: 1px dotted #666666;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  margin-top: -1px;
+}
+.treeline-icon-jointop:before {
+  top: 50%;
+}
+.treeline-icon-joinbottom:before {
+  top: -50%;
+}
+.treeline-icon-line:after {
+  display: none;
+}
+.treeline-icon-blank {
+  display: none;
+}
+.treeline-icon-clear:before,
+.treeline-icon-clear:after {
+  display: none;
 }
 table#typo3-tree {
   margin: 10px 0 20px 10px;
@@ -10979,16 +11028,6 @@ ul.tree div.treeLinkItem span.dragIcon {
 }
 #typo3-pagetree #typo3-docheader img {
   margin: 2px;
-}
-.t3-icon-treeline {
-  display: block;
-  float: left;
-  margin-top: -6px;
-  margin-bottom: -6px;
-  padding: 0;
-  height: 30px;
-  white-space: nowrap;
-  overflow: hidden;
 }
 body#typo3-pagetree,
 body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
