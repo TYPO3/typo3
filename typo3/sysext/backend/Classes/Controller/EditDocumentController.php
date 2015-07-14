@@ -1255,7 +1255,7 @@ class EditDocumentController {
 	 * @return string
 	 */
 	public function shortCutLink() {
-		if ($this->returnUrl == 'close.html' || !$this->getBackendUser()->mayMakeShortcut()) {
+		if ($this->returnUrl === 'sysext/backend/Resources/Private/Templates/Close.html' || !$this->getBackendUser()->mayMakeShortcut()) {
 			return '';
 		}
 		return $this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,returnNewPageId,editRegularContentFromId,noView', '', $this->MCONF['name'], 1);
@@ -1267,10 +1267,10 @@ class EditDocumentController {
 	 * @return string
 	 */
 	public function openInNewWindowLink() {
-		if ($this->returnUrl == 'close.html') {
+		if ($this->returnUrl === 'sysext/backend/Resources/Private/Templates/Close.html') {
 			return '';
 		}
-		$aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('returnUrl' => 'close.html'))) . ',' . GeneralUtility::quoteJSvalue(md5($this->R_URI)) . ',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
+		$aOnClick = 'vHWin=window.open(' . GeneralUtility::quoteJSvalue(GeneralUtility::linkThisScript(array('returnUrl' => 'sysext/backend/Resources/Private/Templates/Close.html'))) . ',' . GeneralUtility::quoteJSvalue(md5($this->R_URI)) . ',\'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1\');vHWin.focus();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-window-open') . '</a>';
 	}
 
