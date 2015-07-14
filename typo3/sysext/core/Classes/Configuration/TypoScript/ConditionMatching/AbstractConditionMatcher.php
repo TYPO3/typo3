@@ -469,7 +469,7 @@ abstract class AbstractConditionMatcher {
 	protected function parseUserFuncArguments($arguments) {
 		$result = array();
 		$arguments = trim($arguments);
-		while ($arguments) {
+		while ($arguments !== '') {
 			if ($arguments[0] === ',') {
 				$result[] = '';
 				$arguments = substr($arguments, 1);
