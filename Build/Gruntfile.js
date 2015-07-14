@@ -17,23 +17,25 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		paths: {
-			root    : "../",
-			sysext  : "<%= paths.root %>typo3/sysext/",
-			t3skin  : "<%= paths.sysext %>t3skin/Resources/",
-			core    : "<%= paths.sysext %>core/Resources/"
+			resources : 'Resources/',
+			less      : '<%= paths.resources %>Public/Less/',
+			root      : '../',
+			sysext    : '<%= paths.root %>typo3/sysext/',
+			t3skin    : '<%= paths.sysext %>t3skin/Resources/',
+			core      : '<%= paths.sysext %>core/Resources/'
 		},
 		less: {
 			t3skin: {
 				options: {
 					outputSourceFiles: true
 				},
-				src : '<%= paths.t3skin %>Private/Styles/t3skin.less',
+				src : '<%= paths.less %>t3skin.less',
 				dest: '<%= paths.t3skin %>Public/Css/visual/t3skin.css'
 			}
 		},
 		watch: {
 			less: {
-				files: '<%= paths.t3skin %>Private/Styles/**/*.less',
+				files: '<%= paths.less %>**/*.less',
 				tasks: 'less'
 			}
 		},
