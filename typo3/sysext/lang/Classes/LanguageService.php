@@ -407,6 +407,13 @@ class LanguageService {
 	 * @return array value of $LOCAL_LANG found in the included file, empty if non found
 	 */
 	protected function readLLfile($fileRef) {
+		// @todo: Usually, an instance of the LocalizationFactory is found in $this->parserFactory.
+		// @todo: This is not the case if $GLOBALS['LANG'] is not used to get hold of this object,
+		// @todo: but the objectManager instead. If then init() is not called, this will fatal ...
+		// @todo: To be sure, we always create an instance here for now.
+		/** @var $languageFactory LocalizationFactory */
+		$languageFactory = GeneralUtility::makeInstance(LocalizationFactory::class);
+
 		if ($this->lang !== 'default') {
 			$languages = array_reverse($this->languageDependencies);
 		} else {
@@ -414,7 +421,7 @@ class LanguageService {
 		}
 		$localLanguage = array();
 		foreach ($languages as $language) {
-			$tempLL = $this->parserFactory->getParsedData($fileRef, $language, $this->charSet);
+			$tempLL = $languageFactory->getParsedData($fileRef, $language, $this->charSet);
 			$localLanguage['default'] = $tempLL['default'];
 			if (!isset($localLanguage[$this->lang])) {
 				$localLanguage[$this->lang] = $localLanguage['default'];
