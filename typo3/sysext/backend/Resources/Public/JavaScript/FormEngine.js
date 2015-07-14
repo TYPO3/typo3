@@ -575,6 +575,11 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 				});
 			}
 		});
+
+		$(document).on('click', '.t3js-editform-close', function(e) {
+			e.preventDefault();
+			FormEngine.preventExitIfNotSaved();
+		});
 	};
 
 	/**
@@ -738,10 +743,6 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 		});
 		FormEngine.convertTextareasResizable();
 		FormEngine.convertTextareasEnableTab();
-		$(document).on('click', '.t3js-editform-close', function(e) {
-			e.preventDefault();
-			FormEngine.preventExitIfNotSaved();
-		});
 	};
 
 	/**
