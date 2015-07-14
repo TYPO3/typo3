@@ -249,7 +249,6 @@ following for the specified tags:
    RTE.default.FE.showStatusBar = 0
    RTE.default.FE.hideButtons = chMode, blockstyle, textstyle, underline, strikethrough, subscript, superscript, lefttoright, righttoleft, left, center, right, justifyfull, table, inserttag, findreplace, removeformat, copy, cut, paste
    RTE.default.FE.userElements >
-   RTE.default.FE.userLinks >
 
 ## tt\_content TCEFORM configuration
 

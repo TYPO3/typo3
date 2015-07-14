@@ -130,7 +130,7 @@ class ElementBrowser {
 
 	/**
 	 * Link selector action.
-	 * page,file,url,mail,spec are allowed values.
+	 * page,file,url,mail are allowed values.
 	 * These are only important with the link selector function and in that case they switch
 	 * between the various menu options.
 	 *
@@ -636,10 +636,6 @@ class ElementBrowser {
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
-				function link_spec(theLink) {	//
-					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
-					return false;
-				}
 				function link_current() {	//
 					if (cur_href!="http://" && cur_href!="mailto:") {
 						self.parent.parent.renderPopup_addLink(cur_href, cur_target, cur_class, cur_title);
@@ -867,7 +863,7 @@ class ElementBrowser {
 		// Add the FlashMessages if any
 		$content .= $this->doc->getFlashMessages();
 
-		$allowedItems = $this->getAllowedItems('page,file,folder,url,mail,spec');
+		$allowedItems = $this->getAllowedItems('page,file,folder,url,mail');
 
 		// Removing link fields if configured
 		$blindLinkFields = isset($this->thisConfig['blindLinkFields'])
@@ -892,9 +888,6 @@ class ElementBrowser {
 			case 'file':
 			case 'folder':
 				$content .= $this->getFileSelectorHtml();
-				break;
-			case 'spec':
-				$content .= $this->getUserLinkSelectorHtml();
 				break;
 			case 'page':
 				$content .= $this->getPageSelectorHtml();
@@ -1123,12 +1116,6 @@ class ElementBrowser {
 			$menuDef['mail']['url'] = '#';
 			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=mail') . ');return false;"';
 		}
-		if (is_array($this->thisConfig['userLinks.']) && in_array('spec', $allowedItems)) {
-			$menuDef['spec']['isActive'] = $this->act === 'spec';
-			$menuDef['spec']['label'] = $lang->getLL('special', TRUE);
-			$menuDef['spec']['url'] = '#';
-			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=spec') . ');return false;"';
-		}
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
 			$menuDef = $hookObject->modifyMenuDefinition($menuDef);
@@ -1278,79 +1265,6 @@ class ElementBrowser {
 			$content .= $uploadForm;
 		}
 		$content .=  '<br />' . $createFolder . '<br />';
-		return $content;
-	}
-
-	/**
-	 * Returns HTML of the user defined link selector
-	 *
-	 * @return string
-	 */
-	protected function getUserLinkSelectorHtml() {
-		if (!is_array($this->thisConfig['userLinks.'])) {
-			return '';
-		}
-		$lang = $this->getLanguageService();
-		$subcats = array();
-		$v = $this->thisConfig['userLinks.'];
-		foreach ($v as $k2 => $value) {
-			$k2i = (int)$k2;
-			if (substr($k2, -1) === '.' && is_array($v[$k2i . '.'])) {
-				// Title:
-				$title = trim($v[$k2i]);
-				if (!$title) {
-					$title = $v[$k2i . '.']['url'];
-				} else {
-					$title = $lang->sL($title);
-				}
-				// Description:
-				$description = $v[$k2i . '.']['description']
-					? $lang->sL($v[($k2i . '.')]['description'], TRUE) . '<br />'
-					: '';
-				// URL + onclick event:
-				$onClickEvent = '';
-				if (isset($v[$k2i . '.']['target'])) {
-					$onClickEvent .= 'browse_links_setTarget(' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['target']) . ');';
-				}
-				$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
-				if (substr($v[$k2i . '.']['url'], 0, 7) === 'http://' || substr($v[$k2i . '.']['url'], 0, 7) === 'mailto:') {
-					$onClickEvent .= 'cur_href=' . GeneralUtility::quoteJSvalue($v[($k2i . '.')]['url']) . ';link_current();';
-				} else {
-					$onClickEvent .= 'link_spec(' . GeneralUtility::quoteJSvalue($this->siteURL . $v[($k2i . '.')]['url']) . ');';
-				}
-				// Link:
-				$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
-				// Adding link to menu of user defined links:
-				$subcats[$k2i] = '
-								<tr>
-									<td class="bgColor4">' . $A[0] . '<strong>' . htmlspecialchars($title)
-					. ($this->curUrlInfo['info'] == $v[$k2i . '.']['url']
-						? '<img' . IconUtility::skinImg(
-							$GLOBALS['BACK_PATH'],
-							'gfx/blinkarrow_right.gif',
-							'width="5" height="9"'
-						) . ' class="c-blinkArrowR" alt="" />'
-						: '')
-					. '</strong><br />' . $description . $A[1] . '</td>
-								</tr>';
-			}
-		}
-		// Sort by keys:
-		ksort($subcats);
-		// Add menu to content:
-		$content = '
-
-			<!--
-				Special userdefined menu:
-			-->
-						<table border="0" cellpadding="1" cellspacing="1" id="typo3-linkSpecial">
-							<tr>
-								<td class="bgColor5" class="c-wCell" valign="top"><strong>'
-			. $lang->getLL('special', TRUE) . '</strong></td>
-							</tr>
-							' . implode('', $subcats) . '
-						</table>
-						';
 		return $content;
 	}
 
@@ -2351,7 +2265,7 @@ class ElementBrowser {
 	 *
 	 * @param string $href HREF value tp analyse
 	 * @param string $siteUrl The URL of the current website (frontend)
-	 * @return array[] Array with URL information stored in assoc. keys: value, act (page, file, spec, mail), pageid, cElement, info
+	 * @return array[] Array with URL information stored in assoc. keys: value, act (page, file, mail), pageid, cElement, info
 	 */
 	public function parseCurUrl($href, $siteUrl) {
 		$href = trim($href);
@@ -2361,12 +2275,7 @@ class ElementBrowser {
 			// Default is "url":
 			$info['value'] = $href;
 			$info['act'] = 'url';
-			$specialParts = explode('#_SPECIAL', $href);
-			// Special kind (Something RTE specific: User configurable links through: "userLinks." from ->thisConfig)
-			if (count($specialParts) == 2) {
-				$info['value'] = '#_SPECIAL' . $specialParts[1];
-				$info['act'] = 'spec';
-			} elseif (!StringUtility::beginsWith($href, 'file://') && strpos($href, 'file:') !== FALSE) {
+			if (!StringUtility::beginsWith($href, 'file://') && strpos($href, 'file:') !== FALSE) {
 				$rel = substr($href, strpos($href, 'file:') + 5);
 				$rel = rawurldecode($rel);
 				// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"

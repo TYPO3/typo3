@@ -301,7 +301,6 @@ into the editor
 
    RTE.default.FE < RTE.default
    RTE.default.FE.userElements >
-   RTE.default.FE.userLinks >
 
 ## tt\_content TCEFORM configuration
 

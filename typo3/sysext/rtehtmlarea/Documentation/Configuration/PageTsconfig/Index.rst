@@ -36,5 +36,4 @@ this is most often done on the root page of your site.
    classesAnchor/Index
    userCategory/Index
    userElements/Index
-   userLinks/Index
 
