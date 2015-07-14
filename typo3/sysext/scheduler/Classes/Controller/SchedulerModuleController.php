@@ -1122,9 +1122,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 								. '<td class="right">' . $schedulerRecord['uid'] . '</td>'
 								. '<td colspan="6">' . $executionStatusOutput . '</td>'
 								. '<td nowrap="nowrap"><div class="btn-group" role="group">'
+									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
+									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
 									. $deleteAction
-									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
-									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
 									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
 								. '</div></td>'
 							. '</tr>';
