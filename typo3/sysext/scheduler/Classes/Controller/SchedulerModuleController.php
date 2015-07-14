@@ -563,7 +563,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$taskInfo['task_group'] = $taskRecord['task_group'];
 
 				// Check that the task object is valid
-				if ($this->scheduler->isValidTaskObject($task)) {
+				if (isset($registeredClasses[get_class($task)]) && $this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid, process with fetching current data
 					$taskInfo['class'] = get_class($task);
 					// Get execution information
@@ -944,6 +944,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$temporaryResult[$row['task_group']]['groupDescription'] = $row['taskGroupDescription'];
 				$temporaryResult[$row['task_group']]['tasks'][] = $row;
 			}
+			$registeredClasses = $this->getRegisteredClasses();
 			foreach ($temporaryResult as $taskGroup) {
 				if (!empty($taskGroup['groupName'])) {
 					$groupText = '<strong>' . htmlspecialchars($taskGroup['groupName']) . '</strong>';
@@ -995,7 +996,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$lastExecution .= ' (' . $context . ')';
 					}
 
-					if ($this->scheduler->isValidTaskObject($task)) {
+					if (isset($registeredClasses[get_class($task)]) && $this->scheduler->isValidTaskObject($task)) {
 						// The task object is valid
 						$labels = array();
 						$name = htmlspecialchars($registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')');
