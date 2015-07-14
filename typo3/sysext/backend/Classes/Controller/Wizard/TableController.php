@@ -315,7 +315,7 @@ class TableController extends AbstractWizardController {
 						$cells[] = '<input class="form-control" type="text"' . $this->doc->formWidth(20) . ' name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
 					} else {
 						$cellContent = preg_replace('/<br[ ]?[\\/]?>/i', LF, $cellContent);
-						$cells[] = '<textarea class="form-control" ' . $this->doc->formWidth(20) . ' rows="6" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . GeneralUtility::formatForTextarea($cellContent) . '</textarea>';
+						$cells[] = '<textarea class="form-control" ' . $this->doc->formWidth(20) . ' rows="6" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . htmlspecialchars($cellContent) . '</textarea>';
 					}
 					// Increment counter:
 					$a++;

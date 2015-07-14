@@ -216,7 +216,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						}
 						$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
 						$default = $this->getFieldDefaultValue($noValueInsert, $confData['fieldname'], str_replace('\\n', LF, trim($parts[2])));
-						$fieldCode = sprintf('<textarea name="%s"%s cols="%s" rows="%s"%s%s>%s</textarea>', $confData['fieldname'], $elementIdAttribute, $cols, $rows, $wrap, $addParams, GeneralUtility::formatForTextarea($default));
+						$fieldCode = sprintf('<textarea name="%s"%s cols="%s" rows="%s"%s%s>%s</textarea>', $confData['fieldname'], $elementIdAttribute, $cols, $rows, $wrap, $addParams, htmlspecialchars($default));
 						break;
 					case 'input':
 

@@ -872,8 +872,10 @@ class GeneralUtility {
 	 * @param int $B Offset value 0-255
 	 * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
 	 * @see modifyHTMLColorAll()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function modifyHTMLColor($color, $R, $G, $B) {
+		self::logDeprecatedFunction();
 		// This takes a hex-color (# included!) and adds $R, $G and $B to the HTML-color (format: #xxxxxx) and returns the new color
 		$nR = MathUtility::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
 		$nG = MathUtility::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
@@ -888,8 +890,10 @@ class GeneralUtility {
 	 * @param int $all Offset value 0-255 for all three channels.
 	 * @return string A hexadecimal color code, #xxxxxx, modified according to input vars
 	 * @see modifyHTMLColor()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function modifyHTMLColorAll($color, $all) {
+		self::logDeprecatedFunction();
 		return self::modifyHTMLColor($color, $all, $all, $all);
 	}
 
@@ -1082,8 +1086,10 @@ class GeneralUtility {
 	 *   by || with the rest in this function.
 	 *
 	 * @return bool TRUE if mail() does not accept recipient name
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function isBrokenEmailEnvironment() {
+		self::logDeprecatedFunction();
 		return TYPO3_OS == 'WIN' || FALSE !== strpos(ini_get('sendmail_path'), 'mini_sendmail');
 	}
 
@@ -1092,8 +1098,10 @@ class GeneralUtility {
 	 *
 	 * @param string $address Address to adjust
 	 * @return string Adjusted address
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function normalizeMailAddress($address) {
+		self::logDeprecatedFunction();
 		if (self::isBrokenEmailEnvironment() && FALSE !== ($pos1 = strrpos($address, '<'))) {
 			$pos2 = strpos($address, '>', $pos1);
 			$address = substr($address, $pos1 + 1, ($pos2 ? $pos2 : strlen($address)) - $pos1 - 1);
@@ -1108,8 +1116,10 @@ class GeneralUtility {
 	 *
 	 * @param string $content Input string to be formatted.
 	 * @return string Formatted for <textarea>-tags
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function formatForTextarea($content) {
+		self::logDeprecatedFunction();
 		return LF . htmlspecialchars($content);
 	}
 
@@ -3152,8 +3162,10 @@ Connection: close
 	 * Returns the HOST+DIR-PATH of the current script (The URL, but without 'http://' and without script-filename)
 	 *
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use GeneralUtility::getIndpEnv* instead
 	 */
 	static public function getThisUrl() {
+		self::logDeprecatedFunction();
 		// Url of this script
 		$p = parse_url(self::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
 		$dir = self::dirname($p['path']) . '/';
@@ -5131,8 +5143,10 @@ Connection: close
 	 * Ends and cleans all output buffers
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in CMS 8, use ob_* functions directly or self::flushOutputBuffers
 	 */
 	static public function cleanOutputBuffers() {
+		self::logDeprecatedFunction();
 		while (ob_end_clean()) {
 
 		}

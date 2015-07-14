@@ -174,7 +174,7 @@ class TextElement extends AbstractFormElement {
 				. $attributeString
 				. $placeholderAttribute
 				. $parameterArray['onFocus']
-				. '>' . GeneralUtility::formatForTextarea($parameterArray['itemFormElValue']) . '</textarea>';
+				. '>' . htmlspecialchars($parameterArray['itemFormElValue']) . '</textarea>';
 
 			// Wrap a wizard around the item?
 			$html = $this->renderWizards(

@@ -345,7 +345,7 @@ class RichTextElement extends AbstractFormElement {
 		$result[] = '</div>';
 		$result[] = '<div id="editorWrap' . $this->domIdentifier . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:100%;">';
 		$result[] = 	'<textarea id="RTEarea' . $this->domIdentifier . '" name="' . htmlspecialchars($itemFormElementName) . '" rows="0" cols="0" style="' . htmlspecialchars($rteDivStyle) . '">';
-		$result[] = 		GeneralUtility::formatForTextarea($value);
+		$result[] = 		htmlspecialchars($value);
 		$result[] = 	'</textarea>';
 		$result[] = '</div>';
 

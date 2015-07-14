@@ -450,7 +450,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 					}
 					// Default data
 					if ($confData['type'] == 'select' || $confData['type'] == 'radio') {
-						$temp_cells[$this->getLanguageService()->getLL('forms_options')] = '<textarea ' . $this->doc->formWidth(15) . ' rows="4" name="FORMCFG[c][' . ($k + 1) * 2 . '][options]" title="' . $this->getLanguageService()->getLL('forms_options', TRUE) . '">' . GeneralUtility::formatForTextarea($confData['default']) . '</textarea>';
+						$temp_cells[$this->getLanguageService()->getLL('forms_options')] = '<textarea ' . $this->doc->formWidth(15) . ' rows="4" name="FORMCFG[c][' . ($k + 1) * 2 . '][options]" title="' . $this->getLanguageService()->getLL('forms_options', TRUE) . '">' . htmlspecialchars($confData['default']) . '</textarea>';
 					} elseif ($confData['type'] == 'check') {
 						$temp_cells[$this->getLanguageService()->getLL('forms_checked')] = '<input type="checkbox" name="FORMCFG[c][' . ($k + 1) * 2 . '][default]" value="1"' . (trim($confData['default']) ? ' checked="checked"' : '') . ' title="' . $this->getLanguageService()->getLL('forms_checked', TRUE) . '" />';
 					} elseif ($confData['type'] && $confData['type'] != 'file') {

@@ -808,7 +808,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							' . $this->lang->getLL('makesavefo_description', TRUE) . ' <br/>
 							<input type="text" name="tx_impexp[meta][description]" value="' . htmlspecialchars($inData['meta']['description']) . '"' . $this->doc->formWidth(30) . ' /><br/>
 							' . $this->lang->getLL('makesavefo_notes', TRUE) . ' <br/>
-							<textarea name="tx_impexp[meta][notes]"' . $this->doc->formWidth(30, 1) . '>' . GeneralUtility::formatForTextarea($inData['meta']['notes']) . '</textarea><br/>
+							<textarea name="tx_impexp[meta][notes]"' . $this->doc->formWidth(30, 1) . '>' . htmlspecialchars($inData['meta']['notes']) . '</textarea><br/>
 							' . (!empty($thumbnailFiles) ? '
 							' . $this->lang->getLL('makesavefo_thumbnail', TRUE) . '<br/>
 							' . $this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnailFiles) : '') . '<br/>
