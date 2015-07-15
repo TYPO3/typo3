@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Simple file locking
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class SimpleLockStrategy implements LockingStrategyInterface {
 

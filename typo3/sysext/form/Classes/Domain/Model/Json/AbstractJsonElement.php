@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON element abstract
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AbstractJsonElement {
 

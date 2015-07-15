@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Semaphore locking
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class SemaphoreLockStrategy implements LockingStrategyInterface {
 

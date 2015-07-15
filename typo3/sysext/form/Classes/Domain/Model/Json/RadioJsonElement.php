@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON radio
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

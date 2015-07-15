@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Domain\Model\Form;
 
 /**
  * Main view layer for Forms.
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\ContainerElementView {
 

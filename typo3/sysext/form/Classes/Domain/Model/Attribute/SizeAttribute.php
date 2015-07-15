@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'size'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class SizeAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

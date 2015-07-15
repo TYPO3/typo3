@@ -15,9 +15,6 @@
  * License:
  * This code is public domain, you are free to do whatever you want with it,
  * including adding it to your own project which can be under any license.
- *
- * @author	Travis Puderbaugh <kallahar@quickwired.com>
- * @author	Jigal van Hemert <jigal.van.hemert@typo3.org>
  * @package	RemoveXSS
  */
 class RemoveXSS {

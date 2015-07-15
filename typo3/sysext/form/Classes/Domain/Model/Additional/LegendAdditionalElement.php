@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
 
 /**
  * Additional 'legend'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LegendAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional\AbstractAdditionalElement {
 

@@ -16,8 +16,6 @@
  * Module: Config
  *
  * This module lets you view the config variables around TYPO3.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\View\ConfigurationView::class);

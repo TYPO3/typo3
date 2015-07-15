@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An extension helper repository to be used in ext:documentation context
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class DocumentRepository {
 

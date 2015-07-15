@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 
 /**
  * Model for the module storage
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface {
 

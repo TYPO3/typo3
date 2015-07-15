@@ -22,8 +22,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * ViewHelper to create a link to edit a note
- *
- * @author Georg Ringer <typo3@ringerge.org>
  * @internal
  */
 class EditLinkViewHelper extends AbstractViewHelper implements CompilableInterface {

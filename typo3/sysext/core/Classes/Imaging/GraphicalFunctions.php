@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * Class contains a bunch of cool functions for manipulating graphics with GDlib/Freetype and ImageMagick.
  * VERY OFTEN used with gifbuilder that extends this class and provides a TypoScript API to using these functions
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class GraphicalFunctions {
 

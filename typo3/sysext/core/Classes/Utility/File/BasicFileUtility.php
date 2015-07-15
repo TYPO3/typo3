@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Please use corresponding TYPO3\\CMS\\Core\\Resource\\ResourceStorage
  * (fetched via BE_USERS->getFileStorages()), as all functions should be
  * found there (in a cleaner manner).
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BasicFileUtility {
 

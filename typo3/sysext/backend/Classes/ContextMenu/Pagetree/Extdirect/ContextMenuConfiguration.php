@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\ContextMenu\Pagetree\Extdirect;
 
 /**
  * Context Menu of the Page Tree
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ContextMenuConfiguration extends \TYPO3\CMS\Backend\ContextMenu\Extdirect\AbstractExtdirectContextMenu {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Textblock model object
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class TextblockElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement {
 

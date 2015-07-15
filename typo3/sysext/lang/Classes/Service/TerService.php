@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Extends of extensionmanager ter connection to enrich with translation
  * related methods
- *
- * @author Sebastian Fischer <typo3@evoweb.de>
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

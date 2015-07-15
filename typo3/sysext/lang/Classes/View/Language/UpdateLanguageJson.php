@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\View\Language;
 
 /**
  * JSON view for "updateLanguage" action in "Language" controller
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class UpdateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
 

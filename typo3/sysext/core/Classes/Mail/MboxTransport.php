@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Locking\LockFactory;
  *
  * This will use the setting in TYPO3_CONF_VARS to choose the correct transport
  * for it to work out-of-the-box.
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class MboxTransport implements \Swift_Transport {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain;
 
 /**
  * Main view layer for plain mail content.
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class PlainView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\ContainerElementView {
 

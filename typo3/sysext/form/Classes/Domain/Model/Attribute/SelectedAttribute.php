@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'selected'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class SelectedAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

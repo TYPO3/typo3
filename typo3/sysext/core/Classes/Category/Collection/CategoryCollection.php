@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Category\Collection;
 
 /**
  * Category Collection to handle records attached to a category
- *
- * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
 class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\EditableCollectionInterface {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Frontend\Page\PageGenerator;
 
 /**
  * Fixture for PageGenerator
- *
- * @author Markus Klein <klein.t3@mfc-linz.at>
  */
 class PageGeneratorFixture extends PageGenerator {
 

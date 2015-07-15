@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Resource\Filter;
 
 /**
  * Utility methods for filtering filenames
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class FileNameFilter {
 

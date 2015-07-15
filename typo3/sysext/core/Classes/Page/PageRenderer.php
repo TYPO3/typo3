@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * TYPO3 pageRender class (new in TYPO3 4.3.0)
  * This class render the HTML of a webpage, usable for BE and FE
- *
- * @author Steffen Kamper <info@sk-typo3.de>
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
@@ -1599,8 +1596,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * 		'paths' => array(
      *			'EXTERN/mybootstrapjs' => 'contrib/twbs/bootstrap.min',
 	 *      ),
-	 *
-	 * @author Daniel Siepmann <daniel.siepmann@typo3.org>
 	 *
 	 * @param array $configuration The configuration that will be merged with existing one.
 	 * @return void

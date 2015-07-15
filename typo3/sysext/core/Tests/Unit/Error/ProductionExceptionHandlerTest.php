@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
 /**
  * testcase for the \TYPO3\CMS\Core\Error\ProductionExceptionHandler class.
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class ProductionExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

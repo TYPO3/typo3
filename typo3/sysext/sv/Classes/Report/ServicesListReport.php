@@ -24,8 +24,6 @@ use TYPO3\CMS\Reports\ReportInterface;
 /**
  * This class provides a report displaying a list of all installed services
  * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
- *
- * @author Francois Suter <francois@typo3.org>
  */
 class ServicesListReport implements ReportInterface {
 

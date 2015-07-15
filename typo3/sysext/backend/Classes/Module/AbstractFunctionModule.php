@@ -101,8 +101,6 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * The two level-2 sub-module "wizard_crpages" and "wizard_sortpages"
  * are totally normal "submodules".
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Backend\Module\BaseScriptClass
  * @see \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController
  * @see \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction

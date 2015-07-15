@@ -18,8 +18,6 @@
  * Basically it includes two libraries which are used to manipulate files on the server.
  *
  * For syntax and API information, see the document 'TYPO3 Core APIs'
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

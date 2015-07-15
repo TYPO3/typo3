@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Request Handler for Form
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Request implements \TYPO3\CMS\Core\SingletonInterface {
 

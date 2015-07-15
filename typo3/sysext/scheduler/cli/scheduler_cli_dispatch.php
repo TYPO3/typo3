@@ -15,8 +15,6 @@
 /**
  * Starts all due tasks, used by the command line interface
  * This script must be included by the "CLI module dispatcher"
- *
- * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
 
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) === 'cli_dispatch.phpsh') {

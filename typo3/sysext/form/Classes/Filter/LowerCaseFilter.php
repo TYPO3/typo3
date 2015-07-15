@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Lowercase filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LowerCaseFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

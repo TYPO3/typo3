@@ -22,8 +22,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * Available tables must be registered in
  * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask::class]['options']['tables']
  * See ext_localconf.php of scheduler extension for an example
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

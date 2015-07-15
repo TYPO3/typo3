@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Script Class, generating the page output.
  * Instantiated in the bottom of this script.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ShowImageController {
 

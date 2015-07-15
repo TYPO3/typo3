@@ -55,8 +55,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  */
 /**
  * Install Tool form protection
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class InstallToolFormProtection extends AbstractFormProtection {
 

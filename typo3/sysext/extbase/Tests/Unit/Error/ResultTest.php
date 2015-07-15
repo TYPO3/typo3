@@ -57,7 +57,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -72,7 +71,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -87,7 +85,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -103,7 +100,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function forPropertyShouldReturnSubResult() {
 		$container2 = $this->result->forProperty('foo.bar');
@@ -113,7 +109,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function forPropertyWithEmptyStringShouldReturnSelf() {
 		$container2 = $this->result->forProperty('');
@@ -122,7 +117,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function forPropertyWithNullShouldReturnSelf() {
 		$container2 = $this->result->forProperty(NULL);
@@ -132,7 +126,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -147,7 +140,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -162,7 +154,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -176,7 +167,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -205,7 +195,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $dataTypeInSingular
 	 * @param string $dataTypeInPlural
 	 */
@@ -225,7 +214,6 @@ class ResultTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function mergeShouldMergeTwoResults() {
 		$notice1 = $this->getMockMessage('Notice');

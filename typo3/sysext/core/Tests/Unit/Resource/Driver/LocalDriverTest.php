@@ -21,8 +21,6 @@ use org\bovigo\vfs\vfsStreamWrapper;
 
 /**
  * Testcase for the local storage driver class of the TYPO3 VFS
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 

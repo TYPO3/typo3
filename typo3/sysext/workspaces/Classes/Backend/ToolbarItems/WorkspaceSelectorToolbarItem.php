@@ -22,8 +22,6 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Class to render the workspace selector
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 

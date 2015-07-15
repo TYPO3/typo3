@@ -32,7 +32,6 @@ class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validato
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theRawValidatorAlwaysReturnsNoErrors() {
 		$rawValidator = new \TYPO3\CMS\Extbase\Validation\Validator\RawValidator(array());

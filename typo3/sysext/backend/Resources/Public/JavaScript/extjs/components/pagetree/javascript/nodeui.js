@@ -19,7 +19,6 @@ Ext.namespace('TYPO3.Components.PageTree');
  *
  * @namespace TYPO3.Components.PageTree
  * @extends Ext.tree.TreeNodeUI
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 	/**

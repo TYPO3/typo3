@@ -58,8 +58,6 @@ use TYPO3\CMS\Frontend\View\AdminPanelView;
  *
  * The use of this class should be inspired by the order of function calls as
  * found in index_ts.php.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TypoScriptFrontendController {
 
@@ -2749,7 +2747,6 @@ class TypoScriptFrontendController {
 	 * shortcut
 	 *
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	protected function checkTranslatedShortcut() {
 		if (!is_null($this->originalShortcutPage)) {

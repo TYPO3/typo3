@@ -29,8 +29,6 @@ use TYPO3\CMS\Lang\LanguageService;
  * Typically instantiated like this:
  * $this->loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
  * $this->loadModules->load($TBE_MODULES);
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
 class ModuleLoader {

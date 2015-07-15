@@ -18,8 +18,6 @@ use \org\bovigo\vfs\vfsStream;
 
 /**
  * Basic test case for the \TYPO3\CMS\Core\Resource\File tests
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

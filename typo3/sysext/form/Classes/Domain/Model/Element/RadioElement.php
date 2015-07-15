@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Radio model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RadioElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

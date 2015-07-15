@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Abstract Context Menu Data Provider
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 abstract class AbstractContextMenuDataProvider {
 

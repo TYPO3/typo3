@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  *
  * Warning:
  * The unit tests use and flush redis database numbers 0 and 1!
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

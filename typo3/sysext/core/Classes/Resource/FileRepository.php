@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class FileRepository extends AbstractRepository {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 
 /**
  * Collection of backend layout data providers.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface {
 

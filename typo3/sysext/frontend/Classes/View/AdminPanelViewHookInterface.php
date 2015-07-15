@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\View;
 
 /**
  * Interface for classes which hook into AdminPanelView
- *
- * @author Georg Ringer <typo3@ringerge.org>
  */
 interface AdminPanelViewHookInterface {
 

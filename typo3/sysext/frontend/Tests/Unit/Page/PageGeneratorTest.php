@@ -19,8 +19,6 @@ use TYPO3\CMS\Frontend\Tests\Unit\Page\Fixtures\PageGeneratorFixture;
 
 /**
  * Test case
- *
- * @author Markus Klein <klein.t3@mfc-linz.at>
  */
 class PageGeneratorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

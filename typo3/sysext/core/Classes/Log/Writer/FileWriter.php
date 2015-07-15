@@ -21,10 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Log writer that writes the log records into a file.
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
- * @author Ingo Renner <ingo@typo3.org>
  */
 class FileWriter extends AbstractWriter {
 

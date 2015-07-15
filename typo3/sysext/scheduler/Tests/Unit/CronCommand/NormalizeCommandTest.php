@@ -20,8 +20,6 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 
 /**
  * Test case
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class NormalizeCommandTest extends UnitTestCase {
 

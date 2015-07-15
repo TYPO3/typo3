@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Textarea model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TextareaElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

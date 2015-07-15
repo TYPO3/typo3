@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides a javascript-driven code editor with syntax highlighting for TS, HTML, CSS and more
- *
- * @author Tobias Liebig <mail_typo3@etobi.de>
  */
 class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
@@ -370,7 +368,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $params additional parameters (not used here)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
 	 * @return void
-	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	public function getPlugins($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
 		$result = array();

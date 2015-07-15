@@ -19,8 +19,6 @@ use TYPO3\CMS\Backend\Module\BaseScriptClass;
 /**
  * The Wizard function in the Web>Info module
  * Creates a framework for adding wizard sub-sub-modules under the Wizard function in Web>Info
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

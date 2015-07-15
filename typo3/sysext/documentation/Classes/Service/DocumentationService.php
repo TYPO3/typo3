@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service class to connect to docs.typo3.org.
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class DocumentationService {
 

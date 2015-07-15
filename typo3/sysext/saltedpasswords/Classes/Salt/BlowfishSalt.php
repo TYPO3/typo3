@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  * Warning: Blowfish salted hashing with PHP's crypt() is not available
  * on every system.
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
 class BlowfishSalt extends Md5Salt {
 

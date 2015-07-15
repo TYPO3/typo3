@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\FormProtection;
 /**
  * This class is a dummy implementation of the form protection,
  * which is used when no authentication is used.
- *
- * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class DisabledFormProtection extends AbstractFormProtection {
 

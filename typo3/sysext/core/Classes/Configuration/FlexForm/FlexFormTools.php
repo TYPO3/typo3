@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Contains functions for manipulating flex form data
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FlexFormTools {
 

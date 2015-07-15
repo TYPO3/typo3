@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /**
  * Testcase for the \TYPO3\CMS\Core\Utility\ClientUtility class.
- *
- * @author Steffen Kamper <info@sk-typo3.de>
  */
 class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

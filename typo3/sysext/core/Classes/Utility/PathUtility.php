@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Class with helper functions for file paths.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class PathUtility {
 

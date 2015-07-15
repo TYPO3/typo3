@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getContextMenuCode()
  */
 class ClickMenuController {

@@ -20,8 +20,6 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Contains FlexForm manipulation methods as part of the TCEforms
- *
- * @author Kai Vogel <kai.vogel(at)speedprogs.de>
  */
 class FlexFormsHelper extends FormEngine {
 

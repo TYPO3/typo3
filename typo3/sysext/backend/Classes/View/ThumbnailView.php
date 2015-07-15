@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Input GET var, &size: integer-values defining size of thumbnail, format '[int]' or '[int]x[int]'
  *
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
- *
- * @author Kasper Skårhøj	<kasperYYYY@typo3.com>
  * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
  */
 class ThumbnailView {

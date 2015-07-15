@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON checkbox
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class CheckboxJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

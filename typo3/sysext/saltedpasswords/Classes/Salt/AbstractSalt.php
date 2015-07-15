@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
 /**
  * Abstract class with methods needed to be extended
  * in a salted hashing class.
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
 abstract class AbstractSalt {
 

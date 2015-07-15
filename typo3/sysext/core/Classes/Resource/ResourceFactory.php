@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 // @todo implement constructor-level caching
 /**
  * Factory class for FAL objects
- *
- * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
 class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 

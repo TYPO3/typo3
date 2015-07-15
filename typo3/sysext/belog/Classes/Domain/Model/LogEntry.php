@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  * This model is 'complete': All current database properties are in there.
  *
  * @todo : This should be stuffed to some more central place
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

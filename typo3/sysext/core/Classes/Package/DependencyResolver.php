@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
  * This class takes care about dependencies between packages.
  * It provides functionality to resolve dependencies and to determine
  * the crucial loading order of the packages.
- *
- * @author Markus Klein <markus.klein@typo3.org>
  */
 class DependencyResolver {
 

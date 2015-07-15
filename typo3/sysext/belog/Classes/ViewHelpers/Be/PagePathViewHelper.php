@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Get page path string from page id
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class PagePathViewHelper extends AbstractBackendViewHelper implements CompilableInterface {

@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
 /**
  * Abstract parser for TYPO3's mirror.xml file.
- *
- * @author Marcus Krause <marcus#exp2010@t3sec.info>
- * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-09
  */
 abstract class AbstractMirrorXmlParser extends AbstractXmlParser {

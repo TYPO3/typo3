@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * File edit hook for t3editor
- *
- * @author Tobias Liebig <mail_typo3@etobi.de>
  */
 class FileEditHook {
 

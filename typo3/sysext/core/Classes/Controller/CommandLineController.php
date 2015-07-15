@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Controller;
 
 /**
  * TYPO3 cli script basis
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CommandLineController {
 

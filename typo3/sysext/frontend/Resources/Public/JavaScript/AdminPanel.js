@@ -12,7 +12,6 @@
  */
 
 /**
- * @author  Dmitry Dulepov  <dmitry@typo3.org>
  */
 
 var TYPO3AdminPanel = function() {

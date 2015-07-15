@@ -22,8 +22,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
  * Display error icon from error integer value
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class ErrorIconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {

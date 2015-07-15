@@ -69,8 +69,6 @@ Ext.override(Ext.layout.BorderLayout.SplitRegion, {
 });
 /**
  * Extends the viewport with some functionality for TYPO3.
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	/**

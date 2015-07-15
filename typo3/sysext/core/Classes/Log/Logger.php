@@ -16,10 +16,6 @@ namespace TYPO3\CMS\Core\Log;
 
 /**
  * Logger to log events and data for different components.
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class Logger implements \Psr\Log\LoggerInterface {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Error\Http;
 
 /**
  * HTTP Status Exception
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class StatusException extends \TYPO3\CMS\Core\Error\Exception {
 

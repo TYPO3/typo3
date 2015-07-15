@@ -41,9 +41,6 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * binaries can be preconfigured with
  * $TYPO3_CONF_VARS['SYS']['binSetup']
- *
- * @author Steffen Kamper <steffen@typo3.org>
- * @author René Fritz <r.fritz@colorcube.de>
  */
 class CommandUtility {
 

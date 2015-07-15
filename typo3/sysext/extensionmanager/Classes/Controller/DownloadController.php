@@ -19,8 +19,6 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * Controller for actions related to the TER download of an extension
- *
- * @author Susanne Moog, <typo3@susannemoog.de>
  */
 class DownloadController extends AbstractController {
 

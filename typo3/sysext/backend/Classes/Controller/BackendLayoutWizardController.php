@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Script Class for grid wizard
- *
- * @author T3UXW09 Team1 <modernbe@cybercraft.de>
  */
 class BackendLayoutWizardController {
 

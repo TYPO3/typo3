@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\SimpleLockStrategy
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class SimpleLockStrategyTest extends UnitTestCase {
 

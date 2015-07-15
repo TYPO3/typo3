@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Log writer that writes the log records into a database table.
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class DatabaseWriter extends AbstractWriter {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Service for integrity
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class IntegrityService {
 

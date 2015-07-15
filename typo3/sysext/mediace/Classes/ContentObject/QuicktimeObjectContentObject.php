@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Contains QTOBJECT content object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 

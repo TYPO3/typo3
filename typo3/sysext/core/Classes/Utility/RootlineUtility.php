@@ -18,8 +18,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * A utility resolving and Caching the Rootline generation
- *
- * @author Steffen Ritter <steffen.ritter@typo3.org>
  */
 class RootlineUtility {
 

@@ -22,8 +22,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
 /**
  * Class for parsing HTML for the Rich Text Editor. (also called transformations)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 

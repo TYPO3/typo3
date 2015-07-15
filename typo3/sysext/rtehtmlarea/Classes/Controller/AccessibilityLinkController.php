@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 /**
  * Remove accessibility icon when no link was rendered
- *
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class AccessibilityLinkController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 

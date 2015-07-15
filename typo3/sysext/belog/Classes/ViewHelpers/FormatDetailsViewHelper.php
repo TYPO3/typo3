@@ -21,8 +21,6 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * Create detail string from log entry
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class FormatDetailsViewHelper extends AbstractViewHelper implements CompilableInterface {

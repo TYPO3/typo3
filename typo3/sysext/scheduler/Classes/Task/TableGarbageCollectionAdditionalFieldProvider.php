@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 
 /**
  * Additional BE fields for sys log table garbage collection task.
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

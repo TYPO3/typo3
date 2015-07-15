@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 /**
  * Interface for classes which hook into inline element handling
- *
- * @author Oliver Hader <oh@inpublica.de>
  */
 interface InlineElementHookInterface {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * Provides an environment status report
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatusProviderInterface {
 

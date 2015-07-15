@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in FormEngine somewhere
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class EditController extends AbstractWizardController {
 

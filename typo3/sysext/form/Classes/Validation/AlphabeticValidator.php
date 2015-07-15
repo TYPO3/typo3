@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Alphabetic rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AlphabeticValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

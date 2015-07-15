@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
 
 /**
  * Renderer for unordered lists
- *
- * @author Steffen Kamper <steffen@typo3.org>
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class ExtJsJsonTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer {
 

@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * A caching backend which stores cache entries during one script run.
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
  * @api
  */
 class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {

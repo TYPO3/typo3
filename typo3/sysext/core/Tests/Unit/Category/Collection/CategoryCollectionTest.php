@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
 
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
- *
- * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
 class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

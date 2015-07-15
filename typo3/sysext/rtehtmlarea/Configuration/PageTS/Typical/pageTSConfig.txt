@@ -2,8 +2,6 @@
 # "Typical" Page TSconfig for htmlArea RTE and Classic RTE
 #
 # Sets Page TSConfig with most commonly used features representing a good start for typical sites.
-#
-# @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
 # ***************************************************************************************
 
 	## Define labels and styles to be applied to class selectors in the interface of the RTE

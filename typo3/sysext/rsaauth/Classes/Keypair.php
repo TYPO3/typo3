@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Rsaauth;
 /**
  * This class contain an RSA key pair. Its purpose is to keep to keys
  * and transfer these keys between other PHP classes.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class Keypair implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Rsaauth\Backend\CommandLineBackend;
 
 /**
  * Test case.
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class CommandLineBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase  {
 	/**

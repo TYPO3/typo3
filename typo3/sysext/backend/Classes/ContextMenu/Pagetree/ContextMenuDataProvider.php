@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Context Menu Data Provider for the Page Tree
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenuDataProvider {
 

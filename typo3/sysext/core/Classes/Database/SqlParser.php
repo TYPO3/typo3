@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Database;
 
 /**
  * TYPO3 SQL parser class.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SqlParser {
 

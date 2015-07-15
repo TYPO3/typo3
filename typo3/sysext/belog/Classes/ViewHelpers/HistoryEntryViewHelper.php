@@ -27,8 +27,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get history entry from for log entry
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInterface {

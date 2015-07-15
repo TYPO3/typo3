@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON reset
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ResetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

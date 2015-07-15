@@ -31,8 +31,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RecordList {
 

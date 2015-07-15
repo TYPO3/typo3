@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 
 /**
  * Extension class creating text based menus
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TextMenuContentObject extends AbstractMenuContentObject {
 

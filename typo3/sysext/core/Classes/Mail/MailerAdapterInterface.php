@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Mail;
 
 /**
  * Mailer Adapter interface
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 interface MailerAdapterInterface {
 

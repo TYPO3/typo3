@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Test case
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @author Tolleiv Nietsch <info@tolleiv.de>
  */
 class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

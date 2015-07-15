@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
 
 /**
  * Abstract Renderer
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 abstract class AbstractTreeRenderer {
 

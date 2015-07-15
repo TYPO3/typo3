@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Service;
 
 /**
  * This class provides basic functionality to encode and decode typolink strings
- *
- * @author Markus Klein <markus.klein@typo3.org>
  */
 class TypoLinkCodecService {
 

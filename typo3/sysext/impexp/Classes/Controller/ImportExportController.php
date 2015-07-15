@@ -25,8 +25,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Main script class for the Import / Export facility
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

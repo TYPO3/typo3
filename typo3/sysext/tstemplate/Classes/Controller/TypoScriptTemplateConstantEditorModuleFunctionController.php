@@ -32,8 +32,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * $GLOBALS['TYPO3_CONF_VARS']['MODS']['web_ts']['onlineResourceDir'] = 'fileadmin/fonts/';
  * // This is the path (must be in "fileadmin/" !!) where the web_ts/constant-editor submodule fetches online resources.
  * Put fonts (ttf) and standard images here!
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractFunctionModule {
 

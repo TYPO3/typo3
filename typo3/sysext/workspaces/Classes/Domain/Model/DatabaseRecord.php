@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\Domain\Model;
 
 /**
  * Database record class
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class DatabaseRecord {
 

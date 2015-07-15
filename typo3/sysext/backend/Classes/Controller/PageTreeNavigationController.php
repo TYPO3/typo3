@@ -29,8 +29,6 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * Main script class for the page tree navigation frame
  * This is the class for rendering the "page tree" navigation frame without ExtJS, used prior to TYPO3 CMS 4.5.
  * This functionality is deprecated since TYPO3 CMS 7, and will be removed with TYPO3 CMS 8
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageTreeNavigationController {
 

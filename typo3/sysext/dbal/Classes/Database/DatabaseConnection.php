@@ -18,10 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TYPO3 database abstraction layer
- *
- * @author Kasper Skårhøj <kasper@typo3.com>
- * @author Karsten Dambekalns <k.dambekalns@fishfarm.de>
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 

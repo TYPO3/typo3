@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Uri rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class UriValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

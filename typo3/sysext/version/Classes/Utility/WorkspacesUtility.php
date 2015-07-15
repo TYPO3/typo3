@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Library with Workspace related functionality
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class WorkspacesUtility {
 

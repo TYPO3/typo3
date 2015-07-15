@@ -16,8 +16,6 @@ namespace TYPO3\CMS\SysAction;
 
 /**
  * Class for the list rendering of Web>Task Center module
- *
- * @author Thomas Maroschik <tmaroschik@dfau.de>
  */
 class ActionList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 

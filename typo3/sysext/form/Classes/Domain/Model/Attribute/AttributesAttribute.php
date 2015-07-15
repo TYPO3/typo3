@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Attribute class for the form elements
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AttributesAttribute {
 

@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Service;
  *    C => (A => TRUE,  B => FALSE, C => FALSE)
  *
  *    A depends on B, C depends on A, B is independent
- *
- * @author Markus Klein <markus.klein@typo3.org>
  */
 class DependencyOrderingService {
 

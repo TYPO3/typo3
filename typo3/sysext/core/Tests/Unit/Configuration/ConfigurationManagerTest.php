@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 /**
  * Test case
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

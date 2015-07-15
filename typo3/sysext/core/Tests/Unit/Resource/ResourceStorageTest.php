@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case for ResourceStorage class
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class ResourceStorageTest extends BaseTestCase {
 

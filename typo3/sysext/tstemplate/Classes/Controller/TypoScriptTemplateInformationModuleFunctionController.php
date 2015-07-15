@@ -27,8 +27,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunctionModule {
 

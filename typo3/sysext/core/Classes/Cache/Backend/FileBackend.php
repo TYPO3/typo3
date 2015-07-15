@@ -20,10 +20,6 @@ use TYPO3\CMS\Core\Service\OpcodeCacheService;
  * A caching backend which stores cache entries in files
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
- * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
 class FileBackend extends \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend implements \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\FreezableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {

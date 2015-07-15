@@ -22,8 +22,6 @@ use TYPO3\CMS\Install\Service\Exception;
 
 /**
  * Provides an installation status report.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	/**

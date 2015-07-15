@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Commands for the Page module
- *
- * @author Jigal van Hemert <jigal.van.hemert@typo3.org>
  * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, as Drag&Drop does this
  * logic now directly and calls DataHandler via AJAX directly.
  */

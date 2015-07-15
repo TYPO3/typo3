@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 /**
  * Position map class for content elements within the page module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ContentLayoutPagePositionMap extends PagePositionMap {
 

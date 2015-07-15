@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * View helper for update script link
- *
- * @author Francois Suter <francois.suter@typo3.org>
  * @internal
  */
 class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {

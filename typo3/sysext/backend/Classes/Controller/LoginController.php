@@ -28,9 +28,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script Class for rendering the login form
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Frank Nägler <typo3@naegler.net>
  */
 class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 

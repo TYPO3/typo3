@@ -19,8 +19,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Controller for configuration related actions.
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ConfigurationController extends AbstractController {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sprite generator
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class SpriteGenerator {
 

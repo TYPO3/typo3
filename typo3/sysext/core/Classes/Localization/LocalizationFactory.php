@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Provides a language parser factory.
- *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 

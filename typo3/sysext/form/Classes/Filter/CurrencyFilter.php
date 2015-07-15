@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Currency filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class CurrencyFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

@@ -21,8 +21,6 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Backend layout for CMS
- *
- * @author GridView Team
  */
 class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'dir'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class DirAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class for handling backend live search.
- *
- * @author Michael Klapper <michael.klapper@aoemedia.de>
- * @author Jeff Segars <jeff@webempoweredchurch.org>
  */
 class LiveSearch {
 

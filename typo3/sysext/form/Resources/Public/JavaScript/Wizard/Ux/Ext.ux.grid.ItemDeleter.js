@@ -1,5 +1,4 @@
 /**
- * @author schiesser
  */
 Ext.ns('Ext.ux.grid');
 

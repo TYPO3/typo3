@@ -21,8 +21,6 @@ use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
 
 /**
  * Performs several checks about the system's health
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

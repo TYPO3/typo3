@@ -21,10 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for colorpicker wizard
- *
- * @author Mathias Schreiber <schreiber@wmdb.de>
- * @author Peter Kühn <peter@kuehn.com>
- * @author Kasper Skårhøj <typo3@typo3.com>
  */
 class ColorpickerController extends AbstractWizardController {
 

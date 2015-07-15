@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Taskcenter;
 
 /**
  * Interface for classes which provide a task.
- *
- * @author Georg Ringer <typo3@ringerge.org
  */
 interface TaskInterface {
 

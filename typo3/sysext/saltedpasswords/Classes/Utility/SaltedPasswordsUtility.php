@@ -17,9 +17,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * General library class.
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
- * @author Steffen Ritter <info@rs-websystems.de>
  */
 class SaltedPasswordsUtility {
 
@@ -47,9 +44,6 @@ class SaltedPasswordsUtility {
 
 	/**
 	 * Returns extension configuration data from $TYPO3_CONF_VARS (configurable in Extension Manager)
-	 *
-	 * @author Rainer Kuhn <kuhn@punkt.de>
-	 * @author Marcus Krause <marcus#exp2009@t3sec.info>
 	 * @param string $mode TYPO3_MODE, whether Configuration for Frontend or Backend should be delivered
 	 * @return array Extension configuration data
 	 */

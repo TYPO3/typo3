@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 
 /**
  * Repository for accessing the collections stored in the database
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollectionRepository {
 

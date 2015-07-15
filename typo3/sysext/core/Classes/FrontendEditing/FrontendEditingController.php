@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller class for frontend editing.
- *
- * @author Jeff Segars <jeff@webempoweredchurch.org>
- * @author David Slayback <dave@webempoweredchurch.org>
  */
 class FrontendEditingController {
 

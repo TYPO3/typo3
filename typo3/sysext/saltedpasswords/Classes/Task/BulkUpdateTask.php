@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
 
 /**
  * Update plaintext and hashed passwords of existing users to salted passwords.
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @author Marcus Krause <marcus#exp2010@t3sec.info>
  */
 class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

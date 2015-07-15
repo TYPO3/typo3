@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 
 /**
  * Class encapsulates all actions which are triggered for all elements within the current workspace.
- *
- * @author Kasper Skårhøj (kasperYYYY@typo3.com)
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class MassActionHandler extends AbstractHandler {
 

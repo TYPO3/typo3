@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces;
 
 /**
  * Interface for (additional) columns.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 interface ColumnDataProviderInterface {
 

@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Class with helper functions for string handling
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
- * @author Markus Klein <klein.t3@mfc-linz.at>
  */
 class StringUtility {
 

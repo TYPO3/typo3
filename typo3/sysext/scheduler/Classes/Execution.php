@@ -16,10 +16,6 @@ namespace TYPO3\CMS\Scheduler;
 
 /**
  * This class manages the logic of a particular execution of a task
- *
- * @author François Suter <francois@typo3.org>
- * @author Christian Jul Jensen <julle@typo3.org>
- * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
 class Execution {
 

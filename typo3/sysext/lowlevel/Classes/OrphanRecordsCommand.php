@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lowlevel;
 
 /**
  * Looking for Orphan Records
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class OrphanRecordsCommand extends CleanerCommand {
 

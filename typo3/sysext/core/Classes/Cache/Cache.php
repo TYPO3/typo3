@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A cache handling helper class
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class Cache {
 

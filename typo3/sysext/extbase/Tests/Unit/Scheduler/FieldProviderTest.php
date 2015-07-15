@@ -76,7 +76,6 @@ class FieldProviderTest extends UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Stefan Neufeind <info@speedpartner.de>
 	 */
 	public function constructResolvesExtensionNameFromNamespaced() {
 		$mockController = new DummyController();
@@ -87,7 +86,6 @@ class FieldProviderTest extends UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function validateAdditionalFieldsReturnsTrue() {
 		/** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
@@ -106,7 +104,6 @@ class FieldProviderTest extends UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getAdditionalFieldsRendersRightHtml() {
 		$this->markTestSkipped('Incomplete mocking in a complex scenario. This should be a functional test');

@@ -24,9 +24,6 @@ use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX Requests
- *
- * @author Julian Kleinhans <typo3@kj187.de>
- * @author Erik Frister <erik_frister@otq-solutions.com>
  */
 class RecyclerAjaxController {
 

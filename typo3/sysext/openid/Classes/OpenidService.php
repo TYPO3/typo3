@@ -26,8 +26,6 @@ require_once ExtensionManagementUtility::extPath('openid') . 'lib/php-openid/Aut
 
 /**
  * Service "OpenID Authentication" for the "openid" extension.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class OpenidService extends AbstractService {
 

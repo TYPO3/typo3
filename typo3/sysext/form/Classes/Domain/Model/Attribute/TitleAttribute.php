@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'title'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TitleAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

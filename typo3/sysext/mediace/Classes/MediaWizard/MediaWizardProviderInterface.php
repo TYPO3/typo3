@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Mediace\MediaWizard;
 /**
  * Interface for classes which hook into tslib_mediawizard adding additional
  * media wizard providers
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 interface MediaWizardProviderInterface {
 

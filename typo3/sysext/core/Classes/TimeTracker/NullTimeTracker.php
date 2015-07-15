@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\TimeTracker;
 /**
  * A fake time tracker that does nothing but providing the methods of the real time tracker.
  * This is done to save some performance over the real time tracker.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class NullTimeTracker {
 

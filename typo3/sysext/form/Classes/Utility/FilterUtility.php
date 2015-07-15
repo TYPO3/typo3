@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Static methods for filtering
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

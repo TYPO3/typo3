@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'value'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ValueAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

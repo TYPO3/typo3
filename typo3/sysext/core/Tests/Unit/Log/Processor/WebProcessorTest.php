@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
 /**
  * Test case
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
  */
 class WebProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

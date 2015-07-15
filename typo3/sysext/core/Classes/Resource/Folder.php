@@ -28,9 +28,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * local disk, S3 buckets or Flickr users). Other folders just group files by a
  * certain criterion, e.g. a tag.
  * The way this is implemented depends on the storage driver.
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class Folder implements FolderInterface {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
 /**
  * An abstract TCA tree data provider
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Object\Container;
 
 /**
  * TYPO3 Dependency Injection container
- *
- * @author Daniel Pötzinger
  */
 class ClassInfoFactory {
 

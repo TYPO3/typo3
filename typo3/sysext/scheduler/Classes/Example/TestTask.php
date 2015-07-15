@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Scheduler\Example;
 
 /**
  * Provides testing procedures
- *
- * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
 class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

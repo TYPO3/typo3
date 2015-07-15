@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * and TCEforms hooks
  *
  * Note: This is now also used by sys_file_category table (fieldname "folder")!
- *
- * @author Benjamin Mack <benni@typo3.org>
  */
 class UserFileMountService {
 

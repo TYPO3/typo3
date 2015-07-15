@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Option model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class OptionElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

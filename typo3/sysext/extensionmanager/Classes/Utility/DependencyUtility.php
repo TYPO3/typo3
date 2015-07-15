@@ -22,8 +22,6 @@ use TYPO3\CMS\Extensionmanager\Exception;
 
 /**
  * Utility for dealing with dependencies
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  */
 class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

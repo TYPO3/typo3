@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Integer rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class IntegerValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Implements the repository for record collections.
- *
- * @author Steffen Ritter <typo3@steffen-ritter.net>
  */
 class RecordCollectionRepository {
 

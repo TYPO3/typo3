@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller for viewing the frontend
- *
- * @author Felix Kopp <felix-source@phorax.com>
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

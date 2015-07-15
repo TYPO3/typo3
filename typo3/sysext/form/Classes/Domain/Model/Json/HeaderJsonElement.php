@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON header
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class HeaderJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

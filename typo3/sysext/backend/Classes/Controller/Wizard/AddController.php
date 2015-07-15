@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class AddController extends AbstractWizardController {
 

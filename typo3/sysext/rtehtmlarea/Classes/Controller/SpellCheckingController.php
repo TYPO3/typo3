@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
- *
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class SpellCheckingController {
 

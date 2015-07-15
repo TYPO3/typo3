@@ -16,9 +16,6 @@ namespace TYPO3\CMS\SysNote\Domain\Repository;
 
 /**
  * Sys_note repository
- *
- * @author Georg Ringer <typo3@ringerge.org>
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class SysNoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 

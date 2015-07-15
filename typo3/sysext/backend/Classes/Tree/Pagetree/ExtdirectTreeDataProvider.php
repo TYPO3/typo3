@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Data Provider of the Page Tree
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTree {
 

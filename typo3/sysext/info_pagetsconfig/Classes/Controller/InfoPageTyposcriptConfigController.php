@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Page TSconfig viewer
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

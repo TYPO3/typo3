@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
 /**
  * Represents a node in a TCA database setup
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class DatabaseTreeNode extends \TYPO3\CMS\Backend\Tree\TreeRepresentationNode {
 

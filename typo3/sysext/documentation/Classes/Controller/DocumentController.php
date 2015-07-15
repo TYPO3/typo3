@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Main controller of the Documentation module.
- *
- * @author Andrea Schmuttermair <spam@schmutt.de>
  */
 class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

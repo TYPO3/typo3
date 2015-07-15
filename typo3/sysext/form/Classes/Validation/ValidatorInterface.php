@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Interface for validate
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 interface ValidatorInterface {
 

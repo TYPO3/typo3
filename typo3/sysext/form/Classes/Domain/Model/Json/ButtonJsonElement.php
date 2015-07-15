@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON button
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ButtonJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

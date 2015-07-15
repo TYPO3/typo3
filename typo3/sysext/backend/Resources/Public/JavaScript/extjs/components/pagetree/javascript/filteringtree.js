@@ -19,7 +19,6 @@ Ext.namespace('TYPO3.Components.PageTree');
  *
  * @namespace TYPO3.Components.PageTree
  * @extends TYPO3.Components.PageTree.Tree
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Components.PageTree.FilteringTree = Ext.extend(TYPO3.Components.PageTree.Tree, {
 	/**

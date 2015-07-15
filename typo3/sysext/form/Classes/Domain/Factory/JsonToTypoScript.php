@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Form\Domain\Factory;
  * Json to Typoscript converter
  *
  * Takes the incoming Json and converts it to Typoscipt
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class JsonToTypoScript {
 

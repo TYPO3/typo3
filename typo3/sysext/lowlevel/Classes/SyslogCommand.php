@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lowlevel;
 
 /**
  * syslog
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SyslogCommand extends CleanerCommand {
 

@@ -20,10 +20,6 @@ namespace TYPO3\CMS\Core\Encoder;
  *
  * This class provides encoding for user input that is intended to be used in a JavaScript context.
  * It encodes all characters except alphanumericals and the immune characters to a hex representation.
- *
- * @author Mike Boberski <boberski_michael@bah.com>
- * @author Franz G. Jahn <franzjahn@cron-it.de>
- * @author Helmut Hummel <helmut.hummel@typo3.org>
  * @copyright 2009-2010 The OWASP Foundation
  * @link http://www.owasp.org/index.php/ESAPI
  */

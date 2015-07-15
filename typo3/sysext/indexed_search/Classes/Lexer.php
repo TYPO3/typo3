@@ -16,14 +16,10 @@ namespace TYPO3\CMS\IndexedSearch;
 
 /**
  * Lexer for indexed_search
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Lexer class for indexed_search
  * A lexer splits the text into words
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class Lexer {
 

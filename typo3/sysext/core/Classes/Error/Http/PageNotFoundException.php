@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Error\Http;
 
 /**
  * Exception for Error 404 - Page Not Found
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class PageNotFoundException extends AbstractClientErrorException {
 

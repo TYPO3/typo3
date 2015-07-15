@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  *
  * Creates an integer input field for difference between scheduler run time
  * and file modification time in days to select from.
- *
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

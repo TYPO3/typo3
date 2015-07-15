@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Utility class for phpinfo()
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  * @internal
  */
 class PhpInfoViewHelper extends AbstractViewHelper implements CompilableInterface {

@@ -234,8 +234,6 @@ TYPO3.Workspaces.Actions = {
 	 * This method is used in the split frontend preview part.
 	 *
 	 * @return void
-	 *
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	sendPageToNextStage: function () {
 		TYPO3.Workspaces.ExtDirectActions.sendPageToNextStage(TYPO3.settings.Workspaces.id, function (response) {
@@ -278,8 +276,6 @@ TYPO3.Workspaces.Actions = {
 	 * This method is used in the split frontend preview part.
 	 *
 	 * @return void
-	 *
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	sendPageToPrevStage: function () {
 		TYPO3.Workspaces.ExtDirectActions.sendPageToPreviousStage(TYPO3.settings.Workspaces.id, function (response) {
@@ -318,8 +314,6 @@ TYPO3.Workspaces.Actions = {
 	 *
 	 * @param object response
 	 * @return void
-	 *
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	updateStageChangeButtons: function (response) {
 
@@ -354,8 +348,6 @@ TYPO3.Workspaces.Actions = {
 	 * This method is used in the split frontend preview part.
 	 *
 	 * @return void
-	 *
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	discardPage: function () {
 		var configuration = {

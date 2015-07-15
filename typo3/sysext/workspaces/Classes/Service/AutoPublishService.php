@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 /**
  * Automatic publishing of workspaces.
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class AutoPublishService {
 

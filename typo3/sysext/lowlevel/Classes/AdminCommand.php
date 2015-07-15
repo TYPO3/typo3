@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lowlevel;
 
 /**
  * Core functions for administration
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 

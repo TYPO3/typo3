@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Resource\Collection;
 
 /**
  * Abstract collection.
- *
- * @author Steffen Ritter <steffen.ritter@typo3.org>
  */
 abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection {
 

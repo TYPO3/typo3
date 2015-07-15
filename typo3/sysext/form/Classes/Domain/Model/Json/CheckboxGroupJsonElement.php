@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON checkboxgroup
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class CheckboxGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement {
 
@@ -63,7 +61,6 @@ class CheckboxGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\Fieldse
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void
-	 * @author Patrick Broens <patrick@patrickbroens.nl>
 	 * @see \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement::setParameters()
 	 */
 	public function setParameters(array $parameters) {

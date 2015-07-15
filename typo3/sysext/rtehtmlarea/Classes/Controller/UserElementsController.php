@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * User defined content for htmlArea RTE
- *
- * @author Kasper Skårhøj <kasper@typo3.com>
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class UserElementsController {
 

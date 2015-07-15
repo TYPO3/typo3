@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 /**
  * Testcase
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

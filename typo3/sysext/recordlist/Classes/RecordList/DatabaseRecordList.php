@@ -30,8 +30,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Class for rendering of Web>List module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DatabaseRecordList extends AbstractDatabaseRecordList {
 

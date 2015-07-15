@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form;
 
 /**
  * Class to handle localizations
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Localization {
 

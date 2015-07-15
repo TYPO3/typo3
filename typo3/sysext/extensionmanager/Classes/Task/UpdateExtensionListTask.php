@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Task;
 
 /**
  * Update extension list from TER task
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class UpdateExtensionListTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

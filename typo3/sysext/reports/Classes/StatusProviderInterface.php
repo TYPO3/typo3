@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Reports;
 
 /**
  * Interface for classes which provide a status report entry.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 interface StatusProviderInterface {
 

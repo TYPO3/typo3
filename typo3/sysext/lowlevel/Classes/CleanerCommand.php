@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Core functions for cleaning and analysing
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CleanerCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 

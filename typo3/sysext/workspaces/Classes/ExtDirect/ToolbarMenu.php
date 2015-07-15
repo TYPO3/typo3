@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 
 /**
  * ExtDirect toolbar menu
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, as the AJAX functionality is now done via plain AJAX
  */
 class ToolbarMenu {

@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script class for rendering the full screen RTE display
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RteController extends AbstractWizardController {
 

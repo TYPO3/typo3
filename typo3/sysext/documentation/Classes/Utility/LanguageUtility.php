@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Documentation\Utility;
 
 /**
  * Utility for language selection.
- *
- * @author Andrea Schmuttermair <spam@schmutt.de>
  */
 class LanguageUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

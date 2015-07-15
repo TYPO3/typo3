@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  * Testcase for the variable cache frontend
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

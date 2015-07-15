@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * TYPO3 clipboard for records and files
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class Clipboard {
 

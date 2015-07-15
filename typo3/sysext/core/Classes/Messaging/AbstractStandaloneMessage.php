@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Messaging;
 
 /**
  * Abstract class as base for standalone messages (error pages etc.)
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 abstract class AbstractStandaloneMessage extends AbstractMessage {
 

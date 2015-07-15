@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Contains IMGTEXT content object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 

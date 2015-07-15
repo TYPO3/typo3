@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  * Formerly known as "Gabriel TYPO3 arch angel"
- *
- * @author François Suter <francois@typo3.org>
- * @author Christian Jul Jensen <julle@typo3.org>
  */
 class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Collection;
 
 /**
  * Collection for handling records from a single database-table.
- *
- * @author Steffen Ritter <typo3steffen-ritter.net>
  */
 interface RecordCollectionInterface extends \TYPO3\CMS\Core\Collection\CollectionInterface, \TYPO3\CMS\Core\Collection\NameableCollectionInterface
 {

@@ -27,8 +27,6 @@ use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 
 /**
  * Class for rendering the TYPO3 backend
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class BackendController {
 

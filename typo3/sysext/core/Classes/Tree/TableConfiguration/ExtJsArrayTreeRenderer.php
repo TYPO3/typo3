@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
 /**
  * Renders a tca tree array for ExtJS
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonTreeRenderer {
 

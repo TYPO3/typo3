@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\Service;
 
 /**
  * Translation service
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class TranslationService implements \TYPO3\CMS\Core\SingletonInterface {
 

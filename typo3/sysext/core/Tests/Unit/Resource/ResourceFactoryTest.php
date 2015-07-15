@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 /**
  * Testcase for the factory of FAL
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class ResourceFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

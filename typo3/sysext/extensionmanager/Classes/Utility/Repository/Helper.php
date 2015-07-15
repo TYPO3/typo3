@@ -18,9 +18,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Central utility class for repository handling.
- *
- * @author Marcus Krause <marcus#exp2010@t3sec.info>
- * @author Steffen Kamper <info@sk-typo3.de>
  */
 class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 

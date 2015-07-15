@@ -38,8 +38,6 @@ namespace TYPO3\CMS\Core\Mail;
  *
  * @category Mail
  * @package Mail
- * @author Richard Heyes <richard@phpguru.org>
- * @author Chuck Hagenbuch <chuck@horde.org
  * @copyright 2001-2010 Richard Heyes
  * @license http://opensource.org/licenses/bsd-license.php New BSD License
  * @link http://pear.php.net/package/Mail/
@@ -60,9 +58,6 @@ namespace TYPO3\CMS\Core\Mail;
  * $address_string = 'My Group: "Richard" <richard@localhost> (A comment), ted@example.com (Ted Bloggs), Barney;';
  * $structure = Mail_RFC822::parseAddressList($address_string, 'example.com', TRUE)
  * print_r($structure);
- *
- * @author Richard Heyes <richard@phpguru.org>
- * @author Chuck Hagenbuch <chuck@horde.org>
  * @version $Revision: 294749 $
  * @license BSD
  * @package Mail

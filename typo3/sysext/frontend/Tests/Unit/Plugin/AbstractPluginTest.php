@@ -18,8 +18,6 @@ use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\Plugin\AbstractPlugin
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
  */
 class AbstractPluginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

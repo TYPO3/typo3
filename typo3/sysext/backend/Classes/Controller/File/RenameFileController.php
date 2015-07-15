@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for the rename-file form.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RenameFileController {
 

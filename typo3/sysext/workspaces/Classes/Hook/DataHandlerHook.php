@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Tcemain service
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class DataHandlerHook {
 

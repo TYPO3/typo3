@@ -20,8 +20,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Repository for backend module menu
  * compiles all data from $GLOBALS[TBE_MODULES]
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 

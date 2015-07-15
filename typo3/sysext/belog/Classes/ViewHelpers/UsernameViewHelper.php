@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get username from backend user id
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class UsernameViewHelper extends AbstractViewHelper implements CompilableInterface {

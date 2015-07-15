@@ -18,8 +18,6 @@ use \org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the storage collection class of the TYPO3 FAL
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

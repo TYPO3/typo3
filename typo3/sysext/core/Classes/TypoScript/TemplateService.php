@@ -30,8 +30,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Template object that is responsible for generating the TypoScript template based on template records.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
  * @see \TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher
  */

@@ -22,8 +22,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Creates the "Create pages" wizard
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

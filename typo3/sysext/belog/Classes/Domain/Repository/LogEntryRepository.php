@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
 
 /**
  * Sys log entry repository
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit;
 
 /**
  * Testcase for TYPO3\CMS\Core\Registry
- *
- * @author Bastian Waidelich <bastian@typo3.org>
  */
 class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

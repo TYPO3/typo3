@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Sprite\SpriteManager;
 
 /**
  * Testcase for TYPO3\CMS\Backend\Sprite\SpriteManager
- *
- * @author Fabien Udriot <fabien.udriot@ecodev.ch>
  */
 class SpriteManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

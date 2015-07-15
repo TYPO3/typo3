@@ -18,8 +18,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Additional fields provider class for usage with the Scheduler's sleep task
- *
- * @author François Suter <francois@typo3.org>
  */
 class SleepTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

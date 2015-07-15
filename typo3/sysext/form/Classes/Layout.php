@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form;
 
 /**
  * Layout class for the form elements
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Layout implements \TYPO3\CMS\Core\SingletonInterface {
 

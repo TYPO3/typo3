@@ -49,9 +49,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for conversion between charsets
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Martin Kutschker <martin.t.kutschker@blackbox.net>
  */
 class CharsetConverter {
 

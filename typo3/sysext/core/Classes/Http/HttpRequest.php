@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Http;
  * HTTP Request Utility class
  *
  * Extends \HTTP_Request2 and sets TYPO3 environment defaults
- *
- * @author Philipp Gampe <philipp.gampe@typo3.org>
  */
 class HttpRequest extends \HTTP_Request2 {
 

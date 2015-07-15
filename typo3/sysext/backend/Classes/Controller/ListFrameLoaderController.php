@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for redirecting shortcut actions to the correct script
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8, this logic is not needed anymore
  */
 class ListFrameLoaderController {

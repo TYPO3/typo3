@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * (TYPO3/ISO, language/script, script/charset)
  * - Update 'setup' extension labels (sysext/setup/mod/locallang.xlf)
  * That's it!
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 class Locales implements \TYPO3\CMS\Core\SingletonInterface {
 

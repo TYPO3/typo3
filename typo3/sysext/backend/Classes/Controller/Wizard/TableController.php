@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Script Class for rendering the Table Wizard
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TableController extends AbstractWizardController {
 

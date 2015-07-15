@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 
 /**
  * Parser for XLIFF file.
- *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class XliffParser extends AbstractXmlParser {
 

@@ -37,8 +37,6 @@
  *
  * Please note that this file might be removed in the future in favor of adding these lines to all entry
  * scripts as well.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

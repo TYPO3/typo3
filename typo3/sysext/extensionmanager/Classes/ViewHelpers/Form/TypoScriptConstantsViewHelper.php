@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
 
 /**
  * View Helper for rendering Extension Manager Configuration Form
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  * @internal
  */
 class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {

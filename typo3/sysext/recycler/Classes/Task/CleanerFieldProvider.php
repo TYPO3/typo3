@@ -21,8 +21,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 /**
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
- *
- * @author Philipp Bergsmann <p.bergsmann@opendo.at>
  */
 class CleanerFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

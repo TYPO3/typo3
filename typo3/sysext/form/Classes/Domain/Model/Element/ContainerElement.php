@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Class for the form container elements
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContainerElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

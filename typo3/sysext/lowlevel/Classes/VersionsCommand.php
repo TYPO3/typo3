@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Looking for versions of records
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class VersionsCommand extends CleanerCommand {
 

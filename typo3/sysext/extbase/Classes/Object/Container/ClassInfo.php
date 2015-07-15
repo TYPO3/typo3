@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Extbase\Object\Container;
 /**
  * Value object containing the relevant informations for a class,
  * this object is build by the classInfoFactory - or could also be restored from a cache
- *
- * @author Daniel Pötzinger
  */
 class ClassInfo {
 

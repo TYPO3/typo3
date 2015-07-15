@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Language store.
- *
- * @author Dominique Feyer <dominique.feyer@reelpeek.net>
  */
 class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -21,8 +21,6 @@ require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('openid
 
 /**
  * This class is a TYPO3-specific OpenID store.
- *
- * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  */
 class OpenidStore extends \Auth_OpenID_OpenIDStore {
 

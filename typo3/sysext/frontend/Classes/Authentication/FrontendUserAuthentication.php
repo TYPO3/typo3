@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extension class for Front End User Authentication.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author René Fritz <r.fritz@colorcube.de>
  */
 class FrontendUserAuthentication extends AbstractUserAuthentication {
 

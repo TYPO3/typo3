@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'accept'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AcceptAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

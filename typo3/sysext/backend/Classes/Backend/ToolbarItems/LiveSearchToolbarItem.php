@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Adds backend live search to the toolbar
- *
- * @author Michael Klapper <michael.klapper@aoemedia.de>
- * @author Jeff Segars <jeff@webempoweredchurch.org>
  */
 class LiveSearchToolbarItem implements ToolbarItemInterface {
 

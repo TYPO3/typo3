@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * File processing service
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class FileProcessingService {
 

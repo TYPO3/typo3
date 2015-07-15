@@ -40,8 +40,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * USE:
  * In all TYPO3 scripts the global variable $TYPO3_DB is an instance of this class. Use that.
  * Eg. $GLOBALS['TYPO3_DB']->sql_fetch_assoc()
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DatabaseConnection {
 

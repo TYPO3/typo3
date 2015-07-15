@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Class with helper functions for version number handling
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
  */
 class VersionNumberUtility {
 

@@ -26,8 +26,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Script class for the DB int module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DatabaseIntegrityView extends BaseScriptClass {
 

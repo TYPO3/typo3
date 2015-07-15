@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Authentication services class
- *
- * @author René Fritz <r.fritz@colorcube.de>
  */
 class AuthenticationService extends AbstractAuthenticationService {
 

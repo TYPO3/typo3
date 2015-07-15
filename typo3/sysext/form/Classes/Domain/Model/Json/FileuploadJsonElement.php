@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON Fileupload
- *
- * @author Peter Beernink <p.beernink@drecomm.nl>
  */
 class FileuploadJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

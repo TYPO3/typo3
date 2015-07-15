@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * File Interface
- *
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 interface FileInterface extends ResourceInterface {
 	/*******************************

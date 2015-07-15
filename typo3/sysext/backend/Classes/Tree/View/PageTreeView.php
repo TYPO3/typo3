@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Generate a page-tree, non-browsable.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor René Fritz <r.fritz@colorcube.de>
  */
 class PageTreeView extends AbstractTreeView {
 

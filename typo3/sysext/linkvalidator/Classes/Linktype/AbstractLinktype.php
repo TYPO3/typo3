@@ -17,8 +17,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class provides Check Base plugin implementation
- *
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 abstract class AbstractLinktype implements LinktypeInterface {
 

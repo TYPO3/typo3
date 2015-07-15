@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 
 /**
  * Dummy locking
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class DummyLock implements LockingStrategyInterface {
 

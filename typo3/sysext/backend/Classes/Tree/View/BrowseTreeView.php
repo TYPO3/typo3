@@ -18,9 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Generate a page-tree, browsable.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor René Fritz <r.fritz@colorcube.de>
  */
 class BrowseTreeView extends AbstractTreeView {
 

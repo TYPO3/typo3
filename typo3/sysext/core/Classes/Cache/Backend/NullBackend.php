@@ -18,9 +18,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * A caching backend which forgets everything immediately
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
- * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
 class NullBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\PhpCapableBackendInterface, \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {

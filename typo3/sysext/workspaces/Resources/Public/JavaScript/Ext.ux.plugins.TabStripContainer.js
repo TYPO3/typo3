@@ -1,7 +1,5 @@
 /**
  * Ext.ux.plugins.TabStripContainer
- *
- * @author  Steffen Kamper
  * @date	December 19, 2010
  *
  * @class Ext.ux.plugins.TabStripContainer

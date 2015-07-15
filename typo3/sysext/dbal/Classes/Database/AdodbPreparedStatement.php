@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Notice: Extends \TYPO3\CMS\Dbal\Database\DatabaseConnection to be able to access
  * protected properties solely (thus would be a "friend" class in C++).
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class AdodbPreparedStatement extends \TYPO3\CMS\Dbal\Database\DatabaseConnection {
 

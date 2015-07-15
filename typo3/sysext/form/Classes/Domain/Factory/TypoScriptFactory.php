@@ -25,8 +25,6 @@ use TYPO3\CMS\Form\ObjectFactory;
  *
  * Takes the incoming Typoscipt and adds all the necessary form objects
  * according to the configuration.
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 

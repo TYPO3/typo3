@@ -21,8 +21,6 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * TYPO3 backend user authentication in the TSFE frontend.
  * This includes mainly functions related to the Admin Panel
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\BackendUserAuthentication {
 

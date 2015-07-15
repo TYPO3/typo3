@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\VersionNumberUtility
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
  */
 class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

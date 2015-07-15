@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Page Tree and Context Menu Commands
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class Commands {
 

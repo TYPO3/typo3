@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Float rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FloatValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

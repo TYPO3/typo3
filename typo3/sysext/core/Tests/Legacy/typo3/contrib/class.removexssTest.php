@@ -14,8 +14,6 @@
 
 /**
  * Testcase for class RemoveXSS
- *
- * @author	Steffen Kamper <info@sk-typo3.de>
  * @ see http://ha.ckers.org/xss.html
  * @ examples from http://ha.ckers.org/xssAttacks.xml
  */

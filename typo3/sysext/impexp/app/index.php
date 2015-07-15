@@ -42,8 +42,6 @@
  * pagetree[tables][]=table/_ALL
  *
  * external_ref[tables][]=table/_ALL
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Impexp\Controller\ImportExportController::class);

@@ -18,9 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Script class; Backend module for DBAL extension
- *
- * @author Kasper Skårhøj <kasper@typo3.com>
- * @author Karsten Dambekalns <karsten@typo3.org>
  */
 class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Creates the "Sort pages" wizard
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

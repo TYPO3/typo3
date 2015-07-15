@@ -14,8 +14,6 @@
 
 /**
  * Dummy document - displays nothing but background color.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $dummyController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\DummyController::class);

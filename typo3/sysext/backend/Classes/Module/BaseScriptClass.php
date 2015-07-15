@@ -72,8 +72,6 @@ use TYPO3\CMS\Lang\LanguageService;
  * $GLOBALS['SOBE']->main();
  * FINALLY THE printContent() FUNCTION WILL OUTPUT THE ACCUMULATED CONTENT
  * $GLOBALS['SOBE']->printContent();
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BaseScriptClass {
 

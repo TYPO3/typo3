@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * A task that should be run regularly that deletes deleted
  * datasets from the DB.
- *
- * @author Philipp Bergsmann <p.bergsmann@opendo.at>
  */
 class CleanerTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

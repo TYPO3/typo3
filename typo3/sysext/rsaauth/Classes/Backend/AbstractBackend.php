@@ -30,8 +30,6 @@ namespace TYPO3\CMS\Rsaauth\Backend;
  * To decode data, the decrypt() method should be called with the private key
  * created at the previous step and the data to decode. If the data is decoded
  * successfully, the result is a string. Otherwise it is NULL.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 abstract class AbstractBackend {
 

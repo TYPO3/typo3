@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * Contains IMG_RESOURCE class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class ImageResourceContentObject extends AbstractContentObject {
 

@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * and registers sprite icons in a cache file.
  *
  * A configurable handler class does the business task.
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class SpriteManager {
 

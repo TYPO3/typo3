@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
 
 /**
  * Additional 'error'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ErrorAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional\AbstractAdditionalElement {
 

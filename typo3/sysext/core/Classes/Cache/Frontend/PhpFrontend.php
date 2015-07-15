@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
  * A cache frontend tailored to PHP code.
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
  * @api
  */
 class PhpFrontend extends StringFrontend {

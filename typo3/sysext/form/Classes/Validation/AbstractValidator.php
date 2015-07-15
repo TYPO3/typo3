@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Request;
 
 /**
  * Abstract for validation
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 

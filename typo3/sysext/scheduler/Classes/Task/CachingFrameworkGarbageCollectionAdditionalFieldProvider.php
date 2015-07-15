@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 /**
  * Additional BE fields for caching framework garbage collection task.
  * Creates a multi selectbox with all available cache backends to select from.
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

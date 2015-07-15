@@ -20,8 +20,6 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Review controller.
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class ReviewController extends AbstractController {
 

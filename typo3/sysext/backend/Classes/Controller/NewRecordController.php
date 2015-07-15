@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
  * Script class for 'db_new'
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class NewRecordController {
 

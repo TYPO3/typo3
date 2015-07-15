@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * This task finds all "_recycler_" folders below fileadmin and
  * deletes all file in them that where not change for more than
  * given number of days.
- *
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

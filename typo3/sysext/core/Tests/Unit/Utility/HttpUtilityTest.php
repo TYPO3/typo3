@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\HttpUtility
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class HttpUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

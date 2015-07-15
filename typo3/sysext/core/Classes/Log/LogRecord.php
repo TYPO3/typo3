@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 
 /**
  * Log record
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller (typo3@t3node.com)
  */
 class LogRecord implements \ArrayAccess {
 

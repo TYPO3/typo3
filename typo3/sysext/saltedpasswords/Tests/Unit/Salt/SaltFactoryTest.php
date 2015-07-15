@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /**
  * Testcase for SaltFactory
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @since 2009-09-06
  */
 class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

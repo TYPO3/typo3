@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\ExtDirect;
 
 /**
  * Ext Direct Debug
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ExtDirectDebug {
 

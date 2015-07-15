@@ -17,8 +17,6 @@ Ext.ns('TYPO3.state');
  * Creates new ExtDirectProvider
  * @constructor
  * @param {Object} config Configuration object
- * @author Jozef Sakalos
- * @author Steffen Kamper
  */
 
 TYPO3.state.ExtDirectProvider = function(config) {

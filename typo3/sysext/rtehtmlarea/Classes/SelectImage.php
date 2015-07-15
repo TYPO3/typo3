@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Resource;
 
 /**
  * Script Class
- *
- * @author Kasper Skårhøj <kasper@typo3.com>
  */
 class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 

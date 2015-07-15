@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Abstract file representation in the file abstraction layer.
- *
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 abstract class AbstractFile implements FileInterface {
 

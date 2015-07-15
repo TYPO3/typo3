@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Page;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\Page\PageRepository
- *
- * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
 interface PageRepositoryGetPageOverlayHookInterface {
 

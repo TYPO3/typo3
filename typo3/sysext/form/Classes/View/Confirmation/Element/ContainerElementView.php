@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Abstract class for the form element containers (FORM and FIELDSET) view
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContainerElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\AbstractElementView {
 

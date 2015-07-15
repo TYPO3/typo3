@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for rendering the move-element wizard display
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class MoveElementController {
 

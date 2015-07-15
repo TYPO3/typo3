@@ -28,7 +28,6 @@ class DisjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function allValidatorsInTheDisjunctionAreCalledEvenIfOneReturnsNoError() {
 		$this->markTestSkipped('Needs a bugfix of Flow first.');
@@ -46,7 +45,6 @@ class DisjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function validateReturnsNoErrorsIfOneValidatorReturnsNoError() {
 		$validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator(array());
@@ -63,7 +61,6 @@ class DisjunctionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function validateReturnsAllErrorsIfAllValidatorsReturnErrrors() {
 		$validatorDisjunction = new \TYPO3\CMS\Extbase\Validation\Validator\DisjunctionValidator(array());

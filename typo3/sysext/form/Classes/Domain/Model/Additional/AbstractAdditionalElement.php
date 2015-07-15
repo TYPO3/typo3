@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
 
 /**
  * Abstract for additional
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 abstract class AbstractAdditionalElement {
 

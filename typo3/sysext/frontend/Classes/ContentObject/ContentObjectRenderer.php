@@ -56,8 +56,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  * There are lots of functions you can use from your include-scripts.
  * The class is normally instantiated and referred to as "cObj".
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ContentObjectRenderer {
 
@@ -1336,8 +1334,6 @@ class ContentObjectRenderer {
 	 *
 	 * @param array $conf Array of TypoScript properties
 	 * @return string the HTML output
-	 * @author Steffen Ritter <info@steffen-ritter.net>
-	 * @author Benjamin Mack <benni@typo3.org>
 	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use $cObj->cObjGetSingle('FLUIDTEMPLATE', $conf) instead
 	 */
 	protected function FLUIDTEMPLATE(array $conf) {
@@ -4239,8 +4235,6 @@ class ContentObjectRenderer {
 	 * @param string $text Input string to be cleaned.
 	 * @param array $conf TypoScript configuration.
 	 * @return string Return string
-	 * @author Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
-	 * @author Kasper Skårhøj
 	 */
 	public function removeBadHTML($text, $conf) {
 		// Copyright 2002-2003 Thomas Bley

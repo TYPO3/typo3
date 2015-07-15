@@ -2,8 +2,6 @@
 # "Advanced" Page TSconfig for htmlArea RTE
 #
 # Sets default Page TSConfig with minimal features for advanced users.
-#
-# @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
 # ***************************************************************************************
 
 RTE.default {

@@ -44,8 +44,6 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * Call ALL methods without making an object!
  * Eg. to get a page-record 51 do this: '\TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages',51)'
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BackendUtility {
 
@@ -2877,7 +2875,6 @@ class BackendUtility {
 	 * @param int $pageId The page ID to use, must be > 0
 	 * @param array|NULL $rootLine The root line structure to use
 	 * @return string The full domain including the protocol http:// or https://, but without the trailing '/'
-	 * @author Michael Klapper <michael.klapper@aoemedia.de>
 	 */
 	static public function getViewDomain($pageId, $rootLine = NULL) {
 		$domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');

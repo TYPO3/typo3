@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'accesskey'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AccesskeyAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

@@ -20,8 +20,6 @@ use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 /**
  * This class contains a hook to implement RSA authentication for the TYPO3
  * Frontend. Warning: felogin must be USER_INT for this to work!
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class FrontendLoginHook {
 

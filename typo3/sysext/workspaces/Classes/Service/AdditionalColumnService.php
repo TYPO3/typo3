@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 /**
  * Service for additional columns in GridPanel
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class AdditionalColumnService implements \TYPO3\CMS\Core\SingletonInterface {
 

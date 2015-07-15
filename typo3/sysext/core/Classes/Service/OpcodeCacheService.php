@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Service;
  * It auto detects the opcache system and invalidates/resets it.
  * http://forge.typo3.org/issues/55252
  * Supported opcaches are: OPcache >= 7.0 (PHP 5.5), WinCache, XCache >= 3.0.1
- *
- * @author Alexander Opitz <opitz@pluspol-interactive.de>
  */
 class OpcodeCacheService {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Rendering of framesets
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FramesetRenderer {
 

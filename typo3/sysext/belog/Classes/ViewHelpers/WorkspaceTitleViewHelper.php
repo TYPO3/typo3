@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get workspace title from workspace id
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class WorkspaceTitleViewHelper extends AbstractViewHelper implements CompilableInterface {

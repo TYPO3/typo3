@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\View\Mail\Html\Element;
 
 /**
  * Test case
- *
- * @author Stefan Neufeind
  */
 class AbstractElementViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

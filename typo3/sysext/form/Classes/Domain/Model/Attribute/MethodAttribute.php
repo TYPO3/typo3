@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'method'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class MethodAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

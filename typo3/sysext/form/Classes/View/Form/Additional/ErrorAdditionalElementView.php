@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Form\Additional;
 
 /**
  * View object for the error tag
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ErrorAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\AdditionalElementView {
 

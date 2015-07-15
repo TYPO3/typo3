@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * Contains CASE class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class CaseContentObject extends AbstractContentObject {
 

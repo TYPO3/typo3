@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 
 /**
  * Interface for locking methods
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 interface LockingStrategyInterface {
 

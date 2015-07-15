@@ -25,8 +25,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  * setting up the user, and API for user from outside.
  * This class contains the configuration of the database fields used plus some
  * functions for the authentication process of backend users.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication {
 

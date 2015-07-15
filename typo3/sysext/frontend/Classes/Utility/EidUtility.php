@@ -29,9 +29,6 @@ use TYPO3\CMS\Lang\LanguageService;
  * this class seeks to provide functions that can
  * initialize parts of the FE environment as needed,
  * eg. Frontend User session, Database connection etc.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class EidUtility {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Locking\Locker;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\Locker
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class LockerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

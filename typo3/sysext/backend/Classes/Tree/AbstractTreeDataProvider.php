@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Tree;
 
 /**
  * Abstract Tree Data Provider
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 abstract class AbstractTreeDataProvider {
 

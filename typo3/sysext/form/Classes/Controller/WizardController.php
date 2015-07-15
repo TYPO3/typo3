@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The form wizard controller
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class WizardController {
 

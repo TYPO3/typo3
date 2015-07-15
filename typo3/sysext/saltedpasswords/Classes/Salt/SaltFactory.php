@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
 /**
  * Class that implements Blowfish salted hashing based on PHP's
  * crypt() function.
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
 class SaltFactory {
 

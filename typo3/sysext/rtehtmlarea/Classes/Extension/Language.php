@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Language plugin for htmlArea RTE
- *
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class Language extends RteHtmlAreaApi {
 

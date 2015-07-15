@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Form\Validation;
 /**
  * Between rule
  * Value must be between the min and max. inclusively optional
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 

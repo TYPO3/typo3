@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Html\HtmlParser;
 
 /**
  * Contains TEMPLATE class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class TemplateContentObject extends AbstractContentObject {
 

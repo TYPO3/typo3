@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
 
 /**
  * A writer dedicated for testing
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class WriterFixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 

@@ -20,9 +20,6 @@ use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
 
 /**
  * Contains RECORDS class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class RecordsContentObject extends AbstractContentObject {
 

@@ -14,8 +14,6 @@
 
 /**
  * Moving pages or content elements (tt_content) around in the system via a page tree navigation.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $moveElementController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController::class);
 $moveElementController->main();

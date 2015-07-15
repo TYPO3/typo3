@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree;
 
 /**
  * Interface that defines the comparison of nodes
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 interface ComparableNodeInterface
 {

@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class that hooks into TCEmain and listens for updates to pages to update the
  * treelist cache
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class TreelistCacheUpdateHooks {
 

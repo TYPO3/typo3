@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * HTTP Utility class
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class HttpUtility {
 

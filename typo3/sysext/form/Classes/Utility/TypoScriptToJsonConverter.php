@@ -21,8 +21,6 @@ use TYPO3\CMS\Form\ObjectFactory;
  * Typoscript to JSON converter
  *
  * Takes the incoming Typoscript and converts it to Json
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TypoScriptToJsonConverter {
 

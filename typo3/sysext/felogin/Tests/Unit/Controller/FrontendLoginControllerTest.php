@@ -18,8 +18,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Test case
- *
- * @author Helmut Hummel <helmut@typo3.org>
  */
 class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * Configuration options can be structured with categories and sub categories.
  * Categories are usually displayed as tabs and sub categories are used to
  * group configuration items in one tab.
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ConfigurationSubcategory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

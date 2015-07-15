@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Special fields like three letter weekdays, ranges and steps are substituted
  * to a comma separated list of integers. Example:
  * '2-4 10-40/10 * mar * fri'  will be normalized to '2,4 10,20,30,40 * * 3 1,2'
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class NormalizeCommand {
 

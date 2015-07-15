@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend;
 
 /**
  * This is the ajax handler for backend login after timeout.
- *
- * @author Christoph Koehler <christoph@webempoweredchurch.org>
  */
 class AjaxLoginHandler {
 

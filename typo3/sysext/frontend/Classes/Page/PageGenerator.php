@@ -29,8 +29,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * The class is not instantiated as an objects but called directly with the "::" operator.
  * eg: \TYPO3\CMS\Frontend\Page\PageGenerator::pagegenInit()
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageGenerator {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 
 /**
  * Abstract implementation of a log writer
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 abstract class AbstractWriter implements WriterInterface {
 

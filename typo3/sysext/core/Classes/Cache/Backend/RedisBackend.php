@@ -21,8 +21,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *
  * @see http://code.google.com/p/redis/
  * @see http://github.com/owlient/phpredis
- * @author Christopher Hlubek <hlubek@networkteam.com>
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @api
  */
 class RedisBackend extends AbstractBackend implements TaggableBackendInterface {

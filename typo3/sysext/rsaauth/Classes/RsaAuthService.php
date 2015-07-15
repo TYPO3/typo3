@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * uses the standard TYPO3 service to do all dirty work. Firsts, it will decode
  * the password and then pass it to the parent service ('sv'). This ensures that it
  * always works, even if other TYPO3 internals change.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class RsaAuthService extends \TYPO3\CMS\Sv\AuthenticationService {
 

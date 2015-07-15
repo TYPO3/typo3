@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 
 /**
  * Test case
- *
- * @author Andreas Lappe <a.lappe@kuehlhaus.com>
  */
 class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

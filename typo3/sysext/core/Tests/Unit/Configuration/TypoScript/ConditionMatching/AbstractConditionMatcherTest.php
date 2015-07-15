@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test cases
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 class AbstractConditionMatcherTest extends UnitTestCase {
 

@@ -15,8 +15,6 @@
 /**
  * Logout script for the backend
  * This script saves the interface positions and calls the closeTypo3Windows in the frameset
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $logoutController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\LogoutController::class);

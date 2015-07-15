@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Digit rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class DigitValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

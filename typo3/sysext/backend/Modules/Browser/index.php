@@ -14,8 +14,6 @@
 
 /**
  * This is the frameset to the file/record browser window
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $elementBrowserFramesetController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

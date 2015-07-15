@@ -27,8 +27,6 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * TSParser extension class to TemplateService
  * Contains functions for the TS module in TYPO3 backend
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ExtendedTemplateService extends TemplateService {
 

@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Compatibility6\ContentObject;
 
 /**
  * Contains CLEARGIF class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class ClearGifContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 

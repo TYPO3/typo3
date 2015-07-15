@@ -16,8 +16,6 @@ namespace TYPO3\CMS\SysNote\Controller;
 
 /**
  * Note controller
- *
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

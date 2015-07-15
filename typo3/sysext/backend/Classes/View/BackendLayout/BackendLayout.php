@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 
 /**
  * Class to represent a backend layout.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class BackendLayout {
 

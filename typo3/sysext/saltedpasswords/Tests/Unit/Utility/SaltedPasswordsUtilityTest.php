@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
 
 /**
  * Testcase for SaltedPasswordsUtility
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
 class SaltedPasswordsUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

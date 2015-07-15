@@ -25,9 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * In both cases this class is a parent class to BackendUserAuthentication and FrontenUserAuthentication
  *
  * See Inside TYPO3 for more information about the API of the class and internal variables.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author René Fritz <r.fritz@colorcube.de>
  */
 abstract class AbstractUserAuthentication {
 

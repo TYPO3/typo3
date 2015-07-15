@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Collection;
 
 /**
  * Interface for collection classes which es enabled to be modified
- *
- * @author Steffen Ritter <typo3steffen-ritter.net>
  */
 interface EditableCollectionInterface {
 

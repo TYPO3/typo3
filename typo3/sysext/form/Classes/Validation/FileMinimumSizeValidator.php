@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Form\Validation;
 /**
  * File Minimum size rule
  * The file size must be bigger than the minimum
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FileMinimumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 

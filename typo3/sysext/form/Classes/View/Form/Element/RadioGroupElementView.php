@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Form\Element;
 
 /**
  * View object for the radio group element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RadioGroupElementView extends \TYPO3\CMS\Form\View\Form\Element\FieldsetElementView {
 

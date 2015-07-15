@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Update backend user setting startModule if set to "help_aboutmodules"
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
 class BackendUserStartModuleUpdate extends AbstractUpdate {
 

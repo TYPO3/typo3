@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
 
 /**
  * Testcase for Language
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
 class LanguageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

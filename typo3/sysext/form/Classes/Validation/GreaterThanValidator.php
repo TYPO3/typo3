@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Greater than rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class GreaterThanValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

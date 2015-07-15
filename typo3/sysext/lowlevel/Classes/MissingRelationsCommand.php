@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lowlevel;
 
 /**
  * Looking for missing relations.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class MissingRelationsCommand extends CleanerCommand {
 

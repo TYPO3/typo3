@@ -14,8 +14,6 @@
 
 /**
  * Class to render the module menu and handle the BE navigation
- *
- * @author	Steffen Kamper
  */
 
 

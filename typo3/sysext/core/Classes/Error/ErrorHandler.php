@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Global error handler for TYPO3
  *
  * This file is a backport from TYPO3 Flow
- *
- * @author Rupert Germann <rupi@gmx.li>
  */
 class ErrorHandler implements ErrorHandlerInterface {
 

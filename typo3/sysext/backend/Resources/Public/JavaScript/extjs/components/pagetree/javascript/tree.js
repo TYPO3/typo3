@@ -19,7 +19,6 @@ Ext.namespace('TYPO3.Components.PageTree');
  *
  * @namespace TYPO3.Components.PageTree
  * @extends Ext.tree.TreePanel
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 	/**

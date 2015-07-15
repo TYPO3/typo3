@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 
 /**
  * ImageMap based menus
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ImageMenuContentObject extends AbstractMenuContentObject {
 

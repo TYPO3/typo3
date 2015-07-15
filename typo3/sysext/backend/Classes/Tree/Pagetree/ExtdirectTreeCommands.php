@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Commands for the Page tree
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ExtdirectTreeCommands {
 

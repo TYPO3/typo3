@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /**
  * Testcase for the \TYPO3\CMS\Core\Utility\MailUtility class.
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

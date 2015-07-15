@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for showing information about an item.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ElementInformationController {
 

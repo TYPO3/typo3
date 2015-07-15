@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 
 /**
  * Testcase for the FAL driver registry.
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

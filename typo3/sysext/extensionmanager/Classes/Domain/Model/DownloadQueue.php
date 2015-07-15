@@ -18,8 +18,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Download Queue - storage for extensions to be downloaded
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 

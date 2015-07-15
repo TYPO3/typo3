@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 /**
  * A caching backend which stores cache entries in database tables
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @author Ingo Renner <ingo@typo3.org>
  * @api
  */
 class Typo3DatabaseBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {

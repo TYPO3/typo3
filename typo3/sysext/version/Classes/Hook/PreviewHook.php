@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Hook for checking if the preview mode is activated
  * preview mode = show a page of a workspace without having to log in
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 

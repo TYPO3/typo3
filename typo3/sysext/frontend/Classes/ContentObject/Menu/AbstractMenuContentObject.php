@@ -33,8 +33,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * The HMENU content object uses this (or more precisely one of the extension classes).
  * Among others the class generates an array of menu items. Thereafter functions from the subclasses are called.
  * The class is always used through extension classes (like GraphicalMenuContentObject or TextMenuContentObject).
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 abstract class AbstractMenuContentObject {
 

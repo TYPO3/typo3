@@ -21,9 +21,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUser
- *
- * @author Felix Kopp <felix-source@phorax.com>
- * @author Pascal Dürsteler <pascal@notionlab.ch>
  */
 class BackendUserSessionRepository extends Repository {
 

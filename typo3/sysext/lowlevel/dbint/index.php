@@ -16,9 +16,6 @@
  * Module: Database integrity check
  *
  * This module lets you check if all pages and the records relate properly to each other
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor Jo Hasenau <info@cybercraft.de>
  */
 
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView::class);

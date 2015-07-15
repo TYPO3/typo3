@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
- *
- * @author Steffen Ritter <steffen.ritter@typo3.org>
  */
 class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

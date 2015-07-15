@@ -19,10 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Contains an implementation of the mediaWizardProvider supporting some
  * well known providers.
- *
- * @author Aishwara M.B.<aishu.moorthy@gmail.com>
- * @author Steffen Kamper <info@sk-typo3.de>
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class MediaWizardProvider implements MediaWizardProviderInterface {
 

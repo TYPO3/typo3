@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Error\Http;
 
 /**
  * Exception for Error 400 - Bad Request
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class BadRequestException extends AbstractClientErrorException {
 

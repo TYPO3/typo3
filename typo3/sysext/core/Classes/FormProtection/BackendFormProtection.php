@@ -70,9 +70,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
 /**
  * Backend form protection
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class BackendFormProtection extends AbstractFormProtection {
 

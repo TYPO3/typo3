@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * Script class for the Setup module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SetupModuleController {
 

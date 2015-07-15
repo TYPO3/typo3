@@ -14,9 +14,6 @@
 
 /**
  * Displays image selector for the RTE
- *
- * @author Kasper Skårhøj <kasper@typo3.com>
- * @author Stanislas Rolland <typo3(arobas)jbr.ca>
  */
 
 // Make instance:

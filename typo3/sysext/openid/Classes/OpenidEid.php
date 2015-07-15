@@ -20,8 +20,6 @@ use TYPO3\CMS\Frontend\Utility\EidUtility;
 
 /**
  * This class is the OpenID return script for the TYPO3 Frontend.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class OpenidEid {
 

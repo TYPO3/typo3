@@ -17,8 +17,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Main view layer for plain mail container content.
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView {
 

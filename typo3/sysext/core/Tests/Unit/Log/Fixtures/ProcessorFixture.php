@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
 
 /**
  * A processor dedicated for testing
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 class ProcessorFixture extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 

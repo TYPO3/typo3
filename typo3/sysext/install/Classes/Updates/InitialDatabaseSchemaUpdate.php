@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Contains the update class to create tables, fields and keys to comply to the database schema
- *
- * @author Stephan Großberndt <stephan@grossberndt.de>
  */
 class InitialDatabaseSchemaUpdate extends AbstractDatabaseSchemaUpdate {
 

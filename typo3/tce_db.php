@@ -17,8 +17,6 @@
  * This script is a gateway for POST forms to \TYPO3\CMS\Core\DataHandling\DataHandler
  * that manipulates all information in the database!!
  * For syntax and API information, see the document 'TYPO3 Core APIs'
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

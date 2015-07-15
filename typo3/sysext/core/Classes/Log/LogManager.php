@@ -18,10 +18,6 @@ namespace TYPO3\CMS\Core\Log;
  * Global LogManager that keeps track of global logging information.
  *
  * Inspired by java.util.logging
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class LogManager implements \TYPO3\CMS\Core\SingletonInterface, LogManagerInterface {
 

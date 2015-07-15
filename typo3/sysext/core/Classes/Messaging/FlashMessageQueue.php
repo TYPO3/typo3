@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 
 /**
  * A class which collects and renders flash messages.
- *
- * @author Rupert Germann <rupi@gmx.li>
- * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
  */
 class FlashMessageQueue extends \SplQueue {
 

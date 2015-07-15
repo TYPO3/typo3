@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
 
 /**
  * Testcase for Extension
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
 class ExtensionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

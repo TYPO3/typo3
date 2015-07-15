@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class with utility functions for module menu
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ModuleController {
 

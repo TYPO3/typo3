@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Converts comma separated list of sys_language uids to html unordered list (<ul>) with speaking titles
- *
- * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
 class SysLanguageViewHelper extends AbstractViewHelper implements CompilableInterface {

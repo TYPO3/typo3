@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\ContentObject\Menu;
 
 /**
  * interface for classes which hook into AbstractMenuContentObject
- *
- * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
 interface AbstractMenuFilterPagesHookInterface {
 

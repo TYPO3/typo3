@@ -23,9 +23,6 @@ namespace TYPO3\CMS\Core;
  * being like the Windows Registry in some ways.
  *
  * Credits: Heavily inspired by Drupal's variable_*() functions.
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Bastian Waidelich <bastian@typo3.org>
  */
 class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 

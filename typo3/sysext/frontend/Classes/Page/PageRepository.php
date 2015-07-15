@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * Mainly used in the frontend but also in some cases in the backend. It's
  * important to set the right $where_hid_del in the object so that the
  * functions operate properly
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::fetch_the_id()
  */
 class PageRepository {

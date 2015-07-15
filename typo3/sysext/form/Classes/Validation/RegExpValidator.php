@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Regexp rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RegExpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

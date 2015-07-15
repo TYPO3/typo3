@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON name
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class NameJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
  * Frontend Timetracking functions
  *
  * Is used to register how much time is used with operations in TypoScript
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TimeTracker {
 

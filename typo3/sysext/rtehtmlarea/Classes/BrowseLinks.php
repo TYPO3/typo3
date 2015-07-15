@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script class for the Element Browser window.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 

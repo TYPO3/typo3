@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * The post processor
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class PostProcessor {
 

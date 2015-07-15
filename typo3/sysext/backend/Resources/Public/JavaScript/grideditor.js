@@ -15,8 +15,6 @@
  * A JavaScript object to handle, edit, draw and export a grid. The grid is basically
  * a table with some colspan and rowspan. Each cell can additionally hold a name and
  * column.
- *
- * @author Thomas Hempel <thomas@typo3.org>
  */
 Ext.namespace('TYPO3.Backend.t3Grid');
 

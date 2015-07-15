@@ -30,7 +30,6 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function regularExpressionValidatorMatchesABasicExpressionCorrectly() {
 		$options = array('regularExpression' => '/^simple[0-9]expression$/');
@@ -41,7 +40,6 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
 		$options = array('regularExpression' => '/^simple[0-9]expression$/');

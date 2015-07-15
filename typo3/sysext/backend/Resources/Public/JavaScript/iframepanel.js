@@ -14,8 +14,6 @@
 
 /**
  * iFrame panel
- *
- * @author	Steffen Kamper
  */
 
 Ext.ns('TYPO3');

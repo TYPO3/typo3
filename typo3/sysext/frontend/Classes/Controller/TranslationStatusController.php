@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying translation status of pages in the tree.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

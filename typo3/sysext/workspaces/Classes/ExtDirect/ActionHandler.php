@@ -20,8 +20,6 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
  * ExtDirect action handler
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class ActionHandler extends AbstractHandler {
 
@@ -357,7 +355,6 @@ class ActionHandler extends AbstractHandler {
 	 *
 	 * @param int $pageId
 	 * @return array
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function discardStagesFromPage($pageId) {
 		$cmdMapArray = array();
@@ -390,7 +387,6 @@ class ActionHandler extends AbstractHandler {
 	 *
 	 * @param stdClass $parameters
 	 * @return array
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sentCollectionToStage(\stdClass $parameters) {
 		$cmdMapArray = array();
@@ -433,7 +429,6 @@ class ActionHandler extends AbstractHandler {
 	 *
 	 * @param array $cmdMapArray
 	 * @return array
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	protected function processTcaCmd(array $cmdMapArray) {
 		$result = array();
@@ -727,7 +722,6 @@ class ActionHandler extends AbstractHandler {
 	 *
 	 * @param int $id Current page id to process items to previous stage.
 	 * @return array
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToPreviousStage($id) {
 		$workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
@@ -746,7 +740,6 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * @param int $id Current Page id to select Workspace items from.
 	 * @return array
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function sendPageToNextStage($id) {
 		$workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
@@ -767,7 +760,6 @@ class ActionHandler extends AbstractHandler {
 	 *
 	 * @param int $id
 	 * @return array Contains the visibility state and label of the stage change buttons.
-	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	public function updateStageChangeButtons($id) {
 		$stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);

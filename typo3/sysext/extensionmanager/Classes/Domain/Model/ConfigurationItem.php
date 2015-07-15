@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
 
 /**
  * Model for extension configuration items
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

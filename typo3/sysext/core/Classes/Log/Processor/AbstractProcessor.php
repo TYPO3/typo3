@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException;
 
 /**
  * Abstract implementation of a log processor
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 abstract class AbstractProcessor implements ProcessorInterface {
 

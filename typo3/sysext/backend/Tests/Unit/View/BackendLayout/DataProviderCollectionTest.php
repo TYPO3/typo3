@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
 
 /**
  * Testing collection of backend layout data providers.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class DataProviderCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class LocalizationFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

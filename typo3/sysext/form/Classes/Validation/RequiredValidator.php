@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Required rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RequiredValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

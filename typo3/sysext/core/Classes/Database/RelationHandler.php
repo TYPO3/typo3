@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * Load database groups (relations)
  * Used to process the relations created by the TCA element types "group" and "select" for database records.
  * Manages MM-relations as well.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RelationHandler {
 

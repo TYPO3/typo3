@@ -19,8 +19,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Backend module user group administration controller
- *
- * @author Ingo Pfennigstorf <i.pfennigstorf@gmail.com>
  */
 class BackendUserGroupController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

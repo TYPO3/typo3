@@ -16,10 +16,6 @@ namespace TYPO3\CMS\Extbase\Object\Container;
 
 /**
  * Internal TYPO3 Dependency Injection container
- *
- * @author Daniel Pötzinger
- * @author Sebastian Kurfürst
- * @author Timo Schmidt
  */
 class Container implements \TYPO3\CMS\Core\SingletonInterface {
 

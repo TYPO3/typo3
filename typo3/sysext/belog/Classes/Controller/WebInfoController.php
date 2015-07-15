@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Belog\Controller;
 
 /**
  * Controller for log entry listings in Web->Info module
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController {
 

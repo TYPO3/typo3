@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
  * Test case
- *
- * @author Markus Klein <markus.klein@typo3.org>
  */
 class DependencyResolverTest extends UnitTestCase {
 

@@ -23,8 +23,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * TypoScript template analyzer
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule {
 

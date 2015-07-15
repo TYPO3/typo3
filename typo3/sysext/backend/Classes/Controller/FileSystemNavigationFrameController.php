@@ -22,8 +22,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Main script class for rendering of the folder tree
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FileSystemNavigationFrameController {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 
 /**
  * Test case
- *
- * @author Mario Rimann <mario.rimann@typo3.org>
  */
 class SqlSchemaMigrationServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

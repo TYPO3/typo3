@@ -18,8 +18,6 @@ use TYPO3\CMS\Form\Domain\Repository\ContentRepository;
 
 /**
  * The form wizard load view
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 abstract class AbstractWizardView {
 

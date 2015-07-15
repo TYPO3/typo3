@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * An abstract exception handler
  *
  * This file is a backport from TYPO3 Flow
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, \TYPO3\CMS\Core\SingletonInterface {
 

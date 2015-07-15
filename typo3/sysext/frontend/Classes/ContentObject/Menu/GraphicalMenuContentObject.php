@@ -21,8 +21,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 
 /**
  * Extension class creating graphic based menus (PNG or GIF files)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class GraphicalMenuContentObject extends AbstractMenuContentObject {
 

@@ -17,9 +17,6 @@ namespace TYPO3\CMS\Backend\Tree;
 /**
  * Describes necessary methods if the node label should be editable
  * within the tree.
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 interface EditableNodeLabelInterface
 {

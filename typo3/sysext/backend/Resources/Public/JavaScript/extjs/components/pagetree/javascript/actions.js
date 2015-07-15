@@ -18,7 +18,6 @@ Ext.namespace('TYPO3.Components.PageTree');
  * Actions dedicated for the page tree
  *
  * @namespace TYPO3.Components.PageTree
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Components.PageTree.Actions = {
 

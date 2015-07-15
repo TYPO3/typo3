@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * A cache frontend for any kinds of PHP variables
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
- * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
 class VariableFrontend extends AbstractFrontend {

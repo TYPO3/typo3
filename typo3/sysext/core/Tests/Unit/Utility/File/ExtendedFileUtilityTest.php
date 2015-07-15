@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Resource\File;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
- *
- * @author Armin Rüdiger Vieweg <armin@v.ieweg.de>
  */
 class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

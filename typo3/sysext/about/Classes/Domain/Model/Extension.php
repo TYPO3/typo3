@@ -18,7 +18,6 @@ namespace TYPO3\CMS\About\Domain\Model;
  * An extension helper model to be used in ext:about context
  *
  * @entity
- * @author Felix Kopp <felix-source@phorax.com>
  */
 class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

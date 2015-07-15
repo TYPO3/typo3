@@ -18,9 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Backend layout data provider class
- *
- * @author Jo Hasenau <info@cybercraft.de>
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class DefaultDataProvider implements DataProviderInterface {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Introspection processor to automatically add where the log record came from.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class IntrospectionProcessor extends AbstractProcessor {
 

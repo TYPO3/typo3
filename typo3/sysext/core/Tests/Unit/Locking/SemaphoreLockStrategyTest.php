@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Locking\SemaphoreLockStrategy
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class SemaphoreLockStrategyTest extends UnitTestCase {
 

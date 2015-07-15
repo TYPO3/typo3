@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Formmail class
  * used to submit data, and hooks into TSFE
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FormDataSubmissionController {
 

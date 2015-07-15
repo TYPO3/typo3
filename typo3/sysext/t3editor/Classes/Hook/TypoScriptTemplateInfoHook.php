@@ -16,8 +16,6 @@ namespace TYPO3\CMS\T3editor\Hook;
 
 /**
  * Hook for tstemplate info
- *
- * @author Tobias Liebig <mail_typo3@etobi.de>
  */
 class TypoScriptTemplateInfoHook {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 
 /**
  * Test case
- *
- * @author Andreas Lappe <nd@kaeufli.ch>
  */
 class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

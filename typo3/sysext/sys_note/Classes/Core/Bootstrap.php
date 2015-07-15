@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
  * Bootstrap for note module
- *
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class Bootstrap {
 	/**

@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\StringUtility
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
- * @author Markus Klein <klein.t3@mfc-linz.at>
  */
 class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -21,8 +21,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Returns true, if a specific extension is loaded
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @internal
  */
 class IsExtensionLoadedViewHelper extends AbstractViewHelper implements CompilableInterface {

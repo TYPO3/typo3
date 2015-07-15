@@ -28,8 +28,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * Most modern frontend plugins are extension classes of this one.
  * This class contains functions which assists these plugins in creating lists, searching, displaying menus, page-browsing (next/previous/1/2/3) and handling links.
  * Functions are all prefixed "pi_" which is reserved for this class. Those functions can of course be overridden in the extension classes (that is the point...)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class AbstractPlugin {
 

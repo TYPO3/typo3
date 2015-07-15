@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Fixtures;
 
 /**
  * Fixture for TYPO3\CMS\Core\Utility\GeneralUtility
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 class GeneralUtilityFixture extends \TYPO3\CMS\Core\Utility\GeneralUtility {
 

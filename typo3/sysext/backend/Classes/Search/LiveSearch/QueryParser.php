@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 /**
  * Class for parsing query parameters in backend live search.
- *
- * @author Michael Klapper <michael.klapper@aoemedia.de>
- * @author Jeff Segars <jeff@webempoweredchurch.org>
  */
 class QueryParser {
 

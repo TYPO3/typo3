@@ -403,7 +403,6 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function mergeConfigurationIntoFrameworkConfigurationWorksAsExpected() {
 		$configuration = array(
@@ -421,7 +420,6 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly() {
 		$this->mockContentObject->expects($this->any())->method('getTreeList')->will($this->returnValue('1,2,3'));
@@ -512,7 +510,6 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function overrideConfigurationFromPluginOverridesCorrectly() {
 		/** @var $frontendConfigurationManager \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager */

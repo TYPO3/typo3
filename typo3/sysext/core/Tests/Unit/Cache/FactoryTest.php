@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
  * Testcase for the TYPO3\CMS\Core\Cache\CacheFactory
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

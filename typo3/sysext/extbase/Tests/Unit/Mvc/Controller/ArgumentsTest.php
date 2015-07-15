@@ -212,7 +212,6 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \LogicException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function callingInvalidMethodThrowsException() {
 		$arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
@@ -221,7 +220,6 @@ class ArgumentsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 */
 	public function removeAllClearsAllArguments() {
 		$mockArgument1 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('getName', 'getShortName'), array(), '', FALSE);

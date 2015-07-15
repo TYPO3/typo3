@@ -23,8 +23,6 @@ use TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject;
 
 /**
  * Testcase
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

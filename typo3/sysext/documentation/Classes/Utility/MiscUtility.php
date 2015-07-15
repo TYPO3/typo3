@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Misc utility.
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class MiscUtility {
 

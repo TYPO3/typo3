@@ -25,8 +25,6 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * Base for class listing of database records and files in the
  * modules Web>List and File>Filelist
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see typo3/db_list.php
  * @see typo3/sysext/filelist/mod1/index.php
  */

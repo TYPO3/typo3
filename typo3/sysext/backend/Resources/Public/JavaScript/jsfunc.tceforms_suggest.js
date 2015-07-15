@@ -13,9 +13,6 @@
 
 /**
  * Class for JS handling of suggest fields in TCEforms.
- *
- * @author  Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author  Benni Mack <benni@typo3.org>
  */
 if (!TCEForms) {
 	var TCEForms = {};

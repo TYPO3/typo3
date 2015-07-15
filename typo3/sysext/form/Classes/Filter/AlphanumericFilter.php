@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Alphanumeric filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AlphanumericFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

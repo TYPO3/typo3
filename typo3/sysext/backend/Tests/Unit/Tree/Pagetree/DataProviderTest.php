@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
 
 /**
  * Test case
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @TODO: Refactor the subject class and make it better testable, especially getNodes()
  */
 class DataProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {

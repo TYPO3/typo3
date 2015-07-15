@@ -21,8 +21,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 /**
  * Controller for handling upload of a local extension file
  * Handles .t3x or .zip files
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class UploadExtensionFileController extends AbstractController {
 

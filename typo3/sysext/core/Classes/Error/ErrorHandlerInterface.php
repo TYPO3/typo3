@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Error;
  * Error handler interface for TYPO3
  *
  * This file is a backport from TYPO3 Flow
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 interface ErrorHandlerInterface {
 

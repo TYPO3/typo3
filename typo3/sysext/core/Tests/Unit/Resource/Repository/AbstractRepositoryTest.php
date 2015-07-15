@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
 
 /**
  * Test case
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

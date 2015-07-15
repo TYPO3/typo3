@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 /**
  * Model for backend user group
- *
- * @author Felix Kopp <felix-source@phorax.com>
  */
 class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

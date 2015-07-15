@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\Controller;
 
 /**
  * Language controller
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

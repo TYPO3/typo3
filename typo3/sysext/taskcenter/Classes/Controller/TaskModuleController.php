@@ -23,8 +23,6 @@ use TYPO3\CMS\Taskcenter\TaskInterface;
 
 /**
  * This class provides a taskcenter for BE users
- *
- * @author Georg Ringer <typo3@ringerge.org>
  */
 class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

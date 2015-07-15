@@ -21,8 +21,6 @@ namespace TYPO3\CMS\Core\Collection;
  * With the nameable interface a title and a description are added
  * to an collection, allowing every collection implementing Nameable
  * being display by the same logic.
- *
- * @author Steffen Ritter <typo3steffen-ritter.net>
  */
 interface NameableCollectionInterface {
 

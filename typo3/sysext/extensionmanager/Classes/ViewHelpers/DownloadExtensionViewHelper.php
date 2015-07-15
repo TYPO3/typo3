@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * view helper
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  * @internal
  */
 class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper {

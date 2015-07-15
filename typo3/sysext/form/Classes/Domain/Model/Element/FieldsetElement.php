@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Fieldset model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FieldsetElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 

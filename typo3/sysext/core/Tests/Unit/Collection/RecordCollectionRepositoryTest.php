@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Collection;
 
 /**
  * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

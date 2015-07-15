@@ -32,7 +32,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsNoErrorForAFalseStringExpectation() {
 		$options = array('is' => 'false');
@@ -42,7 +41,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsNoErrorForATrueStringExpectation() {
 		$options = array('is' => 'true');
@@ -52,7 +50,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsNoErrorForATrueExpectation() {
 		$options = array('is' => TRUE);
@@ -62,7 +59,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsNoErrorForAFalseExpectation() {
 		$options = array('is' => FALSE);
@@ -72,7 +68,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsErrorForTrueWhenFalseExpected() {
 		$options = array('is' => FALSE);
@@ -82,7 +77,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsErrorForFalseWhenTrueExpected() {
 		$options = array('is' => TRUE);
@@ -92,7 +86,6 @@ class BooleanValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Vali
 
 	/**
 	 * @test
-	 * @author Pascal Dürsteler <pascal.duersteler@gmail.com>
 	 */
 	public function booleanValidatorReturnsErrorForAString() {
 		$options = array('is' => TRUE);

@@ -18,9 +18,6 @@ use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\IconUtilityFixture;
 
 /**
  * Test case
- *
- * @author Fabien Udriot <fabien.udriot@ecodev.ch>
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

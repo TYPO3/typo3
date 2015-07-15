@@ -23,9 +23,6 @@ use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
- *
- * @author Oliver Hader <oliver@typo3.org>
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -22,8 +22,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Script Class, putting the frameset together.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ElementBrowserFramesetController {
 

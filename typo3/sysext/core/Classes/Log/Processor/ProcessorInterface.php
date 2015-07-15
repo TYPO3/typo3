@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Log\Processor;
  *
  * Processors provide additional data in an automatic way, without having to
  * collect that data yourself.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 interface ProcessorInterface {
 

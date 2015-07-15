@@ -19,8 +19,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Backend module user administration controller
- *
- * @author Felix Kopp <felix-source@phorax.com>
  */
 class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

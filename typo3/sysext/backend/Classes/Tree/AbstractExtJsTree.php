@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree;
 
 /**
  * Abstract ExtJS tree based on ExtDirect
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 abstract class AbstractExtJsTree extends \TYPO3\CMS\Backend\Tree\AbstractTree {
 

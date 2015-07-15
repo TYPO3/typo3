@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * Repository for accessing the file mounts
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class StorageRepository extends AbstractRepository {
 

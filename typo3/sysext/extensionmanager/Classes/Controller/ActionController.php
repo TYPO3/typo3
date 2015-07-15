@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 /**
  * Controller for handling extension related actions like
  * installing, removing, downloading of data or files
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ActionController extends AbstractController {
 

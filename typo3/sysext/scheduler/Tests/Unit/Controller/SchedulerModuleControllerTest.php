@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Controller;
 
 /**
  * Test case
- *
- * @author Andy Grunwald <andreas.grunwald@wmdb.de>
  */
 class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

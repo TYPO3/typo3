@@ -18,8 +18,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Title filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TitleCaseFilter implements FilterInterface {
 

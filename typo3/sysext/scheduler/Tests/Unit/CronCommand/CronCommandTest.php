@@ -18,8 +18,6 @@ use TYPO3\CMS\Scheduler\CronCommand\CronCommand;
 
 /**
  * Test case
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

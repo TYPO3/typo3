@@ -269,7 +269,6 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \InvalidArgumentException
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function connectThrowsInvalidArgumentExceptionIfSlotMethodNameIsEmptyAndSlotClassNameIsNoClosure() {
 		$this->signalSlotDispatcher->connect('ClassA', 'emitSomeSignal', 'ClassB', '');
@@ -277,7 +276,6 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function dispatchReturnsEmptyArrayIfSignalNameAndOrSignalClassNameIsNotRegistered() {
 		$this->assertSame(array(), $this->signalSlotDispatcher->dispatch('ClassA', 'someNotRegisteredSignalName'));
@@ -305,7 +303,6 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function dispatchThrowsInvalidSlotExceptionIfObjectManagerOfSignalSlotDispatcherIsNotSet() {
 		$this->signalSlotDispatcher->_set('isInitialized', TRUE);

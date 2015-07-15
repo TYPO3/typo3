@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Content model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContentElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

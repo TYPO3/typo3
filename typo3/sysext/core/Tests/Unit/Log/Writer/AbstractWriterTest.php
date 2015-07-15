@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
 
 /**
  * Test case
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class AbstractWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

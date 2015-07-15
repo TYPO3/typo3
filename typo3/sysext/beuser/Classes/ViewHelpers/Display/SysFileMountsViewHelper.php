@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Converts comma separated list of sys_filemounts uids to html unordered list (<ul>) with speaking titles
- *
- * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
 class SysFileMountsViewHelper extends AbstractViewHelper implements CompilableInterface {

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 /**
  * Controller for configuration related actions.
- *
- * @author Francois Suter <francois.suter@typo3.org>
  */
 class UpdateScriptController extends AbstractController {
 

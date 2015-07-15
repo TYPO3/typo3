@@ -17,9 +17,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Log writer that writes to syslog
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
  */
 class SyslogWriter extends AbstractWriter {
 

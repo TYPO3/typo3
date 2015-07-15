@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Module;
 
 /**
  * Test case
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

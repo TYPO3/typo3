@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'multiple'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class MultipleAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

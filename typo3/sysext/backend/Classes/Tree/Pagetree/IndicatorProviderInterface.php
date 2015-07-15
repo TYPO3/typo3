@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
 
 /**
  * Interface for classes which provide a pagetree indicator.
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
  */
 interface IndicatorProviderInterface {
 	/**

@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
 
 /**
  * "Versioning" item added to click menu of elements.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class VersionClickMenu {
 

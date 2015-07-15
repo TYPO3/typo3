@@ -23,8 +23,6 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
  *
  * This will use the setting in TYPO3_CONF_VARS to choose the correct transport
  * for it to work out-of-the-box.
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class Mailer extends \Swift_Mailer {
 

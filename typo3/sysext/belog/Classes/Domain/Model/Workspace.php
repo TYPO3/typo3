@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  * Stub model for workspaces - only properties required for belog module are added currently
  *
  * @todo : This should be extended and put at some more central place
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class Workspace extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

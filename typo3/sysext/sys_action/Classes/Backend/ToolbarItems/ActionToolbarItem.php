@@ -20,8 +20,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Adds action links to the backend's toolbar
- *
- * @author Steffen Kamper <info@sk-typo3.de>
  */
 class ActionToolbarItem implements ToolbarItemInterface {
 

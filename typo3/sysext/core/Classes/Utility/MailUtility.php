@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Class to handle mail specific functionality
- *
- * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  */
 class MailUtility {
 

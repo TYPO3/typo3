@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Compatibility6\ContentObject;
  * Rendering of tables for content positioning
  *
  * @see ContentObjectRenderer::CTABLE()
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TableRenderer {
 

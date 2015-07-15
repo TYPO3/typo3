@@ -24,9 +24,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * This class provides Scheduler Additional Field plugin implementation
- *
- * @author Dimitri König <dk@cabag.ch>
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 class ValidatorTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface {
 

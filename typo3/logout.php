@@ -15,8 +15,6 @@
 /**
  * Logout script for the backend
  * This script saves the interface positions and calls the closeTypo3Windows in the frameset
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

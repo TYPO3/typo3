@@ -14,8 +14,6 @@
 
 /**
  * Main entry point for all backend-related scripts.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

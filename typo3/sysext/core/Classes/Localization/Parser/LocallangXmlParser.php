@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException;
 
 /**
  * Parser for XML locallang file.
- *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class LocallangXmlParser extends AbstractXmlParser {
 

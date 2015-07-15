@@ -24,8 +24,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * OpenID selection wizard for the backend
- *
- * @author Christian Weiske <cweiske@cweiske.de>
  */
 class Wizard extends OpenidService {
 

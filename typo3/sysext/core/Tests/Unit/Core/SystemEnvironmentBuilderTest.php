@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
 /**
  * Testcase
- *
- * @author Christia Kuhn <lolli@schwarzbu.ch>
  */
 class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -23,8 +23,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Issue command ViewHelper, see TYPO3 Core Engine method issueCommand
- *
- * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
 class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInterface{

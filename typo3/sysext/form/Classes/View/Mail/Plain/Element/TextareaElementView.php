@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
 
 /**
  * View object for the textarea element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TextareaElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView {
 

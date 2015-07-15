@@ -22,8 +22,6 @@ use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
 /**
  * Controller for extension listings (TER or local extensions)
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ListController extends AbstractController {
 

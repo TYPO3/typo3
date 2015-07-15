@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Log\Writer\NullWriter;
 
 /**
  * Test case
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

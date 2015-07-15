@@ -47,7 +47,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getCommandReturnsTheCommandObjectReflectingTheRequestInformation() {
 		$this->request->setControllerObjectName('Tx_Extbase_Command_CacheCommandController');
@@ -58,7 +57,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setControllerObjectNameAndSetControllerCommandNameUnsetTheBuiltCommandObject() {
 		$this->request->setControllerObjectName('Tx_Extbase_Command_CacheCommandController');

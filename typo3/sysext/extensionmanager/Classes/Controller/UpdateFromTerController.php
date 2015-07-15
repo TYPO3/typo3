@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 /**
  * Controller for actions relating to update of full extension list from TER
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class UpdateFromTerController extends AbstractController {
 

@@ -35,8 +35,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Script Class: Drawing the editing form for editing records in TYPO3.
  * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class EditDocumentController {
 

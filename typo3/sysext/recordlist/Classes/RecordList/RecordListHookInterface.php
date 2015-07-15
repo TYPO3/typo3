@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Recordlist\RecordList;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList and modify clip-icons
- *
- * @author Bernhard Kraft <kraftb@kraftb.at>
  */
 interface RecordListHookInterface {
 

@@ -21,9 +21,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class provides Processing plugin implementation
- *
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
- * @author Jochen Rieger <j.rieger@connecta.ag>
  */
 class LinkAnalyzer {
 

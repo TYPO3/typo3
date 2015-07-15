@@ -20,16 +20,11 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * In other words: This is the ELEMENT BROWSER!
  *
  * Adapted for htmlArea RTE by Stanislas Rolland
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class which generates the page tree
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
 

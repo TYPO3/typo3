@@ -21,8 +21,6 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Contains FILES content object
- *
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class FilesContentObject extends AbstractContentObject {
 

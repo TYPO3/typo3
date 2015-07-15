@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
 
 /**
  * Tree Node Collection
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class PagetreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollection {
 

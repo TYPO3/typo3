@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Provides a simplified layer for making Constant Editor style configuration forms
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ConfigurationForm extends ExtendedTemplateService {
 

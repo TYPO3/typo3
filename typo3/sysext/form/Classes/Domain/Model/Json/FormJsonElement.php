@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON form
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonElement {
 

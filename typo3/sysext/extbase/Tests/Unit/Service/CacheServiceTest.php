@@ -71,7 +71,6 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function clearsCachesOfRegisteredPageIds() {
 		$this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTag')->with('pages', 'pageId_2');
@@ -87,7 +86,6 @@ class CacheServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function clearsCachesOfDuplicateRegisteredPageIdsOnlyOnce() {
 		$this->cacheManagerMock->expects($this->at(0))->method('flushCachesInGroupByTag')->with('pages', 'pageId_2');

@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Plugin class - instantiated from TypoScript.
  * Rendering some content elements from tt_content table.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
@@ -449,8 +447,6 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration. See TSRef "IMGTEXT". This function aims to be compatible.
 	 * @return string HTML output.
-	 * @coauthor Ernesto Baschny <ernst@cron-it.de>
-	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	public function render_textpic($content, $conf) {
 		// Look for hook before running default code for function

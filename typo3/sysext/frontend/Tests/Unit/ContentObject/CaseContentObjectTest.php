@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\CaseContentObject
- *
- * @author Philipp Gampe <philipp.gampe@typo3.org>
  */
 class CaseContentObjectTest extends UnitTestCase {
 

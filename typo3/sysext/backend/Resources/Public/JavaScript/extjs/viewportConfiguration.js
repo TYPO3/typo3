@@ -20,8 +20,6 @@ Ext.ns('TYPO3');
  * cards id needs to be prepended with typo3-card- the rest of the id is the
  * be module name as passed it is normally in TYPO3
  * Cards shouldn't be simple iframes for performance reasons
- *
- * @author Kay Strobach    <typo3@kay-strobach.de>
  */
 
 TYPO3.Viewport.ContentCards = {
@@ -47,8 +45,6 @@ TYPO3.Viewport.ContentCards = {
 
 /**
  * The backend viewport configuration
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 TYPO3.Viewport.configuration = {
 	layout: 'border',

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 /**
  * Demand filter for listings
- *
- * @author Felix Kopp <felix-source@phorax.com>
  */
 class Demand extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

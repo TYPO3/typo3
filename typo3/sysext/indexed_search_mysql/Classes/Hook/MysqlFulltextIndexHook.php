@@ -16,8 +16,6 @@ namespace TYPO3\CMS\IndexedSearchMysql\Hook;
 
 /**
  * Class that hooks into Indexed Search and replaces standard SQL queries with MySQL fulltext index queries.
- *
- * @author Michael Stucki <michael@typo3.org>
  */
 class MysqlFulltextIndexHook {
 

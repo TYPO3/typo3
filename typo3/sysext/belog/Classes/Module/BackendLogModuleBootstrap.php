@@ -21,8 +21,6 @@ namespace TYPO3\CMS\Belog\Module;
  *
  * Extbase currently provides no way to register a "TBE_MODULES_EXT" module directly,
  * therefore we need to bootstrap extbase on our own here to jump to the WebInfo controller.
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class BackendLogModuleBootstrap {
 

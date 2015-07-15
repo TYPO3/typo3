@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Wizard;
 
 /**
  * The form wizard save view
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class SaveWizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 

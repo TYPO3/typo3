@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional stdWrap processing
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 interface ContentObjectStdWrapHookInterface {
 

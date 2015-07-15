@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 
 /**
  * Testcase for the file class of the TYPO3 FAL
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>.
  */
 class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

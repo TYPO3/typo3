@@ -22,8 +22,6 @@ use TYPO3\CMS\Setup\Controller\SetupModuleController;
 /**
  * This class provides a hook to the login form to add extra javascript code
  * and supply a proper form tag.
- *
- * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class UserSetupHook {
 

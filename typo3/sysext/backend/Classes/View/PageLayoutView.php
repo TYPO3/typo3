@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Child class for the Web > Page module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRecordList {
 

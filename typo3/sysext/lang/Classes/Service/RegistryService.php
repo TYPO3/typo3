@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\Service;
 
 /**
  * Registry service
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class RegistryService {
 

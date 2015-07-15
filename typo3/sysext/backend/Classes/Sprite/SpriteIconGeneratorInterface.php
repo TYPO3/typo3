@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Sprite;
 
 /**
  * Interface all handlers in SpriteManager have to implement.
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 interface SpriteIconGeneratorInterface {
 	/**

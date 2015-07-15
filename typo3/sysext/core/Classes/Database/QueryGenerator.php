@@ -22,10 +22,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Class for generating front end for building queries
- *
- * @author Christian Jul Jensen <christian@typo3.com>
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor Jo Hasenau <info@cybercraft.de>
  */
 class QueryGenerator {
 

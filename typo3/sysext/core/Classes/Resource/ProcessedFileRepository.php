@@ -20,9 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Repository for accessing files
  * it also serves as the public API for the indexing part of files in general
- *
- * @author Benjamin Mack <benni@typo3.org>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class ProcessedFileRepository extends AbstractRepository {
 

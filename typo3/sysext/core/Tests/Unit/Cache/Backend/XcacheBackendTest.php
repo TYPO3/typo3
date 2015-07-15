@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Cache\Backend\XcacheBackend;
 
 /**
  * Test case
- *
- * @author Philipp Gampe <philipp.gampe@typo3.org>
  */
 class XcacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

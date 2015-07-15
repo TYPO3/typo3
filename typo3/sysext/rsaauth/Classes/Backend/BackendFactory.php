@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Rsaauth\Backend;
 
 /**
  * This class contains a factory for the RSA backends.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class BackendFactory {
 

@@ -16,8 +16,6 @@
  * Login frameset
  *
  * This script generates a login-frameset used when the user must relogin.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 call_user_func(function() {

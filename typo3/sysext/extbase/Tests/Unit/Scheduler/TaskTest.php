@@ -37,7 +37,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException Exception
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function executeCallsLogExceptionOnCaughtExceptionAndRethrowsException() {
 		$this->taskExecutor->expects($this->once())->method('execute')->will($this->throwException(new \Exception()));
@@ -48,7 +47,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function executeReturnsTrueIfNoExceptionIsCaught() {
 		$this->task->_set('taskExecutor', $this->taskExecutor);
@@ -57,7 +55,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function setCommandIdentifierSetsCommandIdentifierCorrectly() {
 		$this->task->setCommandIdentifier('Foo');
@@ -66,7 +63,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getCommandIdentifierReturnsCorrectCommandIdentifier() {
 		$this->task->_set('commandIdentifier', 'Foo');
@@ -75,7 +71,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function setArgumentsSetsArgumentsCorrectly() {
 		$this->task->setArguments(array('Foo'));
@@ -84,7 +79,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getArgumentsReturnsCorrectArguments() {
 		$this->task->_set('arguments', array('Foo'));
@@ -93,7 +87,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function setDefaultsSetsDefaultsCorrectly() {
 		$this->task->setDefaults(array('Foo'));
@@ -102,7 +95,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getDefaultsReturnsCorrectDefaults() {
 		$this->task->_set('defaults', array('Foo'));
@@ -111,7 +103,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function addDefaultValueAddsDefaultToDefaults() {
 		$defaults = array('foo' => 'bar');
@@ -125,7 +116,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function addDefaultValueConvertsBooleanValuesToInteger() {
 		$defaults = array('foo' => 'bar');
@@ -139,7 +129,6 @@ class TaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function getAdditionalInformationRespectsArguments() {
 		$this->task->_set('commandIdentifier', 'foo');

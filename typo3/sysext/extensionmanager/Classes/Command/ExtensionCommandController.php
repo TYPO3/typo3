@@ -18,8 +18,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * CommandController for working with extension management through CLI/scheduler
- *
- * @author Claus Due <claus@namelesscoder.net>
  */
 class ExtensionCommandController extends CommandController {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service for additional columns in GridPanel
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class AdditionalResourceService implements \TYPO3\CMS\Core\SingletonInterface {
 

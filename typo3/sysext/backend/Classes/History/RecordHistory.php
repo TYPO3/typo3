@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for the record history display module show_rechis
- *
- * @author Sebastian Kurfürst <sebastian@garbage-group.de>
  */
 class RecordHistory {
 

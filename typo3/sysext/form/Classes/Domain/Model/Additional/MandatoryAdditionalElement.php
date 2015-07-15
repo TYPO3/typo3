@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
 
 /**
  * Additional 'mandatory'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class MandatoryAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional\AbstractAdditionalElement {
 

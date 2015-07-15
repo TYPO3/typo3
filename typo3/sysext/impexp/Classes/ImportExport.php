@@ -54,8 +54,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * T3D file Import/Export library (TYPO3 Record Document)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ImportExport {
 

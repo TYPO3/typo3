@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Test case
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class ArrayUtilityTest extends UnitTestCase {
 

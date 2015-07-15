@@ -17,8 +17,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 

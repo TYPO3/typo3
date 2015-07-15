@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Log;
 
 /**
  * LogManager Contract for delivering log instances.
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 interface LogManagerInterface {
 

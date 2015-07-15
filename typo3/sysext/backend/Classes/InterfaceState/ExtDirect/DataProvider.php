@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\InterfaceState\ExtDirect;
 
 /**
  * ExtDirect DataProvider for State
- *
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class DataProvider {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON password
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class PasswordJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Resource\Driver;
 
 /**
  * Registry for driver classes.
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 

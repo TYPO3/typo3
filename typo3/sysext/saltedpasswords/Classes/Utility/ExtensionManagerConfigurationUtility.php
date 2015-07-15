@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * class providing configuration checks for saltedpasswords.
- *
- * @author Steffen Ritter <info@rs-websystems.de>
  * @since 2009-09-04
  */
 class ExtensionManagerConfigurationUtility {

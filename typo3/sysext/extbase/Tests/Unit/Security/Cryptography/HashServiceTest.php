@@ -31,7 +31,6 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst
 	 */
 	public function generateHmacReturnsHashStringIfStringIsGiven() {
 		$hash = $this->hashService->generateHmac('asdf');
@@ -40,7 +39,6 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst
 	 */
 	public function generateHmacReturnsHashStringWhichContainsSomeSalt() {
 		$hash = $this->hashService->generateHmac('asdf');
@@ -49,7 +47,6 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst
 	 */
 	public function generateHmacReturnsDifferentHashStringsForDifferentInputStrings() {
 		$hash1 = $this->hashService->generateHmac('asdf');
@@ -60,7 +57,6 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException
-	 * @author Sebastian Kurfürst
 	 */
 	public function generateHmacThrowsExceptionIfNoStringGiven() {
 		$hash = $this->hashService->generateHmac(NULL);
@@ -68,7 +64,6 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function generatedHmacCanBeValidatedAgain() {
 		$string = 'asdf';
@@ -78,7 +73,6 @@ class HashServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function generatedHmacWillNotBeValidatedIfHashHasBeenChanged() {
 		$string = 'asdf';

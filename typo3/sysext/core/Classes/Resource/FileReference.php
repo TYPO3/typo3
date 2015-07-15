@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Resource;
  * All file related methods are directly passed along; only meta data functionality is adopted
  * in this decorator class to priorities possible overrides for the metadata for this specific usage
  * of the file.
- *
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class FileReference implements FileInterface {
 

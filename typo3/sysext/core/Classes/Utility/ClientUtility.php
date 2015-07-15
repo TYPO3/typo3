@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Class to handle and determine browser specific information.
- *
- * @author Oliver Hader <oliver@typo3.org>
  */
 class ClientUtility {
 

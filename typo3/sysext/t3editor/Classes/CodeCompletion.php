@@ -16,9 +16,6 @@ namespace TYPO3\CMS\T3editor;
 
 /**
  * Code completion for t3editor
- *
- * @author Stephan Petzl <spetzl@gmx.at>
- * @author Christian Kartnig <office@hahnepeter.de>
  */
 class CodeCompletion {
 
@@ -41,7 +38,6 @@ class CodeCompletion {
 	 * @param array $params Additional parameters (not used here)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
 	 * @return void
-	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;
@@ -62,7 +58,6 @@ class CodeCompletion {
 	 * @param int $pageId ID of the page
 	 * @param int $templateId Currently unused (default: 0)
 	 * @return array Cleaned array of TypoScript information
-	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	protected function loadTemplates($pageId, $templateId = 0) {
 		$templates = array();

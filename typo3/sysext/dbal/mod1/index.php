@@ -14,9 +14,6 @@
 
 /**
  * Module 'DBAL Debug' for the 'dbal' extension.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Karsten Dambekalns <karsten@typo3.org>
  */
 
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Controller\ModuleController::class);

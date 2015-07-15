@@ -31,10 +31,6 @@ namespace TYPO3\CMS\Core\FormProtection;
  * <pre>
  * $formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
  * </pre>
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @author Ernesto Baschny <ernst@cron-it.de>
- * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class FormProtectionFactory {
 

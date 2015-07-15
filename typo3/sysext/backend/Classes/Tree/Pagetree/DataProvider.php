@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Page tree data provider.
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 

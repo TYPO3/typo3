@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Abstract for attribute objects
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 abstract class AbstractAttribute {
 

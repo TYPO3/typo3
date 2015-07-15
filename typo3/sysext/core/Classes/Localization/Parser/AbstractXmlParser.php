@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract class for XML based parser.
- *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 abstract class AbstractXmlParser implements \TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface {
 

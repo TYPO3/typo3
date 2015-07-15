@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Backend\Form;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Backend\Form\FormEngine
  * and do additional dbFileIcons processing
- *
- * @author Andy Grunwald <andreas.grunwald@wmdb.de>
  */
 interface DatabaseFileIconsHookInterface {
 

@@ -23,9 +23,6 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Generate a folder tree,
  * specially made for browsing folders in the File module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor René Fritz <r.fritz@colorcube.de>
  */
 class FolderTreeView extends AbstractTreeView {
 

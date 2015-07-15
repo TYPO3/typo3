@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
 /**
  * Testcase
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class BootstrapTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

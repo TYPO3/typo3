@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Ext Direct API Generator
- *
- * @author Sebastian Kurfürst <sebastian@typo3.org>
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ExtDirectApi {
 

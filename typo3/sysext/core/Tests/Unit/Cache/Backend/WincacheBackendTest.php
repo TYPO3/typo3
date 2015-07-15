@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Cache\Backend\WincacheBackend;
 
 /**
  * Testcase for the WinCache cache backend
- *
- * @author Tobias Burger <tobias_burger@hotmail.com>
  */
 class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

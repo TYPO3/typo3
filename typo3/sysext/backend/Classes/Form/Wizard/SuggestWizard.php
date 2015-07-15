@@ -22,9 +22,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Wizard for rendering an AJAX selector for records
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Benjamin Mack <benni@typo3.org>
  */
 class SuggestWizard {
 

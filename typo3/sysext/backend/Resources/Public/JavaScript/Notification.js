@@ -13,8 +13,6 @@
 
 /**
  * Notification API for the TYPO3 backend
- *
- * @author Frank Nägler <typo3@naegler.net>
  */
 
 define('TYPO3/CMS/Backend/Notification', ['jquery'], function ($) {

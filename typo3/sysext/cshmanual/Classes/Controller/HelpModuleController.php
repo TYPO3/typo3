@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script Class for rendering the Context Sensitive Help documents,
  * either the single display in the small pop-up window or the full-table view in the larger window.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class HelpModuleController {
 

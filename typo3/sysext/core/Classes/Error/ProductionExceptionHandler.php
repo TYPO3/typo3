@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Error;
  * A quite exception handler which catches but ignores any exception.
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class ProductionExceptionHandler extends AbstractExceptionHandler {
 
@@ -39,8 +37,6 @@ class ProductionExceptionHandler extends AbstractExceptionHandler {
 
 	/**
 	 * Constructs this exception handler - registers itself as the default exception handler.
-	 *
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct() {
 		set_exception_handler(array($this, 'handleException'));

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Form\Additional;
 
 /**
  * View object for the mandatory tag
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class MandatoryAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\AdditionalElementView {
 

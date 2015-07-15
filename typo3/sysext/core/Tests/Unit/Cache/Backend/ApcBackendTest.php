@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Cache\Backend\ApcBackend;
  * cli context (apc.enable_cli = 1)
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

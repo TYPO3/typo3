@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Localization\LocalizationFactory;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Localization\Parser\XliffParser.
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

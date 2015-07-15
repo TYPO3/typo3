@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
 /**
  * Testcase
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch
  */
 class MenuContentObjectFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

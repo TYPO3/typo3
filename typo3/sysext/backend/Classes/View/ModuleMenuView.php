@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * class to render the TYPO3 backend menu for the modules
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class ModuleMenuView {
 

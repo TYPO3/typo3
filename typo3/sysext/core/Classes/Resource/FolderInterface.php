@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * Interface for folders
- *
- * @author Andreas Wolf <andreas.wolf@typo3.org>
  */
 interface FolderInterface extends ResourceInterface
 {

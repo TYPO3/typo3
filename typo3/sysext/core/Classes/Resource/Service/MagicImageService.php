@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Magic image service
- *
- * @author Stanislas Rolland <stanislas.rolland@typo3.org>
  */
 class MagicImageService {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
 /**
  * Test case
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class LogRecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 /**
  * Test case
- *
- * @author Helmut Hummel <helmut@typo3.org>
  */
 class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

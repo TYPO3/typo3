@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Scheduler\Task;
  * This task finds all configured caching framework caches and
  * calls the garbage collection of a cache if the cache backend
  * is configured to be cleaned.
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CachingFrameworkGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

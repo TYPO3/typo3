@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Header model object
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class HeaderElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement {
 

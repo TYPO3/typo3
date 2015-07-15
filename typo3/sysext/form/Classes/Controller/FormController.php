@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Main controller for Forms.  All requests come through this class
  * and are routed to the model and view layers for processing.
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FormController {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for class \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
- *
- * @author Oliver Hader <oliver@typo3.org>
  */
 class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

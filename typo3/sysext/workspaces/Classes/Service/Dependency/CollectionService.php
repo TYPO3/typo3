@@ -20,8 +20,6 @@ use TYPO3\CMS\Version\Dependency;
 
 /**
  * Service to collect dependent elements.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class CollectionService implements \TYPO3\CMS\Core\SingletonInterface {
 

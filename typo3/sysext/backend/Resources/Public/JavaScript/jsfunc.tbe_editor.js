@@ -13,9 +13,6 @@
 
 /**
  * Contains JavaScript for TYPO3 Core Form generator - AKA "TCEforms"
- *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @coauthor	Oliver Hader <oh@inpublica.de>
  */
 
 var TBE_EDITOR = {

@@ -19,8 +19,6 @@ use TYPO3\CMS\Install\Service\Exception;
 
 /**
  * Secure session handling for the install tool.
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class SessionService implements \TYPO3\CMS\Core\SingletonInterface {
 

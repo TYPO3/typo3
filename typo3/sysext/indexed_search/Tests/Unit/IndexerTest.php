@@ -16,9 +16,6 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 
 /**
  * This class contains unit tests for the indexer
- *
- * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

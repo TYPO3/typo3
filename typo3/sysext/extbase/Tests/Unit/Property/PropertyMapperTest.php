@@ -34,7 +34,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Sets up this test case
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function setUp() {
 		$this->mockConfigurationBuilder = $this->getMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder::class);
@@ -57,7 +56,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider validSourceTypes
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param mixed $source
 	 * @param mixed $sourceType
 	 */
@@ -82,7 +80,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider invalidSourceTypes
 	 * @expectedException \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param mixed $source
 	 */
 	public function sourceWhichIsNoSimpleTypeThrowsException($source) {
@@ -110,7 +107,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function findTypeConverterShouldReturnTypeConverterFromConfigurationIfItIsSet() {
 		$mockTypeConverter = $this->getMockTypeConverter();
@@ -164,7 +160,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataProviderForFindTypeConverter
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param mixed $source
 	 * @param mixed $targetType
 	 * @param mixed $typeConverters
@@ -309,7 +304,6 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider dataProviderForObjectTypeConverters
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param mixed $targetClass
 	 * @param mixed $expectedTypeConverter
 	 * @param mixed $typeConverters

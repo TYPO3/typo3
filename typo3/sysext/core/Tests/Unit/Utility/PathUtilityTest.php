@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\WindowsPathUtilityFixture;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\PathUtility
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

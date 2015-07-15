@@ -25,8 +25,6 @@ namespace TYPO3\CMS\Core\Collection;
  * for output in frontend
  *
  * The AbstractRecordCollection uses SplDoublyLinkedList for internal storage
- *
- * @author Steffen Ritter <typo3@steffen-ritter.net>
  */
 abstract class AbstractRecordCollection implements RecordCollectionInterface, PersistableCollectionInterface, SortableCollectionInterface {
 

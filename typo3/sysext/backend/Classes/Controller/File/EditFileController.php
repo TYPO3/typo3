@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for rendering the file editing screen
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class EditFileController {
 

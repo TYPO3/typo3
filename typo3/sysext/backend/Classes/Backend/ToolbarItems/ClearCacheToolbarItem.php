@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Render cache clearing toolbar item
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class ClearCacheToolbarItem implements ToolbarItemInterface {
 

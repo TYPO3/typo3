@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form;
 
 /**
  * Element counter for model
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ElementCounter implements \TYPO3\CMS\Core\SingletonInterface {
 

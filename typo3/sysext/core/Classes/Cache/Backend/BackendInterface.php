@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 /**
  * A contract for a Cache Backend
- *
- * @author Ingo Renner <ingo@typo3.org>
  * @api
  */
 interface BackendInterface

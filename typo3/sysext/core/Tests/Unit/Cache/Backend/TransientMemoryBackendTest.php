@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * Testcase for the TransientMemory cache backend
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -23,9 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * An abstract cache
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
- * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
 abstract class AbstractFrontend implements FrontendInterface {

@@ -18,9 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class provides a textarea to save personal notes
- *
- * @author Kasper Skårhøj <kasper@typo3.com>
- * @author Georg Ringer <typo3@ringerge.org>
  */
 class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 

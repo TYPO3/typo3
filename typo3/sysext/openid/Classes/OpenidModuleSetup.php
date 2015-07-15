@@ -21,8 +21,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * This class is the OpenID return script for the TYPO3 Backend (used in the user-settings module).
- *
- * @author Steffen Gebert <steffen@steffen-gebert.de>
  */
 class OpenidModuleSetup {
 

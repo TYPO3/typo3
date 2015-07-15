@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 /**
  * Performs several checks about the system's health
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

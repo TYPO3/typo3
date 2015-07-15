@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\Hook;
 
 /**
  * Frontend hooks
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class TypoScriptFrontendControllerHook {
 

@@ -20,8 +20,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Abstract for the form elements
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 abstract class AbstractElement {
 

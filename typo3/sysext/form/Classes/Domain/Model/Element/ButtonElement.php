@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Button model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ButtonElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

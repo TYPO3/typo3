@@ -22,9 +22,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Class to register category configurations.
- *
- * @author Fabien Udriot <fabien.udriot@typo3.org>
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class CategoryRegistry implements SingletonInterface {
 

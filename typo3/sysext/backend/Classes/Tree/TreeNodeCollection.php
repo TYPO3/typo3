@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Tree;
 
 /**
  * Tree Node Collection
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class TreeNodeCollection extends \ArrayObject {
 

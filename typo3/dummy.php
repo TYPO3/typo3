@@ -14,8 +14,6 @@
 
 /**
  * Dummy document - displays nothing but background color.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

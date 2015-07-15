@@ -27,8 +27,6 @@ namespace TYPO3\CMS\Core\Database;
  * }
  * $statement->free();
  * </code>
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 class PreparedStatement {
 

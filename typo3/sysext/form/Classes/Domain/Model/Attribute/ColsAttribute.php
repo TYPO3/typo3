@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'cols'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ColsAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

@@ -31,8 +31,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
  * Used by many smaller forms/links in TYPO3, including the QuickEdit module.
  * Is not used by FormEngine though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
  * For all other cases than FormEngine it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to FormEngine, that will give you easy form-rendering as well.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SimpleDataHandlerController {
 

@@ -1,7 +1,5 @@
 # ***************************************************************************************
 # Default proc options in Page TSconfig for htmlArea RTE formatting with style attribute
-#
-# @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
 # ***************************************************************************************
 
 	## Default RTE processing rules

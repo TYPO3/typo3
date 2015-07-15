@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The form wizard view
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 

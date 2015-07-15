@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Select model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class SelectElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 

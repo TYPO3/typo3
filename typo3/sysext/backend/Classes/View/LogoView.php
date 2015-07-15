@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\View;
 
 /**
  * class to render the TYPO3 logo in the backend
- *
- * @author Ingo Renner <ingo@typo3.org>
  * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8 - change the logic of the logo directly in the corresponding Fluid template
  */
 class LogoView {

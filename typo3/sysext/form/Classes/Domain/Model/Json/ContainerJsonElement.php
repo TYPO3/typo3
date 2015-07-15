@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON container abstract
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContainerJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

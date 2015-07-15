@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Saltedpasswords\Salt;
  *
  * MD5 salted hashing with PHP's crypt() should be available
  * on most of the systems.
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
 class Md5Salt extends AbstractSalt implements SaltInterface {
 

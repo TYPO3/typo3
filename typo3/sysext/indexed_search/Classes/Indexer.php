@@ -19,13 +19,9 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * This class is a search indexer for TYPO3
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Indexing class for TYPO3 frontend
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class Indexer {
 

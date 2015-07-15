@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sprite build handler
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class SpriteBuildingHandler extends AbstractSpriteHandler {
 

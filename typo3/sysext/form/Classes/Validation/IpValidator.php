@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * IP address rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class IpValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

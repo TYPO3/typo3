@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying page information (records, page record properties)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

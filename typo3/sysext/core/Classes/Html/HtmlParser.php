@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Functions for parsing HTML.
  * You are encouraged to use this class in your own applications
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class HtmlParser {
 

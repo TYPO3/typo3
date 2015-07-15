@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * File upload model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FileuploadElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

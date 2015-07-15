@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Compressor
  * This merges and compresses CSS and JavaScript files of the TYPO3 Backend.
- *
- * @author Steffen Gebert <steffen@steffen-gebert.de>
  */
 class ResourceCompressor {
 

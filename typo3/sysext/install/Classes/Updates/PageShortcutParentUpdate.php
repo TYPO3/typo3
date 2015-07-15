@@ -20,8 +20,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * Update all pages which have set the shortcut mode "Parent of selected or current page" (PageRepository::SHORTCUT_MODE_PARENT_PAGE)
  * to remove a possibly selected page as this would cause a different behaviour of the shortcut now
  * since the selected page is now respected in this shortcut mode.
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class PageShortcutParentUpdate extends AbstractUpdate {
 

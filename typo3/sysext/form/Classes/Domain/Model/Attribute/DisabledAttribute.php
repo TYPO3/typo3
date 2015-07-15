@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'disabled'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class DisabledAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

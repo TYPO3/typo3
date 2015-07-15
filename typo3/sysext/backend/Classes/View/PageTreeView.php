@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Browse pages in Web module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Benjamin Mack <bmack@xnos.org>
  */
 class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 

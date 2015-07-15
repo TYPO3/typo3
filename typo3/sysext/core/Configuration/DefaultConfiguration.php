@@ -15,8 +15,6 @@
 /**
  * This file contains the default array definition that is
  * later populated as $GLOBALS['TYPO3_CONF_VARS']
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 return array(
 	'GFX' => array(

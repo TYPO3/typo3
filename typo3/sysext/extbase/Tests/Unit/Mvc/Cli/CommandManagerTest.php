@@ -44,7 +44,6 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getAvailableCommandsReturnsAllAvailableCommands() {
 		/** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface $commandManager */
@@ -69,7 +68,6 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getCommandByIdentifierReturnsCommandIfIdentifierIsEqual() {
 		$mockCommand = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', FALSE);
@@ -81,7 +79,6 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getCommandByIdentifierWorksCaseInsensitive() {
 		$mockCommand = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', FALSE);
@@ -94,7 +91,6 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getCommandByIdentifierThrowsExceptionIfNoMatchingCommandWasFound() {
 		$mockCommand = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', FALSE);
@@ -107,7 +103,6 @@ class CommandManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getCommandByIdentifierThrowsExceptionIfMoreThanOneMatchingCommandWasFound() {
 		$mockCommand1 = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Cli\Command::class, array(), array(), '', FALSE);

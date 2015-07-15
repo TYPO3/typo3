@@ -50,9 +50,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Check 2: "File Mounts" of the User (act as subsets / filters to the identifiers) [is the user allowed to do something in this folder?]
  * Check 3: "Capabilities" of Storage (then: of Driver) [is the storage/driver writable?]
  * Check 4: "File permissions" of the Driver [is the folder writable?]
- *
- * @author Andreas Wolf <andreas.wolf@typo3.org>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 class ResourceStorage implements ResourceStorageInterface {
 

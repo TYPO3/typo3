@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
 
 /**
  * View object for the radio element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RadioElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView {
 

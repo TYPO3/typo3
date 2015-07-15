@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Image button model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ImagebuttonElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

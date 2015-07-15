@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 /**
  * Utility class to render TCEforms information about a sys_file record
- *
- * @author Benjamin Mack <benni@typo3.org>
  */
 class FileInfoHook {
 

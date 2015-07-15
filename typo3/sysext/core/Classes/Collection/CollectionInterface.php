@@ -21,8 +21,6 @@ namespace TYPO3\CMS\Core\Collection;
  * of data values (f.e. strings, records, relations) in a
  * common and generic way, while the class manages the storage
  * in an appropriate way itself
- *
- * @author Steffen Ritter <typo3steffen-ritter.net>
  */
 interface CollectionInterface extends \Iterator, \Serializable, \Countable {
 

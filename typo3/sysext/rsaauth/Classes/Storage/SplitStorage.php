@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * This class contains a "split" storage for the data. It keeps part of the data
  * in the database, part in the session.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class SplitStorage extends AbstractStorage {
 

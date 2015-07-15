@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility for dealing with extension model related helper functions
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  */
 class ExtensionModelUtility {
 

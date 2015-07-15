@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
  * The Cache Manager
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
  * @scope singleton
  * @api
  */

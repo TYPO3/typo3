@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Dbal;
 
 /**
  * Cache engine helper for generated queries.
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class QueryCache {
 

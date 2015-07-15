@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Tree Node
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class TreeNode implements \TYPO3\CMS\Backend\Tree\ComparableNodeInterface, \Serializable {
 

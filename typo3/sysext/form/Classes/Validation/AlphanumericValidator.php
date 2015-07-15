@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Alphanumeric rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AlphanumericValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

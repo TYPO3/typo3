@@ -54,7 +54,6 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @return array
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function commandIdentifiers() {
 		return array(
@@ -66,7 +65,6 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider commandIdentifiers
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @param string $controllerClassName
 	 * @param string $commandName
 	 * @param string $expectedCommandIdentifier
@@ -101,7 +99,6 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function hasArgumentsReturnsFalseIfCommandExpectsNoArguments() {
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue(array()));
@@ -110,7 +107,6 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function hasArgumentsReturnsTrueIfCommandExpectsArguments() {
 		$mockParameterReflection = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ParameterReflection::class, array(), array(), '', FALSE);
@@ -120,7 +116,6 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getArgumentDefinitionsReturnsEmptyArrayIfCommandExpectsNoArguments() {
 		$this->mockMethodReflection->expects($this->atLeastOnce())->method('getParameters')->will($this->returnValue(array()));
@@ -129,7 +124,6 @@ class CommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArguments() {
 		$mockParameterReflection = $this->getMock(\TYPO3\CMS\Extbase\Reflection\ParameterReflection::class, array(), array(), '', FALSE);

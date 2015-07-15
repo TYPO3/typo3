@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Filter\TitleCaseFilter;
 
 /**
  * Test case
- *
- * @author Andreas Lappe <nd@kaeufli.ch>
  */
 class TitleCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

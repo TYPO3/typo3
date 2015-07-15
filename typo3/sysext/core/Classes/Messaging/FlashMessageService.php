@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Messaging;
 
 /**
  * A class representing flash messages.
- *
- * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
  */
 class FlashMessageService implements \TYPO3\CMS\Core\SingletonInterface {
 

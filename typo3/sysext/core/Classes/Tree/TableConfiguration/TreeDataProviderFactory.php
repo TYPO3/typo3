@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 /**
  * Builds a \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
  * object based on some TCA configuration
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class TreeDataProviderFactory {
 

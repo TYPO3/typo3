@@ -16,9 +16,6 @@ namespace TYPO3\CMS\T3editor;
 
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
- *
- * @author Stephan Petzl <spetzl@gmx.at>
- * @author Christian Kartnig <office@hahnepeter.de>
  */
 class TypoScriptReferenceLoader {
 
@@ -46,7 +43,6 @@ class TypoScriptReferenceLoader {
 	 * @param array $params Additional parameters (not used here)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
 	 * @return void
-	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;

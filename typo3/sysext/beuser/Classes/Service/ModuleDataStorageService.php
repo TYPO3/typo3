@@ -17,9 +17,6 @@ namespace TYPO3\CMS\Beuser\Service;
 /**
  * Module data storage service.
  * Used to store and retrieve module state (eg. checkboxes, selections).
- *
- * @author Felix Kopp <felix-source@phorax.com>
- * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
  */
 class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 

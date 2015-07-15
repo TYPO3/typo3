@@ -30,10 +30,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Module 'TYPO3 Scheduler administration module' for the 'scheduler' extension.
- *
- * @author François Suter <francois@typo3.org>
- * @author Christian Jul Jensen <julle@typo3.org>
- * @author Ingo Renner <ingo@typo3.org>
  */
 class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

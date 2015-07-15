@@ -29,8 +29,6 @@ namespace TYPO3\CMS\Core\Core;
  *
  * This class is derived from the TYPO3 Flow framework.
  * Credits go to the respective authors.
- *
- * @author Steffen Müller <typo3@t3node.com> (Backport to TYPO3 CMS)
  */
 class ApplicationContext {
 

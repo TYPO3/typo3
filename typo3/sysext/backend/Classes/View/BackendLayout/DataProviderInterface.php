@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Backend\View\BackendLayout;
 /**
  * Interface for classes which hook into BackendLayoutDataProvider
  * to provide additional backend layouts from various sources.
- *
- * @author Jo Hasenau <info@cybercraft.de>
  */
 interface DataProviderInterface {
 

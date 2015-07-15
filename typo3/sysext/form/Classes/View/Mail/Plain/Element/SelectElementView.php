@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Plain\Element;
 
 /**
  * View object for the select element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class SelectElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\ContainerElementView {
 

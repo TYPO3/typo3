@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility class for traversing related fields in the TCA.
- *
- * @author Sebastian Fischer <typo3@evoweb.de>
- * @author Alexander Stehlik <astehlik.deleteme@intera.de>
  */
 class FormDataTraverser {
 

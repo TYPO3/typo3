@@ -16,15 +16,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
 
 /**
  * Module: Extension manager - Extension.xml abstract parser
- *
- * @author Marcus Krause <marcus#exp2010@t3sec.info>
- * @author Steffen Kamper <info@sk-typo3.de>
  */
 /**
  * Abstract parser for TYPO3's extension.xml file.
- *
- * @author Marcus Krause <marcus#exp2010@t3sec.info>
- * @author Steffen Kamper <info@sk-typo3.de>
  * @since 2010-02-09
  */
 abstract class AbstractExtensionXmlParser extends AbstractXmlParser {

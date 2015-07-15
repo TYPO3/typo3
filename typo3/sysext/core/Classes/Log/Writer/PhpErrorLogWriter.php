@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Log\LogLevel;
 
 /**
  * Log writer that writes the log records into PHP error log.
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
  */
 class PhpErrorLogWriter extends AbstractWriter {
 

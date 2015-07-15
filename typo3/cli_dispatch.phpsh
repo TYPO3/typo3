@@ -20,8 +20,6 @@
  * the call to a registered script with that key.
  * Valid cliKeys must be registered in
  * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'].
- *
- * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

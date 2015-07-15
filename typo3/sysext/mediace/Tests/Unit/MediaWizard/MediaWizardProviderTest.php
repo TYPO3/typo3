@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Mediace\Tests\Unit\MediaWizard;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider
- *
- * @author Sebastian Fischer <typo3@marketing-factory.de>
  */
 class MediaWizardProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

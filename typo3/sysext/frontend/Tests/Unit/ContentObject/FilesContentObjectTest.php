@@ -20,8 +20,6 @@ use TYPO3\CMS\Frontend\Resource\FileCollector;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\FilesContentObject
- *
- * @author Nicole Cordes <typo3@cordes.co>
  */
 class FilesContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

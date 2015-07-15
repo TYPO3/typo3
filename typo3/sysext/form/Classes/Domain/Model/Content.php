@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model;
 
 /**
  * Content domain model
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Content {
 

@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Charset\CharsetConverter;
 /**
  * Parser for PHP locallang array.
  *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
- * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
- *
  * @deprecated since TYPO3 CMS 7, this file will be removed in TYPO3 CMS 8. Please use XLF files for
  * translation handling. Also note that the extension "extdeveval" has a converter from PHP and XML to XLF.
  */

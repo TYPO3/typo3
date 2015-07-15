@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON submit
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class SubmitJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

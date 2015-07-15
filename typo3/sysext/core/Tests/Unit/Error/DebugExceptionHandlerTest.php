@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Error;
 
 /**
  * testcase for the DebugExceptionHandler class.
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

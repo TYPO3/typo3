@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Test case
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class DatabaseWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

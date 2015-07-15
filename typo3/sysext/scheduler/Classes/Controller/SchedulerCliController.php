@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * CLI controller for the 'scheduler' extension.
- *
- * @author Markus Friedrich <markus.friedrich@dkd.de>
  */
 class SchedulerCliController {
 

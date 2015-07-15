@@ -30,8 +30,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFunctionModule {
 

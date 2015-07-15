@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Trim filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TrimFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

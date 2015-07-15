@@ -36,7 +36,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull() {
 		$this->assertTrue($this->validator->validate('foo')->hasErrors());
@@ -44,7 +43,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function validatorShouldReturnNoErrorsIfTheValueIsNull() {
 		$this->assertFalse($this->validator->validate(NULL)->hasErrors());
@@ -76,7 +74,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	/**
 	 * @test
 	 * @dataProvider dataProviderForValidator
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @param mixed $mockObject
 	 * @param mixed $validationResultForFoo
 	 * @param mixed $validationResultForBar
@@ -94,7 +91,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validateCanHandleRecursiveTargetsWithoutEndlessLooping() {
 		$classNameA = $this->getUniqueId('B');
@@ -116,7 +112,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validateDetectsFailuresInRecursiveTargetsI() {
 		$classNameA = $this->getUniqueId('A');
@@ -143,7 +138,6 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function validateDetectsFailuresInRecursiveTargetsII() {
 		$classNameA = $this->getUniqueId('A');

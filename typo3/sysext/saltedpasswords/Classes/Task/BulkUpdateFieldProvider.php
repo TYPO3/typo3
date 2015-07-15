@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Saltedpasswords\Task;
 
 /**
  * Additional field for salted passwords bulk update task
- *
- * @author Philipp Gampe <typo3@philippgampe.info>
  */
 class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

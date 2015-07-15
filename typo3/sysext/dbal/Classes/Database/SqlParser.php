@@ -18,10 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * PHP SQL engine / server
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Karsten Dambekalns <karsten@typo3.org>
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 

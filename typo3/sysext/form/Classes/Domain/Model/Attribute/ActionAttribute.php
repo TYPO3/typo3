@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'action'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ActionAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

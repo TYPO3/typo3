@@ -21,9 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Alist of all open documents
- *
- * @author Benjamin Mack <benni@typo3.org>
- * @author Ingo Renner <ingo@typo3.org>
  */
 class OpendocsToolbarItem implements ToolbarItemInterface {
 

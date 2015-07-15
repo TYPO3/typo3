@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Version\Task;
 /**
  * This class provides a wrapper around the autopublication
  * mechanism of workspaces, as a Scheduler task
- *
- * @author François Suter <francois@typo3.org>
  */
 class AutoPublishTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

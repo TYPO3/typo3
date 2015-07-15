@@ -38,11 +38,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * the data will be split into chunks to make them fit into the memcached limits.
  *
  * This file is a backport from FLOW3 by Ingo Renner.
- *
- * @author Robert Lemke <robert@typo3.org>
- * @author Christian Jul Jensen <julle@typo3.org>
- * @author Karsten Dambekalns <karsten@typo3.org>
- * @author Dmitry Dulepov <dmitry@typo3.org>
  * @api
  */
 class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {

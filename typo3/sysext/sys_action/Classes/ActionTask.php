@@ -19,9 +19,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class provides a task for the taskcenter
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Georg Ringer <typo3@ringerge.org>
  */
 class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 

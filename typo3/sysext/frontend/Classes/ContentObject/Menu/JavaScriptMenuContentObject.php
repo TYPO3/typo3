@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * JavaScript/Selectorbox based menus
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class JavaScriptMenuContentObject extends AbstractMenuContentObject {
 

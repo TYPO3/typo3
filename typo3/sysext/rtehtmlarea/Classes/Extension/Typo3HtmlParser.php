@@ -20,8 +20,6 @@ use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
  * TYPO3 HTML Parser extension for htmlArea RTE
- *
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class Typo3HtmlParser extends RteHtmlAreaApi {
 

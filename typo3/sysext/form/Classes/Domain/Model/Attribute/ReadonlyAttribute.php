@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'readonly'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ReadonlyAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

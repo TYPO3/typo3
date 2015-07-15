@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Status;
 
 /**
  * Abstract status
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 abstract class AbstractStatus implements StatusInterface {
 

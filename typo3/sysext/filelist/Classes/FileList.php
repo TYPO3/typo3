@@ -33,8 +33,6 @@ use TYPO3\CMS\Core\Resource\FolderInterface;
 
 /**
  * Class for rendering of File>Filelist
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FileList extends AbstractRecordList {
 

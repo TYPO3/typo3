@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Frontend\ContentObject and do additional getImgResource processing
- *
- * @author Oliver Hader <oliver@typo3.org>
  */
 interface ContentObjectGetImageResourceHookInterface {
 

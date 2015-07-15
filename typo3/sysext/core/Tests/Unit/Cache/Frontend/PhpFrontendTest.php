@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  * Testcase for the PHP source code cache frontend
  *
  * This file is a backport from FLOW3
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

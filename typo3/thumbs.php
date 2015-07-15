@@ -14,8 +14,6 @@
 
 /**
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
- *
- * @author René Fritz <r.fritz@colorcube.de>
  * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
  */
 call_user_func(function() {

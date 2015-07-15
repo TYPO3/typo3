@@ -21,8 +21,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Versioning module, including workspace management
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

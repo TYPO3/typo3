@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Status;
 
 /**
  * Status interface
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 interface StatusInterface {
 

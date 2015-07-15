@@ -21,8 +21,6 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * Service class for managing multiple step processes (dependencies for example)
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  */
 class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 

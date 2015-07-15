@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

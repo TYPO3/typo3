@@ -24,8 +24,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays 'SwitchUser' link with sprite icon to change current backend user to target (non-admin) backendUser
- *
- * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
 class SwitchUserViewHelper extends AbstractViewHelper implements CompilableInterface {

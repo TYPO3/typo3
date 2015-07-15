@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'acceptcharset'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AcceptCharsetAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

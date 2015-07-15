@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
 
 /**
  * Test case
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 class AbstractProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

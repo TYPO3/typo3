@@ -21,9 +21,6 @@ use \org\bovigo\vfs\vfsStreamWrapper;
  * Testcase for the File cache backend
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class FileBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

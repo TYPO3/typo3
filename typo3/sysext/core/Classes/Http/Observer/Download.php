@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Http\Observer;
  * This follows an example in HTTP_Request2 manual.
  *
  * @see http://pear.php.net/manual/en/package.http.http-request2.observers.php
- * @author Philipp Gampe
  */
 class Download implements \SplObserver {
 

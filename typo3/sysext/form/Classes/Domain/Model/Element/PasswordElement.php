@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Password model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class PasswordElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

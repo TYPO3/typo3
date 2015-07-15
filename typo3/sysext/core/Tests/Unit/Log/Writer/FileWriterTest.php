@@ -20,8 +20,6 @@ use \org\bovigo\vfs\vfsStreamWrapper;
 
 /**
  * Test case
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

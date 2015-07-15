@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\ElementBrowser;
 
 /**
  * Interface for classes which hook into \TYPO3\CMS\Recordlist\Browser\ElementBrowser
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 interface ElementBrowserHookInterface {
 

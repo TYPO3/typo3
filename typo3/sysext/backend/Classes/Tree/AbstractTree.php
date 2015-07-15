@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree;
 
 /**
  * Abstract Tree
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 abstract class AbstractTree {
 

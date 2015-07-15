@@ -26,8 +26,6 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
  * This class provides Scheduler plugin implementation
- *
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

@@ -28,9 +28,6 @@ use TYPO3\CMS\Core\Tests\FileStreamWrapper;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

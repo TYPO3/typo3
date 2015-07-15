@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Domain\Model\Module;
 
 /**
  * Model for menu entries
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class BackendModule {
 

@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Form\Validation;
 /**
  * File Maximum size rule
  * The file size must be smaller or equal than the maximum
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class FileMaximumSizeValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 

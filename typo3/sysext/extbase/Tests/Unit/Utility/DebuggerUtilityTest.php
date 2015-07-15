@@ -30,7 +30,6 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function debuggerRewindsInstancesOfIterator() {
 		/** @var $objectStorage \TYPO3\CMS\Extbase\Persistence\ObjectStorage */
@@ -46,7 +45,6 @@ class DebuggerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Anja Leichsenring <anja.leichsenring@typo3.org>
 	 */
 	public function debuggerDoesNotRewindInstanceOfArrayAccess() {
 

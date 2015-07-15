@@ -16,9 +16,6 @@ namespace TYPO3\CMS\SysNote\Hook;
 
 /**
  * Hook for the list module
- *
- * @author Georg Ringer <typo3@ringerge.org>
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class RecordListHook {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Form\Domain\Model\Form;
 
 /**
  * The mail post processor
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInterface {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Status;
 
 /**
  * Warning level status
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class WarningStatus extends AbstractStatus implements StatusInterface {
 

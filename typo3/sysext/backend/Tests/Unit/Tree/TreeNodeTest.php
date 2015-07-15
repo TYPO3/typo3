@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
 
 /**
  * Testcase for class \TYPO3\CMS\Backend\Tree\TreeNode.
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class TreeNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

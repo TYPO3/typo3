@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /**
  * Testcase for PhpassSalt
- *
- * @author Marcus Krause <marcus#exp2009@t3sec.info>
  */
 class PhpassSaltTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

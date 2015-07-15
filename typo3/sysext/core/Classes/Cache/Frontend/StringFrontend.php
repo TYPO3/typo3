@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
  * A cache frontend for strings. Nothing else.
  *
  * This file is a backport from FLOW3
- *
- * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
 class StringFrontend extends AbstractFrontend {

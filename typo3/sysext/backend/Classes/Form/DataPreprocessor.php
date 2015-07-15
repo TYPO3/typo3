@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
 /**
  * Class for getting and transforming data for display in backend forms (TCEforms)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DataPreprocessor {
 

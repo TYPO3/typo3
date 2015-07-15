@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View;
 
 /**
  * Testing behaviour of \TYPO3\CMS\Backend\View\BackendLayoutView
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class BackendLayoutViewTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

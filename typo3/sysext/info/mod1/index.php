@@ -15,8 +15,6 @@
 /**
  * Module: Web>Info
  * Presents various page related information from extensions
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Info\Controller\InfoModuleController::class);
 $GLOBALS['SOBE']->init();

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON hidden
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class HiddenJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement {
 

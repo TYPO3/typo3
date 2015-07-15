@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Form\Domain\Model;
  *
  * Takes the incoming Typoscipt and adds all the necessary form objects
  * according to the configuration.
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class Form extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement {
 

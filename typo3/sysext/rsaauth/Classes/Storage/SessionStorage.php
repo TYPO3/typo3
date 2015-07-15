@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  * PHP sessions. PHP sessions usually store data in the file system and it is
  * easy to extract. This storage is useful only as an example. It is better to
  * use "split" storage for keys.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class SessionStorage extends AbstractStorage {
 

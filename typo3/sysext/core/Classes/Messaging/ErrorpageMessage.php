@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Messaging;
 /**
  * A class representing error messages shown on a page.
  * Classic Example: "No pages are found on rootlevel"
- *
- * @author Benjamin Mack <benni@typo3.org>
  */
 class ErrorpageMessage extends AbstractStandaloneMessage {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Additional fields provider class for usage with the Scheduler's test task
- *
- * @author François Suter <francois@typo3.org>
  */
 class TestTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

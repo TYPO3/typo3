@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * View Helper for imploding arrays
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  * @internal
  */
 class ImplodeViewHelper extends AbstractViewHelper implements CompilableInterface {

@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
  * Null writer - just forgets about everything
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class NullWriter extends AbstractWriter {
 

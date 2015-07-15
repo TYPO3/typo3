@@ -21,8 +21,6 @@ use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
  * Abstract class for the form elements view
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 abstract class AbstractElementView {
 

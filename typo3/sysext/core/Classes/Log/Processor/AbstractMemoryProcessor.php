@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Log\Processor;
 
 /**
  * Common memory processor methods.
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
  */
 abstract class AbstractMemoryProcessor extends AbstractProcessor {
 

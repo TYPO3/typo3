@@ -41,8 +41,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * class for the Element Browser window.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ElementBrowser {
 

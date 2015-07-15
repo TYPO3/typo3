@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Additional;
 
 /**
  * Additional 'label'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LabelAdditionalElement extends \TYPO3\CMS\Form\Domain\Model\Additional\AbstractAdditionalElement {
 

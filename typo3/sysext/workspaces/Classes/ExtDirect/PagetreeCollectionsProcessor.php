@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
 
 /**
  * Interface for classes which perform pre or post processing
- *
- * @author Tolleiv Nietsch <typo3@tolleiv.de>
  */
 class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface {
 

@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * flock() locking
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class FileLockStrategy implements LockingStrategyInterface {
 

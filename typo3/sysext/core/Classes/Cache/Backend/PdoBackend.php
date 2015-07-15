@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 /**
  * A PDO database cache backend
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
- * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
  */
 class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface {

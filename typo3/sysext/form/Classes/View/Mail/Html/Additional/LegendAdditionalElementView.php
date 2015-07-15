@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Additional;
 
 /**
  * View object for the legend tag
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LegendAdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Additional\AdditionalElementView {
 

@@ -22,8 +22,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Contains translation tools
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TranslationConfigurationProvider {
 

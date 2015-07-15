@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\View;
 
 /**
  * Base class for JSON views
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 abstract class AbstractJsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 

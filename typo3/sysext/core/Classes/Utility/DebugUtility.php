@@ -17,8 +17,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class to handle debug
- *
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class DebugUtility {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Hidden field model object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class HiddenElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 

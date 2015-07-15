@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Remove Cross Site Scripting filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RemoveXssFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

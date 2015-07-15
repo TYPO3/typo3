@@ -21,8 +21,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays sprite icon identified by iconName key
- *
- * @author Felix Kopp <felix-source@phorax.com>
  * @internal
  */
 class SpriteManagerIconViewHelper extends AbstractViewHelper implements CompilableInterface {

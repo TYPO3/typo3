@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Database;
 
 /**
  * interface for classes with hook for postprocessing extTables after loading
- *
- * @author Steffen Ritter <steffen.ritter@typo3.org>
  */
 interface TableConfigurationPostProcessingHookInterface {
 

@@ -24,10 +24,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  * Creates a search form for indexed search. Indexing must be enabled
  * for this to make sense.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Christian Jul Jensen <christian@typo3.com>
- * @author Benjamin Mack <benni@typo3.org>
  */
 class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

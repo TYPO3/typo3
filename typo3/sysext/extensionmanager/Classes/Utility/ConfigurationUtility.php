@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 
 /**
  * Utility for dealing with ext_emconf and ext_conf_template settings
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  */
 class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

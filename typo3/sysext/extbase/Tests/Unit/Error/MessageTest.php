@@ -21,7 +21,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function theConstructorSetsTheMessageMessageCorrectly() {
 		$messageMessage = 'The message';
@@ -31,7 +30,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function theConstructorSetsTheMessageCodeCorrectly() {
 		$messageCode = 123456789;
@@ -41,7 +39,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function theConstructorSetsTheMessageArgumentsCorrectly() {
 		$messageArguments = array('foo', 'bar');
@@ -51,7 +48,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function theConstructorSetsTheMessageTitleCorrectly() {
 		$messageTitle = 'Title';
@@ -61,7 +57,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function renderRendersCorrectlyWithoutArguments() {
 		$error = new \TYPO3\CMS\Extbase\Error\Message('Message', 1);
@@ -70,7 +65,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function renderRendersCorrectlyWithArguments() {
 		$error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, array('baz', 'qux'));
@@ -79,7 +73,6 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Alexander Schnitzler <alex.schnitzler@typovision.de>
 	 */
 	public function toStringCallsRender() {
 		$error = new \TYPO3\CMS\Extbase\Error\Message('Foo is %s and Bar is %s', 1, array('baz', 'qux'));

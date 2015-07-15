@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Html\HtmlParser
- *
- * @author Nicole Cordes <typo3@cordes.co>
  */
 class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Resource\Filter;
 
 /**
  * Utility methods for filtering filenames
- *
- * @author Ingmar Schlecht <ingmar.schlecht@typo3.org>
  */
 class FileExtensionFilter {
 

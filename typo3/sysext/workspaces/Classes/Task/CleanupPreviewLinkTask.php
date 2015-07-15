@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\Task;
 
 /**
  * This class provides a task to cleanup ol preview links.
- *
- * @author Timo Webler <timo.webler@dkd.de>
  */
 class CleanupPreviewLinkTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 

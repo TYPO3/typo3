@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Error\Http;
 
 /**
  * Exception for Error 403 - Forbidden
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class ForbiddenException extends AbstractClientErrorException {
 

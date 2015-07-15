@@ -20,8 +20,6 @@ use TYPO3\CMS\Form\Validation\AbstractValidator;
 
 /**
  * Static methods for validation
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

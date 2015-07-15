@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
 /**
  * Class for tca tree
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class TableConfigurationTree extends \TYPO3\CMS\Backend\Tree\AbstractTree {
 

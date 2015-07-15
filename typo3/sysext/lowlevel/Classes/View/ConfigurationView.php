@@ -25,8 +25,6 @@ use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 
 /**
  * Script class for the Config module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ConfigurationView extends BaseScriptClass {
 

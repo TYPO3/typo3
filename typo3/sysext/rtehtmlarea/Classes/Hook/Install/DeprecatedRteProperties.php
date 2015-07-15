@@ -19,8 +19,6 @@ use TYPO3\CMS\Install\Updates\AbstractUpdate;
 /**
  * Contains the update class for the replacement of deprecated RTE properties in Page TSconfig.
  * Used by the upgrade wizard in the install tool.
- *
- * @author Stanislas Rolland <typo3@sjbr.ca>
  */
 class DeprecatedRteProperties extends AbstractUpdate {
 

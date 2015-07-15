@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class AbstractBackendTest extends UnitTestCase {
 

@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 

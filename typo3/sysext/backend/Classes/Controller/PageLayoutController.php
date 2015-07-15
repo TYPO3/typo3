@@ -39,8 +39,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Script Class for Web > Layout module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageLayoutController {
 

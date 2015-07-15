@@ -23,9 +23,6 @@ use TYPO3\CMS\Install\Service\EnableFileService;
 /**
  * Provides an status report of the security of the install tool
  *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Frederic Gaus <frederic.gaus@typo3.org>
- *
  */
 class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

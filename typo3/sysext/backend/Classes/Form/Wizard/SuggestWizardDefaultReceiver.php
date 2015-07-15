@@ -24,9 +24,6 @@ use TYPO3\CMS\Lang\LanguageService;
  *
  * Normally other implementations should be inherited from this one.
  * queryTable() should not be overwritten under normal circumstances.
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Benjamin Mack <benni@typo3.org>
  */
 class SuggestWizardDefaultReceiver {
 

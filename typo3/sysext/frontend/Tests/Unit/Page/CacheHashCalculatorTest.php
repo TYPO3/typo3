@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
 
 /**
  * Testcase
- *
- * @author 2012 Tolleiv Nietsch <typo3@tolleiv.de>
  */
 class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

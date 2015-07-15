@@ -23,8 +23,6 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 /**
  * Script Class for the Web > Functions module
  * This class creates the framework to which other extensions can connect their sub-modules
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

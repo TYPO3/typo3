@@ -32,8 +32,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * The class is intended to be used without creating an instance of it.
  * So: Don't instantiate - call functions with "\TYPO3\CMS\Core\Utility\GeneralUtility::" prefixed the function name.
  * So use \TYPO3\CMS\Core\Utility\GeneralUtility::[method-name] to refer to the functions, eg. '\TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds()'
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class GeneralUtility {
 
@@ -1901,7 +1899,6 @@ class GeneralUtility {
 	 * @param int $depth Number of element levels to resolve the XML into an array. Any further structure will be set as XML.
 	 * @param array $parserOptions Options that will be passed to PHP's xml_parser_set_option()
 	 * @return mixed The array with the parsed structure unless the XML parser returns with an error in which case the error message string is returned.
-	 * @author bisqwit at iki dot fi dot not dot for dot ads dot invalid / http://dk.php.net/xml_parse_into_struct + kasperYYYY@typo3.com
 	 */
 	static public function xml2tree($string, $depth = 999, $parserOptions = array()) {
 		$parser = xml_parser_create();
@@ -3849,7 +3846,6 @@ Connection: close
 	 * @param string $source Source file, absolute path
 	 * @param string $destination Destination file, absolute path
 	 * @return bool Returns TRUE if the file was moved.
-	 * @coauthor Dennis Petersen <fessor@software.dk>
 	 * @see upload_to_tempfile()
 	 */
 	static public function upload_copy_move($source, $destination) {

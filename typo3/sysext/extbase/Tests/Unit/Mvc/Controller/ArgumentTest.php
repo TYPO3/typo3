@@ -43,7 +43,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockConfiguration;
 
 	/**
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function setUp() {
 		$this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, array('dummy'), array('someName', 'string'));
@@ -59,7 +58,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function constructingArgumentWithoutNameThrowsException() {
@@ -69,7 +67,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \InvalidArgumentException
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function constructingArgumentWithInvalidNameThrowsException() {
 		new \TYPO3\CMS\Extbase\Mvc\Controller\Argument(new \ArrayObject(), 'Text');
@@ -77,7 +74,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function passingDataTypeToConstructorReallySetsTheDataType() {
 		$this->assertEquals('string', $this->simpleValueArgument->getDataType(), 'The specified data type has not been set correctly.');
@@ -86,7 +82,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setShortNameProvidesFluentInterface() {
 		$returnedArgument = $this->simpleValueArgument->setShortName('x');
@@ -108,7 +103,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider invalidShortNames
 	 * @expectedException \InvalidArgumentException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $invalidShortName
 	 */
 	public function shortNameShouldThrowExceptionIfInvalid($invalidShortName) {
@@ -117,7 +111,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function shortNameCanBeRetrievedAgain() {
 		$this->simpleValueArgument->setShortName('x');
@@ -126,7 +119,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setRequiredShouldProvideFluentInterfaceAndReallySetRequiredState() {
 		$returnedArgument = $this->simpleValueArgument->setRequired(TRUE);
@@ -136,7 +128,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setDefaultValueShouldProvideFluentInterfaceAndReallySetDefaultValue() {
 		$returnedArgument = $this->simpleValueArgument->setDefaultValue('default');
@@ -146,7 +137,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValidatorShouldProvideFluentInterfaceAndReallySetValidator() {
 		$mockValidator = $this->getMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
@@ -157,7 +147,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setValueProvidesFluentInterface() {
 		$returnedArgument = $this->simpleValueArgument->setValue(NULL);
@@ -166,7 +155,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setValueUsesNullAsIs() {
 		$this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'string');
@@ -177,7 +165,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setValueUsesMatchingInstanceAsIs() {
 		$this->mockPropertyMapper->expects($this->never())->method('convert');
@@ -195,7 +182,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValueShouldCallPropertyMapperCorrectlyAndStoreResultInValue() {
 		$this->setupPropertyMapperAndSetValue();
@@ -205,7 +191,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValueShouldBeFluentInterface() {
 		$this->assertSame($this->simpleValueArgument, $this->setupPropertyMapperAndSetValue());
@@ -213,7 +198,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setValueShouldSetValidationErrorsIfValidatorIsSetAndValidationFailed() {
 		$error = new \TYPO3\CMS\Extbase\Error\Error('Some Error', 1234);
@@ -229,7 +213,6 @@ class ArgumentTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function defaultPropertyMappingConfigurationDoesNotAllowCreationOrModificationOfObjects() {
 		$this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));

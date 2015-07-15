@@ -22,8 +22,6 @@
  * The input to this script is basically the "&init" var which is divided by "|" - each part is a reference to table|uid|listframe-flag.
  *
  * If you want to integrate a context menu in your scripts, please see template::getContextMenuCode()
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\DataHandling;
 
 /**
  * Interface for hook in \TYPO3\CMS\Core\DataHandling\DataHandler::checkModifyAccessList
- *
- * @author Oliver Hader <oliver@typo3.org>
  */
 interface DataHandlerCheckModifyAccessListHookInterface {
 

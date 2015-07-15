@@ -20,8 +20,6 @@ use TYPO3\CMS\Install\Controller\Action\Tool\UpgradeWizard;
 /**
  * Generic class that every update wizard class inherits from.
  * Used by the update wizard in the install tool.
- *
- * @author Benjamin Mack <benni@typo3.org>
  */
 abstract class AbstractUpdate {
 

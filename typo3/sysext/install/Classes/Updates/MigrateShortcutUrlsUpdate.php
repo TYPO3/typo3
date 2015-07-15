@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Updates;
 
 /**
  * Migrate backend shorcut urls
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
 class MigrateShortcutUrlsUpdate extends AbstractUpdate {
 

@@ -21,8 +21,6 @@ use TYPO3\CMS\Form\View\Mail\Html\Additional\AdditionalElementView;
 
 /**
  * Abstract class for the form elements view
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 abstract class AbstractElementView {
 

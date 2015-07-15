@@ -28,8 +28,6 @@ use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Class for generating the click menu
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
 class ClickMenu {

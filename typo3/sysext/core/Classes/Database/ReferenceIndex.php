@@ -38,8 +38,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * Somehow this scenario is rarely going to happen. Yet, it is an inconsistency and I see now practical way to handle it - other than simply ignoring
  * maintaining the index for workspace records. Or we can say that the index is precise for all Live elements while glitches might happen in an offline workspace?
  * Anyway, I just wanted to document this finding - I don't think we can find a solution for it. And its very TemplaVoila specific.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ReferenceIndex {
 

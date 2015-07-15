@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
  */
 
 /**
- * @author Felix Oertel, <f@oer.tel>
  */
 class ClassWithInjectProperties {
 

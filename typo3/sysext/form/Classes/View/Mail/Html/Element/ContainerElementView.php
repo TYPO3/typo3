@@ -18,8 +18,6 @@ use TYPO3\CMS\Form\View\Mail\Html\Additional\AdditionalElementView;
 
 /**
  * Abstract class for the form element containers (FORM and FIELDSET) view
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Localization\Parser;
 
 /**
  * Parser interface.
- *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 interface LocalizationParserInterface {
 

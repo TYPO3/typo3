@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\View\Language;
 
 /**
  * JSON view for "getTranslations" action in "Language" controller
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class GetTranslationsJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
 

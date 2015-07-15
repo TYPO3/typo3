@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * View helper for configure extension link
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  * @internal
  */
 class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {

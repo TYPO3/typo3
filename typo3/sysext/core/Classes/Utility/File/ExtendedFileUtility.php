@@ -51,8 +51,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * You should always exclude php-files from the webspace. This will keep people from uploading, copy/moving and renaming files to become executable php scripts.
  * You should never mount a ftp_space 'below' the webspace so that it reaches into the webspace. This is because if somebody unzips a zip-file in the ftp-space so that it reaches out into the webspace this will be a violation of the safety
  * For example this is a bad idea: you have an ftp-space that is '/www/' and a web-space that is '/www/htdocs/'
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ExtendedFileUtility extends BasicFileUtility {
 

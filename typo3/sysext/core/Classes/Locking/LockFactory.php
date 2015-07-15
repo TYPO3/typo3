@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Factory class to retrieve a locking method
- *
- * @author Markus Klein <klein.t3@reelworx.at>
  */
 class LockFactory implements SingletonInterface {
 

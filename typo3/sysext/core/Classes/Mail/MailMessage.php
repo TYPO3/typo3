@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Mail;
 
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class MailMessage extends \Swift_Message {
 
@@ -56,7 +54,6 @@ class MailMessage extends \Swift_Message {
 	 * Sends the message.
 	 *
 	 * @return int the number of recipients who were accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function send() {
 		$this->initializeMailer();
@@ -69,7 +66,6 @@ class MailMessage extends \Swift_Message {
 	 * Checks whether the message has been sent.
 	 *
 	 * @return bool
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function isSent() {
 		return $this->sent;
@@ -79,7 +75,6 @@ class MailMessage extends \Swift_Message {
 	 * Returns the recipients for which the mail was not accepted for delivery.
 	 *
 	 * @return array the recipients who were not accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getFailedRecipients() {
 		return $this->failedRecipients;

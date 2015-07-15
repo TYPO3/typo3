@@ -35,8 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * After this file $LANG and $TBE_TEMPLATE are global variables / instances of their respective classes.
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DocumentTemplate {
 

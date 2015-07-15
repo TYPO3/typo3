@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Manager to register and call registered media wizard providers
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
  * @static
  */
 class MediaWizardProviderManager {

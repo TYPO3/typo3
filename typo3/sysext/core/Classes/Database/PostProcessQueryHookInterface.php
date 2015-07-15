@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Database;
 /**
  * Interface for classes which hook into \TYPO3\CMS\Core\Database\DatabaseConnection
  * and do additional processing after a query has been executed.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 interface PostProcessQueryHookInterface {
 

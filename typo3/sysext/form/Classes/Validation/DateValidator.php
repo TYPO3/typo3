@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Date rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class DateValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

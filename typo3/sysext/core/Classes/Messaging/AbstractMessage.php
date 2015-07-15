@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Messaging;
 
 /**
  * A class used for any kind of messages.
- *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Benjamin Mack <benni@typo3.org>
  */
 abstract class AbstractMessage {
 

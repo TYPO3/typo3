@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Core;
  * This script is internal code and subject to change.
  * DO NOT use it in own code, or be prepared your code might
  * break in future core versions.
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class CliBootstrap {
 

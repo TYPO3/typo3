@@ -20,10 +20,6 @@ use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
 /**
  * Index search abstraction to search through the index
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Christian Jul Jensen <christian@typo3.com>
- * @author Benjamin Mack <benni@typo3.org>
  */
 class IndexSearchRepository {
 

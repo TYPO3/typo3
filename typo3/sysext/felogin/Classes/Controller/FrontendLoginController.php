@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.
- *
- * @author Steffen Kamper <info@sk-typo3.de>
  */
 class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
@@ -884,8 +882,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 
 	/**
 	 * Is used by forgot password - function with md5 option.
-	 *
-	 * @author Bernhard Kraft
 	 * @param int $len Length of new password
 	 * @return string New password
 	 */

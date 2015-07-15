@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Status of tasks
- *
- * @author Georg Ringer <typo3@ringerge.org>
  */
 class TaskStatus {
 

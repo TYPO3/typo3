@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * including PHP source code.
  *
  * @api
- * @author Robert Lemke <robert@typo3.org>
  */
 interface PhpCapableBackendInterface extends \TYPO3\CMS\Core\Cache\Backend\BackendInterface {
 	/**

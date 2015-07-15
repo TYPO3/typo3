@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Additional;
 
 /**
  * Additional elements for FORM object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AdditionalElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView {
 	/**

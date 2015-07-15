@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Object\Container;
 
 /**
  * Simple Cache for classInfos
- *
- * @author Daniel Pötzinger
  */
 class ClassInfoCache {
 

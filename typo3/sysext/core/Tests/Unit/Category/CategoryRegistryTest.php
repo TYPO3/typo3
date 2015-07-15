@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
 
 /**
  * Testcase for CategoryRegistry
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
- * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
 class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

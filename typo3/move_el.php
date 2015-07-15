@@ -15,8 +15,6 @@
 /**
  * Move element wizard:
  * Moving pages or content elements (tt_content) around in the system via a page tree navigation.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';

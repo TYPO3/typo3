@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * Class to hold all the information about an AJAX call and send
  * the right headers for the request type
- *
- * @author Benjamin Mack <mack@xnos.org>
  */
 class AjaxRequestHandler {
 

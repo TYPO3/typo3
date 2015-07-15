@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
 
 /**
  * View object for the hidden input element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class HiddenElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView {
 

@@ -21,8 +21,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 /**
  * Returns a string meant to be used as css class stating whether an extension is
  * available or installed
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  * @internal
  */
 class InstallationStateCssClassViewHelper extends AbstractViewHelper implements CompilableInterface {

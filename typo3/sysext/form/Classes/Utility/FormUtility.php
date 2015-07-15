@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Utility;
 
 /**
  * Common helper methods.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

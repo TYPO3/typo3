@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
 /**
  * Test suite for filtering files by their extensions.
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

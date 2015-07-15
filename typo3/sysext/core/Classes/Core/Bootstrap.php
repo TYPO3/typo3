@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * a method at the beginning has lower dependencies than a method further
  * down. Do not fiddle with the load order in own scripts except you know
  * exactly what you are doing!
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class Bootstrap {
 

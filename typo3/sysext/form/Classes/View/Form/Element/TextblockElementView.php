@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Form\Element;
 
 /**
  * View object for the text input element
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class TextblockElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElementView {
 

@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 /**
  * Testcase
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @author Ernesto Baschny <ernst@cron-it.de>
  */
 class FormProtectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

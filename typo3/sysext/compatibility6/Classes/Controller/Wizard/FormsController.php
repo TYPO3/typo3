@@ -104,8 +104,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  *
  * The XML/phpArray structure is the internal format of the wizard.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController {
 

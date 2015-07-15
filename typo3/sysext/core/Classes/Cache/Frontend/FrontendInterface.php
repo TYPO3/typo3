@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Cache\Frontend;
 
 /**
  * Contract for a Cache (frontend)
- *
- * @author Ingo Renner <ingo@typo3.org>
  * @api
  */
 interface FrontendInterface

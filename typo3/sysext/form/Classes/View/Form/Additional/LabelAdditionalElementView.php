@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Form\Additional;
 
 /**
  * View object for the label tag
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LabelAdditionalElementView extends \TYPO3\CMS\Form\View\Form\Additional\AdditionalElementView {
 

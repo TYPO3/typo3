@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Tree;
 
 /**
  * Representation Tree Node
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class TreeRepresentationNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 

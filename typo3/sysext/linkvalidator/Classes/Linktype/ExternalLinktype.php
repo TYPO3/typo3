@@ -19,10 +19,6 @@ use TYPO3\CMS\Core\Http\HttpRequest;
 
 /**
  * This class provides Check External Links plugin implementation
- *
- * @author Dimitri König <dk@cabag.ch>
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
- * @author Philipp Gampe <typo3.dev@philippgampe.info>
  */
 class ExternalLinktype extends AbstractLinktype {
 

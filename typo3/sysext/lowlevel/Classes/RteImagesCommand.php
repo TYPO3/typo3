@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 
 /**
  * Looking for RTE images integrity
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class RteImagesCommand extends CleanerCommand {
 

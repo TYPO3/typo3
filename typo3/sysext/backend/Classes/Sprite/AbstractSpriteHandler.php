@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * An abstract class implementing SpriteIconGeneratorInterface.
  * Provides base functionality for all handlers.
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface {
 

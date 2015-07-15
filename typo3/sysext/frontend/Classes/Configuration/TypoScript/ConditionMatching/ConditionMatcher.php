@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Used with the TypoScript parser. Matches browserinfo
  * and IP numbers for use with templates.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ConditionMatcher extends AbstractConditionMatcher {
 

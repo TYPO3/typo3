@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'style'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class StyleAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

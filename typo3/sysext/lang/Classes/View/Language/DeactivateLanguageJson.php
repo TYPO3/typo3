@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lang\View\Language;
 
 /**
  * JSON view for "deactivateLanguage" action in "Language" controller
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class DeactivateLanguageJson extends \TYPO3\CMS\Lang\View\AbstractJsonView {
 

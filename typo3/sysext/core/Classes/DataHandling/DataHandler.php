@@ -46,8 +46,6 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * - $GLOBALS['LANG'] must exist
  *
  * tce_db.php for further comments and SYNTAX! Also see document 'TYPO3 Core API' for details.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DataHandler {
 

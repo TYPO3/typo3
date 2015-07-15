@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Filelist;
 
 /**
  * Class for drag and drop and ajax functionality
- *
- * @author Sebastian Kurfürst <sebastian@garbage-group.de>
- * @author Benjamin Mack <bmack@xnos.org>
  * @see class \TYPO3\CMS\Backend\Tree\View\BrowseTreeView
  */
 class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {

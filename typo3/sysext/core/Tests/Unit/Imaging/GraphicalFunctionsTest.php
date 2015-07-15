@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\GraphicalFunctions
- *
- * @author Wouter Wolters <typo3@wouterwolters.nl>
  */
 class GraphicalFunctionsTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

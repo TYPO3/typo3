@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * Length rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Extension repository
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 class ExtensionRepository {
 

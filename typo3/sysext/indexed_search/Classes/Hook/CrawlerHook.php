@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Crawler hook for indexed search. Works with the "crawler" extension
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class CrawlerHook {
 

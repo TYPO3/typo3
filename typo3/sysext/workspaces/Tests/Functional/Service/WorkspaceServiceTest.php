@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
 /**
  * Workspace service test
- *
- * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  */
 class WorkspacesServiceTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 

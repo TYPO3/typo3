@@ -30,8 +30,6 @@ use TYPO3\CMS\Filelist\FileList;
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FileListController {
 

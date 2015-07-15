@@ -20,8 +20,6 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Model class for the 'recycler' extension.
- *
- * @author Julian Kleinhans <typo3@kj187.de>
  */
 class DeletedRecords {
 

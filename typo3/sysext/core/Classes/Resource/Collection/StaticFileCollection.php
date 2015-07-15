@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Core\Resource\Collection;
 /**
  * A collection containing a static set of files. This collection is persisted
  * to the database with references to all files it contains.
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class StaticFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection {
 

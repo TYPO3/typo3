@@ -22,9 +22,6 @@ use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Deleted Records View
- *
- * @author Erik Frister <erik_frister@otq-solutions.com>
- * @author Julian Kleinhans <typo3@kj187.de>
  */
 class DeletedRecordsController {
 

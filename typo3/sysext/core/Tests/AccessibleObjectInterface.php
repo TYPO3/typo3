@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests;
 
 /**
  * This interface defines the methods provided by TYPO3\CMS\Core\Tests\TestCase::getAccessibleMock.::
- *
- * @author Nicole Cordes <nicole.cordes@googlemail.com>
  */
 interface AccessibleObjectInterface {
 	/**

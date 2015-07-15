@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * For documentation on how to use this class, please see the documentation of
  * the corresponding subclasses
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
- * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 abstract class AbstractFormProtection {
 

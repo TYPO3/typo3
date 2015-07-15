@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 /**
  * Script class for the Element Browser window.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class BrowseLinksController {
 

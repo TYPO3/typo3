@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Service for history
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 

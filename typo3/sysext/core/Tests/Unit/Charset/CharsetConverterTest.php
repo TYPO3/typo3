@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Charset;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Charset\CharsetConverter
- *
- * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

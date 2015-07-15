@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Install\Status;
 
 /**
  * Notice level status
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class NoticeStatus extends AbstractStatus implements StatusInterface {
 

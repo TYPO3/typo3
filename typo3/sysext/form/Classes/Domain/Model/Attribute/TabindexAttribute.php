@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'tabindex'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class TabindexAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

@@ -20,8 +20,6 @@
  * Notice: This module and Web>Page module has a special status since they
  * are NOT located in their actual module directories (fx. mod/web/list/) but in the
  * backend root directory. This has some historical and practical causes.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 \TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 

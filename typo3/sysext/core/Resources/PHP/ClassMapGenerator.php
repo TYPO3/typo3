@@ -18,9 +18,6 @@ use Composer\IO\IOInterface;
 
 /**
  * ClassMapGenerator
- *
- * @author Gyula Sallai <salla016@gmail.com>
- * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class ClassMapGenerator
 {

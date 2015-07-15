@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
 
 /**
  * View object for the fileupload element
- *
- * @author Rens Admiraal <r.admiraal@drecomm.nl>
  */
 class FileuploadElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\AbstractElementView {
 

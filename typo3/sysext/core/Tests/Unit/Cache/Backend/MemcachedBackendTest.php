@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Cache\Backend\MemcachedBackend;
  * Testcase for the cache to memcached backend
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

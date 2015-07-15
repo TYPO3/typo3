@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Core\Resource;
 
 /**
  * Abstract repository implementing the basic repository methods
- *
- * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author Ingmar Schlecht <ingmar@typo3.org>
  */
 abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, \TYPO3\CMS\Core\SingletonInterface {
 

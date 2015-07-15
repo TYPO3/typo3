@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 
 /**
  * API for extending htmlArea RTE
- *
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 abstract class RteHtmlAreaApi {
 

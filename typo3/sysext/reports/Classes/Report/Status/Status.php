@@ -20,8 +20,6 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
 
 /**
  * The status report
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class Status implements ReportInterface {
 

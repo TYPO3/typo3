@@ -25,9 +25,6 @@ use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
  * Module 'Linkvalidator' for the 'linkvalidator' extension
- *
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
- * @author Jochen Rieger <j.rieger@connecta.ag>
  */
 class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 

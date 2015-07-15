@@ -20,8 +20,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * renders the header of the results page
- *
- * @author Benjamin Mack <benni@typo3.org>
  * @internal
  */
 class PageBrowsingResultsViewHelper extends AbstractViewHelper implements CompilableInterface {

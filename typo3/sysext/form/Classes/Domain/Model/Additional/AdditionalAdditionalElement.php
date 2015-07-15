@@ -17,8 +17,6 @@ use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Additional elements for FORM object
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class AdditionalAdditionalElement {
 

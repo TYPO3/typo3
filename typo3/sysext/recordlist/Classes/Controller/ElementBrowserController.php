@@ -22,8 +22,6 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Script class for the Element Browser window.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ElementBrowserController {
 

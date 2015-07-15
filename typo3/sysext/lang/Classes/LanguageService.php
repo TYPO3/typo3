@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * please refer to the 'Inside TYPO3' document which describes this.
  * This class is normally instantiated as the global variable $GLOBALS['LANG']
  * It's only available in the backend and under certain circumstances in the frontend
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
  */
 class LanguageService {

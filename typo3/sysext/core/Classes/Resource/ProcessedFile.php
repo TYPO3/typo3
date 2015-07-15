@@ -34,8 +34,6 @@ namespace TYPO3\CMS\Core\Resource;
  * redirects most method calls to the original file object. The data of these objects are also stored in the
  * database, to indicate that no processing is required. With such files, the identifier and name fields in the
  * database are empty to show this.
- *
- * @author Benjamin Mack <benni@typo3.org>
  */
 class ProcessedFile extends AbstractFile {
 

@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Documentation\Domain\Model;
  * An extension helper model to be used in ext:documentation context
  *
  * @entity
- * @author Xavier Perseguers <xavier@typo3.org>
- * @author Andrea Schmuttermair <spam@schmutt.de>
  */
 class DocumentTranslation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

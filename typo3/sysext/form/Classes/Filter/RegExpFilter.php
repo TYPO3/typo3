@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Regular expression filter
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RegExpFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 

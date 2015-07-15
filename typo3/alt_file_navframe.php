@@ -14,8 +14,6 @@
 
 /**
  * Folder tree in the File main module.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 call_user_func(function() {

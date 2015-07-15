@@ -15,8 +15,6 @@
 /**
  * Module: Advanced functions
  * Advanced Functions related to pages
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 /** @var $SOBE \TYPO3\CMS\Func\Controller\PageFunctionsController */

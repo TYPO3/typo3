@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Json;
 
 /**
  * JSON radiogroup
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RadioGroupJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\FieldsetJsonElement {
 

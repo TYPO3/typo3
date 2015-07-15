@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * TCA tree data provider
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvider {
 

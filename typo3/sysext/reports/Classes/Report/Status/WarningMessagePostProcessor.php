@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 /**
  * Post processes the warning messages found in about modules.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class WarningMessagePostProcessor {
 

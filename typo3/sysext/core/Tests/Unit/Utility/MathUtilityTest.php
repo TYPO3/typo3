@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\MathUtility
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
  */
 class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

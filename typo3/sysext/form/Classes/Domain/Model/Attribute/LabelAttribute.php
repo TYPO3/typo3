@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'label'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class LabelAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

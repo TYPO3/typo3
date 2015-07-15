@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
- *
- * @author Stanislas Rolland <typo3@sjbr.ca>
  */
 class RteHtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Migrations\TcaMigration;
  *
  * This class is never instantiated, rather the methods inside is called as functions like
  * \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('my_extension');
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class ExtensionManagementUtility {
 

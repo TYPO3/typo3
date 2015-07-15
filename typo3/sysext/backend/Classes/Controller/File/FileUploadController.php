@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for display up to 10 upload fields
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class FileUploadController {
 

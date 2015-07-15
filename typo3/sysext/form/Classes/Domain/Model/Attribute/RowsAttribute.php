@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
 
 /**
  * Attribute 'rows'
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class RowsAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
 

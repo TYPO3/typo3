@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 /**
  * Class to handle monitoring actions.
- *
- * @author Jigal van Hemert <jigal@xs4all.nl>
  */
 class MonitorUtility {
 

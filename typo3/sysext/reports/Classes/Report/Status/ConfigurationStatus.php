@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Performs some checks about the install tool protection status
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 

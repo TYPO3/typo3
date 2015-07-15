@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
  * This class contains a OpenSSL backend for the TYPO3 RSA authentication
  * service. It uses shell version of OpenSSL to perform tasks. See class
  * \TYPO3\CMS\Rsaauth\Backend\AbstractBackend for the information on using backends.
- *
- * @author Dmitry Dulepov <dmitry@typo3.org>
  */
 class CommandLineBackend extends AbstractBackend {
 

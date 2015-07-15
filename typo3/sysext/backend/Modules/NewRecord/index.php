@@ -17,8 +17,6 @@
  *
  * This script lets users choose a new database element to create.
  * Includes a wizard mode for visually pointing out the position of new pages
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $newRecordController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\NewRecordController::class);

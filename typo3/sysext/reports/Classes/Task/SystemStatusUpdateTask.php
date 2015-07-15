@@ -21,8 +21,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * A task that should be run regularly to determine the system's status.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class SystemStatusUpdateTask extends AbstractTask {
 

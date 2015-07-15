@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Cache;
  * is registered at the cache manager.
  *
  * This file is a backport from FLOW3
- *
- * @author Robert Lemke <robert@typo3.org>
  * @scope singleton
  * @api
  */

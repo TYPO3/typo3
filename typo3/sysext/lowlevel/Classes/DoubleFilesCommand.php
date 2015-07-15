@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Lowlevel;
 
 /**
  * Looking for double files
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class DoubleFilesCommand extends CleanerCommand {
 

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Extend category collection for the frontend, to collect related records
  * while respecting language, enable fields, etc.
- *
- * @author Francois Suter <francois.suter@typo3.org>
  */
 class CategoryCollection extends \TYPO3\CMS\Core\Category\Collection\CategoryCollection {
 

@@ -31,8 +31,6 @@ use TYPO3\CMS\Core\Service\OpcodeCacheService;
  *   This class is intended for internal core use ONLY.
  *   Extensions should usually use the resulting $GLOBALS['TYPO3_CONF_VARS'] array,
  *   do not try to modify settings in LocalConfiguration.php with an extension.
- *
- * @author Helge Funk <helge.funk@e-net.info>
  * @internal
  */
 class ConfigurationManager {

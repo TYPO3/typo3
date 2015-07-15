@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Backend\ContextMenu\Extdirect;
  * This is a concrete implementation that should stay here to be shared
  * between the different ExtDirect implementation. Just create a subclass
  * for adding specific purposes.
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 abstract class AbstractExtdirectContextMenu extends \TYPO3\CMS\Backend\ContextMenu\AbstractContextMenu {
 

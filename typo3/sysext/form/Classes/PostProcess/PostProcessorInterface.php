@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\PostProcess;
 
 /**
  * Interface for postprocessors
- *
- * @author Franz Geiger <mail@fx-g.de>
  */
 interface PostProcessorInterface {
 

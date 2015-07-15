@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A repository for extension configuration items
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class ConfigurationItemRepository {
 

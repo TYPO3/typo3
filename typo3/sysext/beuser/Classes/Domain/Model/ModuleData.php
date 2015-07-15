@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Beuser\Domain\Model;
 
 /**
  * Module data object
- *
- * @author Felix Kopp <felix-source@phorax.com>
- * @author Nikolas Hagelstein <nikolas.hagelstein@gmail.com>
  */
 class ModuleData {
 

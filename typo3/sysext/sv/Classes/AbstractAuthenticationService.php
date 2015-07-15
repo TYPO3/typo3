@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Service\AbstractService;
 
 /**
  * Authentication services class
- *
- * @author René Fritz <r.fritz@colorcube.de>
  */
 class AbstractAuthenticationService extends AbstractService {
 

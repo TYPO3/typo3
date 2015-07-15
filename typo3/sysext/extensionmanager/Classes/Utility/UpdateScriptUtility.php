@@ -19,8 +19,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Utility to find and execute class.ext_update.php scripts of extensions
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class UpdateScriptUtility {
 

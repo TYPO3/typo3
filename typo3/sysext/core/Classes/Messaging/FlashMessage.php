@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Messaging;
 
 /**
  * A class representing flash messages.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class FlashMessage extends AbstractMessage {
 

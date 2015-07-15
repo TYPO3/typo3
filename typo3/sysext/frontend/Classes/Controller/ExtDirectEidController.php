@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * eID controller for ExtDirect
- *
- * @author Stefan Galinski <stefan.galinski@gmail.com>
  */
 class ExtDirectEidController {
 

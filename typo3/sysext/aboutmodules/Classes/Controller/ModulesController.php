@@ -25,9 +25,6 @@ use TYPO3\CMS\Lang\LanguageService;
  * 'About modules' script - the default start-up module.
  * Will display the list of main- and sub-modules available to the user.
  * Each module will be show with description and a link to the module.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class ModulesController extends ActionController {
 

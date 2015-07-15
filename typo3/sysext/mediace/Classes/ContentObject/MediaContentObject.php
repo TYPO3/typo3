@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Mediace\ContentObject;
 
 /**
  * Contains MEDIA class object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 

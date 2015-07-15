@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
  * Testcase for the TYPO3\CMS\Core\Cache\CacheManager
  *
  * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

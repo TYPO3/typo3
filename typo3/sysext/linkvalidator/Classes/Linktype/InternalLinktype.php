@@ -19,9 +19,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * This class provides Check Internal Links plugin implementation
- *
- * @author Dimitri König <dk@cabag.ch>
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 class InternalLinktype extends AbstractLinktype {
 

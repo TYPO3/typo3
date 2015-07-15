@@ -21,7 +21,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function aSingleArgumentCanBeSetWithSetArgumentAndRetrievedWithGetArgument() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -32,7 +31,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsNoString() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -42,7 +40,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsAnEmptyString() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -52,7 +49,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentValueIsAnObject() {
 		$this->markTestSkipped('Differing behavior from TYPO3.Flow because of backwards compatibility reasons.');
@@ -62,7 +58,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentsOverridesAllExistingArguments() {
 		$arguments = array('key1' => 'value1', 'key2' => 'value2');
@@ -75,7 +70,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentsCallsSetArgumentForEveryArrayEntry() {
 		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('setArgument'));
@@ -172,7 +166,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setArgumentAcceptsObjectIfArgumentIsInternal() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -183,7 +176,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function multipleArgumentsCanBeSetWithSetArgumentsAndRetrievedWithGetArguments() {
 		$arguments = array(
@@ -198,7 +190,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function hasArgumentTellsIfAnArgumentExists() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -209,7 +200,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theActionNameCanBeSetAndRetrieved() {
 		$request = $this->getMock(\TYPO3\CMS\Extbase\Mvc\Request::class, array('getControllerObjectName'), array(), '', FALSE);
@@ -220,7 +210,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theRepresentationFormatCanBeSetAndRetrieved() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -240,7 +229,6 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain() {
 		$request = new \TYPO3\CMS\Extbase\Mvc\Request();

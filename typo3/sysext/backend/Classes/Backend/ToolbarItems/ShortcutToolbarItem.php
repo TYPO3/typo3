@@ -26,8 +26,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class to render the shortcut menu
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class ShortcutToolbarItem implements ToolbarItemInterface {
 

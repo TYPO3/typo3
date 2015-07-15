@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 /**
  * Render custom attribute data-htmlarea-clickenlarge
- *
- * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 

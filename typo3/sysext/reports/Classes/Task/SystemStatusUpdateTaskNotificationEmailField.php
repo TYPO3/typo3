@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Reports\Task;
 /**
  * Additional field to set the notification email address(es) for system health
  * issue notifications.
- *
- * @author Ingo Renner <ingo@typo3.org>
  */
 class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 

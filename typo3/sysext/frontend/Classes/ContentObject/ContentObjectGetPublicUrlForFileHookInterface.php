@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Resource\File;
 
 /**
  * Interface for hooks to fetch the public URL of files
- *
- * @author Oliver Hader <oliver.hader@typo3.org>
  */
 interface ContentObjectGetPublicUrlForFileHookInterface {
 

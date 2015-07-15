@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  * Abstract class to show log entries from sys_log
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 

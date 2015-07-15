@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * view helper for displaying a remove extension link
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  * @internal
  */
 class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {

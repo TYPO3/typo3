@@ -18,9 +18,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
  * Contains SWFOBJECT content object.
- *
- * @author Xavier Perseguers <typo3@perseguers.ch>
- * @author Steffen Kamper <steffen@typo3.org>
  */
 class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 

@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Mail\Html\Element;
 
 /**
  * View object for the checkbox group element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class CheckboxGroupElementView extends \TYPO3\CMS\Form\View\Mail\Html\Element\FieldsetElementView {
 

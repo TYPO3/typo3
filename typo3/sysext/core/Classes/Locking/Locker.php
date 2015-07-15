@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * It is intended to blocks requests until some data has been generated.
  * This is especially useful if two clients are requesting the same website short after each other. While the request of client 1 triggers building and caching of the website, client 2 will be waiting at this lock.
- *
- * @author Michael Stucki <michael@typo3.org>
- * @author Markus Klein <klein.t3@mfc-linz.at>
  */
 class Locker {
 

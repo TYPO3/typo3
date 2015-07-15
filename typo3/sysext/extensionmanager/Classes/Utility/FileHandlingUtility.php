@@ -20,8 +20,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Utility for dealing with files and folders
- *
- * @author Susanne Moog <susanne.moog@typo3.org>
  */
 class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

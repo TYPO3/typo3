@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Class LoginControllerTest
- *
- * @author Markus Klein <markus.klein@typo3.org>
  */
 class LoginControllerTest extends UnitTestCase {
 

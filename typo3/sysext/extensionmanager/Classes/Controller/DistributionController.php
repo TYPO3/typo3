@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 /**
  * Controller for distribution related actions
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  */
 class DistributionController extends AbstractController {
 

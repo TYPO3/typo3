@@ -45,8 +45,6 @@ use TYPO3\CMS\Install\Status;
  * The status messages and title *must not* include HTML, use plain
  * text only. The return values of this class are not bound to HTML
  * and can be used in different scopes (eg. as json array).
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class Check {
 

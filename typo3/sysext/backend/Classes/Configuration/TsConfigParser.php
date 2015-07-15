@@ -18,8 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * A TS-Config parsing class which performs condition evaluation
- *
- * @author Kraft Bernhard <kraftb@kraftb.at>
  */
 class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser {
 

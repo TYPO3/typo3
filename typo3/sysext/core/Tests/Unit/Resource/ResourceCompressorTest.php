@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Resource\ResourceCompressor;
 
 /**
  * Testcase for the ResourceCompressor class
- *
- * @author Stefan Neufeind <info (at) speedpartner.de>
  */
 class ResourceCompressorTest extends BaseTestCase {
 

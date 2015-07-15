@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Documentation\Exception;
 
 /**
  * An exception when something is wrong within the document
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  */
 class Document extends \TYPO3\CMS\Core\Exception {
 

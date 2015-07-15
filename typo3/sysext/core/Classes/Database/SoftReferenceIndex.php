@@ -66,8 +66,6 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  * - 'TStemplate' : freetext references to "fileadmin/" files.
  * - 'email' : Email highlight
  * - 'url' : URL highlights (with a scheme)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class SoftReferenceIndex {
 

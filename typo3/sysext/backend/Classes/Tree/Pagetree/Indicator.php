@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
 
 /**
  * Class for pagetree indicator
- *
- * @author Susanne Moog <typo3@susanne-moog.de>
  */
 class Indicator {
 

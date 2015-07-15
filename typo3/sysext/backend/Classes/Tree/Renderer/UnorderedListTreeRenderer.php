@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Tree\Renderer;
 
 /**
  * Renderer for unordered lists
- *
- * @author Steffen Ritter <info@steffen-ritter.net>
  */
 class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer {
 

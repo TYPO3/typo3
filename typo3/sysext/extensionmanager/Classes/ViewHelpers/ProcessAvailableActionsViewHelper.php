@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 /**
  * View helper to let 3rd-party extensions process the list of available
  * actions for a given extension.
- *
- * @author Xavier Perseguers <xavier@typo3.org>
  * @internal
  */
 class ProcessAvailableActionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {

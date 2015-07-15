@@ -18,8 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case for \TYPO3\CMS\Core\Category\Collection\CategoryCollection
- *
- * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
 class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 

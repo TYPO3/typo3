@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Localization\Exception;
 
 /**
  * Invalid XML file exception
- *
- * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class InvalidXmlFileException extends \RuntimeException {
 

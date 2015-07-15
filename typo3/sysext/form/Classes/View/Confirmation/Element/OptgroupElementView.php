@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\View\Confirmation\Element;
 
 /**
  * View object for the optgroup element
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class OptgroupElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\ContainerElementView {
 

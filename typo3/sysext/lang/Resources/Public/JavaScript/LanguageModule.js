@@ -13,8 +13,6 @@
 
 /**
  * Language module class
- *
- * @author Kai Vogel <k.vogel@reply.de>
  */
 define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable'], function($, moment) {
 	var LanguageModule = {

@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Script Class for logging a user out.
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class LogoutController {
 

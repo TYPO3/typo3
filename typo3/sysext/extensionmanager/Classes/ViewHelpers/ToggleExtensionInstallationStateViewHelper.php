@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 /**
  * Display a deactivate / activate link
- *
- * @author Susanne Moog <typo3@susannemoog.de>
  * @internal
  */
 class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {

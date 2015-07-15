@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Validation;
 
 /**
  * In array rule
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 class InArrayValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 

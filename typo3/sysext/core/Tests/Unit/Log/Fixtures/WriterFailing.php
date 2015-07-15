@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
 
 /**
  * A log writer that always fails to write (for testing purposes ;-))
- *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
 class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
 

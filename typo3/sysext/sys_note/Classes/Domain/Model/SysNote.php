@@ -16,8 +16,6 @@ namespace TYPO3\CMS\SysNote\Domain\Model;
 
 /**
  * SysNote model
- *
- * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class SysNote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

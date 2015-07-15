@@ -54,8 +54,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   ),
  *   'another id' => ...
  * )
- *
- * @author René Fritz <r.fritz@colorcube.de>
  */
 class ModuleSettings {
 

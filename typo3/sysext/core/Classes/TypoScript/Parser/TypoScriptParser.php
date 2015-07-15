@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 
 /**
  * The TypoScript parser
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class TypoScriptParser {
 

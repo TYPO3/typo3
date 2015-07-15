@@ -20,8 +20,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 
 /**
  * Testcase for the abstract file class of the TYPO3 FAL
- *
- * @author Steffen Müller <typo3@t3node.com>
  */
 class AbstractFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 

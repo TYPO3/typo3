@@ -22,9 +22,6 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  *
  * Depends on PHP ext/xmlreader which should be available
  * with PHP >= 5.1.0.
- *
- * @author Marcus Krause <marcus#exp2010@t3sec.info>
- * @author Steffen Kamper <info@sk-typo3.de>
  * @since 	   2010-02-09
  */
 class ExtensionXmlPullParser extends AbstractExtensionXmlParser {

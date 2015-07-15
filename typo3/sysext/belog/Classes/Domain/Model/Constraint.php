@@ -17,8 +17,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Constraints for log entries
- *
- * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
 class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 

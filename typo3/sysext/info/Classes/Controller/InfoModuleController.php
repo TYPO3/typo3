@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script Class for the Web > Info module
  * This class creates the framework to which other extensions can connect their sub-modules
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class InfoModuleController extends BaseScriptClass {
 

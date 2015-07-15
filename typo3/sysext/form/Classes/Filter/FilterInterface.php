@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Form\Filter;
 
 /**
  * Interface for filters
- *
- * @author Patrick Broens <patrick@patrickbroens.nl>
  */
 interface FilterInterface {
 

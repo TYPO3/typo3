@@ -19,9 +19,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This class provides Check Link Handler plugin implementation
- *
- * @author Dimitri König <dk@cabag.ch>
- * @author Michael Miousse <michael.miousse@infoglobe.ca>
  */
 class LinkHandler extends AbstractLinktype {
 

@@ -26,8 +26,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * regular pagebrowser
  * so this is a cleaner "pi_browsebox" but not a real page browser
  * functionality
- *
- * @author Benjamin Mack <benni@typo3.org>
  * @internal
  */
 class PageBrowsingViewHelper extends AbstractViewHelper implements CompilableInterface {

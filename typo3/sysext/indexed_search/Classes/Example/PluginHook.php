@@ -16,15 +16,11 @@ namespace TYPO3\CMS\IndexedSearch\Example;
 
 /**
  * Index search frontend example hook
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Index search frontend - EXAMPLE hook for alternative searching / display etc.
  * Hooks are configured in ext_localconf.php as key => hook-reference pairs in $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks']. See example in ext_localconf.php for "indexed_search"
  * Each hook must have an entry, the key must match the hook-key in class.tx_indexed_search.php and generally the key equals the function name in the hook object (a convension used)
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class PluginHook {
 
