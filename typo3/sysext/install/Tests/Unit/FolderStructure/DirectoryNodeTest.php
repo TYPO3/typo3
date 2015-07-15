@@ -600,7 +600,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function isDirectoryReturnsFalseIfNameIsALinkToADirectory() {
+	public function isDirectoryReturnsTrueIfNameIsALinkToADirectory() {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
@@ -614,7 +614,7 @@ class DirectoryNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		mkdir($path . '/' . $dir);
 		symlink($path . '/' . $dir, $path . '/' . $link);
 		$node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path . '/' . $link));
-		$this->assertFalse($node->_call('isDirectory'));
+		$this->assertTrue($node->_call('isDirectory'));
 	}
 
 }
