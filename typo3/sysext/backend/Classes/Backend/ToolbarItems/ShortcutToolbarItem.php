@@ -300,7 +300,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Adds the correct token, if the url is a mod.php script
+	 * Adds the correct token, if the url is a index.php script
 	 *
 	 * @param string $url
 	 * @return string
@@ -313,7 +313,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		if (isset($parameters['returnUrl'])) {
 			$parsedReturnUrl = parse_url($parameters['returnUrl']);
 			parse_str($parsedReturnUrl['query'], $returnUrlParameters);
-			if (strpos($parsedReturnUrl['path'], 'mod.php') !== FALSE && isset($returnUrlParameters['M'])) {
+			if (strpos($parsedReturnUrl['path'], 'index.php') !== FALSE && isset($returnUrlParameters['M'])) {
 				$module = $returnUrlParameters['M'];
 				$returnUrl = BackendUtility::getModuleUrl($module, $returnUrlParameters);
 				$parameters['returnUrl'] = $returnUrl;
@@ -321,7 +321,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			}
 		}
 
-		if (strpos($parsedUrl['path'], 'mod.php') !== FALSE && isset($parameters['M'])) {
+		if (strpos($parsedUrl['path'], 'index.php') !== FALSE && isset($parameters['M'])) {
 			$module = $parameters['M'];
 			$url = BackendUtility::getModuleUrl($module, $parameters);
 		}

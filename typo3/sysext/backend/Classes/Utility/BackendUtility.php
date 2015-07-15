@@ -3076,7 +3076,7 @@ class BackendUtility {
 		if (!$script) {
 			$script = basename(PATH_thisScript);
 		}
-		if ($script === 'mod.php' && GeneralUtility::_GET('M')) {
+		if ($script === 'index.php' && GeneralUtility::_GET('M')) {
 			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addParams;
 		} else {
 			$scriptUrl = $script . '?' . GeneralUtility::implodeArrayForUrl('', $mainParams) . $addParams;
@@ -3269,7 +3269,7 @@ class BackendUtility {
 			'M' => $moduleName,
 			'moduleToken' => FormProtectionFactory::get()->generateToken('moduleCall', $moduleName)
 		) + $urlParameters;
-		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
+		$url = 'index.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
 		if ($returnAbsoluteUrl) {
 			return GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $url;
 		} else {

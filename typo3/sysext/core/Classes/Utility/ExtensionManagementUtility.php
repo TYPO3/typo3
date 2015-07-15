@@ -956,9 +956,9 @@ class ExtensionManagementUtility {
 	}
 
 	/**
-	 * Adds a module path to $GLOBALS['TBE_MODULES'] for used with the module dispatcher, mod.php
+	 * Adds a module path to $GLOBALS['TBE_MODULES'] for used with the module dispatcher, index.php
 	 * Used only for modules that are not placed in the main/sub menu hierarchy by the traditional mechanism of addModule()
-	 * Examples for this is context menu functionality (like import/export) which runs as an independent module through mod.php
+	 * Examples for this is context menu functionality (like import/export) which runs as an independent module through index.php
 	 * FOR USE IN ext_tables.php FILES
 	 * Example:  \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('xMOD_tximpexp', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'app/');
 	 *

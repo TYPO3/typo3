@@ -598,7 +598,7 @@ class UriBuilder {
 
 	/**
 	 * Builds the URI, backend flavour
-	 * The resulting URI is relative and starts with "mod.php".
+	 * The resulting URI is relative and starts with "index.php".
 	 * The settings pageUid, pageType, noCache, useCacheHash & linkAccessRestrictedPages
 	 * will be ignored in the backend.
 	 *

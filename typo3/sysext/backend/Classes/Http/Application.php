@@ -75,6 +75,8 @@ class Application implements ApplicationInterface {
 		// see below when this option is set
 		if ($GLOBALS['TYPO3_AJAX']) {
 			$this->request = $this->request->withAttribute('isAjaxRequest', TRUE);
+		} elseif (isset($this->request->getQueryParams()['M'])) {
+			$this->request = $this->request->withAttribute('isModuleRequest', TRUE);
 		}
 
 		$this->bootstrap->configure();
@@ -115,7 +117,7 @@ class Application implements ApplicationInterface {
 		// activate "AJAX" handler when called with the GET variable ajaxID
 		if (GeneralUtility::_GET('ajaxID') !== NULL) {
 			$GLOBALS['TYPO3_AJAX'] = TRUE;
-		} elseif (substr($currentScript, -16) === '/typo3/index.php') {
+		} elseif (GeneralUtility::_GET('ajaxID') === NULL && substr($currentScript, -16) === '/typo3/index.php') {
 			// allow backend login to work
 			define('TYPO3_PROCEED_IF_NO_USER', 1);
 		}

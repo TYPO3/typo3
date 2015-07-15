@@ -26,7 +26,7 @@ class ModuleRunner implements ModuleRunnerInterface {
 	protected $objectManager;
 
 	/**
-	 * This method forwards the call to Bootstrap's run() method. This method is invoked by the mod.php
+	 * This method forwards the call to Bootstrap's run() method. This method is invoked by the BackendModuleRequestHandler
 	 * function of TYPO3.
 	 *
 	 * @param string $moduleSignature
@@ -53,8 +53,8 @@ class ModuleRunner implements ModuleRunnerInterface {
 		}
 
 		// BACK_PATH is the path from the typo3/ directory from within the
-		// directory containing the controller file. We are using mod.php dispatcher
-		// and thus we are already within typo3/ because we call typo3/mod.php
+		// directory containing the controller file. We are using index.php dispatcher
+		// and thus we are already within typo3/ because we call typo3/index.php
 		$GLOBALS['BACK_PATH'] = '';
 		$configuration = array(
 			'extensionName' => $moduleConfiguration['extensionName'],

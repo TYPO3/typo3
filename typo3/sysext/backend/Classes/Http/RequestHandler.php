@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests except for CLI
  * or AJAX calls. Unlike all other RequestHandlers in the TYPO3 CMS Core, the actual logic for choosing
- * the controller is still done inside places like mod.php and each single file.
+ * the controller is still done inside places like each single file.
  * This RequestHandler here serves solely to check and set up all requirements needed for a TYPO3 Backend.
  * This class might be changed in the future.
  */

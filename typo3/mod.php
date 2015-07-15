@@ -21,5 +21,9 @@ namespace TYPO3\CMS\Backend;
  */
 call_user_func(function() {
 	$classLoader = require __DIR__ . '/vendor/autoload.php';
-	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run();
+	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+			'The entry point to mod.php was moved to index.php with "M" given. Please use BackendUtility::getModuleUrl(\'myModuleKey\') to link to a module. This script will be removed in TYPO3 CMS 8.'
+		);
+	});
 });

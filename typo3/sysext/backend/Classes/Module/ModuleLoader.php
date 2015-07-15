@@ -111,9 +111,9 @@ class ModuleLoader {
 		 */
 		$this->absPathArray = $modulesArray['_PATHS'];
 		unset($modulesArray['_PATHS']);
-		// Unset the array for calling external backend module dispatchers in typo3/mod.php
+		// Unset the array for calling external backend module dispatchers in typo3/index.php
 		unset($modulesArray['_dispatcher']);
-		// Unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php
+		// Unset the array for calling backend modules based on external backend module dispatchers in typo3/index.php
 		unset($modulesArray['_configuration']);
 		$this->navigationComponents = $modulesArray['_navigationComponents'];
 		unset($modulesArray['_navigationComponents']);

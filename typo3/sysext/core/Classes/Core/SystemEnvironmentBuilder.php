@@ -367,7 +367,7 @@ class SystemEnvironmentBuilder {
 	 * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php sets $relativePathPart to
 	 * empty string to hint this code that the document root is identical to the directory the script is located at.
 	 * - An indirect include of any Backend related script (-> a backend module, the install tool, or scripts like ajax.php).
-	 * - A Backend script: This is the case for the mod.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
+	 * - A Backend script: This is the case for the index.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
 	 * or 'ajax.php' that are located inside typo3/ directly. In this case the Bootstrap->run() command sets
 	 * 'typo3/' as $relativePathPart as base to calculate the document root.
 	 *

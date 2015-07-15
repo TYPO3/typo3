@@ -637,8 +637,8 @@ function jumpToUrl(URL) {
 	public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
 		$storeUrl = $this->makeShortcutUrl($gvList, $setList);
 		$pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
-		// Add the module identifier automatically if typo3/mod.php is used:
-		if (preg_match('/typo3\\/mod\\.php$/', $pathInfo['path']) && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
+		// Add the module identifier automatically if typo3/index.php is used:
+		if (GeneralUtility::_GET('M') !== NULL && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
 			$storeUrl = '&M=' . $modName . $storeUrl;
 		}
 		if ((int)$motherModName === 1) {

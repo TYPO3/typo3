@@ -1986,7 +1986,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'../index.php' => array('../index.php'),
 			'../typo3/alt_intro.php' => array('../typo3/alt_intro.php'),
 			'../~userDirectory/index.php' => array('../~userDirectory/index.php'),
-			'../typo3/mod.php?var1=test-case&var2=~user' => array('../typo3/mod.php?var1=test-case&var2=~user'),
+			'../typo3/index.php?var1=test-case&var2=~user' => array('../typo3/index.php?var1=test-case&var2=~user'),
 			PATH_site . 'typo3/alt_intro.php' => array(PATH_site . 'typo3/alt_intro.php'),
 			$typo3SiteUrl . 'typo3/alt_intro.php' => array($typo3SiteUrl . 'typo3/alt_intro.php'),
 			$typo3RequestHost . $subDirectory . '/index.php' => array($typo3RequestHost . $subDirectory . '/index.php')

@@ -5,7 +5,7 @@ Deprecation: #68141 - typo3/ajax.php
 Description
 ===========
 
-The ajax.php entry-point has been marked as deprecation. All AJAX requests in the Backend using the Ajax API are
+The ajax.php entry-point has been marked as deprecated. All AJAX requests in the Backend using the Ajax API are
 not affected as they automatically use index.php.
 
 

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Updates;
 /**
  * Migrate backend shorcut urls
  */
-class MigrateShortcutUrlsUpdate extends AbstractUpdate {
+class MigrateShortcutUrlsAgainUpdate extends AbstractUpdate {
 
 	/**
 	 * @var string
@@ -59,11 +59,15 @@ class MigrateShortcutUrlsUpdate extends AbstractUpdate {
 						'/typo3/sysext/cms/layout/db_layout.php?&',
 						'/typo3/sysext/cms/layout/db_layout.php?',
 						'/typo3/file_edit.php?&',
+						// From 7.2 to 7.4
+						'mod.php',
 					),
 					array(
-						'/typo3/mod.php?&M=web_layout&',
-						urlencode('/typo3/mod.php?&M=web_layout&'),
-						'/typo3/mod.php?&M=file_edit&',
+						'/typo3/index.php?&M=web_layout&',
+						urlencode('/typo3/index.php?&M=web_layout&'),
+						'/typo3/index.php?&M=file_edit&',
+						// From 7.2 to 7.4
+						'index.php',
 					),
 					$decodedUrl
 				);

@@ -75,7 +75,7 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 			throw new Exception('The CSRF protection token for the requested module is missing or invalid', 1417988921);
 		}
 
-		// Set to empty as it is not needed / always coming from typo3/mod.php
+		// Set to empty as it is not needed / always coming from typo3/index.php
 		$GLOBALS['BACK_PATH'] = '';
 
 		$this->backendUserAuthentication = $GLOBALS['BE_USER'];
@@ -117,13 +117,13 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * This request handler can handle any backend request coming from mod.php
+	 * This request handler can handle any backend request coming from index.php
 	 *
 	 * @param ServerRequestInterface $request
 	 * @return bool
 	 */
 	public function canHandleRequest(ServerRequestInterface $request) {
-		return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && !empty((string)$request->getQueryParams()['M']);
+		return $request->getAttribute('isModuleRequest', FALSE);
 	}
 
 	/**
