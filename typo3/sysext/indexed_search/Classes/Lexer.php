@@ -15,22 +15,21 @@ namespace TYPO3\CMS\IndexedSearch;
  */
 
 /**
- * Lexer for indexed_search
- */
-/**
  * Lexer class for indexed_search
  * A lexer splits the text into words
  */
 class Lexer {
 
-	// Debugging options:
 	/**
+	 * Debugging options:
+	 *
 	 * @var bool
 	 */
 	public $debug = FALSE;
 
-	// If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
 	/**
+	 * If set, the debugString is filled with HTML output highlighting search / non-search words (for backend display)
+	 *
 	 * @var string
 	 */
 	public $debugString = '';
@@ -42,11 +41,13 @@ class Lexer {
 	 */
 	public $csObj;
 
-	// Configuration of the lexer:
 	/**
+	 * Configuration of the lexer:
+	 *
 	 * @var array
 	 */
 	public $lexerConf = array(
+		//Characters: . - _ : / '
 		'printjoins' => array(46, 45, 95, 58, 47, 39),
 		'casesensitive' => FALSE,
 		// Set, if case sensitive indexing is wanted.
@@ -56,7 +57,6 @@ class Lexer {
 	/**
 	 * Constructor: Initializes the charset class
 	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->csObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
@@ -106,10 +106,10 @@ class Lexer {
 	 * Add word to word-array
 	 * This function should be used to make sure CJK sequences are split up in the right way
 	 *
-	 * @param array Array of accumulated words
-	 * @param string Complete Input string from where to extract word
-	 * @param int Start position of word in input string
-	 * @param int The Length of the word string from start position
+	 * @param array $words Array of accumulated words
+	 * @param string $wordString Complete Input string from where to extract word
+	 * @param int $start Start position of word in input string
+	 * @param int $len The Length of the word string from start position
 	 * @return void
 	 */
 	public function addWords(&$words, &$wordString, $start, $len) {
@@ -154,8 +154,8 @@ class Lexer {
 	/**
 	 * Get the first word in a given utf-8 string (initial non-letters will be skipped)
 	 *
-	 * @param string Input string (reference)
-	 * @param int Starting position in input string
+	 * @param string $str Input string (reference)
+	 * @param int $pos Starting position in input string
 	 * @return array 0: start, 1: len or FALSE if no word has been found
 	 */
 	public function get_word(&$str, $pos = 0) {
@@ -177,15 +177,16 @@ class Lexer {
 	/**
 	 * See if a character is a letter (or a string of letters or non-letters).
 	 *
-	 * @param string Input string (reference)
-	 * @param int Byte-length of character sequence (reference, return value)
-	 * @param int Starting position in input string
+	 * @param string $str Input string (reference)
+	 * @param int $len Byte-length of character sequence (reference, return value)
+	 * @param int $pos Starting position in input string
 	 * @return bool letter (or word) found
 	 */
 	public function utf8_is_letter(&$str, &$len, $pos = 0) {
-		global $cs;
 		$len = 0;
 		$bc = 0;
+		$cp = 0;
+		$printJoinLgd = 0;
 		$cType = ($cType_prev = FALSE);
 		// Letter type
 		$letter = TRUE;
@@ -202,7 +203,7 @@ class Lexer {
 					if (!$cType || $cType_prev == 'cjk' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('num,alpha', $cType) || $cType == 'cjk' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('num,alpha', $cType_prev)) {
 						// Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
 						if (!in_array($cp, $this->lexerConf['printjoins'])) {
-							// If a printjoin start length has been record, set that back now so the length is right (filtering out multiple end chars)
+							// If a printjoin start length has been recorded, set that back now so the length is right (filtering out multiple end chars)
 							if ($printJoinLgd) {
 								$len = $printJoinLgd;
 							}
@@ -248,7 +249,7 @@ class Lexer {
 	/**
 	 * Determine the type of character
 	 *
-	 * @param int Unicode number to evaluate
+	 * @param int $cp Unicode number to evaluate
 	 * @return array Type of char; index-0: the main type: num, alpha or CJK (Chinese / Japanese / Korean)
 	 */
 	public function charType($cp) {
@@ -271,10 +272,10 @@ class Lexer {
 	/**
 	 * Converts a UTF-8 multibyte character to a UNICODE codepoint
 	 *
-	 * @param string UTF-8 multibyte character string (reference)
-	 * @param int The length of the character (reference, return value)
-	 * @param int Starting position in input string
-	 * @param bool If set, then a hex. number is returned
+	 * @param string $str UTF-8 multibyte character string (reference)
+	 * @param int $len The length of the character (reference, return value)
+	 * @param int $pos Starting position in input string
+	 * @param bool $hex If set, then a hex. number is returned
 	 * @return int UNICODE codepoint
 	 */
 	public function utf8_ord(&$str, &$len, $pos = 0, $hex = FALSE) {
