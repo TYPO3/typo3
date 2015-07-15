@@ -4249,8 +4249,10 @@ class BackendUtility {
 	 * @param int $workspace Workspace ID
 	 * @param int $pageId Page ID
 	 * @return array Overview of records
+	 * @deprecated since TYPO3 CMS 7. Will be removed with TYPO3 CMS 8. Please use \TYPO3\CMS\Workspaces\Service\WorkspaceService::hasPageRecordVersions to check for record versions.
 	 */
 	static public function countVersionsOfRecordsOnPage($workspace, $pageId) {
+		GeneralUtility::logDeprecatedFunction();
 		if ((int)$workspace === 0) {
 			return array();
 		}
