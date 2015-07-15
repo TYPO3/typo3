@@ -1473,6 +1473,7 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {
+		// @todo: maybe we can remove this one as well
 		$this->pageRenderer->addJsFile($this->backPath . $lib);
 	}
 

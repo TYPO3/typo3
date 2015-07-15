@@ -78,15 +78,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$subject->addCssInlineBlock('general2', 'body {margin:20px;}');
 		$subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', NULL, TRUE);
 
-		$expectedLoadPrototypeRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/prototype\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
-		$subject->loadPrototype();
-
-		$subject->loadScriptaculous('slider,controls');
-		$expectedScriptaculousMain = '<script src="sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/scriptaculous.js" type="text/javascript"></script>';
-		$expectedScriptaculousEffects = '<script src="sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/effects.js" type="text/javascript"></script>';
-		$expectedScriptaculousControls = '<script src="sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/controls.js" type="text/javascript"></script>';
-		$expectedScriptaculousSlider  = '<script src="sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/slider.js" type="text/javascript"></script>';
-
 		$subject->loadJquery();
 		$expectedJqueryRegExp = '#<script src="sysext/core/Resources/Public/JavaScript/Contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedJqueryStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
@@ -111,11 +102,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertContains($expectedExtOnReadyCodePartTwo, $renderedString);
 		$this->assertContains($expectedCssFileString, $renderedString);
 		$this->assertContains($expectedCssInlineBlockOnTopString, $renderedString);
-		$this->assertRegExp($expectedLoadPrototypeRegExp, $renderedString);
-		$this->assertContains($expectedScriptaculousMain, $renderedString);
-		$this->assertContains($expectedScriptaculousEffects, $renderedString);
-		$this->assertContains($expectedScriptaculousControls, $renderedString);
-		$this->assertContains($expectedScriptaculousSlider, $renderedString);
 		$this->assertRegExp($expectedJqueryRegExp, $renderedString);
 		$this->assertContains($expectedJqueryStatement, $renderedString);
 		$this->assertContains($expectedBodyContent, $renderedString);
@@ -180,57 +166,6 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertContains($expectedLanguageLabel1, $renderedString);
 		$this->assertContains($expectedLanguageLabel2, $renderedString);
 		$this->assertContains($expectedInlineSettingsReturnValue, $renderedString);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isScriptaculousLoadedCompressedIfConfiguredAndClientIsCapable() {
-		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
-
-		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'gzip,deflate';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = '5';
-		$subject->loadScriptaculous('slider,controls');
-		$subject->enableCompressJavascript();
-		$out = $subject->render();
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js.gzip" type="text/javascript"></script>#', $out);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isScriptaculousNotLoadedCompressedIfClientCannotHandleCompression() {
-		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
-
-		$_SERVER['HTTP_ACCEPT_ENCODING'] = '';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = '5';
-		$subject->loadScriptaculous('slider,controls');
-		$subject->enableCompressJavascript();
-		$out = $subject->render();
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-	}
-
-	/**
-	 * @test
-	 */
-	public function isScriptaculousNotLoadedCompressedIfCompressionIsNotConfigured() {
-		$subject = new \TYPO3\CMS\Core\Page\PageRenderer();
-
-		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'gzip,deflate';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'] = '';
-		$subject->loadScriptaculous('slider,controls');
-		$subject->enableCompressJavascript();
-		$out = $subject->render();
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
-		$this->assertRegExp('#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js" type="text/javascript"></script>#', $out);
 	}
 
 	/**

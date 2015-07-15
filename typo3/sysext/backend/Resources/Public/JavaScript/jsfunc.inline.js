@@ -194,7 +194,7 @@ var inline = {
 				urlParams += '&ajax[' + i + ']=' + encodeURIComponent(params[i]);
 			}
 			if (context) {
-				urlParams += '&ajax[context]=' + encodeURIComponent(Object.toJSON(context));
+				urlParams += '&ajax[context]=' + encodeURIComponent(JSON.stringify(context));
 			}
 			options = {
 				type: 'POST',
@@ -1318,20 +1318,6 @@ var inline = {
 		return escapedSelectorObjectId;
 	}
 };
-
-Object.extend(Array.prototype, {
-	diff: function (current) {
-		var diff = [];
-		if (this.length == current.length) {
-			for (var i = 0; i < this.length; i++) {
-				if (this[i] !== current[i]) {
-					diff.push(i);
-				}
-			}
-		}
-		return diff;
-	}
-});
 
 /*]]>*/
 (function ($) {

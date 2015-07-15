@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
+ * <f:be.container pageTitle="foo" enableClickMenu="false" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with proper head & body tags.
@@ -54,9 +54,6 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 	 *
 	 * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
 	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
-	 * @param bool $loadPrototype specifies whether to load prototype library. Defaults to TRUE
-	 * @param bool $loadScriptaculous specifies whether to load scriptaculous libraries. Defaults to FALSE
-	 * @param string $scriptaculousModule additionales modules for scriptaculous
 	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
 	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
 	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
@@ -70,7 +67,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeCsh = TRUE, $includeRequireJsModules = NULL) {
+	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeCsh = TRUE, $includeRequireJsModules = NULL) {
 		$pageRenderer = $this->getPageRenderer();
 		$doc = $this->getDocInstance();
 		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
@@ -78,12 +75,6 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 		// Load various standard libraries
 		if ($enableClickMenu) {
 			$doc->getContextMenuCode();
-		}
-		if ($loadPrototype) {
-			$pageRenderer->loadPrototype();
-		}
-		if ($loadScriptaculous) {
-			$pageRenderer->loadScriptaculous($scriptaculousModule);
 		}
 		if ($loadExtJs) {
 			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme);

@@ -400,7 +400,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	}
 
 	/**
-	 * Create a unique key from a string which can be used in Prototype's Sortable
+	 * Create a unique key from a string which can be used in JS for sorting
 	 * Therefore '_' are replaced
 	 *
 	 * @param string $string string which is used to generate the identifier

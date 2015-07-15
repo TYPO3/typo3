@@ -5911,15 +5911,6 @@ Might be deprecated soon. Most likely the RTE should be configured by the styles
 
 javascriptLibs {
 
-     # include prototype
-   Prototype = 1
-
-     # include Scriptaculous
-   Scriptaculous = 1
-
-     # adds modules dragdrop and controls to Scriptaculous
-   Scriptaculous.modules = dragdrop,controls
-
      # includes ExtJS
    ExtJs = 1
 

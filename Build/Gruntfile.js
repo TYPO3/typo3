@@ -82,17 +82,6 @@ module.exports = function(grunt) {
 					 */
 
 					/**
-					 * copy needed files of scriptaculous
-					 */
-					'scriptaculous/builder.js': 'scriptaculous-bower/builder.js',
-					'scriptaculous/controls.js': 'scriptaculous-bower/controls.js',
-					'scriptaculous/dragdrop.js': 'scriptaculous-bower/dragdrop.js',
-					'scriptaculous/effects.js': 'scriptaculous-bower/effects.js',
-					'scriptaculous/scriptaculous.js': 'scriptaculous-bower/scriptaculous.js',
-					'scriptaculous/slider.js': 'scriptaculous-bower/slider.js',
-					'scriptaculous/sound.js': 'scriptaculous-bower/sound.js',
-					'scriptaculous/unittest.js': 'scriptaculous-bower/unittest.js',
-					/**
 					 * copy needed parts of jquery
 					 */
 					'jquery/jquery-1.11.3.js': 'jquery/dist/jquery.js',

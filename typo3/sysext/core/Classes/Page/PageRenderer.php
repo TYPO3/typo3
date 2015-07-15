@@ -256,7 +256,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * @var array
 	 */
-	protected $jsLibraryNames = array('prototype', 'scriptaculous', 'extjs');
+	protected $jsLibraryNames = array('extjs');
 
 	// Paths to contibuted libraries
 
@@ -265,16 +265,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var string
 	 */
 	protected $requireJsPath = 'sysext/core/Resources/Public/JavaScript/Contrib/';
-
-	/**
-	 * @var string
-	 */
-	protected $prototypePath = 'sysext/core/Resources/Public/JavaScript/Contrib/';
-
-	/**
-	 * @var string
-	 */
-	protected $scriptaculousPath = 'sysext/core/Resources/Public/JavaScript/Contrib/scriptaculous/';
 
 	/**
 	 * @var string
@@ -339,21 +329,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $requireJsConfig = array();
-
-	/**
-	 * @var bool
-	 */
-	protected $addPrototype = FALSE;
-
-	/**
-	 * @var bool
-	 */
-	protected $addScriptaculous = FALSE;
-
-	/**
-	 * @var array
-	 */
-	protected $addScriptaculousModules = array('builder' => FALSE, 'effects' => FALSE, 'dragdrop' => FALSE, 'controls' => FALSE, 'slider' => FALSE);
 
 	/**
 	 * @var bool
@@ -633,26 +608,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setRequireJsPath($path) {
 		$this->requireJsPath = $path;
-	}
-
-	/**
-	 * Sets path to prototype library (relative to typo3 directory)
-	 *
-	 * @param string $path Path to prototype library
-	 * @return void
-	 */
-	public function setPrototypePath($path) {
-		$this->prototypePath = $path;
-	}
-
-	/**
-	 * Sets Path for scriptaculous library (relative to typo3 directory)
-	 *
-	 * @param string $path
-	 * @return void
-	 */
-	public function setScriptaculousPath($path) {
-		$this->scriptaculousPath = $path;
 	}
 
 	/**
@@ -987,24 +942,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getBodyContent() {
 		return $this->bodyContent;
-	}
-
-	/**
-	 * Gets Path for prototype library (relative to typo3 directory)
-	 *
-	 * @return string
-	 */
-	public function getPrototypePath() {
-		return $this->prototypePath;
-	}
-
-	/**
-	 * Gets Path for scriptaculous library (relative to typo3 directory)
-	 *
-	 * @return string
-	 */
-	public function getScriptaculousPath() {
-		return $this->scriptaculousPath;
 	}
 
 	/**
@@ -1632,40 +1569,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->addJsInlineCode('RequireJS-Module-' . $inlineCodeKey, $javaScriptCode);
 	}
 
-	/**
-	 * Call function if you need the prototype library
-	 *
-	 * @return void
-	 */
-	public function loadPrototype() {
-		$this->addPrototype = TRUE;
-	}
-
-	/**
-	 * Call function if you need the Scriptaculous library
-	 *
-	 * @param string $modules Add modules you need. use "all" if you need complete modules
-	 * @return void
-	 */
-	public function loadScriptaculous($modules = 'all') {
-		// Scriptaculous require prototype, so load prototype too.
-		$this->addPrototype = TRUE;
-		$this->addScriptaculous = TRUE;
-		if ($modules) {
-			if ($modules == 'all') {
-				foreach ($this->addScriptaculousModules as $key => $value) {
-					$this->addScriptaculousModules[$key] = TRUE;
-				}
-			} else {
-				$mods = GeneralUtility::trimExplode(',', $modules);
-				foreach ($mods as $mod) {
-					if (isset($this->addScriptaculousModules[strtolower($mod)])) {
-						$this->addScriptaculousModules[strtolower($mod)] = TRUE;
-					}
-				}
-			}
-		}
-	}
 
 	/**
 	 * call this function if you need the extJS library
@@ -2032,7 +1935,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Helper function for render the main JavaScript libraries,
-	 * currently: RequireJS, jQuery, PrototypeJS, Scriptaculous, ExtJs
+	 * currently: RequireJS, jQuery, ExtJS
 	 *
 	 * @return string Content with JavaScript libraries
 	 */
@@ -2052,30 +1955,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			foreach ($this->jQueryVersions as $namespace => $jQueryVersion) {
 				$out .= $this->renderJqueryScriptTag($jQueryVersion['version'], $jQueryVersion['source'], $namespace);
 			}
-		}
-		if ($this->addPrototype) {
-			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->prototypePath . 'prototype.js')) . '" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . $this->prototypePath . 'prototype.js']);
-		}
-		if ($this->addScriptaculous) {
-			$mods = array();
-			foreach ($this->addScriptaculousModules as $key => $value) {
-				if ($this->addScriptaculousModules[$key]) {
-					$mods[] = $key;
-				}
-			}
-			// Resolve dependencies
-			if (in_array('dragdrop', $mods) || in_array('controls', $mods)) {
-				$mods = array_merge(array('effects'), $mods);
-			}
-			if (!empty($mods)) {
-				foreach ($mods as $module) {
-					$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->scriptaculousPath . $module . '.js')) . '" type="text/javascript"></script>' . LF;
-					unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . $module . '.js']);
-				}
-			}
-			$out .= '<script src="' . $this->processJsFile(($this->backPath . $this->scriptaculousPath . 'scriptaculous.js')) . '" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . 'scriptaculous.js']);
 		}
 		// Include extJS
 		if ($this->addExtJS) {

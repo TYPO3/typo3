@@ -8,10 +8,6 @@ using the Path to this Contrib/ directory.
 
 Libraries not handled by bower/Grunt:
 
-- prototype.js
-prototype.js cannot be handled via bower as it conflicts with RequireJS when
-the sources are fetched via bower.
-
 - bootstrap/bootstrap.js
 Twitter Bootstrap 3 is not shipped as an AMD module, and has been adapted to be
 wrapped as an AMD module called "bootstrap".

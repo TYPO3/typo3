@@ -370,12 +370,12 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 var typo3form = {
 	fieldSetNull: function(fieldName, isNull) {
 		if (document[TBE_EDITOR.formname][fieldName]) {
-			var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3js-formengine-field-item');
+			var $formFieldItemWrapper = TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
 
 			if (isNull) {
-				formFieldItemWrapper.addClassName('disabled');
+				$formFieldItemWrapper.addClass('disabled');
 			} else {
-				formFieldItemWrapper.removeClassName('disabled');
+				$formFieldItemWrapper.removeClass('disabled');
 			}
 		}
 	},
@@ -384,9 +384,9 @@ var typo3form = {
 			return;
 		}
 
-		var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3js-formengine-field-item');
-		var placeholder = formFieldItemWrapper.select('.t3js-formengine-placeholder-placeholder')[0];
-		var formField = formFieldItemWrapper.select('.t3js-formengine-placeholder-formfield')[0];
+		var formFieldItemWrapper = TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
+		var placeholder = formFieldItemWrapper.find('.t3js-formengine-placeholder-placeholder');
+		var formField = formFieldItemWrapper.find('.t3js-formengine-placeholder-formfield');
 		if (showPlaceholder) {
 			placeholder.show();
 			formField.hide();

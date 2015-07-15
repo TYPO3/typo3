@@ -564,13 +564,6 @@ class PageGenerator {
 		}
 		// Javascript Libraries
 		if (is_array($tsfe->pSetup['javascriptLibs.'])) {
-			if ($tsfe->pSetup['javascriptLibs.']['Prototype']) {
-				$pageRenderer->loadPrototype();
-			}
-			if ($tsfe->pSetup['javascriptLibs.']['Scriptaculous']) {
-				$modules = $tsfe->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ?: '';
-				$pageRenderer->loadScriptaculous($modules);
-			}
 			// Include jQuery into the page renderer
 			if (!empty($tsfe->pSetup['javascriptLibs.']['jQuery'])) {
 				$jQueryTS = $tsfe->pSetup['javascriptLibs.']['jQuery.'];

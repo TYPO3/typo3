@@ -689,9 +689,6 @@ class FormEngine {
 		if (!$collapseAll && $expandSingle) {
 			$jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ', ' . GeneralUtility::quoteJSvalue($objectPrefix) . ', ' . GeneralUtility::quoteJSvalue($record['uid']) . ');';
 		}
-		// Tell the browser to scroll to the newly created record
-
-		$jsonArray['scriptCall'][] = 'Element.scrollTo(' . GeneralUtility::quoteJSvalue($objectId . '_div') . ');';
 		// Fade out and fade in the new record in the browser view to catch the user's eye
 		$jsonArray['scriptCall'][] = 'inline.fadeOutFadeIn(' . GeneralUtility::quoteJSvalue($objectId . '_div') . ');';
 
@@ -1251,7 +1248,6 @@ class FormEngine {
 					$pageRenderer->loadRequireJsModule($moduleName, $callback);
 				}
 			}
-			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
 			$beUserAuth = $this->getBackendUserAuthentication();

@@ -241,7 +241,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		var markParent = false;
 		var selected = 0;
 		var returnValue = value;
-		$rules.each(function(rule) {
+		$.each($rules, function(k, rule) {
 			switch (rule.type) {
 				case 'required':
 					if (value === '') {
@@ -897,8 +897,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	 */
 	FormEngineValidation.markParentTab = function($element) {
 		var $panes = $element.parents('.tab-pane');
-		$panes.each(function() {
-			var $pane = $(this);
+		$.each($panes, function(k, $pane) {
 			var id = $pane.attr('id');
 			$(document)
 				.find('a[href="#' + id + '"]')

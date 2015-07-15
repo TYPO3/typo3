@@ -680,7 +680,6 @@ class EditDocumentController {
 		$this->doc = $GLOBALS['TBE_TEMPLATE'];
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->addInlineLanguageLabelFile('EXT:lang/locallang_alt_doc.xlf');
-		$pageRenderer->loadPrototype();
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_doc.html');
 		$this->doc->form = '<form action="' . htmlspecialchars($this->R_URI) . '" method="post" enctype="multipart/form-data" name="editform" onsubmit="document.editform._scrollPosition.value=(document.documentElement.scrollTop || document.body.scrollTop); return TBE_EDITOR.checkSubmit(1);">';
