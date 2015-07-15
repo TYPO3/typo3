@@ -347,9 +347,9 @@ class PageRepository {
 	 * @param int $lUid Language UID if you want to set an alternative value to $this->sys_language_uid which is default. Should be >=0
 	 * @throws \UnexpectedValueException
 	 * @return array Page rows which are overlayed with language_overlay record.
-	 *			   If the input was an array of integers, missing records are not
-	 *			   included. If the input were page rows, untranslated pages
-	 *			   are returned.
+	 *               If the input was an array of integers, missing records are not
+	 *               included. If the input were page rows, untranslated pages
+	 *               are returned.
 	 */
 	public function getPagesOverlay(array $pagesInput, $lUid = -1) {
 		if (empty($pagesInput)) {
@@ -405,7 +405,7 @@ class PageRepository {
 					implode(',', $fieldArr),
 					'pages_language_overlay',
 					'pid IN(' . implode(',', $this->getDatabaseConnection()->cleanIntArray($page_ids)) . ')'
-						. ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay')
+					. ' AND sys_language_uid=' . (int)$lUid . $this->enableFields('pages_language_overlay')
 				);
 				$overlays = array();
 				while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
@@ -540,114 +540,256 @@ class PageRepository {
 	 ************************************************/
 
 	/**
-	 * Returns an array with pagerows for subpages with pid=$uid (which is pid
-	 * here!). This is used for menus. If there are mount points in overlay mode
-	 * the _MP_PARAM field is set to the corret MPvar.
+	 * Returns an array with page rows for subpages of a certain page ID. This is used for menus in the frontend.
+	 * If there are mount points in overlay mode the _MP_PARAM field is set to the corret MPvar.
 	 *
-	 * If the $uid being input does in itself require MPvars to define a correct
+	 * If the $pageId being input does in itself require MPvars to define a correct
 	 * rootline these must be handled externally to this function.
 	 *
-	 * @param int|int[] $uid The page id (or array of page ids) for which to fetch subpages (PID)
+	 * @param int|int[] $pageId The page id (or array of page ids) for which to fetch subpages (PID)
 	 * @param string $fields List of fields to select. Default is "*" = all
 	 * @param string $sortField The field to sort by. Default is "sorting
-	 * @param string $addWhere Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+	 * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
 	 * @param bool $checkShortcuts Check if shortcuts exist, checks by default
 	 * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
 	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
 	 * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
 	 */
-	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
-		$databaseConnection = $this->getDatabaseConnection();
-		$output = array();
-		$query = 'pid IN (' . implode(',', $databaseConnection->cleanIntArray((array)$uid)) .
-			')' . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere;
-		if ((int)$this->versioningWorkspaceId !== 0) {
-			$res = $databaseConnection->exec_SELECTquery(
+	public function getMenu($pageId, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = TRUE) {
+		return $this->getSubpagesForPages((array)$pageId, $fields, $sortField, $additionalWhereClause, $checkShortcuts);
+	}
+
+	/**
+	 * Returns an array with page-rows for pages with uid in $pageIds.
+	 *
+	 * This is used for menus. If there are mount points in overlay mode
+	 * the _MP_PARAM field is set to the correct MPvar.
+	 *
+	 * @param int[] $pageIds Array of page ids to fetch
+	 * @param string $fields List of fields to select. Default is "*" = all
+	 * @param string $sortField The field to sort by. Default is "sorting"
+	 * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+	 * @param bool $checkShortcuts Check if shortcuts exist, checks by default
+	 * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
+	 */
+	public function getMenuForPages(array $pageIds, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = TRUE) {
+		return $this->getSubpagesForPages($pageIds, $fields, $sortField, $additionalWhereClause, $checkShortcuts, FALSE);
+	}
+
+	/**
+	 * Internal method used by getMenu() and getMenuForPages()
+	 * Returns an array with page rows for subpages with pid is in $pageIds or uid is in $pageIds, depending on $parentPages
+	 * This is used for menus. If there are mount points in overlay mode
+	 * the _MP_PARAM field is set to the corret MPvar.
+	 *
+	 * If the $pageIds being input does in itself require MPvars to define a correct
+	 * rootline these must be handled externally to this function.
+	 *
+	 * @param int[] $pageIds The page id (or array of page ids) for which to fetch subpages (PID)
+	 * @param string $fields List of fields to select. Default is "*" = all
+	 * @param string $sortField The field to sort by. Default is "sorting
+	 * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+	 * @param bool $checkShortcuts Check if shortcuts exist, checks by default
+	 * @param bool $parentPages Whether the uid list is meant as list of parent pages or the page itself TRUE means id list is checked agains pid field
+	 * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlayed localized fields, if any)
+	 * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
+	 * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
+	 */
+	protected function getSubpagesForPages(array $pageIds, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = TRUE, $parentPages = TRUE) {
+		$pages = [];
+		$relationField = $parentPages ? 'pid' : 'uid';
+		$db = $this->getDatabaseConnection();
+
+		$whereStatement = $relationField . ' IN ('
+			. implode(',', $db->cleanIntArray($pageIds)) . ')'
+			. $this->where_hid_del
+			. $this->where_groupAccess
+			. ' '
+			. $additionalWhereClause;
+
+		// Check the user group access for draft pages in preview
+		if ($this->versioningWorkspaceId != 0) {
+			$databaseResource = $db->exec_SELECTquery(
 				'uid',
 				'pages',
-				'pid IN (' . implode(',', $databaseConnection->cleanIntArray((array)$uid)) .
-				')' . $this->where_hid_del . ' ' . $addWhere,
+				$relationField . ' IN (' . implode(',', $db->cleanIntArray($pageIds)) . ')'
+					. $this->where_hid_del . ' ' . $additionalWhereClause,
 				'',
 				$sortField
 			);
-			$recordArray = array();
-			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-				$workspaceRow = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $row['uid']);
-				$realUid = is_array($workspaceRow) ? $workspaceRow['uid'] : $row['uid'];
-				$result = $databaseConnection->exec_SELECTgetSingleRow(
-					'uid',
-					'pages',
-					'uid=' . intval($realUid) . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere,
-					'',
-					$sortField
-				);
-				if (is_array($result)) {
-					$recordArray[] = $row['uid'];
-				}
-			}
-			$databaseConnection->sql_free_result($res);
-			if (!empty($recordArray)) {
-				$query = 'uid IN (' . implode(',', $recordArray) . ')';
+
+			$draftUserGroupAccessWhereStatement = $this->getDraftUserGroupAccessWhereStatement(
+				$databaseResource,
+				$sortField,
+				$additionalWhereClause
+			);
+
+			if ($draftUserGroupAccessWhereStatement !== FALSE) {
+				$whereStatement = $draftUserGroupAccessWhereStatement;
 			}
 		};
-		$res = $databaseConnection->exec_SELECTquery($fields, 'pages', $query, '', $sortField);
-		while ($row = $databaseConnection->sql_fetch_assoc($res)) {
-			$this->versionOL('pages', $row, TRUE);
-			if (is_array($row)) {
-				// Keep mount point:
-				$origUid = $row['uid'];
-				// $row MUST have "uid", "pid", "doktype", "mount_pid", "mount_pid_ol" fields
-				// in it
-				$mount_info = $this->getMountPointInfo($origUid, $row);
-				// There is a valid mount point.
-				if (is_array($mount_info) && $mount_info['overlay']) {
-					// Using "getPage" is OK since we need the check for enableFields AND for type 2
-					// of mount pids we DO require a doktype < 200!
-					$mp_row = $this->getPage($mount_info['mount_pid']);
-					if (!empty($mp_row)) {
-						$row = $mp_row;
-						$row['_MP_PARAM'] = $mount_info['MPvar'];
-					} else {
-						unset($row);
-					}
-				}
-				// If shortcut, look up if the target exists and is currently visible
-				$doktype = (int)$row['doktype'];
-				$shortcutMode = (int)$row['shortcut_mode'];
-				if ($doktype === self::DOKTYPE_SHORTCUT && ($row['shortcut'] || $shortcutMode) && $checkShortcuts) {
-					if ($shortcutMode === self::SHORTCUT_MODE_NONE) {
-						// No shortcut_mode set, so target is directly set in $row['shortcut']
-						$searchField = 'uid';
-						$searchUid = (int)$row['shortcut'];
-					} elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
-						// Check subpages - first subpage or random subpage
-						$searchField = 'pid';
-						// If a shortcut mode is set and no valid page is given to select subpags
-						// from use the actual page.
-						$searchUid = (int)$row['shortcut'] ?: $row['uid'];
-					} elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
-						// Shortcut to parent page
-						$searchField = 'uid';
-						$searchUid = $row['pid'];
-					}
-					$count = $databaseConnection->exec_SELECTcountRows('uid', 'pages', $searchField . '=' . $searchUid . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere);
-					if (!$count) {
-						unset($row);
-					}
-				} elseif ($doktype === self::DOKTYPE_SHORTCUT && $checkShortcuts) {
-					// Neither shortcut target nor mode is set. Remove the page from the menu.
-					unset($row);
-				}
-				if (is_array($row)) {
-					$output[$origUid] = $row;
-				}
+
+		$databaseResource = $db->exec_SELECTquery(
+			$fields,
+			'pages',
+			$whereStatement,
+			'',
+			$sortField
+		);
+
+		while (($page = $db->sql_fetch_assoc($databaseResource))) {
+			$originalUid = $page['uid'];
+
+			// Versioning Preview Overlay
+			$this->versionOL('pages', $page, TRUE);
+
+			// Add a mount point parameter if needed
+			$page = $this->addMountPointParameterToPage((array)$page);
+
+			// If shortcut, look up if the target exists and is currently visible
+			if ($checkShortcuts) {
+				$page = $this->checkValidShortcutOfPage((array)$page, $additionalWhereClause);
+			}
+
+			// If the page still is there, we add it to the output
+			if (!empty($page)) {
+				$pages[$originalUid] = $page;
 			}
 		}
-		$databaseConnection->sql_free_result($res);
-        // Finally load language overlays
-		return $this->getPagesOverlay($output);
+
+		$db->sql_free_result($databaseResource);
+
+		// Finally load language overlays
+		return $this->getPagesOverlay($pages);
 	}
 
+	/**
+	 * Prevent pages being shown in menu's for preview which contain usergroup access rights in a draft workspace
+	 *
+	 * Returns an adapted "WHERE" statement if pages are in draft
+	 *
+	 * @param bool|\mysqli_result|object $databaseResource MySQLi result object / DBAL object
+	 * @param string $sortField The field to sort by
+	 * @param string $addWhere Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+	 * @return bool|string FALSE if no records are available in draft, a WHERE statement with the uid's if available
+	 */
+	protected function getDraftUserGroupAccessWhereStatement($databaseResource, $sortField, $addWhere) {
+		$draftUserGroupAccessWhereStatement = FALSE;
+		$recordArray = [];
+
+		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($databaseResource)) {
+			$workspaceRow = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $row['uid']);
+
+			$realUid = is_array($workspaceRow) ? $workspaceRow['uid'] : $row['uid'];
+
+			$result = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+				'uid',
+				'pages',
+				'uid=' . intval($realUid)
+				. $this->where_hid_del
+				. $this->where_groupAccess
+				. ' ' . $addWhere,
+				'',
+				$sortField
+			);
+
+			if (is_array($result)) {
+				$recordArray[] = $row['uid'];
+			}
+		}
+
+		if (!empty($recordArray)) {
+			$draftUserGroupAccessWhereStatement = 'uid IN (' . implode(',', $recordArray) . ')';
+		}
+
+		return $draftUserGroupAccessWhereStatement;
+	}
+
+	/**
+	 * Add the mount point parameter to the page if needed
+	 *
+	 * @param array $page The page to check
+	 * @return array
+	 */
+	protected function addMountPointParameterToPage(array $page) {
+		if (empty($page)) {
+			return [];
+		}
+
+		// $page MUST have "uid", "pid", "doktype", "mount_pid", "mount_pid_ol" fields in it
+		$mountPointInfo = $this->getMountPointInfo($page['uid'], $page);
+
+		// There is a valid mount point.
+		if (is_array($mountPointInfo) && $mountPointInfo['overlay']) {
+
+			// Using "getPage" is OK since we need the check for enableFields AND for type 2
+			// of mount pids we DO require a doktype < 200!
+			$mountPointPage = $this->getPage($mountPointInfo['mount_pid']);
+
+			if (!empty($mountPointPage)) {
+				$page = $mountPointPage;
+				$page['_MP_PARAM'] = $mountPointInfo['MPvar'];
+			} else {
+				$page = [];
+			}
+		}
+		return $page;
+	}
+
+	/**
+	 * If shortcut, look up if the target exists and is currently visible
+	 *
+	 * @param array $page The page to check
+	 * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
+	 * @return array
+	 */
+	protected function checkValidShortcutOfPage(array $page, $additionalWhereClause) {
+		if (empty($page)) {
+			return [];
+		}
+
+		$dokType = (int)$page['doktype'];
+		$shortcutMode = (int)$page['shortcut_mode'];
+
+		if ($dokType === self::DOKTYPE_SHORTCUT && ($page['shortcut'] || $shortcutMode)) {
+			if ($shortcutMode === self::SHORTCUT_MODE_NONE) {
+				// No shortcut_mode set, so target is directly set in $page['shortcut']
+				$searchField = 'uid';
+				$searchUid = (int)$page['shortcut'];
+
+			} elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+				// Check subpages - first subpage or random subpage
+				$searchField = 'pid';
+				// If a shortcut mode is set and no valid page is given to select subpags
+				// from use the actual page.
+				$searchUid = (int)$page['shortcut'] ?: $page['uid'];
+
+			} elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {
+				// Shortcut to parent page
+				$searchField = 'uid';
+				$searchUid = $page['pid'];
+			}
+
+			$whereStatement = $searchField . '=' . $searchUid
+				. $this->where_hid_del
+				. $this->where_groupAccess
+				. ' ' . $additionalWhereClause;
+
+			$count = $this->getDatabaseConnection()->exec_SELECTcountRows(
+				'uid',
+				'pages',
+				$whereStatement
+			);
+
+			if (!$count) {
+				$page = [];
+			}
+		} elseif ($dokType === self::DOKTYPE_SHORTCUT) {
+			// Neither shortcut target nor mode is set. Remove the page from the menu.
+			$page = [];
+		}
+		return $page;
+	}
 	/**
 	 * Will find the page carrying the domain record matching the input domain.
 	 * Might exit after sending a redirect-header IF a found domain record
@@ -952,7 +1094,7 @@ class PageRepository {
 	 * like PageRepository::getHash()
 	 *
 	 * @param string $hash The hash-string which was used to store the data value
-	 * @param int The expiration time (not used anymore)
+	 * @param int $expTime The expiration time (not used anymore)
 	 * @return mixed The "data" from the cache
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */
