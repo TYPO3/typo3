@@ -148,7 +148,6 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 			->checkLockedBackendAndRedirectOrDie($proceedIfNoUserIsLoggedIn)
 			->checkBackendIpOrDie()
 			->checkSslBackendAndRedirectIfNeeded()
-			->checkValidBrowserOrDie()
 			->loadExtensionTables(TRUE)
 			->initializeSpriteManager()
 			->initializeBackendUser()

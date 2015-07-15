@@ -446,21 +446,6 @@ class Bootstrap {
 	}
 
 	/**
-	 * Throws an exception if no browser could be identified
-	 *
-	 * @return Bootstrap
-	 * @throws \RuntimeException
-	 * @internal This is not a public API method, do not use in own extensions
-	 */
-	public function checkValidBrowserOrDie() {
-		// Checks for proper browser
-		if (empty($GLOBALS['CLIENT']['BROWSER'])) {
-			throw new \RuntimeException('Browser Error: Your browser version looks incompatible with this TYPO3 version!', 1294587023);
-		}
-		return $this;
-	}
-
-	/**
 	 * We need an early instance of the configuration manager.
 	 * Since makeInstance relies on the object configuration, we create it here with new instead.
 	 *

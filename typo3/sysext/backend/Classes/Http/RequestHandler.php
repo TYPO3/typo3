@@ -64,7 +64,6 @@ class RequestHandler implements RequestHandlerInterface {
 			->checkLockedBackendAndRedirectOrDie()
 			->checkBackendIpOrDie()
 			->checkSslBackendAndRedirectIfNeeded()
-			->checkValidBrowserOrDie()
 			->loadExtensionTables(TRUE)
 			->initializeSpriteManager()
 			->initializeBackendUser()

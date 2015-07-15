@@ -1035,22 +1035,6 @@ abstract class AbstractUserAuthentication {
 	protected function fetchUserSessionFromDB() {
 		$statement = NULL;
 		$ipLockClause = $this->ipLockClause();
-		if ($GLOBALS['CLIENT']['BROWSER'] == 'flash') {
-			// If on the flash client, the veri code is valid, then the user session is fetched
-			// from the DB without the hashLock clause
-			if (GeneralUtility::_GP('vC') == $this->veriCode()) {
-				$statement = $this->db->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
-						AND ' . $this->session_table . '.ses_name = :ses_name
-						AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
-						' . $ipLockClause['where'] . '
-						' . $this->user_where_clause());
-				$statement->bindValues(array(
-					':ses_id' => $this->id,
-					':ses_name' => $this->name
-				));
-				$statement->bindValues($ipLockClause['parameters']);
-			}
-		} else {
 			$statement = $this->db->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
 					AND ' . $this->session_table . '.ses_name = :ses_name
 					AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
@@ -1062,7 +1046,6 @@ abstract class AbstractUserAuthentication {
 				':ses_name' => $this->name
 			));
 			$statement->bindValues($ipLockClause['parameters']);
-		}
 		return $statement;
 	}
 

@@ -130,15 +130,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function initializeGlobalVariablesSetsGlobalClientArray() {
-		unset($GLOBALS['CLIENT']);
-		$this->subject->_call('initializeGlobalVariables');
-		$this->assertArrayHasKey('CLIENT', $GLOBALS);
-	}
-
-	/**
-	 * @test
-	 */
 	public function initializeGlobalVariablesSetsGlobalTypo3MiscArray() {
 		unset($GLOBALS['TYPO3_MISC']);
 		$this->subject->_call('initializeGlobalVariables');

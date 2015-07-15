@@ -213,8 +213,6 @@ class SystemEnvironmentBuilder {
 	static protected function initializeGlobalVariables() {
 		// Unset variable(s) in global scope (security issue #13959)
 		unset($GLOBALS['error']);
-		// Set up base information about browser/user-agent
-		$GLOBALS['CLIENT'] = GeneralUtility::clientInfo();
 		$GLOBALS['TYPO3_MISC'] = array();
 		$GLOBALS['T3_VAR'] = array();
 		$GLOBALS['T3_SERVICES'] = array();
