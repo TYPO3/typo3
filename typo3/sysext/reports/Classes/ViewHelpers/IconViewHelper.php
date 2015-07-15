@@ -57,12 +57,12 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 		if (!empty($icon)) {
 			$absIconPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($icon);
 			if (file_exists($absIconPath)) {
-				$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
+				$icon = '../' . str_replace(PATH_site, '', $absIconPath);
 			}
 		} else {
 			$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('reports') . 'ext_icon.png';
 		}
-		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" />';
+		return '<img src="' . htmlspecialchars($icon) . '" width="16" height="16" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" />';
 	}
 
 }
