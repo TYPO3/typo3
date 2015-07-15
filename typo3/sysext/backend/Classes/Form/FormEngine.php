@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -233,7 +234,7 @@ class FormEngine {
 		$this->templateFile = 'sysext/backend/Resources/Private/Templates/FormEngine.html';
 		$template = GeneralUtility::getUrl(PATH_typo3 . $this->templateFile);
 		// Wrapping all table rows for a particular record being edited:
-		$this->totalWrap = HtmlParser::getSubpart($template, '###TOTALWRAP###');
+		$this->totalWrap = MarkerUtility::getSubpart($template, '###TOTALWRAP###');
 		$this->nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 	}
 

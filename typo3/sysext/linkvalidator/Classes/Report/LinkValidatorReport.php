@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 
 /**
@@ -347,7 +347,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 */
 	protected function renderBrokenLinksTable() {
 		$brokenLinkItems = '';
-		$brokenLinksTemplate = HtmlParser::getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
+		$brokenLinksTemplate = MarkerUtility::getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
 		$keyOpt = array();
 		if (is_array($this->checkOpt)) {
 			$keyOpt = array_keys($this->checkOpt);
@@ -377,8 +377,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			);
 			if (!empty($records)) {
 				// Display table with broken links
-				$brokenLinksTemplate = HtmlParser::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
-				$brokenLinksItemTemplate = HtmlParser::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
+				$brokenLinksTemplate = MarkerUtility::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
+				$brokenLinksItemTemplate = MarkerUtility::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
 
 				// Table rows containing the broken links
 				$items = array();
@@ -392,12 +392,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 		}
-		$brokenLinksTemplate = HtmlParser::substituteMarkerArray(
+		$brokenLinksTemplate = MarkerUtility::substituteMarkerArray(
 			$brokenLinksTemplate,
 			$brokenLinksMarker, '###|###',
 			TRUE
 		);
-		return HtmlParser::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
+		return MarkerUtility::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
 	}
 
 	/**
@@ -511,7 +511,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$markerArray['lastcheck'] = sprintf($this->getLanguageService()->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime);
 
 		// Return the table html code as string
-		return HtmlParser::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);
+		return MarkerUtility::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);
 	}
 
 	/**
@@ -528,8 +528,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			$additionalAttr = ' class="refresh"';
 		}
-		$checkOptionsTemplate = HtmlParser::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
-		$hookSectionTemplate = HtmlParser::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
+		$checkOptionsTemplate = MarkerUtility::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
+		$hookSectionTemplate = MarkerUtility::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 		$markerArray['statistics_header'] = $this->doc->sectionHeader($this->getLanguageService()->getLL('report.statistics.header'));
 		$markerArray['total_count_label'] = BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $this->getLanguageService()->getLL('overviews.nbtotal'));
 		$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'] ?: '0';
@@ -552,7 +552,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 							. 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="'
 							. $prefix . 'SET_' . $type . '">&nbsp;' . htmlspecialchars($translation) . '</label>';
 
-						$hookSectionContent .= HtmlParser::substituteMarkerArray(
+						$hookSectionContent .= MarkerUtility::substituteMarkerArray(
 							$hookSectionTemplate,
 							$hookSectionMarker, '###|###',
 							TRUE,
@@ -562,12 +562,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 				}
 			}
 		}
-		$checkOptionsTemplate = HtmlParser::substituteSubpart(
+		$checkOptionsTemplate = MarkerUtility::substituteSubpart(
 			$checkOptionsTemplate,
 			'###HOOK_SECTION###',
 			$hookSectionContent
 		);
-		return HtmlParser::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
+		return MarkerUtility::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
 	}
 
 	/**

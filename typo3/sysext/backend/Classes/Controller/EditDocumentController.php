@@ -21,17 +21,16 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -1233,8 +1232,8 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 	public function extraFormHeaders() {
 		$extraTemplate = '';
 		if (is_array($this->tceforms->extraFormHeaders)) {
-			$extraTemplate = HtmlParser::getSubpart($this->doc->moduleTemplate, '###DOCHEADER_EXTRAHEADER###');
-			$extraTemplate = HtmlParser::substituteMarker($extraTemplate, '###EXTRAHEADER###', implode(LF, $this->tceforms->extraFormHeaders));
+			$extraTemplate = MarkerUtility::getSubpart($this->doc->moduleTemplate, '###DOCHEADER_EXTRAHEADER###');
+			$extraTemplate = MarkerUtility::substituteMarker($extraTemplate, '###EXTRAHEADER###', implode(LF, $this->tceforms->extraFormHeaders));
 		}
 		return $extraTemplate;
 	}

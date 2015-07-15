@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Html;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
+
 
 /**
  * Functions for parsing HTML.
@@ -36,36 +38,13 @@ class HtmlParser {
 	 *
 	 * @param string $content Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
 	 * @param string $marker Marker string, eg. "###CONTENT_PART###
+	 *
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
 	 */
 	static public function getSubpart($content, $marker) {
-		$start = strpos($content, $marker);
-		if ($start === FALSE) {
-			return '';
-		}
-		$start += strlen($marker);
-		$stop = strpos($content, $marker, $start);
-		// Q: What shall get returned if no stop marker is given
-		// Everything till the end or nothing?
-		if ($stop === FALSE) {
-			return '';
-		}
-		$content = substr($content, $start, $stop - $start);
-		$matches = array();
-		if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $content, $matches) === 1) {
-			return $matches[2];
-		}
-		// Resetting $matches
-		$matches = array();
-		if (preg_match('/(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $content, $matches) === 1) {
-			return $matches[1];
-		}
-		// Resetting $matches
-		$matches = array();
-		if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)$/s', $content, $matches) === 1) {
-			return $matches[2];
-		}
-		return $content;
+		GeneralUtility::logDeprecatedFunction();
+		return MarkerUtility::getSubpart($content, $marker);
 	}
 
 	/**
@@ -76,70 +55,13 @@ class HtmlParser {
 	 * @param array $subpartContent If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
 	 * @param bool $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
 	 * @param bool $keepMarker If set, the marker around the subpart is not removed, but kept in the output
+	 *
 	 * @return string Processed input content
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
 	 */
 	static public function substituteSubpart($content, $marker, $subpartContent, $recursive = TRUE, $keepMarker = FALSE) {
-		$start = strpos($content, $marker);
-		if ($start === FALSE) {
-			return $content;
-		}
-		$startAM = $start + strlen($marker);
-		$stop = strpos($content, $marker, $startAM);
-		if ($stop === FALSE) {
-			return $content;
-		}
-		$stopAM = $stop + strlen($marker);
-		$before = substr($content, 0, $start);
-		$after = substr($content, $stopAM);
-		$between = substr($content, $startAM, $stop - $startAM);
-		if ($recursive) {
-			$after = self::substituteSubpart($after, $marker, $subpartContent, $recursive, $keepMarker);
-		}
-		if ($keepMarker) {
-			$matches = array();
-			if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
-				$before .= $marker . $matches[1];
-				$between = $matches[2];
-				$after = $matches[3] . $marker . $after;
-			} elseif (preg_match('/^(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
-				$before .= $marker;
-				$between = $matches[1];
-				$after = $matches[2] . $marker . $after;
-			} elseif (preg_match('/^([^\\<]*\\-\\-\\>)(.*)$/s', $between, $matches) === 1) {
-				$before .= $marker . $matches[1];
-				$between = $matches[2];
-				$after = $marker . $after;
-			} else {
-				$before .= $marker;
-				$after = $marker . $after;
-			}
-		} else {
-			$matches = array();
-			if (preg_match('/^(.*)\\<\\!\\-\\-[^\\>]*$/s', $before, $matches) === 1) {
-				$before = $matches[1];
-			}
-			if (is_array($subpartContent)) {
-				$matches = array();
-				if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
-					$between = $matches[2];
-				} elseif (preg_match('/^(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
-					$between = $matches[1];
-				} elseif (preg_match('/^([^\\<]*\\-\\-\\>)(.*)$/s', $between, $matches) === 1) {
-					$between = $matches[2];
-				}
-			}
-			$matches = array();
-			// resetting $matches
-			if (preg_match('/^[^\\<]*\\-\\-\\>(.*)$/s', $after, $matches) === 1) {
-				$after = $matches[1];
-			}
-		}
-		if (is_array($subpartContent)) {
-			$between = $subpartContent[0] . $between . $subpartContent[1];
-		} else {
-			$between = $subpartContent;
-		}
-		return $before . $between . $after;
+		GeneralUtility::logDeprecatedFunction();
+		return MarkerUtility::substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker);
 	}
 
 	/**
@@ -147,13 +69,13 @@ class HtmlParser {
 	 *
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param array $subpartsContent The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
+	 *
 	 * @return string The processed HTML content string.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
 	 */
 	static public function substituteSubpartArray($content, array $subpartsContent) {
-		foreach ($subpartsContent as $subpartMarker => $subpartContent) {
-			$content = self::substituteSubpart($content, $subpartMarker, $subpartContent);
-		}
-		return $content;
+		GeneralUtility::logDeprecatedFunction();
+		return MarkerUtility::substituteSubpartArray($content, $subpartsContent);
 	}
 
 	/**
@@ -163,11 +85,13 @@ class HtmlParser {
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param string $marker The marker string, typically on the form "###[the marker string]###
 	 * @param mixed $markContent The content to insert instead of the marker string found.
+	 *
 	 * @return string The processed HTML content string.
-	 * @see substituteSubpart()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
 	 */
 	static public function substituteMarker($content, $marker, $markContent) {
-		return str_replace($marker, $markContent, $content);
+		GeneralUtility::logDeprecatedFunction();
+		return MarkerUtility::substituteMarker($content, $marker, $markContent);
 	}
 
 	/**
@@ -185,35 +109,13 @@ class HtmlParser {
 	 * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
 	 * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
 	 * @param bool $deleteUnused If set, all unused marker are deleted.
+	 *
 	 * @return string The processed output stream
-	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
 	 */
 	static public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		if (is_array($markContentArray)) {
-			$wrapArr = GeneralUtility::trimExplode('|', $wrap);
-			$search = array();
-			$replace = array();
-			foreach ($markContentArray as $marker => $markContent) {
-				if ($uppercase) {
-					// use strtr instead of strtoupper to avoid locale problems with Turkish
-					$marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-				}
-				if (!empty($wrapArr)) {
-					$marker = $wrapArr[0] . $marker . $wrapArr[1];
-				}
-				$search[] = $marker;
-				$replace[] = $markContent;
-			}
-			$content = str_replace($search, $replace, $content);
-			unset($search, $replace);
-			if ($deleteUnused) {
-				if (empty($wrap)) {
-					$wrapArr = array('###', '###');
-				}
-				$content = preg_replace('/' . preg_quote($wrapArr[0], '/') . '([A-Z0-9_|\\-]*)' . preg_quote($wrapArr[1], '/') . '/is', '', $content);
-			}
-		}
-		return $content;
+		GeneralUtility::logDeprecatedFunction();
+		return MarkerUtility::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**
@@ -227,78 +129,36 @@ class HtmlParser {
 	 * markers.
 	 *
 	 * $markersAndSubparts = array (
-	 * 	'###SINGLEMARKER1###' => 'value 1',
-	 * 	'###SUBPARTMARKER1###' => array(
-	 * 		0 => array(
-	 * 			'###SINGLEMARKER2###' => 'value 2',
-	 * 		),
-	 * 		1 => array(
-	 * 			'###SINGLEMARKER2###' => 'value 3',
-	 * 		)
-	 * 	),
-	 * 	'###SUBPARTMARKER2###' => array(
-	 * 	),
+	 *    '###SINGLEMARKER1###' => 'value 1',
+	 *    '###SUBPARTMARKER1###' => array(
+	 *        0 => array(
+	 *            '###SINGLEMARKER2###' => 'value 2',
+	 *        ),
+	 *        1 => array(
+	 *            '###SINGLEMARKER2###' => 'value 3',
+	 *        )
+	 *    ),
+	 *    '###SUBPARTMARKER2###' => array(
+	 *    ),
 	 * )
 	 * Subparts can be nested, so below the 'SINGLEMARKER2' it is possible to have another subpart marker with an array as the
 	 * value, which in its turn contains the elements of the sub-subparts.
 	 * Empty arrays for Subparts will cause the subtemplate to be cleared.
 	 *
 	 * @static
+	 *
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param array $markersAndSubparts The array of single markers and subpart contents.
 	 * @param string $wrap A wrap value - [part1] | [part2] - for the markers before substitution.
 	 * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
 	 * @param bool $deleteUnused If set, all unused single markers are deleted.
+	 *
 	 * @return string The processed output stream
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
 	 */
 	static public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		$wraps = GeneralUtility::trimExplode('|', $wrap);
-		$singleItems = array();
-		$compoundItems = array();
-		// Split markers and subparts into separate arrays
-		foreach ($markersAndSubparts as $markerName => $markerContent) {
-			if (is_array($markerContent)) {
-				$compoundItems[] = $markerName;
-			} else {
-				$singleItems[$markerName] = $markerContent;
-			}
-		}
-		$subTemplates = array();
-		$subpartSubstitutes = array();
-		// Build a cache for the sub template
-		foreach ($compoundItems as $subpartMarker) {
-			if ($uppercase) {
-				// Use strtr instead of strtoupper to avoid locale problems with Turkish
-				$subpartMarker = strtr($subpartMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-			}
-			if (!empty($wraps)) {
-				$subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
-			}
-			$subTemplates[$subpartMarker] = self::getSubpart($content, $subpartMarker);
-		}
-		// Replace the subpart contents recursively
-		foreach ($compoundItems as $subpartMarker) {
-			$completeMarker = $subpartMarker;
-			if ($uppercase) {
-				// use strtr instead of strtoupper to avoid locale problems with Turkish
-				$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-			}
-			if (!empty($wraps)) {
-				$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
-			}
-			if (!empty($markersAndSubparts[$subpartMarker])) {
-				foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
-					$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker],
-						$partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
-				}
-			} else {
-				$subpartSubstitutes[$completeMarker] = '';
-			}
-		}
-		// Substitute the single markers and subparts
-		$result = self::substituteSubpartArray($content, $subpartSubstitutes);
-		$result = self::substituteMarkerArray($result, $singleItems, $wrap, $uppercase, $deleteUnused);
-		return $result;
+		GeneralUtility::logDeprecatedFunction();
+		return MarkerUtility::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/************************************

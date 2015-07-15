@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Template;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -1692,7 +1692,7 @@ function jumpToUrl(URL) {
 	 */
 	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array()) {
 		// Get the HTML template for the module
-		$moduleBody = HtmlParser::getSubpart($this->moduleTemplate, '###FULLDOC###');
+		$moduleBody = MarkerUtility::getSubpart($this->moduleTemplate, '###FULLDOC###');
 		// Add CSS
 		$this->inDocStylesArray[] = 'html { overflow: hidden; }';
 		// Get the page path for the docheader
@@ -1705,7 +1705,7 @@ function jumpToUrl(URL) {
 		$markerArray = array_merge($markerArray, $docHeaderButtons);
 		// replacing subparts
 		foreach ($subpartArray as $marker => $content) {
-			$moduleBody = HtmlParser::substituteSubpart($moduleBody, $marker, $content);
+			$moduleBody = MarkerUtility::substituteSubpart($moduleBody, $marker, $content);
 		}
 		// adding flash messages
 		if ($this->showFlashMessages) {
@@ -1733,7 +1733,7 @@ function jumpToUrl(URL) {
 			}
 		}
 		// Replacing all markers with the finished markers and return the HTML content
-		return HtmlParser::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+		return MarkerUtility::substituteMarkerArray($moduleBody, $markerArray, '###|###');
 	}
 
 	/**
@@ -1773,20 +1773,20 @@ function jumpToUrl(URL) {
 		$floats = array('left', 'right');
 		foreach ($floats as $key) {
 			// Get the template for each float
-			$buttonTemplate = HtmlParser::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
+			$buttonTemplate = MarkerUtility::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
 			// Fill the button markers in this float
-			$buttonTemplate = HtmlParser::substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
+			$buttonTemplate = MarkerUtility::substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
 			// getting the wrap for each group
-			$buttonWrap = HtmlParser::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
+			$buttonWrap = MarkerUtility::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
 			// looping through the groups (max 6) and remove the empty groups
 			for ($groupNumber = 1; $groupNumber < 6; $groupNumber++) {
 				$buttonMarker = '###BUTTON_GROUP' . $groupNumber . '###';
-				$buttonGroup = HtmlParser::getSubpart($buttonTemplate, $buttonMarker);
+				$buttonGroup = MarkerUtility::getSubpart($buttonTemplate, $buttonMarker);
 				if (trim($buttonGroup)) {
 					if ($buttonWrap) {
-						$buttonGroup = HtmlParser::substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
+						$buttonGroup = MarkerUtility::substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
 					}
-					$buttonTemplate = HtmlParser::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
+					$buttonTemplate = MarkerUtility::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
 				}
 			}
 			// Replace the marker with the template and remove all line breaks (for IE compat)

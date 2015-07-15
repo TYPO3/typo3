@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -1958,21 +1959,21 @@ class ContentObjectRenderer {
 	 * " World. How are ". The input content string could just as well have
 	 * been "Hello ###sub1### World. How are ###sub1### you?" and the result
 	 * would be the same
-	 * Wrapper for \TYPO3\CMS\Core\Html\HtmlParser::getSubpart which behaves identical
+	 * Wrapper for \TYPO3\CMS\Core\Utility\MarkerUtility::getSubpart which behaves identical
 	 *
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param string $marker The marker string, typically on the form "###[the marker string]###
 	 * @return string The subpart found, if found.
 	 */
 	public function getSubpart($content, $marker) {
-		return HtmlParser::getSubpart($content, $marker);
+		return MarkerUtility::getSubpart($content, $marker);
 	}
 
 	/**
 	 * Substitute subpart in input template stream.
 	 * This function substitutes a subpart in $content with the content of
 	 * $subpartContent.
-	 * Wrapper for \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart which behaves identical
+	 * Wrapper for \TYPO3\CMS\Core\Utility\MarkerUtility::substituteSubpart which behaves identical
 	 *
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param string $marker The marker string, typically on the form "###[the marker string]###
@@ -1981,7 +1982,7 @@ class ContentObjectRenderer {
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1) {
-		return HtmlParser::substituteSubpart($content, $marker, $subpartContent, $recursive);
+		return MarkerUtility::substituteSubpart($content, $marker, $subpartContent, $recursive);
 	}
 
 	/**
@@ -1992,7 +1993,7 @@ class ContentObjectRenderer {
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpartArray($content, array $subpartsContent) {
-		return HtmlParser::substituteSubpartArray($content, $subpartsContent);
+		return MarkerUtility::substituteSubpartArray($content, $subpartsContent);
 	}
 
 	/**
@@ -2006,7 +2007,7 @@ class ContentObjectRenderer {
 	 * @see substituteSubpart()
 	 */
 	public function substituteMarker($content, $marker, $markContent) {
-		return HtmlParser::substituteMarker($content, $marker, $markContent);
+		return MarkerUtility::substituteMarker($content, $marker, $markContent);
 	}
 
 	/**
@@ -2149,7 +2150,7 @@ class ContentObjectRenderer {
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	public function substituteMarkerArray($content, array $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		return HtmlParser::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
+		return MarkerUtility::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**
@@ -2182,7 +2183,7 @@ class ContentObjectRenderer {
 	 * @return string
 	 */
 	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		return HtmlParser::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
+		return MarkerUtility::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**

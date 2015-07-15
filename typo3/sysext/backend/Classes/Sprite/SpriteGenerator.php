@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -335,7 +335,7 @@ class SpriteGenerator {
 		$markerArray['###SPRITEURL###'] .= $this->spriteName . '.png' . $timestamp;
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
-			$cssData .= HtmlParser::substituteMarkerArray($this->templateSprite, $markerArray);
+			$cssData .= MarkerUtility::substituteMarkerArray($this->templateSprite, $markerArray);
 
 			if ($this->enableHighDensitySprite) {
 				$highDensityMarkerArray = array_merge($markerArray, array(
@@ -347,7 +347,7 @@ class SpriteGenerator {
 						$markerArray['###SPRITEURL###']
 					)
 				));
-				$cssData .= HtmlParser::substituteMarkerArray($this->templateSpriteHighDensity, $highDensityMarkerArray);
+				$cssData .= MarkerUtility::substituteMarkerArray($this->templateSpriteHighDensity, $highDensityMarkerArray);
 			}
 		}
 
@@ -368,7 +368,7 @@ class SpriteGenerator {
 			if ($data['width'] != $this->defaultWidth) {
 				$markerArrayIcons['###SIZE_INFO###'] .= TAB . 'width: ' . $data['width'] . 'px;' . LF;
 			}
-			$cssData .= HtmlParser::substituteMarkerArray($this->templateIcon, $markerArrayIcons);
+			$cssData .= MarkerUtility::substituteMarkerArray($this->templateIcon, $markerArrayIcons);
 		}
 		GeneralUtility::writeFile(PATH_site . $this->cssFolder . $this->spriteName . '.css', $cssData);
 	}

@@ -1726,7 +1726,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		// This means that you can only register footer files *after* the header has been already rendered.
 		// In case you render the footer part first, header files can only be added *after* the footer has been rendered
 		$this->reset();
-		return trim(\TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($template, $markerArray, '###|###'));
+		return trim(\TYPO3\CMS\Core\Utility\MarkerUtility::substituteMarkerArray($template, $markerArray, '###|###'));
 	}
 
 	/**
@@ -1740,7 +1740,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->prepareRendering();
 		$markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
 		$template = $this->getTemplateForPart(self::PART_COMPLETE);
-		return trim(\TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($template, $markerArray, '###|###'));
+		return trim(\TYPO3\CMS\Core\Utility\MarkerUtility::substituteMarkerArray($template, $markerArray, '###|###'));
 	}
 
 	/**
