@@ -1869,27 +1869,6 @@ class Indexer {
 	}
 
 	/**
-	 * Removes any indexed pages with userlogins which has the same contentHash
-	 * NOT USED anywhere inside this class!
-	 *
-	 * @return void
-	 */
-	public function removeLoginpagesWithContentHash() {
-		if (IndexedSearchUtility::isTableUsed('index_phash') && IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.phash', 'index_phash A,index_grlist B', '
-					A.phash=B.phash
-					AND A.phash_grouping=' . (int)$this->hash['phash_grouping'] . '
-					AND B.hash_gr_list<>' . IndexedSearchUtility::md5inthash($this->defaultGrList) . '
-					AND A.contentHash=' . (int)$this->content_md5h);
-			while ($res && FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$this->log_setTSlogMessage('The currently indexed page was indexed under no user-login and apparently this page has been indexed under login conditions earlier, but with the SAME content. Therefore the old similar page with phash=\'' . $row['phash'] . '\' are now removed.', 1);
-				$this->removeOldIndexedPages($row['phash']);
-			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		}
-	}
-
-	/**
 	 * Includes the crawler class
 	 *
 	 * @return void
