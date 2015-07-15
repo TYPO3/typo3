@@ -161,7 +161,7 @@ class Check {
 				' If this flag is disabled in PHP, you won\'t be able to upload files.' .
 				' But it doesn\'t end here, because not only are files not accepted by' .
 				' the server - ALL content in the forms are discarded and therefore' .
-				' nothing at all will be editable if you don\'t set this flag!' .
+				' nothing at all will be editable if you don\'t set this flag!'
 			);
 		} else {
 			$status = new Status\OkStatus();
