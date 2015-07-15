@@ -142,7 +142,7 @@ class ReplaceFileController {
 		$pageContent .= $this->doc->spacer(5);
 		$pageContent .= $this->doc->divider(5);
 
-		$code = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" role="form" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+		$code = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" role="form" method="post" name="editform" enctype="multipart/form-data">';
 
 		// Making the formfields for renaming:
 		$code .= '

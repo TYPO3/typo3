@@ -97,8 +97,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
-		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="'
-			. $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '"><input type="hidden" name="id" value="' . $this->id . '" />';
+		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="multipart/form-data">'
+			. '<input type="hidden" name="id" value="' . $this->id . '" />';
 		$this->content .= $this->doc->header($this->lang->getLL('title'));
 		$this->content .= $this->doc->spacer(5);
 		// Input data grabbed:

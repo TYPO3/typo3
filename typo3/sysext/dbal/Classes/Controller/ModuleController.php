@@ -119,7 +119,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function printSqlCheck() {
 		$input = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_dbal');
 		$out = '
-			<form name="sql_check" action="' . $this->thisScript . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
+			<form name="sql_check" action="' . $this->thisScript . '" method="post" enctype="multipart/form-data">
 			<script type="text/javascript">
 /*<![CDATA[*/
 function updateQryForm(s) {

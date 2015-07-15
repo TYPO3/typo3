@@ -163,7 +163,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 				'template' => 'all'
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			$this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editForm">';
+			$this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" name="editForm">';
 
 			// JavaScript
 			$this->doc->JScode = '

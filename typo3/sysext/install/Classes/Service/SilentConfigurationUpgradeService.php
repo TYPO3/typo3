@@ -92,6 +92,8 @@ class SilentConfigurationUpgradeService {
 		'GFX/png_to_gif',
 		// #67411
 		'SYS/caching/cacheConfigurations/cache_classes',
+		// #68178
+		'SYS/form_enctype',
 	);
 
 	/**

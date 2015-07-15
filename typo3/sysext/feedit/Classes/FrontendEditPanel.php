@@ -92,7 +92,7 @@ class FrontendEditPanel {
 		$this->frontendController->set_no_cache('Frontend edit panel is shown', TRUE);
 
 		$formName = 'TSFE_EDIT_FORM_' . substr($this->frontendController->uniqueHash(), 0, 4);
-		$formTag = '<form name="' . $formName . '" id ="' . $formName . '" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" enctype="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$formTag = '<form name="' . $formName . '" id ="' . $formName . '" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" enctype="multipart/form-data" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		$labelField = $GLOBALS['TCA'][$table]['ctrl']['label'];
 		$hideField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];

@@ -715,7 +715,7 @@ class PageLayoutController {
 		// Alternative template
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout_quickedit.html');
 		// Alternative form tag; Quick Edit submits its content to tce_db.php.
-		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', ['prErr' => 1, 'uPT' => 1])) . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db', ['prErr' => 1, 'uPT' => 1])) . '" method="post" enctype="multipart/form-data" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 		// Set the edit_record value for internal use in this function:

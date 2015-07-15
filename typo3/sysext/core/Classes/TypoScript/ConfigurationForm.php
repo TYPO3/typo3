@@ -137,7 +137,7 @@ class ConfigurationForm extends ExtendedTemplateService {
 			}
 		');
 		if ($addFormTag) {
-			$content .= '<form action="' . htmlspecialchars(($script ?: GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+			$content .= '<form action="' . htmlspecialchars(($script ?: GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="multipart/form-data">';
 		}
 		$content .= $addFields;
 		$content .= $printFields;

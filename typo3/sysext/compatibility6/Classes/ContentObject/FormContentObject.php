@@ -611,7 +611,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 		$theTarget = $theRedirect ? $LD['target'] : $LD_A['target'];
 		$method = isset($conf['method.']) ? $this->cObj->stdWrap($conf['method'], $conf['method.']) : $conf['method'];
 		$content = array(
-			'<form' . ' action="' . htmlspecialchars($action) . '"' . ' id="' . $formName . '"' . ($xhtmlStrict ? '' : ' name="' . $formName . '"') . ' enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '"' . ' method="' . ($method ? $method : 'post') . '"' . ($theTarget ? ' target="' . $theTarget . '"' : '') . $validateForm . '>',
+			'<form' . ' action="' . htmlspecialchars($action) . '"' . ' id="' . $formName . '"' . ($xhtmlStrict ? '' : ' name="' . $formName . '"') . ' enctype="multipart/form-data"' . ' method="' . ($method ? $method : 'post') . '"' . ($theTarget ? ' target="' . $theTarget . '"' : '') . $validateForm . '>',
 			$hiddenfields . $content,
 			'</form>'
 		);

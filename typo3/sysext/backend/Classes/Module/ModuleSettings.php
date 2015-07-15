@@ -414,7 +414,7 @@ class ModuleSettings {
 		}
 		if ($useOwnForm && trim($code)) {
 			$code = '
-		<form action="' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">' . $code . '</form>';
+		<form action="' . GeneralUtility::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="multipart/form-data">' . $code . '</form>';
 		}
 		return $code;
 	}
