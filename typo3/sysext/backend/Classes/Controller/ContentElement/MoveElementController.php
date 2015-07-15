@@ -126,7 +126,7 @@ class MoveElementController {
 			// Get record for element:
 			$elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
 			// Headerline: Icon, record title:
-			$headerLine = IconUtility::getSpriteIconForRecord($this->table, $elRow, array('id' => 'c-recIcon', 'title' => htmlspecialchars(BackendUtility::getRecordIconAltText($elRow, $this->table))));
+			$headerLine = IconUtility::getSpriteIconForRecord($this->table, $elRow, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($elRow, $this->table))));
 			$headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, TRUE);
 			// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$headerLine .= $this->doc->spacer(5);

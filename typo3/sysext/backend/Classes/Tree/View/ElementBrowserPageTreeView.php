@@ -109,7 +109,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 			}
 
 		}
-		$out = '<ul class="list-tree" id="treeRoot">' . $out . '</ul>';
+		$out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
 		return $out;
 	}
 

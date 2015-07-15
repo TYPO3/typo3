@@ -145,36 +145,6 @@
 	}
 }
 
-
-table#typo3-tree {
-	margin: 10px 0 20px 10px;
-	width: 95%;
-	vertical-align: middle;
-
-	tr {
-		td {
-			padding: 0;
-
-			img {
-				vertical-align: middle;
-				&.c-recIcon {
-					margin-right: 1px;
-				}
-			}
-		}
-	}
-
-	a {
-		text-decoration: none;
-	}
-
-}
-
-p.c-refresh img {
-	margin-right: 7px;
-	vertical-align: middle;
-}
-
 #typo3-pagetree #typo3-docheader div.buttonsright,
 #ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-docheader div.buttonsright {
 	margin-right: 3px;
@@ -189,7 +159,7 @@ body#typo3-alt-db-navframe-php div.c-notice {
 }
 
 /** CSS-based tree for Foldertree */
-ul#treeRoot {
+ul.list-tree-root {
 	li:last-child:before {
 		background-color: #ececec;
 	}
@@ -208,11 +178,11 @@ ul#treeRoot {
 }
 
 // change background color for folder nav frame
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php ul#treeRoot li:last-child:before {
+body#ext-backend-Modules-FileSystemNavigationFrame-index-php ul.list-tree-root li:last-child:before {
 	background-color: #f5f5f5;
 }
 
-body#imp-exp-mod ul#treeRoot {
+body#imp-exp-mod ul.list-tree-root {
 	> li:first-child {
 		padding-left: 0;
 	}
@@ -221,10 +191,8 @@ body#imp-exp-mod ul#treeRoot {
 	}
 }
 
-ul#flatTreeRoot {
-	li:last-child:before {
-		background-color: #f1f1f1;
-	}
+ul.flat-tree-root li:last-child:before {
+	background-color: #f1f1f1;
 }
 
 //
@@ -359,42 +327,14 @@ ul.tree div.treeLinkItem img {
 ul.tree div.treeLinkItem span.dragIcon {
 	vertical-align: top;
 }
+
 #dragIcon {
 	position: absolute;
 	visibility: hidden;
 	z-index: 20;
-}
-
-#treeFilterBox {
-	background: url('../../../../icons/gfx/filter_bg.gif') 0 -2px no-repeat;
-	background-color: #dadada;
-	display: none;
-	height: 25px;
-	position: absolute;
-	top: 49px;
-	left: 0;
-	right: 0;
-	width: auto;
-	z-index: 3;
-}
-
-#searchBubble {
-	padding-left: 10px;
-}
-
-#treeFilter {
-	margin: 6px 0 0 17px !important;
-	height: 16px;
-	width: 160px;
-}
-
-#treeFilterReset {
-	position: absolute;
-	top: 5px;
-	left: 192px;
-	border: 0;
-	cursor: pointer;
-	visibility: hidden;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	white-space: nowrap;
 }
 
 #typo3-pagetree #typo3-docheader img {
@@ -428,33 +368,4 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 #typo3-pagetree-treeContainer {
 	border-right: 1px solid @navigation-border;
 	background-color: @navigation-bg;
-}
-
-table#typo3-tree tr:hover {
-	background-color: #d7dbe2;
-}
-
-//
-// AJAX Page Tree
-//
-
-#dragIcon {
-	filter: alpha(opacity=50);
-	opacity: 0.5;
-	white-space: nowrap;
-}
-
-#treeFilter {
-	background: transparent;
-	border: 0;
-}
-
-#tree-toolbar-filter-item {
-	display: inline-block;
-	height: 22px;
-	width: 20px;
-}
-
-#tree-toolbar-filter-item.active {
-	background-image: url("../../../../icons/gfx/toolbar_item_active_bg.png")
 }

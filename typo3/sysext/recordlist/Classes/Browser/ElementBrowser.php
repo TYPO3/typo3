@@ -1601,7 +1601,7 @@ class ElementBrowser {
 			$db = $this->getDatabaseConnection();
 			$picon = IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
 			$picon .= BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE);
-			$out .= $picon . '<ul class="list-tree" id="flatTreeRoot">';
+			$out .= $picon . '<ul class="list-tree flat-tree-root">';
 			// Look up tt_content elements from the expanded page:
 			$res = $db->exec_SELECTquery(
 				'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
@@ -1777,7 +1777,6 @@ class ElementBrowser {
 		}
 		$out .= '<a href="#"' . $selected . ' title="' . htmlspecialchars($folder->getIdentifier()) . '" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
 			. $folderIcon . '</a><br />';
-
 		// Get files from the folder:
 		if ($renderFolders) {
 			$items = $folder->getSubfolders();
@@ -1785,45 +1784,43 @@ class ElementBrowser {
 			$items = $this->getFilesInFolder($folder, $extensionList);
 		}
 		$c = 0;
-		$totalItems = count($items);
-		foreach ($items as $fileOrFolderObject) {
-			$c++;
-			if ($renderFolders) {
-				$fileIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-				$overlays = array();
-				if ($fileOrFolderObject instanceof InaccessibleFolder) {
-					$overlays = array('status-overlay-locked' => array());
+
+		if (!empty($items)) {
+			$out .= '<ul class="list-tree flat-tree-root">';
+			foreach ($items as $fileOrFolderObject) {
+				$c++;
+				if ($renderFolders) {
+					$fileIdentifier = $fileOrFolderObject->getCombinedIdentifier();
+					$overlays = array();
+					if ($fileOrFolderObject instanceof InaccessibleFolder) {
+						$overlays = array('status-overlay-locked' => array());
+					}
+					$icon = IconUtility::getSpriteIcon(
+						IconUtility::mapFileExtensionToSpriteIconName('folder'),
+						array('title' => $fileOrFolderObject->getName()),
+						$overlays);
+					$itemUid = 'file:' . $fileIdentifier;
+				} else {
+					$fileIdentifier = $fileOrFolderObject->getUid();
+					// Get size and icon:
+					$size = ' (' . GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
+					$icon = IconUtility::getSpriteIconForResource($fileOrFolderObject, array('title' => $fileOrFolderObject->getName() . $size));
+					$itemUid = 'file:' . $fileIdentifier;
 				}
-				$icon = IconUtility::getSpriteIcon(
-					IconUtility::mapFileExtensionToSpriteIconName('folder'),
-					array('title' => $fileOrFolderObject->getName()),
-					$overlays);
-				$itemUid = 'file:' . $fileIdentifier;
-			} else {
-				$fileIdentifier = $fileOrFolderObject->getUid();
-				// Get size and icon:
-				$size = ' (' . GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
-				$icon = IconUtility::getSpriteIconForResource($fileOrFolderObject, array('title' => $fileOrFolderObject->getName() . $size));
-				$itemUid = 'file:' . $fileIdentifier;
+				$selected = '';
+				if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder')
+					&& $currentIdentifier == $fileIdentifier
+				) {
+					$selected = ' class="bg-success"';
+				}
+				// Put it all together for the file element:
+				$out .=
+					'<li><a href="#"' . $selected . ' title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">' .
+						$icon .
+						htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
+					'</a></li>';
 			}
-			$selected = '';
-			if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder')
-				&& $currentIdentifier == $fileIdentifier
-			) {
-				$selected = ' class="bg-success"';
-			}
-			// Put it all together for the file element:
-			$out .=
-				'<img' .
-					IconUtility::skinImg(
-						$GLOBALS['BACK_PATH'],
-						('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'),
-						'width="18" height="16"'
-					) . ' alt="" />' . $arrCol .
-				'<a href="#"' . $selected . ' title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">' .
-					$icon .
-					htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
-				'</a><br />';
+			$out .= '</ul>';
 		}
 		return $out;
 	}

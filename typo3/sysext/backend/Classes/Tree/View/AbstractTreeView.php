@@ -75,14 +75,6 @@ abstract class AbstractTreeView {
 	 */
 	public $showDefaultTitleAttribute = FALSE;
 
-	// If TRUE, pages containing child records which has versions will be
-	// highlighted in yellow. This might be too expensive in terms
-	// of processing power.
-	/**
-	 * @var bool
-	 */
-	public $highlightPagesWithVersions = TRUE;
-
 	/**
 	 * Needs to be initialized with $GLOBALS['BE_USER']
 	 * Done by default in init()
@@ -399,7 +391,7 @@ abstract class AbstractTreeView {
 					if ($this->addSelfId) {
 						$this->ids[] = $uid;
 					}
-					$this->getTree($uid, 999, '', '', $rootRec['_SUBCSSCLASS']);
+					$this->getTree($uid);
 				}
 				// Add tree:
 				$treeArr = array_merge($treeArr, $this->tree);
@@ -422,7 +414,7 @@ abstract class AbstractTreeView {
 		$out = '';
 		$closeDepth = array();
 		foreach ($treeArr as $treeItem) {
-			$classAttr = $treeItem['row']['_CSSCLASS'];
+			$classAttr = '';
 			if ($treeItem['isFirst']) {
 				$out .= '<ul class="list-tree">';
 			}
@@ -453,7 +445,7 @@ abstract class AbstractTreeView {
 				}
 			}
 		}
-		$out = '<ul class="list-tree" id="treeRoot">' . $out . '</ul>';
+		$out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
 		return $out;
 	}
 
@@ -641,8 +633,7 @@ abstract class AbstractTreeView {
 	 */
 	public function getIcon($row) {
 		$icon = IconUtility::getSpriteIconForRecord($this->table, $row, array(
-			'title' => $this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row),
-			'class' => 'c-recIcon'
+			'title' => $this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row)
 		));
 		return $this->wrapIcon($icon, $row);
 	}
@@ -714,12 +705,12 @@ abstract class AbstractTreeView {
 		$depth = (int)$depth;
 		$HTML = '';
 		$a = 0;
-		$res = $this->getDataInit($uid, $subCSSclass);
+		$res = $this->getDataInit($uid);
 		$c = $this->getDataCount($res);
 		$crazyRecursionLimiter = 999;
 		$idH = array();
 		// Traverse the records:
-		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, $subCSSclass))) {
+		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, ''))) {
 			$pageUid = ($this->table === 'pages') ? $row['uid'] : $row['pid'];
 			if (!$GLOBALS['BE_USER']->isInWebMount($pageUid)) {
 				// Current record is not within web mount => skip it
@@ -749,7 +740,7 @@ abstract class AbstractTreeView {
 			// Make a recursive call to the next level
 			$hasSub = $this->expandNext($newID) && !$row['php_tree_stop'];
 			if ($depth > 1 && $hasSub) {
-				$nextCount = $this->getTree($newID, $depth - 1, '', '', $row['_SUBCSSCLASS']);
+				$nextCount = $this->getTree($newID, $depth - 1);
 				if (!empty($this->buffer_idH)) {
 					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
 				}
@@ -883,10 +874,6 @@ abstract class AbstractTreeView {
 				$row = FALSE;
 			} else {
 				list(, $row) = each($this->dataLookup[$res][$this->subLevelID]);
-				// Passing on default <td> class for subelements:
-				if (is_array($row) && $subCSSclass !== '') {
-					$row['_CSSCLASS'] = ($row['_SUBCSSCLASS'] = $subCSSclass);
-				}
 			}
 			return $row;
 		} else {
@@ -894,18 +881,6 @@ abstract class AbstractTreeView {
 				BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, TRUE);
 				if (is_array($row)) {
 					break;
-				}
-			}
-			// Passing on default <td> class for subelements:
-			if (is_array($row) && $subCSSclass !== '') {
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && !empty(BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
-					$row['_CSSCLASS'] = 'ver-versions';
-				}
-				if (!isset($row['_CSSCLASS'])) {
-					$row['_CSSCLASS'] = $subCSSclass;
-				}
-				if (!isset($row['_SUBCSSCLASS'])) {
-					$row['_SUBCSSCLASS'] = $subCSSclass;
 				}
 			}
 			return $row;

@@ -79,7 +79,7 @@ class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
 				}
 			}
 		}
-		$out = '<ul class="list-tree" id="treeRoot">' . $out . '</ul>';
+		$out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
 		return $out;
 	}
 

@@ -133,10 +133,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		if (!is_array($treeArr)) {
 			$treeArr = $this->tree;
 		}
-		$out = '
-			<!-- TYPO3 tree structure. -->
-			<ul class="tree" id="treeRoot">
-		';
+		$out = '<ul class="tree list-tree-root">';
 		// -- evaluate AJAX request
 		// IE takes anchor as parameter
 		$PM = GeneralUtility::_GP('PM');
@@ -312,7 +309,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 					if ($this->addSelfId) {
 						$this->ids[] = $uid;
 					}
-					$this->getTree($uid, 999, '', $rootRec['_SUBCSSCLASS']);
+					$this->getTree($uid);
 				}
 				// Add tree:
 				$treeArr = array_merge($treeArr, $this->tree);
@@ -337,13 +334,13 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$depth = (int)$depth;
 		$HTML = '';
 		$a = 0;
-		$res = $this->getDataInit($uid, $subCSSclass);
+		$res = $this->getDataInit($uid);
 		$c = $this->getDataCount($res);
 		$crazyRecursionLimiter = 999;
 		$inMenuPages = array();
 		$outOfMenuPages = array();
 		$outOfMenuPagesTextIndex = array();
-		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, $subCSSclass))) {
+		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
 			$crazyRecursionLimiter--;
 			// Not in menu:
 			if ($this->ext_separateNotinmenuPages && ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['doktype'] >= 200 || $row['nav_hide'])) {

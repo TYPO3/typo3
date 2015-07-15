@@ -25,13 +25,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
 class ElementBrowserFolderTreeView extends FolderTreeView {
 
 	/**
-	 * If file-drag mode is set, temp and recycler folders are filtered out.
-	 *
-	 * @var int
-	 */
-	public $ext_noTempRecyclerDirs = 0;
-
-	/**
 	 * @var int
 	 */
 	public $ext_IconMode = 1;
@@ -80,6 +73,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
 	 * @param bool $bMark If set, the link will have a anchor point (=$bMark) and a name attribute (=$bMark)
+	 * @param bool $isOpen check if the item has children
 	 * @return string Link-wrapped input string
 	 * @access private
 	 */

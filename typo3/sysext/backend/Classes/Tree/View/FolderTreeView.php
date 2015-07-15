@@ -52,6 +52,7 @@ class FolderTreeView extends AbstractTreeView {
 	protected $scope;
 
 	/**
+	 * If file-drag mode is set, temp and recycler folders are filtered out.
 	 * @var bool
 	 */
 	public $ext_noTempRecyclerDirs;
@@ -427,10 +428,7 @@ class FolderTreeView extends AbstractTreeView {
 			return $message->render();
 		}
 
-		$out = '
-			<!-- TYPO3 folder tree structure. -->
-			<ul id="treeRoot" class="list-tree">
-		';
+		$out = '<ul class="list-tree list-tree-root">';
 		// Evaluate AJAX request
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 			list(, $expandCollapseCommand, $expandedFolderHash, ) = $this->evaluateExpandCollapseParameter();
