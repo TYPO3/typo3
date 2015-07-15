@@ -951,7 +951,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				}
 
 				foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
-					$editAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
+					$link = htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']);
+					$editAction = '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					if ((int)$schedulerRecord['disable'] === 1) {
 						$translationKey = 'enable';
@@ -1093,7 +1094,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						if ($schedulerRecord['description'] !== '') {
 							$taskDesc = '<span class="description">' . nl2br(htmlspecialchars($schedulerRecord['description'])) . '</span>';
 						}
-						$taskName = '<span class="name">' . $name . '</span>';
+						$taskName = '<span class="name"><a href="' . $link . '">' . $name . '</a></span>';
 
 						$table[] =
 							'<tr class="' . ($showAsDisabled ? 'disabled' : '') . '">'
