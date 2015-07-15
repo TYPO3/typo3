@@ -1280,7 +1280,7 @@ class Indexer {
 		// Setting description
 		$maxL = MathUtility::forceIntegerInRange($this->conf['index_descrLgd'], 0, 255, 200);
 		if ($maxL) {
-			$bodyDescription = str_replace(array(' ', TAB, CR, LF), ' ', $contentArr['body']);
+			$bodyDescription = preg_replace('/\s+/u', ' ', $contentArr['body']);
 			// Shorten the string:
 			$bodyDescription = $this->csObj->strtrunc('utf-8', $bodyDescription, $maxL);
 		}
