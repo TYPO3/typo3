@@ -496,7 +496,13 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-version-50',
 	'status-version-no-version',
 	'status-warning-in-use',
-	'status-warning-lock'
+	'status-warning-lock',
+	'module-web',
+	'module-file',
+	'module-system',
+	'module-tools',
+	'module-user',
+	'module-help'
 );
 
 
