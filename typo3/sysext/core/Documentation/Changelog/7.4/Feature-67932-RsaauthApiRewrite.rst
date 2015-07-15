@@ -51,7 +51,8 @@ Decode
 ------
 
 To decode your data you can use the method ``TYPO3\CMS\Rsaauth\RsaEncryptionDecoder::decrypt`` which can
-either handle a string or an array as parameter.
+either handle a string or an array as parameter. Data that is handled by \TYPO3\CMS\Core\DataHandling\DataHandler will
+be decoded automatically before processing.
 
 Notice: A RSA public key can only be used once to decrypt data. If you encrypt multiple fields in your form
 you have to pass an array to the decrypt function with all data you want to decrypt. The function parses the

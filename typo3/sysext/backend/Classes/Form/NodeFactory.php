@@ -49,6 +49,8 @@ class NodeFactory {
 		'check' => Element\CheckboxElement::class,
 		'group' => Element\GroupElement::class,
 		'input' => Element\InputElement::class,
+		// rsaInput is defined with a fallback so extensions can use it even if ext:rsaauth is not loaded
+		'rsaInput' => Element\InputElement::class,
 		'imageManipulation' => Element\ImageManipulationElement::class,
 		'none' => Element\NoneElement::class,
 		'radio' => Element\RadioElement::class,

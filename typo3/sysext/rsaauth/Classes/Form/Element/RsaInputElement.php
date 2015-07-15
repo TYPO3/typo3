@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Element;
+namespace TYPO3\CMS\Rsaauth\Form\Element;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,16 +14,17 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
- * Generation of TCEform elements of the type "input"
+ * Generation of form element of the type rsaInput
  */
-class InputElement extends AbstractFormElement {
+class RsaInputElement extends AbstractFormElement {
 
 	/**
 	 * This will render a single-line input form field, possibly with various control/validation features
@@ -38,48 +39,22 @@ class InputElement extends AbstractFormElement {
 		$row = $this->globalOptions['databaseRow'];
 		$parameterArray = $this->globalOptions['parameterArray'];
 		$resultArray = $this->initializeResultArray();
-		$isDateField = FALSE;
+		$resultArray['requireJsModules'] = array('TYPO3/CMS/Rsaauth/RsaEncryptionModule');
 
 		$config = $parameterArray['fieldConf']['config'];
 		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 		$size = MathUtility::forceIntegerInRange($config['size'] ?: $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);
 		$classes = array();
-		$attributes = array();
-
-		if (!isset($config['checkbox'])) {
-			$config['checkbox'] = '0';
-			$checkboxIsset = FALSE;
-		} else {
-			$checkboxIsset = TRUE;
-		}
-
-		// set all date times available
-		$dateFormats = array(
-			'date' => '%d-%m-%Y',
-			'year' => '%Y',
-			'time' => '%H:%M',
-			'timesec' => '%H:%M:%S'
+		$attributes = array(
+			'type' => 'text',
+			'data-rsa-encryption' => $parameterArray['itemFormElID'] . '_hidden',
+			'value' => '',
 		);
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat']) {
-			$dateFormats['date'] = '%m-%d-%Y';
-		}
-		$dateFormats['datetime'] = $dateFormats['time'] . ' ' . $dateFormats['date'];
-		$dateFormats['datetimesec'] = $dateFormats['timesec'] . ' ' . $dateFormats['date'];
 
 		// readonly
 		if ($this->isGlobalReadonly() || $config['readOnly']) {
 			$itemFormElValue = $parameterArray['itemFormElValue'];
-			if (in_array('date', $evalList)) {
-				$config['format'] = 'date';
-			} elseif (in_array('datetime', $evalList)) {
-				$config['format'] = 'datetime';
-			} elseif (in_array('time', $evalList)) {
-				$config['format'] = 'time';
-			}
-			if (in_array('password', $evalList)) {
-				$itemFormElValue = $itemFormElValue ? '*********' : '';
-			}
 			$options = $this->globalOptions;
 			$options['parameterArray'] = array(
 				'fieldConf' => array(
@@ -93,48 +68,15 @@ class InputElement extends AbstractFormElement {
 			return $nodeFactory->create($options)->render();
 		}
 
-		if (in_array('datetime', $evalList, TRUE)
-			|| in_array('date', $evalList)) {
-
-			$classes[] = 't3js-datetimepicker';
-			$isDateField = TRUE;
-			if (in_array('datetime', $evalList)) {
-				$attributes['data-date-type'] = 'datetime';
-				$dateFormat = $dateFormats['datetime'];
-			} elseif (in_array('date', $evalList)) {
-				$attributes['data-date-type'] = 'date';
-				$dateFormat = $dateFormats['date'];
-			}
-			if ($parameterArray['itemFormElValue'] > 0) {
-				$parameterArray['itemFormElValue'] += date('Z', $parameterArray['itemFormElValue']);
-			}
-			if (isset($config['range']['lower'])) {
-				$attributes['data-date-minDate'] = (int)$config['range']['lower'];
-			}
-			if (isset($config['range']['upper'])) {
-				$attributes['data-date-maxDate'] = (int)$config['range']['upper'];
-			}
-		} elseif (in_array('time', $evalList)) {
-			$dateFormat = $dateFormats['time'];
-			$isDateField = TRUE;
-			$classes[] = 't3js-datetimepicker';
-			$attributes['data-date-type'] = 'time';
-		} elseif (in_array('timesec', $evalList)) {
-			$dateFormat = $dateFormats['timesec'];
-			$isDateField = TRUE;
-			$classes[] = 't3js-datetimepicker';
-			$attributes['data-date-type'] = 'timesec';
-		} else {
-			if ($checkboxIsset === FALSE) {
-				$config['checkbox'] = '';
-			}
-		}
-
 		// @todo: The whole eval handling is a mess and needs refactoring
 		foreach ($evalList as $func) {
 			switch ($func) {
 				case 'required':
 					$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString(array('required' => TRUE));
+					break;
+				case 'password':
+					$attributes['type'] = 'password';
+					$attributes['value'] = '********';
 					break;
 				default:
 					// @todo: This is ugly: The code should find out on it's own whether a eval definition is a
@@ -153,12 +95,14 @@ class InputElement extends AbstractFormElement {
 					}
 			}
 		}
+		$evalList = array_filter($evalList, function($value) {
+			return $value !== 'password';
+		});
+
 		$paramsList = array(
 			'field' => $parameterArray['itemFormElName'],
 			'evalList' => implode(',', $evalList),
 			'is_in' => trim($config['is_in']),
-			'checkbox' => ($config['checkbox'] ? 1 : 0),
-			'checkboxValue' => $config['checkbox'],
 		);
 		// set classes
 		$classes[] = 'form-control';
@@ -170,7 +114,6 @@ class InputElement extends AbstractFormElement {
 		$attributes['data-formengine-input-params'] = json_encode($paramsList);
 		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
 		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
-		$attributes['value'] = '';
 		if (isset($config['max']) && (int)$config['max'] > 0) {
 			$attributes['maxlength'] = (int)$config['max'];
 		}
@@ -194,12 +137,12 @@ class InputElement extends AbstractFormElement {
 		}
 
 		$html = '
-			<input type="text"'
-				. $attributeString
-				. $parameterArray['onFocus'] . ' />';
+			<input'
+			. $attributeString
+			. $parameterArray['onFocus'] . ' />';
 
 		// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-		$html .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
+		$html .= '<input type="hidden" id="' . $parameterArray['itemFormElID'] . '_hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" />';
 
 		// Going through all custom evaluations configured for this field
 		// @todo: Similar to above code!
@@ -212,19 +155,6 @@ class InputElement extends AbstractFormElement {
 					}
 				}
 			}
-		}
-
-		// add HTML wrapper
-		if ($isDateField) {
-			$html = '
-				<div class="input-group">
-					' . $html . '
-					<span class="input-group-btn">
-						<label class="btn btn-default" for="' . $attributes['id'] . '">
-							' . IconUtility::getSpriteIcon('actions-edit-pick-date') . '
-						</label>
-					</span>
-				</div>';
 		}
 
 		// Wrap a wizard around the item?

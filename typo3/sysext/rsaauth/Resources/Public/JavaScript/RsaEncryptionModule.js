@@ -86,24 +86,30 @@ define('TYPO3/CMS/Rsaauth/RsaEncryptionModule', ['jquery', './RsaLibrary'], func
 			rsa.setPublic(publicKey[0], publicKey[1]);
 			RsaEncryption.$currentForm.find(':input[data-rsa-encryption]').each(function() {
 				var $this = $(this);
-				var encryptedPassword = rsa.encrypt($this.val());
+				var encryptedValue = rsa.encrypt($this.val());
 				var dataAttribute = $this.data('rsa-encryption');
+				var rsaValue = 'rsa:' + hex2b64(encryptedValue);
 
 				if (!dataAttribute) {
-					$this.val('rsa:' + hex2b64(encryptedPassword));
+					$this.val(rsaValue);
 				} else {
 					var $typo3Field = $('#' + dataAttribute);
-					$typo3Field.val('rsa:' + hex2b64(encryptedPassword));
+					$typo3Field.val(rsaValue);
 					// Reset user password field to prevent it from being submitted
 					$this.val('');
 				}
 			});
 
-			// Create a hidden input field to fake pressing the submit button
-			RsaEncryption.$currentForm.append('<input type="hidden" name="commandLI" value="Submit">');
-
-			// Submit the form
-			RsaEncryption.$currentForm.trigger('submit');
+			// Try to fetch the field which submitted the form
+			var $currentField = RsaEncryption.$currentForm.find('input[type=submit]:focus,input[type=image]:focus');
+			if ($currentField.length === 1) {
+				$currentField.trigger('click');
+			} else {
+				// Create a hidden input field to fake pressing the submit button
+				RsaEncryption.$currentForm.append('<input type="hidden" name="commandLI" value="Submit">');
+				// Submit the form
+				RsaEncryption.$currentForm.trigger('submit');
+			}
 		}
 	};
 

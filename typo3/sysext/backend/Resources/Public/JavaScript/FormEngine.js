@@ -636,6 +636,11 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			// change class and value
 			$parent.find('.t3js-charcounter span').removeClass().addClass(maxlengthProperties.labelClass).text(TBE_EDITOR.labels.remainingCharacters.replace('{0}', maxlengthProperties.remainingCharacters))
 		});
+		$(':password').on('focus', function() {
+			$(this).attr('type', 'text').select();
+		}).on('blur', function() {
+			$(this).attr('type', 'password');
+		});
 	};
 
 	/**

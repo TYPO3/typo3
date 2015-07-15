@@ -130,7 +130,8 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 				for (var i = 0; i < evalList.length; i++) {
 					value = FormEngineValidation.formatValue(evalList[i], value, config)
 				}
-				if (value.length) {
+				// Prevent password fields to be overwritten with original value
+				if (value.length && $humanReadableField.attr('type') != 'password') {
 					$humanReadableField.val(value);
 				}
 				if ($checkboxField.length) {

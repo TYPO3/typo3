@@ -254,7 +254,9 @@ var TBE_EDITOR = {
 		// Set a short timeout to allow other JS processes to complete, in particular those from
 		// EXT:backend/Resources/Public/JavaScript/FormEngine.js (reference: http://forge.typo3.org/issues/58755).
 		// TODO: This should be solved in a better way when this script is refactored.
-		window.setTimeout('document[TBE_EDITOR.formname].submit()', 10);
+		window.setTimeout(function() {
+			document.getElementsByName(TBE_EDITOR.formname).submit();
+		}, 10);
 	},
 	split: function(theStr1, delim, index) {
 		var theStr = ""+theStr1;

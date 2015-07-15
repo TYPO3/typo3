@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Rsaauth;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * This class decodes rsa protected data
  */
@@ -44,17 +46,7 @@ class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		$decryptedData = is_array($data) ? $data : array($data);
-
-		foreach ($decryptedData as $key => $value) {
-			if (substr($value, 0, 4) !== 'rsa:') {
-				continue;
-			}
-
-			$decryptedValue = $this->getBackend()->decrypt($this->getKey(), substr($value, 4));
-			if ($decryptedValue !== NULL) {
-				$decryptedData[$key] = $decryptedValue;
-			}
-		}
+		$decryptedData = $this->decryptDataArray($decryptedData);
 		$this->getStorage()->put(NULL);
 
 		return is_array($data) ? $decryptedData : $decryptedData[0];
@@ -65,6 +57,33 @@ class RsaEncryptionDecoder implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function isAvailable() {
 		return $this->getBackend() instanceof Backend\AbstractBackend;
+	}
+
+	/**
+	 * @param array $data
+	 * @return array
+	 */
+	protected function decryptDataArray(array $data) {
+		foreach ($data as $key => $value) {
+			if (empty($value)) {
+				continue;
+			}
+			if (is_array($value)) {
+				$data[$key] = $this->decryptDataArray($value);
+				continue;
+			}
+
+			if (!StringUtility::beginsWith($value, 'rsa:')) {
+				continue;
+			}
+
+			$decryptedValue = $this->getBackend()->decrypt($this->getKey(), substr($value, 4));
+			if ($decryptedValue !== NULL) {
+				$data[$key] = $decryptedValue;
+			}
+		}
+
+		return $data;
 	}
 
 	/**
