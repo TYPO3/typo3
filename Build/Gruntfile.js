@@ -16,6 +16,18 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		banner: '/*!\n' +
+			' * This file is part of the TYPO3 CMS project.\n' +
+			' *\n' +
+			' * It is free software; you can redistribute it and/or modify it under\n' +
+			' * the terms of the GNU General Public License, either version 2\n' +
+			' * of the License, or any later version.\n' +
+			' *\n' +
+			' * For the full copyright and license information, please read the\n' +
+			' * LICENSE.txt file that was distributed with this source code.\n' +
+			' *\n' +
+			' * The TYPO3 project - inspiring people to share!\n' +
+			' */\n',
 		paths: {
 			resources : 'Resources/',
 			less      : '<%= paths.resources %>Public/Less/',
@@ -27,10 +39,12 @@ module.exports = function(grunt) {
 		less: {
 			t3skin: {
 				options: {
+					banner: '<%= banner %>',
 					outputSourceFiles: true
 				},
-				src : '<%= paths.less %>t3skin.less',
-				dest: '<%= paths.t3skin %>Public/Css/visual/t3skin.css'
+				files: {
+					"<%= paths.t3skin %>Public/Css/backend.css": "<%= paths.less %>backend.less"
+				}
 			}
 		},
 		watch: {

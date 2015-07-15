@@ -1,0 +1,143 @@
+//
+// Callout
+// =======
+// Use to display static contextual messages.
+//
+//
+// Minimal Usage
+// -------------
+//
+// <div class="callout callout-info">
+//   <h4 class="callout-title">Web&gt;Page module</h4>
+//   <div class="callout-body">
+//	   <p>Please click the page title in the page tree to the left to edit page content.</p>
+//   </div>
+// </div>
+//
+//
+// Advanded Usage
+// --------------
+//
+// <div class="callout callout-info">
+//   <div class="media">
+//     <div class="media-left">
+//       <span class="fa-stack fa-lg callout-icon">
+//         <i class="fa fa-circle fa-stack-2x"></i>
+//         <i class="fa fa-info fa-stack-1x"></i>
+//       </span>
+//     </div>
+//     <div class="media-body">
+//       <h4 class="callout-title">...</h4>
+//       <div class="callout-body">
+//         <p>..</p>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+//
+
+
+//
+// Variables
+//
+@callout-padding:             20px;
+@callout-color:               #333;
+@callout-icon-color:          #fff;
+@callout-bg:                  #f0f0f0;
+@callout-border:              #ccc;
+@callout-border-radius:       2px;
+
+@callout-success-bg:          @state-success-bg;
+@callout-success-color:       @callout-color;
+@callout-success-icon-color:  @callout-icon-color;
+@callout-success-border:      @state-success-border;
+
+@callout-info-bg:             @state-info-bg;
+@callout-info-color:          @callout-color;
+@callout-info-icon-color:     @callout-icon-color;
+@callout-info-border:         @state-info-border;
+
+@callout-warning-bg:          @state-warning-bg;
+@callout-warning-color:       @callout-color;
+@callout-warning-icon-color:  @callout-icon-color;
+@callout-warning-border:      @state-warning-border;
+
+@callout-danger-bg:           @state-danger-bg;
+@callout-danger-color:        @callout-color;
+@callout-danger-icon-color:   @callout-icon-color;
+@callout-danger-border:       @state-danger-border;
+
+@callout-notice-bg:           @state-notice-bg;
+@callout-notice-color:        @callout-color;
+@callout-notice-icon-color:   @callout-icon-color;
+@callout-notice-border:       @state-notice-border;
+
+
+//
+// Component
+//
+.callout {
+	background-color: @callout-bg;
+	border-left: 3px solid @callout-border;
+	margin: 20px 0;
+	padding: @callout-padding;
+	color: @callout-color;
+	.media {
+		margin: 0;
+		.fa-stack {
+			color: @callout-icon-color;
+			> .fa:first-child {
+				color: @callout-border;
+			}
+		}
+	}
+	.media-body {
+		vertical-align: middle;
+	}
+}
+.callout-icon {
+	margin-top: -2px;
+}
+.callout-title {
+	font-size: 1.3em;
+	margin: 0 0 0.5em;
+}
+.callout-body {
+	> *:last-child {
+		margin-bottom: 0;
+	}
+}
+
+
+//
+// Variants
+//
+.callout-variant(@background; @border; @text-color; @icon-color) {
+	background-color: @background;
+	border-color: @border;
+	color: @text-color;
+	.media {
+		margin: 0;
+		.fa-stack {
+			color: @icon-color;
+			> .fa:first-child {
+				color: @border;
+			}
+		}
+	}
+}
+.callout-success {
+	.callout-variant(@callout-success-bg; @callout-success-border; @callout-success-color; @callout-success-icon-color);
+}
+.callout-info {
+	.callout-variant(@callout-info-bg; @callout-info-border; @callout-info-color; @callout-info-icon-color);
+}
+.callout-warning {
+	.callout-variant(@callout-warning-bg; @callout-warning-border; @callout-warning-color; @callout-warning-icon-color);
+}
+.callout-danger {
+	.callout-variant(@callout-danger-bg; @callout-danger-border; @callout-danger-color; @callout-danger-icon-color);
+}
+.callout-notice {
+	.callout-variant(@callout-notice-bg; @callout-notice-border; @callout-notice-color; @callout-notice-icon-color);
+}

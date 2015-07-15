@@ -1,0 +1,91 @@
+//
+// Backend
+// =======
+// Contains all needed styles for the TYPO3 backend.
+//
+
+
+//
+// Load minimal Setup including variables
+//
+@import "_minimal.less";
+
+//
+// Components from bootstrap plugins
+//
+@import "@{path-bower}/eonasdan-bootstrap-datetimepicker/src/less/_bootstrap-datetimepicker.less";
+
+//
+// Image Manipulation Wizard base styles
+//
+@import "@{path-bower}/cropper/src/less/cropper.less";
+
+//
+// NProgress
+//
+@import "nprogress/nprogress.less";
+
+//
+// TYPO3 Backend Components
+//
+@import "TYPO3/_deprecated.less";
+@import "TYPO3/_main_type.less";
+@import "TYPO3/_various_fixes.less";
+@import "TYPO3/_element_animation.less";
+@import "TYPO3/_element_cropper.less";
+@import "TYPO3/_element_csh.less";
+@import "TYPO3/_element_csm.less";
+@import "TYPO3/_element_docheader.less";
+@import "TYPO3/_element_history.less";
+@import "TYPO3/_element_message.less";
+@import "TYPO3/_element_modal.less";
+@import "TYPO3/_element_pagetree.less";
+@import "TYPO3/_element_rte.less";
+@import "TYPO3/_element_slider.less";
+@import "TYPO3/_element_spinner.less";
+@import "TYPO3/_element_tab.less";
+@import "TYPO3/_element_table.less";
+@import "TYPO3/_element_tooltip.less";
+@import "TYPO3/_element_panel.less";
+@import "TYPO3/_element_popover.less";
+@import "TYPO3/_element_tceforms.less";
+@import "TYPO3/_element_tree.less";
+@import "TYPO3/_element_pagination.less";
+@import "TYPO3/_element_label.less";
+@import "TYPO3/_element_badges.less";
+@import "TYPO3/_element_buttons.less";
+@import "TYPO3/_element_draguploader.less";
+@import "TYPO3/_icons.less";
+@import "TYPO3/_login_screen.less";
+@import "TYPO3/_main_body.less";
+@import "TYPO3/_main_content.less";
+@import "TYPO3/_main_form.less";
+@import "TYPO3/_main_scaffolding.less";
+@import "TYPO3/_module_menu.less";
+@import "TYPO3/_module_database.less";
+@import "TYPO3/_module_scheduler.less";
+@import "TYPO3/_module_web_page.less";
+@import "TYPO3/_topbar.less";
+@import "TYPO3/_debugconsole.less";
+
+@import "TYPO3/_module_web_list_sysnote.less";
+@import "TYPO3/_module_web_new_element.less";
+@import "TYPO3/_module_extensionmanager.less";
+@import "TYPO3/_module_lang.less";
+@import "TYPO3/_module_beuser.less";
+
+@import "TYPO3/structure/_element_version.less";
+@import "TYPO3/structure/_element_wizard.less";
+@import "TYPO3/structure/_module_user_ws.less";
+@import "TYPO3/structure/_module_web_list.less";
+
+@import "TYPO3/visual/_element_extjs_icons.less";
+@import "TYPO3/visual/_element_typoscript.less";
+@import "TYPO3/visual/_element_version.less";
+@import "TYPO3/visual/_module_file_upload.less";
+
+//
+// Load global Variables
+// Note: Needs to be loaded always at the end of the LESS file that gets compiled
+//
+@import "_variables.less";

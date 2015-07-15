@@ -1,0 +1,198 @@
+//
+// Global Variables
+// ================
+// Note: Need to be loaded after all LESS files are included to override variables defined before.
+// Note: Use relative paths
+//
+
+
+//
+// Paths
+// =====
+//
+@path-build:  "../../..";
+@path-bower:  "@{path-build}/bower_components";
+@path-root:   "../../../../../..";
+@path-sysext: "@{path-root}/typo3/sysext";
+
+
+//
+// Share Font
+// ==========
+//
+@share-font-path: "@{path-sysext}/t3skin/Resources/Public/Fonts/Share";
+
+
+//
+// FontAwesome
+// ===========
+//
+@fa-font-path: "@{path-sysext}/t3skin/Resources/Public/Fonts/FontAwesome";
+
+
+//
+// Bootstrap
+// =========
+//
+
+// Colors
+@gray-darker:           rgb(30, 30, 30);
+@gray-dark:             rgb(90, 90, 90);
+@gray:                  rgb(115, 115, 115);
+@gray-light:            rgb(215, 215, 215);
+@gray-lighter:          rgb(245, 245, 245);
+@brand-primary:         #0078e6;
+@brand-success:         #79a548;
+@brand-info:            #6daae0;
+@brand-warning:         #e8a33d;
+@brand-danger:          #c83c3c;
+@brand-notice:          #333;
+
+// Scaffolding
+@body-bg:               #fff;
+@text-color:            #000;
+@link-color:            #212424;
+@link-hover-color:      #000;
+
+// Typography
+@font-family-sans-serif:    Verdana, Arial, Helvetica, sans-serif;
+@font-size-base:            12px;
+@font-size-large:           ceil((@font-size-base * 1.25)); // ~15px
+@font-size-small:           11px; // ~11px
+@font-size-h1:              floor((@font-size-base * 2.3));
+@font-size-h2:              floor((@font-size-base * 1.6));
+@font-size-h3:              ceil((@font-size-base * 1.35));
+@font-size-h4:              ceil((@font-size-base * 1.2));
+@line-height-base:          1.5;
+
+// Components
+@padding-base-vertical:     6px;
+@padding-base-horizontal:   6px;
+@padding-large-vertical:    12px;
+@padding-large-horizontal:  12px;
+@padding-small-vertical:    4px;
+@padding-small-horizontal:  4px;
+@padding-xs-vertical:       2px;
+@padding-xs-horizontal:     4px;
+@line-height-large:         1.3333333;
+@line-height-small:         1.5;
+@border-radius-base:        2px;
+@border-radius-large:       2px;
+@border-radius-small:       2px;
+
+// Tables
+@table-cell-padding:            6px;
+@table-condensed-cell-padding:  6px;
+@table-bg:                      #fafafa;
+@table-bg-accent:               darken(@table-bg, 1%);
+@table-bg-hover:                darken(@table-bg, 5%);
+@table-bg-active:               @table-bg-hover;
+@table-border-color:            #ccc;
+
+// Buttons
+@btn-font-weight:                normal;
+@btn-default-color:              #333;
+@btn-default-bg:                 #eee;
+@btn-default-border:             #bbb;
+
+// Forms
+@input-bg:                       #fefefe;
+@input-color:                    #333;
+@input-border:                   #bbb;
+@input-border-focus:             #aaa;
+@input-color-placeholder:        @gray-light;
+@input-height-large:             (ceil(@font-size-large * @line-height-large) + (@padding-large-vertical * 1.6) + 2);
+
+// Navbar
+@navbar-height:                  45px;
+@navbar-default-link-hover-bg:             darken(@navbar-default-bg, 5%);
+@navbar-default-link-active-bg:            darken(@navbar-default-bg, 10%);
+@navbar-default-link-disabled-bg:          darken(@navbar-default-bg, 15%);
+
+@navbar-inverse-color:                      #999;
+@navbar-inverse-bg:                         #111;
+@navbar-inverse-border:                     none;
+@navbar-inverse-link-color:                 #ddd;
+@navbar-inverse-link-bg:                    lighten(@navbar-inverse-bg, 7.5%);  // TYPO3 SPECIFIC
+@navbar-inverse-link-hover-color:           rgb(200, 200, 200);
+@navbar-inverse-link-hover-bg:              rgb(50, 50, 50);
+@navbar-inverse-link-active-color:          #fff;
+@navbar-inverse-link-active-bg:             @navbar-inverse-link-hover-bg;
+@navbar-inverse-link-disabled-color:        darken(@navbar-inverse-color, 30%);
+@navbar-inverse-link-disabled-bg:           darken(@navbar-inverse-bg, 20%);
+
+// Navs
+@nav-open-link-hover-color:                 #fff;
+@nav-link-padding:                          6px 12px;
+@nav-disabled-link-hover-color:             @gray-dark;
+
+// Tabs
+@nav-tabs-border-color:                     #ccc;
+@nav-tabs-link-hover-bg:                    darken(@nav-tabs-active-link-bg, 10%);
+@nav-tabs-link-hover-border-color:          @gray-light;
+@nav-tabs-active-link-bg:                   #fafafa;
+@nav-tabs-active-link-hover-bg:             @body-bg;
+@nav-tabs-active-link-hover-color:          #000;
+@nav-tabs-active-link-hover-border-color:   #ccc;
+@nav-tabs-active-link-hover-bg:             darken(@nav-tabs-active-link-bg, 5%);
+@nav-tabs-justified-link-border-color:            #ccc;
+@nav-tabs-justified-active-link-border-color:     @nav-tabs-border-color;
+
+// Form states and alerts
+@state-success-text:          @brand-success;
+@state-success-bg:            lighten(@brand-success, 35%);
+@state-success-border:        @brand-success;
+@state-info-text:             @brand-info;
+@state-info-bg:               lighten(@brand-info, 30%);
+@state-info-border:           @brand-info;
+@state-warning-text:          @brand-warning;
+@state-warning-bg:            lighten(@brand-warning, 35%);
+@state-warning-border:        @brand-warning;
+@state-danger-text:           @brand-danger;
+@state-danger-bg:             lighten(@brand-danger, 35%);
+@state-danger-border:         @brand-danger;
+@state-notice-text:           rgb(160, 160, 160);                            // TYPO3 SPECIFIC
+@state-notice-bg:             lighten(rgb(160, 160, 160), 35%);              // TYPO3 SPECIFIC
+@state-notice-border:         rgb(160, 160, 160);                            // TYPO3 SPECIFIC
+
+// Tooltips
+@tooltip-bg:                  #333;
+@tooltip-opacity:             1;
+@tooltip-arrow-width:         3px;
+
+// Alerts
+@alert-padding:               11px;
+@alert-border-radius:         2px;
+@alert-link-font-weight:      bold;
+@alert-success-bg:            @brand-success;
+@alert-success-text:          #fff;
+@alert-success-border:        transparent;
+@alert-info-bg:               @brand-info;
+@alert-info-text:             #fff;
+@alert-info-border:           transparent;
+@alert-warning-bg:            @brand-warning;
+@alert-warning-text:          #fff;
+@alert-warning-border:        transparent;
+@alert-danger-bg:             @brand-danger;
+@alert-danger-text:           #fff;
+@alert-danger-border:         transparent;
+@alert-notice-bg:             @brand-notice;                                    // TYPO3 SPECIFIC
+@alert-notice-text:           #fff;                                             // TYPO3 SPECIFIC
+@alert-notice-border:         transparent;                                      // TYPO3 SPECIFIC
+
+// Panels
+@panel-default-border:        #ccc;
+@panel-default-heading-bg:    #ddd;
+
+// Wells
+@well-bg:                     #fafafa;
+@well-border:                 #ccc;
+
+// Badges
+@badge-bg:                    @gray;
+
+// Type
+@text-muted:                  lighten(@text-color,45%);
+@headings-small-color:        @gray;
+@dl-horizontal-offset:        90px;
+@hr-border:                   #7a7a7a;

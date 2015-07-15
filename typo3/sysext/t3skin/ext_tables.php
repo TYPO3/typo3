@@ -7,7 +7,8 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	$GLOBALS['TBE_STYLES']['skins']['t3skin'] = array(
 		'name' => 't3skin',
 		'stylesheetDirectories' => array(
-			'sprites' => 'EXT:t3skin/stylesheets/sprites/'
+			'sprites' => 'EXT:t3skin/stylesheets/sprites/',
+			'css' => 'EXT:t3skin/Resources/Public/Css/'
 		)
 	);
 
