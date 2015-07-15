@@ -88,8 +88,7 @@ These are the more technical specs:
   rendered by a USER cObject calling methods from
   "tx\_cssstyledcontent\_pi1" for rendering.
 
-- TYPO3 specific tags: skipping typolist, typohead, typocode tags (using
-  native HTML from RTE instead). Preserving the <LINK> tag.
+- TYPO3 specific tags: Preserving the <LINK> tag.
 
 - The position of the parseFunc object has changed to "lib.parseFunc"
   and with TYPO3 versions > 3.6.0RC1 parseFunc can be referenced (which

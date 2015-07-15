@@ -4878,8 +4878,7 @@ class ContentObjectRenderer {
 	/**
 	 * Implements the stdWrap property, "parseFunc".
 	 * This is a function with a lot of interesting uses. In classic TypoScript this is used to process text
-	 * from the bodytext field; This included highlighting of search words, changing http:// and mailto: prefixed strings into links,
-	 * parsing <typolist>, <typohead> and <typocode> tags etc.
+	 * from the bodytext field; This included highlighting of search words, changing http:// and mailto: prefixed strings into etc.
 	 * It is still a very important function for processing of bodytext which is normally stored in the database
 	 * in a format which is not fully ready to be outputted.
 	 * This situation has not become better by having a RTE around...
@@ -7181,7 +7180,6 @@ class ContentObjectRenderer {
 	 * @param array $confArr The TypoScript array
 	 * @param string $prop The property name: If this value is a reference (eg. " < plugins.tx_something") then the reference will be retrieved and inserted at that position (into the properties only, not the value...) AND overlaid with the old properties if any.
 	 * @return array The modified TypoScript array
-	 * @see user_plaintext::typolist(),user_plaintext::typohead()
 	 */
 	public function mergeTSRef($confArr, $prop) {
 		if ($confArr[$prop][0] === '<') {
