@@ -176,7 +176,7 @@ class FileCollector implements \Countable {
 			try {
 				$folder = $this->getResourceFactory()->getFolderObjectFromCombinedIdentifier($folderIdentifier);
 				if ($folder instanceof Folder) {
-					$files = $folder->getFiles();
+					$files = array_values($folder->getFiles());
 
 					$this->addFileObjects($files);
 				}
