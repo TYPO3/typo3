@@ -181,10 +181,6 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getPageRenderer();
 
-		// Include needed javascript-frameworks
-		$pageRenderer->loadPrototype();
-		$pageRenderer->loadScriptaculous();
-
 		// Include editor-css
 		$cssFile = GeneralUtility::createVersionNumberedFilename($GLOBALS['BACK_PATH'] . $this->relExtPath . 'res/css/t3editor.css');
 		$doc->addStyleSheet('t3editor', $cssFile);

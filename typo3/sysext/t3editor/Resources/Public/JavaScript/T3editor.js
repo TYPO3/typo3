@@ -85,8 +85,9 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 	T3editor.setAjaxSavetypeCallback = function(codemirror) {
 		if (codemirror.options.ajaxSaveType !== '') {
 			$(document).on('t3editor:save', function(e, data) {
-				var params = Object.extend({
-					t3editor_savetype: codemirror.options.ajaxSaveType
+				var params = $.extend({
+					t3editor_savetype: codemirror.options.ajaxSaveType,
+					submit: true
 				}, data.parameters);
 
 				$.ajax({
@@ -115,9 +116,8 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 		}
 
 		codemirror.options.originalTextarea.val(codemirror.getCode());
-
-		var params = codemirror.options.originalTextarea.get(0).form.serialize(true);
-		params = Object.extend({t3editor_disableEditor: 'false'}, params);
+		var params = codemirror.options.originalTextarea.closest('form').serializeObject();
+		params = $.extend({t3editor_disableEditor: 'false'}, params);
 
 		$(document).trigger('t3editor:save', {parameters: params, t3editor: this});
 	};
@@ -130,9 +130,9 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 			this.textModified = false;
 		} else {
 			if (typeof returnedData.exceptionMessage !== 'undefined') {
-				top.TYPO3.Notification.error(codemirror.labels.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
+				top.TYPO3.Notification.error(codemirror.options.labels.errorWhileSaving[0]['target'], returnedData.exceptionMessage);
 			} else {
-				top.TYPO3.Notification.error(codemirror.labels.errorWhileSaving[0]['target'], '');
+				top.TYPO3.Notification.error(codemirror.options.labels.errorWhileSaving[0]['target'], '');
 			}
 		}
 	};
@@ -192,6 +192,28 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 				taboverride.set($elements);
 			});
 		}
+	};
+
+	/**
+	 * Serialize a form to a JavaScript object
+	 *
+	 * @see http://stackoverflow.com/a/1186309/4828813
+	 * @returns {Object}
+	 */
+	$.fn.serializeObject = function() {
+		var o = {};
+		var a = this.serializeArray();
+		$.each(a, function() {
+			if (typeof o[this.name] !== 'undefined') {
+				if (!o[this.name].push) {
+					o[this.name] = [o[this.name]];
+				}
+				o[this.name].push(this.value || '');
+			} else {
+				o[this.name] = this.value || '';
+			}
+		});
+		return o;
 	};
 
 	/**
