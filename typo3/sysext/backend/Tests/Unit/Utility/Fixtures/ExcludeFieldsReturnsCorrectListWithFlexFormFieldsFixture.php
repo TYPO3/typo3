@@ -23,7 +23,7 @@ class ExcludeFieldsReturnsCorrectListWithFlexFormFieldsFixture extends \TYPO3\CM
 	 * @param string $table
 	 * @return array
 	 */
-	static public function getRegisteredFlexForms($table) {
+	static public function getRegisteredFlexForms($table = 'tt_content') {
 		static $called = 0;
 		++$called;
 		if ($called === 1) {

@@ -90,7 +90,7 @@ class SortedTreeNodeCollection extends \TYPO3\CMS\Backend\Tree\TreeNodeCollectio
 	 * @param \TYPO3\CMS\Backend\Tree\TreeNode $node
 	 * @return void
 	 */
-	public function append(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
+	public function append($node) {
 		parent::append($node);
 		$this->asort();
 		$this->normalize();

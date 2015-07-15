@@ -109,7 +109,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function registeredFileRendererClassWithSamePriorityAreReturnedInSameOrderAsTheyWereAdded() {
+	public function registeredFileRendererClassWithSamePriorityAreAllReturned() {
 		$rendererClass1 = $this->getUniqueId('myRenderer1');
 		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array(), array(), $rendererClass1);
 		$rendererObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
@@ -128,8 +128,8 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$rendererRegistry->registerRendererClass($rendererClass2);
 
 		$rendererInstances = $rendererRegistry->getRendererInstances();
-		$this->assertTrue($rendererInstances[0] instanceof $rendererClass1);
-		$this->assertTrue($rendererInstances[1] instanceof $rendererClass2);
+		$this->assertContains($rendererObject1, $rendererInstances);
+		$this->assertContains($rendererObject2, $rendererInstances);
 	}
 
 	/**

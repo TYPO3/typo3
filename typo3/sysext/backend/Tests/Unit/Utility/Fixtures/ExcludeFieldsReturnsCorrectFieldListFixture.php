@@ -22,7 +22,7 @@ class ExcludeFieldsReturnsCorrectFieldListFixture extends \TYPO3\CMS\Backend\Uti
 	/**
 	 * @return array
 	 */
-	static public function getRegisteredFlexForms() {
+	static public function getRegisteredFlexForms($table = 'tt_content') {
 		return array();
 	}
 }

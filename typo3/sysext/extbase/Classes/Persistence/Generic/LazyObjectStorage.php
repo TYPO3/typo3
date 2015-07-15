@@ -119,7 +119,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::addAll
 	 */
-	public function addAll($storage) {
+	public function addAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage) {
 		$this->initialize();
 		parent::addAll($storage);
 	}
@@ -255,7 +255,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	 *
 	 * @see \TYPO3\CMS\Extbase\Persistence\ObjectStorage::removeAll
 	 */
-	public function removeAll($storage) {
+	public function removeAll(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $storage) {
 		$this->initialize();
 		parent::removeAll($storage);
 	}

@@ -23,10 +23,10 @@ class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonT
 	 * Gets the node array. If the TCA configuration has defined items,
 	 * they are added to rootlevel on top of the tree
 	 *
-	 * @param \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeNode $node
+	 * @param \TYPO3\CMS\Backend\Tree\TreeRepresentationNode|DatabaseTreeNode $node
 	 * @return array
 	 */
-	protected function getNodeArray(DatabaseTreeNode $node) {
+	protected function getNodeArray(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node) {
 		$nodeArray = parent::getNodeArray($node);
 		$nodeArray = array_merge($nodeArray, array(
 			'expanded' => $node->getExpanded(),
@@ -42,7 +42,7 @@ class ExtJsArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\ExtJsJsonT
 	/**
 	 * Renders a node collection recursive or just a single instance
 	 *
-	 * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $node
+	 * @param \TYPO3\CMS\Backend\Tree\AbstractTree $tree
 	 * @param bool $recursive
 	 * @return array
 	 */

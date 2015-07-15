@@ -22,7 +22,7 @@ class ProcessedValueForGroupWithOneAllowedTableFixture extends \TYPO3\CMS\Backen
 	/**
 	 * Get record WSOL
 	 */
-	static public function getRecordWSOL() {
+	static public function getRecordWSOL($table, $uid, $fields = '*', $where = '', $useDeleteClause = TRUE, $unsetMovePointers = FALSE) {
 		static $called = 0;
 		++$called;
 		if ($called === 1) {
@@ -36,7 +36,7 @@ class ProcessedValueForGroupWithOneAllowedTableFixture extends \TYPO3\CMS\Backen
 	/**
 	 * Get record title
 	 */
-	static public function getRecordTitle() {
+	static public function getRecordTitle($table, $row, $prep = FALSE, $forceResult = TRUE) {
 		static $called = 0;
 		++$called;
 		if ($called === 1) {

@@ -282,10 +282,11 @@ class DateViewHelperTest extends UnitTestCase {
 	/**
 	 * @param string $locale
 	 */
-	protected function setLocale($locale) {
-		setlocale(LC_CTYPE, $locale);
-		setlocale(LC_MONETARY, $locale);
-		setlocale(LC_TIME, $locale);
+	protected function setLocale() {
+		$args = func_get_args();
+		setlocale(LC_CTYPE, $args[0]);
+		setlocale(LC_MONETARY, $args[0]);
+		setlocale(LC_TIME, $args[0]);
 	}
 
 }

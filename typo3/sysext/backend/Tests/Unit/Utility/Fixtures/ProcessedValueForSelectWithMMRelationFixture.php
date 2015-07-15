@@ -27,7 +27,7 @@ class ProcessedValueForSelectWithMMRelationFixture extends \TYPO3\CMS\Backend\Ut
 	 *
 	 * @return string
 	 */
-	static public function getRecordTitle($table, $row) {
+	static public function getRecordTitle($table, $row, $prep = FALSE, $forceResult = TRUE) {
 		return $row['title'];
 	}
 }

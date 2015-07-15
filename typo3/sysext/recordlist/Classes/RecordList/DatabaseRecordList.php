@@ -319,7 +319,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @throws \UnexpectedValueException
 	 * @return string HTML table with the listing for the record.
 	 */
-	public function getTable($table, $id, $rowList) {
+	public function getTable($table, $id, $rowList = '') {
 		$backendUser = $this->getBackendUserAuthentication();
 		$lang = $this->getLanguageService();
 		$db = $this->getDatabaseConnection();

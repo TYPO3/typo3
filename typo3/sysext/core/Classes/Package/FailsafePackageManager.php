@@ -60,7 +60,7 @@ class FailsafePackageManager extends PackageManager {
 	 *
 	 * @return void
 	 */
-	protected function registerPackagesFromConfiguration() {
+	protected function registerPackagesFromConfiguration($registerOnlyNewPackages = FALSE) {
 		$this->packageStatesConfiguration['packages']['install']['state'] = 'active';
 		parent::registerPackagesFromConfiguration();
 	}

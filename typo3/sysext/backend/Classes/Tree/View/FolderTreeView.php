@@ -96,7 +96,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * @internal
 	 * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
 	 */
-	public function PMicon(\TYPO3\CMS\Core\Resource\Folder $folderObject, $subFolderCounter, $totalSubFolders, $nextCount, $isExpanded) {
+	public function PMicon($folderObject, $subFolderCounter, $totalSubFolders, $nextCount, $isExpanded) {
 		$icon = '';
 		if ($nextCount) {
 			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isExpanded, $folderObject);
@@ -147,7 +147,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * @return string The processed icon input value.
 	 * @internal
 	 */
-	public function wrapIcon($icon, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
+	public function wrapIcon($icon, $folderObject) {
 		// Add title attribute to input icon tag
 		$theFolderIcon = '';
 		// Wrap icon in click-menu link.
@@ -167,12 +167,12 @@ class FolderTreeView extends AbstractTreeView {
 	 * Wrapping $title in a-tags.
 	 *
 	 * @param string $title Title string
-	 * @param \TYPO3\CMS\Core\Resource\Folder	$folderObject the folder record
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folder record
 	 * @param int $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @internal
 	 */
-	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject, $bank = 0) {
+	public function wrapTitle($title, $folderObject, $bank = 0) {
 		// Check storage access to wrap with click menu
 		if ($folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
 			return $title;
@@ -189,7 +189,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
 	 * @return int The "uid" field value.
 	 */
-	public function getId(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
+	public function getId($folderObject) {
 		return GeneralUtility::md5Int($folderObject->getCombinedIdentifier());
 	}
 
@@ -199,7 +199,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
 	 * @return string The jump-url parameter.
 	 */
-	public function getJumpToParam(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
+	public function getJumpToParam($folderObject) {
 		return rawurlencode($folderObject->getCombinedIdentifier());
 	}
 
@@ -221,7 +221,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder to be used
 	 * @return 	string The attribute value (is htmlspecialchared() already)
 	 */
-	public function getTitleAttrib(\TYPO3\CMS\Core\Resource\Folder $folderObject) {
+	public function getTitleAttrib($folderObject) {
 		return htmlspecialchars($folderObject->getName());
 	}
 

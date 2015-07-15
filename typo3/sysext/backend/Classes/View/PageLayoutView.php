@@ -180,9 +180,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 *
 	 * @param string $table Table name
 	 * @param int $id Current page id
+	 * @param string $fields
 	 * @return string HTML for listing.
 	 */
-	public function getTable($table, $id) {
+	public function getTable($table, $id, $fields = '') {
 		if (isset($this->externalTables[$table])) {
 			return $this->getExternalTables($id, $table);
 		} else {

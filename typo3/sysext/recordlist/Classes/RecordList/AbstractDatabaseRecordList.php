@@ -520,7 +520,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 	 * @param string $fields List of fields to show in the listing. Pseudo fields will be added including the record header.
 	 * @return string HTML code
 	 */
-	public function getTable($tableName, $id, $fields) {
+	public function getTable($tableName, $id, $fields = '') {
 		return '';
 	}
 

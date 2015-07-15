@@ -94,7 +94,7 @@ class ExtractorRegistryTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function registeredExtractorClassWithSamePriorityAreReturnedInSameOrderAsTheyWereAdded() {
+	public function registeredExtractorClassWithSamePriorityAreAllReturned() {
 
 		$extractorClass1 = 'b70551b2b2db62b6b15a9bbfcbd50614';
 		$extractorObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class, array(), array(), $extractorClass1);
@@ -114,8 +114,8 @@ class ExtractorRegistryTest extends UnitTestCase {
 		$extractorRegistry->registerExtractionService($extractorClass2);
 
 		$extractorInstances = $extractorRegistry->getExtractors();
-		$this->assertTrue($extractorInstances[0] instanceof $extractorClass1);
-		$this->assertTrue($extractorInstances[1] instanceof $extractorClass2);
+		$this->assertContains($extractorObject1, $extractorInstances);
+		$this->assertContains($extractorObject2, $extractorInstances);
 	}
 
 	/**

@@ -1182,7 +1182,7 @@ class BackendUtilityTest extends UnitTestCase {
 		eval(
 			'namespace ' . __NAMESPACE__ . ';' .
 			'class ' . $className . ' extends \\TYPO3\\CMS\\Backend\\Utility\\BackendUtility {' .
-			'  static public function getPagesTSconfig() {' .
+			'  static public function getPagesTSconfig($id, $rootLine = NULL, $returnPartArray = false) {' .
 			'    return array();' .
 			'  }' .
 			'}'

@@ -65,10 +65,11 @@ abstract class AbstractConditionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHel
 	/**
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
 	 *
+	 * @param string $condition
 	 * @return string the rendered string
 	 * @api
 	 */
-	public function render() {
+	public function render($condition = '') {
 		if (static::evaluateCondition($this->arguments)) {
 			return $this->renderThenChild();
 		} else {

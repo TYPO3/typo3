@@ -613,7 +613,7 @@ class FileList extends AbstractRecordList {
 	 *
 	 * @return string URL
 	 */
-	public function listURL() {
+	public function listURL($altId = '') {
 		return GeneralUtility::linkThisScript(array(
 			'target' => rawurlencode($this->folderObject->getCombinedIdentifier()),
 			'imagemode' => $this->thumbs
