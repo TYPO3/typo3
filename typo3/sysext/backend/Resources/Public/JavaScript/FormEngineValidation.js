@@ -44,23 +44,6 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	FormEngineValidation.initialize = function() {
 		$(document).find('.' + FormEngineValidation.errorClass).removeClass(FormEngineValidation.errorClass);
 
-		// Bind to field changes
-		$(document).on('change', FormEngineValidation.rulesSelector, function() {
-			// we need to wait, because the update of the select fields needs some time
-			window.setTimeout(function() {
-				FormEngineValidation.validate();
-			}, 500);
-			var $paletteField = $(this).closest('.t3js-formengine-palette-field');
-			$paletteField.addClass('has-change');
-		});
-
-		// Bind to datepicker changes
-		$(document).on('dp.change', FormEngineValidation.dateTimeSelector, function(event) {
-			FormEngineValidation.validate();
-			var $paletteField = $(this).closest('.t3js-formengine-palette-field');
-			$paletteField.addClass('has-change');
-		});
-
 		// Initialize input fields
 		$(document).find(FormEngineValidation.inputSelector).each(function() {
 			var config = $(this).data('formengine-input-params');
@@ -69,6 +52,25 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 			$field.data('main-field', fieldName);
 			$field.data('config', config);
 			FormEngineValidation.initializeInputField(fieldName);
+		}).promise().done(function () {
+			// Bind to field changes
+			$(document).on('change', FormEngineValidation.rulesSelector, function() {
+				// we need to wait, because the update of the select fields needs some time
+				window.setTimeout(function() {
+					FormEngineValidation.validate();
+				}, 500);
+				var $paletteField = $(this).closest('.t3js-formengine-palette-field');
+				$paletteField.addClass('has-change');
+			});
+
+			// Bind to datepicker change event, but wait some milliseconds, because the init is not so fast
+			window.setTimeout(function() {
+				$(document).on('dp.change', FormEngineValidation.dateTimeSelector, function(event) {
+					FormEngineValidation.validate();
+					var $paletteField = $(this).closest('.t3js-formengine-palette-field');
+					$paletteField.addClass('has-change');
+				});
+			}, 500);
 		});
 
 		var today = new Date();
@@ -215,14 +217,12 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 			if (typeof typeConfig !== 'undefined' && typeConfig.length) {
 				type = typeConfig[0].type;
 			}
-			switch (type) {
-				case 'password':
-					$mainField.val(origValue);
-					$humanReadableField.val(newValue);
-					break;
-				default:
-					$mainField.val(newValue);
-					$humanReadableField.val(newValue);
+			if ($.inArray('password', evalList)) {
+				$mainField.val(origValue);
+				$humanReadableField.val(newValue);
+			} else {
+				$mainField.val(newValue);
+				$humanReadableField.val(newValue);
 			}
 		}
 	};
