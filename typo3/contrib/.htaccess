@@ -1,7 +1,0 @@
-<FilesMatch "\.(gif|png|jpg)$">
-	<IfModule mod_expires.c>
-		ExpiresActive on
-		ExpiresDefault "access plus 7 days"
-	</IfModule>
-	FileETag MTime Size
-</FilesMatch>
