@@ -369,7 +369,6 @@ class Bootstrap {
 			->setDefaultTimezone()
 			->initializeL10nLocales()
 			->convertPageNotFoundHandlingToBoolean()
-			->registerGlobalDebugFunctions()
 			->setMemoryLimit()
 			->defineTypo3RequestTypes();
 		if ($allowCaching) {
@@ -635,19 +634,6 @@ class Bootstrap {
 		if (!strcasecmp($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'], 'TRUE')) {
 			$GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'] = TRUE;
 		}
-		return $this;
-	}
-
-	/**
-	 * Register xdebug(), debug(), debugBegin() and debugEnd() as global functions
-	 *
-	 * Note: Yes, this is possible in php! xdebug() is then a global function, even
-	 * if registerGlobalDebugFunctions() is encapsulated in class scope.
-	 *
-	 * @return Bootstrap
-	 */
-	protected function registerGlobalDebugFunctions() {
-		require_once('GlobalDebugFunctions.php');
 		return $this;
 	}
 

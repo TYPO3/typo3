@@ -25,7 +25,8 @@
 		"psr-4": {
 			"TYPO3\\CMS\\Core\\": "Classes/"
 		},
-		"classmap": ["Resources/PHP/"]
+		"classmap": ["Resources/PHP/"],
+		"files": ["typo3/sysext/core/Resources/PHP/GlobalDebugFunctions.php"]
 	},
 	"autoload-dev": {
 		"psr-4": {
