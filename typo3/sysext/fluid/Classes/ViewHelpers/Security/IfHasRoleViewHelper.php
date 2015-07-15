@@ -70,8 +70,8 @@ class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 	 * @return string the rendered string
 	 * @api
 	 */
-	public function render($role = '') {
-		return parent::render($role);
+	public function render($role) {
+		return parent::render();
 	}
 
 	/**

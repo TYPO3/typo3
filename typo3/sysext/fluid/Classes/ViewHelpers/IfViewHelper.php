@@ -86,11 +86,11 @@ class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionVie
 	/**
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
 	 *
-	 * @param string $condition View helper condition
+	 * @param bool $condition View helper condition
 	 * @return string the rendered string
 	 * @api
 	 */
-	public function render($condition = '') {
-		return parent::render($condition);
+	public function render($condition) {
+		return parent::render();
 	}
 }
