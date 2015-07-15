@@ -88,6 +88,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 	 */
 	LoginRefresh.initializeTimeoutModal = function() {
 		LoginRefresh.$timeoutModal = LoginRefresh.generateModal(LoginRefresh.identifier.loginrefresh);
+		LoginRefresh.$timeoutModal.addClass('t3-modal-notice');
 		LoginRefresh.$timeoutModal.find('.modal-header h4').text(TYPO3.LLL.core.login_about_to_expire_title);
 		LoginRefresh.$timeoutModal.find('.modal-body').append(
 			$('<p />').text(TYPO3.LLL.core.login_about_to_expire),
@@ -103,7 +104,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			)
 		);
 		LoginRefresh.$timeoutModal.find('.modal-footer').append(
-			$('<button />', {class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
+			$('<button />', {class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_abort_button).on('click', function() {
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
 					method: 'GET',
@@ -112,11 +113,10 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 					}
 				});
 			}),
-			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
+			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_login_confirm_button).on('click', function() {
 				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
 			})
 		);
-
 		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$timeoutModal);
 
 		$('body').append(LoginRefresh.$timeoutModal);
@@ -192,6 +192,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 		}
 
 		LoginRefresh.$loginForm = LoginRefresh.generateModal(LoginRefresh.identifier.loginFormModal);
+		LoginRefresh.$loginForm.addClass('t3-modal-notice');
 		LoginRefresh.$loginForm.find('.modal-header h4').text(TYPO3.LLL.core.refresh_login_title);
 		LoginRefresh.$loginForm.find('.modal-body').append(
 			$('<p />').text(TYPO3.LLL.core.login_expired),
@@ -204,10 +205,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			)
 		);
 		LoginRefresh.$loginForm.find('.modal-footer').append(
-			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button),
-			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_direct_logout_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
-			})
+			$('<button />', {type: 'submit', form: 'beLoginRefresh', class: 'btn btn-primary', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_button)
 		);
 
 		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$loginForm).on('submit', LoginRefresh.submitForm);
@@ -353,6 +351,8 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			LoginRefresh.startTask();
 		}).on('shown.bs.modal', function() {
 			LoginRefresh.stopTask();
+			// focus the button which was configured as active button
+			LoginRefresh.$timeoutModal.find('.modal-footer .t3js-active').first().focus();
 		});
 
 		return $modal;

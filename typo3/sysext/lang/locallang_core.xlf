@@ -638,6 +638,15 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.login_about_to_expire">
 				<source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
 			</trans-unit>
+			<trans-unit id="mess.refresh_login_abort_button">
+				<source>Abort</source>
+			</trans-unit>
+			<trans-unit id="mess.refresh_login_confirm_button">
+				<source>Log me out</source>
+			</trans-unit>
+			<trans-unit id="mess.login_refresh_about_to_expire">
+				<source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
+			</trans-unit>
 			<trans-unit id="mess.login_about_to_expire_title">
 				<source>TYPO3 login expiration notice</source>
 			</trans-unit>
