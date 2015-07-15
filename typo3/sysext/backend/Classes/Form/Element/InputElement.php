@@ -171,8 +171,9 @@ class InputElement extends AbstractFormElement {
 		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
 		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
 		$attributes['value'] = '';
-		$attributes['maxlength'] = $config['max'] ?: 256;
-
+		if (isset($config['max']) && (int)$config['max'] > 0) {
+			$attributes['maxlength'] = (int)$config['max'];
+		}
 		if (!empty($styles)) {
 			$attributes['style'] = implode(' ', $styles);
 		}
