@@ -1,0 +1,12 @@
+actor: Tester
+paths:
+    tests: Configuration/Acceptance
+    log: ../../../../typo3temp/codeception
+    data: ''
+    support: Configuration/Acceptance/Support
+settings:
+    colors: true
+    memory_limit: 1024M
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed

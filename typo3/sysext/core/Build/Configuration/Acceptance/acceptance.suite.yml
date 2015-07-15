@@ -1,0 +1,6 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - PhpBrowser:
+            url: http://localhost:8000
+        - \Helper\Acceptance
