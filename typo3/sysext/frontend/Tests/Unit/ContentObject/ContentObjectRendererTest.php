@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -3563,6 +3564,100 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$expectedResult,
 			$amountOfEntries
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getWhereReturnCorrectQueryDataProvider() {
+		return array(
+			array(
+				array(
+					'tt_content' => array(
+						'ctrl' => array(
+						),
+						'columns' => array(
+						)
+					),
+				),
+				'tt_content',
+				array(
+					'uidInList' => '42',
+					'pidInList' => 43,
+					'where' => 'tt_content.cruser_id=5',
+					'andWhere' => 'tt_content.crdate>0',
+					'groupBy' => 'tt_content.title',
+					'orderBy' => 'tt_content.sorting',
+				),
+				'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND tt_content.crdate>0 GROUP BY tt_content.title ORDER BY tt_content.sorting',
+			),
+			array(
+				array(
+					'tt_content' => array(
+						'ctrl' => array(
+							'delete' => 'deleted',
+							'enablecolumns' => array(
+								'disabled' => 'hidden',
+								'starttime' => 'startdate',
+								'endtime' => 'enddate',
+							),
+							'languageField' => 'sys_language_uid',
+							'transOrigPointerField' => 'l18n_parent',
+						),
+						'columns' => array(
+						)
+					),
+				),
+				'tt_content',
+				array(
+					'uidInList' => 42,
+					'pidInList' => 43,
+					'where' => 'tt_content.cruser_id=5',
+					'andWhere' => 'tt_content.crdate>0',
+					'groupBy' => 'tt_content.title',
+					'orderBy' => 'tt_content.sorting',
+				),
+				'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5 AND (tt_content.sys_language_uid = 13) AND tt_content.crdate>0 AND tt_content.deleted=0 AND tt_content.hidden=0 AND tt_content.startdate<=4242 AND (tt_content.enddate=0 OR tt_content.enddate>4242) GROUP BY tt_content.title ORDER BY tt_content.sorting',
+			),
+			array(
+				array(
+					'tt_content' => array(
+						'ctrl' => array(
+							'languageField' => 'sys_language_uid',
+							'transOrigPointerField' => 'l18n_parent',
+						),
+						'columns' => array(
+						)
+					),
+				),
+				'tt_content',
+				array(
+					'uidInList' => 42,
+					'pidInList' => 43,
+					'where' => 'tt_content.cruser_id=5',
+					'languageField' => 0,
+				),
+				'WHERE tt_content.uid=42 AND tt_content.pid IN (43) AND tt_content.cruser_id=5',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param array $tca
+	 * @param string $table
+	 * @param array $configuration
+	 * @param string $expectedResult
+	 * @dataProvider getWhereReturnCorrectQueryDataProvider
+	 */
+	public function getWhereReturnCorrectQuery($tca, $table, $configuration, $expectedResult) {
+		$GLOBALS['TCA'] = $tca;
+		$GLOBALS['SIM_ACCESS_TIME'] = '4242';
+		$GLOBALS['TSFE']->sys_language_content = 13;
+		/** @var \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer $contentObjectRenderer */
+		$contentObjectRenderer = $this->getMock(ContentObjectRenderer::class, array('checkPidArray'));
+		$contentObjectRenderer->expects($this->any())->method('checkPidArray')->willReturn(explode(',', $configuration['pidInList']));
+		$this->assertEquals($expectedResult, $contentObjectRenderer->getWhere($table, $configuration));
 	}
 
 }

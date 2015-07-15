@@ -12,7 +12,6 @@ styles.content.get {
 	table = tt_content
 	select.orderBy = sorting
 	select.where = colPos=0
-	select.languageField = sys_language_uid
 }
 
 # get content, left

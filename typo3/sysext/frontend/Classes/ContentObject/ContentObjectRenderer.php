@@ -8058,18 +8058,25 @@ class ContentObjectRenderer {
 		if ($where) {
 			$query .= ' AND ' . $where;
 		}
-		if ($conf['languageField']) {
+
+		// Check if the table is translatable, and set the language field by default from the TCA information
+		$languageField = '';
+		if (!empty($conf['languageField']) || !isset($conf['languageField'])) {
+			if (isset($conf['languageField']) && !empty($GLOBALS['TCA'][$table]['columns'][$conf['languageField']])) {
+				$languageField = $conf['languageField'];
+			} elseif (!empty($GLOBALS['TCA'][$table]['ctrl']['languageField']) && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
+				$languageField = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+			}
+		}
+
+		if (!empty($languageField)) {
 			// The sys_language record UID of the content of the page
 			$sys_language_content = (int)$GLOBALS['TSFE']->sys_language_content;
 
-			if ($GLOBALS['TSFE']->sys_language_contentOL
-				&& isset($GLOBALS['TCA'][$table])
-				&& !empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])
-				&& !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
-			) {
+			if ($GLOBALS['TSFE']->sys_language_contentOL && !empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
 				// Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
 				// OVERLAY the records with localized versions!
-				$languageQuery = $conf['languageField'] . ' IN (0,-1)';
+				$languageQuery = $languageField . ' IN (0,-1)';
 				// Use this option to include records that don't have a default translation
 				// (originalpointerfield is 0 and the language field contains the requested language)
 				$includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.']) ?
@@ -8077,10 +8084,10 @@ class ContentObjectRenderer {
 					$conf['includeRecordsWithoutDefaultTranslation'];
 				if (!empty(trim($includeRecordsWithoutDefaultTranslation))) {
 					$languageQuery .= ' OR (' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ' = 0 AND ' .
-						$conf['languageField'] . ' = ' . $sys_language_content . ')';
+						$languageField . ' = ' . $sys_language_content . ')';
 				}
 			} else {
-				$languageQuery = $conf['languageField'] . ' = ' . $sys_language_content;
+				$languageQuery = $languageField . ' = ' . $sys_language_content;
 			}
 			$query .= ' AND (' . $languageQuery . ')';
 		}
@@ -8104,6 +8111,7 @@ class ContentObjectRenderer {
 		// GROUP BY
 		if (trim($conf['groupBy'])) {
 			$queryParts['GROUPBY'] = isset($conf['groupBy.']) ? trim($this->stdWrap($conf['groupBy'], $conf['groupBy.'])) : trim($conf['groupBy']);
+			$query .= ' GROUP BY ' . $queryParts['GROUPBY'];
 		}
 		// ORDER BY
 		if (trim($conf['orderBy'])) {
