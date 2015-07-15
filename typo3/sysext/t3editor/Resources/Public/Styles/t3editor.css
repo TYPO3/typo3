@@ -85,7 +85,7 @@ div.CodeMirror-line-numbers {
 	border: 1px solid gray;
 	position: relative;
 	background-color: #EFEFF4;
-	background-image: url('../../Resources/Public/Icons/spinner.gif');
+	background-image: url('../../Public/Icons/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
 	margin-right: 10px;
@@ -95,7 +95,7 @@ div.CodeMirror-line-numbers {
 	position: absolute;
 	top: 0; left: 0;
 	background-color: #EFEFF4;
-	background-image: url('../../Resources/Public/Icons/spinner.gif');
+	background-image: url('../../Public/Icons/spinner.gif');
 	background-position: 49% 50%;
 	background-repeat: no-repeat;
 	z-index:200;
@@ -160,7 +160,7 @@ div.CodeMirror-line-numbers {
 	padding-left: 3px;
 	padding-top: 3px;
 	background-color:#B8BEC9;
-	background-image: url(../../../t3skin/icons/gfx/alt_menu_mainitem_bg.gif);
+	background-image: url(../../../../t3skin/icons/gfx/alt_menu_mainitem_bg.gif);
 	background-position:left top;
 	background-repeat:repeat-x;
 	height: 20px;

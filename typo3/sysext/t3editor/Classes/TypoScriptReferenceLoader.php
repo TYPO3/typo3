@@ -47,7 +47,7 @@ class TypoScriptReferenceLoader {
 	public function processAjaxRequest($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;
 		// Load the TSref XML information:
-		$this->loadFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'res/tsref/tsref.xml');
+		$this->loadFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Resources/Private/tsref.xml');
 		$ajaxIdParts = explode('::', $ajaxObj->getAjaxID(), 2);
 		$ajaxMethod = $ajaxIdParts[1];
 		$response = array();

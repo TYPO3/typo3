@@ -60,7 +60,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @var string
 	 */
-	protected $codemirrorPath = 'contrib/codemirror/js/';
+	protected $codemirrorPath = 'sysext/t3editor/Resources/Public/JavaScript/Contrib/codemirror/js/';
 
 	/**
 	 * RequireJS modules loaded for code completion
@@ -182,7 +182,9 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 		$pageRenderer = $this->getPageRenderer();
 
 		// Include editor-css
-		$cssFile = GeneralUtility::createVersionNumberedFilename($GLOBALS['BACK_PATH'] . $this->relExtPath . 'res/css/t3editor.css');
+		$cssFile = GeneralUtility::createVersionNumberedFilename(
+			$this->relExtPath . 'Resources/Public/Styles/t3editor.css'
+		);
 		$doc->addStyleSheet('t3editor', $cssFile);
 
 		// Include editor-js-lib
@@ -212,9 +214,10 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string The template code, prepared to use in javascript
 	 */
 	protected function getPreparedTemplate() {
-		$T3editor_template = GeneralUtility::getUrl(GeneralUtility::getFileAbsFileName('EXT:t3editor/res/templates/t3editor.html'));
-		$T3editor_template = str_replace(array(CR, LF), '', $T3editor_template);
-		return $T3editor_template;
+		$T3editor_template = GeneralUtility::getUrl(
+			GeneralUtility::getFileAbsFileName('EXT:t3editor/Resources/Private/Templates/t3editor.html')
+		);
+		return str_replace(array(CR, LF), '', $T3editor_template);
 	}
 
 	/**
@@ -226,7 +229,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getParserfileByMode($mode) {
 		switch ($mode) {
 			case self::MODE_TYPOSCRIPT:
-				$relPath = ($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../') . $this->relExtPath . 'res/jslib/parse_typoscript/';
+				$relPath = '../../../parse_typoscript/';
 				$parserfile = array($relPath . 'tokenizetyposcript.js', $relPath . 'parsetyposcript.js');
 				break;
 			case self::MODE_JAVASCRIPT:
@@ -261,7 +264,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getStylesheetByMode($mode) {
 		switch ($mode) {
 			case self::MODE_TYPOSCRIPT:
-				$stylesheet = array($this->relExtPath . 'res/css/typoscriptcolors.css');
+				$stylesheet = array($this->relExtPath . 'Resources/Public/Styles/typoscriptcolors.css');
 				break;
 			case self::MODE_JAVASCRIPT:
 				$stylesheet = array($this->codemirrorPath . '../css/jscolors.css');
@@ -287,7 +290,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 			default:
 				$stylesheet = array();
 		}
-		$stylesheet[] = $this->relExtPath . 'res/css/t3editor_inner.css';
+		$stylesheet[] = $this->relExtPath . 'Resources/Public/Styles/t3editor_inner.css';
 		return json_encode($stylesheet);
 	}
 
@@ -322,8 +325,8 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 					. $alt
 					. ' data-labels="' . htmlspecialchars(json_encode($GLOBALS['LANG']->getLabelsWithPrefix('js.', 'label_'))) . '"'
 					. ' data-instance-number="' . $this->editorCounter . '"'
-					. ' data-editor-path="' . htmlspecialchars($GLOBALS['BACK_PATH'] . $this->relExtPath) . '"'
-					. ' data-codemirror-path="' . htmlspecialchars($GLOBALS['BACK_PATH'] . $this->codemirrorPath) . '"'
+					. ' data-editor-path="' . htmlspecialchars($this->relExtPath) . '"'
+					. ' data-codemirror-path="' . htmlspecialchars($this->codemirrorPath) . '"'
 					. ' data-ajaxsavetype="' . htmlspecialchars($this->ajaxSaveType) . '"'
 					. ' data-parserfile="' . htmlspecialchars($this->getParserfileByMode($this->mode)) . '"'
 					. ' data-stylesheet="' . htmlspecialchars($this->getStylesheetByMode($this->mode)) . '"'
