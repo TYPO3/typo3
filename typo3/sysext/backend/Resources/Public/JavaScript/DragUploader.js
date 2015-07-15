@@ -358,7 +358,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'TYPO3/CMS/Lang/Lang'], func
 			formData.append('file[upload][1][target]', me.dragUploader.target);
 			formData.append('file[upload][1][data]', '1');
 			if(me.override) {
-				formData.append('overwriteExistingFiles', '1');
+				formData.append('overwriteExistingFiles', 'replace');
 			}
 			formData.append('redirect', '');
 			formData.append('upload_1', me.file);

@@ -150,7 +150,7 @@ class FileUploadController {
 		// Make checkbox for "overwrite"
 		$content = '
 			<div id="c-override">
-				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $this->getLanguageService()->getLL('overwriteExistingFiles', 1) . '</label></p>
+				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="replace" /> ' . $this->getLanguageService()->getLL('overwriteExistingFiles', 1) . '</label></p>
 				<p>&nbsp;</p>
 				<p>' . $this->getLanguageService()->getLL('uploadMultipleFilesInfo', TRUE) . '</p>
 			</div>

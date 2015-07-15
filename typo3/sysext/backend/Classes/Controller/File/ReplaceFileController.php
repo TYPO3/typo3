@@ -165,7 +165,7 @@ class ReplaceFileController {
 			});
 			</script>
 
-			<input type="hidden" name="overwriteExistingFiles" value="1" />
+			<input type="hidden" name="overwriteExistingFiles" value="replace" />
 			<input type="hidden" name="file[replace][1][data]" value="1" />
 			<input type="hidden" name="file[replace][1][uid]" value="' . $this->uid . '" />
 		';

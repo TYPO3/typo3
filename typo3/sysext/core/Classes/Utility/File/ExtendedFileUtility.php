@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -67,8 +68,16 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * If set, the uploaded files will overwrite existing files.
 	 *
 	 * @var bool
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public $dontCheckForUnique = 0;
+
+	/**
+	 * Defines behaviour when uploading files with names that already exist; possible value are 'cancel', 'replace', 'changeName'
+	 *
+	 * @var string
+	 */
+	protected $existingFilesConflictMode;
 
 	/**
 	 * This array is self-explaining (look in the class below).
@@ -135,6 +144,28 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
 	protected $fileFactory;
+
+	/**
+	 * Get existingFilesConflictMode
+	 *
+	 * @return string
+	 */
+	public function getExistingFilesConflictMode() {
+		return $this->existingFilesConflictMode;
+	}
+
+	/**
+	 * Set existingFilesConflictMode
+	 *
+	 * @param string $existingFilesConflictMode
+	 * @throws Exception
+	 */
+	public function setExistingFilesConflictMode($existingFilesConflictMode) {
+		if (!in_array($existingFilesConflictMode, array('cancel', 'replace', 'changeName'))) {
+			throw new Exception(sprintf('Invalid argument, received: "%s", expected: "cancel", "replace" or "changeName"', $existingFilesConflictMode));
+		}
+		$this->existingFilesConflictMode = $existingFilesConflictMode;
+	}
 
 	/**
 	 * Initialization of the class
@@ -938,16 +969,16 @@ class ExtendedFileUtility extends BasicFileUtility {
 				'size' => $uploadedFileData['size'][$i]
 			);
 			try {
-				// @todo can be improved towards conflict mode naming
-				if ($this->dontCheckForUnique) {
-					$conflictMode = 'replace';
-				} else {
-					$conflictMode = 'cancel';
+
+				if ((int)$this->dontCheckForUnique === 1) {
+					GeneralUtility::deprecationLog('dontCheckForUnique = 1 is deprecated. Use setExistingFilesConflictMode(\'replace\');. Support for dontCheckForUnique will be removed in TYPO3 CMS 8.');
+					$this->existingFilesConflictMode = 'replace';
 				}
+
 				/** @var $fileObject File */
-				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $conflictMode);
+				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $this->existingFilesConflictMode);
 				$fileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
-				if ($conflictMode === 'replace') {
+				if ($this->existingFilesConflictMode === 'replace') {
 					$this->getIndexer($fileObject->getStorage())->updateIndexEntry($fileObject);
 				}
 				$resultObjects[] = $fileObject;

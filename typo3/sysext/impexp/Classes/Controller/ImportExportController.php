@@ -1318,7 +1318,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
 		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->setActionPermissions();
-		$this->fileProcessor->dontCheckForUnique = GeneralUtility::_GP('overwriteExistingFiles') ? 1 : 0;
+		$this->fileProcessor->setExistingFilesConflictMode((int)GeneralUtility::_GP('overwriteExistingFiles') === 1 ? 'replace' : 'cancel');
 		// Checking referer / executing:
 		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
 		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
