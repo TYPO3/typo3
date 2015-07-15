@@ -38,11 +38,11 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Styles/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
+ * <f:be.container pageTitle="foo" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" scriptaculousModule="someModule,someOtherModule" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with proper head & body tags.
- * Custom CSS file EXT:your_extension/Resources/Public/Styles/styles.css and
+ * Custom CSS file EXT:your_extension/Resources/Public/Css/styles.css and
  * JavaScript files EXT:your_extension/Resources/Public/JavaScript/Library1.js and EXT:your_extension/Resources/Public/JavaScript/Library2.js
  * will be loaded, plus ExtJS and jQuery and some inline labels for usage in JS code.
  * </output>

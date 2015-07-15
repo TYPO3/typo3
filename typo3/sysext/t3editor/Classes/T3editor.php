@@ -183,7 +183,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
 		// Include editor-css
 		$cssFile = GeneralUtility::createVersionNumberedFilename(
-			$this->relExtPath . 'Resources/Public/Styles/t3editor.css'
+			$this->relExtPath . 'Resources/Public/Css/t3editor.css'
 		);
 		$doc->addStyleSheet('t3editor', $cssFile);
 
@@ -264,7 +264,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getStylesheetByMode($mode) {
 		switch ($mode) {
 			case self::MODE_TYPOSCRIPT:
-				$stylesheet = array($this->relExtPath . 'Resources/Public/Styles/typoscriptcolors.css');
+				$stylesheet = array($this->relExtPath . 'Resources/Public/Css/typoscriptcolors.css');
 				break;
 			case self::MODE_JAVASCRIPT:
 				$stylesheet = array($this->codemirrorPath . '../css/jscolors.css');
@@ -290,7 +290,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 			default:
 				$stylesheet = array();
 		}
-		$stylesheet[] = $this->relExtPath . 'Resources/Public/Styles/t3editor_inner.css';
+		$stylesheet[] = $this->relExtPath . 'Resources/Public/Css/t3editor_inner.css';
 		return json_encode($stylesheet);
 	}
 

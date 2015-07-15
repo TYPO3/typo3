@@ -52,7 +52,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('taskcenter') . 'Resources/Private/Templates/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->getPageRenderer()->loadJquery();
-		$this->doc->addStyleSheet('tx_taskcenter', '../' . ExtensionManagementUtility::siteRelPath('taskcenter') . 'Resources/Public/Styles/styles.css');
+		$this->doc->addStyleSheet('tx_taskcenter', '../' . ExtensionManagementUtility::siteRelPath('taskcenter') . 'Resources/Public/Css/styles.css');
 	}
 
 	/**

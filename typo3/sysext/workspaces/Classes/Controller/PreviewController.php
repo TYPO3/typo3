@@ -43,7 +43,7 @@ class PreviewController extends AbstractController {
 		$this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
 		$this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
 		$this->template->setExtDirectStateProvider();
-		$resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/StyleSheet/preview.css';
+		$resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Css/preview.css';
 		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
