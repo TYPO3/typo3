@@ -225,6 +225,7 @@ class Bootstrap {
 	public function redirectToInstallTool($relativePathPart = '') {
 		$backPathToSiteRoot = str_repeat('../', count(explode('/', $relativePathPart)) - 1);
 		header('Location: ' . $backPathToSiteRoot . 'typo3/sysext/install/Start/Install.php');
+		die;
 	}
 
 	/**
