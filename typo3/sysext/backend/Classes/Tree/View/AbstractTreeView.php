@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
@@ -295,13 +296,18 @@ abstract class AbstractTreeView {
 	public $recs = array();
 
 	/**
+	 * @var WorkspaceService
+	 */
+	protected $workspaceService = NULL;
+
+	/**
 	 * Sets the script url depending on being a module or script request
 	 */
 	protected function determineScriptUrl() {
-		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
+		if ($moduleName = GeneralUtility::_GP('M')) {
 			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
 		} else {
-			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+			$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
 		}
 	}
 
@@ -963,7 +969,7 @@ abstract class AbstractTreeView {
 			}
 			// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass !== '') {
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && count(BackendUtility::countVersionsOfRecordsOnPage($this->BE_USER->workspace, $row['uid']))) {
+				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && $this->getWorkspaceService()->hasPageRecordVersions($this->BE_USER->workspace, $row['uid'])) {
 					$row['_CSSCLASS'] = 'ver-versions';
 				}
 				if (!isset($row['_CSSCLASS'])) {
@@ -1033,6 +1039,17 @@ abstract class AbstractTreeView {
 	public function setDataFromTreeArray(&$treeArr, &$treeLookupArr) {
 		$this->data = &$treeArr;
 		$this->dataLookup = &$treeLookupArr;
+	}
+
+	/**
+	 * @return WorkspaceService
+	 */
+	protected function getWorkspaceService() {
+		if ($this->workspaceService === NULL) {
+			$this->workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		}
+
+		return $this->workspaceService;
 	}
 
 }

@@ -13,12 +13,21 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Workspaces\Service\WorkspaceService;
+
 /**
  * Interface for classes which perform pre or post processing
  *
  * @author Tolleiv Nietsch <typo3@tolleiv.de>
  */
 class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface {
+
+	/**
+	 * @var WorkspaceService
+	 */
+	protected $workspaceService = NULL;
 
 	/**
 	 * @abstract
@@ -71,9 +80,20 @@ class PagetreeCollectionsProcessor implements \TYPO3\CMS\Backend\Tree\Pagetree\C
 	 * @return void
 	 */
 	protected function highlightVersionizedElements(\TYPO3\CMS\Backend\Tree\TreeNode $node) {
-		if (!$node->getCls() && count(\TYPO3\CMS\Backend\Utility\BackendUtility::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $node->getId(), TRUE))) {
+		if (!$node->getCls() && $this->getWorkspaceService()->hasPageRecordVersions($GLOBALS['BE_USER']->workspace, $node->getId())) {
 			$node->setCls('ver-versions');
 		}
+	}
+
+	/**
+	 * @return WorkspaceService
+	 */
+	protected function getWorkspaceService() {
+		if ($this->workspaceService === NULL) {
+			$this->workspaceService = GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+		}
+
+		return $this->workspaceService;
 	}
 
 }
