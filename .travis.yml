@@ -72,7 +72,7 @@ script:
     if [[ "$PHP_LINT" == "yes" ]]; then
         echo;
         echo "Running php lint";
-        find typo3/ -name \*.php -not -path "typo3/contrib/vendor/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+        find typo3/ -name \*.php -not -path "typo3/vendor/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
     fi
   - >
     if [[ "$XLF_CHECK" == "yes" ]]; then

@@ -19,7 +19,7 @@
  * Includes a wizard mode for visually pointing out the position of new pages
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 			'The entry point to create a new database entry was moved to an own module. Please use BackendUtility::getModuleUrl(\'db_new\') to link to db_new.php. This script will be removed in TYPO3 CMS 8.'

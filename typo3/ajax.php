@@ -19,7 +19,7 @@
  * See $TYPO3_CONF_VARS['BE']['AJAX'] and the Core APIs on how to register an AJAX call in the TYPO3 Backend.
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 			'The entry point to ajax.php was moved to index.php with ajaxID given. Please use BackendUtility::getAjaxUrl(\'myAjaxKey\') to link to the AJAX Call. This script will be removed in TYPO3 CMS 8.'

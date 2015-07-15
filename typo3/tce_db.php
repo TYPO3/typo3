@@ -19,7 +19,7 @@
  * For syntax and API information, see the document 'TYPO3 Core APIs'
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 			'The entry point to data handling via DataHandler was moved to an own module. Please use BackendUtility::getModuleUrl(\'tce_db\') to link to tce_db.php / DataHandler. This script will be removed in TYPO3 CMS 8.'

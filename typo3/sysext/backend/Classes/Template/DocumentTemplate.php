@@ -1469,7 +1469,7 @@ function jumpToUrl(URL) {
 	 * Includes a javascript library that exists in the core /typo3/ directory. The
 	 * backpath is automatically applied
 	 *
-	 * @param string $lib: Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @param string $lib: Library name. Call it with the full path like "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
 	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {

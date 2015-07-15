@@ -17,7 +17,7 @@
  */
 
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Usage of alt_file_navframe.php is deprecated since TYPO3 CMS 7, and will be removed in TYPO3 CMS 8');
 

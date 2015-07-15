@@ -1594,7 +1594,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * To add another path mapping deliver the following configuration:
 	 * 		'paths' => array(
-     *			'EXTERN/mybootstrapjs' => 'contrib/twbs/bootstrap.min',
+     *			'EXTERN/mybootstrapjs' => 'sysext/.../twbs/bootstrap.min',
 	 *      ),
 	 *
 	 * @param array $configuration The configuration that will be merged with existing one.

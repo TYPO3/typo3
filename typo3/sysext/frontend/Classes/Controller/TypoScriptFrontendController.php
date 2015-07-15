@@ -3964,14 +3964,12 @@ class TypoScriptFrontendController {
 		$search = array(
 			'"typo3temp/',
 			'"typo3conf/ext/',
-			'"' . TYPO3_mainDir . 'contrib/',
 			'"' . TYPO3_mainDir . 'ext/',
 			'"' . TYPO3_mainDir . 'sysext/'
 		);
 		$replace = array(
 			'"' . $this->absRefPrefix . 'typo3temp/',
 			'"' . $this->absRefPrefix . 'typo3conf/ext/',
-			'"' . $this->absRefPrefix . TYPO3_mainDir . 'contrib/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/',
 			'"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/'
 		);

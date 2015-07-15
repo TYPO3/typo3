@@ -171,7 +171,7 @@ class UnitTestsBootstrap {
 	 * @return UnitTestsBootstrap fluent interface
 	 */
 	protected function includeAndStartCoreBootstrap() {
-		$classLoader = require PATH_site . '/typo3/contrib/vendor/autoload.php';
+		$classLoader = require PATH_site . '/typo3/vendor/autoload.php';
 
 		Bootstrap::getInstance()
 			->initializeClassLoader($classLoader)

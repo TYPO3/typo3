@@ -19,7 +19,7 @@
  */
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 			'Login frameset is moved to an own module. Please use BackendUtility::getModuleUrl(\'login_frameset\') to link to login_frameset.php. This script will be removed in TYPO3 CMS 8.'

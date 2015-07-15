@@ -1354,7 +1354,7 @@ class FormEngine {
 	 * backpath is automatically applied.
 	 * This method acts as wrapper for $GLOBALS['SOBE']->doc->loadJavascriptLib($lib).
 	 *
-	 * @param string $lib Library name. Call it with the full path like "contrib/prototype/prototype.js" to load it
+	 * @param string $lib Library name. Call it with the full path like "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
 	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {

@@ -33,8 +33,8 @@ class PathUtility {
 	/**
 	 * Creates an absolute URL out of really any input path, removes '../' parts for the targetPath
 	 *
-	 * @param string $targetPath can be "../../typo3/contrib/myfile.js" or "/myfile.js"
-	 * @return string something like "/mysite/typo3/sysext/backend.js"
+	 * @param string $targetPath can be "../typo3conf/ext/myext/myfile.js" or "/myfile.js"
+	 * @return string something like "/mysite/typo3conf/ext/myext/myfile.js"
 	 */
 	static public function getAbsoluteWebPath($targetPath) {
 		if (self::isAbsolutePath($targetPath)) {

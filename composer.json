@@ -24,7 +24,7 @@
 		"news": "nntp://lists.typo3.org"
 	},
 	"config": {
-		"vendor-dir": "typo3/contrib/vendor",
+		"vendor-dir": "typo3/vendor",
 		"bin-dir": "bin"
 	},
 	"require": {
@@ -208,6 +208,6 @@
 		}
 	},
 	"include-path": [
-		"typo3/contrib/vendor/pear/http_request2/"
+		"typo3/vendor/pear/http_request2/"
 	]
 }

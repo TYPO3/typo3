@@ -12,7 +12,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xlf');
 

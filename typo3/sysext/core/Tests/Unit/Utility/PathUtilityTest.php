@@ -68,7 +68,6 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'/var/www/myhost.com/uploads/directory/',
 					'/var/www/myhost.com/typo3/sysext/',
-					'/var/www/myhost.com/typo3/contrib/',
 					'/var/www/myhost.com/t3lib/utility/'
 				),
 				'/var/www/myhost.com/'
@@ -105,7 +104,6 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				array(
 					'C:\\www\\myhost.com\\uploads\\directory\\',
 					'C:\\www\\myhost.com\\typo3\\sysext\\',
-					'C:\\www\\myhost.com\\typo3\\contrib\\',
 					'C:\\www\\myhost.com\\t3lib\\utility\\'
 				),
 				'C:/www/myhost.com/'

@@ -1,11 +1,11 @@
-===============================================================================================
-Breaking: #66001 - Third-party libraries installed via composer are now in typo3/contrib/vendor
-===============================================================================================
+=======================================================================================
+Breaking: #66001 - Third-party libraries installed via composer are now in typo3/vendor
+=======================================================================================
 
 Description
 ===========
 
-All composer-installed libraries which the TYPO3 Core uses are now installed under typo3/contrib/vendor
+All composer-installed libraries which the TYPO3 Core uses are now installed under typo3/vendor
 when running ``composer install``. This way the packaging process for releasing TYPO3 CMS as tarball or zip
 can trigger a fully working installation without having to ship Packages/ for third-party libraries. Before composer
 installed all third-party libraries in the folder ``Packages/Libraries``.
@@ -30,5 +30,5 @@ TYPO3 distribution from composer.typo3.org are not affected.
 Migration
 =========
 
-Running ``rm -rf typo3/contrib/vendor/ bin/ Packages/Libraries/ composer.lock; composer install`` will make PHPunit
+Running ``rm -rf typo3/vendor/ bin/ Packages/Libraries/ composer.lock; composer install`` will make PHPunit
 work again.

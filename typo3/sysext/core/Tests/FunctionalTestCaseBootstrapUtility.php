@@ -427,7 +427,7 @@ class FunctionalTestCaseBootstrapUtility {
 		require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
 		\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
 
-		$classLoader = require $this->instancePath . '/typo3/contrib/vendor/autoload.php';
+		$classLoader = require $this->instancePath . '/typo3/vendor/autoload.php';
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->initializeClassLoader($classLoader)
 			->baseSetup('')

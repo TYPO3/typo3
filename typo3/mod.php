@@ -20,6 +20,6 @@ namespace TYPO3\CMS\Backend;
  * which usually uses the BackendModuleRequestHandler
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/contrib/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run();
 });

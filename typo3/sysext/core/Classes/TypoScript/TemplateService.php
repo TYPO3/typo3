@@ -380,7 +380,6 @@ class TemplateService {
 			'typo3temp/',
 			TYPO3_mainDir . 'ext/',
 			TYPO3_mainDir . 'sysext/',
-			TYPO3_mainDir . 'contrib/',
 			'typo3conf/ext/'
 		);
 		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['addAllowedPaths']) {
