@@ -491,9 +491,9 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	 * @return string
 	 */
 	protected function getFinalOpenIDIdentifier() {
-		$result = $this->getSignedParameter('openid_identity');
+		$result = $this->getSignedParameter('openid_claimed_id');
 		if (!$result) {
-			$result = $this->getSignedParameter('openid_claimed_id');
+			$result = $this->getSignedParameter('openid_identity');
 		}
 		if (!$result) {
 			$result = $this->getSignedClaimedOpenIDIdentifier();
