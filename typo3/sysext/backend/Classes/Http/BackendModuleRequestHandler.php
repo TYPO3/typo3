@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Http;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
@@ -132,7 +133,9 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	 * @return bool
 	 */
 	protected function isValidModuleRequest() {
-		return $this->getFormProtection()->validateToken((string)$this->request->getQueryParams()['moduleToken'], 'moduleCall', (string)$this->request->getQueryParams()['M']);
+		return
+			$this->getFormProtection() instanceof BackendFormProtection
+		&& $this->getFormProtection()->validateToken((string)$this->request->getQueryParams()['moduleToken'], 'moduleCall', (string)$this->request->getQueryParams()['M']);
 	}
 
 	/**
