@@ -361,6 +361,9 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 						$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgIndex;
 						$imgIndex = $index + $a * $colCount_temp;
 						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgIndex;
+						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($imgs[$imgIndex])) {
+							$this->setCurrentFileInContentObjectRenderer(intval($imgs[$imgIndex]));
+						}
 						if ($imgsTag[$imgIndex]) {
 							// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
 							if ($rowspacing && $noRows && $a) {
