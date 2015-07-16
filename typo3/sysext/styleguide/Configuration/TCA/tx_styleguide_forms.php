@@ -1392,26 +1392,28 @@ return array(
 
 		'group_1' => array(
 			'exclude' => 1,
-			'label' => 'GROUP: 1 internal_type=db, two tables allowed',
+			'label' => 'GROUP: 1 internal_type=db, maxitems=999, two tables allowed',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'be_users,be_groups',
+				'maxitems' => 999,
 			),
 		),
 		'group_2' => array(
 			'exclude' => 1,
-			'label' => 'GROUP: 2 internal_type=db, two tables allowed, show thumbs',
+			'label' => 'GROUP: 2 internal_type=db, maxitems=999, two tables allowed, show thumbs',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'be_users,be_groups',
 				'show_thumbs' => TRUE,
+				'maxitems' => 999,
 			),
 		),
 		'group_3' => array(
 			'exclude' => 1,
-			'label' => 'GROUP: 3 internal_type=db, suggest wizard, disable_controls=browser',
+			'label' => 'GROUP: 3 internal_type=db, maxitems=999, suggest wizard, disable_controls=browser',
 			'config' => array (
 				'type' => 'group',
 				'internal_type' => 'db',
@@ -1422,6 +1424,7 @@ return array(
 						'type' => 'suggest',
 					),
 				),
+				'maxitems' => 999,
 			),
 		),
 		'group_4' => array(
@@ -1454,6 +1457,7 @@ return array(
 				'uploadfolder' => 'uploads/pics/',
 				'disable_controls' => 'upload', // @TODO: Documented feature has no effect since upload field in form is not shown anymore (since fal?)
 				'max_size' => 2000,
+				// @todo: does maxitems = 1 default hit here?
 			),
 		),
 		'group_6' => array(
@@ -2060,6 +2064,7 @@ return array(
 				'internal_type' => 'db',
 				'allowed' => 'tx_styleguide_forms_staticdata',
 				'disable_controls' => 'browser',
+				'maxitems' => 999,
 				'wizards' => array(
 					'_POSITION' => 'top',
 					'suggest' => array(
@@ -2075,6 +2080,7 @@ return array(
 				'internal_type' => 'db',
 				'allowed' => 'tx_styleguide_forms_staticdata',
 				'disable_controls' => 'browser',
+				'maxitems' => 999,
 				'wizards' => array(
 					'_POSITION' => 'bottom',
 					'suggest' => array(
