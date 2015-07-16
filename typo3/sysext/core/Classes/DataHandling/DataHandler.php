@@ -1700,7 +1700,7 @@ class DataHandler {
 				$res = $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
 				break;
 			case 'radio':
-				$res = $this->checkValueForRadio($res, $value, $tcaFieldConf);
+				$res = $this->checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $realPid, $field);
 				break;
 			case 'group':
 			case 'select':
@@ -1929,7 +1929,8 @@ class DataHandler {
 	 */
 	public function checkValue_radio($res, $value, $tcaFieldConf, $PP) {
 		GeneralUtility::logDeprecatedFunction();
-		return $this->checkValueForRadio($res, $value, $tcaFieldConf);
+		// TODO find a way to get the field name; it should not be set in $recFID as this is only created for some record types, see checkValue()
+		return $this->checkValueForRadio($res, $value, $tcaFieldConf, $PP[0], $PP[1], $PP[4], '');
 	}
 
 	/**
@@ -1938,9 +1939,13 @@ class DataHandler {
 	 * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
 	 * @param string $value The value to set.
 	 * @param array $tcaFieldConf Field configuration from TCA
+	 * @param array $table The table of the record
+	 * @param int $id The id of the record
+	 * @param int $pid The pid of the record
+	 * @param string $field The field to check
 	 * @return array Modified $res array
 	 */
-	protected function checkValueForRadio($res, $value, $tcaFieldConf) {
+	protected function checkValueForRadio($res, $value, $tcaFieldConf, $table, $id, $pid, $field) {
 		if (is_array($tcaFieldConf['items'])) {
 			foreach ($tcaFieldConf['items'] as $set) {
 				if ((string)$set[1] === (string)$value) {
@@ -1949,6 +1954,21 @@ class DataHandler {
 				}
 			}
 		}
+
+		// if no value was found and an itemsProcFunc is defined, check that for the value
+		if ($tcaFieldConf['itemsProcFunc'] && empty($res['value'])) {
+			$processingService = GeneralUtility::makeInstance(ItemProcessingService::class);
+			$processedItems = $processingService->getProcessingItems($table, $pid, $field, $this->checkValue_currentRecord,
+				$tcaFieldConf, $tcaFieldConf['items']);
+
+			foreach ($processedItems as $set) {
+				if ((string)$set[1] === (string)$value) {
+					$res['value'] = $value;
+					break;
+				}
+			}
+		}
+
 		return $res;
 	}
 

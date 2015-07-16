@@ -3,7 +3,8 @@
 #
 CREATE TABLE tt_content (
     tx_testdatahandler_select text NOT NULL,
-    tx_testdatahandler_group text NOT NULL
+    tx_testdatahandler_group text NOT NULL,
+    tx_testdatahandler_radio text NOT NULL
 );
 
 #

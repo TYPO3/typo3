@@ -29,6 +29,17 @@ defined('TYPO3_MODE') or die();
 				'autoSizeMax' => '10',
 			),
 		),
+		 'tx_testdatahandler_radio' => array(
+			'exclude' => 1,
+			'label' => 'DataHandler Test Radio',
+			'config' => array(
+				'type' => 'radio',
+				'items' => array(
+					array('predefined label', 'predefined value')
+				),
+				'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\RadioElementItems->getItems'
+			),
+		),
 	)
 );
 
