@@ -6,12 +6,12 @@
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.eot?v=4.3.0');
-  src: url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),
-  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),
-  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.woff?v=4.3.0') format('woff'),
-  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),
-  url('../../Resources/Public/Fonts/font-awesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+  src: url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?v=4.3.0');
+  src: url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),
+  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),
+  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.woff?v=4.3.0') format('woff'),
+  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),
+  url('../../Resources/Public/Fonts/FontAwesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
