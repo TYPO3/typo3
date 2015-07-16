@@ -57,6 +57,14 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     protected $isMountPoint = false;
 
     /**
+     * Indicator if the page tree should stop here
+     *
+     * @var bool
+     */
+    protected $stopPageTree = false;
+
+
+    /**
      * Background color for the node
      *
      * @var string
@@ -103,6 +111,26 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
     public function getWorkspaceId()
     {
         return $this->workspaceId;
+    }
+
+    /**
+     * Sets if the pagetree should stop here
+     *
+     * @param bool $stopPageTree
+     */
+    public function setStopPageTree($stopPageTree)
+    {
+        $this->stopPageTree = (bool)$stopPageTree;
+    }
+
+    /**
+     * Returns if the pagetree should stop here
+     *
+     * @return int
+     */
+    public function getStopPageTree()
+    {
+        return $this->stopPageTree;
     }
 
     /**
@@ -402,6 +430,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode
         $arrayRepresentation['nodeData']['workspaceId'] = $this->getWorkspaceId();
         $arrayRepresentation['nodeData']['isMountPoint'] = $this->isMountPoint();
         $arrayRepresentation['nodeData']['backgroundColor'] = htmlspecialchars($this->getBackgroundColor());
+        $arrayRepresentation['nodeData']['stopPageTree'] = $this->getStopPageTree();
         $arrayRepresentation['nodeData']['serializeClassName'] = get_class($this);
         return $arrayRepresentation;
     }

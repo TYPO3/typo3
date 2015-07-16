@@ -317,6 +317,7 @@ class Commands
         $subNode->setCls($record['_CSSCLASS']);
         $subNode->setType('pages');
         $subNode->setId($record['uid']);
+        $subNode->setStopPageTree($record['php_tree_stop']);
         $subNode->setMountPoint($mountPoint);
         $subNode->setWorkspaceId($record['_ORIG_uid'] ?: $record['uid']);
         $subNode->setBackgroundColor(self::$backgroundColors[$record['uid']]);

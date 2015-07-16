@@ -110,7 +110,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider
     {
         /** @var $nodeCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
         $nodeCollection = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection::class);
-        if ($level >= 99) {
+        if ($level >= 99 || $node->getStopPageTree()) {
             return $nodeCollection;
         }
         $isVirtualRootNode = false;
