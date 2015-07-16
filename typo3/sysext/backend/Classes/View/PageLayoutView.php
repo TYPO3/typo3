@@ -377,6 +377,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		/** @var $pageRenderer PageRenderer */
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
 		$userCanEditPage = $this->ext_CALC_PERMS & Permission::PAGE_EDIT && !empty($this->id);
 		if ($this->tt_contentConfig['languageColsPointer'] > 0) {
 			$userCanEditPage = $this->getBackendUser()->check('tables_modify', 'pages_language_overlay');
@@ -1163,13 +1164,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				}
 				// Delete
 				$params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
-				$confirm = GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('deleteWarning')
+				$confirm = $this->getLanguageService()->getLL('deleteWarning')
 					. BackendUtility::translationCount('tt_content', $row['uid'], (' '
-						. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')))
+					. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord'))
 				);
-				$out .= '<a class="btn btn-default" href="' . htmlspecialchars($this->getPageLayoutController()->doc->issueCommand($params))
-					. '" onclick="' . htmlspecialchars(('return confirm(' . $confirm . ');')) . '" title="'
-					. $this->getLanguageService()->getLL('deleteItem', TRUE) . '">'
+				$out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->getPageLayoutController()->doc->issueCommand($params)) . '"'
+					. ' data-severity="warning"'
+					. ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
+					. ' data-content="' . htmlspecialchars($confirm) . '" '
+					. ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
+					. ' title="' . $this->getLanguageService()->getLL('deleteItem', TRUE) . '">'
 					. IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				if ($out) {
 					$out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
