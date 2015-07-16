@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Log writer that writes the log records into a file.
@@ -75,19 +76,19 @@ class FileWriter extends AbstractWriter
     /**
      * Sets the path to the log file.
      *
-     * @param string $logFile path to the log file, relative to PATH_site
+     * @param string $relativeLogFile path to the log file, relative to PATH_site
      * @return WriterInterface
      * @throws InvalidLogWriterConfigurationException
      */
-    public function setLogFile($logFile)
+    public function setLogFile($relativeLogFile)
     {
-
+	$logFile = $relativeLogFile;
         // Skip handling if logFile is a stream resource. This is used by unit tests with vfs:// directories
-        if (false === strpos($logFile, '://')) {
-            if (!GeneralUtility::isAllowedAbsPath((PATH_site . $logFile))) {
-                throw new InvalidLogWriterConfigurationException('Log file path "' . $logFile . '" is not valid!', 1326411176);
-            }
+        if (false === strpos($logFile, '://') && !PathUtility::isAbsolutePath($logFile)) {
             $logFile = GeneralUtility::getFileAbsFileName($logFile);
+            if ($logFile === NULL) {
+                throw new InvalidLogWriterConfigurationException('Log file path "' . $relativeLogFile . '" is not valid!', 1444374805);
+            }
         }
         $this->logFile = $logFile;
         $this->openLogFile();

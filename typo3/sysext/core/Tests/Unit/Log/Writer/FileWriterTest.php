@@ -93,12 +93,12 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException
      */
-    public function setLogFileRefusesIllegalPath()
+    public function setLogFileAcceptsAbsolutePath()
     {
         $writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Log\Writer\FileWriter::class);
         $writer->setLogFile('/tmp/typo3.log');
+        $this->assertAttributeEquals('/tmp/typo3.log', 'logFile', $writer);
     }
 
     /**
