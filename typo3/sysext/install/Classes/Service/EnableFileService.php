@@ -46,7 +46,7 @@ class EnableFileService {
 	 */
 	static public function isFirstInstallAllowed() {
 		$files = self::getFirstInstallFilePaths();
-		if (!is_dir(PATH_typo3conf) && !empty($files)) {
+		if (!empty($files) && !\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->checkIfEssentialConfigurationExists()) {
 			return TRUE;
 		}
 		return FALSE;
