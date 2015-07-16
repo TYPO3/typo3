@@ -424,9 +424,6 @@ class FunctionalTestCaseBootstrapUtility {
 		define('TYPO3_MODE', 'BE');
 		define('TYPO3_cliMode', TRUE);
 
-		require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
-		\TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
-
 		$classLoader = require $this->instancePath . '/typo3/vendor/autoload.php';
 		\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 			->initializeClassLoader($classLoader)
