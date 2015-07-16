@@ -30,12 +30,14 @@ class LogoutController {
 	 * @return void
 	 */
 	public function logout() {
-		// Logout written to log
-		$this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($this->getBackendUser()->user['username']));
-		/** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
-		$backendFormProtection = FormProtectionFactory::get();
-		$backendFormProtection->removeSessionTokenFromRegistry();
-		$this->getBackendUser()->logoff();
+		if (!empty($this->getBackendUser()->user['username'])) {
+			// Logout written to log
+			$this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', array($this->getBackendUser()->user['username']));
+			/** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
+			$backendFormProtection = FormProtectionFactory::get();
+			$backendFormProtection->removeSessionTokenFromRegistry();
+			$this->getBackendUser()->logoff();
+		}
 		$redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$redirectUrl = $redirect ? $redirect : 'index.php';
 		HttpUtility::redirect($redirectUrl);
