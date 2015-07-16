@@ -132,7 +132,6 @@ class PagePositionMap {
 	 * @return string HTML code for the tree.
 	 */
 	public function positionTree($id, $pageinfo, $perms_clause, $R_URI) {
-		$code = '';
 		// Make page tree object:
 		/** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance($this->pageTreeClassName);
@@ -143,14 +142,12 @@ class PagePositionMap {
 		$this->elUid = $id;
 		// Create page tree, in $this->depth levels.
 		$pageTree->getTree($pageinfo['pid'], $this->depth);
-		if (!$this->dontPrintPageInsertIcons) {
-			$code .= $this->JSimgFunc();
-		}
 		// Initialize variables:
 		$saveBlankLineState = array();
 		$saveLatestUid = array();
 		$latestInvDepth = $this->depth;
 		// Traverse the tree:
+		$lines = array();
 		foreach ($pageTree->tree as $cc => $dat) {
 			// Make link + parameters.
 			$latestInvDepth = $dat['invertedDepth'];
@@ -161,7 +158,8 @@ class PagePositionMap {
 				if ($prev_dat['row']['uid'] == $id) {
 					// 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
-						$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgSubpage' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
+						end($lines);
+						$lines[key($lines)] .= '<ul><li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 1)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
 					}
 				}
 				// If going down
@@ -172,7 +170,8 @@ class PagePositionMap {
 					// First of all the previous level should have an icon:
 					if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
 						$prevPid = -$prev_dat['row']['uid'];
-						$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<img src="clear.gif" width="18" height="1" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'], 2)) . '"">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgAfter' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
+						end($lines);
+						$lines[key($lines)] .= '<ul><li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'], 2)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
 					}
 					// Then set the current prevPid
 					$prevPid = -$prev_dat['row']['pid'];
@@ -184,57 +183,36 @@ class PagePositionMap {
 				// First in the tree
 				$prevPid = $dat['row']['pid'];
 			}
+			// print arrow on the same level
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode']) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImg' . $cc . '" title="' . $this->insertlabel() . '"></i></a></span><br />';
+				$lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 3)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
 			}
 			// The line with the icon and title:
-			$t_code = '<span class="text-nowrap">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span><br />';
-			$code .= $t_code;
+			$lines[] = '<span class="text-nowrap">' . $dat['HTML'] . $this->linkPageTitle($this->boldTitle(htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], $GLOBALS['BE_USER']->uc['titleLen'])), $dat, $id), $dat['row']) . '</span>';
+
 		}
 		// If the current page was the last in the tree:
 		$prev_dat = end($pageTree->tree);
 		if ($prev_dat['row']['uid'] == $id) {
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
-				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($saveLatestUid[$latestInvDepth]['blankLineCode'], 1) . '<img src="clear.gif" width="18" height="8" align="top" alt="" />' . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 4)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgSubpage' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
+				$lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id, 4)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
 			}
 		}
 		for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
 			$dat = $saveLatestUid[$a];
 			$prevPid = -$dat['row']['uid'];
 			if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-				$code .= '<span class="text-nowrap">' . $this->insertQuadLines($dat['blankLineCode'], 1) . '<a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 5)) . '">' . '<i class="t3-icon fa fa-long-arrow-left" name="mImgEnd' . $cc . '" title="' . $this->insertlabel() . '"></i>' . '</a></span><br />';
+				$lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'], 5)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
 			}
 		}
-		return $code;
-	}
 
-	/**
-	 * Creates the JavaScritp for insert new-record rollover image
-	 *
-	 * @param string $prefix Insert record image prefix.
-	 * @return string <script> section
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
-	 */
-	public function JSimgFunc($prefix = '') {
-		GeneralUtility::logDeprecatedFunction();
-		$code = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$code = '<ul class="list-tree">';
 
-			var img_newrecord_marker=new Image();
-			img_newrecord_marker.src = "' . IconUtility::skinImg($this->backPath, ('gfx/newrecord' . $prefix . '_marker.gif'), '', 1) . '";
+		foreach ($lines as $line) {
+			$code .= '<li>' . $line . '</li>';
+		}
 
-			var img_newrecord_marker_d=new Image();
-			img_newrecord_marker_d.src = "' . IconUtility::skinImg($this->backPath, ('gfx/newrecord' . $prefix . '_marker_d.gif'), '', 1) . '";
-
-			function changeImg(name,d) {	//
-				if (document[name]) {
-					if (d) {
-						document[name].src = img_newrecord_marker_d.src;
-					} else {
-						document[name].src = img_newrecord_marker.src;
-					}
-				}
-			}
-		');
+		$code .= '</ul>';
 		return $code;
 	}
 
@@ -323,26 +301,6 @@ class PagePositionMap {
 			$this->getModConfigCache[$pid] = BackendUtility::getModTSconfig($pid, $this->modConfigStr);
 		}
 		return $this->getModConfigCache[$pid]['properties'];
-	}
-
-	/**
-	 * Insert half/quad lines.
-	 *
-	 * @param string $codes Keywords for which lines to insert.
-	 * @param bool $allBlank If TRUE all lines are just blank clear.gifs
-	 * @return string HTML content.
-	 */
-	public function insertQuadLines($codes, $allBlank = FALSE) {
-		$codeA = GeneralUtility::trimExplode(',', $codes . ',line', TRUE);
-		$lines = array();
-		foreach ($codeA as $code) {
-			if ($code == 'blank' || $allBlank) {
-				$lines[] = '<img src="clear.gif" width="18" height="8" align="top" alt="" />';
-			} else {
-				$lines[] = '<img' . IconUtility::skinImg($this->backPath, 'gfx/ol/halfline.gif', 'width="18" height="8"') . ' align="top" alt="" />';
-			}
-		}
-		return implode('', $lines);
 	}
 
 	/*************************************
