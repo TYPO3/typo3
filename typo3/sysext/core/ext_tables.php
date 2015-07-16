@@ -570,5 +570,13 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 		$flagIcons[] = 'flags-' . $flagName . '-overlay';
 	}
 	\TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite($flagIcons);
+
+	$GLOBALS['TBE_STYLES']['skins']['core'] = array(
+		'name' => 'core',
+		'stylesheetDirectories' => array(
+			'css' => 'EXT:core/Resources/Public/Css/'
+		)
+	);
+
 	unset($flagNames, $flagName, $flagIcons);
 }
