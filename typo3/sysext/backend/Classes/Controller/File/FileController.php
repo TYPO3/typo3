@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
  */
 
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -209,10 +210,15 @@ class FileController {
 
 		/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
 		$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+		/** @var Folder $fileTargetObject */
 		$fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
 		$processedFileName = $fileTargetObject->getStorage()->processUploadedFileName($fileTargetObject, $fileName);
 
-		$ajaxObj->addContent('result', $fileTargetObject->hasFile($processedFileName));
+		$result = FALSE;
+		if ($fileTargetObject->hasFile($processedFileName)) {
+			$result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
+		}
+		$ajaxObj->addContent('result', $result);
 		$ajaxObj->setContentFormat('json');
 	}
 
@@ -226,11 +232,19 @@ class FileController {
 	 */
 	protected function flattenResultDataValue($result) {
 		if ($result instanceof \TYPO3\CMS\Core\Resource\File) {
+			$thumbUrl = '';
+			if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
+				$processedFile = $result->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
+				if ($processedFile) {
+					$thumbUrl = $processedFile->getPublicUrl(TRUE);
+				}
+			}
 			$result = array_merge(
 				$result->toArray(),
 				array (
 					'date' => BackendUtility::date($result->getModificationTime()),
 					'iconClasses' => \TYPO3\CMS\Backend\Utility\IconUtility::mapFileExtensionToSpriteIconClass($result->getExtension()),
+					'thumbUrl' => $thumbUrl
 				)
 			);
 		} elseif ($result instanceof \TYPO3\CMS\Core\Resource\Folder) {
