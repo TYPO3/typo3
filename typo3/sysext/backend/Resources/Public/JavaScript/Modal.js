@@ -264,12 +264,14 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 				{
 					text: $element.data('button-close-text') || 'Close',
 					active: true,
+					btnClass: 'btn-default',
 					trigger: function() {
 						$element.trigger('modal-dismiss');
 					}
 				},
 				{
 					text: $element.data('button-ok-text') || 'OK',
+					btnClass: 'btn-primary',
 					trigger: function() {
 						$element.trigger('modal-dismiss');
 						self.location.href = $element.data('href') || $element.attr('href');
