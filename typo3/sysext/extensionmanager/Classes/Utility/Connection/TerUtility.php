@@ -29,6 +29,12 @@ class TerUtility {
 	public $wsdlUrl;
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
+	 * @inject
+	 */
+	protected $configurationUtility;
+
+	/**
 	 * Fetches an extension from the given mirror
 	 *
 	 * @param string $extensionKey Extension Key
@@ -39,12 +45,15 @@ class TerUtility {
 	 * @return array T3X data
 	 */
 	public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl) {
+		if (!$this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value']) {
+			throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
+		}
 		$extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
 		$mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
 		$t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl, 0, array(TYPO3_user_agent));
 		$md5 = md5($t3x);
 		if ($t3x === FALSE) {
-			throw new ExtensionManagerException(sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off,' . ' cURL is not enabled in Install Tool.', $mirrorUrl), 1334426097);
+			throw new ExtensionManagerException(sprintf('The T3X file "%s" could not be fetched. Possible reasons: network problems, allow_url_fopen is off, cURL is not enabled in Install Tool.', $mirrorUrl), 1334426097);
 		}
 		if ($md5 === $expectedMd5) {
 			// Fetch and return:

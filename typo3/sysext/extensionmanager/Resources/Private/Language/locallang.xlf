@@ -542,6 +542,9 @@
 			<trans-unit id="config.automaticInstallation">
 				<source>Install extensions automatically after download from TER or file upload</source>
 			</trans-unit>
+			<trans-unit id="config.offlineMode">
+				<source>Disable TER connection and hide menu items</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
