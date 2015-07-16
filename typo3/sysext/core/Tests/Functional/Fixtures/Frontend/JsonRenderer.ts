@@ -61,6 +61,8 @@ page {
 			select {
 				orderBy = sorting
 				pidInList = this
+				# prevent sys_language_uid lookup
+				languageField = 0
 			}
 			renderObj < lib.watcherDataObject
 			renderObj.1.watcher.dataWrap = {register:watcher}|.__pages/pages:{field:uid}
@@ -71,7 +73,6 @@ page {
 			select {
 				orderBy = sorting
 				where = colPos=0
-				languageField = sys_language_uid
 			}
 			renderObj < lib.watcherDataObject
 			renderObj.1.watcher.dataWrap = {register:watcher}|.__contents/tt_content:{field:uid}
@@ -102,7 +103,6 @@ page {
 						where.field = uid
 						where.intval = 1
 						where.wrap = parenttable="tt_content" AND parentid=|
-						languageField = sys_language_uid
 					}
 					renderObj < lib.watcherDataObject
 					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_1nff_hotels/tx_irretutorial_1nff_hotel:{field:uid}
@@ -116,7 +116,6 @@ page {
 								where.field = uid
 								where.intval = 1
 								where.wrap = parenttable="tx_irretutorial_1nff_hotel" AND parentid=|
-								languageField = sys_language_uid
 							}
 							renderObj < lib.watcherDataObject
 							renderObj.1.watcher.dataWrap = {register:watcher}|.offers/tx_irretutorial_1nff_offer:{field:uid}
@@ -130,7 +129,6 @@ page {
 										where.field = uid
 										where.intval = 1
 										where.wrap = parenttable="tx_irretutorial_1nff_offer" AND parentid=|
-										languageField = sys_language_uid
 									}
 									renderObj < lib.watcherDataObject
 									renderObj.1.watcher.dataWrap = {register:watcher}|.prices/tx_irretutorial_1nff_price:{field:uid}
@@ -146,8 +144,8 @@ page {
 					select {
 						uidInList.data = field:tx_irretutorial_1ncsv_hotels
 						orderBy = sorting
-						# not including sys_language_uid lookup
-						# languageField = sys_language_uid
+						# prevent sys_language_uid lookup
+						languageField = 0
 					}
 					renderObj < lib.watcherDataObject
 					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_irretutorial_1ncsv_hotels/tx_irretutorial_1ncsv_hotel:{field:uid}
@@ -159,8 +157,8 @@ page {
 							select {
 								uidInList.data = field:offers
 								orderBy = sorting
-								# not including sys_language_uid lookup
-								# languageField = sys_language_uid
+								# prevent sys_language_uid lookup
+								languageField = 0
 							}
 							renderObj < lib.watcherDataObject
 							renderObj.1.watcher.dataWrap = {register:watcher}|.offers/tx_irretutorial_1ncsv_offer:{field:uid}
@@ -172,8 +170,8 @@ page {
 									select {
 										uidInList.data = field:prices
 										orderBy = sorting
-										# not including sys_language_uid lookup
-										# languageField = sys_language_uid
+										# prevent sys_language_uid lookup
+										languageField = 0
 									}
 									renderObj < lib.watcherDataObject
 									renderObj.1.watcher.dataWrap = {register:watcher}|.prices/tx_irretutorial_1ncsv_price:{field:uid}
@@ -199,8 +197,8 @@ page {
 						uidInList.data = field:tx_testdatahandler_select
 						pidInList = 0
 						orderBy = sorting
-						# not including sys_language_uid lookup
-						# languageField = sys_language_uid
+						# prevent sys_language_uid lookup
+						languageField = 0
 					}
 					renderObj < lib.watcherDataObject
 					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_testdatahandler_select/tx_testdatahandler_element:{field:uid}
@@ -213,8 +211,8 @@ page {
 						uidInList.data = field:tx_testdatahandler_group
 						pidInList = 0
 						orderBy = sorting
-						# not including sys_language_uid lookup
-						# languageField = sys_language_uid
+						# prevent sys_language_uid lookup
+						languageField = 0
 					}
 					renderObj < lib.watcherDataObject
 					renderObj.1.watcher.dataWrap = {register:watcher}|.tx_testdatahandler_group/tx_testdatahandler_element:{field:uid}
