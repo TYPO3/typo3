@@ -9016,7 +9016,7 @@ div#contentMenu1 {
 #typo3-navigationContainer-xsplit,
 #typo3-navigationContainer-xcollapsed,
 #typo3-navigationDummy {
-  background: #ffffff url(../../Images/docheader-split-background.png) left top repeat-x;
+  background: #ffffff url(../../Public/Images/docheader-split-background.png) left top repeat-x;
 }
 #typo3-navigationContainer-xcollapsed {
   width: 24px!important;
