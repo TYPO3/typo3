@@ -74,7 +74,8 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array(
 				'id' => 'foo',
 				'date' => '29-11-73',
-				'iconClasses' => 't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html'
+				'iconClasses' => 't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html',
+				'thumbUrl' => ''
 			),
 			$this->fileController->_call('flattenResultDataValue', $this->fileResourceMock)
 		);
@@ -156,7 +157,8 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$result = array('upload' => array(array(
 			'id' => 'foo',
 			'date' => '29-11-73',
-			'iconClasses' => 't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html'
+			'iconClasses' => 't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html',
+			'thumbUrl' => ''
 		)));
 		$this->fileController->_set('fileProcessor', $this->mockFileProcessor);
 		$this->fileController->_set('fileData', $fileData);
