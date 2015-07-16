@@ -15,6 +15,7 @@ namespace TYPO3\CMS\WizardSortpages\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -30,7 +31,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 */
 	public function main() {
 		$lang = $this->getLanguageService();
-		$lang->includeLLFile('EXT:wizard_sortpages/locallang.xlf');
+		$lang->includeLLFile('EXT:wizard_sortpages/Resources/Private/Language/locallang.xlf');
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
 		$out = $this->pObj->doc->header($lang->getLL('wiz_sort'));
@@ -94,7 +95,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$lines[] = $this->wiz_linkOrder($lang->getLL('wiz_changeOrder_REVERSE'), 'REV');
 				$theCode .= '<h4>' . $lang->getLL('wiz_changeOrder') . '</h4><p>' . implode(' ', $lines) . '</p>';
 			} else {
-				$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $lang->getLL('no_subpages'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
+				$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('no_subpages'), '', FlashMessage::NOTICE);
 				$theCode .= $flashMessage->render();
 			}
 			// CSH:

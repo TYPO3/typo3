@@ -55,7 +55,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	 * @return string HTML content for the module, actually a "section" made through the parent object in $this->pObj
 	 */
 	public function main() {
-		$this->getLanguageService()->includeLLFile('EXT:wizard_crpages/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:wizard_crpages/Resources/Private/Language/locallang.xlf');
 		$theCode = '';
 		$this->tsConfig = BackendUtility::getPagesTSconfig($this->pObj->id);
 		$this->pagesTsConfig = isset($this->tsConfig['TCEFORM.']['pages.']) ? $this->tsConfig['TCEFORM.']['pages.'] : array();

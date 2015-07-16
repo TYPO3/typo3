@@ -30,7 +30,7 @@ Will sort pages by their creation date.
 Click this to reverse the current order. For example, if you want to sort pages alphabetically but in descending order you simply sort by title first and then reverse the order by clicking this.</source>
 			</trans-unit>
 			<trans-unit id="_tx_wizardsortpages.image">
-				<source>EXT:wizard_sortpages/cshimages/wizards_1.png</source>
+				<source>EXT:wizard_sortpages/Resources/Public/Images/cshimages/wizards_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 		</body>

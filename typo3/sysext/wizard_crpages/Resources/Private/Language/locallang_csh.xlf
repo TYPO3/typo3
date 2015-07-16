@@ -28,8 +28,8 @@ The Create new page wizard supports the Lorem Ipsum extension providing dummy co
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tx_wizardcrpages.image" xml:space="preserve">
-				<source>EXT:wizard_crpages/cshimages/wizards_1.png,
-EXT:wizard_crpages/cshimages/wizards_2.png</source>
+				<source>EXT:wizard_crpages/Resources/Public/Images/cshimages/wizards_1.png,
+EXT:wizard_crpages/Resources/Public/Images/cshimages/wizards_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tx_wizardcrpages.image_descr" xml:space="preserve">

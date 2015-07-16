@@ -6,11 +6,11 @@ if (TYPO3_MODE === 'BE') {
 		'web_func',
 		\TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController::class,
 		NULL,
-		'LLL:EXT:wizard_crpages/locallang.xlf:wiz_crMany'
+		'LLL:EXT:wizard_crpages/Resources/Private/Language/locallang.xlf:wiz_crMany'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 		'_MOD_web_func',
-		'EXT:wizard_crpages/locallang_csh.xlf'
+		'EXT:wizard_crpages/Resources/Private/Language/locallang_csh.xlf'
 	);
 }
