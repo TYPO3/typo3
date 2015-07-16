@@ -65,7 +65,7 @@ $extraContentColumns = array(
 							'mode' => 'wizard'
 						)
 					),
-					'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+					'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
 				)
 			),
 			'softref' => 'typolink[linkList]'
@@ -138,7 +138,7 @@ $extraContentColumns = array(
 						'blindLinkOptions' => 'folder,file,mail,spec',
 						'blindLinkFields' => 'target,title,class,params'
 					),
-					'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1'
+					'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
 				)
 			),
 			'softref' => 'typolink[linkList]'

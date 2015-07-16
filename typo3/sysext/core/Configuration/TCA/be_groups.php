@@ -72,7 +72,7 @@ return array(
 						),
 						'popup_onlyOpenIfSelected' => 1,
 						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
+						'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
 					),
 					'add' => array(
 						'type' => 'script',

@@ -19,7 +19,7 @@ $tempColumns = array(
 						'name' => 'wizard_openid'
 					),
 					'icon' => 'EXT:openid/ext_icon_small.png',
-					'JSopenParams' => ',width=800,height=400,status=0,menubar=0,scrollbars=0',
+					'JSopenParams' => ',width=800,height=600,status=0,menubar=0,scrollbars=0',
 				)
 			),
 		)

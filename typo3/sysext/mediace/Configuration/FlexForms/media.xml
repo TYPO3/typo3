@@ -238,7 +238,7 @@
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 											<allowedExtensions>class,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv,ogg,ogv,swf,webm</allowedExtensions>
 										</params>
-										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+										<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</link>
 								</wizards>
 							</config>
@@ -288,7 +288,7 @@
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 															<allowedExtensions>mov,mpg,mp4,m4a,m4v,ogg,ogv,swf,webm</allowedExtensions>
 														</params>
-														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+														<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 													</link>
 												</wizards>
 											</config>
@@ -322,7 +322,7 @@
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 											<allowedExtensions>srt,vtt</allowedExtensions>
 										</params>
-										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+										<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</link>
 								</wizards>
 							</config>
@@ -361,7 +361,7 @@
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 															<allowedExtensions>au,asf,mp3,m4a,oga,ogg, wav,webm,wmv</allowedExtensions>
 														</params>
-														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+														<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 													</link>
 												</wizards>
 											</config>
@@ -407,7 +407,7 @@
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 											<allowedExtensions>au,asf,mp3,m4a,oga,swa,wav,webm,wmv</allowedExtensions>
 										</params>
-										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+										<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</link>
 								</wizards>
 							</config>
@@ -446,7 +446,7 @@
 															<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
 															<allowedExtensions>au,asf,mp3,m4a,oga,ogg, wav,webm,wmv</allowedExtensions>
 														</params>
-														<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+														<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 													</link>
 												</wizards>
 											</config>

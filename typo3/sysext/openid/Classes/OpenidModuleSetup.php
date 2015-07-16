@@ -54,7 +54,7 @@ class OpenidModuleSetup {
 			' value="' . htmlspecialchars($openid) . '" />' .
 			'<div class="input-group-addon">' .
 				'<a href="#" onclick="' .
-				'vHWin=window.open(' . $popUpUrl . ',null,\'width=800,height=400,status=0,menubar=0,scrollbars=0\');' .
+				'vHWin=window.open(' . $popUpUrl . ',null,\'width=800,height=600,status=0,menubar=0,scrollbars=0\');' .
 				'vHWin.focus();return false;' .
 				'">' .
 					'<img src="../typo3/sysext/openid/ext_icon_small.png" alt="' . $add . '" title="' . $add . '"/>' .
