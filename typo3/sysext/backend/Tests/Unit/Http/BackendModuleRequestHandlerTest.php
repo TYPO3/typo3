@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Http;
 
 use PHPUnit_Framework_MockObject_MockObject;
 use TYPO3\CMS\Backend\Http\BackendModuleRequestHandler;
-use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
+use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
@@ -42,7 +42,7 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 
 	public function setUp() {
 		$this->requestMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Http\ServerRequest::class, array(), array(), '', FALSE);
-		$this->formProtectionMock = $this->getMockForAbstractClass(AbstractFormProtection::class, array(), '', TRUE, TRUE, TRUE, array('validateToken'));
+		$this->formProtectionMock = $this->getMockForAbstractClass(BackendFormProtection::class, array(), '', FALSE, TRUE, TRUE, array('validateToken'));
 		$this->subject = $this->getAccessibleMock(BackendModuleRequestHandler::class, array('boot', 'getFormProtection'), array(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()), '', TRUE);
 	}
 
@@ -61,7 +61,7 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 		$this->requestMock->expects($this->any())->method('getQueryParams')->will($this->returnValue(array('M' => 'module_fixture')));
 		$this->formProtectionMock->expects($this->once())->method('validateToken')->will($this->returnValue(TRUE));
 		$this->subject->expects($this->once())->method('boot');
-		$this->subject->expects($this->once())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
+		$this->subject->expects($this->atLeastOnce())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
 
 		$this->subject->handleRequest($this->requestMock);
 	}
@@ -74,7 +74,7 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 	public function throwsExceptionIfTokenIsInvalid() {
 		$this->formProtectionMock->expects($this->once())->method('validateToken')->will($this->returnValue(FALSE));
 		$this->subject->expects($this->once())->method('boot');
-		$this->subject->expects($this->once())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
+		$this->subject->expects($this->atLeastOnce())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
 
 		$this->subject->handleRequest($this->requestMock);
 	}
@@ -94,7 +94,7 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 		$this->requestMock->expects($this->any())->method('getQueryParams')->will($this->returnValue(array('M' => 'module_fixture')));
 		$this->formProtectionMock->expects($this->once())->method('validateToken')->will($this->returnValue(TRUE));
 		$this->subject->expects($this->once())->method('boot');
-		$this->subject->expects($this->once())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
+		$this->subject->expects($this->atLeastOnce())->method('getFormProtection')->will($this->returnValue($this->formProtectionMock));
 
 		$this->subject->handleRequest($this->requestMock);
 	}
