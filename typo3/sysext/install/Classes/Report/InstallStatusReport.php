@@ -69,13 +69,17 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			'typo3conf/' => 2,
 			'typo3conf/ext/' => 0,
 			'typo3conf/l10n/' => 0,
-			TYPO3_mainDir . 'ext/' => -1,
 			'uploads/' => 2,
 			'uploads/pics/' => 0,
 			'uploads/media/' => 0,
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => 0,
 		);
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['allowGlobalInstall']) {
+			$checkWritable[TYPO3_mainDir . 'ext/'] = -1;
+		}
+
 		foreach ($checkWritable as $relPath => $requirementLevel) {
 			if (!@is_dir(PATH_site . $relPath)) {
 				// If the directory is missing, try to create it
