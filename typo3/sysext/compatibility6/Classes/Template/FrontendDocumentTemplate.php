@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Template;
+namespace TYPO3\CMS\Compatibility6\Template;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Extension class for "template" - used in the context of frontend editing.
  */
-class FrontendDocumentTemplate extends DocumentTemplate {
+class FrontendDocumentTemplate extends \TYPO3\CMS\Backend\Template\DocumentTemplate {
 
 	/**
 	 * Gets instance of PageRenderer
