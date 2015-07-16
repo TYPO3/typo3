@@ -504,8 +504,7 @@ class FolderTreeView extends AbstractTreeView {
 			return $ajaxOutput;
 		}
 		// Finally close the first ul
-		$out .= '</ul>
-';
+		$out .= '</ul>';
 		return $out;
 	}
 

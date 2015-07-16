@@ -10922,9 +10922,7 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
   margin: 0;
   padding: 0;
 }
-body#typo3-pagetree #typo3-inner-docbody {
-  padding: 0 0 10px 0;
-}
+body#typo3-pagetree #typo3-inner-docbody,
 body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
   padding: 10px 0;
 }
