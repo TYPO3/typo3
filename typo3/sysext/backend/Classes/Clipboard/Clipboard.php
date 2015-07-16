@@ -422,13 +422,6 @@ class Clipboard {
 				}
 			}
 		}
-		if (empty($lines)) {
-			$lines[] = '
-								<tr>
-									<td class="col-icon"></td>
-									<td colspan="2 nowrap="nowrap" width="95%"><em>(' . $this->clLabel('clipNoEl') . ')</em>&nbsp;</td>
-								</tr>';
-		}
 		$this->endClipboard();
 		return $lines;
 	}
