@@ -730,12 +730,7 @@ class EditDocumentController {
 				}
 			}
 			function deleteRecord(table,id,url) {	//
-				if (
-					' . ($beUser->jsConfirmation(JsConfirmation::DELETE) ? 'confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('deleteWarning')) . ')' : '1==1') . '
-				)	{
-					window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1' . BackendUtility::getUrlToken('tceAction') . '&redirect="+escape(url)+"&vC=' . $beUser->veriCode() . '&prErr=1&uPT=1";
-				}
-				return false;
+				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1' . BackendUtility::getUrlToken('tceAction') . '&redirect="+escape(url)+"&vC=' . $beUser->veriCode() . '&prErr=1&uPT=1";
 			}
 		';
 
@@ -1146,8 +1141,7 @@ class EditDocumentController {
 			if ($this->firstEl['cmd'] != 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
 				// Delete:
 				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')) {
-					$aOnClick = 'return deleteRecord(' . GeneralUtility::quoteJSvalue($this->firstEl['table']) . ',' . GeneralUtility::quoteJSvalue($this->firstEl['uid']) . ', ' . GeneralUtility::quoteJSvalue($this->retUrl) . ');';
-					$buttons['delete'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $lang->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					$buttons['delete'] = '<a href="#" class="t3js-editform-delete-record" data-return-url="' . htmlspecialchars($this->retUrl) . '" data-uid="' . htmlspecialchars($this->firstEl['uid']) . '" data-table="' . htmlspecialchars($this->firstEl['table']) . '" title="' . $lang->getLL('deleteItem', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 				}
 				// Undo:
 				$undoRes = $this->getDatabaseConnection()->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($this->firstEl['table'], 'sys_history') . ' AND recuid=' . (int)$this->firstEl['uid'], '', 'tstamp DESC', '1');
