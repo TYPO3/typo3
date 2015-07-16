@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
@@ -105,9 +106,8 @@ class InlineRecordContainer extends AbstractContainer {
 			$record[$foreign_selector] = $this->normalizeUid($record[$foreign_selector]);
 		}
 		if (!$this->checkAccess(($isNewRecord ? 'new' : 'edit'), $foreign_table, $record['uid'])) {
-			// @todo: Suddenly returning something different than the usual return array is not a cool thing ...
-			// @todo: Inline ajax relies on this at the moment, though.
-			return FALSE;
+			// This is caught by InlineControlContainer or FormEngine, they need to handle this case differently
+			throw new AccessDeniedException('Access denied', 1437081986);
 		}
 		// Get the current naming scheme for DOM name/id attributes:
 		$appendFormFieldNames = '[' . $foreign_table . '][' . $record['uid'] . ']';

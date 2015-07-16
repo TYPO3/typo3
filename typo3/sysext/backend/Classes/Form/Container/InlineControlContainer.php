@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
@@ -224,7 +225,13 @@ class InlineControlContainer extends AbstractContainer {
 				$options['renderType'] = 'inlineRecordContainer';
 				/** @var NodeFactory $nodeFactory */
 				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$childArray = $nodeFactory->create($options)->render();
+				try {
+					// This container may raise an access denied exception, to not kill further processing,
+					// just a simple "empty" return is created here to ignore this field.
+					$childArray = $nodeFactory->create($options)->render();
+				} catch (AccessDeniedException $e) {
+					$childArray = $this->initializeResultArray();
+				}
 				$html .= $childArray['html'];
 				$childArray['html'] = '';
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);

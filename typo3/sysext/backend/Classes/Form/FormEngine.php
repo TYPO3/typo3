@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -536,9 +537,11 @@ class FormEngine {
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 
 		$options['renderType'] = 'inlineRecordContainer';
-		$childArray = $this->nodeFactory->create($options)->render();
 
-		if ($childArray === FALSE) {
+		try {
+			// Access to this record my be denied, create an according error message in this case
+			$childArray = $this->nodeFactory->create($options)->render();
+		} catch (AccessDeniedException $e) {
 			return $this->getErrorMessageForAJAX('Access denied');
 		}
 
@@ -657,9 +660,11 @@ class FormEngine {
 		$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 
 		$options['renderType'] = 'inlineRecordContainer';
-		$childArray = $this->nodeFactory->create($options)->render();
 
-		if ($childArray === FALSE) {
+		try {
+			// Access to this record my be denied, create an according error message in this case
+			$childArray = $this->nodeFactory->create($options)->render();
+		} catch (AccessDeniedException $e) {
 			return $this->getErrorMessageForAJAX('Access denied');
 		}
 
@@ -755,7 +760,13 @@ class FormEngine {
 				$options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
 
 				$options['renderType'] = 'inlineRecordContainer';
-				$childArray = $this->nodeFactory->create($options)->render();
+				try {
+					// Access to this record my be denied, create an according error message in this case
+					$childArray = $this->nodeFactory->create($options)->render();
+				} catch (AccessDeniedException $e) {
+					return $this->getErrorMessageForAJAX('Access denied');
+				}
+
 				$html .= $childArray['html'];
 				$childArray['html'] = '';
 
