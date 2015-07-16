@@ -12550,7 +12550,7 @@ iframe {
 .t3-page-ce-dropzone-possible {
   margin: 10px;
 }
-.t3-page-ce-dragitem .t3-page-ce-header:hover {
+.t3-page-ce-dragitem .t3-page-ce-header-draggable:hover {
   cursor: move;
 }
 [id="typo3-topbar"],

@@ -8,6 +8,7 @@ return array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
+		'editlock' => 'editlock',
 		'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content',
 		'delete' => 'deleted',
 		'versioningWS' => 2,
@@ -133,6 +134,18 @@ return array(
 				'authMode_enforce' => 'strict',
 				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1
+			)
+		),
+		'editlock' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:editlock',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:lang/locallang_core.xlf:labels.enabled'
+					)
+				)
 			)
 		),
 		'hidden' => array(
@@ -1206,7 +1219,8 @@ return array(
 				starttime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:starttime_formlabel,
 				endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel,
 				--linebreak--,
-				fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:fe_group_formlabel
+				fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:fe_group_formlabel,
+				--linebreak--,editlock,
 			',
 		),
 		'uploadslayout' => array(

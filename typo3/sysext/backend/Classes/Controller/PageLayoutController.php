@@ -759,7 +759,11 @@ class PageLayoutController {
 			$opt[] = '<option value="' . $inValue . '"' . ($edit_record == $inValue ? ' selected="selected"' : '') . '>[ ' . $lang->getLL('editPageProperties', TRUE) . ' ]</option>';
 		}
 		// Selecting all content elements from this language and allowed colPos:
-		$res = $databaseConnection->exec_SELECTquery('*', 'tt_content', 'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
+		$whereClause = 'pid=' . (int)$this->id . ' AND sys_language_uid=' . (int)$this->current_sys_language . ' AND colPos IN (' . $this->colPosList . ')' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : BackendUtility::BEenableFields('tt_content')) . BackendUtility::deleteClause('tt_content') . BackendUtility::versioningPlaceholderClause('tt_content');
+		if (!$this->getBackendUser()->user['admin']) {
+			$whereClause .= ' AND editlock = 0';
+		}
+		$res = $databaseConnection->exec_SELECTquery('*', 'tt_content', $whereClause, '', 'colPos,sorting');
 		$colPos = NULL;
 		$first = 1;
 		// Page is the pid if no record to put this after.

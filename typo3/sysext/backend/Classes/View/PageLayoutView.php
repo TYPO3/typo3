@@ -1249,7 +1249,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 		// Wrap the whole header
 		// NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
-		return '<div class="t3-page-ce-header t3js-page-ce-draghandle">
+		return '<div class="t3-page-ce-header ' . ($this->getBackendUser()->user['admin'] || (int)$row['editlock'] === 0 ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
 					<div class="t3-page-ce-header-icons-left">' . implode('', $additionalIcons) . '</div>
 					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' .$out . '</div>' : '') . '</div>
 				</div>
