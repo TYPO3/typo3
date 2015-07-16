@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Displays 'Delete user' link with sprite icon to remove user
@@ -72,9 +73,12 @@ class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInter
 		];
 		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
 
-		return '<a class="btn btn-default" href="' . htmlspecialchars($url) . '"  onclick="return confirm(' .
-			GeneralUtility::quoteJSvalue(LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) .
-			')">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+		return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
+			. ' data-severity="warning"'
+			. ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
+			. ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) . '" '
+			. ' data-button-close-text="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
+			. '>' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 	}
 
 }
