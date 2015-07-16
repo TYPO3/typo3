@@ -74,7 +74,9 @@ class InfoModuleController extends BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
-		// Access check...
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+
 		// The page will show only if there is a valid page and if this page
 		// may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -83,21 +85,8 @@ class InfoModuleController extends BaseScriptClass {
 			if ($this->backendUser->user['admin'] && !$this->id) {
 				$this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 			}
-			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:info/Resources/Private/Templates/info.html');
-			$this->doc->tableLayout = array(
-				'0' => array(
-					'0' => array('<td valign="top"><strong>', '</strong></td>'),
-					'defCol' => array('<td><img src="' . $this->doc->backPath .
-						'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
-				),
-				'defRow' => array(
-					'0' => array('<td valign="top">', '</td>'),
-					'defCol' => array('<td><img src="' . $this->doc->backPath .
-						'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
-				)
-			);
+
 			// JavaScript
 			$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 			// Setting up the context sensitive menu:
@@ -125,11 +114,7 @@ class InfoModuleController extends BaseScriptClass {
 			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		} else {
 			// If no access or if ID == zero
-			$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->content = $this->doc->header($this->languageService->getLL('title'));
-			$this->content .= $this->doc->spacer(5);
-			$this->content .= $this->doc->spacer(10);
 		}
 		// Renders the module page
 		$this->content = $this->doc->render($this->languageService->getLL('title'), $this->content);
