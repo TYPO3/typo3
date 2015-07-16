@@ -266,6 +266,141 @@ Value 2.2
 	}
 
 	/**
+	 * Data provider for spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured
+	 */
+	public static function spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider() {
+		return array(
+			'Span tag with no attrib' => array(
+				'<span>text</span>',
+				'text'
+			),
+			'Span tag with allowed id attrib' => array(
+				'<span id="id">text</span>',
+				'<span id="id">text</span>'
+			),
+			'Span tag with disallowed style attrib' => array(
+				'<span style="line-height: 12px;">text</span>',
+				'text'
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider
+	 */
+	public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured($content, $expectedResult) {
+		$tsConfig = array(
+			'allowTags' => 'span',
+			'tags.' => array(
+				'span.' => array(
+					'allowedAttribs' => 'id',
+					'rmTagIfNoAttrib' => 1
+				)
+			)
+		);
+		$this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+	}
+
+	/**
+	 * @test
+	 */
+	public function rmTagIfNoAttribIsConfiguredDoesNotChangeNestingType() {
+		$tsConfig = array(
+			'allowTags' => 'div,span',
+			'rmTagIfNoAttrib' => 'span',
+			'globalNesting' => 'div,span'
+		);
+		$content = '<span></span><span id="test"><div></span></div>';
+		$expectedResult = '<span id="test"></span>';
+		$this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+	}
+
+	/**
+	 * Data provider for localNestingCorrectlyRemovesInvalidTags
+	 */
+	public static function localNestingCorrectlyRemovesInvalidTagsDataProvider() {
+		return array(
+			'Valid nesting is untouched' => array(
+				'<B><I></B></I>',
+				'<B><I></B></I>'
+			),
+			'Valid nesting with content is untouched' => array(
+				'testa<B>test1<I>test2</B>test3</I>testb',
+				'testa<B>test1<I>test2</B>test3</I>testb'
+			),
+			'Superflous tags are removed' => array(
+				'</B><B><I></B></I></B>',
+				'<B><I></B></I>'
+			),
+			'Superflous tags with content are removed' => array(
+				'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
+				'test1test2<B>test3<I>test4</B>test5</I>test6test7'
+			),
+			'Another valid nesting test' => array(
+				'<span><div></span></div>',
+				'<span><div></span></div>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider localNestingCorrectlyRemovesInvalidTagsDataProvider
+	 * @param string $content
+	 * @param string $expectedResult
+	 */
+	public function localNestingCorrectlyRemovesInvalidTags($content, $expectedResult) {
+		$tsConfig = array(
+			'allowTags' => 'div,span,b,i',
+			'localNesting' => 'div,span,b,i',
+		);
+		$this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+	}
+
+	/**
+	 * Data provider for globalNestingCorrectlyRemovesInvalidTags
+	 */
+	public static function globalNestingCorrectlyRemovesInvalidTagsDataProvider() {
+		return array(
+			'Valid nesting is untouched' => array(
+				'<B><I></I></B>',
+				'<B><I></I></B>'
+			),
+			'Valid nesting with content is untouched' => array(
+				'testa<B>test1<I>test2</I>test3</B>testb',
+				'testa<B>test1<I>test2</I>test3</B>testb'
+			),
+			'Invalid nesting is cleaned' => array(
+				'</B><B><I></B></I></B>',
+				'<B></B>'
+			),
+			'Invalid nesting with content is cleaned' => array(
+				'test1</B>test2<B>test3<I>test4</B>test5</I>test6</B>test7',
+				'test1test2<B>test3test4</B>test5test6test7'
+			),
+			'Another invalid nesting test' => array(
+				'<span><div></span></div>',
+				'<span></span>',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider globalNestingCorrectlyRemovesInvalidTagsDataProvider
+	 * @param string $content
+	 * @param string $expectedResult
+	 */
+	public function globalNestingCorrectlyRemovesInvalidTags($content, $expectedResult) {
+		$tsConfig = array(
+			'allowTags' => 'span,div,b,i',
+			'globalNesting' => 'span,div,b,i',
+		);
+		$this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+	}
+
+	/**
 	 * @return array
 	 */
 	public function emptyTagsDataProvider() {
@@ -308,8 +443,20 @@ Value 2.2
 				'treatNonBreakingSpaceAsEmpty' => $treatNonBreakingSpaceAsEmpty
 			),
 		);
-		$config = $this->subject->HTMLparserConfig($tsConfig);
-		$result = $this->subject->HTMLcleaner($content, $config[0], $config[1], $config[2], $config[3]);
+
+		$result = $this->parseConfigAndCleanHtml($tsConfig, $content);
 		$this->assertEquals($expectedResult, $result);
+	}
+
+	/**
+	 * Calls HTMLparserConfig() and passes the generated config to the HTMLcleaner() method on the current subject.
+	 *
+	 * @param array $tsConfig The TypoScript that should be used to generate the HTML parser config.
+	 * @param string $content The content that should be parsed by the HTMLcleaner.
+	 * @return string The parsed content.
+	 */
+	protected function parseConfigAndCleanHtml(array $tsConfig, $content) {
+		$config = $this->subject->HTMLparserConfig($tsConfig);
+		return $this->subject->HTMLcleaner($content, $config[0], $config[1], $config[2], $config[3]);
 	}
 }
