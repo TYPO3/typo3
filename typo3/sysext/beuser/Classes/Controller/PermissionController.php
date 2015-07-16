@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Beuser\Controller;
  */
 
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -145,7 +144,7 @@ class PermissionController extends ActionController {
 		$beGroupArray = BackendUtility::getGroupNames();
 		$this->view->assign('beGroups', $beGroupArray);
 
-		/** @var PageTreeView */
+		/** @var $tree PageTreeView */
 		$tree = GeneralUtility::makeInstance(PageTreeView::class);
 		$tree->init();
 		$tree->addField('perms_user', TRUE);
@@ -159,12 +158,13 @@ class PermissionController extends ActionController {
 		$tree->addField('endtime');
 		$tree->addField('editlock');
 
-		// Creating top icon; the current page
-		$html = IconUtility::getSpriteIconForRecord('pages', $this->pageInfo);
-		$tree->tree[] = array('row' => $this->pageInfo, 'HTML' => $html);
-
 		// Create the tree from $this->id
-		$tree->getTree($this->id, $this->depth, '');
+		if ($this->id) {
+			$tree->tree[] = array('row' => $this->pageInfo, 'HTML' => $tree->getIcon($this->id));
+		} else {
+			$tree->tree[] = array('row' => $this->pageInfo, 'HTML' => $tree->getRootIcon($this->pageInfo));
+		}
+		$tree->getTree($this->id, $this->depth);
 		$this->view->assign('viewTree', $tree->tree);
 
 		// CSH for permissions setting

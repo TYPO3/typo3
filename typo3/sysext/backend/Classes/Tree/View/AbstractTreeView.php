@@ -388,10 +388,11 @@ abstract class AbstractTreeView {
 				$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec, 'hasSub' => $isOpen, 'bank' => $this->bank);
 				// If the mount is expanded, go down:
 				if ($isOpen) {
+					$depthData = '<span class="treeline-icon treeline-icon-clear"></span>';
 					if ($this->addSelfId) {
 						$this->ids[] = $uid;
 					}
-					$this->getTree($uid);
+					$this->getTree($uid, 999, $depthData);
 				}
 				// Add tree:
 				$treeArr = array_merge($treeArr, $this->tree);
@@ -632,6 +633,9 @@ abstract class AbstractTreeView {
 	 * @return string Image tag.
 	 */
 	public function getIcon($row) {
+		if (is_int($row)) {
+			$row = BackendUtility::getRecord($this->table, $row);
+		}
 		$icon = IconUtility::getSpriteIconForRecord($this->table, $row, array(
 			'title' => $this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row)
 		));
@@ -738,9 +742,10 @@ abstract class AbstractTreeView {
 			$this->orig_ids_hierarchy[$depth][] = $row['_ORIG_uid'] ?: $row['uid'];
 
 			// Make a recursive call to the next level
+			$nextLevelDepthData = $depthData . '<span class="treeline-icon treeline-icon-' . ($a === $c ? 'clear' : 'line') .'"></span>';
 			$hasSub = $this->expandNext($newID) && !$row['php_tree_stop'];
 			if ($depth > 1 && $hasSub) {
-				$nextCount = $this->getTree($newID, $depth - 1);
+				$nextCount = $this->getTree($newID, $depth - 1, $nextLevelDepthData);
 				if (!empty($this->buffer_idH)) {
 					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
 				}
@@ -760,6 +765,7 @@ abstract class AbstractTreeView {
 				'row' => $row,
 				'HTML' => $HTML,
 				'invertedDepth' => $depth,
+				'depthData' => $depthData,
 				'bank' => $this->bank,
 				'hasSub' => $nextCount && $hasSub,
 				'isFirst' => $a === 1,

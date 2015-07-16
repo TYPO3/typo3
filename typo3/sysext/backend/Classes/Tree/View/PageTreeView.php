@@ -89,7 +89,7 @@ class PageTreeView extends AbstractTreeView {
 	 * @see AbstractTreeView::PMicon()
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $isExpand) {
-		return '<i class="fa"></i>';
+		return '<span class="treeline-icon treeline-icon-join' . ($a == $c ? 'bottom' : '') . '"></span>';
 	}
 
 	/**

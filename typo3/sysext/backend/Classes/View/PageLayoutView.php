@@ -947,18 +947,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				BackendUtility::workspaceOL('pages', $row);
 				if (is_array($row)) {
 					$c++;
-					$row['treeIcons'] = $treeIcons . '<img' . IconUtility::skinImg(
-							$this->backPath,
-							'gfx/ol/join' . ($rc == $c ? 'bottom' : '') . '.gif',
-							'width="18" height="16"'
-						) . ' alt="" />';
+					$row['treeIcons'] = $treeIcons . '<span class="treeline-icon treeline-icon-join' . ($rc === $c ? 'bottom' : '') . '"></span>';
 					$theRows[] = $row;
 					// Get the branch
-					$spaceOutIcons = '<img' . IconUtility::skinImg(
-							$this->backPath,
-							'gfx/ol/' . ($rc == $c ? 'blank.gif' : 'line.gif'),
-							'width="18" height="16"'
-						) . ' alt="" />';
+					$spaceOutIcons = '<span class="treeline-icon treeline-icon-' . ($rc === $c ? 'clear' : 'line') . '"></span>';
 					$theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons, $row['php_tree_stop'] ? 0 : $depth);
 				}
 			}
