@@ -2258,16 +2258,26 @@ class ElementBrowser {
 			if (!StringUtility::beginsWith($href, 'file://') && strpos($href, 'file:') !== FALSE) {
 				$rel = substr($href, strpos($href, 'file:') + 5);
 				$rel = rawurldecode($rel);
-				// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-				$fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($rel);
-				if ($fileOrFolderObject instanceof Folder) {
-					$info['act'] = 'folder';
-					$info['value'] = $fileOrFolderObject->getCombinedIdentifier();
-				} elseif ($fileOrFolderObject instanceof File) {
-					$info['act'] = 'file';
-					$info['value'] = $fileOrFolderObject->getUid();
-				} else {
-					$info['value'] = $rel;
+				try {
+					// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
+					$fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($rel);
+					if ($fileOrFolderObject instanceof Folder) {
+						$info['act'] = 'folder';
+						$info['value'] = $fileOrFolderObject->getCombinedIdentifier();
+					} elseif ($fileOrFolderObject instanceof File) {
+						$info['act'] = 'file';
+						$info['value'] = $fileOrFolderObject->getUid();
+					} else {
+						$info['value'] = $rel;
+					}
+				} catch (Exception\FileDoesNotExistException $e) {
+					// file was deleted or any other reason, don't select any item
+					if (MathUtility::canBeInterpretedAsInteger($rel)) {
+						$info['act'] = 'file';
+					} else {
+						$info['act'] = 'folder';
+					}
+					$info['value'] = '';
 				}
 			} elseif (StringUtility::beginsWith($href, $siteUrl)) {
 				// If URL is on the current frontend website:
