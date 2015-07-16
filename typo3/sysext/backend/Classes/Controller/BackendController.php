@@ -577,6 +577,7 @@ class BackendController {
 			'PATH_typo3' => $pathTYPO3,
 			'PATH_typo3_enc' => rawurlencode($pathTYPO3),
 			'username' => htmlspecialchars($beUser->user['username']),
+			'userUid' => htmlspecialchars($beUser->user['uid']),
 			'uniqueID' => GeneralUtility::shortMD5(uniqid('', TRUE)),
 			'securityLevel' => trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) ?: 'normal',
 			'TYPO3_mainDir' => TYPO3_mainDir,
