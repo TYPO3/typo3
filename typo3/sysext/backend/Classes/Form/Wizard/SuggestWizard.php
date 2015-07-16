@@ -26,11 +26,6 @@ use TYPO3\CMS\Lang\LanguageService;
 class SuggestWizard {
 
 	/**
-	 * @var string
-	 */
-	protected $cssClass = 'typo3-TCEforms-suggest';
-
-	/**
 	 * Renders an ajax-enabled text field. Also adds required JS
 	 *
 	 * @param string $fieldname The fieldname in the form
@@ -42,8 +37,6 @@ class SuggestWizard {
 	 */
 	public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config) {
 		$languageService = $this->getLanguageService();
-		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
-		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
 		$isFlexFormField = $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex';
 		if ($isFlexFormField) {
 			$fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
@@ -51,17 +44,7 @@ class SuggestWizard {
 			$flexformField = substr($flexformField, 0, -1);
 			$field = str_replace(array(']['), '|', $flexformField);
 		}
-		$selector = '
-		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-search"></i></span>
-				<input type="search" id="' . htmlspecialchars($fieldname) . 'Suggest" value="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '" class="form-control ' . $this->cssClass . '-search" />
-				<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . htmlspecialchars($fieldname) . 'SuggestIndicator">
-					<span class="fa fa-spin fa-spinner" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:alttext.suggestSearching', TRUE) . '"></span>
-				</div>
-				<div class="' . $this->cssClass . '-choices" style="display: none;" id="' . htmlspecialchars($fieldname) . 'SuggestChoices"></div>
-			</div>
-		</div>';
+
 		// Get minimumCharacters from TCA
 		$minChars = 0;
 		if (isset($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'])) {
@@ -80,20 +63,30 @@ class SuggestWizard {
 		}
 
 		$jsRow = '';
-		if ($isFlexFormField && !MathUtility::canBeInterpretedAsInteger($row['uid'])) {
+		if ($isFlexFormField || !MathUtility::canBeInterpretedAsInteger($row['uid'])) {
 			// Ff we have a new record, we hand that row over to JS.
 			// This way we can properly retrieve the configuration of our wizard
 			// if it is shown in a flexform
 			$jsRow = serialize($row);
 		}
 
-		// Replace "-" with ucwords for the JS object name
-		$jsObj = str_replace(' ', '', ucwords(str_replace(array('-', '.'), ' ', GeneralUtility::strtolower($suggestId))));
-		$selector .=
-			'<script type="text/javascript">' . LF .
-				'var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ', "' . $type . '", ' . GeneralUtility::quoteJSvalue($jsRow) . ');' . LF .
-				$jsObj . '.defaultValue = "' . GeneralUtility::slashJS($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord')) . '";' . LF .
-			'</script>' . LF;
+		$selector = '
+		<div class="autocomplete t3-form-suggest-container">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-search"></i></span>
+				<input type="search" class="t3-form-suggest form-control"
+					placeholder="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '"
+					data-fieldname="' . $fieldname . '"
+					data-table="' . $table . '"
+					data-field="' . $field . '"
+					data-uid="' . $row['uid'] . '"
+					data-pid="' . $row['pid'] . '"
+					data-fieldtype="' . $type . '"
+					data-minchars="' . $minChars .'"
+					data-recorddata="' . htmlspecialchars($jsRow) .'"
+				/>
+			</div>
+		</div>';
 
 		return $selector;
 	}
@@ -217,16 +210,10 @@ class SuggestWizard {
 		$maxItems = isset($config['maxItemsInResultList']) ? $config['maxItemsInResultList'] : 10;
 		$maxItems = min(count($resultRows), $maxItems);
 
-		$rowIdSuffix = '-' . $table . '-' . $uid . '-' . $field;
-		$listItems = $this->createListItemsFromResultRow($resultRows, $maxItems, $rowIdSuffix);
+		$listItems = $this->createListItemsFromResultRow($resultRows, $maxItems);
 
-		if (!empty($listItems)) {
-			$list = implode('', $listItems);
-		} else {
-			$list = '<li class="suggest-noresults"><i>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noRecordFound') . '</i></li>';
-		}
-		$list = '<ul class="' . $this->cssClass . '-resultlist">' . $list . '</ul>';
-		$ajaxObj->addContent(0, $list);
+		$ajaxObj->setContent($listItems);
+		$ajaxObj->setContentFormat('json');
 	}
 
 	/**
@@ -354,7 +341,7 @@ class SuggestWizard {
 	 * @param string $rowIdSuffix
 	 * @return array
 	 */
-	protected function createListItemsFromResultRow(array $resultRows, $maxItems, $rowIdSuffix) {
+	protected function createListItemsFromResultRow(array $resultRows, $maxItems) {
 		if (empty($resultRows)) {
 			return array();
 		}
@@ -370,11 +357,8 @@ class SuggestWizard {
 
 		// put together the selector entries
 		for ($i = 0; $i < $maxItems; ++$i) {
-			$row = $resultRows[$rowsSort[$i]];
-			$rowId = $row['table'] . '-' . $row['uid'] . $rowIdSuffix;
-			$listItems[] = '<li' . ($row['class'] !== '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '"' . ($row['style'] !== '' ? ' style="' . $row['style'] . '"' : '') . '>' . $row['sprite'] . $row['text'] . '</li>';
+			$listItems[] = $resultRows[$rowsSort[$i]];
 		}
-
 		return $listItems;
 	}
 

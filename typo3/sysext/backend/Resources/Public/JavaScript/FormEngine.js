@@ -764,6 +764,11 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 				$('.t3js-clearable').clearable();
 			});
 		}
+		if ($('.t3-form-suggest').length) {
+			require(['TYPO3/CMS/Backend/FormEngineSuggest'], function(Suggest) {
+				Suggest($('.t3-form-suggest'));
+			});
+		}
 		// apply DatePicker to all date time fields
 		require(['TYPO3/CMS/Backend/DateTimePicker'], function(DateTimePicker) {
 			DateTimePicker.initialize();
