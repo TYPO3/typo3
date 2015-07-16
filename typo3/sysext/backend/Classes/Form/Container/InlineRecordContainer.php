@@ -579,9 +579,7 @@ class InlineRecordContainer extends AbstractContainer {
 			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $cells);
 		}
 
-		$out = '
-			<!-- CONTROL PANEL: ' . $foreign_table . ':' . $rec['uid'] . ' -->
-			<img name="' . $nameObjectFtId . '_req" src="clear.gif" alt="" />';
+		$out = '';
 		if (!empty($cells)) {
 			$out .= ' <div class="btn-group btn-group-sm" role="group">' . implode('', $cells) . '</div>';
 		}
