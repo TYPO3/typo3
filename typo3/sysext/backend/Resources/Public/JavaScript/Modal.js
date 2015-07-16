@@ -89,17 +89,17 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 	Modal.confirm = function(title, content, severity, buttons) {
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.warning);
 		buttons = buttons || [
-			{
-				text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
-				active: true,
-				name: 'cancel'
-			},
-			{
-				text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
-				btnClass: 'btn-' + Modal.getSeverityClass(severity),
-				name: 'ok'
-			}
-		];
+				{
+					text: $(this).data('button-close-text') || TYPO3.lang['button.cancel'] || 'Cancel',
+					active: true,
+					name: 'cancel'
+				},
+				{
+					text: $(this).data('button-ok-text') || TYPO3.lang['button.ok'] || 'OK',
+					btnClass: 'btn-' + Modal.getSeverityClass(severity),
+					name: 'ok'
+				}
+			];
 		$modal = Modal.show(title, content, severity, buttons);
 		$modal.on('button.clicked', function(e) {
 			if (e.target.name === 'cancel') {
@@ -266,14 +266,22 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 					active: true,
 					btnClass: 'btn-default',
 					trigger: function() {
-						$element.trigger('modal-dismiss');
+						if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
+							top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+						} else {
+							Modal.trigger('modal-dismiss');
+						}
 					}
 				},
 				{
 					text: $element.data('button-ok-text') || 'OK',
-					btnClass: 'btn-primary',
+					btnClass: 'btn-' + Modal.getSeverityClass(severity),
 					trigger: function() {
-						$element.trigger('modal-dismiss');
+						if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
+							top.TYPO3.Modal.currentModal.trigger('modal-dismiss');
+						} else {
+							Modal.trigger('modal-dismiss');
+						}
 						self.location.href = $element.data('href') || $element.attr('href');
 					}
 				}
@@ -281,9 +289,17 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 			if (url !== null) {
 				var separator = (url.indexOf('?') > -1) ? '&' : '?';
 				var params = $.param({data: $element.data()});
-				Modal.loadUrl(title, severity, buttons, url + separator + params);
+				if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
+					top.TYPO3.Modal.loadUrl(title, severity, buttons, url + separator + params);
+				} else {
+					Modal.loadUrl(title, severity, buttons, url + separator + params);
+				}
 			} else {
-				Modal.show(title, content, severity, buttons);
+				if (typeof top.TYPO3 !== 'undefined' && typeof top.TYPO3.Modal !== 'undefined') {
+					top.TYPO3.Modal.show(title, content, severity, buttons);
+				} else {
+					Modal.show(title, content, severity, buttons);
+				}
 			}
 		});
 	};
