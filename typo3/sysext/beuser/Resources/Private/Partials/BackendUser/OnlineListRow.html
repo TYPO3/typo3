@@ -30,11 +30,11 @@
 				<f:if condition="{currentSessionId} == {session.id}">
 					<f:else>
 						<f:link.action
-							class="btn btn-default"
+							class="btn btn-default t3js-modal-trigger"
 							action="terminateBackendUserSession"
 							controller="BackendUser"
 							arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
-							onclick="javascript:return confirm('{f:translate(key: 'reallyLogout')} {onlineUser.backendUser.userName}?');"
+							data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:lang/locallang_common.xlf:cancel\')}'}"
 						>
 							<be:spriteManagerIcon iconName="actions-document-close" />
 							<f:translate key="endSession" />
