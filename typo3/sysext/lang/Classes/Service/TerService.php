@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Lang\Service;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Extends of extensionmanager ter connection to enrich with translation
@@ -158,9 +159,26 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
 	 */
 	protected function fetchTranslation($extensionKey, $language, $mirrorUrl) {
 		$extensionPath = GeneralUtility::strtolower($extensionKey);
-		$mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath .
+		// Typical non sysext path, Hungarian:
+		// http://my.mirror/ter/a/n/anextension-l10n/anextension-l10n-hu.zip
+		$packageUrl = $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath .
 			'-l10n/' . $extensionPath . '-l10n-' . $language . '.zip';
-		$l10nResponse = GeneralUtility::getURL($mirrorUrl, 0, array(TYPO3_user_agent));
+
+		try {
+			$path = ExtensionManagementUtility::extPath($extensionPath);
+			if (strpos($path, DIRECTORY_SEPARATOR . 'sysext' . DIRECTORY_SEPARATOR) !== FALSE) {
+				// This is a system extension and the package URL should be adapted
+				list($majorVersion, ) = explode('.', TYPO3_branch);
+				// Typical non sysext path, mind the additional version part, French
+				// http://my.mirror/ter/b/a/backend-l10n/backend-l10n-fr.v7.zip
+				$packageUrl = $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath .
+					'-l10n/' . $extensionPath . '-l10n-' . $language . '.v' . $majorVersion . '.zip';
+			}
+		} catch (\BadFunctionCallException $e) {
+			// Nothing to do
+		}
+
+		$l10nResponse = GeneralUtility::getURL($mirrorUrl . $packageUrl, 0, array(TYPO3_user_agent));
 		if ($l10nResponse === FALSE) {
 			throw new \TYPO3\CMS\Lang\Exception\XmlParser('Error: Translation could not be fetched.', 1345736785);
 		} else {
