@@ -23,12 +23,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('6f487e40-4483-11de-8a39-0800200c9a66'));
 
-		$className = $this->getUniqueId('Object');
-		$fullClassName = 'TYPO3\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace TYPO3\\Fluid\\ViewHelpers\\Form; class ' . $className . ' {
-			public function __clone() {}
-		}');
-		$object = $this->getMock($fullClassName);
+		$object = $this->getMock(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptyClass::class);
 		$object->expects($this->any())->method('FLOW3_Persistence_isNew')->will($this->returnValue(FALSE));
 
 		$formViewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper::class, array('dummy'), array(), '', FALSE);
@@ -125,18 +120,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 		$formViewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper::class, array('isObjectAccessorMode', 'addAdditionalIdentityPropertiesIfNeeded'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 
-		$className = $this->getUniqueId('test_');
-		$mockObject = eval('
-			class ' . $className . ' {
-				public function getSomething() {
-					return "MyString";
-				}
-				public function getValue() {
-					return new ' . $className . ';
-				}
-			}
-			return new ' . $className . ';
-		');
+		$mockObject = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ClassWithTwoGetters();
 
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$formViewHelper->expects($this->once())->method('addAdditionalIdentityPropertiesIfNeeded');
@@ -250,18 +234,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function addAdditionalIdentityPropertiesIfNeededCallsRenderIdentityFieldWithTheRightParameters() {
-		$className = $this->getUniqueId('test_');
-		$mockFormObject = eval('
-			class ' . $className . ' {
-				public function getSomething() {
-					return "MyString";
-				}
-				public function getValue() {
-					return new ' . $className . ';
-				}
-			}
-			return new ' . $className . ';
-		');
+		$mockFormObject = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ClassWithTwoGetters();
 		$property = 'value.something';
 		$objectName = 'myObject';
 		$expectedProperty = 'myObject[value]';
@@ -283,18 +256,7 @@ class AbstractFormFieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHe
 	 * @test
 	 */
 	public function addAdditionalIdentityPropertiesIfNeededCallsRenderIdentityFieldWithTheRightParametersWithMoreHierarchyLevels() {
-		$className = $this->getUniqueId('test_');
-		$mockFormObject = eval('
-			class ' . $className . ' {
-				public function getSomething() {
-					return "MyString";
-				}
-				public function getValue() {
-					return new ' . $className . ';
-				}
-			}
-			return new ' . $className . ';
-		');
+		$mockFormObject = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ClassWithTwoGetters();
 		$property = 'value.value.something';
 		$objectName = 'myObject';
 		$expectedProperty1 = 'myObject[value]';

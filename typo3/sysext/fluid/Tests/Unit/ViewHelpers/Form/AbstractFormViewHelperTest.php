@@ -30,11 +30,7 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 * @test
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID() {
-		$className = $this->getUniqueId('Object');
-		$fullClassName = '\\TYPO3\\CMS\\Fluid\\ViewHelpers\\Form\\' . $className;
-		eval('namespace TYPO3\\CMS\\Fluid\\ViewHelpers\\Form; class ' . $className . ' extends \\' . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . ' {
-		}');
-		$object = $this->getAccessibleMock($fullClassName, array('dummy'));
+		$object = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ExtendsAbstractEntity::class, array('dummy'));
 		$object->_set('uid', 123);
 		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 		$viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);
@@ -47,10 +43,7 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 * @test
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldIfObjectIsNewButAClone() {
-		$className = $this->getUniqueId('Object');
-		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
-		}');
-		$object = $this->getAccessibleMock($className, array('dummy'));
+		$object = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ExtendsAbstractEntity::class, array('dummy'));
 		$object->_set('uid', 123);
 		$object = clone $object;
 		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
