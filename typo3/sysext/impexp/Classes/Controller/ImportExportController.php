@@ -87,12 +87,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
-		$this->lang->includeLLFile('EXT:impexp/app/locallang.xlf');
+		$this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
 		// Start document template object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->bodyTagId = 'imp-exp-mod';
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . '/app/template.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . '/Resources/Private/Templates/template.html');
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();

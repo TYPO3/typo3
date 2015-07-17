@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp']['tx_impexp_task'] = array(
 		'title' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.alttitle',
 		'description' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.description',
-		'icon' => 'EXT:impexp/export.gif'
+		'icon' => 'EXT:impexp/Resources/Public/Images/export.gif'
 	);
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/Resources/Private/Language/locallang_csh.xlf');
 	// CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
@@ -20,7 +20,7 @@ if (TYPO3_MODE === 'BE') {
 		9100 = ITEM
 		9100 {
 			name = exportT3d
-			label = LLL:EXT:impexp/app/locallang.xlf:export
+			label = LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:export
 			spriteIcon = actions-document-export-t3d
 			callbackAction = exportT3d
 		}
@@ -28,7 +28,7 @@ if (TYPO3_MODE === 'BE') {
 		9200 = ITEM
 		9200 {
 			name = importT3d
-			label = LLL:EXT:impexp/app/locallang.xlf:import
+			label = LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:import
 			spriteIcon = actions-document-import-t3d
 			callbackAction = importT3d
 		}
