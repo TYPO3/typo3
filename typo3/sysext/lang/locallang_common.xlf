@@ -198,6 +198,9 @@
 			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
+			<trans-unit id="pleaseConfirm">
+				<source>Please confirm</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
