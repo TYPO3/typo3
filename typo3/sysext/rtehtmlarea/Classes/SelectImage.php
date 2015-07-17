@@ -715,7 +715,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	}
 
 	/**
-	 * Checks if the given file is selectable in the file list.
+	 * Checks if the given file is selectable in the filelist.
 	 *
 	 * In "plain" RTE mode only image files with a maximum width and height are selectable.
 	 *

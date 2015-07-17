@@ -72,7 +72,7 @@ class InaccessibleFolder extends Folder {
 	 *
 	 * @param int $start The item to start at
 	 * @param int $numberOfItems The number of items to return
-	 * @param int $filterMode The filter mode to use for the file list.
+	 * @param int $filterMode The filter mode to use for the filelist.
 	 * @param bool $recursive
 	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
@@ -110,7 +110,7 @@ class InaccessibleFolder extends Folder {
 	 *
 	 * @param int $start The item to start at
 	 * @param int $numberOfItems The number of items to return
-	 * @param int $filterMode The filter mode to use for the file list.
+	 * @param int $filterMode The filter mode to use for the filelist.
 	 * @return Folder[]
 	 */
 	public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS) {

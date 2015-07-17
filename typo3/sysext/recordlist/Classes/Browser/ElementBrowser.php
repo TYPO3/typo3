@@ -1481,7 +1481,7 @@ class ElementBrowser {
 		$content .= '
 
 			<!--
-				Wrapper table for folder tree / file list:
+				Wrapper table for folder tree / filelist:
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
 				<tr>
@@ -1740,7 +1740,7 @@ class ElementBrowser {
 
 	/******************************************************************
 	 *
-	 * File listing
+	 * Filelisting
 	 *
 	 ******************************************************************/
 	/**
@@ -1875,7 +1875,7 @@ class ElementBrowser {
 					<td colspan="4">No files found.</td>
 				</tr>';
 		}
-		// Traverse the file list:
+		// Traverse the filelist:
 		/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
 		foreach ($files as $fileObject) {
 			$fileExtension = $fileObject->getExtension();
@@ -1962,18 +1962,18 @@ class ElementBrowser {
 		$out .= '
 
 	<!--
-		File listing
+		Filelisting
 	-->
 			<table cellpadding="0" cellspacing="0" id="typo3-filelist">
 				' . implode('', $lines) . '
 			</table>';
-		// Return accumulated content for file listing:
+		// Return accumulated content for filelisting:
 		$out .= '</div>';
 		return $out;
 	}
 
 	/**
-	 * Checks if the given file is selectable in the file list.
+	 * Checks if the given file is selectable in the filelist.
 	 *
 	 * By default all files are selectable. This method may be overwritten in child classes.
 	 *
@@ -2164,7 +2164,7 @@ class ElementBrowser {
 
 
 <!--
-	File listing / Drag-n-drop
+	Filelisting / Drag-n-drop
 -->
 			<table border="0" cellpadding="0" cellspacing="1" id="typo3-dragBox">
 				' . implode('', $lines) . '

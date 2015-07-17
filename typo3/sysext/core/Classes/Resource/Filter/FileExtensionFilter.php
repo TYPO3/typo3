@@ -70,7 +70,7 @@ class FileExtensionFilter {
 	}
 
 	/**
-	 * Entry method for use as file list filter.
+	 * Entry method for use as filelist filter.
 	 *
 	 * We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
 	 * if calling the method failed and thus we can't use that as a return value.

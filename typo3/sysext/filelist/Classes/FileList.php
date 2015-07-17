@@ -214,7 +214,7 @@ class FileList extends AbstractRecordList {
 	}
 
 	/**
-	 * Return the buttons used by the file list to include in the top header
+	 * Return the buttons used by the filelist to include in the top header
 	 *
 	 * @param Folder $folderObject
 	 * @return array
@@ -427,7 +427,7 @@ class FileList extends AbstractRecordList {
 			// finish
 			$out = '
 		<!--
-			File list table:
+			Filelist table:
 		-->
 			<div class="table-fit">
 				<table class="table table-striped table-hover" id="typo3-filelist">

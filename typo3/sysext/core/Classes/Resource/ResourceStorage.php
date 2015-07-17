@@ -536,7 +536,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 *
 	 * This method, by design, does not throw exceptions or do logging.
 	 * Besides the usage from other methods in this class, it is also used by
-	 * the File List UI to check whether an action is allowed and whether action
+	 * the Filelist UI to check whether an action is allowed and whether action
 	 * related UI elements should thus be shown (move icon, edit icon, etc.)
 	 *
 	 * @param string $action action, can be read, write, delete
@@ -1301,7 +1301,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
-	 * Unsets the file and folder name filters, thus making this storage return unfiltered file lists.
+	 * Unsets the file and folder name filters, thus making this storage return unfiltered filelists.
 	 *
 	 * @return void
 	 */

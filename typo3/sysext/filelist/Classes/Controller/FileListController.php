@@ -116,7 +116,7 @@ class FileListController {
 	protected $overwriteExistingFiles;
 
 	/**
-	 * The file list object
+	 * The filelist object
 	 *
 	 * @var FileList
 	 */

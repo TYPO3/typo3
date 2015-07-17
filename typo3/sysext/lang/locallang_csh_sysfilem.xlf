@@ -72,7 +72,7 @@ The directory structure of "fileadmin/" where you can see the "user_upload" fold
 				<source>Display this file mount as read-only.</source>
 			</trans-unit>
 			<trans-unit id="read_only.details">
-				<source>Read-only file mounts are displayed in the File List and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
+				<source>Read-only file mounts are displayed in the Filelist and the Element Browser. They allow displaying of files and folders which are neither writable nor editable for the user.</source>
 			</trans-unit>
 		</body>
 	</file>

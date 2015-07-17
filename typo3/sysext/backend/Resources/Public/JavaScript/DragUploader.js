@@ -477,7 +477,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			return false;
 		};
 
-		// position queue item in file list
+		// position queue item in filelist
 		if ($('tbody tr.upload-queue-item', me.dragUploader.$fileList).length === 0) {
 			me.$row.prependTo($('tbody', me.dragUploader.$fileList));
 			me.$row.addClass('last');

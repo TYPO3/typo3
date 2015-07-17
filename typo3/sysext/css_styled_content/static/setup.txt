@@ -1346,7 +1346,7 @@ tt_content.uploads {
 		stdWrap {
 			editIcons = tt_content: media, layout [table_bgColor|table_border|table_cellspacing|table_cellpadding], filelink_size
 			editIcons.iconTitle.data = LLL:EXT:css_styled_content/Resources/Private/Language/locallang.xlf:eIcon.filelist
-			prefixComment = 2 | File list:
+			prefixComment = 2 | Filelist:
 			dataWrap = <ul class="csc-uploads csc-uploads-{field:layout}">|</ul>
 		}
 	}

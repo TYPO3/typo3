@@ -79,7 +79,7 @@
 				<source>Edit table</source>
 			</trans-unit>
 			<trans-unit id="eIcon.filelist">
-				<source>Edit file list</source>
+				<source>Edit filelist</source>
 			</trans-unit>
 			<trans-unit id="eIcon.menuSitemap">
 				<source>Edit menu / sitemap</source>

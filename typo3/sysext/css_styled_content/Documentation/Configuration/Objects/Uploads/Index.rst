@@ -188,7 +188,7 @@ itemRendering
          :ref:`cObj <t3tsref:cobjects>` / + :ref:`optionSplit <t3tsref:objects-optionsplit>`
 
    Description
-         Provides the rendering information for every row in the file list.
+         Provides the rendering information for every row in the filelist.
          Each file will be rendered with this cObject, optionSplit will be
          applied to the whole itemRendering array so that different rendering
          needs can be applied to individual rows. Default rendering in

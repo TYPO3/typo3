@@ -55,7 +55,7 @@ class Folder implements FolderInterface {
 	protected $name;
 
 	/**
-	 * The filters this folder should use for a file list.
+	 * The filters this folder should use for a filelist.
 	 *
 	 * @var callable[]
 	 */
@@ -188,7 +188,7 @@ class Folder implements FolderInterface {
 	 *
 	 * @param int $start The item to start at
 	 * @param int $numberOfItems The number of items to return
-	 * @param int $filterMode The filter mode to use for the file list.
+	 * @param int $filterMode The filter mode to use for the filelist.
 	 * @param bool $recursive
 	 * @param string $sort Property name used to sort the items.
 	 *                     Among them may be: '' (empty, no sorting), name,
@@ -246,7 +246,7 @@ class Folder implements FolderInterface {
 	 *
 	 * @param int $start The item to start at
 	 * @param int $numberOfItems The number of items to return
-	 * @param int $filterMode The filter mode to use for the file list.
+	 * @param int $filterMode The filter mode to use for the filelist.
 	 * @param bool $recursive
 	 * @return Folder[]
 	 */

@@ -277,7 +277,7 @@
 				<source>File upload directly in Doc-module</source>
 			</trans-unit>
 			<trans-unit id="showHiddenFilesAndFolders">
-				<source>Show hidden files and folders in the file list</source>
+				<source>Show hidden files and folders in the filelist</source>
 			</trans-unit>
 			<trans-unit id="enableFlashUploader">
 				<source>Enable Flash Uploader (requires Flash 9+)</source>

@@ -785,7 +785,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function getFolderListLeavesOutNavigationalEntries() {
 		// we have to add .. and . manually, as these are not included in vfsStream directory listings (as opposed
-		// to normal file listings)
+		// to normal filelistings)
 		$this->addToMount(array(
 			'..' => array(),
 			'.' => array()

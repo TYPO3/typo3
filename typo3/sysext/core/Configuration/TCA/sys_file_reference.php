@@ -259,7 +259,7 @@ return array(
 		)
 	),
 	'palettes' => array(
-		// Used for basic overlays: having a file list etc
+		// Used for basic overlays: having a filelist etc
 		'basicoverlayPalette' => array(
 			'showitem' => 'title,description',
 		),

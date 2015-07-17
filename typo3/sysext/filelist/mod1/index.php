@@ -13,7 +13,7 @@
  */
 
 /**
- * Web>File: File listing
+ * Web>File: Filelisting
  */
 $GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Filelist\Controller\FileListController::class);
 $GLOBALS['SOBE']->init();
