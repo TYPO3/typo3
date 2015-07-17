@@ -433,7 +433,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		} else {
 			$pathId = $row['data_page_id'] ?: $row['page_id'];
 			$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
-			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId, $pathMP));
+			$pathStr = $this->getPathFromPageId($pathId, $pathMP);
 			$resultData['path'] = $this->linkPage($pathId, $pathStr, array(
 				'cHashParams' => $row['cHashParams'],
 				'data_page_type' => $row['data_page_type'],
