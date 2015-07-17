@@ -213,7 +213,7 @@ return array(
 	'types' => array(
 		'0' => array(
 			'showitem' => '
-				--div--;General, input_1, inline_1, inline_2, inline_3, inline_4
+				--div--;General, input_1, inline_1, inline_2, inline_3, inline_4,
 				--div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable
 			',
 		),
