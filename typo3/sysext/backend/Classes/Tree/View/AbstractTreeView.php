@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
@@ -969,7 +969,7 @@ abstract class AbstractTreeView {
 			}
 			// Passing on default <td> class for subelements:
 			if (is_array($row) && $subCSSclass !== '') {
-				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && $this->getWorkspaceService()->hasPageRecordVersions($this->BE_USER->workspace, $row['uid'])) {
+				if ($this->table === 'pages' && $this->highlightPagesWithVersions && !isset($row['_CSSCLASS']) && $this->hasPageRecordVersions($this->BE_USER->workspace, $row['uid'])) {
 					$row['_CSSCLASS'] = 'ver-versions';
 				}
 				if (!isset($row['_CSSCLASS'])) {
@@ -1042,7 +1042,21 @@ abstract class AbstractTreeView {
 	}
 
 	/**
-	 * @return WorkspaceService
+	 * @param int $workspaceId
+	 * @param int $pageId
+	 * @return bool
+	 */
+	protected function hasPageRecordVersions($workspaceId, $pageId) {
+		if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+			return FALSE;
+		}
+
+		return $this->getWorkspaceService()->hasPageRecordVersions($workspaceId, $pageId);
+
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Workspaces\Service\WorkspaceService;
 	 */
 	protected function getWorkspaceService() {
 		if ($this->workspaceService === NULL) {
