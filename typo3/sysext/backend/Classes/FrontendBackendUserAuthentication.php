@@ -119,7 +119,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 					}
 					$controllerClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['frontendEditingController'][$controllerKey];
 					if ($controllerClass) {
-						$this->frontendEdit = GeneralUtility::getUserObj($controllerClass, FALSE);
+						$this->frontendEdit = GeneralUtility::getUserObj($controllerClass);
 					}
 					break;
 				}

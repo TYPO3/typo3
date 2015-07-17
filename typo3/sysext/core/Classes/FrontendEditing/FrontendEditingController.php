@@ -89,7 +89,7 @@ class FrontendEditingController {
 		if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
-				$edit = GeneralUtility::getUserObj($editClass, FALSE);
+				$edit = GeneralUtility::getUserObj($editClass);
 				if (is_object($edit)) {
 					$allowedActions = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
 					$content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFields($dataArray));

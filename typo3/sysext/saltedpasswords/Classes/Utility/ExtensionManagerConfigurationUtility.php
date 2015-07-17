@@ -391,7 +391,7 @@ class ExtensionManagerConfigurationUtility {
 		$pField = '';
 		$registeredMethods = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getRegisteredSaltedHashingMethods();
 		foreach ($registeredMethods as $class => $reference) {
-			$classInstance = GeneralUtility::getUserObj($reference, 'tx_');
+			$classInstance = GeneralUtility::getUserObj($reference);
 			if ($classInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface && $classInstance->isAvailable()) {
 				$sel = $this->extConf[$disposal]['saltedPWHashingMethod'] == $class ? ' selected="selected" ' : '';
 				$label = 'ext.saltedpasswords.title.' . strtolower(end(explode('\\', $class)));

@@ -3802,7 +3802,7 @@ class BackendUtility {
 				$objRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
 			}
 			if ($objRef) {
-				$softRefParserObj = GeneralUtility::getUserObj($objRef, '');
+				$softRefParserObj = GeneralUtility::getUserObj($objRef);
 				if (is_object($softRefParserObj)) {
 					$GLOBALS['T3_VAR']['softRefParser'][$spKey] = $softRefParserObj;
 				}

@@ -131,7 +131,7 @@ class ExtDirectRouter {
 				), TRUE);
 			}
 		}
-		$endpointObject = GeneralUtility::getUserObj($callbackClass, FALSE);
+		$endpointObject = GeneralUtility::getUserObj($callbackClass);
 		return call_user_func_array(array($endpointObject, $singleRequest->method), is_array($singleRequest->data) ? $singleRequest->data : array());
 	}
 
