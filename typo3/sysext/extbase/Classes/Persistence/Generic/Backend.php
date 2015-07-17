@@ -633,8 +633,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$row = array();
 		$this->addCommonFieldsToRow($object, $row);
-		if ($dataMap->getLanguageIdColumnName() !== NULL) {
-			$row[$dataMap->getLanguageIdColumnName()] = -1;
+		if ($dataMap->getLanguageIdColumnName() !== NULL && $object->_getProperty('_languageUid') === NULL) {
+			$row[$dataMap->getLanguageIdColumnName()] = 0;
+			$object->_setProperty('_languageUid', 0);
 		}
 		if ($parentObject !== NULL && $parentPropertyName) {
 			$parentColumnDataMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
