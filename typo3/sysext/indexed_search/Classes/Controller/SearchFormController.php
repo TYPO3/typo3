@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Index search frontend
@@ -31,14 +32,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @var string
 	 */
 	public $prefixId = 'tx_indexedsearch';
-
-	/**
-	 * Path to this script relative to the extension dir.
-	 *
-	 * @var string
-	 * @TODO This is still set to the "old" class location since the locallang.xlf file in the same dir is loaded by pi_loadLL
-	 */
-	public $scriptRelPath = 'pi/class.tx_indexedsearch.php';
 
 	/**
 	 * Extension key.
@@ -189,7 +182,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function main($content, $conf) {
 		// Initialize:
 		$this->conf = $conf;
-		$this->pi_loadLL();
+		$this->LOCAL_LANG = $this->getLanguageService()->includeLLFile('EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf' , FALSE, TRUE);
 		$this->pi_setPiVarDefaults();
 		// Initialize:
 		$this->initialize();
@@ -2370,5 +2363,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function getJoinPagesForQuery() {
 		return (bool)$this->join_pages;
+	}
+
+	/**
+	 * Returns the Language Service
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

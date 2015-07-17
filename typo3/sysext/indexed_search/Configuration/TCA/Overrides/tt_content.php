@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 // Register "old" FE plugin and hide layout, select_key and pages fields in BE
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
-	array('LLL:EXT:indexed_search/locallang.xlf:mod_indexed_search', 'indexed_search'),
+	array('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:mod_indexed_search', 'indexed_search'),
 	'list_type',
 	'indexed_search'
 );
