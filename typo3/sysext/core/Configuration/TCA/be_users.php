@@ -112,6 +112,14 @@ return array(
 				)
 			)
 		),
+		'avatar' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.avatar',
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+				'avatar',
+				array('maxitems' => 1),
+				$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+			)
+		),
 		'lockToDomain' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:lockToDomain',
 			'config' => array(
@@ -386,13 +394,13 @@ return array(
 		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'disable, username, password, description, usergroup, admin, realName, email, lang, lastlogin,
+		'0' => array('showitem' => 'disable, username, password, description, avatar, usergroup, admin, realName, email, lang, lastlogin,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.rights, userMods, allowed_languages,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.mounts_and_workspaces, workspace_perms, db_mountpoints, options, file_mountpoints, file_permissions, category_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, lockToDomain, disableIPlock, TSconfig,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended'),
-		'1' => array('showitem' => 'disable, username, password, description, usergroup, admin, realName, email, lang, lastlogin,
+		'1' => array('showitem' => 'disable, username, password, avatar,description, usergroup, admin, realName, email, lang, lastlogin,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.options, disableIPlock, TSconfig, db_mountpoints, options, file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.access, starttime,endtime,
 			--div--;LLL:EXT:lang/locallang_tca.xlf:be_users.tabs.extended')

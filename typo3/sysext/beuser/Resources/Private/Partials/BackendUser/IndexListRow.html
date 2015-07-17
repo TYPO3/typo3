@@ -4,11 +4,13 @@
 <tr>
 	<td class="col-icon">
 		<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{backendUser.uid}" data-listframe="1" title="{f:if(condition: '{backendUser.description}', then: '{backendUser.description} ')}(id={backendUser.uid})">
-			<bu:spriteIconForRecord table="be_users" object="{backendUser}" />
+			<be:avatar backendUser="{backendUser.uid}" showIcon="TRUE" />
 		</a>
 	</td>
 	<td class="col-title">
-		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><b>{backendUser.userName}</b></a>
+		<a href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}">
+			<b>{backendUser.userName}</b>
+		</a>
 		<f:if condition="{bu:arrayElement(array: onlineBackendUsers, key: backendUser.uid)}">
 			<span class="label label-success"><f:translate key="online" /></span>
 		</f:if>

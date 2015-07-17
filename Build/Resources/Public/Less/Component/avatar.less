@@ -1,0 +1,107 @@
+//
+// Avatar
+// ======
+// Display user profile images
+//
+//
+// Empty Usage - Fallback image provided
+// -------------------------------------
+//
+// <span class="avatar">
+//   <span class="avatar-image"></span>
+// </span>
+//
+//
+// Normal Usage
+// ------------
+//
+// <span class="avatar">
+//   <span class="avatar-image">
+//     <img src="">
+//   </span>
+// </span>
+//
+//
+// Avatar with RecordIcon
+// ------------
+//
+// <span class="avatar">
+//   <span class="avatar-image">
+//     <img src="">
+//   </span>
+//   <span class="avatar-icon">
+//     <span class="t3-icon t3-icon-status t3-icon-status-user t3-icon-user-admin"></span>
+//   </span>
+// </span>
+//
+//
+
+
+//
+// Variables
+//
+@avatar-size:                32px;
+@avatar-border-radius:       50%;
+@avatar-dropdown-size:       28px;
+@avatar-dropdown-correction: ((@avatar-dropdown-size - @line-height-computed) / 2);
+
+
+//
+// Component
+//
+.avatar {
+	position: relative;
+	display: inline-block;
+	height: @avatar-size;
+	width: @avatar-size;
+	vertical-align: middle;
+}
+.avatar-image {
+	display: block;
+	height: @avatar-size;
+	width: @avatar-size;
+	overflow: hidden;
+	border-radius: @avatar-border-radius;
+	background-image: url('@{path-sysext}/backend/Resources/Public/Icons/avatar-default.svg');
+	background-size: 100%;
+	&:after {
+		display: block;
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		border-radius: @avatar-border-radius;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	> img {
+		width: 100% !important;
+		height: auto !important;
+	}
+}
+.avatar-icon {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: @avatar-size / 2;
+	width: @avatar-size / 2;
+}
+
+
+//
+// Avatar in dropdowns
+//
+.dropdown-toggle {
+	> .avatar {
+		height: @avatar-dropdown-size;
+		width: @avatar-dropdown-size;
+		float: left;
+		margin-right: 0.5em;
+		margin-top: -@avatar-dropdown-correction;
+	}
+	.avatar-image {
+		height: @avatar-dropdown-size;
+		width: @avatar-dropdown-size;
+	}
+}

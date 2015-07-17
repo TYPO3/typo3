@@ -7347,6 +7347,55 @@ button.close {
     bottom: 20px;
   }
 }
+.avatar {
+  position: relative;
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+}
+.avatar-image {
+  display: block;
+  height: 32px;
+  width: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+  background-image: url('../../../../../../typo3/sysext/backend/Resources/Public/Icons/avatar-default.svg');
+  background-size: 100%;
+}
+.avatar-image:after {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.avatar-image > img {
+  width: 100% !important;
+  height: auto !important;
+}
+.avatar-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 16px;
+  width: 16px;
+}
+.dropdown-toggle > .avatar {
+  height: 28px;
+  width: 28px;
+  float: left;
+  margin-right: 0.5em;
+  margin-top: -5px;
+}
+.dropdown-toggle .avatar-image {
+  height: 28px;
+  width: 28px;
+}
 .callout {
   background-color: #f0f0f0;
   border-left: 3px solid #cccccc;

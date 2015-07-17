@@ -61,6 +61,12 @@ if (TYPO3_MODE === 'BE') {
 				'table' => 'be_users',
 				'csh' => 'passwordCurrent',
 			),
+			'avatar' => array(
+				'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.avatar',
+				'type' => 'avatar',
+				'table' => 'be_users',
+				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+			),
 			'lang' => array(
 				'type' => 'select',
 				'itemsProcFunc' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '->renderLanguageSelect',
@@ -145,7 +151,7 @@ if (TYPO3_MODE === 'BE') {
 				'access' => 'admin'
 			)
 		),
-		'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,lang,
+		'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
 				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xml:passwordHeader,passwordCurrent,password,password2,
 				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,startModule,thumbnailsByDefault,titleLen,
 				--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,edit_RTE,edit_docModuleUpload,showHiddenFilesAndFolders,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,

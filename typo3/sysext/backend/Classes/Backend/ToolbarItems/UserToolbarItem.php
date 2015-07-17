@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Domain\Model\Module\BackendModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 
 /**
  * User toolbar item
@@ -43,7 +43,10 @@ class UserToolbarItem implements ToolbarItemInterface {
 	public function getItem() {
 		$backendUser = $this->getBackendUser();
 		$languageService = $this->getLanguageService();
-		$icon = IconUtility::getSpriteIcon('status-user-' . ($backendUser->isAdmin() ? 'admin' : 'backend'));
+
+		/** @var Avatar $avatar */
+		$avatar =  GeneralUtility::makeInstance(Avatar::class);
+		$icon = $avatar->render();
 
 		$realName = $backendUser->user['realName'];
 		$username = $backendUser->user['username'];

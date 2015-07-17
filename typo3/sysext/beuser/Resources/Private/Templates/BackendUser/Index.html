@@ -25,7 +25,7 @@
 						<tr>
 							<td class="col-icon">
 								<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" data-listframe="1" title="id={compareUser.uid}">
-									<bu:spriteIconForRecord table="be_users" object="{compareUser}" />
+									<be:avatar backendUser="{compareUser.uid}" showIcon="TRUE" />
 								</a>
 							</td>
 							<td class="col-title">
@@ -74,7 +74,7 @@
 						Footer row: no officially defined style yet
 					</f:comment>
 					<tr>
-						<td colspan="4">
+						<td colspan="5">
 							<f:count subject="{backendUsers}" /> <f:translate key="users" />
 						</td>
 					</tr>

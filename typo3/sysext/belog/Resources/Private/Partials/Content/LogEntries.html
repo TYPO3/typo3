@@ -1,3 +1,4 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 {namespace belog=TYPO3\CMS\Belog\ViewHelpers}
 
 <f:if condition="{constraint.groupByPage}">
@@ -114,7 +115,7 @@
 							</strong>
 						</th>
 						<th><span style="width: 10px; height: 1px; display: inline-block"></span></th>
-						<th valign="top">
+						<th valign="top" colspan="2">
 							<strong>
 								<f:translate key="chLog_l_user" />
 							</strong>
@@ -160,14 +161,22 @@
 							</td>
 							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
 
+							<td class="col-icon" valign="top">
+								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
+									<be:avatar backendUser="{logItem.backendUserUid}" showIcon="true" />
+								</f:if>
+							</td>
 							<td valign="top">
 								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
 									<f:then><belog:username uid="{logItem.backendUserUid}" /></f:then>
 									<f:else>[{logItem.backendUserUid}]</f:else>
-								</f:if>@<f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
-									<f:then><belog:workspaceTitle uid="{logItem.workspaceUid}" /></f:then>
-									<f:else>[{logItem.workspaceUid}]</f:else>
-								</f:if>
+								</f:if><br>
+								<span class="text-muted">
+									<f:if condition="{belog:workspaceTitle(uid:logItem.workspaceUid)}">
+										<f:then><belog:workspaceTitle uid="{logItem.workspaceUid}" /></f:then>
+										<f:else>[{logItem.workspaceUid}]</f:else>
+									</f:if>
+								</span>
 							</td>
 							<td><span style="width: 10px; height: 1px; display: inline-block"></span></td>
 

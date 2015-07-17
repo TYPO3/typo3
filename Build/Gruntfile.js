@@ -118,6 +118,9 @@ module.exports = function(grunt) {
 			 */
 			icons: {
 				files: [
+					// Avatar
+					{ src: 'Resources/Private/Icons/avatar-default.svg', dest: '<%= paths.sysext %>backend/Resources/Public/Icons/avatar-default.svg' },
+					// Module Icons
 					{ src: 'Resources/Private/Icons/module-about.svg', dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg' },
 					{ src: 'Resources/Private/Icons/module-aboutmodules.svg', dest: '<%= paths.sysext %>aboutmodules/Resources/Public/Icons/module-aboutmodules.svg' },
 					{ src: 'Resources/Private/Icons/module-belog.svg', dest: '<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg' },

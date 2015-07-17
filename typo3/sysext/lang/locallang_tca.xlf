@@ -54,6 +54,9 @@
 			<trans-unit id="be_users.password">
 				<source>Password:</source>
 			</trans-unit>
+			<trans-unit id="be_users.avatar">
+				<source>Avatar</source>
+			</trans-unit>
 			<trans-unit id="be_users.usergroup">
 				<source>Group:</source>
 			</trans-unit>

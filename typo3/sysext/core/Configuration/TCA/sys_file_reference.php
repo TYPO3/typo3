@@ -21,6 +21,7 @@ return array(
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'rootLevel' => -1,
 		// records can and should be edited in workspaces
 		'shadowColumnsForNewPlaceholders' => 'tablenames,fieldname,uid_local,uid_foreign',
 		'enablecolumns' => array(

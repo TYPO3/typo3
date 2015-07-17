@@ -7,7 +7,7 @@
 			<f:then>
 				<td class="col-icon">
 					<a href="#" class="t3-js-clickmenutrigger" data-table="be_users" data-uid="{onlineUser.backendUser.uid}" data-listframe="1" title="{f:if(condition: '{onlineUser.backendUser.description}', then: '{onlineUser.backendUser.description} ')}(id={onlineUser.backendUser.uid})">
-						<bu:spriteIconForRecord table="be_users" object="{onlineUser.backendUser}" />
+						<be:avatar backendUser="{onlineUser.backendUser.uid}" showIcon="true" />
 					</a>
 				</td>
 				<td class="col-title">
