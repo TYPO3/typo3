@@ -70,4 +70,37 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		$this->assertSame(1, $newBlogCount);
 	}
 
+	/**
+	 * @test
+	 */
+	public function addObjectSetsDefaultLanguageTest() {
+		$newBlogTitle = 'aDi1oogh';
+		$newBlog = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Blog::class);
+		$newBlog->setTitle($newBlogTitle);
+
+		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
+		$this->blogRepository->add($newBlog);
+		$this->persistentManager->persistAll();
+
+		$newBlogRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
+		$this->assertEquals(0, $newBlogRecord['sys_language_uid']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addObjectSetsDefinedLanguageTest() {
+		$newBlogTitle = 'aDi1oogh';
+		$newBlog = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Blog::class);
+		$newBlog->setTitle($newBlogTitle);
+		$newBlog->_setProperty('_languageUid', -1);
+
+		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
+		$this->blogRepository->add($newBlog);
+		$this->persistentManager->persistAll();
+
+		$newBlogRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'tx_blogexample_domain_model_blog', 'title = \'' . $newBlogTitle . '\'');
+		$this->assertEquals(-1, $newBlogRecord['sys_language_uid']);
+	}
+
 }
