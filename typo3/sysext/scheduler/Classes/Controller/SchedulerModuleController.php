@@ -101,6 +101,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$this->view->getRequest()->setControllerExtensionName('scheduler');
 		$this->moduleUri = BackendUtility::getModuleUrl($this->moduleName);
+
+		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
 	}
 
 	/**
@@ -963,9 +966,19 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					}
 					$toggleHiddenAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey, TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon($spriteIcon) . '</a>';
-					$deleteAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('msg.delete')) . ');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
+					$deleteAction = '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
+						. ' data-severity="warning"'
+						. ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '"'
+						. ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '"'
+						. ' data-content="' . $this->getLanguageService()->getLL('msg.delete', TRUE) . '"'
+						. ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
-					$stopAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('msg.stop')) . ');" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
+					$stopAction = '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
+						. ' data-severity="warning"'
+						. ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '"'
+						. ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '"'
+						. ' data-content="' . $this->getLanguageService()->getLL('msg.stop', TRUE) . '"'
+						. ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 					$runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
