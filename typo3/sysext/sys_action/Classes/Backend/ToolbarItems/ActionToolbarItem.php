@@ -32,7 +32,7 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:sys_action/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
 		$this->initializeActionEntries();
 	}
 
