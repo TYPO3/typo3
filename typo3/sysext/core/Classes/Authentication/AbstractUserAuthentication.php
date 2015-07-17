@@ -1221,7 +1221,7 @@ abstract class AbstractUserAuthentication {
 	 * @return mixed The module data if available: $this->uc['moduleData'][$module];
 	 */
 	public function getModuleData($module, $type = '') {
-		if ($type != 'ses' || $this->uc['moduleSessionID'][$module] == $this->id) {
+		if ($type != 'ses' || (isset($this->uc['moduleSessionID'][$module]) && $this->uc['moduleSessionID'][$module] == $this->id)) {
 			return $this->uc['moduleData'][$module];
 		}
 		return NULL;
