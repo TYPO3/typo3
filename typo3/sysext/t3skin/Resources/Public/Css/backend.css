@@ -9687,6 +9687,12 @@ ul.typo3-messages {
   top: 5px;
   position: absolute;
 }
+.x-menu-floating {
+  z-index: 50 !important;
+}
+.x-shadow {
+  z-index: 40 !important;
+}
 #typo3-browse-links-php {
   background: #ececec;
   background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
