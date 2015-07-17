@@ -1367,6 +1367,9 @@ class HtmlParser {
 					}
 					unset($tagC['fixAttrib.']);
 					unset($tagC['fixAttrib']);
+					if (isset($tagC['rmTagIfNoAttrib']) && $tagC['rmTagIfNoAttrib'] && empty($tagC['nesting'])) {
+						$tagC['nesting'] = 1;
+					}
 					// Candidate for \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge() if integer-keys will some day make trouble...
 					$keepTags[$key] = array_merge($keepTags[$key], $tagC);
 				}
@@ -1377,6 +1380,9 @@ class HtmlParser {
 			$lN = GeneralUtility::trimExplode(',', strtolower($TSconfig['localNesting']), TRUE);
 			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn])) {
+					if (!is_array($keepTags[$tn])) {
+						$keepTags[$tn] = array();
+					}
 					$keepTags[$tn]['nesting'] = 1;
 				}
 			}
@@ -1400,6 +1406,9 @@ class HtmlParser {
 						$keepTags[$tn] = array();
 					}
 					$keepTags[$tn]['rmTagIfNoAttrib'] = 1;
+					if (empty($keepTags[$tn]['nesting'])) {
+						$keepTags[$tn]['nesting'] = 1;
+					}
 				}
 			}
 		}
