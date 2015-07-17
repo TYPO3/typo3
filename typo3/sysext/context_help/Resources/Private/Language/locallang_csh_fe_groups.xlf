@@ -70,8 +70,8 @@ The configuration is subject to being overridden in other groups and by the TSco
 About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:context_help/cshimages/fegroups_3.png,
-EXT:context_help/cshimages/fegroups_4.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/fegroups_3.png,
+EXT:context_help/Resources/Public/Images/cshimages/fegroups_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

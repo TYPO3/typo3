@@ -43,8 +43,8 @@ When you're logged in as a backend user you can preview hidden pages if you have
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_hidden.image" xml:space="preserve">
-				<source>EXT:context_help/cshimages/hidden_page.gif,
-EXT:context_help/cshimages/pages_1.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/hidden_page.gif,
+EXT:context_help/Resources/Public/Images/cshimages/pages_1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.image_descr" xml:space="preserve">
@@ -82,7 +82,7 @@ If you insert eg. a 'd' the current date is inserted. You can also append any va
 				<source>fe_groups</source>
 			</trans-unit>
 			<trans-unit id="_fe_group.image">
-				<source>EXT:context_help/cshimages/fegroups_4.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/fegroups_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="extendToSubpages.description">
@@ -100,7 +100,7 @@ pages:fe_group</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_extendToSubpages.image">
-				<source>EXT:context_help/cshimages/pages_2.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/pages_2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="extendToSubpages.image_descr">
@@ -237,7 +237,7 @@ pages:shortcut_mode</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_shortcut.image">
-				<source>EXT:context_help/cshimages/page_shortcut.gif</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/page_shortcut.gif</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="shortcut.image_descr">

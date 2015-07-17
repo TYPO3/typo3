@@ -137,8 +137,8 @@ be_groups:TSconfig</source>
 be_users</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:context_help/cshimages/feusers_1.png,
-EXT:context_help/cshimages/feusers_2.png,</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/feusers_1.png,
+EXT:context_help/Resources/Public/Images/cshimages/feusers_2.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">

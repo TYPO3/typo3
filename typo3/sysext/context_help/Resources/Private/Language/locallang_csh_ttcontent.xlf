@@ -14,9 +14,9 @@
 _MOD_web_layout</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:context_help/cshimages/ttcontent_1.png,
-EXT:context_help/cshimages/ttcontent_2.png,
-EXT:context_help/cshimages/ttcontent_3.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_1.png,
+EXT:context_help/Resources/Public/Images/cshimages/ttcontent_2.png,
+EXT:context_help/Resources/Public/Images/cshimages/ttcontent_3.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -89,7 +89,7 @@ About Content Elements | http://typo3.org/documentation/document-library/doc_tut
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_CType.image">
-				<source>EXT:context_help/cshimages/ttcontent_4.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="hidden.description">
@@ -200,7 +200,7 @@ tt_content:date,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_header.image">
-				<source>EXT:context_help/cshimages/ttcontent_6.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_6.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="header_position.description">
@@ -323,7 +323,7 @@ Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_image.image">
-				<source>EXT:context_help/cshimages/ttcontent_5.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="image.image_descr">
@@ -546,7 +546,7 @@ tt_content:sectionIndex</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_type.image">
-				<source>EXT:context_help/cshimages/ttcontent_7.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/ttcontent_7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="select_key.description">

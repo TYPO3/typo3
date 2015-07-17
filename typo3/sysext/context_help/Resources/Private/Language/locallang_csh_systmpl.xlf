@@ -17,8 +17,8 @@ TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
 TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:context_help/cshimages/systemplate.png,
-EXT:context_help/cshimages/systemplate1.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/systemplate.png,
+EXT:context_help/Resources/Public/Images/cshimages/systemplate1.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -81,7 +81,7 @@ TypoScript Syntax | http://typo3.org/documentation/document-library/doc_core_ts/
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_clear.image">
-				<source>EXT:context_help/cshimages/systemplate2.png</source>
+				<source>EXT:context_help/Resources/Public/Images/cshimages/systemplate2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="root.description">
