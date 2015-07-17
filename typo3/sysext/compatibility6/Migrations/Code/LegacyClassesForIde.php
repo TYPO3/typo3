@@ -19,11 +19,6 @@ class Tx_About_Domain_Repository_ExtensionRepository extends \TYPO3\CMS\About\Do
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class Tx_About_ViewHelpers_SkinImageViewHelper extends \TYPO3\CMS\About\ViewHelpers\SkinImageViewHelper {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class Tx_Aboutmodules_Controller_ModulesController extends \TYPO3\CMS\Aboutmodules\Controller\ModulesController {}
 
 /**
@@ -299,11 +294,6 @@ class t3lib_TCEforms_Suggest_DefaultReceiver extends \TYPO3\CMS\Backend\Form\Wiz
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_TCEforms_Tree extends \TYPO3\CMS\Backend\Form\Element\TreeElement {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class t3lib_TCEforms_ValueSlider extends \TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard {}
 
 /**
@@ -369,11 +359,6 @@ interface t3lib_localRecordListGetTableHook extends \TYPO3\CMS\Backend\RecordLis
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class extDirect_dataProvider_BackendLiveSearch extends \TYPO3\CMS\Backend\Search\LiveSearch\ExtDirect\LiveSearchDataProvider {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class t3lib_search_liveSearch extends \TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch {}
 
 /**
@@ -419,7 +404,7 @@ class template extends \TYPO3\CMS\Backend\Template\DocumentTemplate {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class frontendDoc extends \TYPO3\CMS\Backend\Template\FrontendDocumentTemplate {}
+class frontendDoc extends \TYPO3\CMS\Compatibility6\Template\FrontendDocumentTemplate {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -700,11 +685,6 @@ class t3lib_cache_backend_TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\B
  * @deprecated since 6.0, removed since 7.0
  */
 class t3lib_cache_backend_DbBackend extends \TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class t3lib_cache extends \TYPO3\CMS\Core\Cache\Cache {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4779,7 +4759,7 @@ class tslib_content_Files extends \TYPO3\CMS\Frontend\ContentObject\FilesContent
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_FlowPlayer extends \TYPO3\CMS\Frontend\ContentObject\FlowPlayerContentObject {}
+class tslib_content_FlowPlayer extends \TYPO3\CMS\Mediace\ContentObject\FlowPlayerContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4824,12 +4804,12 @@ class tslib_content_LoadRegister extends \TYPO3\CMS\Frontend\ContentObject\LoadR
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_Media extends \TYPO3\CMS\Frontend\ContentObject\MediaContentObject {}
+class tslib_content_Media extends \TYPO3\CMS\Mediace\ContentObject\MediaContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_Multimedia extends \TYPO3\CMS\Frontend\ContentObject\MultimediaContentObject {}
+class tslib_content_Multimedia extends \TYPO3\CMS\Mediace\ContentObject\MultimediaContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4839,7 +4819,7 @@ class tslib_content_OffsetTable extends \TYPO3\CMS\Compatibility6\ContentObject\
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_QuicktimeObject extends \TYPO3\CMS\Frontend\ContentObject\QuicktimeObjectContentObject {}
+class tslib_content_QuicktimeObject extends \TYPO3\CMS\Mediace\ContentObject\QuicktimeObjectContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4864,7 +4844,7 @@ class tslib_content_SearchResult extends \TYPO3\CMS\Compatibility6\ContentObject
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_content_ShockwaveFlashObject extends \TYPO3\CMS\Frontend\ContentObject\ShockwaveFlashObjectContentObject {}
+class tslib_content_ShockwaveFlashObject extends \TYPO3\CMS\Mediace\ContentObject\ShockwaveFlashObjectContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4914,7 +4894,7 @@ class tslib_tableOffset extends \TYPO3\CMS\Compatibility6\ContentObject\OffsetTa
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_search extends \TYPO3\CMS\Frontend\ContentObject\SearchResultContentObject {}
+class tslib_search extends \TYPO3\CMS\Compatibility6\ContentObject\SearchResultContentObject {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -4979,17 +4959,17 @@ class tslib_gifBuilder extends \TYPO3\CMS\Frontend\Imaging\GifBuilder {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_mediaWizardCoreProvider extends \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProvider {}
+class tslib_mediaWizardCoreProvider extends \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProvider {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-interface tslib_mediaWizardProvider extends \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderInterface {}
+interface tslib_mediaWizardProvider extends \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderInterface {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tslib_mediaWizardManager extends \TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager {}
+class tslib_mediaWizardManager extends \TYPO3\CMS\Mediace\MediaWizard\MediaWizardProviderManager {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -5059,7 +5039,7 @@ class SC_mod_web_func_index extends \TYPO3\CMS\Func\Controller\PageFunctionsCont
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_funcwizards_webfunc extends \TYPO3\CMS\FuncWizards\Controller\WebFunctionWizardsBaseController {}
+class tx_funcwizards_webfunc extends \TYPO3\CMS\Compatibility6\Controller\WebFunctionWizardsBaseController {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -5150,11 +5130,6 @@ class SC_mod_web_info_index extends \TYPO3\CMS\Info\Controller\InfoModuleControl
  * @deprecated since 6.0, removed since 7.0
  */
 class tx_infopagetsconfig_webinfo extends \TYPO3\CMS\InfoPagetsconfig\Controller\InfoPageTyposcriptConfigController {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_coreupdates_compatversion extends \TYPO3\CMS\Install\Updates\CompatVersionUpdate {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -5950,11 +5925,6 @@ abstract class tx_sv_authbase extends \TYPO3\CMS\Sv\AbstractAuthenticationServic
  * @deprecated since 6.0, removed since 7.0
  */
 class tx_sv_auth extends \TYPO3\CMS\Sv\AuthenticationService {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_sv_loginformhook extends \TYPO3\CMS\Sv\LoginFormHook {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
