@@ -70,19 +70,40 @@ return array(
 			),
 			'defaultExtras' => 'richtext[*]:rte_transform[mode=ts_css]',
 		),
+
+		'tree_1' => array(
+			'exclude' => 1,
+			'label' => 'SELECT TREE 1',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 8,
+				'maxitems' => 99, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => TRUE,
+					),
+				),
+			),
+		),
+
+
 	),
 
 	'interface' => array(
 		'showRecordFieldList' => '
 			sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable,
-			rte_1
+			rte_1, tree_1,
 		',
 	),
 
 	'types' => array(
 		'0' => array(
 			'showitem' => '
-				rte_1,
+				rte_1, tree_1,
 			',
 		),
 	),

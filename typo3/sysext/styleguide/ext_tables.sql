@@ -355,8 +355,6 @@ CREATE TABLE tx_styleguide_forms_inline_2_child1 (
 	input_1 text NOT NULL,
 	inline_1 int(11) DEFAULT '0' NOT NULL,
 	inline_2 int(11) DEFAULT '0' NOT NULL,
-	inline_3 text NOT NULL,
-	inline_4 text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
@@ -562,6 +560,7 @@ CREATE TABLE tx_styleguide_inlineexpand_inline_1_child1 (
 	parentidentifier text NOT NULL,
 
 	rte_1 text NOT NULL,
+	tree_1 text NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
