@@ -148,6 +148,10 @@ class LiveSearch {
 		$limit = $this->limitCount;
 		$getRecordArray = array();
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
+			// if no access for the table (read or write), skip this table
+			if (!$GLOBALS['BE_USER']->check('tables_select', $tableName) && !$GLOBALS['BE_USER']->check('tables_modify', $tableName) ){
+				continue;
+			}
 			$recordArray = $this->findByTable($tableName, $pageIdList, '0,' . $limit);
 			$recordCount = count($recordArray);
 			if ($recordCount) {
