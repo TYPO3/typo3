@@ -24,6 +24,7 @@ h2 {
 	width: 41em;
 	font-size: 110%;
 	line-height: 1.7em;
+	max-width: 100%;
 }
 
 .typo3-message {
@@ -38,6 +39,13 @@ h2 {
 	background-image: url("../../../Images/Icon/Warning.png");
 	background-color: #fbf6de;
 	border-color: #b1905c;
+}
+
+.message-ok {
+	background-image: url("../../../Images/Icon/Ok.png");
+	background-color: #79a548;
+	border-color: transparent;
+	color: #fff;
 }
 
 .typo3-message ul {
