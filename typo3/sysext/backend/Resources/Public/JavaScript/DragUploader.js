@@ -31,7 +31,8 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 	var actions = {
 		OVERRIDE: 'replace',
 		RENAME: 'changeName',
-		SKIP: 'cancel'
+		SKIP: 'cancel',
+		USE_EXISTING: 'useExisting'
 	};
 
 	/*
@@ -45,7 +46,8 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 		me.$element = $(element);
 		me.$trigger = $(me.$element.data('dropzone-trigger'));
 		me.$dropzone = $('<div />').addClass('dropzone').hide();
-		if (me.$element.data('file-irre-object') && me.$element.nextAll(me.$element.data('dropzone-target')).length !== 0) {
+		me.irreObjectUid = me.$element.data('file-irre-object');
+		if (me.irreObjectUid && me.$element.nextAll(me.$element.data('dropzone-target')).length !== 0) {
 			me.dropZoneInsertBefore = true;
 			me.$dropzone.insertBefore(me.$element.data('dropzone-target'));
 		} else {
@@ -110,8 +112,6 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 		me.processFiles = function(files) {
 			me.queueLength = files.length;
 
-			// ask user if we should override files
-			var override = false;
 			if (!me.$fileList.is(':visible')) {
 				me.$fileList.show();
 			}
@@ -119,47 +119,42 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			NProgress.start();
 			percentagePerFile = 1 / files.length;
 
-			// Add each file to queue and start upload
+			// Check for each file if is already exist before adding it to the queue
 			var ajaxCalls = [];
 			$.each(files, function(i, file) {
-				if (typeof askForOverride[i] === 'undefined') {
-					// check if the file exists
-					ajaxCalls[i] = $.ajax({
-						url: TYPO3.settings.ajaxUrls['TYPO3_tcefile::fileExists'],
-						data: {
-							fileName: file.name,
-							fileTarget: me.target
-						},
-						cache: false,
-						success: function(response) {
-							var fileExists = typeof response.result !== 'undefined';
-							if (fileExists) {
-								askForOverride[i] = {
-									original: response.result,
-									uploaded: file,
-									action: actions.SKIP
-								};
-								NProgress.inc(percentagePerFile);
-							} else {
-								new FileQueueItem(me, file, 'cancel');
-							}
+
+				ajaxCalls[i] = $.ajax({
+					url: TYPO3.settings.ajaxUrls['TYPO3_tcefile::fileExists'],
+					data: {
+						fileName: file.name,
+						fileTarget: me.target
+					},
+					cache: false,
+					success: function(response) {
+						var fileExists = typeof response.result !== 'undefined';
+						if (fileExists) {
+							askForOverride.push({
+								original: response.result,
+								uploaded: file,
+								action: me.irreObjectUid ? actions.USE_EXISTING : actions.SKIP
+							});
+							NProgress.inc(percentagePerFile);
+						} else {
+							new FileQueueItem(me, file, 'cancel');
 						}
-					});
-				} else {
-					if (askForOverride[i].action !== actions.SKIP) {
-						new FileQueueItem(me, askForOverride[i].uploaded, askForOverride[i].action);
 					}
-				}
-			});
-			if (ajaxCalls.length) {
-				$.when.apply($, ajaxCalls).done(function () {
-					me.drawOverrideModal();
-					NProgress.done();
 				});
-			}
+			});
+
+			$.when.apply($, ajaxCalls).done(function () {
+				me.drawOverrideModal();
+				NProgress.done();
+			});
+
 			delete ajaxCalls;
 			me.$fileInput.val('');
 		};
+
 
 		me.fileInDropzone = function(event) {
 			me.$dropzone.addClass('drop-status-ok');
@@ -228,7 +223,6 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			if (me.queueLength > 0) {
 				me.queueLength--;
 				if (me.queueLength === 0) {
-					NProgress.done();
 					$.ajax({
 						url: TYPO3.settings.ajaxUrls['DocumentTemplate::getFlashMessages'],
 						cache: false,
@@ -241,8 +235,6 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 							}
 						}
 					});
-				} else {
-					NProgress.inc(percentagePerFile);
 				}
 			}
 		};
@@ -252,26 +244,14 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			if (amountOfItems === 0) {
 				return;
 			}
-			var $records = $('<p/>').text(TYPO3.lang['file_upload.existingfiles.description']).append(
-				$('<table/>', {class: 'table table-striped table-fixed'}).append(
+			var $modalContent = $('<div/>').append(
+				$('<p/>').text(TYPO3.lang['file_upload.existingfiles.description']),
+				$('<table/>', {class: 'table table-striped'}).append(
 					$('<tr />').append(
 						$('<th/>'),
 						$('<th/>').text(TYPO3.lang['file_upload.header.originalFile']),
 						$('<th/>').text(TYPO3.lang['file_upload.header.uploadedFile']),
 						$('<th/>').text(TYPO3.lang['file_upload.header.action'])
-					),
-					$('<tr/>').append(
-						$('<td/>', {colspan: 3}).append(
-							$('<label/>').text(TYPO3.lang['file_upload.actions.all.label'])
-						),
-						$('<td/>').append(
-							$('<select/>', {class: 'form-control t3js-actions-all'}).append(
-								$('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
-								$('<option/>').val(actions.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
-								$('<option/>').val(actions.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
-								$('<option/>').val(actions.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override'])
-							)
-						)
 					)
 				)
 			);
@@ -280,7 +260,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 				var $record = $('<tr />').append(
 					$('<td />').append(
 						(askForOverride[i].original.thumbUrl !== ''
-							? $('<img />', {src: askForOverride[i].original.thumbUrl})
+							? $('<img />', {src: askForOverride[i].original.thumbUrl, height: 40})
 							: $('<span />', {class: askForOverride[i].original.iconClasses})
 						)
 					),
@@ -294,16 +274,17 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 					),
 					$('<td />').append(
 						$('<select />', {class: 'form-control t3js-actions', 'data-override': i}).append(
+							(me.irreObjectUid ? $('<option/>').val(actions.USE_EXISTING).text(TYPO3.lang['file_upload.actions.use_existing']) : ''),
 							$('<option />').val(actions.SKIP).text(TYPO3.lang['file_upload.actions.skip']),
 							$('<option />').val(actions.RENAME).text(TYPO3.lang['file_upload.actions.rename']),
 							$('<option />').val(actions.OVERRIDE).text(TYPO3.lang['file_upload.actions.override'])
 						)
 					)
 				);
-				$records.find('tr:last-child').before($record);
+				$modalContent.find('table').append($record);
 			}
 
-			var $modal = top.TYPO3.Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $records, top.TYPO3.Severity.warning, [
+			var $modal = top.TYPO3.Modal.confirm(TYPO3.lang['file_upload.existingfiles.title'], $modalContent, top.TYPO3.Severity.warning, [
 				{
 					text: $(this).data('button-close-text') || TYPO3.lang['file_upload.button.cancel'] || 'Cancel',
 					active: true,
@@ -314,25 +295,36 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 					btnClass: 'btn-warning',
 					name: 'continue'
 				}
-			]);
+			], ['modal-inner-scroll']);
+			$modal.find('.modal-dialog').addClass('modal-lg');
+
+			$modal.find('.modal-footer').prepend(
+				$('<span/>').addClass('form-inline pull-left').append(
+					$('<label/>').text(TYPO3.lang['file_upload.actions.all.label']),
+					$('<select/>', {class: 'form-control t3js-actions-all'}).append(
+						$('<option/>').val('').text(TYPO3.lang['file_upload.actions.all.empty']),
+						(me.irreObjectUid ? $('<option/>').val(actions.USE_EXISTING).text(TYPO3.lang['file_upload.actions.all.use_existing']) : ''),
+						$('<option/>').val(actions.SKIP).text(TYPO3.lang['file_upload.actions.all.skip']),
+						$('<option/>').val(actions.RENAME).text(TYPO3.lang['file_upload.actions.all.rename']),
+						$('<option/>').val(actions.OVERRIDE).text(TYPO3.lang['file_upload.actions.all.override'])
+					)
+				)
+			);
+
 			$modal.on('change', '.t3js-actions-all', function() {
 				var $me = $(this),
 					value = $me.val();
 
 				if (value !== '') {
 					// mass action was selected, apply action to every file
-					$modal.find('.t3js-actions').attr('disabled', 'disabled');
-					for (var i = 0; i < amountOfItems; ++i) {
-						askForOverride[i].action = value;
-					}
-				} else {
-					$modal.find('.t3js-actions').each(function (index, select) {
-						var $select = $(select);
-						$select.removeAttr('disabled');
-						if (typeof askForOverride[index] !== 'undefined') {
-							askForOverride[index].action = $select.val();
-						}
+					$modal.find('.t3js-actions').each(function (i, select) {
+						var $select = $(select),
+							index = parseInt($select.data('override'));
+						$select.val(value).prop('disabled', 'disabled');
+						askForOverride[index].action = $select.val();
 					});
+				} else {
+					$modal.find('.t3js-actions').removeProp('disabled');
 				}
 			}).on('change', '.t3js-actions', function() {
 				var $me = $(this),
@@ -340,15 +332,20 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 				askForOverride[index].action = $me.val();
 			}).on('button.clicked', function(e) {
 				if (e.target.name === 'cancel') {
+					askForOverride = [];
 					top.TYPO3.Modal.dismiss();
 				} else if (e.target.name === 'continue') {
-					var files = [];
-					for (var i = 0; i < amountOfItems; ++i) {
-						if (askForOverride[i].action !== actions.SKIP) {
-							files.push(askForOverride[i].item);
+					$.each(askForOverride, function(key, fileInfo) {
+						if (fileInfo.action === actions.USE_EXISTING) {
+							DragUploader.addFileToIrre(
+								me.irreObjectUid,
+								fileInfo.original
+							);
+						} else if (fileInfo.action !== actions.SKIP) {
+							new FileQueueItem(me, fileInfo.uploaded, fileInfo.action);
 						}
-					}
-					me.processFiles(files);
+					});
+					askForOverride = [];
 					top.TYPO3.Modal.dismiss();
 				}
 			}).on('hidden.bs.modal', function() {
@@ -422,12 +419,10 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 					me.$iconCol.html('<span class="' + data.result.upload[0].iconClasses + '">&nbsp;</span>');
 				}
 
-				if (me.dragUploader.$element.data('file-irre-object')) {
-					inline.delayedImportElement(
-						me.dragUploader.$element.data('file-irre-object'),
-						'sys_file',
-						data.result.upload[0].uid,
-						'file'
+				if (me.dragUploader.irreObjectUid) {
+					DragUploader.addFileToIrre(
+						me.dragUploader.irreObjectUid,
+						data.result.upload[0]
 					);
 					setTimeout(function() {
 						me.$row.remove();
@@ -559,6 +554,15 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			string = sizeKB.toFixed(1) + ' KB';
 		}
 		return string;
+	};
+
+	DragUploader.addFileToIrre = function(irre_object, file) {
+		inline.delayedImportElement(
+			irre_object,
+			'sys_file',
+			file.uid,
+			'file'
+		);
 	};
 
 	DragUploader.initialize = function() {

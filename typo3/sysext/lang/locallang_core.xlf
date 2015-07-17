@@ -529,6 +529,9 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_upload.actions.override">
 				<source>Overwrite</source>
 			</trans-unit>
+			<trans-unit id="file_upload.actions.use_existing">
+				<source>Use existing file</source>
+			</trans-unit>
 			<trans-unit id="file_upload.actions.all.label">
 				<source>Alternatively, choose a mass action:</source>
 			</trans-unit>
@@ -543,6 +546,9 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="file_upload.actions.all.override">
 				<source>Overwrite all files</source>
+			</trans-unit>
+			<trans-unit id="file_upload.actions.all.use_existing">
+				<source>Use existing files</source>
 			</trans-unit>
 			<trans-unit id="file_upload.button.cancel">
 				<source>Cancel</source>

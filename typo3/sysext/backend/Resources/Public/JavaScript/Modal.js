@@ -85,8 +85,9 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 	 * @param {string} content the content for the conform modal, e.g. the main question
 	 * @param {int} severity default top.TYPO3.Severity.warning
 	 * @param {array} buttons an array with buttons, default no buttons
+	 * @param {array} additionalCssClasses additional css classes to add to the modal
 	 */
-	Modal.confirm = function(title, content, severity, buttons) {
+	Modal.confirm = function(title, content, severity, buttons, additionalCssClasses) {
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.warning);
 		buttons = buttons || [
 				{
@@ -100,7 +101,8 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 					name: 'ok'
 				}
 			];
-		$modal = Modal.show(title, content, severity, buttons);
+		additionalCssClasses = additionalCssClasses || [];
+		$modal = Modal.show(title, content, severity, buttons, additionalCssClasses);
 		$modal.on('button.clicked', function(e) {
 			if (e.target.name === 'cancel') {
 				$(this).trigger('confirm.button.cancel');
@@ -143,11 +145,18 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 	 * @param {string} content the content for the conform modal, e.g. the main question
 	 * @param {int} severity default top.TYPO3.Severity.info
 	 * @param {array} buttons an array with buttons, default no buttons
+	 * @param {array} additionalCssClasses additional css classes to add to the modal
 	 */
-	Modal.show = function(title, content, severity, buttons) {
+	Modal.show = function(title, content, severity, buttons, additionalCssClasses) {
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.info);
 		buttons = buttons || [];
+		additionalCssClasses = additionalCssClasses || [];
 		Modal.currentModal = Modal.template.clone();
+		if (additionalCssClasses.length) {
+			for (var i=0; i < additionalCssClasses.length; i++) {
+				Modal.currentModal.addClass(additionalCssClasses[i]);
+			}
+		}
 		Modal.currentModal.attr('tabindex', '-1');
 		Modal.currentModal.find('.modal-title').text(title);
 		Modal.currentModal.find('.modal-header .close').on('click', function() {
@@ -242,6 +251,11 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 				var $me = $(this),
 					$clone = $me.clone().css('display', 'block').appendTo('body'),
 					top = Math.max(0, Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2));
+
+				if ($me.hasClass('modal-inner-scroll')) {
+					var maxHeight = $(window).height() - $clone.find('.modal-header').height() - $clone.find('.modal-footer').height() - 100;
+					$me.find('.modal-body').css({'max-height': maxHeight, 'overflow-y': 'auto'});
+				}
 
 				$clone.remove();
 				$me.find('.modal-content').css('margin-top', top);
