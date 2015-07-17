@@ -68,7 +68,7 @@ function jump(url, modName, mainModName, pageId) {
 
 /**
  * shortcut manager to delegate the action of creating shortcuts to the new
- * backend.php shortcut menu or the old shortcut frame depending on what is available
+ * BackendUtility::getModuleUrl('main') shortcut menu or the old shortcut frame depending on what is available
  */
 var ShortcutManager = {
 

@@ -97,7 +97,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 			$classValue = ($workspaceId === $activeWorkspace ? ' class="selected"' : '');
 			$sectionName = ($index++ === 0 ? 'top' : 'items');
 			$workspaceSections[$sectionName][] = '<li' . $classValue . '>'
-				. '<a href="backend.php?changeWorkspace=' . $workspaceId . '" data-workspaceid="' . $workspaceId . '" class="dropdown-list-link tx-workspaces-switchlink">'
+				. '<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('main', array('changeWorkspace' => $workspaceId))) . '" data-workspaceid="' . $workspaceId . '" class="dropdown-list-link tx-workspaces-switchlink">'
 				. $iconState . ' ' . htmlspecialchars($label)
 				. '</a></li>';
 		}

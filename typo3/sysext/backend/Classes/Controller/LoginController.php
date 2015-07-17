@@ -41,7 +41,7 @@ class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	protected $redirectUrl;
 
 	/**
-	 * Set to the redirect URL of the form (may be redirect_url or "backend.php")
+	 * Set to the redirect URL of the form (may be redirect_url or "index.php?M=main")
 	 *
 	 * @var string
 	 */
@@ -109,8 +109,8 @@ class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_login.xlf');
 
-		// Setting the redirect URL to "backend.php" if no alternative input is given
-		$this->redirectToURL = $this->redirectUrl ?: 'backend.php';
+		// Setting the redirect URL to "index.php?M=main" if no alternative input is given
+		$this->redirectToURL = $this->redirectUrl ?: BackendUtility::getModuleUrl('main');
 
 		// If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
 		if (GeneralUtility::_GP('L') === 'OUT' && is_object($this->getBackendUserAuthentication())) {
@@ -289,7 +289,7 @@ class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 					break;
 				case 'backend':
 					$interface = 'backend';
-					$this->redirectToURL = 'backend.php';
+					$this->redirectToURL = BackendUtility::getModuleUrl('main');
 					break;
 				default:
 					$interface = '';
@@ -335,7 +335,7 @@ class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 				$interfaces = array(
 					'backend' => array(
 						'label' => $this->getLanguageService()->getLL('interface.backend'),
-						'jumpScript' => 'backend.php',
+						'jumpScript' => BackendUtility::getModuleUrl('main'),
 						'interface' => 'backend'
 					),
 					'frontend' => array(

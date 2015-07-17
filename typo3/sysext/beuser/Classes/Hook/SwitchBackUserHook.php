@@ -37,7 +37,7 @@ class SwitchBackUserHook {
 			$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 			$backendUserSessionRepository = $objectManager->get(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository::class);
 			$backendUserSessionRepository->switchBackToOriginalUser($authentication);
-			HttpUtility::redirect($GLOBALS['BACK_PATH'] . 'backend.php');
+			HttpUtility::redirect(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('main'));
 		}
 	}
 

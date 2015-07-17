@@ -4438,9 +4438,8 @@ class BackendUtility {
 				$script = '../.';
 				break;
 			case 'backend':
-
 			default:
-				$script = 'backend.php';
+				$script = self::getModuleUrl('main');
 		}
 		return $script;
 	}

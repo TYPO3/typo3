@@ -182,7 +182,7 @@ class PreviewController extends AbstractController {
 	/**
 	 * Generates the JavaScript code for the backend,
 	 * and since we're loading a backend module outside of the actual backend
-	 * this copies parts of the backend.php
+	 * this copies parts of the index.php?M=main module
 	 *
 	 * @return string
 	 */

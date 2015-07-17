@@ -156,7 +156,7 @@ class SystemEnvironmentBuilder {
 		// Absolute path of the entry script that was called
 		// All paths are unified between Windows and Unix, so the \ of Windows is substituted to a /
 		// Example "/var/www/instance-name/htdocs/typo3conf/ext/wec_map/mod1/index.php"
-		// Example "c:/var/www/instance-name/htdocs/typo3/backend.php" for a path in Windows
+		// Example "c:/var/www/instance-name/htdocs/typo3/index.php?M=main" for a path in Windows
 		if (!defined('PATH_thisScript')) {
 			define('PATH_thisScript', self::getPathThisScript());
 		}
