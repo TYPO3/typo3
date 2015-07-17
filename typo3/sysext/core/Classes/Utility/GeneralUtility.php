@@ -4138,7 +4138,7 @@ Connection: close
 			return call_user_func_array($funcName, array(&$params, &$ref));
 		}
 		// Check persistent object and if found, call directly and exit.
-		if (is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName])) {
+		if (isset($GLOBALS['T3_VAR']['callUserFunction'][$funcName]) && is_array($GLOBALS['T3_VAR']['callUserFunction'][$funcName])) {
 			return call_user_func_array(array(
 				&$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['obj'],
 				$GLOBALS['T3_VAR']['callUserFunction'][$funcName]['method']
