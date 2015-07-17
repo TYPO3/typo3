@@ -2294,6 +2294,17 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * Retrieves information about a folder
+     *
+     * @param Folder $folder
+     * @return array
+     */
+    public function getFolderInfo(Folder $folder)
+    {
+        return $this->driver->getFolderInfoByIdentifier($folder->getIdentifier());
+    }
+
+    /**
      * Returns the default folder where new files are stored if no other folder is given.
      *
      * @return Folder

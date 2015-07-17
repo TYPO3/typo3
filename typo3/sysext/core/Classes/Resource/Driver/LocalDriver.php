@@ -288,9 +288,12 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver
                 1314516810
             );
         }
+        $absolutePath = $this->getAbsolutePath($folderIdentifier);
         return array(
             'identifier' => $folderIdentifier,
             'name' => PathUtility::basename($folderIdentifier),
+            'mtime' => filemtime($absolutePath),
+            'ctime' => filectime($absolutePath),
             'storage' => $this->storageUid
         );
     }

@@ -76,4 +76,18 @@ interface FolderInterface extends ResourceInterface
      * @return bool TRUE if deletion succeeded
      */
     public function delete();
+
+    /**
+     * Returns the modification time of the folder as Unix timestamp
+     *
+     * @return int
+     */
+    public function getModificationTime();
+
+    /**
+     * Returns the creation time of the folder as Unix timestamp
+     *
+     * @return int
+     */
+    public function getCreationTime();
 }

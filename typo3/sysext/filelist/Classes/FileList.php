@@ -503,8 +503,8 @@ class FileList extends AbstractRecordList
                             $theData[$field] = $this->getLanguageService()->getLL('folder', true);
                             break;
                         case 'tstamp':
-                            // @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
-                            $theData[$field] = '-';
+                            $tstamp = $folderObject->getModificationTime();
+                            $theData[$field] = $tstamp ? BackendUtility::date($tstamp) : '-';
                             break;
                         case 'file':
                             $theData[$field] = $this->linkWrapDir($displayName, $folderObject);

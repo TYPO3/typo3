@@ -512,4 +512,24 @@ class Folder implements FolderInterface
     {
         return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
     }
+
+    /**
+     * Returns the modification time of the file as Unix timestamp
+     *
+     * @return int
+     */
+    public function getModificationTime()
+    {
+        return $this->storage->getFolderInfo($this)['mtime'];
+    }
+
+    /**
+     * Returns the creation time of the file as Unix timestamp
+     *
+     * @return int
+     */
+    public function getCreationTime()
+    {
+        return $this->storage->getFolderInfo($this)['ctime'];
+    }
 }
