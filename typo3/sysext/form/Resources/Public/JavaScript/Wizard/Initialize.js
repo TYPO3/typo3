@@ -13,8 +13,6 @@
  * @return void
  */
 Ext.onReady(function() {
-		// Initialize QuickTips (Can be used anywhere)
-	Ext.QuickTips.init();
 		// Instantiate new viewport
 	var viewport = new TYPO3.Form.Wizard.Viewport({});
 		// When the window is resized, the viewport has to be resized as well

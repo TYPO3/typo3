@@ -664,7 +664,6 @@ class RichTextElement extends AbstractFormElement {
 							RTEarea.init();
 						}, 10);
 					} else {
-						Ext.QuickTips.init();
 						HTMLArea.init();
 					}
 				};

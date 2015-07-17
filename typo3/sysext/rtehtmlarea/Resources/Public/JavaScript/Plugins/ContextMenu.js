@@ -282,9 +282,6 @@ define('TYPO3/CMS/Rtehtmlarea/Plugins/ContextMenu',
 		 * Handler invoked when the editor is about to be destroyed
 		 */
 		onBeforeDestroy: function (event) {
-			this.menu.items.each(function (menuItem) {
-				Ext.QuickTips.unregister(menuItem);
-			});
 			this.menu.removeAll(true);
 			this.menu.destroy();
 		}

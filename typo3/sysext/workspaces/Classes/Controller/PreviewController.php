@@ -46,7 +46,6 @@ class PreviewController extends AbstractController {
 		$resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Css/preview.css';
 		$GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
 		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->enableExtJSQuickTips();
 		// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode(array(
 			'TYPO3.Workspaces',

@@ -140,7 +140,6 @@ class ReviewController extends AbstractController {
 			$defaultFlashMessageQueue->enqueue($flashMessage);
 		}
 		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->enableExtJSQuickTips();
 		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
 		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 		// Load  JavaScript:

@@ -386,11 +386,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $extJScss = TRUE;
 
 	/**
-	 * @var bool
-	 */
-	protected $enableExtJSQuickTips = FALSE;
-
-	/**
 	 * @var array
 	 */
 	protected $inlineLanguageLabels = array();
@@ -1686,16 +1681,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Enables ExtJs QuickTips
-	 * Need extJs loaded
-	 *
-	 * @return void
-	 */
-	public function enableExtJSQuickTips() {
-		$this->enableExtJSQuickTips = TRUE;
-	}
-
-	/**
 	 * Call this function to load debug version of ExtJS. Use this for development only
 	 *
 	 * @return void
@@ -2137,7 +2122,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				Ext.SSL_SECURE_URL = "' . htmlspecialchars(GeneralUtility::locationHeaderUrl(($this->backPath . 'gfx/clear.gif'))) . '";' . LF
 				. $inlineSettings
 				. 'Ext.onReady(function() {'
-					. ($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . LF : '')
 					. $code
 				. ' });'
 				. $this->inlineJavascriptWrap[1];

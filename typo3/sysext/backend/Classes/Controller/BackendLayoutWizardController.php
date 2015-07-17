@@ -83,6 +83,7 @@ class BackendLayoutWizardController {
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->loadExtJS();
 		$pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/grideditor.js');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
 		$pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_cshmanual'));
 		$pageRenderer->addJsInlineCode('storeData', '
 			function storeData(data) {
@@ -177,7 +178,6 @@ class BackendLayoutWizardController {
 				}
 			}
 		}
-		$pageRenderer->enableExtJSQuickTips();
 		$pageRenderer->addExtOnReadyCode('
 			t3Grid = new TYPO3.Backend.t3Grid({
 				data: ' . json_encode($rows, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS) . ',

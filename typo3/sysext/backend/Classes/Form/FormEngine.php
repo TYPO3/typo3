@@ -1254,8 +1254,6 @@ class FormEngine {
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
-			// rtehtmlarea needs extjs quick tips (?)
-			$pageRenderer->enableExtJSQuickTips();
 			$beUserAuth = $this->getBackendUserAuthentication();
 			// Make textareas resizable and flexible ("autogrow" in height)
 			$textareaSettings = array(

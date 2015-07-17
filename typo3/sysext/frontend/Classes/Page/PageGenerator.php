@@ -597,9 +597,6 @@ class PageGenerator {
 				if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
 					$pageRenderer->enableExtJsDebug();
 				}
-				if ($tsfe->pSetup['javascriptLibs.']['ExtJs.']['quickTips']) {
-					$pageRenderer->enableExtJSQuickTips();
-				}
 			}
 		}
 		// JavaScript library files

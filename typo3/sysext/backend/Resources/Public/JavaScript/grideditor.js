@@ -357,10 +357,14 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 				tabIndex: 1,
 				listeners: {
 					render: function(c) {
-						Ext.QuickTips.register({
-							target: c,
-							text: TYPO3.l10n.localize('nameHelp')
+						c.getEl().set({
+							'data-toggle': 'tooltip',
+							'data-placement': 'bottom',
+							'data-title': TYPO3.l10n.localize('nameHelp')
 						});
+					},
+					afterrender: function(cmp) {
+						TYPO3.Tooltip.initialize('[data-toggle="tooltip"]');
 					}
 				}
 			});
@@ -373,10 +377,14 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 				tabIndex: 2,
 				listeners: {
 					render: function(c) {
-						Ext.QuickTips.register({
-							target: c,
-							text: TYPO3.l10n.localize('columnHelp')
+						c.getEl().set({
+							'data-toggle': 'tooltip',
+							'data-placement': 'bottom',
+							'data-title': TYPO3.l10n.localize('columnHelp')
 						});
+					},
+					afterrender: function(cmp) {
+						TYPO3.Tooltip.initialize('[data-toggle="tooltip"]');
 					}
 				}
 			});
