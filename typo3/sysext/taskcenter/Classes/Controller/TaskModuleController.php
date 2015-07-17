@@ -42,7 +42,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Initializes the Module
 	 */
 	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:taskcenter/task/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:taskcenter/Resources/Private/Language/locallang_task.xlf');
 		$this->MCONF = array(
 			'name' => $this->moduleName
 		);
@@ -62,8 +62,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU = array('mode' => array());
-		$this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/locallang.xlf:task_overview');
-		$this->MOD_MENU['mode']['tasks'] =  $this->getLanguageService()->sL('LLL:EXT:taskcenter/locallang.xlf:task_tasks');
+		$this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_overview');
+		$this->MOD_MENU['mode']['tasks'] =  $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
 		/* Copied from parent::menuConfig, because parent is hardcoded to menu.function,
 		 * however menu.function is already used for the individual tasks.
 		 * Therefore we use menu.mode here.
@@ -153,8 +153,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		} else {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				$this->getLanguageService()->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_labels_tabdescr'),
-				$this->getLanguageService()->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_tabs_tab'),
+				$this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tabdescr'),
+				$this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
 				FlashMessage::INFO
 			);
 			$actionContent .= $flashMessage->render();
@@ -173,7 +173,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	protected function renderInformationContent() {
-		$content = $this->description($this->getLanguageService()->getLL('mlang_tabs_tab'), $this->getLanguageService()->sL('LLL:EXT:taskcenter/task/locallang_mod.xlf:mlang_labels_tabdescr'));
+		$content = $this->description($this->getLanguageService()->getLL('mlang_tabs_tab'), $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf:mlang_labels_tabdescr'));
 		$content .= $this->getLanguageService()->getLL('taskcenter-about');
 		if ($this->getBackendUser()->isAdmin()) {
 			$content .= '<br /><br />' . $this->description($this->getLanguageService()->getLL('taskcenter-adminheader'), $this->getLanguageService()->getLL('taskcenter-admin'));

@@ -19,7 +19,7 @@ if (TYPO3_MODE === 'BE') {
 				'tabs_images' => array(
 					'tab' => '../Resources/Public/Icons/module-taskcenter.svg',
 				),
-				'll_ref' => 'LLL:EXT:taskcenter/task/locallang_mod.xlf',
+				'll_ref' => 'LLL:EXT:taskcenter/Resources/Private/Language/locallang_mod.xlf',
 			),
 		)
 	);
