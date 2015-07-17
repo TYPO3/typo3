@@ -2091,7 +2091,7 @@ return array(
 		),
 		'wizard_6' => array(
 			'exclude' => 1,
-			'label' => 'WIZARD: 6 link wizard, from flex',
+			'label' => 'WIZARD 6: Flex forms',
 			'config' => array(
 				'type' => 'flex',
 				'ds' => array(
@@ -2103,9 +2103,9 @@ return array(
 							<ROOT>
 								<type>array</type>
 								<el>
-									<input_1>
+									<link_1>
 										<TCEforms>
-											<label>WIZARD 6: eval=trim, link wizard</label>
+											<label>LINK 1</label>
 											<config>
 												<type>input</type>
 												<eval>trim</eval>
@@ -2130,11 +2130,57 @@ return array(
 												</wizards>
 											</config>
 										</TCEforms>
-									</input_1>
+									</link_1>
+									<table_1>
+										<TCEforms>
+											<label>TABLE 1</label>
+												<config>
+													<type>text</type>
+													<cols>30</cols>
+													<rows>5</rows>
+													<wizards>
+														<table type="array">
+															<type>script</type>
+															<title>Table wizard</title>
+															<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
+															<module type="array">
+																<name>wizard_table</name>
+															</module>
+															<params type="array">
+																<xmlOutput>0</xmlOutput>
+															</params>
+															<notNewRecords>1</notNewRecords>
+														</table>
+													</wizards>
+												</config>
+										</TCEforms>
+									</table_1>
 								</el>
 							</ROOT>
 						</T3DataStructure>
 					',
+				),
+			),
+		),
+		'wizard_7' => array(
+			'label' => 'WIZARD: 7 table',
+			'config' => array(
+				'type' => 'text',
+				'cols' => '40',
+				'rows' => '5',
+				'wizards' => array(
+					'table' => array(
+						'type' => 'script',
+						'title' => 'Table wizard',
+						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif',
+						'module' => array(
+							'name' => 'wizard_table'
+						),
+						'params' => array(
+							'xmlOutput' => 0
+						),
+						'notNewRecords' => 1,
+					),
 				),
 			),
 		),
@@ -2525,7 +2571,7 @@ return array(
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
 			inline_1, inline_2, inline_3,
-			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
+			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_5, t3editor_6,
 			system_1, system_2, system_3, system_4, system_5, system_6, system_7, system_8, system_9, system_10,
@@ -2577,7 +2623,7 @@ return array(
 					--palette--;Palettes 5;palettes_5,
 					palette_6_1;Field with palette below, --palette--;;palettes_6,
 				--div--;Wizards,
-					wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6,
+					wizard_1, wizard_2, wizard_3, wizard_7, wizard_4, wizard_5, wizard_6,
 				--div--;RTE,
 					rte_1, --palette--;RTE in palette;rte_2_palette, rte_3, rte_4,
 				--div--;t3editor,
