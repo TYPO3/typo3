@@ -6,7 +6,7 @@ if (TYPO3_MODE === 'BE') {
 		'web_info',
 		\TYPO3\CMS\InfoPagetsconfig\Controller\InfoPageTyposcriptConfigController::class,
 		NULL,
-		'LLL:EXT:info_pagetsconfig/locallang.xlf:mod_pagetsconfig'
+		'LLL:EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf:mod_pagetsconfig'
 	);
 }
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:info_pagetsconfig/locallang_csh_webinfo.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:info_pagetsconfig/Resources/Private/Language/locallang_csh_webinfo.xlf');

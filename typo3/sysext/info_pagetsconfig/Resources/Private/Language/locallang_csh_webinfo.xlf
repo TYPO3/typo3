@@ -22,8 +22,8 @@ Page TSconfig objects | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsc
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tsconfig_hierarchy.image" xml:space="preserve">
-				<source>EXT:info_pagetsconfig/cshimages/img_1.png,
-EXT:info_pagetsconfig/cshimages/img_2.png,</source>
+				<source>EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_1.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_2.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tsconfig_hierarchy.image_descr" xml:space="preserve">
@@ -45,9 +45,9 @@ You can also click the edit-icons of the various pages to go directly to the TSc
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_tsconfig_edit.image" xml:space="preserve">
-				<source>EXT:info_pagetsconfig/cshimages/img_3.png,
-EXT:info_pagetsconfig/cshimages/img_4.png,
-EXT:info_pagetsconfig/cshimages/img_5.png</source>
+				<source>EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_3.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_4.png,
+EXT:info_pagetsconfig/Resources/Public/Images/cshimages/img_5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="tsconfig_edit.image_descr" xml:space="preserve">

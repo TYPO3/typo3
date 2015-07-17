@@ -28,7 +28,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:info_pagetsconfig/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
