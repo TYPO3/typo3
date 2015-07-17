@@ -107,19 +107,19 @@
 								<f:translate key="chLog_l_error" />
 							</strong>
 						</th>
-						<th><img src="clear.gif" width="10" height="1" alt="" /></th>
+						<th><span style="width: 10px; height: 1px;" /></th>
 						<th valign="top">
 							<strong>
 								<f:translate key="chLog_l_time" />
 							</strong>
 						</th>
-						<th><img src="clear.gif" width="10" height="1" alt="" /></th>
+						<th><span style="width: 10px; height: 1px;" /></th>
 						<th valign="top">
 							<strong>
 								<f:translate key="chLog_l_user" />
 							</strong>
 						</th>
-						<th><img src="clear.gif" width="10" height="1" alt="" /></th>
+						<th><span style="width: 10px; height: 1px;" /></th>
 						<th valign="top">
 							<strong>
 								<f:if condition="{constraint.isInPageContext}">
@@ -132,19 +132,19 @@
 								</f:if>
 							</strong>
 						</th>
-						<th><img src="clear.gif" width="10" height="1" alt="" /></th>
+						<th><span style="width: 10px; height: 1px;" /></th>
 						<th valign="top">
 							<strong>
 								<f:translate key="chLog_l_action" />
 							</strong>
 						</th>
-						<th><img src="clear.gif" width="10" height="1" alt="" /></th>
+						<th><span style="width: 10px; height: 1px;" /></th>
 						<th valign="top">
 							<strong>
 								<f:translate key="chLog_l_details" />
 							</strong>
 						</th>
-						<th><img src="clear.gif" width="10" height="1" alt="" /></th>
+						<th><span style="width: 10px; height: 1px;" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -153,12 +153,12 @@
 							<td valign="top">
 								<belog:ErrorIcon errorNumber="{logItem.error}" />
 							</td>
-							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+							<td><span style="width: 10px; height: 1px;" /></td>
 
 							<td valign="top">
 								<f:format.date format="H:i:s">@{logItem.tstamp}</f:format.date>
 							</td>
-							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+							<td><span style="width: 10px; height: 1px;" /></td>
 
 							<td valign="top">
 								<f:if condition="{belog:username(uid:logItem.backendUserUid)}">
@@ -169,7 +169,7 @@
 									<f:else>[{logItem.workspaceUid}]</f:else>
 								</f:if>
 							</td>
-							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+							<td><span style="width: 10px; height: 1px;" /></td>
 
 							<td valign="top">
 								<f:if condition="{constraint.isInPageContext}">
@@ -188,7 +188,7 @@
 									</f:else>
 								</f:if>
 							</td>
-							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+							<td><span style="width: 10px; height: 1px;" /></td>
 
 							<td valign="top">
 								<f:if condition="{f:translate(key:'action_{logItem.type}_{logItem.action}')}">
@@ -203,7 +203,7 @@
 									</f:else>
 								</f:if>
 							</td>
-							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+							<td><span style="width: 10px; height: 1px;" /></td>
 
 							<td valign="top">
 								<belog:formatDetails logEntry="{logItem}" />
@@ -212,7 +212,7 @@
 									(msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
 								</f:if>
 							</td>
-							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
+							<td><span style="width: 10px; height: 1px;" /></td>
 						</tr>
 					</f:for>
 				</tbody>
