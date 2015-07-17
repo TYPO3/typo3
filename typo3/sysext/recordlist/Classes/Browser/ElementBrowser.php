@@ -2015,7 +2015,7 @@ class ElementBrowser {
 		foreach ($folders as $subFolder) {
 			$subFolderIdentifier = $subFolder->getCombinedIdentifier();
 			// Create folder icon:
-			$icon = '<img src="clear.gif" width="16" height="16" alt="" />';
+			$icon = '<span style="width: 16px; height: 16px; display: inline-block;"></span>';
 			$icon .= IconUtility::getSpriteIcon('apps-filetree-folder-default', array('title' => htmlspecialchars($subFolder->getName())));
 			// Create links for adding the folder:
 			if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
@@ -2054,7 +2054,7 @@ class ElementBrowser {
 			}
 			$lines[] = '
 					<tr>
-						<td colspan="3"><img src="clear.gif" width="1" height="3" alt="" /></td>
+						<td colspan="3"><span style="width: 1px; height: 3px; display: inline-block;"></span></td>
 					</tr>';
 		}
 		// Wrap all the rows in table tags:
@@ -2155,7 +2155,7 @@ class ElementBrowser {
 					</tr>';
 				$lines[] = '
 					<tr>
-						<td colspan="2"><img src="clear.gif" width="1" height="3" alt="" /></td>
+						<td colspan="2"><span style="width: 1px; height: 3px; display: inline-block;"></span></td>
 					</tr>';
 			}
 		}

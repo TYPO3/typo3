@@ -6889,14 +6889,14 @@ class ContentObjectRenderer {
 				if ($useDivTag) {
 					$content = '<div class="content-spacer spacer-before" style="height:' . $wrapBefore . 'px;"></div>' . $content;
 				} else {
-					$content = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapBefore . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />' . $content;
+					$content = '<span style="width: 1px; height: ' . $wrapBefore . 'px; display: inline-block;"></span><br />' . $content;
 				}
 			}
 			if ($wrapAfter) {
 				if ($useDivTag) {
 					$content .= '<div class="content-spacer spacer-after" style="height:' . $wrapAfter . 'px;"></div>';
 				} else {
-					$content .= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapAfter . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />';
+					$content .= '<span style="width: 1px; height: ' . $wrapAfter . 'px; display: inline-block;"></span><br />';
 				}
 			}
 		}

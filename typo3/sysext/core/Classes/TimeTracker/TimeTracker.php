@@ -184,9 +184,9 @@ class TimeTracker {
 	public function setTSlogMessage($content, $num = 0) {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
-		// Enlarge the "details" column by adding a wide clear.gif
+		// Enlarge the "details" column by adding a span
 		if (strlen($content) > 30) {
-			$placeholder = '<br /><img src="' . TYPO3_mainDir . 'clear.gif" width="300" height="1" alt="" />';
+			$placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';
 		}
 		$this->tsStackLog[$k]['message'][] = IconUtility::getSpriteIcon($this->wrapIcon[$num]) . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
 	}

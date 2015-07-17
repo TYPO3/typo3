@@ -1033,7 +1033,7 @@ class PageLayoutController {
 			// Generate the list of elements here:
 			$dbList->generateList();
 			// Adding the list content to the tableOutput variable:
-			$tableOutput[$table] = ($h_func ? $h_func . '<br /><img src="clear.gif" width="1" height="4" alt="" /><br />' : '') . $dbList->HTMLcode . ($h_func_b ? '<img src="clear.gif" width="1" height="10" alt="" /><br />' . $h_func_b : '');
+			$tableOutput[$table] = ($h_func ? $h_func . '<br /><span style="width: 1px; height: 4px; display: inline-block;"></span><br />' : '') . $dbList->HTMLcode . ($h_func_b ? '<span style="width: 1px; height: 10px; display:inline-block;"></span><br />' . $h_func_b : '');
 			// ... and any accumulated JavaScript goes the same way!
 			$tableJSOutput[$table] = $dbList->JScode;
 			// Increase global counter:
@@ -1188,7 +1188,7 @@ class PageLayoutController {
 				// Save record
 				$buttons['savedok'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 				// Save and close
-				$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
+				$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" src="clear.gif" name="_saveandclosedok" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
 				// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';
 				// Close record
