@@ -164,17 +164,56 @@ return array(
 				),
 			),
 		),
+		'inline_3' => array(
+			'exclude' => 1,
+			'label' => '3 renderMode=tree of pages',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 20,
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => TRUE,
+					),
+				),
+			),
+		),
+		'inline_4' => array(
+			'exclude' => 1,
+			'label' => '4 renderMode=tree of pages showHeader=FALSE, nonSelectableLevels=0,1, allowRecursiveMode=TRUE, width=400',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'size' => 10,
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => FALSE,
+						'nonSelectableLevels' => '0,1',
+						'allowRecursiveMode' => TRUE, // @TODO: No effect?
+						'width' => 400,
+					),
+				),
+			),
+		),
 	),
 	'interface' => array(
 		'showRecordFieldList' => '
 			sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable,
-			input_1, inline_1, inline_2,
+			input_1, inline_1, inline_2, inline_3, inline_4
 		',
 	),
 	'types' => array(
 		'0' => array(
 			'showitem' => '
-				--div--;General, input_1, inline_1, inline_2,
+				--div--;General, input_1, inline_1, inline_2, inline_3, inline_4
 				--div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable
 			',
 		),
