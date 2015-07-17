@@ -415,6 +415,16 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
 		// Render video
 		if ($conf['type'] === 'video') {
+			// add preview image, html5 poster attribute
+			$sourceBasePath = substr($conf['sources'][1], 0, strrpos($conf['sources'][1], '.'));
+			foreach (['.jpg', '.jpeg', '.png'] as $fileExtension) {
+				$posterFilePath = $GLOBALS['TSFE']->tmpl->getFileName($sourceBasePath . $fileExtension);
+				if (file_exists($posterFilePath)) {
+					$attributes .= ' poster="' . htmlspecialchars($posterFilePath) . '"';
+					break;
+				}
+			}
+
 			if ($conf['preferFlashOverHtml5']) {
 				// Flash with video tag fallback
 				$conf['params.']['playerFallbackOrder'] = array('flash', 'html5');
