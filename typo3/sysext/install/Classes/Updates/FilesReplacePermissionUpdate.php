@@ -31,6 +31,9 @@ class FilesReplacePermissionUpdate extends AbstractUpdate {
 	 * @return bool Whether an update is required (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
+		if ($this->isWizardDone()) {
+			return FALSE;
+		}
 		$description = 'A new file permission was introduced regarding replacing files.' .
 			' This update sets "Files:replace" for all BE users/groups with the permission "Files:write".';
 		$updateNeeded = FALSE;
@@ -88,6 +91,7 @@ class FilesReplacePermissionUpdate extends AbstractUpdate {
 				}
 			}
 		}
+		$this->markWizardAsDone();
 		return TRUE;
 	}
 
