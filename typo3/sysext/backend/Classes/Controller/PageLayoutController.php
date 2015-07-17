@@ -500,7 +500,8 @@ class PageLayoutController {
 		if ($this->id && $access) {
 			// Initialize permission settings:
 			$this->CALC_PERMS = $this->getBackendUser()->calcPerms($this->pageinfo);
-			$this->EDIT_CONTENT = $this->CALC_PERMS & Permission::CONTENT_EDIT ? 1 : 0;
+			$this->EDIT_CONTENT = $this->pageIsNotLockedForEditors();
+
 			// Start document template object:
 			$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
@@ -1143,7 +1144,7 @@ class PageLayoutController {
 			}
 
 			// Edit page properties and page language overlay icons
-			if ($this->CALC_PERMS & Permission::PAGE_EDIT) {
+			if ($this->pageIsNotLockedForEditors()) {
 
 				// Edit localized page_language_overlay only when one specific language is selected
 				if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
@@ -1293,6 +1294,15 @@ class PageLayoutController {
 				'sys_language.title'
 			);
 		}
+	}
+
+	/**
+	 * Check the editlock access
+	 *
+	 * @return bool
+	 */
+	public function pageIsNotLockedForEditors() {
+		return !($this->pageinfo['editlock'] && ($this->CALC_PERMS & Permission::PAGE_EDIT));
 	}
 
 	/**

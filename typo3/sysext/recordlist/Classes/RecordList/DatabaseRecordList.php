@@ -404,11 +404,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
 			$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
 		}
-		if ($GLOBALS['TCA'][$table]['ctrl']['type']) {
-			$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
-		}
-		if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
-			$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
+		foreach(array('type', 'typeicon_column', 'editlock') as $field) {
+			if ($GLOBALS['TCA'][$table]['ctrl'][$field]) {
+				$selectFields[] = $GLOBALS['TCA'][$table]['ctrl'][$field];
+			}
 		}
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			$selectFields[] = 't3ver_id';
@@ -1197,8 +1196,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($table == 'pages') {
 			$localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
 		}
-		// This expresses the edit permissions for this particular element:
 		$permsEdit = $table === 'pages' && $localCalcPerms & Permission::PAGE_EDIT || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT;
+		$permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 		// "Show" link (only pages and tt_content elements)
 		if ($table == 'pages' || $table == 'tt_content') {
 			$viewAction = '<a class="btn btn-default" href="#" onclick="'
@@ -1219,15 +1218,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$spriteIcon = (!$this->isEditable($table) ? 'actions-document-open-read-only' : 'actions-document-open');
 			$editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon($spriteIcon) . '</a>';
-			$this->addActionToCellGroup($cells, $editAction, 'edit');
+		} else {
+			$editAction = $this->spaceIcon;
 		}
+		$this->addActionToCellGroup($cells, $editAction, 'edit');
 		// "Info": (All records)
 		$onClick = 'top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;';
 		$viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('showInfo', TRUE) . '">'
 			. IconUtility::getSpriteIcon('actions-document-info') . '</a>';
 		$this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
 		// "Move" wizard link for pages/tt_content elements:
-		if ($table === 'tt_content' && $permsEdit || $table === 'pages') {
+		if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
 			$onClick = 'return jumpExt(\'' . $this->backPath . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
 			$linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), TRUE);
 			$spriteIcon = $table === 'tt_content' ? 'actions-document-move' : 'actions-page-move';
@@ -1310,13 +1311,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			}
 			// "Hide/Unhide" links:
 			$hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
+
 			if (
 				$permsEdit && $hiddenField && $GLOBALS['TCA'][$table]['columns'][$hiddenField]
 				&& (!$GLOBALS['TCA'][$table]['columns'][$hiddenField]['exclude']
 					|| $this->getBackendUserAuthentication()->check('non_exclude_fields', $table . ':' . $hiddenField))
 			) {
 				if ($this->isRecordCurrentBackendUser($table, $row)) {
-					$hideAction = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+					$hideAction = $this->spaceIcon;
 				} else {
 					if ($row[$hiddenField]) {
 						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
@@ -1335,7 +1337,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$this->addActionToCellGroup($cells, $hideAction, 'hide');
 			}
 			// "Delete" link:
-			if ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT) {
+			if ($permsEdit && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)) {
 				// Check if the record version is in "deleted" state, because that will switch the action to "restore"
 				if ($this->getBackendUserAuthentication()->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
 					$actionName = 'restore';
@@ -1352,7 +1354,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				}
 
 				if ($this->isRecordCurrentBackendUser($table, $row)) {
-					$deleteAction = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+					$deleteAction = $this->spaceIcon;
 				} else {
 					$titleOrig = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 					$title = GeneralUtility::slashJS(GeneralUtility::fixed_lgd_cs($titleOrig, $this->fixedL), TRUE);
@@ -1367,8 +1369,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 									. ' data-message="' . htmlspecialchars($warningText) . '" title="' . $linkTitle . '"'
 									. '>' . $icon . '</a>';
 				}
-				$this->addActionToCellGroup($cells, $deleteAction, 'delete');
+			} else {
+				$deleteAction = $this->spaceIcon;
 			}
+			$this->addActionToCellGroup($cells, $deleteAction, 'delete');
 			// "Levels" links: Moving pages into new levels...
 			if ($permsEdit && $table == 'pages' && !$this->searchLevels) {
 				// Up (Paste as the page right after the current parent page)
@@ -1483,7 +1487,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($this->clipObj->current == 'normal') {
 			// Show copy/cut icons:
 			$isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
-			if ($isL10nOverlay) {
+			if ($isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)) {
 				$cells['copy'] = $this->spaceIcon;
 				$cells['cut'] = $this->spaceIcon;
 			} else {
@@ -1491,10 +1495,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel == 'copy'), array('returnUrl' => '')) . '\');')
 					. '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', TRUE) . '">'
 					. (!$isSel == 'copy' ? IconUtility::getSpriteIcon('actions-edit-copy') : IconUtility::getSpriteIcon('actions-edit-copy-release')) . '</a>';
-				$cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-					. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel == 'cut'), array('returnUrl' => '')) . '\');')
-					. '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE) . '">'
-					. (!$isSel == 'cut' ? IconUtility::getSpriteIcon('actions-edit-cut') : IconUtility::getSpriteIcon('actions-edit-cut-release')) . '</a>';
+				if (TRUE) {
+					$cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
+						. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel == 'cut'), array('returnUrl' => '')) . '\');')
+						. '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE) . '">'
+						. (!$isSel == 'cut' ? IconUtility::getSpriteIcon('actions-edit-cut') : IconUtility::getSpriteIcon('actions-edit-cut-release')) . '</a>';
+				} else {
+					$cells['cut'] = $this->spaceIcon;
+				}
 			}
 		} else {
 			// For the numeric clipboard pads (showing checkboxes where one can select elements on/off)
@@ -1922,6 +1930,25 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 */
 	public function isEditable($table) {
 		return $GLOBALS['TCA'][$table]['ctrl']['readOnly'] || $this->editable;
+	}
+
+	/**
+	 * Check if the current record is locked by editlock
+	 *
+	 * @param string $table
+	 * @param array $row
+	 * @param bool $editPermission
+	 * @return bool
+	 */
+	protected function overlayEditLockPermissions($table, $row, $editPermission = TRUE) {
+		if ($editPermission) {
+			if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $this->pageRow['editlock'])) {
+				$editPermission = FALSE;
+			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['editlock']) && $row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
+				$editPermission = FALSE;
+			}
+		}
+		return $editPermission;
 	}
 
 	/**

@@ -440,15 +440,19 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				}
 				$content[$key] .= '">';
 				// Add new content at the top most position
+				$link = '';
+				if ($this->getPageLayoutController()->pageIsNotLockedForEditors()) {
+					$link = '<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
+						. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
+						. IconUtility::getSpriteIcon('actions-document-new')
+						. ' '
+						. $this->getLanguageService()->getLL('content', TRUE) . '</a>';
+				}
 				$content[$key] .= '
 				<div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
-					<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">
-						<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
-							. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-							. IconUtility::getSpriteIcon('actions-document-new')
-							. ' '
-							. $this->getLanguageService()->getLL('content', TRUE) . '</a>
-					</div>
+					<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">'
+						. $link
+					. '</div>
 					<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
 				</div>
 				';
@@ -498,7 +502,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id .
 							'-' . str_replace('.', '', uniqid('', TRUE)) . '">';
 						// Add icon "new content element below"
-						if (!$disableMoveAndNewButtons) {
+						if (!$disableMoveAndNewButtons && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
 							// New content element:
 							if ($this->option_newWizard) {
 								$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $row['pid']
