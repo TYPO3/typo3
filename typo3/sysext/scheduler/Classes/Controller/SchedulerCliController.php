@@ -42,12 +42,36 @@ class SchedulerCliController {
 	public function __construct() {
 		$this->cli = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Controller\CommandLineController::class);
 		$this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+		$this->cli->cli_options[] = array('-h', 'Show this output');
+		$this->cli->cli_options[] = array('--help', 'Same as -h');
+		// Setting help texts:
+		$this->cli->cli_help['name'] = 'scheduler -- Start the TYPO3 Scheduler from the command line';
+		$this->cli->cli_help['synopsis'] = '###OPTIONS###';
+		$this->cli->cli_help['description'] = 'This command line starts any task';
+		$this->cli->cli_help['examples'] = 'typo3/cli_dispatch.phpsh scheduler';
+		unset($this->cli->cli_help['author']);
 	}
+
+	/**
+	 * Check cli is help
+	 *
+	 * @return bool
+	 */
+	protected function isHelp() {
+		return ($this->cli->cli_isArg('--help') && $this->cli->cli_isArg('--help') > 0)
+			|| ($this->cli->cli_isArg('-h') && $this->cli->cli_isArg('-h') > 0);
+	}
+
 
 	/**
 	 * Execute scheduler tasks
 	 */
 	public function run() {
+		if ($this->isHelp()) {
+			$this->cli->cli_help();
+			return;
+		}
+
 		if ($this->cli->cli_isArg('-i') && $this->cli->cli_isArg('-i') > 0) {
 			/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask */
 			$task = $this->getTask();
