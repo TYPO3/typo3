@@ -175,4 +175,7 @@ if (TYPO3_MODE === 'BE') {
 		'dummy',
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Dummy/'
 	);
+
+	// Register BackendLayoutDataProvider for PageTs
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets'] = \TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider::class;
 }
