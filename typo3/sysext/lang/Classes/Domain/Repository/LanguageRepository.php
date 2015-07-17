@@ -80,7 +80,7 @@ class LanguageRepository {
 			$languages = $this->locales->getLanguages();
 			array_shift($languages);
 			foreach ($languages as $locale => $language) {
-				$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xlf:lang_' . $locale));
+				$label = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:lang_' . $locale));
 				if ($label === '') {
 					$label = htmlspecialchars($language);
 				}

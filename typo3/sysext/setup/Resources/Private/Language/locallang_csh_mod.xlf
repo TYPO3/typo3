@@ -16,8 +16,8 @@
 				<source>User TSconfig SETUP | http://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Setup/Index.html</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
-				<source>EXT:setup/cshimages/setup8.png,
-EXT:setup/cshimages/setup7.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup8.png,
+EXT:setup/Resources/Public/Images/cshimages/setup7.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id=".image_descr" xml:space="preserve">
@@ -35,7 +35,7 @@ This is how the Setup module interface looks like - a list of options to configu
 The solution clearly is to set the configuration option mentioned above to a value like "utf-8". This must be done by the developers responsible for the whole system configuration.</source>
 			</trans-unit>
 			<trans-unit id="_language.image">
-				<source>EXT:setup/cshimages/lang.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/lang.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="language.image_descr">
@@ -52,8 +52,8 @@ The solution clearly is to set the configuration option mentioned above to a val
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_option_condensedMode.image" xml:space="preserve">
-				<source>EXT:setup/cshimages/setup3.png,
-EXT:setup/cshimages/setup4.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup3.png,
+EXT:setup/Resources/Public/Images/cshimages/setup4.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_condensedMode.image_descr" xml:space="preserve">
@@ -80,8 +80,8 @@ This option shows all menu items in the top frame as a horizontal list of icons.
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_option_noMenuMode.image" xml:space="preserve">
-				<source>EXT:setup/cshimages/setup1.png,
-EXT:setup/cshimages/setup2.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup1.png,
+EXT:setup/Resources/Public/Images/cshimages/setup2.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_noMenuMode.image_descr" xml:space="preserve">
@@ -102,7 +102,7 @@ The default module is "About Modules".</source>
 				<source>In modules like the "Web &gt; List" and "File &gt; Filelist" you can enable the display of thumbnails of files (images/fonts) and records (if images are attached) with a checkbox. Setting this option will enable the display by default.</source>
 			</trans-unit>
 			<trans-unit id="_option_showThumbs.image">
-				<source>EXT:setup/cshimages/setup5.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup5.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_showThumbs.image_descr">
@@ -121,7 +121,7 @@ The default module is "About Modules".</source>
 				<source>TYPO3 will often crop long titles of records etc. so only the first X characters are shown. Often the number of shown characters depends on this variable. For instance the length of page titles in the page tree is determined by this value.</source>
 			</trans-unit>
 			<trans-unit id="_option_maxTitleLen.image">
-				<source>EXT:setup/cshimages/setup6.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup6.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_maxTitleLen.image_descr">
@@ -158,7 +158,7 @@ The default module is "About Modules".</source>
 				<source>A Rich Text Editor (RTE) means that a text editing field has buttons for making selected text bold, italic etc. Whether a RTE is available also depends on factors like the browser you are using and which extensions are installed. Finally RTEs are applied to only a few record fields. The most well known example would be the Text field of a Content Element.</source>
 			</trans-unit>
 			<trans-unit id="_option_edit_RTE.image">
-				<source>EXT:setup/cshimages/rte.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/rte.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_edit_docModuleUpload.alttitle">
@@ -171,7 +171,7 @@ The default module is "About Modules".</source>
 				<source>If you disable the Upload box there is still the TYPO3 Element Browser left for attaching files and images.</source>
 			</trans-unit>
 			<trans-unit id="_option_edit_docModuleUpload.image">
-				<source>EXT:setup/cshimages/setup12.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup12.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_enableFlashUploader.alttitle">
@@ -223,8 +223,8 @@ Finally experienced users will want to totally disable the help icons if they se
 Context Sensitive Help is also available as a full user manual in the Help&gt;Manual module.</source>
 			</trans-unit>
 			<trans-unit id="_option_edit_showFieldHelp.image" xml:space="preserve">
-				<source>EXT:setup/cshimages/setup11.png,
-EXT:setup/cshimages/setup10.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup11.png,
+EXT:setup/Resources/Public/Images/cshimages/setup10.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_edit_showFieldHelp.image_descr" xml:space="preserve">
@@ -238,7 +238,7 @@ When "Display full text message" is selected you will see a short description sh
 				<source>When an icon for a file or database record is shown inside the TYPO3 backend you can often click on the icon and a contextual menu will appear over the icon with options related to it. You can disable this behaviour by this option. However you probably don't want to do that.</source>
 			</trans-unit>
 			<trans-unit id="_option_disableCMlayers.image">
-				<source>EXT:setup/cshimages/setup9.png</source>
+				<source>EXT:setup/Resources/Public/Images/cshimages/setup9.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="option_disableCMlayers.image_descr">

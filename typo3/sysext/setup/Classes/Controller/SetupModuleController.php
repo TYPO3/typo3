@@ -296,7 +296,7 @@ class SetupModuleController {
 	 * @return void
 	 */
 	public function init() {
-		$this->getLanguageService()->includeLLFile('EXT:setup/mod/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
 
 		// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
@@ -735,7 +735,7 @@ class SetupModuleController {
 
 		return '<p>' .
 			'<label for="field_simulate" style="margin-right: 20px;">' .
-			$this->getLanguageService()->sL('LLL:EXT:setup/mod/locallang.xlf:simulate') .
+			$this->getLanguageService()->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:simulate') .
 			'</label>' .
 			$this->simulateSelector .
 			'</p>';

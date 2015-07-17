@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * (default for new languages is "utf-8")
  * - Add mappings for language in \TYPO3\CMS\Core\Charset\CharsetConverter
  * (TYPO3/ISO, language/script, script/charset)
- * - Update 'setup' extension labels (sysext/setup/mod/locallang.xlf)
+ * - Update 'setup' extension labels (sysext/setup/Resources/Private/Language/locallang.xlf)
  * That's it!
  */
 class Locales implements \TYPO3\CMS\Core\SingletonInterface {
