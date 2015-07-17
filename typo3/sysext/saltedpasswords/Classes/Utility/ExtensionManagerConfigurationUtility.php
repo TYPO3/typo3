@@ -150,7 +150,7 @@ class ExtensionManagerConfigurationUtility {
 		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
 		$this->extConf['BE'] = array_merge((array)$extConf['BE.'], (array)$requestSetup['BE.']);
 		$this->extConf['FE'] = array_merge((array)$extConf['FE.'], (array)$requestSetup['FE.']);
-		$GLOBALS['LANG']->includeLLFile('EXT:saltedpasswords/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:saltedpasswords/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
