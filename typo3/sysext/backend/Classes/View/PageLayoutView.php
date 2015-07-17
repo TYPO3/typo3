@@ -1004,6 +1004,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 					$theData[$field] = '<span align="right">' . $row['uid'] . $eI . '</span>';
 					break;
+				case 'shortcut':
+				case 'shortcut_mode':
+					if ((int)$row['doktype'] === \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
+						$theData[$field] = $this->getPagesTableFieldValue($field, $row);
+					}
+					break;
 				default:
 					if (substr($field, 0, 6) == 'table_') {
 						$f2 = substr($field, 6);
@@ -1012,13 +1018,24 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
 						}
 					} else {
-						$theData[$field] = '&nbsp;&nbsp;'
-							. htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
+						$theData[$field] = $this->getPagesTableFieldValue($field, $row);
 					}
 			}
 		}
 		$this->addElement_tdParams['title'] = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : '';
 		return $this->addelement(1, '', $theData);
+	}
+
+	/**
+	 * Returns the HTML code for rendering a field in the pages table.
+	 * The row value is processed to a human readable form and the result is parsed through htmlspecialchars().
+	 *
+	 * @param string $field The name of the field of which the value should be rendered.
+	 * @param array $row The pages table row as an associative array.
+	 * @return string The rendered table field value.
+	 */
+	protected function getPagesTableFieldValue($field, array $row) {
+		return '&nbsp;&nbsp;' . htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field]));
 	}
 
 	/**********************************
