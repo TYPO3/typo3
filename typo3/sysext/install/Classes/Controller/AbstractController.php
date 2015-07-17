@@ -63,8 +63,8 @@ class AbstractController {
 		if (!$this->isInstallToolAvailable()) {
 			if (!EnableFileService::isFirstInstallAllowed() && !is_dir(PATH_typo3conf)) {
 				/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
-				$action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\AccessNotAllowedAction::class);
-				$action->setAction('accessNotAllowed');
+				$action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\FirstInstallAction::class);
+				$action->setAction('firstInstall');
 			} else {
 				/** @var \TYPO3\CMS\Install\Controller\Action\ActionInterface $action */
 				$action = $this->objectManager->get(\TYPO3\CMS\Install\Controller\Action\Common\InstallToolDisabledAction::class);

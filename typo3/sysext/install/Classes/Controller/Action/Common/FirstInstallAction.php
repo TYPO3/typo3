@@ -19,7 +19,7 @@ use TYPO3\CMS\Install\Controller\Action;
 /**
  * Welcome page
  */
-class AccessNotAllowedAction extends Action\AbstractAction {
+class FirstInstallAction extends Action\AbstractAction {
 
 	/**
 	 * Handle this action
