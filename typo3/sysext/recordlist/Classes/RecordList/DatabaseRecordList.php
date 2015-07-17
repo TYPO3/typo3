@@ -740,7 +740,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						. htmlspecialchars($lockInfo['msg']) . '">'
 						. IconUtility::getSpriteIcon('status-warning-in-use') . '</a>';
 				}
-				$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
+				$theData[$fCol] = $theData['__label'] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
 				// Render thumbnails, if:
 				// - a thumbnail column exists
 				// - there is content in it

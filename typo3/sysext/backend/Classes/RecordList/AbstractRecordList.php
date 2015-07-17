@@ -234,8 +234,14 @@ abstract class AbstractRecordList {
 		$lastKey = '';
 		$c = 0;
 		$ccount = 0;
+		// __label is used as the label key to circumvent problems with uid used as label (see #67756)
+		// as it was introduced later on, check if it really exists before using it
+		$fields = $this->fieldArray;
+		if ($colType === 'td' && array_key_exists('__label', $data)) {
+			$fields[0] = '__label';
+		}
 		// Traverse field array which contains the data to present:
-		foreach ($this->fieldArray as $vKey) {
+		foreach ($fields as $vKey) {
 			if (isset($data[$vKey])) {
 				if ($lastKey) {
 					$cssClass = $this->addElement_tdCssClass[$lastKey];
