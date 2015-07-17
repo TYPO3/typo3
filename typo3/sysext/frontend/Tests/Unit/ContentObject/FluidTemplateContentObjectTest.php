@@ -138,6 +138,36 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function renderCallsStandardWrapForGivenTemplateRootPathsWithStandardWrap() {
+		$this->addMockViewToSubject();
+		$this->contentObjectRenderer
+			->expects($this->at(0))
+			->method('stdWrap')
+			->with('FILE', array('file' => 'dummyPath5/'));
+		$this->contentObjectRenderer
+			->expects($this->at(1))
+			->method('stdWrap')
+			->with('FILE', array('file' => 'dummyPath25/'));
+		$this->subject->render(array(
+				'templateName' => 'foobar',
+				'templateRootPaths.' => array(
+					10 => 'FILE',
+					'10.' => array(
+						'file' => 'dummyPath5/',
+					),
+					15 => 'dummyPath6/',
+					25 => 'FILE',
+					'25.' => array(
+						'file' => 'dummyPath25/',
+					),
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function renderSetsTemplateFileInView() {
 		$this->addMockViewToSubject();
 		/** @var $templateService \PHPUnit_Framework_MockObject_MockObject */
@@ -260,6 +290,28 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function layoutRootPathsHasStdWrapSupport() {
+		$this->addMockViewToSubject();
+		$this->contentObjectRenderer
+			->expects($this->at(0))
+			->method('stdWrap')
+			->with('FILE', array('file' => 'foo/bar.html'));
+		$this->subject->render(
+			array(
+				'layoutRootPaths.' => array(
+					10 => 'FILE',
+					'10.' => array(
+						'file' => 'foo/bar.html',
+					),
+					20 => 'foo/bar2.html',
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function fallbacksForLayoutRootPathAreSet() {
 		$this->addMockViewToSubject();
 		$this->standaloneView
@@ -291,6 +343,28 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->method('setPartialRootPaths')
 			->with(array(PATH_site . 'foo/bar.html'));
 		$this->subject->render(array('partialRootPath' => 'foo/bar.html'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function partialRootPathsHasStdWrapSupport() {
+		$this->addMockViewToSubject();
+		$this->contentObjectRenderer
+			->expects($this->at(0))
+			->method('stdWrap')
+			->with('FILE', array('file' => 'foo/bar.html'));
+		$this->subject->render(
+			array(
+				'partialRootPaths.' => array(
+					10 => 'FILE',
+					'10.' => array(
+						'file' => 'foo/bar.html',
+					),
+					20 => 'foo/bar2.html',
+				)
+			)
+		);
 	}
 
 	/**

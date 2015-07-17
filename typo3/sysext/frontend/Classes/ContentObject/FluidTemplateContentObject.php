@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -108,7 +107,11 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		if (!empty($conf['templateName']) && !empty($conf['templateRootPaths.']) && is_array($conf['templateRootPaths.'])) {
 			$templateRootPaths = array();
 			foreach ($conf['templateRootPaths.'] as $key => $path) {
-				$templateRootPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+				if (strpos($key, '.') === FALSE) {
+						$templateRootPaths[$key] = isset($conf['templateRootPaths.'][$key . '.']) ?
+							GeneralUtility::getFileAbsFileName($this->cObj->stdWrap($conf['templateRootPaths.'][$key], $conf['templateRootPaths.'][$key . '.'])) :
+							GeneralUtility::getFileAbsFileName($path);
+				}
 			}
 			$this->view->setTemplateRootPaths($templateRootPaths);
 			$templateName = isset($conf['templateName.']) ? $this->cObj->stdWrap($conf['templateName'], $conf['templateName.']) : $conf['templateName'];
@@ -144,7 +147,12 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		}
 		if (isset($conf['layoutRootPaths.'])) {
 			foreach ($conf['layoutRootPaths.'] as $key => $path) {
-				$layoutPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+				if (strpos($key, '.') === FALSE) {
+					$layoutPaths[$key] = isset($conf['layoutRootPaths.'][$key . '.']) ?
+						GeneralUtility::getFileAbsFileName($this->cObj->stdWrap($conf['layoutRootPaths.'][$key], $conf['layoutRootPaths.'][$key . '.'])) :
+						GeneralUtility::getFileAbsFileName($path);
+				}
+
 			}
 		}
 		if (!empty($layoutPaths)) {
@@ -168,7 +176,11 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		}
 		if (isset($conf['partialRootPaths.'])) {
 			foreach ($conf['partialRootPaths.'] as $key => $path) {
-				$partialPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+				if (strpos($key, '.') === FALSE) {
+					$partialPaths[$key] = isset($conf['partialRootPaths.'][$key . '.']) ?
+						GeneralUtility::getFileAbsFileName($this->cObj->stdWrap($conf['partialRootPaths.'][$key], $conf['partialRootPaths.'][$key . '.'])) :
+						GeneralUtility::getFileAbsFileName($path);
+				}
 			}
 		}
 		if (!empty($partialPaths)) {
