@@ -206,7 +206,7 @@ class SuggestWizardDefaultReceiver {
 	 * @return void
 	 */
 	protected function prepareSelectStatement() {
-		$searchWholePhrase = $this->config['searchWholePhrase'];
+		$searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
 		$searchString = $this->params['value'];
 		$searchUid = (int)$searchString;
 		if ($searchString !== '') {
