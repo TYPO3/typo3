@@ -1690,6 +1690,8 @@ class ElementBrowser {
 		$dbList->thisScript = $this->thisScript;
 		$dbList->backPath = $GLOBALS['BACK_PATH'];
 		$dbList->thumbs = 0;
+		$dbList->localizationView = 1;
+		$dbList->setIsEditable(FALSE);
 		$dbList->calcPerms = $backendUser->calcPerms($pageInfo);
 		$dbList->noControlPanels = 1;
 		$dbList->clickMenuEnabled = 0;

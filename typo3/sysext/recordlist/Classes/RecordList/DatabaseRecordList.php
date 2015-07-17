@@ -185,6 +185,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	public $MOD_MENU;
 
 	/**
+	 * If defined the records are editable
+	 *
+	 * @var bool
+	 */
+	protected $editable = TRUE;
+
+	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform
 	 * operations.
 	 *
@@ -939,7 +946,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					break;
 				case '_CONTROL_':
 					// Control panel:
-					if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
+					if ($this->isEditable($table)) {
 						// If new records can be created on this page, add links:
 						$permsAdditional = ($table === 'pages' ? 8 : 16);
 						if ($this->calcPerms & $permsAdditional && $this->showNewRecLink($table)) {
@@ -1012,7 +1019,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						}
 						// If the table can be edited, add link for editing THIS field for all
 						// listed records:
-						if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly'] && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
+						if ($this->isEditable($table) && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
 							$editIdList = implode(',', $currentIdList);
 							if ($this->clipNumPane()) {
 								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
@@ -1209,7 +1216,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		if ($permsEdit) {
 			$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-			$spriteIcon = ($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ? 'actions-document-open-read-only' : 'actions-document-open');
+			$spriteIcon = (!$this->isEditable($table) ? 'actions-document-open-read-only' : 'actions-document-open');
 			$editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon($spriteIcon) . '</a>';
 			$this->addActionToCellGroup($cells, $editAction, 'edit');
@@ -1228,7 +1235,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$this->addActionToCellGroup($cells, $moveAction, 'move');
 		}
 		// If the table is NOT a read-only table, then show these links:
-		if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
+		if ($this->isEditable($table)) {
 			// "Revert" link (history/undo)
 			$moduleUrl = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $row['uid']));
 			$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($this->backPath . $moduleUrl) . ',\'#latest\');';
@@ -1583,15 +1590,17 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		);
 		// Reset translations
 		$this->translations = array();
-		$translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
+
 		// Language title and icon:
 		$out[0] = $this->languageFlag($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+
+		$translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
 		if (is_array($translations)) {
 			$this->translations = $translations['translations'];
 			// Traverse page translations and add icon for each language that does NOT yet exist:
 			$lNew = '';
 			foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
-				if (!isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
+				if ($this->isEditable && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
 					$url = substr($this->listURL(), strlen($this->backPath));
 					$href = $this->getModule()->doc->issueCommand(
 						'&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
@@ -1897,6 +1906,22 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 */
 	protected function isRecordCurrentBackendUser($table, $row) {
 		return $table === 'be_users' && (int)$row['uid'] === $this->getBackendUserAuthentication()->user['uid'];
+	}
+
+	/**
+	 * @param bool $isEditable
+	 */
+	public function setIsEditable($isEditable) {
+		$this->editable = $isEditable;
+	}
+
+	/**
+	 * Check if the table is readonly or editable
+	 * @param string $table
+	 * @return bool
+	 */
+	public function isEditable($table) {
+		return $GLOBALS['TCA'][$table]['ctrl']['readOnly'] || $this->editable;
 	}
 
 	/**
