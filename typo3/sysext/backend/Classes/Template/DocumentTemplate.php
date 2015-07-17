@@ -1950,7 +1950,7 @@ function jumpToUrl(URL) {
 	* @return string
 	*/
 	protected function getBackendFavicon() {
-		return IconUtility::skinImg($this->backPath, 'sysext/backend/Resources/Public/Icons/favicon.ico', '', 1);
+		return $GLOBALS['TBE_STYLES']['favicon'] ?: $this->backPath . 'sysext/backend/Resources/Public/Icons/favicon.ico';
 	}
 
 }
