@@ -6,11 +6,11 @@ defined('TYPO3_MODE') or die();
 
 // Add Abbreviation records (as of 7.0 not working in Configuration/TCA/Overrides)
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:rtehtmlarea/locallang_csh_abbreviation.xlf');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:rtehtmlarea/Resources/Private/Language/locallang_csh_abbreviation.xlf');
 
 // Add contextual help files
 $htmlAreaRteContextHelpFiles = array(
-	'General' => 'EXT:rtehtmlarea/locallang_csh.xlf',
+	'General' => 'EXT:rtehtmlarea/Resources/Private/Language/locallang_csh.xlf',
 	'Abbreviation' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/Abbreviation/locallang_csh.xlf',
 	'EditElement' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/EditElement/locallang_csh.xlf',
 	'Language' => 'EXT:rtehtmlarea/Resources/Private/Language/Plugins/Language/locallang_csh.xlf',
@@ -29,22 +29,22 @@ if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::i
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge($GLOBALS['TYPO3_USER_SETTINGS']['columns'], array(
 		'rteWidth' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:rtehtmlarea/locallang.xlf:rteWidth',
+			'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteWidth',
 			'csh' => 'xEXT_rtehtmlarea_General:rteWidth'
 		),
 		'rteHeight' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:rtehtmlarea/locallang.xlf:rteHeight',
+			'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteHeight',
 			'csh' => 'xEXT_rtehtmlarea_General:rteHeight'
 		),
 		'rteResize' => array(
 			'type' => 'check',
-			'label' => 'LLL:EXT:rtehtmlarea/locallang.xlf:rteResize',
+			'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteResize',
 			'csh' => 'xEXT_rtehtmlarea_General:rteResize'
 		),
 		'rteMaxHeight' => array(
 			'type' => 'text',
-			'label' => 'LLL:EXT:rtehtmlarea/locallang.xlf:rteMaxHeight',
+			'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteMaxHeight',
 			'csh' => 'xEXT_rtehtmlarea_General:rteMaxHeight'
 		),
 		'rteCleanPasteBehaviour' => array(
@@ -58,7 +58,7 @@ if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::i
 			'csh' => 'xEXT_rtehtmlarea_PlainText:behaviour'
 		)
 	));
-	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
+	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
 }
 if (TYPO3_MODE === 'BE') {
 	// Register RTE browse links wizard

@@ -338,7 +338,7 @@ class RichTextElement extends AbstractFormElement {
 		// The hidden field tells the DataHandler that processing should be done on this value.
 		$result[] = '<input type="hidden" name="' . htmlspecialchars($triggerFieldName) . '" value="RTE" />';
 		$result[] = '<div id="pleasewait' . $this->domIdentifier . '" class="pleasewait" style="display: block;" >';
-		$result[] = 	$this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/locallang.xlf:Please wait');
+		$result[] = 	$this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:Please wait');
 		$result[] = '</div>';
 		$result[] = '<div id="editorWrap' . $this->domIdentifier . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:100%;">';
 		$result[] = 	'<textarea id="RTEarea' . $this->domIdentifier . '" name="' . htmlspecialchars($itemFormElementName) . '" rows="0" cols="0" style="' . htmlspecialchars($rteDivStyle) . '">';
@@ -1204,7 +1204,7 @@ class RichTextElement extends AbstractFormElement {
 			GeneralUtility::deprecationLog($message);
 			if ($this->processedRteConfiguration['logDeprecatedProperties.']['logAlsoToBELog']) {
 				$message = sprintf(
-					$this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/locallang.xlf:deprecatedPropertyMessage'),
+					$this->getLanguageService()->sL('LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:deprecatedPropertyMessage'),
 					$deprecatedProperty,
 					$useProperty,
 					$version,
