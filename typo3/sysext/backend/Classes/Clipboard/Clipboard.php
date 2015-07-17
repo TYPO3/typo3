@@ -302,12 +302,15 @@ class Clipboard {
 				<td colspan="2" nowrap="nowrap" width="95%">' . $copymodeSelector . ' ' . $menuSelector . '</td>
 				<td nowrap="nowrap" class="col-control">' . $deleteLink . '</td>
 			</tr>';
+
 		// Print header and content for the NORMAL tab:
+		// check for current item so it can be wrapped in strong tag
+		$current = ($this->current == 'normal');
 		$out[] = '
 			<tr>
 				<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head" title="' . $this->clLabel('normal-description') . '">'
-					. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand')))
-					. $this->padTitleWrap($this->clLabel('normal'), 'normal')
+					. '<span class="t3-icon fa ' . ($current ? 'fa-check-circle' : 'fa-circle-o') . '"></span>'
+					. $this->padTitleWrap($this->clLabel('normal'), 'normal', $current)
 					. '</a></td>
 			</tr>';
 		if ($this->current == 'normal') {
@@ -315,11 +318,13 @@ class Clipboard {
 		}
 		// Print header and content for the NUMERIC tabs:
 		for ($a = 1; $a <= $this->numberTabs; $a++) {
+			// check for current item so it can be wrapped in strong tag
+			$current = ($this->current == 'tab_' . $a);
 			$out[] = '
 				<tr>
 					<td colspan="3"><a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head" title="' . $this->clLabel('cliptabs-description') . '">'
-						. IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand')))
-						. $this->padTitleWrap(sprintf($this->clLabel('cliptabs-name'), $a), ('tab_' . $a))
+						. '<span class="t3-icon fa ' . ($current ? 'fa-check-circle' : 'fa-circle-o') . '"></span>'
+						. $this->padTitleWrap(sprintf($this->clLabel('cliptabs-name'), $a), ('tab_' . $a), $current)
 						. '</a></td>
 				</tr>';
 			if ($this->current == 'tab_' . $a) {
@@ -484,16 +489,21 @@ class Clipboard {
 	}
 
 	/**
-	 * Wraps title of pad in bold-tags and maybe the number of elements if any.
+	 * Wraps title of pad in bold-tag and maybe the number of elements if any.
+	 * Only applies bold-tag if the item is active
 	 *
-	 * @param string $str String (already htmlspecialchars()'ed)
-	 * @param string $pad Pad reference
+	 * @param string  $str String (already htmlspecialchars()'ed)
+	 * @param string  $pad Pad reference
+	 * @param boolean $active is currently active
 	 * @return string HTML output (htmlspecialchar'ed content inside of tags.)
 	 */
-	public function padTitleWrap($str, $pad) {
+	public function padTitleWrap($str, $pad, $active) {
 		$el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
 		if ($el) {
-			return '<strong>' . $str . '</strong> (' . ($pad == 'normal' ? ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el)) . ')';
+			$str .=  ' (' . ($pad == 'normal' ? ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el)) . ')';
+		}
+		if ($active === TRUE) {
+			return '<strong>' . $str . '</strong>';
 		} else {
 			return '<span class="text-muted">' . $str . '</span>';
 		}
