@@ -2451,6 +2451,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				// use external concatenation routine
 				$params = array(
 					'cssFiles' => &$this->cssFiles,
+					'cssLibs' => &$this->cssLibs,
 					'headerData' => &$this->headerData,
 					'footerData' => &$this->footerData
 				);
@@ -2460,6 +2461,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				if (TYPO3_MODE === 'BE') {
 					$cssOptions = array('baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories());
 				}
+				$this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs, $cssOptions);
 				$this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles, $cssOptions);
 			}
 		}
@@ -2482,17 +2484,18 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function doCompressCss() {
 		if ($this->compressCss) {
-			// Use external compression routine
-			$params = array(
-				'cssInline' => &$this->cssInline,
-				'cssFiles' => &$this->cssFiles,
-				'headerData' => &$this->headerData,
-				'footerData' => &$this->footerData
-			);
 			if (!empty($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'])) {
-				// use external concatenation routine
+				// Use external compression routine
+				$params = array(
+					'cssInline' => &$this->cssInline,
+					'cssFiles' => &$this->cssFiles,
+					'cssLibs' => &$this->cssLibs,
+					'headerData' => &$this->headerData,
+					'footerData' => &$this->footerData
+				);
 				GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
 			} else {
+				$this->cssLibs = $this->getCompressor()->compressCssFiles($this->cssLibs);
 				$this->cssFiles = $this->getCompressor()->compressCssFiles($this->cssFiles);
 			}
 		}
