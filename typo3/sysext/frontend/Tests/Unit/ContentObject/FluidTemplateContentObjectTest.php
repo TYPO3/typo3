@@ -208,6 +208,27 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	/**
 	 * @test
 	 */
+	public function layoutRootPathsHasStdWrapSupport() {
+		$this->addMockViewToSubject();
+		$this->contentObjectRenderer
+			->expects($this->at(0))
+			->method('stdWrap')
+			->with('', array('field' => 'someField'));
+		$this->subject->render(
+			array(
+				'layoutRootPaths.' => array(
+					'10.' => array(
+						'field' => 'someField',
+					),
+					20 => 'foo/bar2.html',
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
 	public function fallbacksForLayoutRootPathAreSet() {
 		$this->addMockViewToSubject();
 		$this->standaloneView
@@ -239,6 +260,28 @@ class FluidTemplateContentObjectTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			->method('setPartialRootPaths')
 			->with(array(PATH_site . 'foo/bar.html'));
 		$this->subject->render(array('partialRootPath' => 'foo/bar.html'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function partialRootPathsHasStdWrapSupport() {
+		$this->addMockViewToSubject();
+		$this->contentObjectRenderer
+			->expects($this->at(0))
+			->method('stdWrap')
+			->with('foo/', array('wrap' => '|bar.html'));
+		$this->subject->render(
+			array(
+				'partialRootPaths.' => array(
+					10 => 'foo/',
+					'10.' => array(
+						'wrap' => '|bar.html',
+					),
+					20 => 'foo/bar2.html',
+				)
+			)
+		);
 	}
 
 	/**

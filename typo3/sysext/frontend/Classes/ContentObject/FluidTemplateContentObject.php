@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Contains TEMPLATE class object.
@@ -131,7 +133,7 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 		}
 		if (isset($conf['layoutRootPaths.'])) {
 			foreach ($conf['layoutRootPaths.'] as $key => $path) {
-				$layoutPaths[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+				$layoutPaths = array_replace($layoutPaths, $this->applyStandardWrapToFluidPaths($conf['layoutRootPaths.']));
 			}
 		}
 		if (!empty($layoutPaths)) {
@@ -155,7 +157,7 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 		}
 		if (isset($conf['partialRootPaths.'])) {
 			foreach ($conf['partialRootPaths.'] as $key => $path) {
-				$partialPaths[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path);
+				$partialPaths = array_replace($partialPaths, $this->applyStandardWrapToFluidPaths($conf['partialRootPaths.']));
 			}
 		}
 		if (!empty($partialPaths)) {
@@ -279,6 +281,29 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}
 		return $content;
+	}
+
+	/**
+	 * Applies stdWrap on Fluid path definitions
+	 *
+	 * @param array $paths
+	 *
+	 * @return array
+	 */
+	protected function applyStandardWrapToFluidPaths(array $paths) {
+		$finalPaths = array();
+		foreach ($paths as $key => $path) {
+			if (StringUtility::isLastPartOfString($key, '.')) {
+				if (isset($paths[substr($key, 0, -1)])) {
+					continue;
+				}
+				$path = $this->cObj->stdWrap('', $path);
+			} elseif (isset($paths[$key . '.'])) {
+				$path = $this->cObj->stdWrap($path, $paths[$key . '.']);
+			}
+			$finalPaths[$key] = GeneralUtility::getFileAbsFileName($path);
+		}
+		return $finalPaths;
 	}
 
 }
