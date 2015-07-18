@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Extbase\Service\ImageService;
 
@@ -42,6 +43,8 @@ class ImageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject = new ImageService();
 		$this->environmentService = $this->getMock(EnvironmentService::class);
 		$this->inject($this->subject, 'environmentService', $this->environmentService);
+		GeneralUtility::flushInternalRuntimeCaches();
+		$_SERVER['HTTP_HOST'] = 'foo.bar';
 	}
 
 	/**
@@ -81,6 +84,32 @@ class ImageServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
 
 		$this->assertSame($expected, $this->subject->getImageUri($file));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider() {
+		return array(
+			'with scheme' => array('http://foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
+			'scheme relative' => array('//foo.bar/img.jpg', 'http://foo.bar/img.jpg'),
+			'without scheme' => array('foo.bar/img.jpg', 'http://foo.bar/prefix/foo.bar/img.jpg'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider prefixIsCorrectlyAppliedToGetImageUriWithAbsolutePathDataProvider
+	 */
+	public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected) {
+		$this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(TRUE);
+		$GLOBALS['TSFE'] = new \stdClass();
+		$GLOBALS['TSFE']->absRefPrefix = '/prefix/';
+
+		$file = $this->getMock(File::class, array(), array(), '', FALSE);
+		$file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
+
+		$this->assertSame($expected, $this->subject->getImageUri($file, TRUE));
 	}
 
 }

@@ -94,11 +94,12 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 	 * @param bool $treatIdAsReference given src argument is a sys_file_reference record
 	 * @param FileInterface|AbstractFileFolder $image a FAL object
 	 * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
+	 * @param bool $absolute Force absolute URL
 	 *
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 * @return string Rendered tag
 	 */
-	public function render($src = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $image = NULL, $crop = NULL) {
+	public function render($src = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $image = NULL, $crop = NULL, $absolute = FALSE) {
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
 			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('You must either specify a string src or a File object.', 1382284106);
 		}
@@ -116,7 +117,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 			'crop' => $crop,
 		);
 		$processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
-		$imageUri = $this->imageService->getImageUri($processedImage);
+		$imageUri = $this->imageService->getImageUri($processedImage, $absolute);
 
 		$this->tag->addAttribute('src', $imageUri);
 		$this->tag->addAttribute('width', $processedImage->getProperty('width'));

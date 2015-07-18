@@ -79,10 +79,11 @@ class ImageViewHelper extends AbstractViewHelper  implements CompilableInterface
 	 * @param int $maxHeight maximum height of the image
 	 * @param bool $treatIdAsReference given src argument is a sys_file_reference record
 	 * @param string|bool $crop overrule cropping of image (setting to FALSE disables the cropping set in FileReference)
+	 * @param bool $absolute Force absolute URL
 	 * @throws Exception
 	 * @return string path to the image
 	 */
-	public function render($src = NULL, $image = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $crop = NULL) {
+	public function render($src = NULL, $image = NULL, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $treatIdAsReference = FALSE, $crop = NULL, $absolute = FALSE) {
 		return self::renderStatic(
 			array(
 				'src' => $src,
@@ -95,6 +96,7 @@ class ImageViewHelper extends AbstractViewHelper  implements CompilableInterface
 				'maxHeight' => $maxHeight,
 				'treatIdAsReference' => $treatIdAsReference,
 				'crop' => $crop,
+				'absolute' => $absolute,
 			),
 			$this->buildRenderChildrenClosure(),
 			$this->renderingContext
@@ -106,12 +108,14 @@ class ImageViewHelper extends AbstractViewHelper  implements CompilableInterface
 	 * @param callable $renderChildrenClosure
 	 * @param RenderingContextInterface $renderingContext
 	 * @return string
+	 * @throws Exception
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		$src = $arguments['src'];
 		$image = $arguments['image'];
 		$treatIdAsReference = $arguments['treatIdAsReference'];
 		$crop = $arguments['crop'];
+		$absolute = $arguments['absolute'];
 
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
 			throw new Exception('You must either specify a string src or a File object.', 1382284105);
@@ -134,7 +138,7 @@ class ImageViewHelper extends AbstractViewHelper  implements CompilableInterface
 			'crop' => $crop,
 		);
 		$processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
-		return $imageService->getImageUri($processedImage);
+		return $imageService->getImageUri($processedImage, $absolute);
 	}
 
 	/**
