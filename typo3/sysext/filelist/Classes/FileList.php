@@ -783,7 +783,7 @@ class FileList extends AbstractRecordList {
 	}
 
 	/**
-	 * Wraps the directory-titles ($code) in a link to filelist/mod1/index.php (id=$path) and sorting commands...
+	 * Wraps the directory-titles ($code) in a link to filelist/Modules/Filelist/index.php (id=$path) and sorting commands...
 	 *
 	 * @param string $code String to be wrapped
 	 * @param string $folderIdentifier ID (path)

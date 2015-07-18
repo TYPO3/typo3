@@ -6,7 +6,7 @@ if (TYPO3_MODE === 'BE') {
 		'file',
 		'list',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+		'EXT:filelist/Modules/Filelist/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'user,group',
@@ -14,7 +14,7 @@ if (TYPO3_MODE === 'BE') {
 			'workspaces' => 'online,custom',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-filelist.svg',
+					'tab' => 'EXT:filelist/Resources/Public/Icons/module-filelist.svg',
 				),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_file_list.xlf',
 			),
