@@ -12,6 +12,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        */
 
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\PaddingViewHelper;
 
 /**
  * Test case
@@ -19,13 +20,13 @@ use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class PaddingViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\Fluid\ViewHelpers\Format\PaddingViewHelper
+	 * @var PaddingViewHelper
 	 */
 	protected $viewHelper;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock('TYPO3\CMS\Fluid\ViewHelpers\Format\PaddingViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(PaddingViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}

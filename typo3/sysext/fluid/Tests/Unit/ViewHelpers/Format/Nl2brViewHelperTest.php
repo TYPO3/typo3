@@ -12,6 +12,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        */
 
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper;
 
 /**
  * Test case
@@ -19,13 +20,13 @@ use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class Nl2brViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper
+	 * @var Nl2brViewHelper
 	 */
 	protected $viewHelper;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock('TYPO3\CMS\Fluid\ViewHelpers\Format\Nl2brViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(Nl2brViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}

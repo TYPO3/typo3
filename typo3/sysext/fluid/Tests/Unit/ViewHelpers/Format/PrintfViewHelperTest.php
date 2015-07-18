@@ -12,6 +12,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Format;
  *                                                                        */
 
 use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3\CMS\Fluid\ViewHelpers\Format\PrintfViewHelper;
 
 /**
  * Test case
@@ -19,13 +20,13 @@ use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class PrintfViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
-	 * @var \TYPO3\Fluid\ViewHelpers\Format\PrintfViewHelper
+	 * @var PrintfViewHelper
 	 */
 	protected $viewHelper;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock('TYPO3\CMS\Fluid\ViewHelpers\Format\PrintfViewHelper', array('renderChildren'));
+		$this->viewHelper = $this->getMock(PrintfViewHelper::class, array('renderChildren'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
