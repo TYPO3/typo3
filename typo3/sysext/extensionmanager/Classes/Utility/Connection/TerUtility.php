@@ -45,7 +45,7 @@ class TerUtility {
 	 * @return array T3X data
 	 */
 	public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl) {
-		if (!$this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value']) {
+		if (!empty($this->configurationUtility->getCurrentConfiguration('extensionmanager')['offlineMode']['value'])) {
 			throw new ExtensionManagerException('Extension Manager is in offline mode. No TER connection available.', 1437078620);
 		}
 		$extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
