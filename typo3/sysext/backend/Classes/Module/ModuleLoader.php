@@ -263,11 +263,18 @@ class ModuleLoader {
 						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
 						// Setting icon, either default or alternative:
 						if ($altIconAbsPath && @is_file($altIconAbsPath)) {
-							$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $altIconAbsPath);
+							$defaultLabels['tabs_images']['tab'] = $altIconAbsPath;
 						} else {
 							// Setting default icon:
-							$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $defaultLabels['tabs_images']['tab']);
+							if (substr($defaultLabels['tabs_images']['tab'], 0, 4) === 'EXT:') {
+								list($extensionKey, $relativePath) = explode('/', substr($defaultLabels['tabs_images']['tab'], 4), 2);
+								$defaultLabels['tabs_images']['tab'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
+							} else {
+								$defaultLabels['tabs_images']['tab'] = $fullpath . '/' . $defaultLabels['tabs_images']['tab'];
+							}
 						}
+
+						$defaultLabels['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $defaultLabels['tabs_images']['tab']);
 
 						// Finally, setting the icon with correct path:
 						if (substr($defaultLabels['tabs_images']['tab'], 0, 3) == '../') {

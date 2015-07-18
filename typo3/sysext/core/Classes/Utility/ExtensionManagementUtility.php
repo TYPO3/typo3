@@ -891,6 +891,11 @@ class ExtensionManagementUtility {
 		$fullModuleSignature = $main . ($sub ? '_' . $sub : '');
 		// Adding path:
 		if ($path) {
+			if (substr($path, 0, 4) === 'EXT:') {
+				list($extensionKey, $relativePath) = explode('/', substr($path, 4), 2);
+				$path = self::extPath($extensionKey) . $relativePath;
+			}
+
 			$GLOBALS['TBE_MODULES']['_PATHS'][$fullModuleSignature] = $path;
 		}
 
