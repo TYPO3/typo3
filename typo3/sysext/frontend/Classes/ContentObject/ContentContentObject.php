@@ -66,56 +66,37 @@ class ContentContentObject extends AbstractContentObject {
 		$again = FALSE;
 		$tmpValue = '';
 		$cobjValue = '';
-		$databaseConnection = $this->getDatabaseConnection();
+
 		do {
-			$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
-			if ($error = $databaseConnection->sql_error()) {
-				$this->getTimeTracker()->setTSlogMessage($error, 3);
-			} else {
-				$this->cObj->currentRecordTotal = $databaseConnection->sql_num_rows($res);
-				$this->getTimeTracker()->setTSlogMessage('NUMROWS: ' . $databaseConnection->sql_num_rows($res));
+			$records = $this->cObj->getRecords($conf);
+			if (!empty($records)) {
+				$this->cObj->currentRecordTotal = count($records);
+				$this->getTimeTracker()->setTSlogMessage('NUMROWS: ' .  count($records));
+
 				/** @var $cObj ContentObjectRenderer */
 				$cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 				$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 				$this->cObj->currentRecordNumber = 0;
 				$cobjValue = '';
-				while (($row = $databaseConnection->sql_fetch_assoc($res)) !== FALSE) {
-					// Versioning preview:
-					$frontendController->sys_page->versionOL($conf['table'], $row, TRUE);
-					// Language overlay:
-					if (is_array($row) && $frontendController->sys_language_contentOL) {
-						if ($conf['table'] == 'pages') {
-							$row = $frontendController->sys_page->getPageOverlay($row);
-						} else {
-							$row = $frontendController->sys_page->getRecordOverlay(
-								$conf['table'],
-								$row,
-								$frontendController->sys_language_content,
-								$frontendController->sys_language_contentOL
-							);
+
+				foreach ($records as $row) {
+					// Call hook for possible manipulation of database row for cObj->data
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
+							$_procObj = GeneralUtility::getUserObj($_classRef);
+							$_procObj->modifyDBRow($row, $conf['table']);
 						}
 					}
-					// Might be unset in the sys_language_contentOL
-					if (is_array($row)) {
-						// Call hook for possible manipulation of database row for cObj->data
-						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
-							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
-								$_procObj = GeneralUtility::getUserObj($_classRef);
-								$_procObj->modifyDBRow($row, $conf['table']);
-							}
-						}
-						if (!$frontendController->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
-							$this->cObj->currentRecordNumber++;
-							$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-							$frontendController->currentRecord = $conf['table'] . ':' . $row['uid'];
-							$this->cObj->lastChanged($row['tstamp']);
-							$cObj->start($row, $conf['table']);
-							$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
-							$cobjValue .= $tmpValue;
-						}
+					if (!$frontendController->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
+						$this->cObj->currentRecordNumber++;
+						$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
+						$frontendController->currentRecord = $conf['table'] . ':' . $row['uid'];
+						$this->cObj->lastChanged($row['tstamp']);
+						$cObj->start($row, $conf['table']);
+						$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+						$cobjValue .= $tmpValue;
 					}
 				}
-				$databaseConnection->sql_free_result($res);
 			}
 			if ($slideCollectReverse) {
 				$theValue = $cobjValue . $theValue;
