@@ -2592,56 +2592,55 @@ Connection: close
 	 * @return mixed TRUE on success, FALSE on error, always TRUE on Windows OS
 	 */
 	static public function fixPermissions($path, $recursive = FALSE) {
-		if (TYPO3_OS != 'WIN') {
-			$result = FALSE;
-			// Make path absolute
-			if (!self::isAbsPath($path)) {
-				$path = self::getFileAbsFileName($path, FALSE);
+		if (TYPO3_OS === 'WIN') {
+			return TRUE;
+		}
+		$result = FALSE;
+		// Make path absolute
+		if (!self::isAbsPath($path)) {
+			$path = self::getFileAbsFileName($path, FALSE);
+		}
+		if (self::isAllowedAbsPath($path)) {
+			if (@is_file($path)) {
+				$targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
+					? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
+					: octdec('0644');
+				// "@" is there because file is not necessarily OWNED by the user
+				$result = @chmod($path, $targetFilePermissions);
+			} elseif (@is_dir($path)) {
+				$targetDirectoryPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
+					? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
+					: octdec('0755');
+				// "@" is there because file is not necessarily OWNED by the user
+				$result = @chmod($path, $targetDirectoryPermissions);
 			}
-			if (self::isAllowedAbsPath($path)) {
-				if (@is_file($path)) {
-					$targetFilePermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
-						? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'])
-						: octdec('0644');
-					// "@" is there because file is not necessarily OWNED by the user
-					$result = @chmod($path, $targetFilePermissions);
-				} elseif (@is_dir($path)) {
-					$targetDirectoryPermissions = isset($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
-						? octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])
-						: octdec('0755');
-					// "@" is there because file is not necessarily OWNED by the user
-					$result = @chmod($path, $targetDirectoryPermissions);
-				}
-				// Set createGroup if not empty
-				if (
-					isset($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
-					&& $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] !== ''
-				) {
-					// "@" is there because file is not necessarily OWNED by the user
-					$changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
-					$result = $changeGroupResult ? $result : FALSE;
-				}
-				// Call recursive if recursive flag if set and $path is directory
-				if ($recursive && @is_dir($path)) {
-					$handle = opendir($path);
-					while (($file = readdir($handle)) !== FALSE) {
-						$recursionResult = NULL;
-						if ($file !== '.' && $file !== '..') {
-							if (@is_file(($path . '/' . $file))) {
-								$recursionResult = self::fixPermissions($path . '/' . $file);
-							} elseif (@is_dir(($path . '/' . $file))) {
-								$recursionResult = self::fixPermissions($path . '/' . $file, TRUE);
-							}
-							if (isset($recursionResult) && !$recursionResult) {
-								$result = FALSE;
-							}
+			// Set createGroup if not empty
+			if (
+				isset($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
+				&& $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] !== ''
+			) {
+				// "@" is there because file is not necessarily OWNED by the user
+				$changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
+				$result = $changeGroupResult ? $result : FALSE;
+			}
+			// Call recursive if recursive flag if set and $path is directory
+			if ($recursive && @is_dir($path)) {
+				$handle = opendir($path);
+				while (($file = readdir($handle)) !== FALSE) {
+					$recursionResult = NULL;
+					if ($file !== '.' && $file !== '..') {
+						if (@is_file(($path . '/' . $file))) {
+							$recursionResult = self::fixPermissions($path . '/' . $file);
+						} elseif (@is_dir(($path . '/' . $file))) {
+							$recursionResult = self::fixPermissions($path . '/' . $file, TRUE);
+						}
+						if (isset($recursionResult) && !$recursionResult) {
+							$result = FALSE;
 						}
 					}
-					closedir($handle);
 				}
+				closedir($handle);
 			}
-		} else {
-			$result = TRUE;
 		}
 		return $result;
 	}

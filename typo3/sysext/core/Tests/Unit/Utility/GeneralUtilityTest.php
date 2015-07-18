@@ -2558,7 +2558,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function fixPermissionsSetsGroup() {
-		if (TYPO3_OS == 'WIN') {
+		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('fixPermissionsSetsGroup() tests not available on Windows');
 		}
 		if (!function_exists('posix_getegid')) {
