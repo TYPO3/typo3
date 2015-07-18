@@ -1530,12 +1530,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		if ($this->CMD === 'add' || $this->CMD === 'edit') {
 			$buttons['close'] = '<a href="#" onclick="document.location=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->moduleUri)) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
-			$buttons['save'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="save" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save') . '</button>';
-			$buttons['saveclose'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="saveclose" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-close') . '</button>';
-			$buttons['savenew'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="savenew" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-new') . '</button>';
+			$buttons['save'] = '<button name="CMD" value="save" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save') . '</button>';
+			$buttons['saveclose'] = '<button name="CMD" value="saveclose" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-close') . '</button>';
+			$buttons['savenew'] = '<button name="CMD" value="savenew" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-new') . '</button>';
 		}
 		if ($this->CMD === 'edit') {
-			$buttons['delete'] = '<button style="padding: 0; margin: 0; cursor: pointer;" type="submit" name="CMD" value="delete" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</button>';
+			$buttons['delete'] = '<button name="CMD" value="delete" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '">' . IconUtility::getSpriteIcon('actions-edit-delete') . '</button>';
 		}
 		return $buttons;
 	}

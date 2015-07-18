@@ -9066,6 +9066,8 @@ div#contentMenu1 {
 }
 #typo3-docheader .buttongroup .c-inputButton {
   color: inherit;
+  padding: 0;
+  text-indent: -1000px;
 }
 #typo3-docheader select {
   margin-right: 12px;
@@ -11312,6 +11314,7 @@ a.badge-danger:focus {
 .t3-icon .c-inputButton {
   width: 16px;
   height: 16px;
+  display: inline-block;
 }
 .t3-icon-overlay {
   display: block;

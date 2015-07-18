@@ -286,20 +286,22 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 					// no NEW-button while edit
 					$buttons['new'] = '';
 					// SAVE button
-					$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array(
-						'html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'
-					));
+					$buttons['save'] = '<button type="submit" class="c-inputButton" name="submit">'
+						. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
+						. '</button>';
 					// SAVE AND CLOSE button
-					$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array(
-						'html' => '<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" ' . '/>'
-					));
+					$buttons['save_close'] = '<button class="c-inputButton" name="saveclose">'
+						. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
+						. '</button>';
 					// CLOSE button
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
 					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
 				}
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
-				$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' . 'title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . 'value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" ' . '/>'));
+				$buttons['save'] = '<button class="c-inputButton" name="submit">'
+					. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
+					. '</button>';
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
 				if (!empty($this->sObj)) {
 					// BACK

@@ -1206,9 +1206,13 @@ class PageLayoutController {
 			}
 			if ($function == 'quickEdit') {
 				// Save record
-				$buttons['savedok'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
+				$buttons['savedok'] = '<button class="c-inputButton" name="_savedok_x">'
+					. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
+					. '</button>';
 				// Save and close
-				$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" src="clear.gif" name="_saveandclosedok" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
+				$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x">'
+					. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
+					. '</button>';
 				// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';
 				// Close record

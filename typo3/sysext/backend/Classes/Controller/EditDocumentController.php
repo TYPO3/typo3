@@ -1117,7 +1117,7 @@ class EditDocumentController {
 		// The action of each button is decided by its name attribute. (See doProcessData())
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
 			// SAVE button:
-			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
+			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="_savedok" class="c-inputButton" value="" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
@@ -1128,15 +1128,15 @@ class EditDocumentController {
 					$excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
 				}
 				if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE) || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'].'.']['previewPageId'])) {
-					$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input onclick="window.open(\'\', \'newTYPO3frontendWindow\');" type="image" class="c-inputButton" name="_savedokview" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
+					$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input onclick="window.open(\'\', \'newTYPO3frontendWindow\');" type="image" class="c-inputButton" name="_savedokview"  value="" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
 				}
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
-				$buttons['save_new'] = IconUtility::getSpriteIcon('actions-document-save-new', array('html' => '<input type="image" class="c-inputButton" name="_savedoknew" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '" />'));
+				$buttons['save_new'] = IconUtility::getSpriteIcon('actions-document-save-new', array('html' => '<input type="image" class="c-inputButton" name="_savedoknew" value="" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '" />'));
 			}
 			// SAVE / CLOSE
-			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" src="clear.gif" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
+			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<input type="image" class="c-inputButton" name="_saveandclosedok" value="" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '" />'));
 			// FINISH TRANSLATION / SAVE / CLOSE
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation']) {
 				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok" src="sysext/t3skin/images/icons/actions/document-save-translation.png" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', TRUE) . '" /> ';

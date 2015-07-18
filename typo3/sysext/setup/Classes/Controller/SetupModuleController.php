@@ -461,7 +461,9 @@ class SetupModuleController {
 			'shortcut' => ''
 		);
 		$buttons['csh'] = BackendUtility::cshItem('_MOD_user_setup', '');
-		$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
+		$buttons['save'] = '<button class="c-inputButton" name="data[save]">'
+			. IconUtility::getSpriteIcon('actions-document-save', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
+			. '</button>';
 		if ($this->getBackendUser()->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->moduleName);
 		}
