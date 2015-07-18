@@ -298,7 +298,7 @@ class TimeTracker {
 			$out .= '
 				<th><strong>' . $row . '</strong></th>';
 		}
-		$out = '<tr>' . $out . '</tr>';
+		$out = '<tr class="typo3-adminPanel-itemRow">' . $out . '</tr>';
 		$flag_tree = $this->printConf['flag_tree'];
 		$flag_messages = $this->printConf['flag_messages'];
 		$flag_content = $this->printConf['flag_content'];
@@ -314,6 +314,7 @@ class TimeTracker {
 			} else {
 				$logRowClass = $c % 2 ? 'line-odd' : 'line-even';
 			}
+			$logRowClass .= ' typo3-adminPanel-section-content-title';
 			$item = '';
 			// If first...
 			if (!$c) {
@@ -382,10 +383,10 @@ class TimeTracker {
 				$msg = implode($msgArr, '<hr />');
 			}
 			$item .= '<td valign="top" class="' . $logRowClass . '" style="text-align:left;">' . $this->fw($msg) . '</td>';
-			$out .= '<tr>' . $item . '</tr>';
+			$out .= '<tr class="typo3-adminPanel-itemRow">' . $item . '</tr>';
 			$c++;
 		}
-		$out = '<table class="admin-panel-table typo3-adminPanel-tsLog">' . $out . '</table>';
+		$out = '<table class="typo3-adminPanel-table typo3-adminPanel-tsLog">' . $out . '</table>';
 		return $out;
 	}
 

@@ -252,11 +252,11 @@ class AdminPanelView {
 		$row = $this->extGetLL('adminPanelTitle') . ': <span class="typo3-adminPanel-beuser">' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</span>';
 		$isVisible = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'];
 		$cssClassName = 'typo3-adminPanel-panel-' . ($isVisible ? 'open' : 'closed');
-		$header = '<tr class="typo3-adminPanel-header">' . '<td colspan="2" id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></td>' . '</tr>';
+		$header = '<tr class="typo3-adminPanel-header">' . '<td colspan="2" id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button fa"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></td>' . '</tr>';
 		if ($moduleContent && $this->extNeedUpdate) {
 			$footer = '<tr class="typo3-adminPanel-footer">
 						<td colspan="2">
-							<input class="typo3-adminPanel-update" type="submit" value="' . $this->extGetLL('update') . '" />
+							<input class="typo3-adminPanel-update btn btn-default" type="submit" value="' . $this->extGetLL('update') . '" />
 						</td>
 					</tr>';
 		}
@@ -278,8 +278,8 @@ class AdminPanelView {
 <!--
 	TYPO3 Admin panel start
 -->
-<a id="TSFE_ADMIN"></a>
-<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<table class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</table></form>';
+<a id="TSFE_ADMIN_PANEL"></a>
+<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<table class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</table></form>';
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
 			$out .= '<script type="text/javascript" src="typo3/sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js"></script>';
 			$out .= '<script type="text/javascript">/*<![CDATA[*/' . GeneralUtility::minifyJavaScript('
@@ -396,7 +396,7 @@ class AdminPanelView {
 			$options .= '<option value="0"' . ($levels == 0 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_0') . '</option>';
 			$options .= '<option value="1"' . ($levels == 1 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_1') . '</option>';
 			$options .= '<option value="2"' . ($levels == 2 ? ' selected="selected"' : '') . '>' . $this->extGetLL('div_Levels_2') . '</option>';
-			$out .= $this->extGetItem('cache_clearLevels', '<select id="cache_clearLevels" name="TSFE_ADMIN_PANEL[cache_clearCacheLevels]">' . $options . '</select>' . '<input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . $GLOBALS['TSFE']->id . '" /> <input type="submit" value="' . $this->extGetLL('update') . '" />');
+			$out .= $this->extGetItem('cache_clearLevels', '<select id="cache_clearLevels" name="TSFE_ADMIN_PANEL[cache_clearCacheLevels]">' . $options . '</select>' . '<input type="hidden" name="TSFE_ADMIN_PANEL[cache_clearCacheId]" value="' . $GLOBALS['TSFE']->id . '" /> <input class="btn btn-default" type="submit" value="' . $this->extGetLL('update') . '" />');
 			// Generating tree:
 			$depth = (int)$this->extGetFeAdminValue('cache', 'clearCacheLevels');
 			$outTable = '';
@@ -406,9 +406,10 @@ class AdminPanelView {
 			foreach ($GLOBALS['BE_USER']->extPageInTreeInfo as $row) {
 				$outTable .= '<tr>' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . IconUtility::getSpriteIcon('apps-pagetree-page-default') . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
 			}
-			$outTable = '<br /><table>' . $outTable . '</table>';
-			$outTable .= '<input type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
-			$out .= $this->extGetItem('cache_cacheEntries', $outTable);
+			$outTable = '<br /><table class="typo3-adminPanel-table"><thead><tr><th colspan="2">' . $this->extGetLL('cache_cacheEntries') . '</th></tr></thead>' . $outTable . '</table>';
+			$outTable .= '<span class="fa fa-bolt clear-cache-icon"><!-- --></span><input class="btn btn-default clear-cache" type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
+
+			$out .= $this->extGetItem('', $outTable);
 		}
 		return $out;
 	}
@@ -430,7 +431,7 @@ class AdminPanelView {
 			$out .= $this->extGetItem('edit_displayIcons', '', '<input type="hidden" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="0" /><input type="checkbox" id="edit_displayIcons" name="TSFE_ADMIN_PANEL[edit_displayIcons]" value="1"' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_displayIcons'] ? ' checked="checked"' : '') . ' />');
 			$out .= $this->extGetItem('', $this->ext_makeToolBar());
 			if (!GeneralUtility::_GP('ADMCMD_view')) {
-				$out .= $this->extGetItem('', '<a href="#" onclick="' . htmlspecialchars(('
+				$out .= $this->extGetItem('', '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('
 						if (parent.opener && parent.opener.top && parent.opener.top.TS) {
 							parent.opener.top.fsMod.recentIds["web"]=' . (int)$GLOBALS['TSFE']->page['uid'] . ';
 							if (parent.opener.top.content && parent.opener.top.content.nav_frame && parent.opener.top.content.nav_frame.refresh_nav) {
@@ -471,7 +472,7 @@ class AdminPanelView {
 			$GLOBALS['TT']->printConf['flag_messages'] = $this->extGetFeAdminValue('tsdebug', 'displayMessages');
 			$GLOBALS['TT']->printConf['flag_content'] = $this->extGetFeAdminValue('tsdebug', 'displayContent');
 			$GLOBALS['TT']->printConf['flag_queries'] = $this->extGetFeAdminValue('tsdebug', 'displayQueries');
-			$out .= '<tr><td colspan="2">' . $GLOBALS['TT']->printTSlog() . '</td></tr>';
+			$out .= '<tr><td class="typo3-adminPanel-table-wrapper" colspan="2">' . $GLOBALS['TT']->printTSlog() . '</td></tr>';
 		}
 		return $out;
 	}
@@ -526,7 +527,7 @@ class AdminPanelView {
 						</tr>';
 			}
 			$out .= $table;
-			$out = '<tr><td colspan="2"><table class="admin-panel-table">' . $out . '</table></td></tr>';
+			$out = '<tr><td class="typo3-adminPanel-table-wrapper" colspan="2"><table class="typo3-adminPanel-table">' . $out . '</table></td></tr>';
 		}
 
 		$out = $head . $out;
@@ -564,7 +565,7 @@ class AdminPanelView {
 	public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
 		$onclick = 'document.TSFE_ADMIN_PANEL_FORM[' . GeneralUtility::quoteJSvalue('TSFE_ADMIN_PANEL[display_' . $sectionSuffix . ']') . '].value=' . ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $sectionSuffix] ? '0' : '1') . ';document.TSFE_ADMIN_PANEL_FORM.submit();return false;';
 		$content = '<div class="typo3-adminPanel-label">
-						<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '"' . ($className ? ' class="' . htmlspecialchars($className) . '"' : '') . '>'
+						<a href="javascript:void(0)" onclick="' . htmlspecialchars($onclick) . '"' . ($className ? ' class="fa ' . htmlspecialchars($className) . '"' : '') . '>'
 			. $sectionTitle .
 			'</a>
 		</div>';
@@ -577,7 +578,7 @@ class AdminPanelView {
 	 *
 	 * @param string $title Key to label
 	 * @param string $content The HTML content for the forth table cell.
-	 * @param string $checkbox The HTML for a checkbox or hidden fields
+	 * @param string $checkbox The HTML for a checkbox or hidden fields.
 	 * @return string HTML table row.
 	 * @see extGetHead()
 	 */
@@ -605,22 +606,22 @@ class AdminPanelView {
 		$returnUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
 
 		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_recordHistory', FALSE)));
-		$toolBar = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl))) . '#latest">' . $icon . '</a>';
+		$toolBar = '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl))) . '#latest">' . $icon . '</a>';
 		if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {
 				$params = '&sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
 			}
 			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars($newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_NEW) {
 			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties', FALSE)));
@@ -629,7 +630,7 @@ class AdminPanelView {
 				'noView' => 1,
 				'returnUrl' => $returnUrl
 			));
-			$toolBar .= '<a href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($url) . '">' . $icon . '</a>';
 			if ($GLOBALS['TSFE']->sys_language_uid && $langAllowed) {
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 					'uid,pid,t3ver_state',
@@ -656,11 +657,10 @@ class AdminPanelView {
 				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 			);
 			$icon = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $this->extGetLL('edit_db_list', FALSE)));
-			$toolBar .= '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', $urlParams)) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', $urlParams)) . '">' . $icon . '</a>';
 		}
 
-		$toolBar = '<div class="toolbar">' . $toolBar . '</div>';
-
+		$toolBar = '<div class="toolbar btn-group" role="group">' . $toolBar . '</div>';
 		return $toolBar;
 	}
 
