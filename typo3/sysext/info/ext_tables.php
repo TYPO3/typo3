@@ -6,14 +6,14 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'info',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+		'EXT:info/Modules/Info/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'user,group',
 			'name' => 'web_info',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-info.svg',
+					'tab' => 'EXT:info/Resources/Public/Icons/module-info.svg',
 				),
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_web_info.xlf',
 			),
