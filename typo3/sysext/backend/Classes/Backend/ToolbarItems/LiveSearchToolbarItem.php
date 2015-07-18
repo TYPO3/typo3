@@ -60,6 +60,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 					<input type="text" class="form-control t3js-topbar-navigation-search-field" placeholder="Search" id="live-search-box" autocomplete="off">
 				</div>
 			</form>
+			<div class="dropdown-menu" role="menu"></div>
 		';
 	}
 
@@ -69,7 +70,7 @@ class LiveSearchToolbarItem implements ToolbarItemInterface {
 	 * @return array
 	 */
 	public function getAdditionalAttributes() {
-		return array();
+		return array('class' => 'dropdown');
 	}
 
 	/**

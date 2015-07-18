@@ -14,94 +14,83 @@
 /**
  * Global search to deal with everything in the backend that is search-related
  */
-define('TYPO3/CMS/Backend/LiveSearch', ['jquery', 'typeaheadjs'], function ($) {
+define('TYPO3/CMS/Backend/LiveSearch', ['jquery', 'jquery/autocomplete'], function ($) {
 
-	var containerSelector = '.t3js-topbar-navigation-search';
+	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
-	var url = TYPO3.settings.ajaxUrls['LiveSearch'] + '&q=';
-	var cssPrefix = 'typeahead';
+	var url = TYPO3.settings.ajaxUrls['LiveSearch'];
+	var category = '';
 
 	var initialize = function() {
-		var $searchField = $(searchFieldSelector);
-
-		var searchCall = function(query, syncResults, asyncResults) {
-			$.ajax({
-				url: url + rawurlencode(query.toString()),
-				cache: false,
-				success: function(results) {
-					asyncResults(results);
-				}
-			});
-		};
-
-		$searchField.typeahead({
-			hint: false,
-			highlight: true,
-			limit: 10,
-			minLength: 2,
-			classNames: {
-				wrapper: cssPrefix,
-				input: cssPrefix + '-input',
-				hint: cssPrefix + '-hint',
-				menu: cssPrefix + '-menu dropdown-menu',
-				dataset: 'dropdown-list ' + cssPrefix + '-dataset',
-				suggestion: cssPrefix + '-suggestion',
-				empty: cssPrefix + '-empty',
-				open: cssPrefix + '-open',
-				cursor: cssPrefix + '-cursor',
-				highlight: cssPrefix + '-highlight'
-			}
-		}, {
-			name: 'databaseRecords',
-			source: searchCall,
-			limit: 1000,	// this needs to be very high, limiter is on PHP side
-			display: function() {
-				return $searchField.val();
-			},
-			templates: {
-				empty: '<div class="dropdown-info typeahead-search-empty-message">' + TYPO3.LLL.liveSearch.listEmptyText + '</div>'
+		$(searchFieldSelector).autocomplete({
+			// ajax options
+			serviceUrl: url,
+			paramName: 'q',
+			dataType: 'json',
+			minChars: 2,
+			groupBy: 'typeLabel',
+			containerClass: 'dropdown-list',
+			appendTo: containerSelector + ' .dropdown-menu',
+			forceFixPosition: false,
+			preserveInput: true,
+			showNoSuggestionNotice: true,
+			noSuggestionNotice: '<div class="dropdown-info">' + TYPO3.LLL.liveSearch.listEmptyText + '</div>'
 					+ '<div class="search-list-help-content"><strong>' + TYPO3.LLL.liveSearch.helpTitle + '</strong>'
 					+ '<p>' + TYPO3.LLL.liveSearch.helpDescription + '<br>' + TYPO3.LLL.liveSearch.helpDescriptionPages + '</p>'
-					+ '</div>'
-				,
-				suggestion: function(result) {
-					return '' +
-						'<div data-table-name="' + result.table.name + '" data-table-title="' + result.table.title + '">' +
-							'<a class="dropdown-list-link" href="#" data-pageid="' + result.pageId + '" data-target="' + result.editLink + '">' +
-								result.iconHTML + ' ' + result.title +
-							'</a>' +
-						'</div>';
-				},
-				footer: '' +
-						'<div>' +
-							'<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
-								TYPO3.LLL.liveSearch.showAllResults +
-							'</a>' +
-						'</div>'
-			}
-		}).bind('typeahead:render', function(e) {
-			var suggestions = [].slice.call(arguments, 1);
-			var lastTable = '';
-			$.each(suggestions, function(){
-				if (lastTable !== this.table.name) {
-					lastTable = this.table.name;
-					var $dataSet = $(containerSelector + ' [data-table-name=' + this.table.name + ']');
-					$dataSet.first().before('<div class="dropdown-header">' + this.table.title + '</div>');
-					$dataSet.last().after('<div class="divider"></div>');
+					+ '</div>',
+			// put the AJAX results in the right format
+			transformResult: function(response) {
+				return {
+					suggestions: $.map(response, function(dataItem) {
+						return { value: dataItem.title, data: dataItem };
+					})
+				};
+			},
+			// Format group is currently modified inside autocomplete to be allowed to be configurable
+			formatGroup: function(suggestion, value, i) {
+				var currentCategory = suggestion.data['typeLabel'];
+				if (category === currentCategory) {
+					return '';
 				}
-			});
+				category = currentCategory;
+				var html = '';
+				// add a divider if it's not the first group
+				if (i > 0) {
+					html = '<div class="divider"></div>';
+				}
+				return html + '<div class="dropdown-header">' + category + '</div>';
+			},
+			// Rendering of each item
+			formatResult: function(suggestion, value) {
+				return '<a class="dropdown-list-link" href="#" data-pageid="' + suggestion.data.pageId + '" data-target="' + suggestion.data.editLink + '">' +
+						suggestion.data.iconHTML + ' ' + suggestion.data.title +
+					'</a>';
+			},
+			onSearchComplete: function() {
+				$(containerSelector).addClass('open');
+			},
+			beforeRender: function(container) {
+				// Unset height, width and z-index again, should be fixed by the plugin at a later point
+				container.attr('style', '').append('<div class="divider"></div><div>' +
+					'<a href="#" class="btn btn-primary pull-right t3js-live-search-show-all">' +
+						TYPO3.LLL.liveSearch.showAllResults +
+					'</a>' +
+				'</div>');
+				$(containerSelector).addClass('open');
+			},
+			onHide: function() {
+				$(containerSelector).removeClass('open');
+			}
 		});
 
 		// set up the events
-		$(containerSelector).on('click', '.t3js-live-search-show-all', function() {
-			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + $searchField.val());
-			$searchField.typeahead('close');
-		}).on('click', '.typeahead-suggestion a', function() {
-			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
-			$searchField.typeahead('close');
+		$(document).on('click', '.t3js-live-search-show-all', function(evt) {
+			evt.preventDefault();
+			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + $(searchFieldSelector).val());
 		});
-		$searchField.on('typeahead:change', function() {
-			$searchField.typeahead('close');
+		$(document).on('click', '.dropdown-list-link', function(evt) {
+			evt.preventDefault();
+			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
 		});
 	};
 

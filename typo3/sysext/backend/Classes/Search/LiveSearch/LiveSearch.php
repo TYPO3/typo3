@@ -216,10 +216,7 @@ class LiveSearch {
 			$collect[] = array(
 				'id' => $tableName . ':' . $row['uid'],
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
-				'table' => array(
-					'title' => $this->getTitleOfCurrentRecordType($tableName),
-					'name' => $tableName,
-				),
+				'typeLabel' =>  $this->getTitleOfCurrentRecordType($tableName),
 				'iconHTML' => IconUtility::getSpriteIconForRecord($tableName, $row, array('title' => 'id=' . $row['uid'] . ', pid=' . $row['pid'])),
 				'title' => BackendUtility::getRecordTitle($tableName, $row),
 				'editLink' => $this->getEditLink($tableName, $row)

@@ -76,7 +76,10 @@ module.exports = function(grunt) {
 					'placeholders.jquery.min.js': 'Placeholders.js/dist/placeholders.jquery.min.js',
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
 					'bootstrap-slider.min.js': 'seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
-					'typeahead.js': 'typeahead.js/dist/typeahead.jquery.min.js',
+					/* disabled until autocomplete groupBy is fixed by the author
+						see https://github.com/devbridge/jQuery-Autocomplete/pull/387
+					'jquery.autocomplete.js': 'devbridge-autocomplete/src/jquery.autocomplete.js',
+					 */
 
 					/**
 					 * copy needed files of scriptaculous
