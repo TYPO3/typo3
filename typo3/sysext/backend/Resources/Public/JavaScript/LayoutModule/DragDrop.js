@@ -46,9 +46,11 @@ define(['jquery', 'jquery-ui/sortable'], function ($) {
 				tolerance: 'pointer',
 				start: function(e, ui) {
 					DragDrop.onSortStart($(this), ui);
+					$(this).addClass('t3-is-dragged');
 				},
 				stop: function(e, ui) {
 					DragDrop.onSortStop($(this), ui);
+					$(this).removeClass('t3-is-dragged');
 				},
 				change: function(e, ui) {
 					DragDrop.onSortChange($(this), ui);

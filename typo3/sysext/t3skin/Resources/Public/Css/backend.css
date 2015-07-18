@@ -12553,6 +12553,14 @@ iframe {
 .t3-page-ce-dragitem .t3-page-ce-header-draggable:hover {
   cursor: move;
 }
+.t3-is-dragged .t3-page-ce-body {
+  max-height: 225px;
+  overflow: hidden;
+}
+.t3-page-ce-dropzone-available.active,
+.t3-page-ce-dropzone-possible {
+  max-height: 225px;
+}
 [id="typo3-topbar"],
 [id="typo3-topbar"] .x-panel-body {
   min-width: 1000px;
