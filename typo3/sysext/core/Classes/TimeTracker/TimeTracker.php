@@ -415,16 +415,17 @@ class TimeTracker {
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
 				$c++;
 				$deeper = is_array($arr[$k . '.']) ? 1 : 0;
-				$PM = 'join';
 				$LN = $ac == $c ? 'blank' : 'line';
+
 				$BTM = $ac == $c ? 'bottom' : '';
-				$PM = is_array($arr[$k . '.']) ? ($deeper ? 'minus' : 'plus') : 'join';
-				$this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : '<img src="' . TYPO3_mainDir . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />');
+				$PM = is_array($arr[$k . '.']) ? '<i class="fa fa-' . ($deeper ? 'minus' : 'plus') . '-square-o"></i>' : '<span class="treeline-icon treeline-icon-join' . ($BTM ? 'bottom' : '') . '"></span>';
+
+				$this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : $PM);
 				if ($this->tsStackLog[$v]['content'] !== '') {
 					$content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
 				}
 				if (is_array($arr[$k . '.'])) {
-					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . ($first ? '' : '<img src="' . TYPO3_mainDir . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
+					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), 0, $v);
 				} else {
 					$this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
 					$this->tsStackLog[$v]['subtime'] = '';

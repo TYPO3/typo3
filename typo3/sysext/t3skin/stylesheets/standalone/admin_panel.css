@@ -262,7 +262,7 @@
 }
 
 #TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-itemRow td {
-	padding: 7px 15px;
+	padding: 0px 15px;
 	line-height: 16px;
 }
 
@@ -456,4 +456,52 @@
 	-webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+#TSFE_ADMIN_PANEL_FORM .treeline-icon {
+  position: relative;
+  display: inline-block;
+  margin-right: 2px;
+  padding: 0;
+  height: 18px;
+  width: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:after,
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:before {
+  position: absolute;
+  content: '';
+  left: 50%;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:before {
+  top: 0;
+  height: 100%;
+  width: 2px;
+  margin-left: -1px;
+  border-left: 1px dotted #666666;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon:after {
+  border-top: 1px dotted #666666;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  margin-top: -1px;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-jointop:before {
+  top: 50%;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-joinbottom:before {
+  top: -50%;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-line:after {
+  display: none;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-blank {
+  display: none;
+}
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-clear:before,
+#TSFE_ADMIN_PANEL_FORM .treeline-icon-clear:after {
+  display: none;
 }

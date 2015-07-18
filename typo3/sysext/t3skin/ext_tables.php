@@ -12,9 +12,6 @@ if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 		)
 	);
 
-	// Manual setting up of alternative icons.
-	$GLOBALS['TBE_STYLES']['skinImg']['gfx/ol/blank.gif'] = array('clear.gif', 'width="18" height="16"');
-
 	// Alternative dimensions for frameset sizes:
 	// Left menu frame width
 	$GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] = 190;
