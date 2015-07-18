@@ -105,20 +105,28 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 	onTipChange : function(node, tip, title) {
 		TYPO3.Components.PageTree.PageTreeNodeUI.superclass.onTipChange.apply(this, arguments);
 
-	if(this.rendered){
-		var hasTitle = Ext.isDefined(title);
-		if(this.iconNode.setAttributeNS){
-			this.iconNode.setAttributeNS("ext", "qtip", tip);
-		if(hasTitle){
-			this.iconNode.setAttributeNS("ext", "qtitle", title);
+		if (this.rendered) {
+			var hasTitle = Ext.isDefined(title);
+			if (this.iconNode.setAttributeNS) {
+				this.iconNode.setAttributeNS('ext', 'data-toggle', 'tooltip');
+				this.iconNode.setAttributeNS('ext', 'data-title', tip);
+				this.iconNode.setAttributeNS('ext', 'data-html', 'true');
+				this.iconNode.setAttributeNS('ext', 'data-placement', 'right');
+				if (hasTitle) {
+					this.iconNode.setAttributeNS("ext", "qtitle", title);
+				}
+			} else {
+				this.iconNode.setAttribute("ext:qtip", tip);
+				this.iconNode.setAttribute('ext:data-toggle', 'tooltip');
+				this.iconNode.setAttribute('ext:data-title', tip);
+				this.iconNode.setAttribute('ext:data-html', 'true');
+				this.iconNode.setAttribute('ext:data-placement', 'right');
+				if (hasTitle) {
+					this.iconNode.setAttribute("ext:qtitle", title);
+				}
+			}
+			TYPO3.jQuery(this.iconNode).tooltip();
 		}
-		}else{
-			this.iconNode.setAttribute("ext:qtip", tip);
-		if(hasTitle){
-			this.iconNode.setAttribute("ext:qtitle", title);
-		}
-	}
-	}
 	},
 
 	/**
