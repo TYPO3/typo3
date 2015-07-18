@@ -1432,6 +1432,23 @@ tt_content.' . $key . $suffix . ' {
 	}
 
 	/**
+	 * Call this method to add an entry in the pageTSconfig list found in pages
+	 * FOR USE in ext_tables.php FILES or files in Configuration/TCA/Overrides/*.php Use the latter to benefit from TCA caching!
+	 *
+	 * @param string $extKey The extension key
+	 * @param string $file The path and title where the TSconfig file is located
+	 * @param string $title The title in the selector box
+	 * @return void
+	 */
+	static public function registerPageTSConfigFile($extKey, $file, $title) {
+		if ($extKey && $file && is_array($GLOBALS['TCA']['pages']['columns'])) {
+			$value = str_replace(',',  '', 'EXT:' . $extKey . '/' . $file);
+			$itemArray = array(trim($title . ' (' . $extKey . ')'), $value);
+			$GLOBALS['TCA']['pages']['columns']['tsconfig_includes']['config']['items'][] = $itemArray;
+		}
+	}
+
+	/**
 	 * Adds $content to the default TypoScript setup code as set in $GLOBALS['TYPO3_CONF_VARS'][FE]['defaultTypoScript_setup']
 	 * Prefixed with a [GLOBAL] line
 	 * FOR USE IN ext_localconf.php FILES

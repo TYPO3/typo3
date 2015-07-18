@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -348,6 +349,7 @@ class BackendUtility {
 					'pid' => $val['pid'],
 					'title' => $val['title'],
 					'doktype' => $val['doktype'],
+					'tsconfig_includes' => $val['tsconfig_includes'],
 					'TSconfig' => $val['TSconfig'],
 					'is_siteroot' => $val['is_siteroot'],
 					't3ver_oid' => $val['t3ver_oid'],
@@ -381,7 +383,7 @@ class BackendUtility {
 			$row = $getPageForRootline_cache[$ident];
 		} else {
 			$db = static::getDatabaseConnection();
-			$res = $db->exec_SELECTquery('pid,uid,title,doktype,TSconfig,is_siteroot,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
+			$res = $db->exec_SELECTquery('pid,uid,title,doktype,tsconfig_includes,TSconfig,is_siteroot,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . (int)$uid . ' ' . self::deleteClause('pages') . ' ' . $clause);
 			$row = $db->sql_fetch_assoc($res);
 			if ($row) {
 				$newLocation = FALSE;
@@ -1234,6 +1236,30 @@ class BackendUtility {
 			// Setting default configuration
 			$TSdataArray['defaultPageTSconfig'] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
 			foreach ($rootLine as $k => $v) {
+				if (trim($v['tsconfig_includes'])) {
+					$includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], TRUE);
+					// Traversing list
+					foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
+						if (StringUtility::beginsWith($includeTsConfigFile, 'EXT:')) {
+							list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
+								'/',
+								substr($includeTsConfigFile, 4),
+								2
+							);
+							if (
+								(string)$includeTsConfigFileExtensionKey !== ''
+								&& ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
+								&& (string)$includeTsConfigFilename !== ''
+							) {
+								$includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
+									$includeTsConfigFilename;
+								if (file_exists($includeTsConfigFileAndPath)) {
+									$TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = GeneralUtility::getUrl($includeTsConfigFileAndPath);
+								}
+							}
+						}
+					}
+				}
 				$TSdataArray['uid_' . $v['uid']] = $v['TSconfig'];
 			}
 			$TSdataArray = static::emitGetPagesTSconfigPreIncludeSignal($TSdataArray, $id, $rootLine, $returnPartArray);

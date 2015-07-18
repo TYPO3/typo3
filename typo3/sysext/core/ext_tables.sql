@@ -162,6 +162,7 @@ CREATE TABLE pages (
 	fe_login_mode tinyint(4) DEFAULT '0' NOT NULL,
 	backend_layout varchar(64) DEFAULT '' NOT NULL,
 	backend_layout_next_level varchar(64) DEFAULT '' NOT NULL,
+	tsconfig_includes text,
 	PRIMARY KEY (uid),
 	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
 	KEY parent (pid,deleted,sorting),

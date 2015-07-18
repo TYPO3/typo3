@@ -447,6 +447,9 @@
 			<trans-unit id="pages.backend_layout.default">
 				<source>Default</source>
 			</trans-unit>
+			<trans-unit id="pages.tsconfig_includes">
+				<source>Include Page TSConfig (from extensions):</source>
+			</trans-unit>
 			<trans-unit id="tt_content">
 				<source>Page Content</source>
 			</trans-unit>

@@ -801,7 +801,18 @@ return array(
 				'size' => 1,
 				'maxitems' => 1,
 			)
-		)
+		),
+		'tsconfig_includes' => array(
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
+			'config' => array(
+				'type' => 'select',
+				'size' => 10,
+				'maxitems' => 100,
+				'items' => array(),
+				'enableMultiSelectFilterTextfield' => TRUE,
+				'softref' => 'ext_fileref'
+			)
+		),
 	),
 	'types' => array(
 		// normal
@@ -1029,7 +1040,7 @@ return array(
 			'showitem' => 'media;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.media_formlabel',
 		),
 		'config' => array(
-			'showitem' => 'TSconfig;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.TSconfig_formlabel',
+			'showitem' => 'tsconfig_includes;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes, --linebreak--, TSconfig;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.TSconfig_formlabel',
 		)
 	)
 );
