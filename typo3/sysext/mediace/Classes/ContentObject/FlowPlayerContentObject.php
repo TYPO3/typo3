@@ -34,11 +34,11 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		'au' => array(
 			'audio' => 'audio/x-au'
 		),
-		'avi' => array(
-			'audio' => 'video/x-msvideo'
-		),
 		'asf' => array(
 			'video' => 'video/x-ms-asf'
+		),
+		'avi' => array(
+			'audio' => 'video/x-msvideo'
 		),
 		'class' => array(
 			'audio' => 'application/java',
@@ -52,6 +52,15 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		),
 		'flv' => array(
 			'video' => 'video/x-flv'
+		),
+		'm4a' => array(
+			'audio' => 'audio/mp4a-latm'
+		),
+		'm4v' => array(
+			'video' => 'video/x-m4v'
+		),
+		'mov' => array(
+			'video' => 'video/quicktime'
 		),
 		'mp3' => array(
 			'audio' => 'audio/mpeg'
@@ -68,18 +77,6 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		),
 		'ogv' => array(
 			'video' => 'video/ogg'
-		),
-		'swa' => array(
-			'audio' => 'audio/x-m4a'
-		),
-		'mov' => array(
-			'video' => 'video/quicktime'
-		),
-		'm4a' => array(
-			'audio' => 'audio/mp4a-latm'
-		),
-		'm4v' => array(
-			'video' => 'video/x-m4v'
 		),
 		'qt' => array(
 			'video' => 'video/quicktime'
@@ -222,7 +219,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$typeConf = $conf[$type . '.'];
 		// Add Flowplayer js-file
 		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('flowplayer/flowplayer-3.2.13.min.js'));
-		// Add Flowpayer css for exprss install
+		// Add Flowpayer css for express install
 		$this->getPageRenderer()->addCssFile($this->getPathToLibrary('flowplayer/express-install/express-install.css'));
 		// Add videoJS js-file
 		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('videojs/video-js/video.js'));
