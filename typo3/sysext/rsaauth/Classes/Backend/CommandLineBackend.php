@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 
 /**
- * This class contains a OpenSSL backend for the TYPO3 RSA authentication
+ * This class contains an OpenSSL backend for the TYPO3 RSA authentication
  * service. It uses shell version of OpenSSL to perform tasks. See class
  * \TYPO3\CMS\Rsaauth\Backend\AbstractBackend for the information on using backends.
  */
@@ -122,7 +122,7 @@ class CommandLineBackend extends AbstractBackend {
 	/**
 	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
 	 * @param string $data Data to decrypt (base64-encoded)
-	 * @return string Decrypted data or NULL in case of a error
+	 * @return string Decrypted data or NULL in case of an error
 	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {

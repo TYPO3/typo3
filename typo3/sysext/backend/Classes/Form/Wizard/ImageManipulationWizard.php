@@ -85,7 +85,7 @@ class ImageManipulationWizard {
 	 */
 	protected function getRatiosArray() {
 		$ratios = json_decode(GeneralUtility::_GET('ratios'));
-		// Json transforms a array with sting keys to a array,
+		// Json transforms an array with string keys to an array,
 		// we need to transform this to an array for the fluid ForViewHelper
 		if (is_object($ratios)) {
 			$ratios = get_object_vars($ratios);

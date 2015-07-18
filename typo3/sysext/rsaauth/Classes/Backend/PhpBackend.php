@@ -69,7 +69,7 @@ class PhpBackend extends AbstractBackend {
 	 *
 	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
 	 * @param string $data Data to decrypt (base64-encoded)
-	 * @return string|NULL Decrypted data or NULL in case of a error
+	 * @return string|NULL Decrypted data or NULL in case of an error
 	 * @see \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {

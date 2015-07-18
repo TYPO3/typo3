@@ -1601,7 +1601,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * includes a AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request,
+	 * includes an AMD-compatible JS file by resolving the ModuleName, and then requires the file via a requireJS request,
 	 * additionally allowing to execute JavaScript code afterwards
 	 *
 	 * this function only works for AMD-ready JS modules, used like "define('TYPO3/CMS/Backend/FormEngine..."

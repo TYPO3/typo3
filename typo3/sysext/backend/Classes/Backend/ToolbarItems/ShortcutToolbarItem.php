@@ -300,7 +300,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * Adds the correct token, if the url is a index.php script
+	 * Adds the correct token, if the url is an index.php script
 	 *
 	 * @param string $url
 	 * @return string

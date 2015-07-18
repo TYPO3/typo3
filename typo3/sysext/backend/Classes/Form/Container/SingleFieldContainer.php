@@ -263,7 +263,7 @@ class SingleFieldContainer extends AbstractContainer {
 				$resultArray['additionalJavaScriptPost'][] = 'typo3form.fieldTogglePlaceholder('
 					. GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', ' . ($checked ? 'false' : 'true') . ');';
 
-				// Renders a input or textarea field depending on type of "parent"
+				// Renders an input or textarea field depending on type of "parent"
 				$options = array();
 				$options['databaseRow'] = array();
 				$options['table'] = '';
@@ -421,7 +421,7 @@ class SingleFieldContainer extends AbstractContainer {
 	}
 
 	/**
-	 * Checks if the $table is the child of a inline type AND the $field is the label field of this table.
+	 * Checks if the $table is the child of an inline type AND the $field is the label field of this table.
 	 * This function is used to dynamically update the label while editing. This has no effect on labels,
 	 * that were processed by a FormEngine-hook on saving.
 	 *

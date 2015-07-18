@@ -44,7 +44,7 @@ class LoadedExtensionsArray implements \Iterator, \ArrayAccess, \Serializable, \
 	}
 
 	/**
-	 * Whether a offset exists
+	 * Whether an offset exists
 	 *
 	 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
 	 * @param mixed $offset An offset to check for.

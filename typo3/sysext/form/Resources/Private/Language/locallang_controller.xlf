@@ -142,7 +142,7 @@
 				<source>The value does not appear to be valid</source>
 			</trans-unit>
 			<trans-unit id="tx_form_system_validate_integer.message">
-				<source>Use a integer</source>
+				<source>Use an integer</source>
 			</trans-unit>
 			<trans-unit id="tx_form_system_validate_integer.error">
 				<source>The value does not appear to be an integer</source>

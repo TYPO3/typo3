@@ -120,7 +120,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Looking for a ADMCMD_prev code, looks it up if found and returns configuration data.
+	 * Looking for an ADMCMD_prev code, looks it up if found and returns configuration data.
 	 * Background: From the backend a request to the frontend to show a page, possibly with
 	 * workspace preview can be "recorded" and associated with a keyword.
 	 * When the frontend is requested with this keyword the associated request parameters are

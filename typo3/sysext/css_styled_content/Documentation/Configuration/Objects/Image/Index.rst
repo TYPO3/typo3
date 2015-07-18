@@ -247,7 +247,7 @@ imgObjNum
          Rendering of the individual images
 
          The register "IMAGE\_NUM" is set with the number of image being
-         rendered for each rendering of a image-object. Starting with zero.
+         rendered for each rendering of an image-object. Starting with zero.
 
          The image-object should not be of type GIFBUILDER!
 

@@ -498,7 +498,7 @@ class FolderTreeView extends AbstractTreeView {
 			}
 			$out .= $itemHTML;
 		}
-		// If this is a AJAX request, output directly
+		// If this is an AJAX request, output directly
 		if ($ajaxOutput) {
 			$this->ajaxStatus = TRUE;
 			return $ajaxOutput;

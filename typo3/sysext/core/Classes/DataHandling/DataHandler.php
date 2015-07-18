@@ -1336,7 +1336,7 @@ class DataHandler {
 	}
 
 	/**
-	 * Fix shadowing of data in case we are editing a offline version of a live "New" placeholder record:
+	 * Fix shadowing of data in case we are editing an offline version of a live "New" placeholder record:
 	 *
 	 * @param string $table Table name
 	 * @param int $id Record uid
@@ -5398,7 +5398,7 @@ class DataHandler {
 	 ********************************************/
 
 	/**
-	 * Returns a instance of TCEmain for handling local datamaps/cmdmaps
+	 * Returns an instance of DataHandler for handling local datamaps/cmdmaps
 	 *
 	 * @param bool $stripslashesValues If TRUE, incoming values in the data-array have their slashes stripped.
 	 * @param bool $dontProcessTransformations If set, then transformations are NOT performed on the input.
@@ -5568,7 +5568,7 @@ class DataHandler {
 	}
 
 	/**
-	 * Performs remapping of old UID values to NEW uid values for a inline field.
+	 * Performs remapping of old UID values to NEW uid values for an inline field.
 	 *
 	 * @param array $conf TCA field config
 	 * @param string $value Field value
@@ -6018,7 +6018,7 @@ class DataHandler {
 				? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']
 				: $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 			$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
-			// If all tables or the table is listed as a allowed type, return TRUE
+			// If all tables or the table is listed as an allowed type, return TRUE
 			if (strpos($allowedTableList, '*') !== FALSE || in_array($checkTable, $allowedArray, TRUE)) {
 				$allowed = TRUE;
 			}
@@ -7184,7 +7184,7 @@ class DataHandler {
 
 	/**
 	 * Returns the subtype as a string of an inline field.
-	 * If it's not a inline field at all, it returns FALSE.
+	 * If it's not an inline field at all, it returns FALSE.
 	 *
 	 * @param array $conf Config array for TCA/columns field
 	 * @return string|bool string Inline subtype (field|mm|list), boolean: FALSE

@@ -28,7 +28,7 @@ class PhpFrontend extends StringFrontend {
 	/**
 	 * Constructs the cache
 	 *
-	 * @param string $identifier A identifier which describes this cache
+	 * @param string $identifier An identifier which describes this cache
 	 * @param PhpCapableBackendInterface $backend Backend to be used for this cache
 	 */
 	public function __construct($identifier, PhpCapableBackendInterface $backend) {

@@ -172,7 +172,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			// Cut off M or C and test if we have a salted hash
 			$isSaltedHash = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::determineSaltingHashingMethod(substr($password, 1));
 		}
-		// Test if given password is a already a usual salted hash
+		// Test if given password is already a usual salted hash
 		if (!$isSaltedHash) {
 			$isSaltedHash = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::determineSaltingHashingMethod($password);
 		}

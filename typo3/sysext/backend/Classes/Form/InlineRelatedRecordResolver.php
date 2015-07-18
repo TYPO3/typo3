@@ -209,7 +209,7 @@ class InlineRelatedRecordResolver {
 		$transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
 		// Compare original to localized version of the records:
 		foreach ($recordsLocalization as $uid => $row) {
-			// If the record points to a original translation which doesn't exist anymore, it could be removed:
+			// If the record points to an original translation which doesn't exist anymore, it could be removed:
 			if (isset($row[$transOrigPointerField]) && $row[$transOrigPointerField] > 0) {
 				$transOrigPointer = $row[$transOrigPointerField];
 				if (isset($recordsOriginal[$transOrigPointer])) {

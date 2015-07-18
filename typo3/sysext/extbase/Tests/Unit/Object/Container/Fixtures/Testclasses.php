@@ -139,7 +139,7 @@ class t3lib_object_tests_serializable implements \Serializable {
 }
 
 /**
- * class which implements a Interface
+ * class which implements an Interface
  */
 class t3lib_object_tests_someimplementation implements \t3lib_object_tests_someinterface {
 
@@ -153,7 +153,7 @@ class t3lib_object_tests_b_child_someimplementation extends \t3lib_object_tests_
 }
 
 /**
- * class which depends on a Interface
+ * class which depends on an Interface
  */
 class t3lib_object_tests_needsinterface {
 

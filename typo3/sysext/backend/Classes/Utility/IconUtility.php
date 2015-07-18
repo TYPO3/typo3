@@ -313,7 +313,7 @@ class IconUtility {
 				$wHattribs = 'width="' . round($iInfo[0] * $scaleFactor) . '" height="' . round($iInfo[1] * $scaleFactor) . '"';
 			}
 			// In any case, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function,
-			// regardless of whether it points to a alternative icon or just the current.
+			// regardless of whether it points to an alternative icon or just the current.
 			$GLOBALS['TBE_STYLES']['skinImg'][$srcKey] = array($src, $wHattribs);
 		}
 		// Rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)
@@ -749,7 +749,7 @@ class IconUtility {
 				}
 
 				if ($iconName === NULL) {
-					// in folder tree view $options['folder-open'] can define a open folder icon
+					// in folder tree view $options['folder-open'] can define an open folder icon
 					if (!empty($options['folder-open'])) {
 						$iconName = 'apps-filetree-folder-opened';
 					} else {

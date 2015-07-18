@@ -263,7 +263,7 @@ return array(
 		'basicoverlayPalette' => array(
 			'showitem' => 'title,description',
 		),
-		// Used for everything that is an image (because it has a link and a alternative text)
+		// Used for everything that is an image (because it has a link and an alternative text)
 		'imageoverlayPalette' => array(
 			'showitem' => '
 				title,alternative,--linebreak--,

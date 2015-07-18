@@ -119,7 +119,7 @@ class AjaxRequestHandler implements RequestHandlerInterface {
 
 	/**
 	 * This request handler can handle any backend request coming from ajax.php or having
-	 * a ajaxID as parameter (see Application.php in EXT:backend)
+	 * an ajaxID as parameter (see Application.php in EXT:backend)
 	 *
 	 * @param ServerRequestInterface $request
 	 * @return bool If the request is an AJAX backend request, TRUE otherwise FALSE

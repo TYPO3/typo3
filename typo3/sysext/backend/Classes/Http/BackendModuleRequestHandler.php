@@ -170,7 +170,7 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * Calls traditional modules which are identified by having a index.php in their directory
+	 * Calls traditional modules which are identified by having an index.php in their directory
 	 * and were previously located within the global scope.
 	 *
 	 * @param string $moduleName

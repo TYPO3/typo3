@@ -106,7 +106,7 @@ class AdminPanelView {
 	}
 
 	/**
-	 * Checks if a Admin Panel section ("module") is available for the user. If so, TRUE is returned.
+	 * Checks if an Admin Panel section ("module") is available for the user. If so, TRUE is returned.
 	 *
 	 * @param string $key The module key, eg. "edit", "preview", "info" etc.
 	 * @return bool

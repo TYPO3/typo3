@@ -1346,7 +1346,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Function is called recursively to fetch subgroups
 	 *
 	 * @param string $grList Commalist of be_groups uid numbers
-	 * @param string $idList List of already processed be_groups-uids so the function will not fall into a eternal recursion.
+	 * @param string $idList List of already processed be_groups-uids so the function will not fall into an eternal recursion.
 	 * @return void
 	 * @access private
 	 */

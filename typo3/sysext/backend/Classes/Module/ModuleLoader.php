@@ -468,7 +468,7 @@ class ModuleLoader {
 	}
 
 	/**
-	 * Parses the moduleArray ($TBE_MODULES) into a internally useful structure.
+	 * Parses the moduleArray ($TBE_MODULES) into an internally useful structure.
 	 * Returns an array where the keys are names of the module and the values may be TRUE (only module) or an array (of submodules)
 	 *
 	 * @param array $arr ModuleArray ($TBE_MODULES)

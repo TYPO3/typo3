@@ -85,7 +85,7 @@ abstract class AbstractFormElement extends AbstractNode {
 	}
 
 	/**
-	 * Returns the max width in pixels for a elements like input and text
+	 * Returns the max width in pixels for an elements like input and text
 	 *
 	 * @param int $size The abstract size value (1-48)
 	 * @return int Maximum width in pixels

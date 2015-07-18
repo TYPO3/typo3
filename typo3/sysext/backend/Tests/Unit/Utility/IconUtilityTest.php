@@ -491,7 +491,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests whether a overrideIconOverlay hook is called.
+	 * Tests whether an overrideIconOverlay hook is called.
 	 *
 	 * @test
 	 */
@@ -682,7 +682,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Tests whether a overrideResourceIcon hook is called.
+	 * Tests whether an overrideResourceIcon hook is called.
 	 *
 	 * @test
 	 */

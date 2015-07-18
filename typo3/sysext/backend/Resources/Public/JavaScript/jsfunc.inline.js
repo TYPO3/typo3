@@ -385,7 +385,7 @@ var inline = {
 				return true;
 			}
 
-			// for group/db: table and uid is stored in a assoc array
+			// for group/db: table and uid is stored in an assoc array
 		} else if (unique.type == 'groupdb') {
 			for (var i = values.length - 1; i >= 0; i--) {
 				// if the pair table:uid is already used:

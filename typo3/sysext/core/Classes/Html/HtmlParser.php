@@ -521,7 +521,7 @@ class HtmlParser {
 
 	/**
 	 * Returns an array with all attributes as keys. Attributes are only lowercase a-z
-	 * If a attribute is empty (shorthand), then the value for the key is empty. You can check if it existed with isset()
+	 * If an attribute is empty (shorthand), then the value for the key is empty. You can check if it existed with isset()
 	 *
 	 * @param string $tag Tag: $tag is either a whole tag (eg '<TAG OPTION ATTRIB=VALUE>') or the parameterlist (ex ' OPTION ATTRIB=VALUE>')
 	 * @param bool $deHSC If set, the attribute values are de-htmlspecialchar'ed. Should actually always be set!

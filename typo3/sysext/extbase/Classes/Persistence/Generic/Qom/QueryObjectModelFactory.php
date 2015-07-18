@@ -152,7 +152,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Evaluates to the upper-case string value (or values, if multi-valued) of an operand.
 	 *
-	 * @param PropertyValueInterface $operand the operand whose value is converted to a upper-case string; non-null
+	 * @param PropertyValueInterface $operand the operand whose value is converted to an upper-case string; non-null
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface the operand; non-null
 	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */

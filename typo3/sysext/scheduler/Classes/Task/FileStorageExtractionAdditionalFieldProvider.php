@@ -80,7 +80,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
 	}
 
 	/**
-	 * Returns a field configuration including a input field for the file count
+	 * Returns a field configuration including an input field for the file count
 	 *
 	 * @param FileStorageExtractionTask $task When editing, reference to the current task object. NULL when adding.
 	 * @return array Array containing all the information pertaining to the additional fields

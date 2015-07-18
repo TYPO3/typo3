@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 
 /**
- * Validator resolver to automatically find a appropriate validator for a given subject
+ * Validator resolver to automatically find an appropriate validator for a given subject
  */
 class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 

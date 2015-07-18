@@ -60,7 +60,7 @@ class SecurityStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 	}
 
 	/**
-	 * Checks whether a an BE user account named admin with default password exists.
+	 * Checks whether a BE user account named admin with default password exists.
 	 *
 	 * @return \TYPO3\CMS\Reports\Status An object representing whether a default admin account exists
 	 */

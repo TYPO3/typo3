@@ -126,7 +126,7 @@ class InlineRecordContainer extends AbstractContainer {
 			} else {
 				$isExpanded = $config['renderFieldsOnly'] || !$collapseAll && $this->getExpandedCollapsedState($foreign_table, $record['uid']) || $expandAll;
 			}
-			// Render full content ONLY IF this is a AJAX-request, a new record, the record is not collapsed or AJAX-loading is explicitly turned off
+			// Render full content ONLY IF this is an AJAX request, a new record, the record is not collapsed or AJAX loading is explicitly turned off
 			if ($isNewRecord || $isExpanded || !$ajaxLoad) {
 				$combinationChildArray = $this->renderCombinationTable($record, $appendFormFieldNames, $config);
 				$combinationHtml = $combinationChildArray['html'];
@@ -224,7 +224,7 @@ class InlineRecordContainer extends AbstractContainer {
 	}
 
 	/**
-	 * Render a table with FormEngine, that occurs on a intermediate table but should be editable directly,
+	 * Render a table with FormEngine, that occurs on an intermediate table but should be editable directly,
 	 * so two tables are combined (the intermediate table with attributes and the sub-embedded table).
 	 * -> This is a direct embedding over two levels!
 	 *

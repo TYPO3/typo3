@@ -327,7 +327,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 				$cleanProperty = $object->_getCleanProperty($propertyName);
 				// objectstorage needs to be persisted if the object is new, the objectstorge is dirty, meaning it has
-				// been changed after initial build, or a empty objectstorge is present and the cleanstate objectstorage
+				// been changed after initial build, or an empty objectstorge is present and the cleanstate objectstorage
 				// has childelements, meaning all elements should been removed from the objectstorage
 				if ($object->_isNew() || $propertyValue->_isDirty() || ($propertyValue->count() === 0 && $cleanProperty && $cleanProperty->count() > 0)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
@@ -384,7 +384,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	}
 
 	/**
-	 * Persists a an object storage. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
+	 * Persists an object storage. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
 	 * gets persisted immediately. Objects which were removed from the property were detached from the parent object. They will not be
 	 * deleted by default. You have to annotate the property with "@cascade remove" if you want them to be deleted as well.
 	 *

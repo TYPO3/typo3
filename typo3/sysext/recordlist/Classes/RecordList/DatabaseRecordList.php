@@ -535,7 +535,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// single table view
 			$rowOutput = '';
 			if (!$listOnlyInSingleTableMode && (!$tableCollapsed || $this->table)) {
-				// Fixing a order table for sortby tables
+				// Fixing an order table for sortby tables
 				$this->currentTable = array();
 				$currentIdList = array();
 				$doSort = $GLOBALS['TCA'][$table]['ctrl']['sortby'] && !$this->sortField;

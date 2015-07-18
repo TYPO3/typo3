@@ -580,7 +580,7 @@ class NewRecordController {
 		if (!($allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'])) {
 			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}
-		// If all tables or the table is listed as a allowed type, return TRUE
+		// If all tables or the table is listed as an allowed type, return TRUE
 		if (strstr($allowedTableList, '*') || GeneralUtility::inList($allowedTableList, $checkTable)) {
 			return TRUE;
 		}

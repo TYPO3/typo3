@@ -96,7 +96,7 @@ class RenameFileController {
 		}
 
 		// If a folder should be renamed, AND the returnURL should go to the old directory name, the redirect is forced
-		// so the redirect will NOT end in a error message
+		// so the redirect will NOT end in an error message
 		// this case only happens if you select the folder itself in the foldertree and then use the clickmenu to
 		// rename the folder
 		if ($this->fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {

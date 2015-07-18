@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  */
 
 /**
- * A abstract Value Object. A Value Object is an object that describes some characteristic
+ * An abstract Value Object. A Value Object is an object that describes some characteristic
  * or attribute (e.g. a color) but carries no concept of identity.
  */
 abstract class AbstractValueObject extends \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject {

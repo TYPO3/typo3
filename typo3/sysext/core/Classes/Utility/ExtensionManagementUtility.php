@@ -795,7 +795,7 @@ class ExtensionManagementUtility {
 	}
 
 	/**
-	 * Adds a ExtJS module (main or sub) to the backend interface
+	 * Adds an ExtJS module (main or sub) to the backend interface
 	 * FOR USE IN ext_tables.php FILES
 	 *
 	 * @static

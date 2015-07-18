@@ -34,7 +34,7 @@ class StepController extends AbstractController {
 	);
 
 	/**
-	 * Index action acts a a dispatcher to different steps
+	 * Index action acts as a dispatcher to different steps
 	 *
 	 * Warning: Order of these methods is security relevant and interferes with different access
 	 * conditions (new/existing installation). See the single method comments for details.

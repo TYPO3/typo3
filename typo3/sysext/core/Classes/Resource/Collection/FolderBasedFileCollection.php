@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Resource\Collection;
 use TYPO3\CMS\Core\Resource\Folder;
 
 /**
- * A collection containing a a set files to be represented as a (virtual) folder.
+ * A collection containing a set of files to be represented as a (virtual) folder.
  * This collection is persisted to the database with the accordant folder reference.
  */
 class FolderBasedFileCollection extends \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection {

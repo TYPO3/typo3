@@ -727,7 +727,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							}
 						} else {
 							// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
-							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
+							// Splitting the parameter by ',' and if the array counts more than 1 element it's an id/type/parameters triplet
 							$pairParts = GeneralUtility::trimExplode(',', $link_param, TRUE);
 							$idPart = $pairParts[0];
 							$link_params_parts = explode('#', $idPart);

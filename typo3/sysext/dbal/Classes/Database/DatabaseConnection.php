@@ -2132,7 +2132,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 			case 'adodb':
 				// Check if method exists for the current $res object.
-				// If a table exists in TCA but not in the db, a error
+				// If a table exists in TCA but not in the db, an error
 				// occurred because $res is not a valid object.
 				if (method_exists($res, 'FetchRow')) {
 					$output = $res->FetchRow();
@@ -2200,7 +2200,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 			case 'adodb':
 				// Check if method exists for the current $res object.
-				// If a table exists in TCA but not in the db, a error
+				// If a table exists in TCA but not in the db, an error
 				// occurred because $res is not a valid object.
 				if (method_exists($res, 'FetchRow')) {
 					$output = $res->FetchRow();

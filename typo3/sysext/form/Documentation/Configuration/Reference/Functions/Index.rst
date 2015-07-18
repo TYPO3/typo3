@@ -2819,23 +2819,23 @@ message
 
             message = TEXT
             message {
-                value = Use a integer
+                value = Use an integer
             }
 
          **Example:**
 
          ::
 
-            message = Use a integer
+            message = Use an integer
 
          **Example:**
 
          ::
 
-            message.value = Use a integer
+            message.value = Use an integer
 
    Default
-         local language: Use a integer
+         local language: Use an integer
 
 
 

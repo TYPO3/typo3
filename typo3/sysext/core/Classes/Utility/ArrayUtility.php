@@ -25,7 +25,7 @@ class ArrayUtility {
 	 * Comparison is type strict:
 	 * - For a given needle of type string, integer, array or boolean,
 	 * value and value type must match to occur in result array
-	 * - For a given object, a object within the array must be a reference to
+	 * - For a given object, an object within the array must be a reference to
 	 * the same object to match (not just different instance of same class)
 	 *
 	 * Example:

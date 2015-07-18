@@ -42,7 +42,7 @@ class UpperCase implements UpperCaseInterface {
 	}
 
 	/**
-	 * Gets the operand whose value is converted to a upper-case string.
+	 * Gets the operand whose value is converted to an upper-case string.
 	 *
 	 * @return PropertyValueInterface the operand; non-null
 	 */

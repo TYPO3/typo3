@@ -630,7 +630,7 @@ class InlineControlContainer extends AbstractContainer {
 				// Add a "Create new relation" link for adding new relations
 				// This is necessary, if the size of the selector is "1" or if
 				// there is only one record item in the select-box, that is selected by default
-				// The selector-box creates a new relation on using a onChange event (see some line above)
+				// The selector-box creates a new relation on using an onChange event (see some line above)
 				if (!empty($conf['appearance']['createNewRelationLinkTitle'])) {
 					$createNewRelationText = $this->getLanguageService()->sL($conf['appearance']['createNewRelationLinkTitle'], TRUE);
 				} else {

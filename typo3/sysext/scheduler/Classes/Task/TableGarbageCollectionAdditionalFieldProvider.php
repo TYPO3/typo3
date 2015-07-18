@@ -128,7 +128,7 @@ class TableGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Schedu
 	}
 
 	/**
-	 * Add a input field to get the number of days.
+	 * Add an input field to get the number of days.
 	 *
 	 * @param array $taskInfo Reference to the array containing the info used in the add/edit form
 	 * @param AbstractTask|NULL $task When editing, reference to the current task. NULL when adding.

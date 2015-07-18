@@ -56,7 +56,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Create a object fo the subject to be tested.
+	 * Create an object fo the subject to be tested.
 	 *
 	 * @param string $query
 	 * @return \TYPO3\CMS\Core\Database\PreparedStatement

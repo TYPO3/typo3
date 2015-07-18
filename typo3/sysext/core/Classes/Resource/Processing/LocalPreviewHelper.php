@@ -130,7 +130,7 @@ class LocalPreviewHelper {
 				CommandUtility::exec($cmd);
 
 				if (!file_exists($targetFilePath)) {
-					// Create a error gif
+					// Create an error gif
 					$graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
 					$graphicalFunctions->getTemporaryImageWithText(
 						$targetFilePath,

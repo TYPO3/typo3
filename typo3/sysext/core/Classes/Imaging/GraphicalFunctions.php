@@ -2520,7 +2520,7 @@ class GraphicalFunctions {
 	}
 
 	/**
-	 * Executes a ImageMagick "convert" on two filenames, $input and $output using $params before them.
+	 * Executes an ImageMagick "convert" on two filenames, $input and $output using $params before them.
 	 * Can be used for many things, mostly scaling and effects.
 	 *
 	 * @param string $input The relative (to PATH_site) image filepath, input file (read from)
@@ -2548,7 +2548,7 @@ class GraphicalFunctions {
 	}
 
 	/**
-	 * Executes a ImageMagick "combine" (or composite in newer times) on four filenames - $input, $overlay and $mask as input files and $output as the output filename (written to)
+	 * Executes an ImageMagick "combine" (or composite in newer times) on four filenames - $input, $overlay and $mask as input files and $output as the output filename (written to)
 	 * Can be used for many things, mostly scaling and effects.
 	 *
 	 * @param string $input The relative (to PATH_site) image filepath, bottom file
@@ -2862,7 +2862,7 @@ class GraphicalFunctions {
 
 	/**
 	 * Creates a new GDlib image resource based on the input image filename.
-	 * If it fails creating a image from the input file a blank gray image with the dimensions of the input image will be created instead.
+	 * If it fails creating an image from the input file a blank gray image with the dimensions of the input image will be created instead.
 	 *
 	 * @param string $sourceImg Image filename
 	 * @return resource Image Resource pointer

@@ -27,7 +27,7 @@ interface PersistableCollectionInterface {
 	/**
 	 * Get the identifier of the collection
 	 *
-	 * For database stored collections, this will be a integer,
+	 * For database stored collections, this will be an integer,
 	 * session stored, registry stored or other collections might
 	 * use a string as well
 	 *

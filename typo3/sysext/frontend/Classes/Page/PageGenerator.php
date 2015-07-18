@@ -604,7 +604,7 @@ class PageGenerator {
 			if (!is_array($tsfe->pSetup['includeJSlibs.'])) {
 				$tsfe->pSetup['includeJSlibs.'] = array();
 			} else {
-				GeneralUtility::deprecationLog('The property page.includeJSlibs is marked for deprecation and will be removed in TYPO3 CMS 8. Please use page.includeJSLibs (with a uppercase L) instead.');
+				GeneralUtility::deprecationLog('The property page.includeJSlibs is marked for deprecation and will be removed in TYPO3 CMS 8. Please use page.includeJSLibs (with an uppercase L) instead.');
 			}
 			if (!is_array($tsfe->pSetup['includeJSLibs.'])) {
 				$tsfe->pSetup['includeJSLibs.'] = array();

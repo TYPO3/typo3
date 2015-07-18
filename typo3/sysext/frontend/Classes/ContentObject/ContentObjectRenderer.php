@@ -2487,7 +2487,7 @@ class ContentObjectRenderer {
 
 	/**
 	 * cObject
-	 * Will replace the content with the value of a any official TypoScript cObject
+	 * Will replace the content with the value of an official TypoScript cObject
 	 * like TEXT, COA, HMENU
 	 *
 	 * @param string $content Input value undergoing processing in this function.
@@ -6252,7 +6252,7 @@ class ContentObjectRenderer {
 					if ($conf['no_cache.']) {
 						$conf['no_cache'] = $this->stdWrap($conf['no_cache'], $conf['no_cache.']);
 					}
-					// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
+					// Splitting the parameter by ',' and if the array counts more than 1 element it's an id/type/parameters triplet
 					$pairParts = GeneralUtility::trimExplode(',', $linkParameter, TRUE);
 					$linkParameter = $pairParts[0];
 					$link_params_parts = explode('#', $linkParameter);
@@ -6439,7 +6439,7 @@ class ContentObjectRenderer {
 								}
 							}
 						}
-						// If link is to a access restricted page which should be redirected, then find new URL:
+						// If link is to an access restricted page which should be redirected, then find new URL:
 						if (empty($conf['linkAccessRestrictedPages']) && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 							$thePage = $GLOBALS['TSFE']->sys_page->getPage($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']);
 							$addParams = str_replace(

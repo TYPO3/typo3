@@ -429,7 +429,7 @@ class Message implements MessageInterface {
 	}
 
 	/**
-	 * Checks if a a HTTP header value is valid.
+	 * Checks if an HTTP header value is valid.
 	 *
 	 * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
 	 * tabs are allowed in values; header continuations MUST consist of

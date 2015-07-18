@@ -31,7 +31,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * registered alternative implementations of a class
-	 * e.g. used to know the class for a AbstractClass or a Dependency
+	 * e.g. used to know the class for an AbstractClass or a Dependency
 	 *
 	 * @var array
 	 */
@@ -262,7 +262,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * register a classname that should be used if a dependency is required.
-	 * e.g. used to define default class for a interface
+	 * e.g. used to define default class for an interface
 	 *
 	 * @param string $className
 	 * @param string $alternativeClassName

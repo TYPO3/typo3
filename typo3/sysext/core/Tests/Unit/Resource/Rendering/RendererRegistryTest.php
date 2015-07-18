@@ -137,7 +137,7 @@ class RendererRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getRendererReturnsCorrectInstance() {
 
-		$this->markTestSkipped('Test triggers a error this is known PHP bug - http://stackoverflow.com/questions/3235387/usort-array-was-modified-by-the-user-comparison-function)');
+		$this->markTestSkipped('Test triggers an error. This is a known PHP bug (http://stackoverflow.com/questions/3235387/usort-array-was-modified-by-the-user-comparison-function)');
 
 		$rendererClass1 = $this->getUniqueId('myVideoRenderer');
 		$rendererObject1 = $this->getMock(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class, array('getPriority', 'canRender', 'render'), array(), $rendererClass1);

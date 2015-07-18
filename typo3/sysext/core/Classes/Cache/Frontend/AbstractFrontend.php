@@ -42,7 +42,7 @@ abstract class AbstractFrontend implements FrontendInterface {
 	/**
 	 * Constructs the cache
 	 *
-	 * @param string $identifier A identifier which describes this cache
+	 * @param string $identifier An identifier which describes this cache
 	 * @param BackendInterface $backend Backend to be used for this cache
 	 * @throws \InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
 	 */

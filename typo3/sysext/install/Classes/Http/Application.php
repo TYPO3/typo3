@@ -33,7 +33,7 @@ class Application implements ApplicationInterface {
 	protected $entryPointPath = 'typo3/sysext/install/Start/';
 
 	/**
-	 * All available request handlers that can handle a install tool request
+	 * All available request handlers that can handle an install tool request
 	 * @var array
 	 */
 	protected $availableRequestHandlers = array(

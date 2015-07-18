@@ -59,7 +59,7 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Use that hook to show a info message in case someone starts editing
+	 * Use that hook to show an info message in case someone starts editing
 	 * a staged element
 	 *
 	 * @param array $params

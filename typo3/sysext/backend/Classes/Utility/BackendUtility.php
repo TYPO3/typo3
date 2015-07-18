@@ -2698,7 +2698,7 @@ class BackendUtility {
 		}
 		// If there's a help text or some overload information, proceed with preparing an output
 		// @todo: right now this is a hard dependency on csh manual, as the whole help system should be moved to
-		// the extension. The core provides a API for adding help, and rendering help, but the rendering
+		// the extension. The core provides an API for adding help and rendering help, but the rendering
 		// should be up to the extension itself
 		if ((!empty($helpText) || $hasHelpTextOverload) && ExtensionManagementUtility::isLoaded('cshmanual')) {
 			// If no text was given, just use the regular help icon
@@ -3045,7 +3045,7 @@ class BackendUtility {
 
 	/**
 	 * Input field function menu
-	 * Works like ->getFuncMenu() / ->getFuncCheck() but displays a input field instead which updates the script "onchange"
+	 * Works like ->getFuncMenu() / ->getFuncCheck() but displays an input field instead which updates the script "onchange"
 	 *
 	 * @param mixed $mainParams $id is the "&id=" parameter value to be sent to the module, but it can be also a parameter array which will be passed instead of the &id=...
 	 * @param string $elementName The form elements name, probably something like "SET[...]

@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *                                                                        */
 
 /**
- * Converter which transforms simple types to a ObjectStorage.
+ * Converter which transforms simple types to an ObjectStorage.
  *
  * @api
  * @todo Implement functionality for converting collection properties.

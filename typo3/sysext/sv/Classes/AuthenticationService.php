@@ -170,7 +170,7 @@ class AuthenticationService extends AbstractAuthenticationService {
 	 * \TYPO3\CMS\Core\Authentication\BackendUserAuthentication->fetchGroups and has been slightly modified.
 	 *
 	 * @param string $grList Commalist of fe_groups uid numbers
-	 * @param string $idList List of already processed fe_groups-uids so the function will not fall into a eternal recursion.
+	 * @param string $idList List of already processed fe_groups-uids so the function will not fall into an eternal recursion.
 	 * @param array $groups
 	 * @return array
 	 * @access private

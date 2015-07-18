@@ -1133,7 +1133,7 @@ class TypoScriptParser {
 					// an additional empty line, remove this again
 					$skipNextLineIfEmpty = TRUE;
 				} else {
-					// If this is not a ending commented include statement this line goes into the file content
+					// If this is not an ending commented include statement this line goes into the file content
 					$fileContent[] = $line;
 				}
 			}

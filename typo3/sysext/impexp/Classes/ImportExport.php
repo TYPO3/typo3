@@ -1573,7 +1573,7 @@ class ImportExport {
 				foreach ($this->storageObjects as $localStorage) {
 					// check the available storage for Local, writable and online ones
 					if ($localStorage->getDriverType() === 'Local' && $localStorage->isWritable() && $localStorage->isOnline()) {
-						// check if there is already a identical storage present (same pathType and basePath)
+						// check if there is already an identical storage present (same pathType and basePath)
 						$storageRecordConfiguration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
 						$localStorageRecordConfiguration = $localStorage->getConfiguration();
 						if (
@@ -1623,7 +1623,7 @@ class ImportExport {
 			$this->import_mapId['sys_file_storage'][$sysFileStorageUidToBeResetToDefaultStorage] = $defaultStorageUid;
 		}
 
-		// unset the sys_file_storage records to prevent a import in writeRecords_records
+		// unset the sys_file_storage records to prevent an import in writeRecords_records
 		unset($this->dat['header']['records']['sys_file_storage']);
 	}
 
@@ -1669,7 +1669,7 @@ class ImportExport {
 			$originalStorageUid = $fileRecord['storage'];
 			$useStorageFromStorageRecords = FALSE;
 
-			// replace storage id, if a alternative one was registered
+			// replace storage id, if an alternative one was registered
 			if (isset($this->import_mapId['sys_file_storage'][$fileRecord['storage']])) {
 				$fileRecord['storage'] = $this->import_mapId['sys_file_storage'][$fileRecord['storage']];
 				$useStorageFromStorageRecords = TRUE;
@@ -1697,7 +1697,7 @@ class ImportExport {
 
 			$newFile = NULL;
 
-			// check, if there is a identical file
+			// check, if there is an identical file
 			try {
 				if ($storage->hasFile($fileRecord['identifier'])) {
 						$file = $storage->getFile($fileRecord['identifier']);
@@ -1746,7 +1746,7 @@ class ImportExport {
 
 		}
 
-		// unset the sys_file records to prevent a import in writeRecords_records
+		// unset the sys_file records to prevent an import in writeRecords_records
 		unset($this->dat['header']['records']['sys_file']);
 	}
 
@@ -3893,7 +3893,7 @@ class ImportExport {
 	public function checkDokType($checkTable, $doktype) {
 		$allowedTableList = isset($GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) ? $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] : $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		$allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, TRUE);
-		// If all tables or the table is listed as a allowed type, return TRUE
+		// If all tables or the table is listed as an allowed type, return TRUE
 		if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
 			return TRUE;
 		}

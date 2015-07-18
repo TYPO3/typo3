@@ -232,7 +232,7 @@ class ServicesListReport implements ReportInterface {
 	 *
 	 * @param array $a First service to compare
 	 * @param array $b Second service to compare
-	 * @return int 1, 0 or -1 if a is smaller, equal or greater than b, respectively
+	 * @return int 1, 0 or -1 if $a is smaller, equal or greater than $b, respectively
 	 */
 	protected function sortServices(array $a, array $b) {
 		$result = 0;

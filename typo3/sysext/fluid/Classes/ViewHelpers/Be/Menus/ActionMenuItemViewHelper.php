@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 /**
- * View helper which returns a option tag.
+ * View helper which returns an option tag.
  * This view helper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
  * Note: This view helper is experimental!
  *

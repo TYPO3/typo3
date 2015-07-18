@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with file metadata data security is a assembly of hooks to
+ * deals with file metadata data security is an assembly of hooks to
  * check permissions on files belonging to file meta data records
  */
 class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListHookInterface, SingletonInterface {

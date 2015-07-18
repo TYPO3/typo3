@@ -350,7 +350,7 @@ abstract class AbstractElementView {
 
 	/**
 	 * Read the noWrap value of an element
-	 * if TRUE the element does not need a element wrap
+	 * if TRUE the element does not need an element wrap
 	 * like <li>element</li>
 	 *
 	 * @return bool
