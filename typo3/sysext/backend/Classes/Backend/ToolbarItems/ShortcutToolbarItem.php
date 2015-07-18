@@ -536,6 +536,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			}
 			// adding the shortcut
 			if ($module && $url) {
+				if ($shortcutName === 'Shortcut' && !empty($languageService->moduleLabels['labels'][$module . '_tablabel'])) {
+					$shortcutName = $languageService->moduleLabels['labels'][$module . '_tablabel'];
+				}
 				$fieldValues = array(
 					'userid' => $this->getBackendUser()->user['uid'],
 					'module_name' => $module . '|' . $motherModule,
