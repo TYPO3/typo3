@@ -915,6 +915,11 @@ class ExtensionManagementUtility {
 		$fullModuleSignature = $main . ($sub ? '_' . $sub : '');
 		// Adding path:
 		if ($path) {
+			if (\TYPO3\CMS\Core\Utility\StringUtility::beginsWith($path, 'EXT:')) {
+				list($extensionKey, $relativePath) = explode('/', substr($path, 4), 2);
+				$path = ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
+			}
+
 			$GLOBALS['TBE_MODULES']['_PATHS'][$fullModuleSignature] = $path;
 		}
 
