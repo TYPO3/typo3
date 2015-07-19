@@ -519,7 +519,7 @@ class RecordList {
 			$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
 		}
 		// Additional footer content
-		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/mod1/index.php']['drawFooterHook'];
+		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook'];
 		if (is_array($footerContentHook)) {
 			foreach ($footerContentHook as $hook) {
 				$params = array();
