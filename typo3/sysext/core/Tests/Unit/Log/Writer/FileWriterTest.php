@@ -186,31 +186,4 @@ class FileWriterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
         $secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
     }
-
-    /**
-     * @test
-     */
-    public function createsHtaccessForNewDirectory()
-    {
-        $this->setUpVfsStream();
-        $directory = $this->getUniqueId('Log');
-        $logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;
-        $this->createWriter()->setLogFile($logFile);
-        $this->assertFileExists('vfs://LogRoot/' . $directory . '/.htaccess');
-    }
-
-    /**
-     * @test
-     */
-    public function createsNoHtaccessForExistingDirectory()
-    {
-        $this->setUpVfsStream();
-        $directory = $this->getUniqueId('Log');
-            // create a directory
-        vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory($directory));
-        $logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;
-        $this->assertTrue(is_dir('vfs://LogRoot/' . $directory));
-        $this->createWriter()->setLogFile($logFile);
-        $this->assertFileNotExists('vfs://LogRoot/' . $directory . '/.htaccess');
-    }
 }
