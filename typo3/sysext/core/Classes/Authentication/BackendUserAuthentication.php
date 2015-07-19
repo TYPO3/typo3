@@ -1463,7 +1463,9 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			foreach ($this->getFileMountRecords() as $row) {
 				if (!array_key_exists((int)$row['base'], $this->fileStorages)) {
 					$storageObject = $storageRepository->findByUid($row['base']);
-					$this->fileStorages[$storageObject->getUid()] = $storageObject;
+					if ($storageObject) {
+						$this->fileStorages[$storageObject->getUid()] = $storageObject;
+					}
 				}
 			}
 		}
