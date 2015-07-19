@@ -867,7 +867,8 @@ class SetupModuleController {
 			'uid_local',
 			'sys_file_reference',
 			'tablenames = \'be_users\' AND fieldname = \'avatar\' AND ' .
-			'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId
+			'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId .
+			BackendUtility::BEenableFields('sys_file_reference') . BackendUtility::deleteClause('sys_file_reference')
 		);
 		return $file ? $file['uid_local'] : 0;
 	}
