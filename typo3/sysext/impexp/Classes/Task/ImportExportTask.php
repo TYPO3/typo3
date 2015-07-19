@@ -128,7 +128,7 @@ class ImportExportTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						'icon' => $icon,
 						'title' => $title,
 						'descriptionHtml' => implode('<br />', $description),
-						'link' => BackendUtility::getModuleUrl('user_task') . '&SET[function]=impexp.tx_impexp_task&display=' . $presetCfg['uid']
+						'link' => BackendUtility::getModuleUrl('user_task') . '&SET[function]=impexp.TYPO3\\CMS\\Impexp\\Task\\ImportExportTask&display=' . $presetCfg['uid']
 					);
 				}
 				// Render preset list
