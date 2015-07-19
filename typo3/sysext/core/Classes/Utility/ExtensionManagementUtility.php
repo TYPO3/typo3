@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Utility;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Extension Management functions
@@ -972,6 +973,10 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addModulePath($name, $path) {
+		if (StringUtility::beginsWith($path, 'EXT:')) {
+			list($extensionKey, $relativePath) = explode('/', substr($path, 4), 2);
+			$path = ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
+		}
 		$GLOBALS['TBE_MODULES']['_PATHS'][$name] = $path;
 	}
 
