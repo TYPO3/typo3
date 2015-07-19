@@ -490,7 +490,11 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * @return string Combined username
 	 */
 	protected function fixUsername($username, $prefix) {
-		return trim($prefix) . trim($username);
+		$prefix = trim($prefix);
+		if (substr($username, 0, strlen($prefix)) === $prefix) {
+			$username = substr($username, strlen($prefix));
+		}
+		return $prefix . $username;
 	}
 
 	/**
