@@ -6,14 +6,14 @@ if (TYPO3_MODE === 'BE') {
 		'user',
 		'setup',
 		'after:task',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod/',
+		'EXT:setup/Modules/Setup/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'group,user',
 			'name' => 'user_setup',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-setup.svg',
+					'tab' => 'EXT:setup/Resources/Public/Icons/module-setup.svg',
 				),
 				'll_ref' => 'LLL:EXT:setup/Resources/Private/Language/locallang_mod.xlf',
 			),
