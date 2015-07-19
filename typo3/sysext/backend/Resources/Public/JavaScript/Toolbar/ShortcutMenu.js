@@ -102,7 +102,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 	 * makes a call to the backend class to create a new shortcut,
 	 * when finished it reloads the menu
 	 */
-	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText) {
+	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule) {
 		var shouldCreateShortcut = true;
 		if (typeof confirmationText !== 'undefined') {
 			shouldCreateShortcut = window.confirm(confirmationText);
@@ -118,7 +118,8 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 				type: 'post',
 				data: {
 					module: moduleName,
-					url: url
+					url: url,
+					motherModName: motherModule
 				},
 				cache: false
 			}).done(function() {

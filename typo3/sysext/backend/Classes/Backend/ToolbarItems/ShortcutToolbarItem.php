@@ -258,13 +258,13 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			}
 			// Check for module access
 			$moduleName = $row['M_module_name'] ?: $row['module_name'];
-			$pageId = $this->getLinkedPageId($row['url']);
 			if (!$backendUser->isAdmin()) {
 				if (!isset($this->getLanguageService()->moduleLabels['tabs_images'][$moduleName . '_tab'])) {
 					// Nice hack to check if the user has access to this module
 					// - otherwise the translation label would not have been loaded :-)
 					continue;
 				}
+				$pageId = $this->getLinkedPageId($row['url']);
 				if (MathUtility::canBeInterpretedAsInteger($pageId)) {
 					// Check for webmount access
 					if (!$backendUser->isInWebMount($pageId)) {
@@ -503,6 +503,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			if (is_array($queryParameters['edit'])) {
 				$shortcut['table'] = key($queryParameters['edit']);
 				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
+				$shortcut['pid'] = BackendUtility::getRecord($shortcut['table'], $shortcut['recordid'])['pid'];
 				if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
 					$shortcut['type'] = 'edit';
 					$shortcutNamePrepend = $languageService->getLL('shortcut_edit', TRUE);
@@ -512,14 +513,17 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				}
 			} else {
 				$shortcut['type'] = 'other';
+				$shortcut['table'] = '';
+				$shortcut['recordid'] = 0;
 			}
 			// Lookup the title of this page and use it as default description
-			$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
-			if (MathUtility::canBeInterpretedAsInteger($pageId)) {
+
+			$pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
+			if ($pageId) {
 				$page = BackendUtility::getRecord('pages', $pageId);
 				if (!empty($page)) {
 					// Set the name to the title of the page
-					if ($shortcut['type'] == 'other') {
+					if ($shortcut['type'] === 'other') {
 						$shortcutName = $page['title'];
 					} else {
 						$shortcutName = $shortcutNamePrepend . ' ' . $languageService->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) . ' (' . $page['title'] . ')';

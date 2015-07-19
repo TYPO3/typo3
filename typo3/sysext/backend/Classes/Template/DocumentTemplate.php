@@ -631,25 +631,29 @@ function jumpToUrl(URL) {
 	 * @param string $gvList Is the list of GET variables to store (if any)
 	 * @param string $setList Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
 	 * @param string $modName Module name string
-	 * @param string $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to "1" in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit and wizard_rte modules where those are really running as a part of another module.
+	 * @param string|int $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to 1 in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit and wizard_rte modules where those are really running as a part of another module.
 	 * @return string HTML content
 	 */
 	public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
 		$storeUrl = $this->makeShortcutUrl($gvList, $setList);
 		$pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
+		// Fallback for alt_mod. We still pass in the old xMOD... stuff, but TBE_MODULES only knows about "record_edit".
+		// We still need to pass the xMOD name to createShortcut below, since this is used for icons.
+		$moduleName = $modName === 'xMOD_alt_doc.php' ? 'record_edit' : $modName;
 		// Add the module identifier automatically if typo3/index.php is used:
-		if (GeneralUtility::_GET('M') !== NULL && isset($GLOBALS['TBE_MODULES']['_PATHS'][$modName])) {
-			$storeUrl = '&M=' . $modName . $storeUrl;
+		if (GeneralUtility::_GET('M') !== NULL && isset($GLOBALS['TBE_MODULES']['_PATHS'][$moduleName])) {
+			$storeUrl = '&M=' . $moduleName . $storeUrl;
 		}
 		if ((int)$motherModName === 1) {
-			$mMN = '&motherModName=\'+top.currentModuleLoaded+\'';
+			$motherModule = 'top.currentModuleLoaded';
 		} elseif ($motherModName) {
-			$mMN = '&motherModName=' . rawurlencode($motherModName);
+			$motherModule = GeneralUtility::quoteJSvalue($motherModName);
 		} else {
-			$mMN = '';
+			$motherModule = '\'\'';
 		}
 		$confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark'));
-		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) . ', ' . GeneralUtility::quoteJSvalue(rawurlencode($pathInfo['path'] . '?' . $storeUrl) . $mMN) . ', ' . $confirmationText . ');return false;';
+		$url = GeneralUtility::quoteJSvalue(rawurlencode($pathInfo['path'] . '?' . $storeUrl));
+		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) . ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ');return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 	}
 
