@@ -51,7 +51,7 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $helper) {
-		$this->mirrorUrl = $helper->getMirrors()->getMirrorUrl();
+		$this->mirrorUrl = $helper->getMirrors(FALSE)->getMirrorUrl();
 	}
 
 	/**
