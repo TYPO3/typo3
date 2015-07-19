@@ -982,7 +982,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		foreach ($fieldArr as $field) {
 			switch ($field) {
 				case 'title':
-					$red = $this->plusPages[$row['uid']] ? '<font color="red"><strong>+&nbsp;</strong></font>' : '';
+					$red = $this->plusPages[$row['uid']] ? '<span class="text-danger"><strong>+</strong></span>' : '';
 					$pTitle = htmlspecialchars(BackendUtility::getProcessedValue('pages', $field, $row[$field], 20));
 					if ($red) {
 						$pTitle = '<a href="'
@@ -1833,7 +1833,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		// Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
 		if (is_array($tableNames)) {
 			foreach ($tableNames as $k => $v) {
-				if ($this->getBackendUser()->check('tables_select', $k)) {
+				if (!$GLOBALS['TCA'][$k]['ctrl']['hideTable'] && $this->getBackendUser()->check('tables_select', $k)) {
 					$allowedTableNames['table_' . $k] = $k;
 				}
 			}
