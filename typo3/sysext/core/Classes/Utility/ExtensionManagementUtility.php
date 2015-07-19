@@ -948,6 +948,10 @@ class ExtensionManagementUtility {
 	 * @return void
 	 */
 	static public function addModulePath($name, $path) {
+		if (substr($path, 0, 4) === 'EXT:') {
+			list($extensionKey, $relativePath) = explode('/', substr($path, 4), 2);
+			$path = ExtensionManagementUtility::extPath($extensionKey) . $relativePath;
+		}
 		$GLOBALS['TBE_MODULES']['_PATHS'][$name] = $path;
 	}
 
