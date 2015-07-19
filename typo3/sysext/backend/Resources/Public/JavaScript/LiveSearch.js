@@ -84,11 +84,11 @@ define('TYPO3/CMS/Backend/LiveSearch', ['jquery', 'jquery/autocomplete'], functi
 		});
 
 		// set up the events
-		$(document).on('click', '.t3js-live-search-show-all', function(evt) {
+		$(containerSelector).on('click', '.t3js-live-search-show-all', function(evt) {
 			evt.preventDefault();
 			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + $(searchFieldSelector).val());
 		});
-		$(document).on('click', '.dropdown-list-link', function(evt) {
+		$(containerSelector).on('click', '.dropdown-list-link', function(evt) {
 			evt.preventDefault();
 			jump($(this).data('target'), 'web_list', 'web', $(this).data('pageid'));
 		});
