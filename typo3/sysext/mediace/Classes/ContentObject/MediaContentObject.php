@@ -125,10 +125,10 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 								if ($tsLine[0] !== '#' && ($pos = strpos($tsLine, '.'))) {
 									$parts[0] = substr($tsLine, 0, $pos);
 									$parts[1] = substr($tsLine, $pos + 1);
-									$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $parts[1], TRUE);
+									$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('=', $parts[1], TRUE, 2);
 									switch (strtolower($parts[0])) {
 										case 'flashvars':
-											$conf['flashvars.'][$valueParts[0]] = $valueParts[1];
+											$conf['flashvars.'][$valueParts[0]] = rawurlencode($valueParts[1]);
 											break;
 										case 'params':
 											$conf['params.'][$valueParts[0]] = $valueParts[1];
