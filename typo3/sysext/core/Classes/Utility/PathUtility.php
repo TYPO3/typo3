@@ -39,7 +39,10 @@ class PathUtility {
 	static public function getAbsoluteWebPath($targetPath) {
 		if (self::isAbsolutePath($targetPath)) {
 			if (StringUtility::beginsWith($targetPath, PATH_site)) {
-				$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . self::stripPathSitePrefix($targetPath);
+				$targetPath = self::stripPathSitePrefix($targetPath);
+				if (!defined('TYPO3_cliMode')) {
+					$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+				}
 			}
 		} elseif (strpos($targetPath, '://') !== FALSE) {
 			return $targetPath;
@@ -47,7 +50,9 @@ class PathUtility {
 			// Make an absolute path out of it
 			$targetPath = GeneralUtility::resolveBackPath(dirname(PATH_thisScript) . '/' . $targetPath);
 			$targetPath = self::stripPathSitePrefix($targetPath);
-			$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+			if (!defined('TYPO3_cliMode')) {
+				$targetPath = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . $targetPath;
+			}
 		}
 		return $targetPath;
 	}

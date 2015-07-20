@@ -1,0 +1,90 @@
+//
+// Icon
+// ====
+// General CSS for Icons
+//
+//
+// Example Usage
+// -------------
+//
+// <span class="icon icon-size-large icon-provider-svg">
+//   <span class="icon-markup">
+//     <img src="#" width="16" height="16">
+//   </span>
+//   <span class="icon-overlay">
+//     <img src="#" width="8" height="8">
+//   </span>
+// </span>
+//
+
+
+//
+// Variables
+//
+@icon-size-small:        16px;
+@icon-size-default:      32px;
+@icon-size-large:        48px;
+@icon-unify-modifier:    0.86;
+
+
+//
+// Component
+//
+.icon {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	img {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+}
+.icon-markup {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+}
+.icon-overlay {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: 50%;
+	width: 50%;
+	text-align: center;
+}
+
+//
+// Variants
+//
+.icon-size(@identifier; @size) {
+	.icon-size-@{identifier} {
+		height: @size;
+		width: @size;
+		.icon-unify {
+			line-height: @size;
+			font-size: ceil(@size * @icon-unify-modifier);
+		}
+		.icon-overlay {
+			.icon-unify {
+				line-height: ceil(@size / 2);
+				font-size: ceil(ceil(@size / 2) * @icon-unify-modifier);
+			}
+		}
+	}
+}
+.icon-size(small; @icon-size-small);
+.icon-size(default; @icon-size-default);
+.icon-size(large; @icon-size-large);
+
+//
+// Special icons
+//
+.icon-default-not-found {
+	color: @brand-danger;
+}
+
+.icon-overlay-read-only {
+	color: @brand-danger;
+}

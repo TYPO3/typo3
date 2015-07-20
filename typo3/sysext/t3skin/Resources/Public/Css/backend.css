@@ -7528,6 +7528,72 @@ button.close {
 .callout-notice .media .fa-stack > .fa:first-child {
   color: #a0a0a0;
 }
+.icon {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.icon img {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.icon-markup {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+.icon-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50%;
+  width: 50%;
+  text-align: center;
+}
+.icon-size-small {
+  height: 16px;
+  width: 16px;
+}
+.icon-size-small .icon-unify {
+  line-height: 16px;
+  font-size: 14px;
+}
+.icon-size-small .icon-overlay .icon-unify {
+  line-height: 8px;
+  font-size: 7px;
+}
+.icon-size-default {
+  height: 32px;
+  width: 32px;
+}
+.icon-size-default .icon-unify {
+  line-height: 32px;
+  font-size: 28px;
+}
+.icon-size-default .icon-overlay .icon-unify {
+  line-height: 16px;
+  font-size: 14px;
+}
+.icon-size-large {
+  height: 48px;
+  width: 48px;
+}
+.icon-size-large .icon-unify {
+  line-height: 48px;
+  font-size: 42px;
+}
+.icon-size-large .icon-overlay .icon-unify {
+  line-height: 24px;
+  font-size: 21px;
+}
+.icon-default-not-found {
+  color: #c83c3c;
+}
+.icon-overlay-read-only {
+  color: #c83c3c;
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,
