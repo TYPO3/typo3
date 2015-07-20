@@ -1933,7 +1933,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	}
 
 	/**
-	 * Check if the current record is locked by editlock
+	 * Check if the current record is locked by editlock. Pages are locked if their editlock flag is set,
+	 * records are if they are locked themselves or if the page they are on is locked (a page’s editlock
+	 * is transitive for its content elements).
 	 *
 	 * @param string $table
 	 * @param array $row
@@ -1941,7 +1943,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @return bool
 	 */
 	protected function overlayEditLockPermissions($table, $row, $editPermission = TRUE) {
-		if ($editPermission) {
+		if ($editPermission && !$this->getBackendUserAuthentication()->isAdmin()) {
 			if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $this->pageRow['editlock'])) {
 				$editPermission = FALSE;
 			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['editlock']) && $row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
