@@ -1124,7 +1124,7 @@ class EditDocumentController {
 				if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
 					$excludeDokTypes = GeneralUtility::intExplode(',', $pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], TRUE);
 				} else {
-					// exclude sysfolders and recycler by default
+					// exclude sysfolders, spacers and recycler by default
 					$excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
 				}
 				if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE) || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'].'.']['previewPageId'])) {
