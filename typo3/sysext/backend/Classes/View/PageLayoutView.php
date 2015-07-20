@@ -173,6 +173,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public $ext_CALC_PERMS;
 
 	/**
+	 * Current ids page record
+	 *
+	 * @var array
+	 */
+	protected $pageinfo;
+
+	/**
 	 * @var IconFactory
 	 */
 	protected $iconFactory;
@@ -385,6 +392,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return string HTML for the listing
 	 */
 	public function getTable_tt_content($id) {
+		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->ext_CALC_PERMS);
+		$backendUser = $this->getBackendUser();
 		$this->initializeLanguages();
 		$this->initializeClipboard();
 		$pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), TRUE));
@@ -392,7 +401,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-		$userCanEditPage = $this->ext_CALC_PERMS & Permission::PAGE_EDIT && !empty($this->id);
+		$userCanEditPage = $this->ext_CALC_PERMS & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
 		if ($this->tt_contentConfig['languageColsPointer'] > 0) {
 			$userCanEditPage = $this->getBackendUser()->check('tables_modify', 'pages_language_overlay');
 		}
@@ -1107,7 +1116,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			if ($pasteParams) {
 				$elFromTable = $this->clipboard->elFromTable('tt_content');
-				if (!empty($elFromTable)) {
+				if (!empty($elFromTable) && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
 					$iconsArr['paste'] = '<a href="'
 						. htmlspecialchars($this->clipboard->pasteUrl('tt_content', $this->id, TRUE, $pasteParams))
 						. '" onclick="' . htmlspecialchars(('return '
@@ -1287,7 +1296,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 		// Wrap the whole header
 		// NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
-		return '<div class="t3-page-ce-header ' . ($this->getBackendUser()->user['admin'] || (int)$row['editlock'] === 0 ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
+		return '<div class="t3-page-ce-header ' . ($this->getBackendUser()->user['admin'] || ((int)$row['editlock'] === 0 && (int)$this->pageinfo['editlock'] === 0)  ? 't3-page-ce-header-draggable t3js-page-ce-draghandle' : '') . '">
 					<div class="t3-page-ce-header-icons-left">' . implode('', $additionalIcons) . '</div>
 					<div class="t3-page-ce-header-icons-right">' . ($out ? '<div class="btn-toolbar">' .$out . '</div>' : '') . '</div>
 				</div>

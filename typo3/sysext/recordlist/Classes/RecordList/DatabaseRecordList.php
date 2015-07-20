@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -202,6 +201,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * Constructor
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
@@ -259,8 +259,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
 					. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 			}
-			// New record
-			if (!$module->modTSconfig['properties']['noCreateRecordsLink']) {
+			// New record on pages that are not locked by editlock
+			if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
 				$onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');');
 				$buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
 					. $lang->getLL('newRecordGeneral', TRUE) . '">'
@@ -268,7 +268,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			}
 			// If edit permissions are set, see
 			// \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-			if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id)) {
+			if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions()) {
 				// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
 				$onClick = htmlspecialchars(BackendUtility::editOnClick($params, '', -1));
@@ -277,7 +277,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					. IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			}
 			// Paste
-			if ($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) {
+			if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
 				$elFromTable = $this->clipObj->elFromTable('');
 				if (!empty($elFromTable)) {
 					$onClick = htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable)));
@@ -884,7 +884,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// Traverse the fields:
 		foreach ($this->fieldArray as $fCol) {
 			// Calculate users permissions to edit records in the table:
-			$permsEdit = $this->calcPerms & ($table == 'pages' ? 2 : 16);
+			$permsEdit = $this->calcPerms & ($table == 'pages' ? 2 : 16) && $this->overlayEditLockPermissions($table);
 			switch ((string)$fCol) {
 				case '_PATH_':
 					// Path
@@ -908,10 +908,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					}
 					// Clipboard:
 					$cells = array();
-					// If there are elements on the clipboard for this table, then display the
-					// "paste into" icon:
+					// If there are elements on the clipboard for this table, and the parent page is not locked by editlock
+					// then display the "paste into" icon:
 					$elFromTable = $this->clipObj->elFromTable($table);
-					if (!empty($elFromTable)) {
+					if (!empty($elFromTable) && $this->overlayEditLockPermissions($table)) {
 						$href = htmlspecialchars($this->clipObj->pasteUrl($table, $this->id));
 						$onClick = htmlspecialchars('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable));
 						$cells['pasteAfter'] = '<a class="btn btn-default" href="' . $href . '" onclick="' . $onClick
@@ -1274,10 +1274,6 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$vers = BackendUtility::selectVersionsOfRecord($table, $row['uid'], 'uid', $this->getBackendUserAuthentication()->workspace, FALSE, $row);
 				// If table can be versionized.
 				if (is_array($vers)) {
-					$versionIcon = 'no-version';
-					if (count($vers) > 1) {
-						$versionIcon = count($vers) - 1;
-					}
 					$href = BackendUtility::getModuleUrl('web_txversionM1', array(
 						'table' => $table, 'uid' => $row['uid']
 					));
@@ -1297,7 +1293,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			}
 			// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
 			// or if default values can depend on previous record):
-			if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) {
+			if (($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) && $permsEdit) {
 				if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
 					if ($this->showNewRecLink($table)) {
 						$params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
@@ -1563,8 +1559,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// Now, looking for selected elements from the current table:
 		$elFromTable = $this->clipObj->elFromTable($table);
 		if (!empty($elFromTable) && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-			// IF elements are found and they can be individually ordered, then add a "paste after" icon:
-			$cells['pasteAfter'] = $isL10nOverlay
+			// IF elements are found, they can be individually ordered and are not locked by editlock, then add a "paste after" icon:
+			$cells['pasteAfter'] = $isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)
 				? $this->spaceIcon
 				: '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl($table, -$row['uid'])) . '" onclick="'
 					. htmlspecialchars(('return ' . $this->clipObj->confirmMsg($table, $row, 'after', $elFromTable)))
@@ -1986,8 +1982,12 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @param bool $editPermission
 	 * @return bool
 	 */
-	protected function overlayEditLockPermissions($table, $row, $editPermission = TRUE) {
+	protected function overlayEditLockPermissions($table, $row = array(), $editPermission = TRUE) {
 		if ($editPermission && !$this->getBackendUserAuthentication()->isAdmin()) {
+			// If no $row is submitted we only check for general edit lock of current page (except for table "pages")
+			if (empty($row)) {
+				return $table === 'pages' ? TRUE : !$this->pageRow['editlock'];
+			}
 			if (($table === 'pages' && $row['editlock']) || ($table !== 'pages' && $this->pageRow['editlock'])) {
 				$editPermission = FALSE;
 			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['editlock']) && $row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
@@ -1995,6 +1995,16 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			}
 		}
 		return $editPermission;
+	}
+
+	/**
+	 * Check whether or not the current backend user is an admin or the current page is
+	 * locked by editlock.
+	 *
+	 * @return bool
+	 */
+	protected function editLockPermissions() {
+		return $this->getBackendUserAuthentication()->isAdmin() || !$this->pageRow['editlock'];
 	}
 
 	/**

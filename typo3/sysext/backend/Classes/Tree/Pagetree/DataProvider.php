@@ -161,6 +161,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				} else {
 					$subNode->setLeaf(!$this->hasNodeSubPages($subNode->getId()));
 				}
+				if (!$GLOBALS['BE_USER']->isAdmin() && (int)$subpage['editlock'] === 1) {
+					$subNode->setLabelIsEditable(FALSE);
+				}
 				$nodeCollection->append($subNode);
 			}
 		}

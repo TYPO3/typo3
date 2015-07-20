@@ -177,7 +177,12 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 */
 	protected function canEdit() {
 		if (!isset($this->cachedAccessRights['edit'])) {
-			$this->cachedAccessRights['edit'] = $GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 2);
+			$this->cachedAccessRights['edit'] =
+				$GLOBALS['BE_USER']->isAdmin()
+				|| (
+					(int)$this->record['editlock'] === 0
+					&& $GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 2)
+				);
 		}
 		return $this->cachedAccessRights['edit'];
 	}
@@ -189,7 +194,12 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 */
 	protected function canRemove() {
 		if (!isset($this->cachedAccessRights['remove'])) {
-			$this->cachedAccessRights['remove'] = $GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 4);
+			$this->cachedAccessRights['remove'] =
+				$GLOBALS['BE_USER']->isAdmin()
+				|| (
+					(int)$this->record['editlock'] === 0
+					&& $GLOBALS['BE_USER']->doesUserHaveAccess($this->record, 4)
+				);
 			if (!$this->isLeafNode() && !$GLOBALS['BE_USER']->uc['recursiveDelete']) {
 				$this->cachedAccessRights['remove'] = FALSE;
 			}

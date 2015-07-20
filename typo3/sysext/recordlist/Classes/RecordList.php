@@ -274,9 +274,10 @@ class RecordList {
 		$this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
 		$calcPerms = $backendUser->calcPerms($this->pageinfo);
+		$userCanEditPage = $calcPerms & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
 			PageActions.setPageId(' . (int)$this->id . ');
-			PageActions.setCanEditPage(' . ($calcPerms & Permission::PAGE_EDIT && !empty($this->id) ? 'true' : 'false') . ');
+			PageActions.setCanEditPage(' . ($userCanEditPage ? 'true' : 'false') . ');
 			PageActions.initializePageTitleRenaming();
 		}');
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
