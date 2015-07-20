@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Recordlist\Browser;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
+use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -478,7 +480,7 @@ class ElementBrowser {
 	 */
 	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $this->getBackendUserAuthentication()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
 		return BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
 
@@ -1191,11 +1193,12 @@ class ElementBrowser {
 	 * @param string $treeClassName
 	 * @return string
 	 */
-	protected function getFileSelectorHtml($treeClassName = \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class) {
+	protected function getFileSelectorHtml($treeClassName = ElementBrowserFolderTreeView::class) {
+		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance($treeClassName);
 		$folderTree->thisScript = $this->thisScript;
 		$tree = $folderTree->getBrowsableTree();
-		$backendUser = $this->getBackendUserAuthentication();
+		$backendUser = $this->getBackendUser();
 		if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
 			$cmpPath = '';
 		} else {
@@ -1280,8 +1283,10 @@ class ElementBrowser {
 	 * @param string $treeClassName name of the class used for page tree rendering
 	 * @return string
 	 */
-	protected function getPageSelectorHtml($treeClassName = \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView::class) {
-		$backendUser = $this->getBackendUserAuthentication();
+	protected function getPageSelectorHtml($treeClassName = ElementBrowserPageTreeView::class) {
+		$backendUser = $this->getBackendUser();
+
+		/** @var ElementBrowserPageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance($treeClassName);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_showPageId = $backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
@@ -1319,7 +1324,7 @@ class ElementBrowser {
 		// Init variable:
 		$pArr = explode('|', $this->bparams);
 		$tables = $pArr[3];
-		$backendUser = $this->getBackendUserAuthentication();
+		$backendUser = $this->getBackendUser();
 
 		// Making the browsable pagetree:
 		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView $pageTree */
@@ -1398,7 +1403,7 @@ class ElementBrowser {
 		if ($allowed !== 'sys_file' && $allowed !== '*' && !empty($allowed)) {
 			$allowedFileExtensions = $allowed;
 		}
-		$backendUser = $this->getBackendUserAuthentication();
+		$backendUser = $this->getBackendUser();
 
 		if (isset($allowedFileExtensions)) {
 			// Create new filter object
@@ -1462,8 +1467,8 @@ class ElementBrowser {
 		}
 		$noThumbs = $noThumbs ?: !$_MOD_SETTINGS['displayThumbs'];
 		// Create folder tree:
-		/** @var \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView $folderTree */
-		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class);
+		/** @var ElementBrowserFolderTreeView $folderTree */
+		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1533,11 +1538,11 @@ class ElementBrowser {
 			$createFolder = '';
 		}
 		// Create folder tree:
-		/** @var \TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView $folderTree */
-		$folderTree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class);
+		/** @var ElementBrowserFolderTreeView $folderTree */
+		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
-		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
-		$tree = $folderTree->getBrowsableTree(FALSE);
+		$folderTree->ext_noTempRecyclerDirs = $this->mode === 'filedrag';
+		$tree = $folderTree->getBrowsableTree();
 		$folders = '';
 		if ($this->selectedFolder) {
 			if ($this->mode == 'filedrag') {
@@ -1592,7 +1597,7 @@ class ElementBrowser {
 		// Draw the record list IF there is a page id to expand:
 		if ($expPageId
 			&& MathUtility::canBeInterpretedAsInteger($expPageId)
-			&& $this->getBackendUserAuthentication()->isInWebMount($expPageId)
+			&& $this->getBackendUser()->isInWebMount($expPageId)
 		) {
 			// Set header:
 			$out .= $this->barheader($this->getLanguageService()->getLL('contentElements') . ':');
@@ -1638,7 +1643,7 @@ class ElementBrowser {
 	 * @return string HTML output.
 	 */
 	public function TBE_expandPage($tables) {
-		$backendUser = $this->getBackendUserAuthentication();
+		$backendUser = $this->getBackendUser();
 		if (!MathUtility::canBeInterpretedAsInteger($this->expandPage)
 			|| $this->expandPage < 0
 			|| !$backendUser->isInWebMount($this->expandPage)
@@ -1770,7 +1775,7 @@ class ElementBrowser {
 			$currentIdentifier = $this->curUrlInfo['info'];
 		}
 		// Create header element; The folder from which files are listed.
-		$titleLen = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
+		$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 		$folderIcon = IconUtility::getSpriteIconForResource($folder);
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
 		$selected = '';
@@ -1862,7 +1867,7 @@ class ElementBrowser {
 		$out .= $this->barheader(sprintf($lang->getLL('files') . ' (%s):', $filesCount));
 		$out .= '<div id="filelist">';
 		$out .= $this->getBulkSelector($filesCount);
-		$titleLen = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
+		$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 		// Create the header of current folder:
 		if ($folder) {
 			$folderIcon = IconUtility::getSpriteIconForResource($folder);
@@ -2000,7 +2005,7 @@ class ElementBrowser {
 		$folderIdentifier = $baseFolder->getCombinedIdentifier();
 		// Create headline (showing number of folders):
 		$content .= $this->barheader(sprintf($lang->getLL('folders') . ' (%s):', count($folders)));
-		$titleLength = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
+		$titleLength = (int)$this->getBackendUser()->uc['titleLen'];
 		// Create the header of current folder:
 		$aTag = '<a href="#" onclick="return insertElement(\'\',' . GeneralUtility::quoteJSvalue($folderIdentifier)
 			. ', \'folder\', ' . GeneralUtility::quoteJSvalue($folderIdentifier) . ', ' . GeneralUtility::quoteJSvalue($folderIdentifier)
@@ -2097,7 +2102,7 @@ class ElementBrowser {
 		$files = $this->getFilesInFolder($folder, $extensionList);
 
 		$out .= $this->barheader(sprintf($lang->getLL('files') . ' (%s):', count($files)));
-		$titleLen = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
+		$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 		$picon = IconUtility::getSpriteIcon('apps-filetree-folder-default');
 		$picon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
 		$out .= $picon . '<br />';
@@ -2306,7 +2311,7 @@ class ElementBrowser {
 							$id = (int)$idPartR['uid'];
 						}
 						$pageRow = BackendUtility::getRecordWSOL('pages', $id);
-						$titleLen = (int)$this->getBackendUserAuthentication()->uc['titleLen'];
+						$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
 						$info['value'] = ((((($lang->getLL('page', TRUE) . ' \'')
 										. htmlspecialchars(GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen)))
 										. '\' (ID:') . $id) . ($uP['fragment'] ? ', #' . $uP['fragment'] : '')) . ')';
@@ -2366,7 +2371,7 @@ class ElementBrowser {
 			return '';
 		}
 		// Read configuration of upload field count
-		$userSetting = $this->getBackendUserAuthentication()->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
+		$userSetting = $this->getBackendUser()->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
 		$count = isset($userSetting) ? $userSetting : 1;
 		if ($count === '0') {
 			return '';
@@ -2436,7 +2441,7 @@ class ElementBrowser {
 		if (!$folderObject->checkActionPermission('write')) {
 			return '';
 		}
-		$backendUser = $this->getBackendUserAuthentication();
+		$backendUser = $this->getBackendUser();
 		if (!($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.createFoldersInEB'))) {
 			return '';
 		}
@@ -2500,7 +2505,7 @@ class ElementBrowser {
 		$labelToggleSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:toggleSelection', TRUE);
 		$labelImportSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:importSelection', TRUE);
 		// Getting flag for showing/not showing thumbnails:
-		$noThumbsInEB = $this->getBackendUserAuthentication()->getTSConfigVal('options.noThumbsInEB');
+		$noThumbsInEB = $this->getBackendUser()->getTSConfigVal('options.noThumbsInEB');
 		$out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()">'
 			. IconUtility::getSpriteIcon('actions-document-import-t3d', array('title' => $labelImportSelection))
 			. $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
@@ -2560,7 +2565,7 @@ class ElementBrowser {
 	 * @return string
 	 */
 	protected function getTemporaryTreeMountCancelNotice() {
-		if ((int)$this->getBackendUserAuthentication()->getSessionData('pageTree_temporaryMountPoint') === 0) {
+		if ((int)$this->getBackendUser()->getSessionData('pageTree_temporaryMountPoint') === 0) {
 			return '';
 		}
 		$link = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">'
@@ -2602,7 +2607,7 @@ class ElementBrowser {
 	/**
 	 * @return BackendUserAuthentication
 	 */
-	protected function getBackendUserAuthentication() {
+	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
 

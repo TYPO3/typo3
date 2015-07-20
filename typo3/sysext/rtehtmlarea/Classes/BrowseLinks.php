@@ -15,12 +15,15 @@ namespace TYPO3\CMS\Rtehtmlarea;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Script class for the Element Browser window.
  */
-class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
+class BrowseLinks extends ElementBrowser {
 
 	public $editorNo;
 	/**
@@ -29,8 +32,11 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public $contentTypo3Language;
 
 	public $contentTypo3Charset = 'utf-8';
+
 	/**
 	 * Language service object for localization to the content language
+	 *
+	 * @var LanguageService
 	 */
 	protected $contentLanguageService;
 
@@ -65,7 +71,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function init() {
 		$this->initVariables();
 		// Create content language service
-		$this->contentLanguageService = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+		$this->contentLanguageService = GeneralUtility::makeInstance(LanguageService::class);
 		$this->contentLanguageService->init($this->contentTypo3Language);
 		$this->initConfiguration();
 
@@ -168,7 +174,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
+		$RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
 		return BackendUtility::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
@@ -428,7 +434,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	public function main_rte($wiz = FALSE) {
 		// Starting content:
-		$content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert/Modify Link', TRUE));
+		$content = $this->doc->startPage($this->getLanguageService()->getLL('Insert/Modify Link', TRUE));
 		// Making menu in top:
 		$content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $this->allowedItems));
 		// Adding the menu and header to the top of page:
@@ -446,11 +452,11 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			case 'file':
 			case 'folder':
 				$content .= $this->addAttributesForm();
-				$content .= $this->getFileSelectorHtml(\TYPO3\CMS\Rtehtmlarea\FolderTree::class);
+				$content .= $this->getFileSelectorHtml(FolderTree::class);
 				break;
 			case 'page':
 				$content .= $this->addAttributesForm();
-				$content .= $this->getPageSelectorHtml(\TYPO3\CMS\Rtehtmlarea\PageTree::class);
+				$content .= $this->getPageSelectorHtml(PageTree::class);
 				break;
 			default:
 				// call hook
@@ -473,39 +479,40 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function buildMenuArray($wiz, $allowedItems) {
 		$menuDef = array();
+		$lang = $this->getLanguageService();
 		if (!$wiz && $this->curUrlArray['href']) {
 			$menuDef['removeLink']['isActive'] = $this->act == 'removeLink';
-			$menuDef['removeLink']['label'] = $GLOBALS['LANG']->getLL('removeLink', TRUE);
+			$menuDef['removeLink']['label'] = $lang->getLL('removeLink', TRUE);
 			$menuDef['removeLink']['url'] = '#';
 			$menuDef['removeLink']['addParams'] = 'onclick="plugin.unLink();return false;"';
 		}
 		if (in_array('page', $this->allowedItems)) {
 			$menuDef['page']['isActive'] = $this->act == 'page';
-			$menuDef['page']['label'] = $GLOBALS['LANG']->getLL('page', TRUE);
+			$menuDef['page']['label'] = $lang->getLL('page', TRUE);
 			$menuDef['page']['url'] = '#';
 			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=page&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('file', $this->allowedItems)) {
 			$menuDef['file']['isActive'] = $this->act == 'file';
-			$menuDef['file']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:file', TRUE);
+			$menuDef['file']['label'] = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:file', TRUE);
 			$menuDef['file']['url'] = '#';
 			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=file&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('folder', $this->allowedItems)) {
 			$menuDef['folder']['isActive'] = $this->act == 'folder';
-			$menuDef['folder']['label'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.xlf:folder', TRUE);
+			$menuDef['folder']['label'] = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:folder', TRUE);
 			$menuDef['folder']['url'] = '#';
 			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=folder&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('url', $this->allowedItems)) {
 			$menuDef['url']['isActive'] = $this->act == 'url';
-			$menuDef['url']['label'] = $GLOBALS['LANG']->getLL('extUrl', TRUE);
+			$menuDef['url']['label'] = $lang->getLL('extUrl', TRUE);
 			$menuDef['url']['url'] = '#';
 			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=url&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('mail', $this->allowedItems)) {
 			$menuDef['mail']['isActive'] = $this->act == 'mail';
-			$menuDef['mail']['label'] = $GLOBALS['LANG']->getLL('email', TRUE);
+			$menuDef['mail']['label'] = $lang->getLL('email', TRUE);
 			$menuDef['mail']['url'] = '#';
 			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=mail&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
@@ -529,13 +536,13 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			<tr>
 				<td>
 					<label>
-						' . $GLOBALS['LANG']->getLL('emailAddress', TRUE) . ':
+						' . $this->getLanguageService()->getLL('emailAddress', TRUE) . ':
 					</label>
 				</td>
 				<td>
 					<input type="text" name="lemail"' . $this->doc->formWidth(20)
 						. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" />
-					<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
+					<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('setLink', TRUE)
 						. '" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.ltargetform.lemail.value);'
 						. 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" />
 				</td>
@@ -563,10 +570,10 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					<input type="text" name="lurl"' . $this->doc->formWidth(20)
 						. ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://'))
 						. '" />
-					<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', TRUE)
+					<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('setLink', TRUE)
 						. '" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.ltargetform.lurl.value)) { '
 						. ' browse_links_setHref(document.ltargetform.lurl.value); } else { browse_links_setHref(\'http://\''
-						. '+document.ltargetform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\');'
+						. '+document.ltargetform.lurl.value); } browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\');'
 						. 'return link_current();" />
 				</td>
 			</tr>';
@@ -650,7 +657,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						<td>
 						</td>
 						<td colspan="3">
-							<input class="btn btn-default" type="submit" value="' . $GLOBALS['LANG']->getLL('update', TRUE) . '" onclick="'
+							<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('update', TRUE) . '" onclick="'
 								. ($this->act == 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
 								. 'return link_current();" />
 						</td>
@@ -675,12 +682,12 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				<tr>
 					<td>
 						<label>
-							' . $GLOBALS['LANG']->getLL('page_id', TRUE) . ':
+							' . $this->getLanguageService()->getLL('page_id', TRUE) . ':
 						</label>
 					</td>
 					<td colspan="3">
 						<input type="text" size="6" name="luid" /> <input class="btn btn-default" type="submit" value="'
-							. $GLOBALS['LANG']->getLL('setLink', TRUE) . '" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
+							. $this->getLanguageService()->getLL('setLink', TRUE) . '" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
 					</td>
 				</tr>';
 		}
@@ -700,7 +707,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		) {
 			return '
 						<tr>
-							<td><label>' . $GLOBALS['LANG']->getLL('linkRelationship', TRUE) . ':</label></td>
+							<td><label>' . $this->getLanguageService()->getLL('linkRelationship', TRUE) . ':</label></td>
 							<td colspan="3">
 								<input type="text" name="lrel" value="' . $currentRel . '"  '
 				. $this->doc->formWidth(30) . ' />
@@ -721,7 +728,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		) {
 			return '
 						<tr>
-							<td><label>' . $GLOBALS['LANG']->getLL('query_parameters', TRUE) . ':</label></td>
+							<td><label>' . $this->getLanguageService()->getLL('query_parameters', TRUE) . ':</label></td>
 							<td colspan="3">
 								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ?: '')
 				. '" ' . $this->doc->formWidth(30) . ' />
@@ -751,9 +758,10 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		// Reset the target to default if we changed tab
 		$currentTarget = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['target']) ? $this->curUrlArray['target'] : '';
 		$target = $currentTarget ?: $this->defaultLinkTarget;
+		$lang = $this->getLanguageService();
 		$ltarget = '
 				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-					<td><label>' . $GLOBALS['LANG']->getLL('target', TRUE) . ':</label></td>
+					<td><label>' . $lang->getLL('target', TRUE) . ':</label></td>
 					<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="'
 					. htmlspecialchars($target) . '"' . $this->doc->formWidth(10) . ' /></td>';
 		$ltarget .= '
@@ -762,8 +770,8 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$ltarget .= '
 						<select name="ltarget_type" onchange="browse_links_setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
 							<option></option>
-							<option value="_top">' . $GLOBALS['LANG']->getLL('top', TRUE) . '</option>
-							<option value="_blank">' . $GLOBALS['LANG']->getLL('newWindow', TRUE) . '</option>
+							<option value="_top">' . $lang->getLL('top', TRUE) . '</option>
+							<option value="_blank">' . $lang->getLL('newWindow', TRUE) . '</option>
 						</select>';
 		}
 		$ltarget .= '
@@ -778,10 +786,10 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			}';
 			$ltarget .= '
 					<tr>
-						<td><label>' . $GLOBALS['LANG']->getLL('target_popUpWindow', TRUE) . ':</label></td>
+						<td><label>' . $lang->getLL('target_popUpWindow', TRUE) . ':</label></td>
 						<td colspan="3">
 							<select name="popup_width" onchange="' . $selectJS . '">
-								<option value="0">' . $GLOBALS['LANG']->getLL('target_popUpWindow_width', TRUE) . '</option>
+								<option value="0">' . $lang->getLL('target_popUpWindow_width', TRUE) . '</option>
 								<option value="300">300</option>
 								<option value="400">400</option>
 								<option value="500">500</option>
@@ -791,7 +799,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 							</select>
 							x
 							<select name="popup_height" onchange="' . $selectJS . '">
-								<option value="0">' . $GLOBALS['LANG']->getLL('target_popUpWindow_height', TRUE) . '</option>
+								<option value="0">' . $lang->getLL('target_popUpWindow_height', TRUE) . '</option>
 								<option value="200">200</option>
 								<option value="300">300</option>
 								<option value="400">400</option>
@@ -814,7 +822,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if ($this->classesAnchorJSOptions[$this->act]) {
 			$selectClass = '
 						<tr>
-							<td><label>' . $GLOBALS['LANG']->getLL('anchor_class', TRUE) . ':</label></td>
+							<td><label>' . $this->getLanguageService()->getLL('anchor_class', TRUE) . ':</label></td>
 							<td colspan="3">
 								<select name="anchor_class" onchange="' . $this->getClassOnChangeJS() . '">
 									' . $this->classesAnchorJSOptions[$this->act] . '
@@ -887,7 +895,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}
 		return '
 						<tr>
-							<td><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $GLOBALS['LANG']->getLL('anchor_title', TRUE) . ':</label></td>
+							<td><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $this->getLanguageService()->getLL('anchor_title', TRUE) . ':</label></td>
 							<td colspan="3">
 								<span id="rtehtmlarea-browse-links-title-input" style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
 									<input type="text" id="rtehtmlarea-browse-links-anchor_title" name="anchor_title" value="' . htmlspecialchars($title) . '" ' . $this->doc->formWidth(30) . ' />
@@ -918,10 +926,24 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if (substr($string, 0, 4) !== 'LLL:') {
 			$label = $string;
 		} else {
-			$label = $GLOBALS['LANG']->sL(trim($string));
+			$label = $this->getLanguageService()->sL(trim($string));
 		}
 		$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
 		return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }

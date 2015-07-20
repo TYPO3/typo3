@@ -17,6 +17,6 @@
  */
 
 // Make instance:
-$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\SelectImageController::class);
-$GLOBALS['SOBE']->main();
-$GLOBALS['SOBE']->printContent();
+$elementBrowserController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\SelectImageController::class);
+$elementBrowserController->main();
+$elementBrowserController->printContent();

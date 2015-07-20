@@ -65,28 +65,26 @@ class ElementBrowserController {
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
 		$GLOBALS['BACK_PATH'] = '';
-		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_browse_links.xlf');
 
-		$this->init();
-	}
-
-	/**
-	 * Not really needed but for backwards compatibility ...
-	 *
-	 * @return void
-	 */
-	protected function init() {
-		// Find "mode"
-		$this->mode = GeneralUtility::_GP('mode');
-		if (!$this->mode) {
-			$this->mode = 'rte';
-		}
 		// Creating backend template object:
 		// this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		// Apply the same styles as those of the base script
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 
+		$this->init();
+	}
+
+	/**
+	 * Init controller
+	 */
+	protected function init() {
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_browse_links.xlf');
+
+		$this->mode = GeneralUtility::_GP('mode');
+		if (!$this->mode) {
+			$this->mode = 'rte';
+		}
 	}
 
 	/**
@@ -95,32 +93,10 @@ class ElementBrowserController {
 	 * @return void
 	 */
 	public function main() {
-		// Clear temporary DB mounts
-		$tmpMount = GeneralUtility::_GET('setTempDBmount');
-		$backendUser = $this->getBackendUserAuthentication();
-		if (isset($tmpMount)) {
-			$backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
-		}
-		// Set temporary DB mounts
-		$alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
-		if ($alternativeWebmountPoint) {
-			$alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
-			$backendUser->setWebmounts($alternativeWebmountPoint);
-		} else {
-			switch ((string)$this->mode) {
-				case 'rte':
-				case 'db':
-				case 'wizard':
-					// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-					$alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-					$appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
-					if ($alternativeWebmountPoints) {
-						$alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
-						$GLOBALS['BE_USER']->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
-					}
-			}
-		}
+		$this->setTemporaryDbMounts();
+
 		$this->content = '';
+
 		// Render type by user func
 		$browserRendered = FALSE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
@@ -137,11 +113,13 @@ class ElementBrowserController {
 		}
 		// if type was not rendered use default rendering functions
 		if (!$browserRendered) {
-			$this->browser = GeneralUtility::makeInstance(ElementBrowser::class);
+			$this->browser = $this->getElementBrowserInstance();
 			$this->browser->init();
+			$backendUser = $this->getBackendUser();
 			$modData = $backendUser->getModuleData('browse_links.php', 'ses');
 			list($modData) = $this->browser->processSessionData($modData);
 			$backendUser->pushModuleData('browse_links.php', $modData);
+
 			// Output the correct content according to $this->mode
 			switch ((string)$this->mode) {
 				case 'rte':
@@ -165,6 +143,49 @@ class ElementBrowserController {
 	}
 
 	/**
+	 * @return void
+	 */
+	protected function setTemporaryDbMounts() {
+		$backendUser = $this->getBackendUser();
+
+		// Clear temporary DB mounts
+		$tmpMount = GeneralUtility::_GET('setTempDBmount');
+		if (isset($tmpMount)) {
+			$backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
+		}
+		// Set temporary DB mounts
+		$alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
+		if ($alternativeWebmountPoint) {
+			$alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
+			$backendUser->setWebmounts($alternativeWebmountPoint);
+		} else {
+			switch ((string)$this->mode) {
+				case 'rte':
+				case 'db':
+				case 'wizard':
+					// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
+					$alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+					$appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
+					if ($alternativeWebmountPoints) {
+						$alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
+						$this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
+					}
+			}
+		}
+	}
+
+	/**
+	 * Get instance of ElementBrowser
+	 *
+	 * This method shall be overwritten in subclasses
+	 *
+	 * @return ElementBrowser
+	 */
+	protected function getElementBrowserInstance() {
+		return GeneralUtility::makeInstance(ElementBrowser::class);
+	}
+
+	/**
 	 * Print module content
 	 *
 	 * @return void
@@ -183,7 +204,7 @@ class ElementBrowserController {
 	/**
 	 * @return BackendUserAuthentication
 	 */
-	protected function getBackendUserAuthentication() {
+	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
 

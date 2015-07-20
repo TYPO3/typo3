@@ -14,72 +14,48 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
+use TYPO3\CMS\Recordlist\Controller\ElementBrowserController;
+use TYPO3\CMS\Rtehtmlarea\SelectImage;
+
 /**
- * Script class for the Element Browser window.
+ * Script class for the Element Browser window to select images in RTE
  */
-class SelectImageController {
+class SelectImageController extends ElementBrowserController {
 
-	public $mode = 'rte';
-
+	/**
+	 * @var string
+	 */
 	public $button = 'image';
 
-	protected $content = '';
+	/**
+	 * @var SelectImage
+	 */
+	public $browser;
 
 	/**
-	 * Initialize language files
+	 * Initialize controller
 	 */
-	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_browse_links.xlf');
-		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_selectimagecontroller.xlf');
-		$GLOBALS['LANG']->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_dialogs.xlf');
+	protected function init() {
+		parent::init();
+
+		$lang = $this->getLanguageService();
+		$lang->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_selectimagecontroller.xlf');
+		$lang->includeLLFile('EXT:rtehtmlarea/Resources/Private/Language/locallang_dialogs.xlf');
+
+		$this->mode = 'rte';
 	}
 
 	/**
-	 * Main function, rendering the element browser in RTE mode.
+	 * Get instance of ElementBrowser
 	 *
-	 * @return void
-	 */
-	public function main() {
-		// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
-		if ($altMountPoints) {
-			$altMountPoints = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $altMountPoints);
-			foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
-				// @todo: add this feature for FAL and TYPO3 6.2
-			}
-		}
-		// Rendering type by user function
-		$browserRendered = FALSE;
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser.php']['browserRendering'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser.php']['browserRendering'] as $classRef) {
-				$browserRenderObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
-				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
-					if ($browserRenderObj->isValid($this->mode, $this)) {
-						$this->content .= $browserRenderObj->render($this->mode, $this);
-						$browserRendered = TRUE;
-						break;
-					}
-				}
-			}
-		}
-		// If type was not rendered, use default rendering functions
-		if (!$browserRendered) {
-			$GLOBALS['SOBE']->browser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\SelectImage::class);
-			$GLOBALS['SOBE']->browser->init();
-			$modData = $GLOBALS['BE_USER']->getModuleData('select_image.php', 'ses');
-			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);
-			$GLOBALS['BE_USER']->pushModuleData('select_image.php', $modData);
-			$this->content = $GLOBALS['SOBE']->browser->main_rte();
-		}
-	}
-
-	/**
-	 * Print module content
+	 * This method shall be overwritten in subclasses
 	 *
-	 * @return void
+	 * @return ElementBrowser
 	 */
-	public function printContent() {
-		echo $this->content;
+	protected function getElementBrowserInstance() {
+		return GeneralUtility::makeInstance(SelectImage::class);
 	}
 
 }

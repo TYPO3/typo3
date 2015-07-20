@@ -21,6 +21,6 @@
  */
 
 // Make instance:
-$GLOBALS['SOBE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\BrowseLinksController::class);
-$GLOBALS['SOBE']->main();
-$GLOBALS['SOBE']->printContent();
+$elementBrowserController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\Controller\BrowseLinksController::class);
+$elementBrowserController->main();
+$elementBrowserController->printContent();

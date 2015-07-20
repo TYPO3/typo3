@@ -14,13 +14,19 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Resource\Service\MagicImageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Script Class
  */
-class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
+class SelectImage extends ElementBrowser {
 
 	/**
 	 * These file extensions are allowed in the "plain" image selection mode.
@@ -70,6 +76,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public $buttonConfig;
 
 	protected $imgObj;
+
+	/**
+	 * @var string
+	 */
+	public $addModifyTab;
 
 	/**
 	 * Initialisation
@@ -135,12 +146,12 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		}');
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
 			SelectImage.editorNo = ' . GeneralUtility::quoteJSvalue($this->editorNo) . ';
-			SelectImage.act = ' . GeneralUtility::quoteJSvalue(($this->act ?: reset($this->allowedItems))) . ';
+			SelectImage.act = ' . GeneralUtility::quoteJSvalue($this->act ?: reset($this->allowedItems)) . ';
 			SelectImage.sys_language_content = ' . GeneralUtility::quoteJSvalue($this->sys_language_content) . ';
 			SelectImage.RTEtsConfigParams = ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
 			SelectImage.bparams = ' . GeneralUtility::quoteJSvalue($this->bparams) . ';
 		}');
-		$this->getPageRenderer()->addCssFile($this->doc->backPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		$this->getPageRenderer()->addCssFile($this->doc->backPath . ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
 	}
 
@@ -201,8 +212,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	public function insertMagicImage(Resource\File $fileObject, $altText = '', $titleText = '', $additionalParams = '') {
 		// Create the magic image service
-		/** @var $magicImageService Resource\Service\MagicImageService */
-		$magicImageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Service\MagicImageService::class);
+		/** @var $magicImageService MagicImageService */
+		$magicImageService = GeneralUtility::makeInstance(MagicImageService::class);
 		$magicImageService->setMagicImageMaximumDimensions($this->thisConfig);
 		// Create the magic image
 		$imageConfiguration = array(
@@ -257,7 +268,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return string the image insertion JS statement
 	 */
 	protected function imageInsertJsStatement($url, $width, $height, $altText = '', $titleText = '', $additionalParams = '') {
-		return 'insertImage(' . GeneralUtility::quoteJSvalue($url, 1) . ',' . $width . ',' . $height . ',' . GeneralUtility::quoteJSvalue($altText, 1) . ',' . GeneralUtility::quoteJSvalue($titleText, 1) . ',' . GeneralUtility::quoteJSvalue($additionalParams, 1) . ');';
+		return 'insertImage(' . GeneralUtility::quoteJSvalue($url) . ',' . $width . ',' . $height . ',' . GeneralUtility::quoteJSvalue($altText)
+			. ',' . GeneralUtility::quoteJSvalue($titleText) . ',' . GeneralUtility::quoteJSvalue($additionalParams) . ');';
 	}
 
 	/**
@@ -348,7 +360,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	public function main_rte($wiz = FALSE) {
 		// Starting content:
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Image', TRUE));
+		$lang = $this->getLanguageService();
+		$this->content = $this->doc->startPage($lang->getLL('Insert Image', TRUE));
 
 		$this->content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $this->allowedItems));
 		switch ($this->act) {
@@ -377,9 +390,9 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 				$labels = array('notSet','nonFloating','right','left','class','width','height','border','float','padding_top','padding_left','padding_bottom','padding_right','title','alt','update');
 				foreach ($labels as $label) {
-					$localizedLabels[$label] = $GLOBALS['LANG']->getLL($label);
+					$localizedLabels[$label] = $lang->getLL($label);
 				}
-				$localizedLabels['image_zoom'] = $GLOBALS['LANG']->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom', TRUE);
+				$localizedLabels['image_zoom'] = $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_zoom', TRUE);
 				$JScode = '
 					require(["TYPO3/CMS/Rtehtmlarea/Modules/SelectImage"], function(SelectImage) {
 						SelectImage.editorNo = "' . $this->editorNo . '";
@@ -397,13 +410,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			case 'plain':
 			case 'magic':
 				// Create folder tree:
-				$foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Rtehtmlarea\FolderTree::class);
+				$foldertree = GeneralUtility::makeInstance(FolderTree::class);
 				$foldertree->thisScript = $this->thisScript;
 				$tree = $foldertree->getBrowsableTree();
 				// Get currently selected folder
-				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
-					$cmpPath = '';
-				} else {
+				if ($this->curUrlInfo['value'] && $this->curUrlInfo['act'] === $this->act) {
 					$cmpPath = $this->curUrlInfo['value'];
 					if (!isset($this->expandFolder)) {
 						$this->expandFolder = $cmpPath;
@@ -414,14 +425,14 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				if ($this->expandFolder) {
 					$fileOrFolderObject = NULL;
 					try {
-						$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+						$fileOrFolderObject = Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
 					} catch (\Exception $e) {
 						// No path is selected
 					}
-					if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+					if ($fileOrFolderObject instanceof Resource\Folder) {
 						// it's a folder
 						$selectedFolder = $fileOrFolderObject;
-					} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+					} elseif ($fileOrFolderObject instanceof Resource\FileInterface) {
 						// it's a file
 						try {
 							$selectedFolder = $fileOrFolderObject->getParentFolder();
@@ -431,9 +442,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					}
 				}
 				// If no folder is selected, get the user's default upload folder
+				$backendUser = $this->getBackendUser();
 				if (!$selectedFolder) {
 					try {
-						$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+						$selectedFolder = $backendUser->getDefaultUploadFolder();
 					} catch (\Exception $e) {
 						// The configured default user folder does not exist
 					}
@@ -446,13 +458,13 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					$createFolder = $this->createFolder($selectedFolder);
 				}
 				// Insert the upload form on top, if so configured
-				if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+				if ($backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 					$this->content .= $uploadForm;
 				}
 				// Render the filelist if there is a folder selected
 				$files = '';
 				if ($selectedFolder) {
-					$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
+					$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $backendUser->getTSConfigVal('options.noThumbsInRTEimageSelect'));
 				}
 				// Setup filelist indexed elements:
 				$this->doc->JScode .= $this->doc->wrapScriptTags('
@@ -467,7 +479,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				-->
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
 							<tr>
-								<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+								<td class="c-wCell" valign="top">' . $this->barheader(($lang->getLL('folderTree') . ':')) . $tree . '</td>
 								<td class="c-wCell" valign="top">' . $files . '</td>
 							</tr>
 						</table>
@@ -478,21 +490,19 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 					$this->content .= $this->getMsgBox($helpMessage);
 				}
 				// Adding create folder + upload form if applicable
-				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+				if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 					$this->content .= $uploadForm;
 				}
 				$this->content .= $createFolder;
 				$this->content .= '<br />';
 				break;
 			case 'dragdrop':
-				$foldertree = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView::class);
+				$foldertree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
 				$foldertree->thisScript = $this->thisScript;
 				$foldertree->ext_noTempRecyclerDirs = TRUE;
 				$tree = $foldertree->getBrowsableTree();
 				// Get currently selected folder
-				if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
-					$cmpPath = '';
-				} else {
+				if ($this->curUrlInfo['value'] && $this->curUrlInfo['act'] === $this->act) {
 					$cmpPath = $this->curUrlInfo['value'];
 					if (!isset($this->expandFolder)) {
 						$this->expandFolder = $cmpPath;
@@ -501,7 +511,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$selectedFolder = FALSE;
 				if ($this->expandFolder) {
 					try {
-						$selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+						$selectedFolder = Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
 					} catch (\Exception $e) {
 					}
 				}
@@ -513,7 +523,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				// Wrap tree
 				$this->content .= '<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
-						<td style="vertical-align: top;">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+						<td style="vertical-align: top;">' . $this->barheader(($lang->getLL('folderTree') . ':')) . $tree . '</td>
 						<td>&nbsp;</td>
 						<td style="vertical-align: top;">' . $files . '</td>
 					</tr>
@@ -540,27 +550,28 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 */
 	protected function buildMenuArray($wiz, $allowedItems) {
 		$menuDef = array();
+		$lang = $this->getLanguageService();
 		if (in_array('image', $this->allowedItems) && ($this->act === 'image' || $this->addModifyTab)) {
 			$menuDef['image']['isActive'] = FALSE;
-			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', TRUE);
+			$menuDef['image']['label'] = $lang->getLL('currentImage', TRUE);
 			$menuDef['image']['url'] = '#';
 			$menuDef['image']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=image\');return false;"';
 		}
 		if (in_array('magic', $this->allowedItems)) {
 			$menuDef['magic']['isActive'] = FALSE;
-			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', TRUE);
+			$menuDef['magic']['label'] = $lang->getLL('magicImage', TRUE);
 			$menuDef['magic']['url'] = '#';
 			$menuDef['magic']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=magic\');return false;"';
 		}
 		if (in_array('plain', $this->allowedItems)) {
 			$menuDef['plain']['isActive'] = FALSE;
-			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', TRUE);
+			$menuDef['plain']['label'] = $lang->getLL('plainImage', TRUE);
 			$menuDef['plain']['url'] = '#';
 			$menuDef['plain']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=plain\');return false;"';
 		}
 		if (in_array('dragdrop', $this->allowedItems)) {
 			$menuDef['dragdrop']['isActive'] = FALSE;
-			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', TRUE);
+			$menuDef['dragdrop']['label'] = $lang->getLL('dragDropImage', TRUE);
 			$menuDef['dragdrop']['url'] = '#';
 			$menuDef['dragdrop']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + \'act=dragdrop\');return false;"';
 		}
@@ -704,10 +715,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	public function getHelpMessage($act) {
 		switch ($act) {
 			case 'plain':
-				return sprintf($GLOBALS['LANG']->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
+				return sprintf($this->getLanguageService()->getLL('plainImage_msg'), $this->plainMaxWidth, $this->plainMaxHeight);
 				break;
 			case 'magic':
-				return sprintf($GLOBALS['LANG']->getLL('magicImage_msg'));
+				return sprintf($this->getLanguageService()->getLL('magicImage_msg'));
 				break;
 			default:
 				return '';
@@ -719,11 +730,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 *
 	 * In "plain" RTE mode only image files with a maximum width and height are selectable.
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
+	 * @param Resource\FileInterface $file
 	 * @param array $imgInfo Image dimensions from \TYPO3\CMS\Core\Imaging\GraphicalFunctions::getImageDimensions()
 	 * @return bool TRUE if file is selectable.
 	 */
-	protected function fileIsSelectableInFileList(\TYPO3\CMS\Core\Resource\FileInterface $file, array $imgInfo) {
+	protected function fileIsSelectableInFileList(Resource\FileInterface $file, array $imgInfo) {
 		return (
 			$this->act !== 'plain'
 			|| (
@@ -732,6 +743,20 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				&& $imgInfo[1] <= $this->plainMaxHeight
 			)
 		);
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
