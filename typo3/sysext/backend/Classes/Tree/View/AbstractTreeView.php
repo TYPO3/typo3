@@ -90,9 +90,9 @@ abstract class AbstractTreeView {
 	 * values are the ID of the root element (COULD be zero or anything else.
 	 * For pages that would be the uid of the page, zero for the pagetree root.)
 	 *
-	 * @var string
+	 * @var array|NULL
 	 */
-	public $MOUNTS = '';
+	public $MOUNTS = NULL;
 
 	/**
 	 * Database table to get the tree data from.
@@ -477,17 +477,15 @@ abstract class AbstractTreeView {
 	 *
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
-	 * @param bool $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
+	 * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
 	 * @param bool $isOpen
 	 * @return string Link-wrapped input string
 	 * @access private
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
 		if ($this->thisScript) {
-			if ($bMark) {
-				$anchor = '#' . $bMark;
-				$name = ' name="' . $bMark . '"';
-			}
+			$anchor = $bMark ? '#' . $bMark : '';
+			$name = $bMark ? ' name="' . $bMark . '"' : '';
 			$aUrl = $this->getThisScript() . 'PM=' . $cmd . $anchor;
 			return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed') . ' href="' . htmlspecialchars($aUrl) . '"' . $name . '><i class="fa"></i></a>';
 		} else {

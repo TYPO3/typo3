@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Recordlist\Controller\ElementBrowserController;
+
 /**
  * Extension class for the TBE record browser
  */
@@ -40,10 +44,12 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
 	 */
 	public function wrapTitle($title, $v, $ext_pArrPages) {
 		if ($ext_pArrPages) {
-			$ficon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $v);
-			$onClick = 'return insertElement(\'pages\', \'' . $v['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($v['title']) . ', \'\', \'\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($ficon) . ',\'\',1);';
+			$ficon = IconUtility::getSpriteIconForRecord('pages', $v);
+			$onClick = 'return insertElement(\'pages\', \'' . $v['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($v['title']) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ',\'\',1);';
 		} else {
-			$onClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['uid']) . ');';
+			/** @var ElementBrowserController $controller */
+			$controller = $GLOBALS['SOBE'];
+			$onClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $controller->browser->act . '&mode=' . $controller->browser->mode . '&expandPage=' . $v['uid']) . ');';
 		}
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $title . '</a>';
 	}

@@ -183,7 +183,7 @@ class ElementBrowser {
 	 *
 	 * Values:
 	 * 0: form field name reference, eg. "data[tt_content][123][image]"
-	 * 1: htmlArea RTE parameters: editorNo:contentTypo3Language:contentTypo3Charset
+	 * 1: htmlArea RTE parameters: editorNo:contentTypo3Language
 	 * 2: RTE config parameters: RTEtsConfigParams
 	 * 3: allowed types. Eg. "tt_content" or "gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai"
 	 * 4: IRRE uniqueness: target level object-id to perform actions/checks on, eg. "data[79][tt_address][1][<field>][<foreign_table>]"
@@ -555,7 +555,7 @@ class ElementBrowser {
 			}
 		' . $this->doc->redirectUrls();
 		// Functions used, if the link selector is in wizard mode (= TCEforms fields)
-		if ($this->mode == 'wizard') {
+		if ($this->mode === 'wizard') {
 			if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(TRUE)) {
 				$this->P['fieldChangeFunc'] = array();
 			}
@@ -854,9 +854,7 @@ class ElementBrowser {
 				}
 				break;
 			case 'file':
-
 			case 'filedrag':
-
 			case 'folder':
 				if (isset($this->expandFolder)) {
 					$data['expandFolder'] = $this->expandFolder;
@@ -1103,45 +1101,46 @@ class ElementBrowser {
 	/**
 	 * Returns an array definition of the top menu
 	 *
-	 * @param $wiz
-	 * @param $allowedItems
+	 * @param bool $wiz
+	 * @param array $allowedItems
 	 * @return mixed[][]
 	 */
 	protected function buildMenuArray($wiz, $allowedItems) {
+		$lang = $this->getLanguageService();
+
 		// Making menu in top:
 		$menuDef = array();
-		$lang = $this->getLanguageService();
 		if (!$wiz) {
 			$menuDef['removeLink']['isActive'] = $this->act === 'removeLink';
 			$menuDef['removeLink']['label'] = $lang->getLL('removeLink', TRUE);
 			$menuDef['removeLink']['url'] = '#';
 			$menuDef['removeLink']['addParams'] = 'onclick="self.parent.parent.renderPopup_unLink();return false;"';
 		}
-		if (in_array('page', $allowedItems)) {
+		if (in_array('page', $allowedItems, TRUE)) {
 			$menuDef['page']['isActive'] = $this->act === 'page';
 			$menuDef['page']['label'] = $lang->getLL('page', TRUE);
 			$menuDef['page']['url'] = '#';
 			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=page') . ');return false;"';
 		}
-		if (in_array('file', $allowedItems)) {
+		if (in_array('file', $allowedItems, TRUE)) {
 			$menuDef['file']['isActive'] = $this->act === 'file';
 			$menuDef['file']['label'] = $lang->getLL('file', TRUE);
 			$menuDef['file']['url'] = '#';
 			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=file') . ');return false;"';
 		}
-		if (in_array('folder', $allowedItems)) {
+		if (in_array('folder', $allowedItems, TRUE)) {
 			$menuDef['folder']['isActive'] = $this->act === 'folder';
 			$menuDef['folder']['label'] = $lang->getLL('folder', TRUE);
 			$menuDef['folder']['url'] = '#';
 			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=folder') . ');return false;"';
 		}
-		if (in_array('url', $allowedItems)) {
+		if (in_array('url', $allowedItems, TRUE)) {
 			$menuDef['url']['isActive'] = $this->act === 'url';
 			$menuDef['url']['label'] = $lang->getLL('extUrl', TRUE);
 			$menuDef['url']['url'] = '#';
 			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=url') . ');return false;"';
 		}
-		if (in_array('mail', $allowedItems)) {
+		if (in_array('mail', $allowedItems, TRUE)) {
 			$menuDef['mail']['isActive'] = $this->act === 'mail';
 			$menuDef['mail']['label'] = $lang->getLL('email', TRUE);
 			$menuDef['mail']['url'] = '#';
@@ -1222,9 +1221,7 @@ class ElementBrowser {
 		$folderTree->thisScript = $this->thisScript;
 		$tree = $folderTree->getBrowsableTree();
 		$backendUser = $this->getBackendUser();
-		if (!$this->curUrlInfo['value'] || $this->curUrlInfo['act'] != $this->act) {
-			$cmpPath = '';
-		} else {
+		if ($this->curUrlInfo['value'] && $this->curUrlInfo['act'] === $this->act) {
 			$cmpPath = $this->curUrlInfo['value'];
 			if (!isset($this->expandFolder)) {
 				$this->expandFolder = $cmpPath;
@@ -1312,8 +1309,8 @@ class ElementBrowser {
 		/** @var ElementBrowserPageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance($treeClassName);
 		$pageTree->thisScript = $this->thisScript;
-		$pageTree->ext_showPageId = $backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-		$pageTree->ext_showNavTitle = $backendUser->getTSConfigVal('options.pageTree.showNavTitle');
+		$pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
 		$pageTree->addField('nav_title');
 		$tree = $pageTree->getBrowsableTree();
 		$cElements = $this->expandPage();
@@ -1353,9 +1350,9 @@ class ElementBrowser {
 		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView::class);
 		$pageTree->thisScript = $this->thisScript;
-		$pageTree->ext_pArrPages = $tables === 'pages' ? 1 : 0;
-		$pageTree->ext_showNavTitle = $backendUser->getTSConfigVal('options.pageTree.showNavTitle');
-		$pageTree->ext_showPageId = $backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$pageTree->ext_pArrPages = $tables === 'pages';
+		$pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
+		$pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$pageTree->addField('nav_title');
 
 		$withTree = TRUE;
@@ -1618,7 +1615,8 @@ class ElementBrowser {
 			$expPageId = $this->curUrlInfo['pageid'];
 		}
 		// Draw the record list IF there is a page id to expand:
-		if ($expPageId
+		if (
+			$expPageId
 			&& MathUtility::canBeInterpretedAsInteger($expPageId)
 			&& $this->getBackendUser()->isInWebMount($expPageId)
 		) {
@@ -1646,7 +1644,6 @@ class ElementBrowser {
 				'',
 				'colPos,sorting'
 			);
-			$cc = $db->sql_num_rows($res);
 			// Traverse list of records:
 			$c = 0;
 			while ($row = $db->sql_fetch_assoc($res)) {
@@ -1932,7 +1929,7 @@ class ElementBrowser {
 				</tr>';
 		}
 		// Traverse the filelist:
-		/** @var $fileObject \TYPO3\CMS\Core\Resource\File */
+		/** @var $fileObject File */
 		foreach ($files as $fileObject) {
 			$fileExtension = $fileObject->getExtension();
 			// Thumbnail/size generation:
@@ -2621,7 +2618,7 @@ class ElementBrowser {
 	 *
 	 * @param Folder $folder
 	 * @param string $extensionList
-	 * @return \TYPO3\CMS\Core\Resource\File[]
+	 * @return File[]
 	 */
 	protected function getFilesInFolder(Folder $folder, $extensionList) {
 		if ($extensionList !== '') {
@@ -2661,7 +2658,6 @@ class ElementBrowser {
 		if ($this->pageRenderer === NULL) {
 			$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		}
-
 		return $this->pageRenderer;
 	}
 

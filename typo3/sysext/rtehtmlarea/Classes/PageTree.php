@@ -21,17 +21,20 @@ namespace TYPO3\CMS\Rtehtmlarea;
  *
  * Adapted for htmlArea RTE by Stanislas Rolland
  */
+
+use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Rtehtmlarea\Controller\BrowseLinksController;
 
 /**
  * Class which generates the page tree
  */
-class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
+class PageTree extends ElementBrowserPageTreeView {
 
 	/**
 	 * Create the page navigation tree in HTML
 	 *
-	 * @param array Tree array
+	 * @param array|string $treeArr Tree array
 	 * @return string HTML output.
 	 */
 	public function printTree($treeArr = '') {
@@ -54,14 +57,21 @@ class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
 			}
 
 			$selected = '';
-			if ($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
-				$classAttr .= ' active';
+			/** @var BrowseLinksController $controller */
+			$controller = $GLOBALS['SOBE'];
+			if ($controller->browser->curUrlInfo['act'] === 'page' && $controller->browser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $controller->browser->curUrlInfo['pageid']) {
+				$selected = ' bg-success';
 			}
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
-			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="list-tree-show" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()
+					. 'act=' . $controller->browser->act . '&editorNo=' . $controller->browser->editorNo
+					. '&contentTypo3Language=' . $controller->browser->contentTypo3Language
+					. '&mode=' . $controller->browser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid'])
+				? '<a href="#" class="pull-right" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>'
+				: '';
 			$out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
-					<span class="list-tree-group">
+					<span class="list-tree-group' . $selected . '">
 						' . $cEbullet . '
 						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
 						' . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $this->ext_pArrPages) . '
@@ -86,8 +96,7 @@ class PageTree extends \TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView {
 				}
 			}
 		}
-		$out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
-		return $out;
+		return '<ul class="list-tree list-tree-root">' . $out . '</ul>';
 	}
 
 }

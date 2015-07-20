@@ -14,18 +14,25 @@ namespace TYPO3\CMS\Backend\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Browse pages in Web module
  */
-class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
+class PageTreeView extends BrowseTreeView {
 
 	/**
 	 * @var bool
 	 */
-	public $ext_showPageId;
+	public $ext_showPageId = FALSE;
+
+	/**
+	 * @var bool
+	 */
+	public $ext_showNavTitle = FALSE;
 
 	/**
 	 * @var string
@@ -65,7 +72,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 */
 	public function wrapIcon($thePageIcon, &$row) {
 		// If the record is locked, present a warning sign.
-		if ($lockInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::isRecordLocked('pages', $row['uid'])) {
+		if ($lockInfo = BackendUtility::isRecordLocked('pages', $row['uid'])) {
 			$aOnClick = 'alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;';
 			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '</a>';
 		} else {
@@ -73,7 +80,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		}
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
-			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon, 'pages', $row['uid'], 0, '&bank=' . $this->bank);
+			$thePageIcon = $this->getDocumentTemplate()->wrapClickMenuOnIcon($thePageIcon, 'pages', $row['uid'], 0, '&bank=' . $this->bank);
 		} elseif ($this->ext_IconMode === 'titlelink') {
 			$aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->treeName) . ');';
 			$thePageIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $thePageIcon . '</a>';
@@ -115,7 +122,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			unset($_params);
 		}
 		$aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($row)) . ',this,' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($row)) . ',' . $bank . ');';
-		$clickMenuParts = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', TRUE);
+		$clickMenuParts = $this->getDocumentTemplate()->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', TRUE);
 
 		$thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
 		// Wrap title in a drag/drop span.
@@ -125,7 +132,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	/**
 	 * Compiles the HTML code for displaying the structure found inside the ->tree array
 	 *
-	 * @param array $treeArr "tree-array" - if blank string, the internal ->tree array is used.
+	 * @param array|string $treeArr "tree-array" - if blank string, the internal ->tree array is used.
 	 * @return string The HTML code for the tree
 	 */
 	public function printTree($treeArr = '') {
@@ -141,12 +148,14 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$PM = substr($PM, 0, $PMpos);
 		}
 		$PM = explode('_', $PM);
+
+		$doCollapse = FALSE;
+		$doExpand = FALSE;
+		$expandedPageUid = NULL;
+		$collapsedPageUid = NULL;
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX && is_array($PM) && count($PM) === 4 && $PM[2] != 0) {
 			if ($PM[1]) {
 				$expandedPageUid = $PM[2];
-				$ajaxOutput = '';
-				// We don't know yet. Will be set later.
-				$invertedDepthOfAjaxRequestedItem = 0;
 				$doExpand = TRUE;
 			} else {
 				$collapsedPageUid = $PM[2];
@@ -156,6 +165,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		// We need to count the opened <ul>'s every time we dig into another level,
 		// so we know how many we have to close when all children are done rendering
 		$closeDepth = array();
+		$ajaxOutput = '';
+		$invertedDepthOfAjaxRequestedItem = 0;
 		foreach ($treeArr as $k => $treeItem) {
 			$classAttr = $treeItem['row']['_CSSCLASS'];
 			$uid = $treeItem['row']['uid'];
@@ -163,7 +174,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$itemHTML = '';
 			// If this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
-			if ($treeItem['isFirst'] && !$doCollapse && !($doExpand && $expandedPageUid == $uid)) {
+			if ($treeItem['isFirst'] && !$doCollapse && (!$doExpand || (int)$expandedPageUid !== (int)$uid)) {
 				$itemHTML = '<ul class="list-tree">';
 			}
 
@@ -171,7 +182,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			if ($treeItem['hasSub']) {
 				$classAttr .= ' list-tree-control-open';
 			}
-			$itemHTML .= '<li id="' . $idAttr . '" ' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>';
+			$itemHTML .= '<li id="' . $idAttr . '" ' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '')
+				. '><span class="list-tree-group">' . $treeItem['HTML']
+				. $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>';
 			if (!$treeItem['hasSub']) {
 				$itemHTML .= '</li>';
 			}
@@ -190,12 +203,12 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 				}
 			}
 			// Ajax request: collapse
-			if ($doCollapse && $collapsedPageUid == $uid) {
+			if ($doCollapse && (int)$collapsedPageUid === (int)$uid) {
 				$this->ajaxStatus = TRUE;
 				return $itemHTML;
 			}
 			// ajax request: expand
-			if ($doExpand && $expandedPageUid == $uid) {
+			if ($doExpand && (int)$expandedPageUid === (int)$uid) {
 				$ajaxOutput .= $itemHTML;
 				$invertedDepthOfAjaxRequestedItem = $treeItem['invertedDepth'];
 			} elseif ($invertedDepthOfAjaxRequestedItem) {
@@ -243,7 +256,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 *
 	 * @param string $icon HTML string to wrap, probably an image tag.
 	 * @param string $cmd Command for 'PM' get var
-	 * @return bool $isExpand Link-wrapped input string
+	 * @param bool $isExpand Link-wrapped input string
+	 * @return string
 	 * @access private
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
@@ -266,9 +280,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		// Get stored tree structure AND updating it if needed according to incoming PM GET var.
 		$this->initializePositionSaving();
 		// Init done:
-		$titleLen = (int)$this->BE_USER->uc['titleLen'];
 		$treeArr = array();
 		// Traverse mounts:
+		$firstHtml = '';
 		foreach ($this->MOUNTS as $idx => $uid) {
 			// Set first:
 			$this->bank = $idx;
@@ -281,7 +295,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			if ($uid) {
 				// Set PM icon for root of mount:
 				$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
-				$firstHtml = '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '" href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"><i class="fa"></i></a>';
+				$firstHtml = '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed')
+					. '" href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"><i class="fa"></i></a>';
 			}
 			// Preparing rootRec for the mount
 			if ($uid) {
@@ -310,6 +325,15 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			}
 		}
 		return $this->printTree($treeArr);
+	}
+
+	/**
+	 * Returns an instance of DocumentTemplate
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function getDocumentTemplate() {
+		return $GLOBALS['TBE_TEMPLATE'];
 	}
 
 }

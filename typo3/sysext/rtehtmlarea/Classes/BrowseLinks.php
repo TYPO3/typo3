@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
@@ -25,13 +26,17 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
  */
 class BrowseLinks extends ElementBrowser {
 
+	/**
+	 * @var int
+	 */
 	public $editorNo;
+
 	/**
 	 * TYPO3 language code of the content language
+	 *
+	 * @var int
 	 */
 	public $contentTypo3Language;
-
-	public $contentTypo3Charset = 'utf-8';
 
 	/**
 	 * Language service object for localization to the content language
@@ -40,26 +45,59 @@ class BrowseLinks extends ElementBrowser {
 	 */
 	protected $contentLanguageService;
 
+	/**
+	 * @var array
+	 */
 	public $additionalAttributes = array();
 
+	/**
+	 * @var array
+	 */
 	public $buttonConfig = array();
 
+	/**
+	 * @var array
+	 */
 	public $RTEProperties = array();
 
+	/**
+	 * @var array
+	 */
 	public $anchorTypes = array('page', 'url', 'file', 'mail');
 
+	/**
+	 * @var array
+	 */
 	public $classesAnchorDefault = array();
 
+	/**
+	 * @var array
+	 */
 	public $classesAnchorDefaultTitle = array();
 
+	/**
+	 * @var array
+	 */
 	public $classesAnchorClassTitle = array();
 
+	/**
+	 * @var array
+	 */
 	public $classesAnchorDefaultTarget = array();
 
+	/**
+	 * @var array
+	 */
 	public $classesAnchorJSOptions = array();
 
+	/**
+	 * @var
+	 */
 	protected $defaultLinkTarget;
 
+	/**
+	 * @var
+	 */
 	public $allowedItems;
 
 	/**
@@ -114,7 +152,7 @@ class BrowseLinks extends ElementBrowser {
 			$this->contentTypo3Language = GeneralUtility::_GP('contentTypo3Language');
 			$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
 		}
-		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language, $this->contentTypo3Charset));
+		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language));
 		$pArr[2] = $this->RTEtsConfigParams;
 		$this->bparams = implode('|', $pArr);
 	}
@@ -138,8 +176,7 @@ class BrowseLinks extends ElementBrowser {
 		parent::initDocumentTemplate();
 		$this->doc->getContextMenuCode();
 		// Apply the same styles as those of the base script
-		$this->doc->bodyTagId = 'typo3-browse-links-php';
-		$this->getPageRenderer()->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		$this->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
 		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
@@ -406,7 +443,10 @@ class BrowseLinks extends ElementBrowser {
 			}
 		';
 		// Hook to overwrite or extend javascript functions
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'])) {
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'])
+			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['extendJScode'])
+		) {
 			$conf = array();
 			$_params = array(
 				'conf' => &$conf
@@ -610,17 +650,10 @@ class BrowseLinks extends ElementBrowser {
 	 * @return string The HTML code of the form
 	 */
 	public function addAttributesForm($rows = '') {
-		$ltargetForm = '';
-		$additionalAttributeFields = '';
-		// Add page id, target, class selector box, title and parameters fields:
-		$lpageId = $this->addPageIdSelector();
-		$queryParameters = $this->addQueryParametersSelector();
-		$ltarget = $this->addTargetSelector();
-		$lclass = $this->addClassSelector();
-		$ltitle = $this->addTitleSelector();
-		$rel = $this->addRelField();
 		// additional fields for links
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'])
+		$additionalAttributeFields = '';
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'])
 			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php']['addAttributeFields'])
 		) {
 			$conf = array();
@@ -632,6 +665,16 @@ class BrowseLinks extends ElementBrowser {
 				$additionalAttributeFields .= $processor->getAttributefields($_params, $this);
 			}
 		}
+
+		// Add page id, target, class selector box, title and parameters fields:
+		$lpageId = $this->addPageIdSelector();
+		$queryParameters = $this->addQueryParametersSelector();
+		$ltarget = $this->addTargetSelector();
+		$lclass = $this->addClassSelector();
+		$ltitle = $this->addTitleSelector();
+		$rel = $this->addRelField();
+
+		$ltargetForm = '';
 		if ($rows || $lpageId || $queryParameters || $lclass || $ltitle || $ltarget || $rel) {
 			$ltargetForm = $this->wrapInForm($rows . $lpageId . $queryParameters . $lclass . $ltitle . $ltarget . $rel . $additionalAttributeFields);
 		}
@@ -658,7 +701,7 @@ class BrowseLinks extends ElementBrowser {
 						</td>
 						<td colspan="3">
 							<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('update', TRUE) . '" onclick="'
-								. ($this->act == 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
+								. ($this->act === 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
 								. 'return link_current();" />
 						</td>
 					</tr>';

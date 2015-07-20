@@ -102,8 +102,8 @@ class PageTreeNavigationController {
 		$beUser = $this->getBackendUser();
 		$this->pagetree = GeneralUtility::makeInstance(PageTreeView::class);
 		$this->pagetree->ext_IconMode = $beUser->getTSConfigVal('options.pageTree.disableIconLinkToContextmenu');
-		$this->pagetree->ext_showPageId = $beUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-		$this->pagetree->ext_showNavTitle = $beUser->getTSConfigVal('options.pageTree.showNavTitle');
+		$this->pagetree->ext_showPageId = (bool)$beUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+		$this->pagetree->ext_showNavTitle = (bool)$beUser->getTSConfigVal('options.pageTree.showNavTitle');
 		$this->pagetree->ext_separateNotinmenuPages = $beUser->getTSConfigVal('options.pageTree.separateNotinmenuPages');
 		$this->pagetree->ext_alphasortNotinmenuPages = $beUser->getTSConfigVal('options.pageTree.alphasortNotinmenuPages');
 		$this->pagetree->thisScript = 'alt_db_navframe.php';
