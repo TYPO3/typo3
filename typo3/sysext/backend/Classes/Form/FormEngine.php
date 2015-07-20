@@ -1250,6 +1250,7 @@ class FormEngine {
 			}
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
+			$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/tree.js');
 			$beUserAuth = $this->getBackendUserAuthentication();
 			// Make textareas resizable and flexible ("autogrow" in height)
 			$textareaSettings = array(
