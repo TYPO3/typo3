@@ -6,13 +6,13 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables</sheetTitle>
+					<sheetTitle>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<acctables_caption>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_caption</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_caption</label>
 							<config>
 								<type>input</type>
 								<size>33</size>
@@ -22,7 +22,7 @@
 
 					<acctables_summary>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_summary</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_summary</label>
 							<config>
 								<type>input</type>
 								<size>33</size>
@@ -32,7 +32,7 @@
 
 					<acctables_tfoot>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_tfoot</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_tfoot</label>
 							<config>
 								<type>check</type>
 								<items type="array">
@@ -47,20 +47,20 @@
 
 					<acctables_headerpos>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_headerpos</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos.I.0</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_headerpos.I.0</numIndex>
 										<numIndex index="1"></numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos.I.1</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_headerpos.I.1</numIndex>
 										<numIndex index="1">top</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_headerpos.I.2</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_headerpos.I.2</numIndex>
 										<numIndex index="1">left</numIndex>
 									</numIndex>
 								</items>
@@ -72,7 +72,7 @@
 					</acctables_headerpos>
 					<acctables_nostyles>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_nostyles</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_nostyles</label>
 							<config>
 								<type>check</type>
 							</config>
@@ -81,7 +81,7 @@
 
 					<acctables_tableclass>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_acctables_tableclass</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_acctables_tableclass</label>
 							<config>
 								<type>input</type>
 								<size>33</size>
@@ -95,26 +95,26 @@
 		<s_parsing>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing</sheetTitle>
+					<sheetTitle>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<tableparsing_quote>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_quote</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote_none</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_quote_none</numIndex>
 										<numIndex index="1"></numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote_single</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_quote_single</numIndex>
 										<numIndex index="1">39</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_quote_double</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_quote_double</numIndex>
 										<numIndex index="1">34</numIndex>
 									</numIndex>
 								</items>
@@ -127,28 +127,28 @@
 
 					<tableparsing_delimiter>
 						<TCEforms>
-							<label>LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter</label>
+							<label>LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_delimiter</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_delimiter_pipe</numIndex>
 										<numIndex index="1">124</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_delimiter_semicolon</numIndex>
 										<numIndex index="1">59</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma</numIndex>
 										<numIndex index="1">44</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon</numIndex>
 										<numIndex index="1">58</numIndex>
 									</numIndex>
 									<numIndex index="4" type="array">
-										<numIndex index="0">LLL:EXT:css_styled_content/locallang_db.xml:tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab</numIndex>
+										<numIndex index="0">LLL:EXT:css_styled_content/Resources/Private/Language/locallang_db.xlf:tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab</numIndex>
 										<numIndex index="1">9</numIndex>
 									</numIndex>
 								</items>
