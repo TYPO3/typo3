@@ -283,7 +283,7 @@ CREATE TABLE tt_content (
 	linkToTop tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	file_collections text,
 	filelink_size tinyint(3) unsigned DEFAULT '0' NOT NULL,
-	filelink_sorting tinytext NOT NULL,
+	filelink_sorting varchar(10) DEFAULT '' NOT NULL,
 	target varchar(30) DEFAULT '' NOT NULL,
 	date int(10) unsigned DEFAULT '0' NOT NULL,
 	recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
