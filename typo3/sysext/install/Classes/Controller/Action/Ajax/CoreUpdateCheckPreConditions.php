@@ -26,7 +26,7 @@ class CoreUpdateCheckPreConditions extends AbstractCoreUpdate {
 	 */
 	protected function executeAction() {
 		$this->view->assignMultiple(array(
-				'success' => $this->coreUpdateService->checkPreConditions(),
+				'success' => $this->coreUpdateService->checkPreConditions($this->getVersionToHandle()),
 				'status' => $this->coreUpdateService->getMessages(),
 			));
 		return $this->view->render();

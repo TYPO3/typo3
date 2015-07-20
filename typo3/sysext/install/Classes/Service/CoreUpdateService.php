@@ -165,9 +165,11 @@ class CoreUpdateService {
 	/**
 	 * Check if an update is possible at all
 	 *
+	 * @param string $version The target version number
 	 * @return bool TRUE on success
+	 * @throws \TYPO3\CMS\Install\Status\Exception
 	 */
-	public function checkPreConditions() {
+	public function checkPreConditions($version) {
 		$success = TRUE;
 		$messages = array();
 
@@ -216,21 +218,23 @@ class CoreUpdateService {
 				unlink($file);
 			}
 
-			// Explicit write check to upper directory of current core location
-			$coreLocation = @realPath($this->symlinkToCoreFiles . '/../');
-			$file = $coreLocation . '/' . uniqid('install-core-update-test-', TRUE);
-			$result = @touch($file);
-			if (!$result) {
-				$success = FALSE;
-				/** @var $message StatusInterface */
-				$message = $this->objectManager->get(ErrorStatus::class);
-				$message->setTitle('Automatic TYPO3 CMS core update not possible: No write access to TYPO3 CMS core location');
-				$message->setMessage(
-					'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!'
-				);
-				$messages[] = $message;
-			} else {
-				unlink($file);
+			if (!$this->checkCoreFilesAvailable($version)) {
+				// Explicit write check to upper directory of current core location
+				$coreLocation = @realPath($this->symlinkToCoreFiles . '/../');
+				$file = $coreLocation . '/' . uniqid('install-core-update-test-', TRUE);
+				$result = @touch($file);
+				if (!$result) {
+					$success = FALSE;
+					/** @var $message StatusInterface */
+					$message = $this->objectManager->get(ErrorStatus::class);
+					$message->setTitle('Automatic TYPO3 CMS core update not possible: No write access to TYPO3 CMS core location');
+					$message->setMessage(
+						'New TYPO3 CMS core should be installed in "' . $coreLocation . '", but this directory is not writable!'
+					);
+					$messages[] = $message;
+				} else {
+					unlink($file);
+				}
 			}
 		}
 
