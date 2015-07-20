@@ -888,7 +888,8 @@ abstract class AbstractUserAuthentication {
 			'ses_iplock' => $tempuser['disableIPlock'] ? '[DISABLED]' : $this->ipLockClause_remoteIPNumber($this->lockIP),
 			'ses_hashlock' => $this->hashLockClause_getHashInt(),
 			'ses_userid' => $tempuser[$this->userid_column],
-			'ses_tstamp' => $GLOBALS['EXEC_TIME']
+			'ses_tstamp' => $GLOBALS['EXEC_TIME'],
+			'ses_data' => ''
 		);
 	}
 
