@@ -183,7 +183,7 @@ class UpdateTranslationService {
 	 * @return string
 	 */
 	protected function getMirrorUrl($extensionKey) {
-		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
+		$mirrorUrl = $this->repositoryHelper->getMirrors(FALSE)->getMirrorUrl();
 
 		$mirrorUrl = $this->emitPostProcessMirrorUrlSignal($extensionKey, $mirrorUrl);
 
