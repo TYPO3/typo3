@@ -405,7 +405,7 @@ class PageGenerator {
 		}
 		// Including CSS files
 		if (is_array($tsfe->tmpl->setup['plugin.'])) {
-			$temp_styleLines = array();
+			$stylesFromPlugins = '';
 			foreach ($tsfe->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode)) {
 					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($tsfe->config['config']['removeDefaultCss'])) {
@@ -414,23 +414,20 @@ class PageGenerator {
 						} else {
 							$cssDefaultStyle = $iCSScode['_CSS_DEFAULT_STYLE'];
 						}
-						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle;
+						$stylesFromPlugins .= '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssDefaultStyle . LF;
 					}
 					if ($iCSScode['_CSS_PAGE_STYLE'] && empty($tsfe->config['config']['removePageCss'])) {
 						$cssPageStyle = implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
 						if (isset($iCSScode['_CSS_PAGE_STYLE.'])) {
 							$cssPageStyle = $tsfe->cObj->stdWrap($cssPageStyle, $iCSScode['_CSS_PAGE_STYLE.']);
 						}
-						$temp_styleLines[] = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssPageStyle;
+						$cssPageStyle = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . $cssPageStyle;
+						self::addCssToPageRenderer($cssPageStyle, TRUE);
 					}
 				}
 			}
-			if (!empty($temp_styleLines)) {
-				if ($tsfe->config['config']['inlineStyle2TempFile']) {
-					$pageRenderer->addCssFile(self::inline2TempFile(implode(LF, $temp_styleLines), 'css'));
-				} else {
-					$pageRenderer->addCssInlineBlock('TSFEinlineStyle', implode(LF, $temp_styleLines));
-				}
+			if (!empty($stylesFromPlugins)) {
+				self::addCssToPageRenderer($stylesFromPlugins);
 			}
 		}
 		if ($tsfe->pSetup['stylesheet']) {
@@ -542,11 +539,7 @@ class PageGenerator {
 		$style .= trim($tsfe->pSetup['CSS_inlineStyle']);
 		$style .= $tsfe->cObj->cObjGet($tsfe->pSetup['cssInline.'], 'cssInline.');
 		if (trim($style)) {
-			if ($tsfe->config['config']['inlineStyle2TempFile']) {
-				$pageRenderer->addCssFile(self::inline2TempFile($style, 'css'));
-			} else {
-				$pageRenderer->addCssInlineBlock('additionalTSFEInlineStyle', $style);
-			}
+			self::addCssToPageRenderer($style, TRUE, 'additionalTSFEInlineStyle');
 		}
 		// Javascript Libraries
 		if (is_array($tsfe->pSetup['javascriptLibs.'])) {
@@ -1199,5 +1192,29 @@ class PageGenerator {
 	 */
 	static protected function getPageRenderer() {
 		return GeneralUtility::makeInstance(PageRenderer::class);
+	}
+
+	/**
+	 * Adds inline CSS code, by respecting the inlineStyle2TempFile option
+	 *
+	 * @param string $cssStyles the inline CSS styling
+	 * @param bool $excludeFromConcatenation option to see if it should be conctatenated
+	 * @param string $inlineBlockName the block name to add it
+	 */
+	static protected function addCssToPageRenderer($cssStyles, $excludeFromConcatenation = FALSE, $inlineBlockName = 'TSFEinlineStyle') {
+		if (empty($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile'])) {
+			self::getPageRenderer()->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($GLOBALS['TSFE']->config['config']['compressCss']));
+		} else {
+			self::getPageRenderer()->addCssFile(
+				self::inline2TempFile($cssStyles, 'css'),
+				'stylesheet',
+				'all',
+				'',
+				(bool)$GLOBALS['TSFE']->config['config']['compressCss'],
+				FALSE,
+				'',
+				$excludeFromConcatenation
+			);
+		}
 	}
 }
