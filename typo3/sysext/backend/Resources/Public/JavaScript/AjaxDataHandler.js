@@ -15,6 +15,8 @@
  * AjaxDataHandler - Javascript functions to work with AJAX and interacting with tce_db.php
  */
 define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Backend/Modal'], function ($) {
+	'use strict';
+
 	var AjaxDataHandler = {};
 
 	/**
@@ -35,17 +37,12 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 		// HIDE/UNHIDE: click events for all action icons to hide/unhide
 		$(document).on('click', '.t3js-record-hide', function(evt) {
 			evt.preventDefault();
-			var $anchorElement = $(this);
-			var $iconElement   = $anchorElement.find('span');
-			var $rowElement    = $anchorElement.closest('tr[data-uid]');
-			var table  = $anchorElement.closest('table[data-table]').data('table');
-			var hasVisibleState  = $anchorElement.data('state') === 'visible';
-			var params = $anchorElement.data('params');
+			var $anchorElement   = $(this);
+			var $iconElement     = $anchorElement.find('span');
+			var $rowElement      = $anchorElement.closest('tr[data-uid]');
+			var params           = $anchorElement.data('params');
 
-			var removeClass = hasVisibleState ? 'fa-toggle-on' : 'fa-toggle-off';
-			var addClass    = hasVisibleState ? 'fa-toggle-off' : 'fa-toggle-on';
-			var nextState   = hasVisibleState ? 'hidden' : 'visible';
-			var nextParams  = hasVisibleState ? params.replace('=1', '=0') : params.replace('=0', '=1');
+			var removeClass      = $anchorElement.data('state') === 'visible' ? 'fa-toggle-on' : 'fa-toggle-off';
 
 			// add a spinner
 			$iconElement.removeClass(removeClass);
@@ -60,22 +57,8 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 					// revert to the old class
 					$iconElement.addClass(removeClass);
 				} else {
-					$anchorElement.data('state', nextState).data('params', nextParams);
-					$iconElement.removeClass(removeClass).addClass(addClass);
-					if (nextState === 'hidden') {
-						// add overlay icon
-						$rowElement.find('td.col-icon span.t3-icon').append('<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>');
-					} else {
-						// remove overlay icon
-						$rowElement.find('td.col-icon span.t3-icon span.t3-icon').remove();
-					}
-					$rowElement.fadeTo('fast', 0.4, function() {
-						$rowElement.fadeTo('fast', 1);
-					});
-
-					if (table === 'pages') {
-						AjaxDataHandler.refreshPageTree();
-					}
+					// adjust overlay icon
+					AjaxDataHandler.toggleRow($rowElement);
 				}
 			});
 		});
@@ -105,6 +88,45 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 				}
 			});
 		});
+	};
+
+	/**
+	 * Toggle row visibility after record has been changed
+	 *
+	 * @param $rowElement
+	 */
+	AjaxDataHandler.toggleRow = function($rowElement) {
+		var $anchorElement = $rowElement.find('.t3js-record-hide');
+		var table = $anchorElement.closest('table[data-table]').data('table');
+		var params = $anchorElement.data('params');
+		var nextParams, nextState;
+
+		if ($anchorElement.data('state') === 'hidden') {
+			nextState = 'visible';
+			nextParams = params.replace('=0', '=1');
+		} else {
+			nextState = 'hidden';
+			nextParams = params.replace('=1', '=0');
+		}
+		$anchorElement.data('state', nextState).data('params', nextParams);
+
+		var $iconElement = $anchorElement.find('span');
+		$iconElement.toggleClass('fa-toggle-on').toggleClass('fa-toggle-off');
+
+		var $icon = $rowElement.find('td.col-icon span.t3-icon');
+		var $overlayIcon = $icon.find('span.t3-icon');
+		if ($overlayIcon.length) {
+			$overlayIcon.remove();
+		} else {
+			$icon.append('<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>');
+		}
+
+		$rowElement.fadeTo('fast', 0.4, function() {
+			$rowElement.fadeTo('fast', 1);
+		});
+		if (table === 'pages') {
+			AjaxDataHandler.refreshPageTree();
+		}
 	};
 
 	/**
