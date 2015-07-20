@@ -86,7 +86,7 @@ define('TYPO3/CMS/Backend/LiveSearch', ['jquery', 'jquery/autocomplete'], functi
 		// set up the events
 		$(containerSelector).on('click', '.t3js-live-search-show-all', function(evt) {
 			evt.preventDefault();
-			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + $(searchFieldSelector).val());
+			TYPO3.ModuleMenu.App.showModule('web_list', 'id=0&search_levels=4&search_field=' + encodeURIComponent($(searchFieldSelector).val()));
 		});
 		$(containerSelector).on('click', '.dropdown-list-link', function(evt) {
 			evt.preventDefault();
