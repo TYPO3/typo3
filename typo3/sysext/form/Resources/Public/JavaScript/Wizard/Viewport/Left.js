@@ -78,7 +78,7 @@ TYPO3.Form.Wizard.Viewport.Left = Ext.extend(Ext.TabPanel, {
 		var allowedTabs = TYPO3.Form.Wizard.Settings.defaults.showTabs.split(/[, ]+/);
 		var tabs = [];
 
-		allowedTabs.each(function(option, index, length) {
+		Ext.each(allowedTabs, function(option, index, length) {
 			var tabXtype = 'typo3-form-wizard-viewport-left-' + option;
 			if (Ext.ComponentMgr.isRegistered(tabXtype)) {
 				tabs.push({

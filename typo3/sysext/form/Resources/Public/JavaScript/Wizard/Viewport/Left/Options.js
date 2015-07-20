@@ -120,7 +120,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options = Ext.extend(Ext.Panel, {
 				xtype: 'typo3-form-wizard-viewport-left-options-dummy'
 			});
 		}
-		this.tabEl.removeClassName('validation-error');
+		Ext.get(this.tabEl).removeClass('validation-error');
 		Ext.iterate(this.validAccordions, function(key, value) {
 			this.validAccordions[key] = true;
 		}, this);
@@ -157,10 +157,11 @@ TYPO3.Form.Wizard.Viewport.Left.Options = Ext.extend(Ext.Panel, {
 		var tabIsValid = this.tabIsValid();
 
 		if (this.tabEl) {
-			if (tabIsValid && Ext.get(this.tabEl).hasClass('validation-error')) {
-				this.tabEl.removeClassName('validation-error');
-			} else if (!tabIsValid && !Ext.get(this.tabEl).hasClass('validation-error')) {
-				this.tabEl.addClassName('validation-error');
+			var tabEl = Ext.get(this.tabEl);
+			if (tabIsValid && tabEl.hasClass('validation-error')) {
+				tabEl.removeClass('validation-error');
+			} else if (!tabIsValid && !tabEl.hasClass('validation-error')) {
+				tabEl.addClass('validation-error');
 			}
 		}
 	}

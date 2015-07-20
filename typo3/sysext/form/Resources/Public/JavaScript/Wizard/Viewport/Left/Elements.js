@@ -46,7 +46,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements = Ext.extend(Ext.Panel, {
 		var allowedAccordions = TYPO3.Form.Wizard.Settings.defaults.tabs.elements.showAccordions.split(/[, ]+/);
 		var accordions = [];
 
-		allowedAccordions.each(function(option, index, length) {
+		Ext.each(allowedAccordions, function(option, index, length) {
 			var accordionXtype = 'typo3-form-wizard-viewport-left-elements-' + option;
 			if (Ext.ComponentMgr.isRegistered(accordionXtype)) {
 				accordions.push({

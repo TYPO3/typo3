@@ -38,7 +38,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Predefined = Ext.extend(TYPO3.Form.Wiza
 		var allowedButtons = TYPO3.Form.Wizard.Settings.defaults.tabs.elements.accordions.predefined.showButtons.split(/[, ]+/);
 		var buttons = [];
 
-		allowedButtons.each(function(option, index, length) {
+		Ext.each(allowedButtons, function(option, index, length) {
 			switch (option) {
 				case 'email':
 					buttons.push({

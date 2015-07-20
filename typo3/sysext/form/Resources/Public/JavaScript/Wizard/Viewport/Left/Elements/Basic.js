@@ -38,7 +38,7 @@ TYPO3.Form.Wizard.Viewport.Left.Elements.Basic = Ext.extend(TYPO3.Form.Wizard.Vi
 		var allowedButtons = TYPO3.Form.Wizard.Settings.defaults.tabs.elements.accordions.basic.showButtons.split(/[, ]+/);
 		var buttons = [];
 
-		allowedButtons.each(function(option, index, length) {
+		Ext.each(allowedButtons, function(option, index, length) {
 			switch (option) {
 				case 'button':
 					buttons.push({

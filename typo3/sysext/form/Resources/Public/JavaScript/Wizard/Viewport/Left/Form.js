@@ -108,7 +108,7 @@ TYPO3.Form.Wizard.Viewport.Left.Form = Ext.extend(Ext.Panel, {
 
 		this.accordion.removeAll();
 		if (form) {
-			allowedAccordions.each(function(option, index, length) {
+			Ext.each(allowedAccordions, function(option, index, length) {
 				switch (option) {
 					case 'behaviour':
 						this.accordion.add({
@@ -181,10 +181,11 @@ TYPO3.Form.Wizard.Viewport.Left.Form = Ext.extend(Ext.Panel, {
 			}
 		}, this);
 		if (this.tabEl) {
-			if (tabIsValid && Ext.get(this.tabEl).hasClass('validation-error')) {
-				this.tabEl.removeClassName('validation-error');
-			} else if (!tabIsValid && !Ext.get(this.tabEl).hasClass('validation-error')) {
-				this.tabEl.addClassName('validation-error');
+			var tabEl = Ext.get(this.tabEl);
+			if (tabIsValid && tabEl.hasClass('validation-error')) {
+				tabEl.removeClass('validation-error');
+			} else if (!tabIsValid && !tabEl.hasClass('validation-error')) {
+				tabEl.addClass('validation-error');
 			}
 		}
 	}

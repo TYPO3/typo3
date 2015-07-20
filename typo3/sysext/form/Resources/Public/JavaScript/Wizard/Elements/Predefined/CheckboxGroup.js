@@ -105,12 +105,12 @@ TYPO3.Form.Wizard.Elements.Predefined.CheckboxGroup = Ext.extend(TYPO3.Form.Wiza
 	 */
 	rebuild: function(component) {
 		this.containerComponent.removeAll();
-		if (this.configuration.options.size() > 0) {
+		if (this.configuration.options.length > 0) {
 			var dummy = this.containerComponent.findById('dummy');
 			if (dummy) {
 				this.containerComponent.remove(dummy, true);
 			}
-			this.configuration.options.each(function(option, index, length) {
+			Ext.each(this.configuration.options, function(option, index, length) {
 				var checkbox = this.containerComponent.add({
 					xtype: 'typo3-form-wizard-elements-basic-checkbox',
 					isEditable: false,

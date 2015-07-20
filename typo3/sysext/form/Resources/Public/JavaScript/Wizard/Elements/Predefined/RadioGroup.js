@@ -105,12 +105,12 @@ TYPO3.Form.Wizard.Elements.Predefined.RadioGroup = Ext.extend(TYPO3.Form.Wizard.
 	 */
 	rebuild: function(component) {
 		this.containerComponent.removeAll();
-		if (this.configuration.options.size() > 0) {
+		if (this.configuration.options.length > 0) {
 			var dummy = this.containerComponent.findById('dummy');
 			if (dummy) {
 				this.containerComponent.remove(dummy, true);
 			}
-			this.configuration.options.each(function(option, index, length) {
+			Ext.each(this.configuration.options, function(option, index, length) {
 				var radio = this.containerComponent.add({
 					xtype: 'typo3-form-wizard-elements-basic-radio',
 					isEditable: false,
