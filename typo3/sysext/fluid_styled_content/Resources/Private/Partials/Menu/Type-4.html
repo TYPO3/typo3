@@ -1,0 +1,39 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:ce="http://typo3.org/ns/TYPO3/CMS/FluidStyledContent/ViewHelpers" data-namespace-typo3-fluid="true">
+<ce:menu.directory pageUids="{pageUids}" as="pages">
+	<f:if condition="{pages}">
+		<dl class="ce-menu ce-menu-4">
+			<f:for each="{pages}" as="page">
+				<dt>
+					<f:link.page pageUid="{page.uid}">
+						{page.title}
+					</f:link.page>
+				</dt>
+				<dd>
+					<f:if condition="{page.abstract}">
+						<f:then>
+							{page.abstract}
+						</f:then>
+						<f:else>
+							<f:if condition="{page.description}">
+								<f:then>
+									{page.description}
+								</f:then>
+								<f:else>
+									<f:if condition="{page.subtitle}">
+										<f:then>
+											{page.subtitle}
+										</f:then>
+										<f:else>
+											&nbsp;
+										</f:else>
+									</f:if>
+								</f:else>
+							</f:if>
+						</f:else>
+					</f:if>
+				</dd>
+			</f:for>
+		</dl>
+	</f:if>
+</ce:menu.directory>
+</html>

@@ -981,6 +981,12 @@
 			<trans-unit id="imagecaption.ALT.script_formlabel">
 				<source>Comments</source>
 			</trans-unit>
+			<trans-unit id="field.default.hidden">
+				<source>Visibility of content element</source>
+			</trans-unit>
+			<trans-unit id="field.table.bodytext">
+				<source>Table content</source>
+			</trans-unit>
 			<trans-unit id="palette.general">
 				<source>Content Element</source>
 			</trans-unit>
@@ -1044,6 +1050,9 @@
 			<trans-unit id="palette.table_layout">
 				<source>Table Layout</source>
 			</trans-unit>
+			<trans-unit id="palette.appearanceLinks">
+				<source>Links</source>
+			</trans-unit>
 			<trans-unit id="tabs.access">
 				<source>Access</source>
 			</trans-unit>
@@ -1061,6 +1070,9 @@
 			</trans-unit>
 			<trans-unit id="tabs.extended">
 				<source>Extended</source>
+			</trans-unit>
+			<trans-unit id="tabs.accessibility">
+				<source>Accessibility</source>
 			</trans-unit>
 		</body>
 	</file>

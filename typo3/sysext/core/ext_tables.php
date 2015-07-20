@@ -376,6 +376,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-x-content-template-static',
 	'mimetypes-x-content-text',
 	'mimetypes-x-content-text-picture',
+	'mimetypes-x-content-text-media',
 	'mimetypes-x-sys_action',
 	'mimetypes-x-sys_category',
 	'mimetypes-x-sys_language',

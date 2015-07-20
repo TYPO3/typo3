@@ -30,6 +30,12 @@
 			<trans-unit id="common_textImage_description">
 				<source>Any number of images wrapped right around a regular text element.</source>
 			</trans-unit>
+			<trans-unit id="common_textMedia_title">
+				<source>Text &amp; Media</source>
+			</trans-unit>
+			<trans-unit id="common_textMedia_description">
+				<source>Any number of media wrapped right around a regular text element.</source>
+			</trans-unit>
 			<trans-unit id="common_imagesOnly_title">
 				<source>Images Only</source>
 			</trans-unit>

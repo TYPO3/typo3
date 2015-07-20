@@ -1,0 +1,21 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:ce="http://typo3.org/ns/TYPO3/CMS/FluidStyledContent/ViewHelpers" data-namespace-typo3-fluid="true">
+<ce:menu.list pageUids="{pageUids}" as="pages">
+	<f:if condition="{pages}">
+		<ul class="ce-menu ce-menu-3">
+			<f:for each="{pages}" as="page">
+				<ce:menu.section pageUid="{page.uid}" as="contentElements" type="header">
+					<f:if condition="{contentElements}">
+						<f:for each="{contentElements}" as="contentElement">
+							<li>
+								<f:link.page pageUid="{page.uid}" section="c{contentElement.uid}">
+									{contentElement.header}
+								</f:link.page>
+							</li>
+						</f:for>
+					</f:if>
+				</ce:menu.section>
+			</f:for>
+		</ul>
+	</f:if>
+</ce:menu.list>
+</html>

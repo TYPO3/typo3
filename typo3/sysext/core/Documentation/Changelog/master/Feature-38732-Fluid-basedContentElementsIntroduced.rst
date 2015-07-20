@@ -1,0 +1,32 @@
+=========================================================
+Feature: #38732 - Fluid-based Content Elements Introduced
+=========================================================
+
+Description
+===========
+
+A new system extension called "Fluid Styled Content" is added to the core, which ships with a trimmed down and
+simplified set of Content Elements which are rendered by Fluid Templates. This extension is installed by default on
+new installations.
+
+In order to have Fluid Styled Content running, add the TypoScript file inside the Template module, and the PageTSconfig
+file on the page properties.
+
+It is possible to overwrite the templates by adding your own paths in the TypoScript setup:
+
+.. code-block:: typoscript
+
+	lib.fluidContent.templateRootPaths.50 = EXT:site_example/Resources/Private/Templates/
+	lib.fluidContent.partialRootPaths.50 = EXT:site_example/Resources/Private/Partials/
+	lib.fluidContent.layoutRootPaths.50 = EXT:site_example/Resources/Private/Layouts/
+
+
+The new CType ``textmedia`` adds support for rendering media elements and image elements side by side.
+
+Impact
+======
+
+Please note that this extension is still experimental, and breaking changes are still possible until TYPO3 CMS 7 LTS,
+so be aware of changes to TCA, Templates, Behaviour and Feature set.
+
+Some conflicts regarding CSS Styled Content and Fluid Styled Content might still exist.

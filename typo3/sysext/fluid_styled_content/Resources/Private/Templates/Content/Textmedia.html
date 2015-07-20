@@ -1,0 +1,26 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div id="c{data.uid}">
+	<f:if condition="{gallery.position.noWrap} != 1">
+		<f:render partial="Header" arguments="{_all}" />
+	</f:if>
+
+	<div class="ce-textpic ce-{gallery.position.horizontal} ce-{gallery.position.vertical}{f:if(condition: gallery.position.noWrap, then: ' ce-nowrap')}">
+		<f:if condition="{gallery.position.vertical} != 'below'">
+			<f:render partial="MediaGallery" arguments="{_all}" />
+		</f:if>
+
+		<div class="ce-bodytext">
+			<f:if condition="{gallery.position.noWrap}">
+				<f:render partial="Header" arguments="{_all}" />
+			</f:if>
+			<f:format.html>{data.bodytext}</f:format.html>
+		</div>
+
+		<f:if condition="{gallery.position.vertical} == 'below'">
+			<f:render partial="MediaGallery" arguments="{_all}" />
+		</f:if>
+	</div>
+
+	<f:render partial="Footer" arguments="{_all}" />
+</div>
+</html>

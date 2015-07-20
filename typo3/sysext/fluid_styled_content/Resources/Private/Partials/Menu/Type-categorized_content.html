@@ -1,0 +1,17 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:ce="http://typo3.org/ns/TYPO3/CMS/FluidStyledContent/ViewHelpers" data-namespace-typo3-fluid="true">
+<ce:menu.categories categoryUids="{categoryUids}" as="contentElements" relationField="{data.category_field}" table="tt_content">
+	<f:if condition="{contentElements}">
+		<ul class="ce-menu ce-menu-categorized-content">
+			<f:for each="{contentElements}" as="contentElement">
+				<f:if condition="{contentElement.header}">
+					<li>
+						<f:link.page pageUid="{contentElement.pid}" section="c{contentElement.uid}">
+							{contentElement.header}
+						</f:link.page>
+					</li>
+				</f:if>
+			</f:for>
+		</ul>
+	</f:if>
+</ce:menu.categories>
+</html>

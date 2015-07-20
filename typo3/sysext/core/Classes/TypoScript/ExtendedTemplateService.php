@@ -88,6 +88,7 @@ class ExtendedTemplateService extends TemplateService {
 		'cheader_g' => array('Content: \'Header\', Graphical', 'ma'),
 		'ctext' => array('Content: \'Text\'', 'mb'),
 		'cimage' => array('Content: \'Image\'', 'md'),
+		'ctextmedia' => array('Content: \'Textmedia\'', 'ml'),
 		'cbullets' => array('Content: \'Bullet list\'', 'me'),
 		'ctable' => array('Content: \'Table\'', 'mf'),
 		'cuploads' => array('Content: \'Filelinks\'', 'mg'),

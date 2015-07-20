@@ -1,0 +1,46 @@
+plugin.tx_frontend._CSS_DEFAULT_STYLE (
+	.ce-align-left { text-align: left; }
+	.ce-align-center { text-align: center; }
+	.ce-align-right { text-align: right; }
+
+	.ce-table td, .ce-table th { vertical-align: top; }
+
+	.ce-textpic, .ce-nowrap .ce-bodytext, .ce-gallery, .ce-row, .ce-uploads li, .ce-uploads div { overflow: hidden; }
+
+	.ce-left .ce-gallery, .ce-column { float: left; }
+	.ce-center .ce-outer { position: relative; float: right; right: 50%; }
+	.ce-center .ce-inner { position: relative; float: right; right: -50%; }
+	.ce-right .ce-gallery { float: right; }
+
+	.ce-gallery figure { display: table; margin: 0; }
+	.ce-gallery figcaption { display: table-caption; caption-side: bottom; }
+	.ce-gallery img { display: block; }
+	.ce-gallery iframe { border-width: 0; }
+	.ce-border img,
+	.ce-border iframe {
+		border: {$styles.content.textmedia.borderThick}px solid {$styles.content.textmedia.borderColor};
+		padding: {$styles.content.textmedia.borderSpace}px;
+	}
+
+	.ce-intext.ce-right .ce-gallery, .ce-intext.ce-left .ce-gallery, .ce-above .ce-gallery {
+		margin-bottom: {$styles.content.textmedia.textMargin}px;
+	}
+	.ce-intext.ce-right .ce-gallery { margin-left: {$styles.content.textmedia.textMargin}px; }
+	.ce-intext.ce-left .ce-gallery { margin-right: {$styles.content.textmedia.textMargin}px; }
+	.ce-below .ce-gallery { margin-top: {$styles.content.textmedia.textMargin}px; }
+
+	.ce-column { margin-right: {$styles.content.textmedia.colSpace}px; }
+	.ce-column:last-child { margin-right: 0; }
+
+	.ce-row { margin-bottom: {$styles.content.textmedia.rowSpace}px; }
+	.ce-row:last-child { margin-bottom: 0; }
+
+	.ce-above .ce-bodytext { clear: both; }
+
+	.ce-intext.ce-left ol, .ce-intext.ce-left ul { padding-left: 40px; overflow: auto; }
+
+	.ce-uploads { margin: 0; padding: 0; }
+	.ce-uploads li { list-style: none outside none; margin: 1em 0; }
+	.ce-uploads img { float: left; padding-right: 1em; vertical-align: top; }
+	.ce-uploads span { display: block; }
+)
