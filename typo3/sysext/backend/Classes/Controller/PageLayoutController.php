@@ -291,6 +291,21 @@ class PageLayoutController {
 	protected $closeUrl;
 
 	/**
+	 * Caches the available languages in a colPos
+	 *
+	 * @var array
+	 */
+	protected $languagesInColumnCache = array();
+
+	/**
+	 * Caches the amount of content elements as a matrix
+	 *
+	 * @var array
+	 * @internal
+	 */
+	public $contentElementCache = array();
+
+	/**
 	 * Initializing the module
 	 *
 	 * @return void
@@ -1298,6 +1313,92 @@ class PageLayoutController {
 				'sys_language.title'
 			);
 		}
+	}
+
+	/**
+	 * Get used languages in a colPos of a page
+	 *
+	 * @param int $pageId
+	 * @param int $colPos
+	 * @return bool|\mysqli_result|object
+	 */
+	public function getUsedLanguagesInPageAndColumn($pageId, $colPos) {
+		if (!isset($languagesInColumnCache[$pageId])) {
+			$languagesInColumnCache[$pageId] = array();
+		}
+		if (!isset($languagesInColumnCache[$pageId][$colPos])) {
+			$languagesInColumnCache[$pageId][$colPos] = array();
+		}
+
+		if (empty($languagesInColumnCache[$pageId][$colPos])) {
+			$exQ = BackendUtility::deleteClause('tt_content') .
+				($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
+
+			$databaseConnection = $this->getDatabaseConnection();
+			$res = $databaseConnection->exec_SELECTquery(
+				'sys_language.*',
+				'tt_content,sys_language',
+				'tt_content.sys_language_uid=sys_language.uid AND tt_content.colPos = ' . (int)$colPos . ' AND tt_content.pid=' . (int)$pageId . $exQ .
+				BackendUtility::versioningPlaceholderClause('tt_content'),
+				'tt_content.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag',
+				'sys_language.title'
+			);
+			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+				$languagesInColumnCache[$pageId][$colPos][$row['uid']] = $row;
+			}
+			$databaseConnection->sql_free_result($res);
+		}
+
+		return $languagesInColumnCache[$pageId][$colPos];
+	}
+
+	/**
+	 * Check if a column of a page for a language is empty. Translation records are ignored here!
+	 *
+	 * @param int $colPos
+	 * @param int $languageId
+	 * @return bool
+	 */
+	public function isColumnEmpty($colPos, $languageId) {
+		foreach ($this->contentElementCache[$languageId][$colPos] as $uid => $row) {
+			if ((int)$row['l18n_parent'] === 0) {
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Get elements for a column and a language
+	 *
+	 * @param int $pageId
+	 * @param int $colPos
+	 * @param int $languageId
+	 * @return array
+	 */
+	public function getElementsFromColumnAndLanguage($pageId, $colPos, $languageId) {
+		if (!isset($this->contentElementCache[$languageId][$colPos])) {
+			$languageId = (int)$languageId;
+			$whereClause = 'tt_content.pid=' . (int)$pageId . ' AND tt_content.colPos=' . (int)$colPos . ' AND tt_content.sys_language_uid=' . $languageId . BackendUtility::deleteClause('tt_content');
+			if ($languageId > 0) {
+				$whereClause .= ' AND tt_content.l18n_parent=0 AND sys_language.uid=' . $languageId . ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
+			}
+
+			$databaseConnection = $this->getDatabaseConnection();
+			$res = $databaseConnection->exec_SELECTquery(
+				'tt_content.uid',
+				'tt_content,sys_language',
+				$whereClause
+			);
+			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+				$this->contentElementCache[$languageId][$colPos][$row['uid']] = $row;
+			}
+			$databaseConnection->sql_free_result($res);
+		}
+		if (is_array($this->contentElementCache[$languageId][$colPos])) {
+			return array_keys($this->contentElementCache[$languageId][$colPos]);
+		}
+		return array();
 	}
 
 	/**
