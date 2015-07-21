@@ -164,7 +164,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates a new instance of the class
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
 		// Disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
 		$GLOBALS['BE_USER']->uc['disablePMKTextarea'] = 1;
 

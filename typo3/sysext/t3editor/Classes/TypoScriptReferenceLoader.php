@@ -33,7 +33,7 @@ class TypoScriptReferenceLoader {
 	 * Default constructor
 	 */
 	public function __construct() {
-		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:t3editor/Resources/Private/Language/locallang.xlf');
 	}
 
 	/**
