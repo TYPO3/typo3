@@ -3105,10 +3105,9 @@ Connection: close
 	 * = FALSE (BE) / "querystring" (FE) : add timestamp as parameter
 	 *
 	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
-	 * @param bool $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
 	 * @return string Relative path with version filename including the timestamp
 	 */
-	static public function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
+	static public function createVersionNumberedFilename($file) {
 		$lookupFile = explode('?', $file);
 		$path = self::resolveBackPath(self::dirname(PATH_thisScript) . '/' . $lookupFile[0]);
 
@@ -3131,7 +3130,7 @@ Connection: close
 			// File not found, return filename unaltered
 			$fullName = $file;
 		} else {
-			if (!$mode || $forceQueryString) {
+			if (!$mode) {
 				// If use of .htaccess rule is not configured,
 				// we use the default query-string method
 				if ($lookupFile[1]) {

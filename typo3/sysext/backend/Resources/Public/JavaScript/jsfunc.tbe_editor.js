@@ -92,30 +92,28 @@ var TBE_EDITOR = {
 		if (nestedLevelIdent && TBE_EDITOR.nested.level && TBE_EDITOR.nested.level[nestedLevelIdent]) {
 			nestedLevel = TBE_EDITOR.nested.level[nestedLevelIdent];
 			if (!nestedLevel.clean) {
-				if (typeof nestedLevel.item == 'object') {
-					$H(nestedLevel.item).each(
-						function(pair) {
-							if (isClean || typeof isClean == 'undefined') {
+				if (typeof nestedLevel.item === 'object') {
+					TYPO3.jQuery.each(nestedLevel.item, function(key, value) {
+							if (isClean || typeof isClean === 'undefined') {
 								isClean = (
-									TBE_EDITOR.checkElements('required', false, pair.value[0], pair.value[1]) &&
-									TBE_EDITOR.checkElements('range', false, pair.value[0], pair.value[1])
+									TBE_EDITOR.checkElements('required', false, value[0], value[1]) &&
+									TBE_EDITOR.checkElements('range', false, value[0], value[1])
 								);
 							}
 						}
 					);
-					if (typeof isClean != 'undefined' && !isClean) {
+					if (typeof isClean !== 'undefined' && !isClean) {
 						return false;
 					}
 				}
-				if (typeof nestedLevel.sub == 'object') {
-					$H(nestedLevel.sub).each(
-						function(pair) {
-							if (isClean || typeof isClean == 'undefined') {
-								isClean = TBE_EDITOR.checkNested(pair.key);
+				if (typeof nestedLevel.sub === 'object') {
+					TYPO3.jQuery.each(nestedLevel.sub, function(key, value) {
+							if (isClean || typeof isClean === 'undefined') {
+								isClean = TBE_EDITOR.checkNested(key);
 							}
 						}
 					);
-					if (typeof isClean != 'undefined' && !isClean) {
+					if (typeof isClean !== 'undefined' && !isClean) {
 						return false;
 					}
 				}
@@ -370,13 +368,7 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 var typo3form = {
 	fieldSetNull: function(fieldName, isNull) {
 		if (document[TBE_EDITOR.formname][fieldName]) {
-			var $formFieldItemWrapper = TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
-
-			if (isNull) {
-				$formFieldItemWrapper.addClass('disabled');
-			} else {
-				$formFieldItemWrapper.removeClass('disabled');
-			}
+			TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item').toggleClass('disabled', isNull);
 		}
 	},
 	fieldTogglePlaceholder: function(fieldName, showPlaceholder) {
@@ -384,16 +376,9 @@ var typo3form = {
 			return;
 		}
 
-		var formFieldItemWrapper = TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
-		var placeholder = formFieldItemWrapper.find('.t3js-formengine-placeholder-placeholder');
-		var formField = formFieldItemWrapper.find('.t3js-formengine-placeholder-formfield');
-		if (showPlaceholder) {
-			placeholder.show();
-			formField.hide();
-		} else {
-			placeholder.hide();
-			formField.show();
-		}
+		var $formFieldItemWrapper = TYPO3.jQuery(document[TBE_EDITOR.formname][fieldName]).closest('.t3js-formengine-field-item');
+		$formFieldItemWrapper.find('.t3js-formengine-placeholder-placeholder').toggle(showPlaceholder);
+		$formFieldItemWrapper.find('.t3js-formengine-placeholder-formfield').toggle(!showPlaceholder);
 	},
 	fieldSet: function(theField, evallist, is_in, checkbox, checkboxValue) {
 		var i;
