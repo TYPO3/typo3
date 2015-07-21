@@ -6,7 +6,7 @@ if (TYPO3_MODE === 'BE') {
 		'system',
 		'dbint',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'dbint/',
+		'EXT:lowlevel/Modules/DatabaseIntegrity/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'admin',
@@ -14,9 +14,9 @@ if (TYPO3_MODE === 'BE') {
 			'workspaces' => 'online',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-dbint.svg',
+					'tab' => 'EXT:lowlevel/Resources/Public/Icons/module-dbint.svg',
 				),
-				'll_ref' => 'LLL:EXT:lowlevel/dbint/locallang_mod.xlf',
+				'll_ref' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod.xlf',
 			),
 		)
 	);
@@ -24,7 +24,7 @@ if (TYPO3_MODE === 'BE') {
 		'system',
 		'config',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'config/',
+		'EXT:lowlevel/Modules/Configuration/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'admin',
@@ -32,9 +32,9 @@ if (TYPO3_MODE === 'BE') {
 			'workspaces' => 'online',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-config.svg',
+					'tab' => 'EXT:lowlevel/Resources/Public/Icons/module-config.svg',
 				),
-				'll_ref' => 'LLL:EXT:lowlevel/config/locallang_mod.xlf',
+				'll_ref' => 'LLL:EXT:lowlevel/Resources/Private/Language/locallang_mod_configuration.xlf',
 			),
 		)
 	);
