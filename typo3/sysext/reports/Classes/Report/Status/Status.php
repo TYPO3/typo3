@@ -33,7 +33,7 @@ class Status implements ReportInterface {
 	 */
 	public function __construct() {
 		$this->getStatusProviders();
-		$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xlf');
+		$GLOBALS['LANG']->includeLLFile('EXT:reports/Resources/Private/Language/locallang_reports.xlf');
 	}
 
 	/**

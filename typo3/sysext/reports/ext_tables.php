@@ -16,9 +16,9 @@ if (TYPO3_MODE === 'BE') {
 		)
 	);
 	$statusReport = array(
-		'title' => 'LLL:EXT:reports/reports/locallang.xlf:status_report_title',
+		'title' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_title',
 		'icon' => 'EXT:reports/Resources/Public/Icons/module-reports.svg',
-		'description' => 'LLL:EXT:reports/reports/locallang.xlf:status_report_description',
+		'description' => 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_report_description',
 		'report' => \TYPO3\CMS\Reports\Report\Status\Status::class
 	);
 	if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status'])) {
