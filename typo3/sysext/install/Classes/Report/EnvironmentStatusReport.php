@@ -50,6 +50,10 @@ class EnvironmentStatusReport implements StatusProviderInterface, ExtendedStatus
 		$statusCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\Check::class);
 		$statusObjects = $statusCheck->getStatus();
 
+		/** @var $statusCheck \TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck */
+		$databaseStatusCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck::class);
+		$statusObjects = array_merge($statusObjects, $databaseStatusCheck->getStatus());
+
 		$reportStatusTypes = array(
 			'error' => array(),
 			'warning' => array(),

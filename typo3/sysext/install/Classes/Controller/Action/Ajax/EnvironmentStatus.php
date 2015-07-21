@@ -28,10 +28,15 @@ class EnvironmentStatus extends AbstractAjaxAction {
 		/** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
 		$statusUtility = $this->objectManager->get(\TYPO3\CMS\Install\Status\StatusUtility::class);
 
-		// Count of failed environment checks are displayed in the left navigation menu
+		// Count of failed environment checks to be displayed in the left navigation menu
 		$environmentStatus = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\Check::class)->getStatus();
 		$environmentErrors = $statusUtility->filterBySeverity($environmentStatus, 'error');
-		return count($environmentErrors);
+
+		// Count of failed database checks to be displayed in the left navigation menu
+		$databaseStatus = $this->objectManager->get(\TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck::class)->getStatus();
+		$databaseErrors = $statusUtility->filterBySeverity($databaseStatus, 'error');
+
+		return count($environmentErrors) + count($databaseErrors);
 	}
 
 }

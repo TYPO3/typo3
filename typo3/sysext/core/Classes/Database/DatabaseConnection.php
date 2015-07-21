@@ -1214,7 +1214,6 @@ class DatabaseConnection {
 					);
 				}
 			}
-			$this->setSqlMode();
 			$this->checkConnectionCharset();
 		} else {
 			// @todo This should raise an exception. Would be useful especially to work during installation.
@@ -1227,28 +1226,6 @@ class DatabaseConnection {
 			);
 		}
 		return $this->link;
-	}
-
-	/**
-	 * Fixes the SQL mode by unsetting NO_BACKSLASH_ESCAPES if found.
-	 *
-	 * @return void
-	 */
-	protected function setSqlMode() {
-		$resource = $this->sql_query('SELECT @@SESSION.sql_mode;');
-		if ($resource) {
-			$result = $this->sql_fetch_row($resource);
-			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
-				$modes = array_diff(GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
-				$query = 'SET sql_mode=\'' . $this->link->real_escape_string(implode(',', $modes)) . '\';';
-				$this->sql_query($query);
-				GeneralUtility::sysLog(
-					'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
-					'core',
-					GeneralUtility::SYSLOG_SEVERITY_ERROR
-				);
-			}
-		}
 	}
 
 	/**
