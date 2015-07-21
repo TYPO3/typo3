@@ -69,7 +69,8 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 		$imageUrl = $image->getPublicUrl();
 
 		// no prefix in case of an already fully qualified URL (having a schema)
-		if (strpos($imageUrl, '://')) {
+		// We need to fix the dection for PHP 5.4.6 and below as the host detection is broken
+		if (parse_url($imageUrl, PHP_URL_HOST) !== NULL || strpos($imageUrl, '//') === 0) {
 			$uriPrefix = '';
 		} elseif ($this->environmentService->isEnvironmentInFrontendMode()) {
 			$uriPrefix = $GLOBALS['TSFE']->absRefPrefix;
