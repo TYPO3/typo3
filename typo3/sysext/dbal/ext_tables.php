@@ -6,16 +6,16 @@ if (TYPO3_MODE === 'BE') {
 		'tools',
 		'txdbalM1',
 		'',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'mod1/',
+		'EXT:dbal/Modules/Dbal/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'admin',
 			'name' => 'tools_txdbalM1',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../Resources/Public/Icons/module-dbal.svg',
+					'tab' => 'EXT:dbal/Resources/Public/Icons/module-dbal.svg',
 				),
-				'll_ref' => 'LLL:EXT:dbal/mod1/locallang_mod.xlf',
+				'll_ref' => 'LLL:EXT:dbal/Resources/Private/Language/locallang_mod.xlf',
 			),
 		)
 	);

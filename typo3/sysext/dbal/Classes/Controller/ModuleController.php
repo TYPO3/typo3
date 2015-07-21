@@ -42,7 +42,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->MCONF = array(
 			'name' => $this->moduleName,
 		);
-		$this->getLanguageService()->includeLLFile('EXT:dbal/mod1/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:dbal/Resources/Private/Language/locallang.xlf');
 		parent::init();
 	}
 
