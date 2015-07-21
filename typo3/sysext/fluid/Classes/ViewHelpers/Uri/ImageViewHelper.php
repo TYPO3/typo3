@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  *                                                                        */
 
 use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder;
 
 /**
