@@ -1258,7 +1258,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					));
 					$versionAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
 						. $this->getLanguageService()->getLL('displayVersions', TRUE) . '">'
-						. IconUtility::getSpriteIcon(('status-version-' . $versionIcon)) . '</a>';
+						. '<span class="t3-icon fa fa-refresh"></span>' . '</a>';
 					$this->addActionToCellGroup($cells, $versionAction, 'version');
 				}
 			}
