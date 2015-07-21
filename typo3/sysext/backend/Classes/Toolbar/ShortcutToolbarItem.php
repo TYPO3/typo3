@@ -542,23 +542,21 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
 		$shortcutName = strip_tags(GeneralUtility::_POST('value'));
 		$shortcutGroupId = (int)GeneralUtility::_POST('shortcut-group');
-		if ($shortcutGroupId > 0 || $GLOBALS['BE_USER']->isAdmin()) {
-			// Users can delete only their own shortcuts (except admins)
-			$addUserWhere = !$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . (int)$GLOBALS['BE_USER']->user['uid'] : '';
-			$fieldValues = array(
-				'description' => $shortcutName,
-				'sc_group' => $shortcutGroupId
-			);
-			if ($fieldValues['sc_group'] < 0 && !$GLOBALS['BE_USER']->isAdmin()) {
-				$fieldValues['sc_group'] = 0;
-			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_be_shortcuts', 'uid=' . $shortcutId . $addUserWhere, $fieldValues);
-			$affectedRows = $GLOBALS['TYPO3_DB']->sql_affected_rows();
-			if ($affectedRows == 1) {
-				$ajaxObj->addContent('shortcut', $shortcutName);
-			} else {
-				$ajaxObj->addContent('shortcut', 'failed');
-			}
+		// Users can modify only their own shortcuts (except admins)
+		$addUserWhere = !$GLOBALS['BE_USER']->isAdmin() ? ' AND userid=' . (int)$GLOBALS['BE_USER']->user['uid'] : '';
+		$fieldValues = array(
+			'description' => $shortcutName,
+			'sc_group' => $shortcutGroupId
+		);
+		if ($fieldValues['sc_group'] < 0 && !$GLOBALS['BE_USER']->isAdmin()) {
+			$fieldValues['sc_group'] = 0;
+		}
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_be_shortcuts', 'uid=' . $shortcutId . $addUserWhere, $fieldValues);
+		$affectedRows = $GLOBALS['TYPO3_DB']->sql_affected_rows();
+		if ($affectedRows == 1) {
+			$ajaxObj->addContent('shortcut', $shortcutName);
+		} else {
+			$ajaxObj->addContent('shortcut', 'failed');
 		}
 		$ajaxObj->setContentFormat('plain');
 	}
