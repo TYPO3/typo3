@@ -47,7 +47,7 @@ TYPO3 System requirements
 -----------------------------
 
 TYPO3 is based upon PHP and uses a MySQL database. For more information
-regarding these requirements see the INSTALL.md file in this folder.
+regarding these requirements see the [INSTALL.md](INSTALL.md) file in this folder.
 
 Using the Database Abstraction Layer (DBAL) allows one to use TYPO3 with other
 Database Management Systems, like PostgreSQL, Oracle and MSSQL.
@@ -58,25 +58,16 @@ TYPO3 resources
 Here is an overview of the most important TYPO3 resources to help you get
 started:
 
-### Text files bundled in this package
-
-* README.md: This file, provides a basic overview on the product and
-  points to important resources.
-
-* INSTALL.md: System requirements to install and use TYPO3, the basic
-  installation instructions and information about upgrading an existing
-  installation to the new version.
-
 ### Get more information
 
-* http://typo3.org is the main project website. It provides up to
+* https://typo3.org is the main project website. It provides up to
   date official news, information about events, access to downloading the
   products and extensions.
 
-* http://wiki.typo3.org is a collaborative wiki, providing access to
+* https://wiki.typo3.org is a collaborative wiki, providing access to
   all kind of information around the TYPO3 ecosphere.
 
-* http://www.typo3.org/documentation: TYPO3 is one of the most thoroughly
+* http://docs.typo3.org/: TYPO3 is one of the most thoroughly
   documented OpenSource products around, with manuals covering basic
   tutorials, TypoScript, administration, development, core structure, etc.
   You should make the time to locate the various documents, and read those
@@ -98,21 +89,28 @@ The community and all TYPO3 teams communicate through newsgroups, which can
 also be accessed through mailing lists and forums. Any of these three ways
 provide access to the same communication channels:
 
-* Forum (Web): http://forum.typo3.org/
-* Mailing Lists (Mail): http://typo3.org/support/mailing-lists/
+* Forum (Web): https://forum.typo3.org/
+* Mailing Lists (Mail): https://typo3.org/support/mailing-lists/
 * Newsgroups (NNTP): news://lists.typo3.org/
 
-### Participate in the development
+Contributing
+------------
+
+If you want to contribute to the TYPO3 CMS source code, take a look at our
+Contributors Walkthrough and Review System:
+
+* https://wiki.typo3.org/CWT
+* https://review.typo3.org/
+
+The [repository at GitHub](https://github.com/TYPO3/TYPO3.CMS) is a
+synchronized mirror of the primary TYPO3 CMS core git repository:
+
+* https://git.typo3.org/Packages/TYPO3.CMS.git
 
 If you want to file a bug report, maintain your own extension using our
 infrastructure (Git, Issue Tracker, Wiki, etc), take a look at:
 
-* http://forge.typo3.org
-
-If you want to contribute to the TYPO3 CMS source code, take a look at our
-Contributors Walkthrough:
-
-* http://wiki.typo3.org/CWT
+* https://forge.typo3.org
 
 Final notes
 -----------
@@ -137,9 +135,9 @@ The decisions will be made transparent to the community and especially the
 supporting members. Your funds will also serve for other purposes as laid
 out in the bylaws.
 
-* Donate: http://typo3.org/donate
+* Donate: https://typo3.org/donate
 * Become a member of the TYPO3 Association:
-  http://association.typo3.org/association/join-now/
+  https://typo3.org/association/membership/levels/
 
 Copyleft
 --------
