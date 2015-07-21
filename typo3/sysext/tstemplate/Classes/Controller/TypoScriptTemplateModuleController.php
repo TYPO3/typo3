@@ -95,7 +95,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:tstemplate/ts/locallang.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
 
 		$this->MCONF = array(
 			'name' => $this->moduleName
