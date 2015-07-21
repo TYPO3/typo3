@@ -4164,11 +4164,13 @@ class TypoScriptFrontendController {
 	public function getPagesTSconfig() {
 		if (!is_array($this->pagesTSconfig)) {
 			$TSdataArray = array();
-			// Setting default configuration:
-			$TSdataArray[] = $this->TYPO3_CONF_VARS['BE']['defaultPageTSconfig'];
 			foreach ($this->rootLine as $k => $v) {
 				$TSdataArray[] = $v['TSconfig'];
 			}
+			// Adding the default configuration:
+			$TSdataArray[] = $this->TYPO3_CONF_VARS['BE']['defaultPageTSconfig'];
+			// Bring everything in the right order. Default first, then the Rootline down to the current page
+			$TSdataArray = array_reverse($TSdataArray);
 			// Parsing the user TS (or getting from cache)
 			$TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
 			$userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
