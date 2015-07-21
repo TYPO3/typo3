@@ -69,7 +69,7 @@ class VersionClickMenu {
 	 * @return array Local lang array
 	 */
 	public function includeLL() {
-		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xlf', FALSE);
+		return $GLOBALS['LANG']->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf', FALSE);
 	}
 
 }

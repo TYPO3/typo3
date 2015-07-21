@@ -6,7 +6,7 @@ if (TYPO3_MODE == 'BE') {
 		// Register version_click_module
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 			'web_txversionM1',
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'cm1/'
+			'EXT:version/Modules/Version/'
 		);
 
 		$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(

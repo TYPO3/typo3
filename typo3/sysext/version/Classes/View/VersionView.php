@@ -43,15 +43,15 @@ class VersionView {
 			$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
 			// If more than one was found...:
 			if (count($versions) > 1) {
-				$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionSelect.label', TRUE) . '</strong>';
+				$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.label', TRUE) . '</strong>';
 				// Create selector box entries:
 				$opt = array();
 				foreach ($versions as $vRow) {
 					if ($vRow['uid'] == $onlineId) {
 						// Live version
-						$label = '[' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionSelect.live', TRUE) . ']';
+						$label = '[' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.live', TRUE) . ']';
 					} else {
-						$label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionId', TRUE) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:workspaceId', TRUE) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
+						$label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionId', TRUE) . ' ' . $vRow['t3ver_id'] . ($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:workspaceId', TRUE) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
 					}
 					$opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $vRow['uid']))) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 				}
