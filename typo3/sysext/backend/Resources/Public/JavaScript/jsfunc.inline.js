@@ -287,6 +287,7 @@ var inline = {
 				});
 			}
 			TYPO3.FormEngine.reinitialize();
+			TYPO3.FormEngine.Validation.initializeInputFields();
 			TYPO3.FormEngine.Validation.validate();
 		}
 	},

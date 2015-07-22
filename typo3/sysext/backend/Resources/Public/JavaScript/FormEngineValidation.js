@@ -45,14 +45,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		$(document).find('.' + FormEngineValidation.errorClass).removeClass(FormEngineValidation.errorClass);
 
 		// Initialize input fields
-		$(document).find(FormEngineValidation.inputSelector).each(function() {
-			var config = $(this).data('formengine-input-params');
-			var fieldName = config.field;
-			var $field = $('[name="' + fieldName + '"]');
-			$field.data('main-field', fieldName);
-			$field.data('config', config);
-			FormEngineValidation.initializeInputField(fieldName);
-		}).promise().done(function () {
+		FormEngineValidation.initializeInputFields().promise().done(function () {
 			// Bind to field changes
 			$(document).on('change', FormEngineValidation.rulesSelector, function() {
 				// we need to wait, because the update of the select fields needs some time
@@ -79,6 +72,26 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		FormEngineValidation.lastTime = 0;
 		FormEngineValidation.refDate = today;
 		FormEngineValidation.USmode = 0;
+	};
+
+	/**
+	 * initialize all input fields
+	 *
+	 * @returns {*|jQuery}
+	 */
+	FormEngineValidation.initializeInputFields = function() {
+		return $(document).find(FormEngineValidation.inputSelector).each(function() {
+			var config = $(this).data('formengine-input-params');
+			var fieldName = config.field;
+			var $field = $('[name="' + fieldName + '"]');
+
+			// ignore fields which already have been initialized
+			if ($field.data('main-field') === undefined) {
+				$field.data('main-field', fieldName);
+				$field.data('config', config);
+				FormEngineValidation.initializeInputField(fieldName);
+			}
+		});
 	};
 
 	/**
