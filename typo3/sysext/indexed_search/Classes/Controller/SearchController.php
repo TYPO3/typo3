@@ -229,7 +229,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'index_config', 'uid=' . (int)$freeIndexUid . $GLOBALS['TSFE']->cObj->enableFields('index_config'));
 					$categoryTitle = $indexCfgRec['title'];
 				} else {
-					$categoryTitle = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'indexed_search');
+					$categoryTitle = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
 				}
 				$resultsets[$freeIndexUid]['categoryTitle'] = $categoryTitle;
 			}
@@ -269,13 +269,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			if ($resultData['count']) {
 				// could we get this in the view?
 				if ($this->searchData['group'] == 'sections' && $freeIndexUid <= 0) {
-					$result['sectionText'] = sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.' . (count($this->resultSections) > 1 ? 'inNsections' : 'inNsection'), 'indexed_search'), count($this->resultSections));
+					$result['sectionText'] = sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.' . (count($this->resultSections) > 1 ? 'inNsections' : 'inNsection'), 'IndexedSearch'), count($this->resultSections));
 				}
 			}
 		}
 		// Print a message telling which words in which sections we searched for
 		if (substr($this->searchData['sections'], 0, 2) == 'rl') {
-			$result['searchedInSectionInfo'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.inSection', 'indexed_search') . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
+			$result['searchedInSectionInfo'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
 		}
 		return $result;
 	}
@@ -337,7 +337,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				$sectionName = $this->getPathFromPageId($theId);
 				$sectionName = ltrim($sectionName, '/');
 				if (!trim($sectionName)) {
-					$sectionTitleLinked = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.unnamedSection', 'indexed_search') . ':';
+					$sectionTitleLinked = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.unnamedSection', 'IndexedSearch') . ':';
 				} else {
 					$onclick = 'document.forms[\'tx_indexedsearch\'][\'tx_indexedsearch_pi2[search][_sections]\'].value=' . GeneralUtility::quoteJSvalue($theRLid) . ';document.forms[\'tx_indexedsearch\'].submit();return false;';
 					$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
@@ -380,9 +380,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$dat = unserialize($row['cHashParams']);
 			$pp = explode('-', $dat['key']);
 			if ($pp[0] != $pp[1]) {
-				$resultData['titleaddition'] = ', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.page', 'indexed_search') . ' ' . $dat['key'];
+				$resultData['titleaddition'] = ', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $dat['key'];
 			} else {
-				$resultData['titleaddition'] = ', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.pages', 'indexed_search') . ' ' . $pp[0];
+				$resultData['titleaddition'] = ', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.pages', 'IndexedSearch') . ' ' . $pp[0];
 			}
 		}
 		$title = $resultData['item_title'] . $resultData['titleaddition'];
@@ -441,7 +441,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			));
 			// check if the access is restricted
 			if (is_array($this->requiredFrontendUsergroups[$pathId]) && count($this->requiredFrontendUsergroups[$pathId])) {
-				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'indexed_search'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId]))) . '" alt="" />';
+				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('IndexedSearch') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'IndexedSearch'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId]))) . '" alt="" />';
 			}
 		}
 		// If there are subrows (eg. subpages in a PDF-file or if a duplicate page
@@ -449,13 +449,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		if (is_array($row['_sub'])) {
 			$resultData['subresults'] = array();
 			if ($this->multiplePagesType($row['item_type'])) {
-				$resultData['subresults']['header'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.otherMatching', 'indexed_search');
+				$resultData['subresults']['header'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.otherMatching', 'IndexedSearch');
 				foreach ($row['_sub'] as $subRow) {
 					$resultData['subresults']['items'][] = $this->compileSingleResultRow($subRow, 1);
 				}
 			} else {
-				$resultData['subresults']['header'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.otherMatching', 'indexed_search');
-				$resultData['subresults']['info'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.otherPageAsWell', 'indexed_search');
+				$resultData['subresults']['header'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.otherMatching', 'IndexedSearch');
+				$resultData['subresults']['info'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.otherPageAsWell', 'IndexedSearch');
 			}
 		}
 		return $resultData;
@@ -495,7 +495,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function makeRating($row) {
 		switch ((string) $this->searchData['sortOrder']) {
 			case 'rank_count':
-				return $row['order_val'] . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'indexed_search');
+				return $row['order_val'] . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'IndexedSearch');
 				break;
 			case 'rank_first':
 				return ceil(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
@@ -639,7 +639,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$output = $outputStr ?: $markedSW;
 			$output = $GLOBALS['TSFE']->csConv($output, 'utf-8');
 		} else {
-			$output = '<span class="noResume">' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.noResume', 'indexed_search') . '</span>';
+			$output = '<span class="noResume">' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.noResume', 'IndexedSearch') . '</span>';
 		}
 		return $output;
 	}
@@ -795,9 +795,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					array('-', 'AND NOT'),
 					// Add operators for various languages
 					// Converts the operators to UTF-8 and lowercase
-					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandAnd', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND'),
-					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandOr', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
-					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandNot', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT')
+					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandAnd', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND'),
+					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandOr', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
+					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('localizedOperandNot', 'IndexedSearch'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT')
 				);
 				$search = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\SearchResultContentObject');
 				$search->default_operator = $defaultOperator == 1 ? 'OR' : 'AND';
@@ -912,7 +912,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['searchType']) {
 			foreach ($types as $typeNum) {
-				$allOptions[$typeNum] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('searchTypes.' . $typeNum, 'indexed_search');
+				$allOptions[$typeNum] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('searchTypes.' . $typeNum, 'IndexedSearch');
 			}
 		}
 		// Remove this option if metaphone search is disabled)
@@ -934,8 +934,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['defaultOperand']) {
 			$allOptions = array(
-				0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('defaultOperands.0', 'indexed_search'),
-				1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('defaultOperands.1', 'indexed_search')
+				0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('defaultOperands.0', 'IndexedSearch'),
+				1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('defaultOperands.1', 'IndexedSearch')
 			);
 		}
 		// disable single entries by TypoScript
@@ -954,7 +954,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['mediaType']) {
 			foreach ($mediaTypes as $mediaType) {
-				$allOptions[$mediaType] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $mediaType, 'indexed_search');
+				$allOptions[$mediaType] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $mediaType, 'IndexedSearch');
 			}
 			// Add media to search in:
 			$additionalMedia = trim($this->settings['mediaList']);
@@ -969,7 +969,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					continue;
 				}
 				if ($name = $obj->searchTypeMediaTitle($extension)) {
-					$translatedName = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $extension, 'indexed_search');
+					$translatedName = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mediaTypes.' . $extension, 'IndexedSearch');
 					$allOptions[$extension] = $translatedName ?: $name;
 				}
 			}
@@ -986,8 +986,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function getAllAvailableLanguageOptions() {
 		$allOptions = array(
-			'-1' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('languageUids.-1', 'indexed_search'),
-			'0' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('languageUids.0', 'indexed_search')
+			'-1' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('languageUids.-1', 'IndexedSearch'),
+			'0' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('languageUids.0', 'IndexedSearch')
 		);
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['languageUid']) {
@@ -1021,15 +1021,15 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['sections']) {
 			foreach ($sections as $section) {
-				$allOptions[$section] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.' . $section, 'indexed_search');
+				$allOptions[$section] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.' . $section, 'IndexedSearch');
 			}
 		}
 		// Creating levels for section menu:
 		// This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub sections.
 		if ($this->settings['displayLevel1Sections']) {
 			$firstLevelMenu = $this->getMenuOfPages($this->searchRootPageIdList);
-			$labelLevel1 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1', 'indexed_search');
-			$labelLevel2 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel2', 'indexed_search');
+			$labelLevel1 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1', 'IndexedSearch');
+			$labelLevel2 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel2', 'IndexedSearch');
 			foreach ($firstLevelMenu as $firstLevelKey => $menuItem) {
 				if (!$menuItem['nav_hide']) {
 					$allOptions['rl1_' . $menuItem['uid']] = trim($labelLevel1 . ' ' . $menuItem['title']);
@@ -1042,13 +1042,13 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 								unset($secondLevelMenu[$secondLevelKey]);
 							}
 						}
-						$allOptions['rl2_' . implode(',', array_keys($secondLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel2All', 'indexed_search');
+						$allOptions['rl2_' . implode(',', array_keys($secondLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel2All', 'IndexedSearch');
 					}
 				} else {
 					unset($firstLevelMenu[$firstLevelKey]);
 				}
 			}
-			$allOptions['rl1_' . implode(',', array_keys($firstLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1All', 'indexed_search');
+			$allOptions['rl1_' . implode(',', array_keys($firstLevelMenu))] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.rootLevel1All', 'IndexedSearch');
 		}
 		// disable single entries by TypoScript
 		$allOptions = $this->removeOptionsFromOptionList($allOptions, $blindSettings['sections']);
@@ -1062,9 +1062,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected function getAllAvailableIndexConfigurationsOptions() {
 		$allOptions = array(
-			'-1' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.-1', 'indexed_search'),
-			'-2' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.-2', 'indexed_search'),
-			'0' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.0', 'indexed_search')
+			'-1' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.-1', 'IndexedSearch'),
+			'-2' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.-2', 'IndexedSearch'),
+			'0' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurations.0', 'IndexedSearch')
 		);
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['indexingConfigurations']) {
@@ -1101,7 +1101,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['sortOrder']) {
 			foreach ($sortOrders as $order) {
-				$allOptions[$order] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.' . $order, 'indexed_search');
+				$allOptions[$order] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.' . $order, 'IndexedSearch');
 			}
 		}
 		// disable single entries by TypoScript
@@ -1119,8 +1119,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['groupBy']) {
 			$allOptions = array(
-				'sections' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('groupBy.sections', 'indexed_search'),
-				'flat' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('groupBy.flat', 'indexed_search')
+				'sections' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('groupBy.sections', 'IndexedSearch'),
+				'flat' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('groupBy.flat', 'IndexedSearch')
 			);
 		}
 		// disable single entries by TypoScript
@@ -1138,8 +1138,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$blindSettings = $this->settings['blind'];
 		if (!$blindSettings['descending']) {
 			$allOptions = array(
-				0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.descending', 'indexed_search'),
-				1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.ascending', 'indexed_search')
+				0 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.descending', 'IndexedSearch'),
+				1 => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sortOrders.ascending', 'IndexedSearch')
 			);
 		}
 		// disable single entries by TypoScript

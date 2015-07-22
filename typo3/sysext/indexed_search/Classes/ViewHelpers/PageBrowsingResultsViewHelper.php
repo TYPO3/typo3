@@ -31,7 +31,7 @@ class PageBrowsingResultsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	public function render($numberOfResults, $resultsPerPage, $currentPage = 1) {
 		$firstResultOnPage = $currentPage * $resultsPerPage + 1;
 		$lastResultOnPage = $currentPage * $resultsPerPage + $resultsPerPage;
-		$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults', 'indexed_search');
+		$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults', 'IndexedSearch');
 		$content = sprintf($label, $firstResultOnPage, min(array($numberOfResults, $lastResultOnPage)), $numberOfResults);
 		return $content;
 	}
