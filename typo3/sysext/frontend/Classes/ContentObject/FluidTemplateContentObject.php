@@ -22,6 +22,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * Contains FLUIDTEMPLATE class object
  */
 class FluidTemplateContentObject extends AbstractContentObject {
+	use DataProcessingTrait;
 
 	/**
 	 * @var StandaloneView
@@ -71,7 +72,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		$this->setExtbaseVariables($conf);
 		$this->assignSettings($conf);
 		$variables = $this->getContentObjectVariables($conf);
-		$variables = $this->processData($conf, $variables);
+		$variables = $this->processData($this->cObj, $conf, $variables);
 
 		$this->view->assignMultiple($variables);
 
@@ -225,47 +226,6 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		if ($requestControllerActionName) {
 			$this->view->getRequest()->setControllerActionName($requestControllerActionName);
 		}
-	}
-
-	/**
-	 * Check for the availability of processors, defined in TypoScript, and use them for data processing
-	 *
-	 * @param array $configuration Configuration array
-	 * @param array $variables the variables to be processed
-	 * @return array the processed data and variables as key/value store
-	 * @throws \UnexpectedValueException
-	 */
-	protected function processData(array $configuration, array $variables) {
-		if (
-			!empty($configuration['dataProcessing.'])
-			&& is_array($configuration['dataProcessing.'])
-		) {
-			$processors = $configuration['dataProcessing.'];
-			$processorKeys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($processors);
-
-			foreach ($processorKeys as $key) {
-				$className = $processors[$key];
-				$processor = GeneralUtility::makeInstance($className);
-
-				if (!$processor instanceof DataProcessorInterface) {
-					throw new \UnexpectedValueException(
-						'$processor with class name "' . $className . '" ' .
-						'must implement interface "' . DataProcessorInterface::class . '"',
-						1427455377
-					);
-				}
-
-				$processorConfiguration = isset($processors[$key . '.']) ? $processors[$key . '.'] : array();
-
-				$variables = $processor->process(
-					$this->cObj,
-					$configuration,
-					$processorConfiguration,
-					$variables
-				);
-			}
-		}
-		return $variables;
 	}
 
 	/**
