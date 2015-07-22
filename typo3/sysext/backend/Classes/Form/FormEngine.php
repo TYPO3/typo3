@@ -1251,6 +1251,13 @@ class FormEngine {
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
 			$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/tree.js');
+			$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
+			if (ExtensionManagementUtility::isLoaded('rtehtmlarea')) {
+				// This js addition is hackish ... it will always load this file even if not RTE
+				// is added here. But this simplifies RTE initialization a lot and is thus kept for now.
+				$pageRenderer->addJsFile('sysext/rtehtmlarea/Resources/Public/JavaScript/HTMLArea/NameSpace/NameSpace.js');
+			}
+
 			$beUserAuth = $this->getBackendUserAuthentication();
 			// Make textareas resizable and flexible ("autogrow" in height)
 			$textareaSettings = array(

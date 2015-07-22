@@ -29,7 +29,6 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi;
 
 /**
@@ -218,7 +217,6 @@ class RichTextElement extends AbstractFormElement {
 		$parameterArray = $this->globalOptions['parameterArray'];
 
 		$backendUser = $this->getBackendUserAuthentication();
-		$pageRenderer = $this->getPageRenderer();
 
 		$this->resultArray = $this->initializeResultArray();
 		$this->defaultExtras = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
@@ -257,17 +255,18 @@ class RichTextElement extends AbstractFormElement {
 		// Merge the list of enabled plugins with the lists from the previous RTE editing areas on the same form
 		$this->pluginEnabledCumulativeArray = $this->pluginEnabledArray;
 
-
 		$this->addInstanceJavaScriptRegistration();
 
 		$this->addOnSubmitJavaScriptCode();
 
-		// Add TYPO3 notifications JavaScript
-		$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 		// Add RTE JavaScript
-		$this->addRteJsFiles();
-		$pageRenderer->addJsFile($this->createJavaScriptLanguageLabelsFromFiles());
-		$pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
+		$this->loadRequireModulesForRTE();
+
+		// Create language labels
+		$this->createJavaScriptLanguageLabelsFromFiles();
+
+		// Get RTE init JS code
+		$this->resultArray['additionalJavaScriptPost'][] = $this->getRteInitJsCode();
 
 		$html = $this->getMainHtml();
 
@@ -578,63 +577,15 @@ class RichTextElement extends AbstractFormElement {
 	 *
 	 * @return void
 	 */
-	protected function addRteJsFiles() {
-		$pageRenderer = $this->getPageRenderer();
-		// Component files. Order is important.
-		$components = array(
-			'Util/Wrap.open',
-			'NameSpace/NameSpace',
-			'UserAgent/UserAgent',
-			'Util/Util',
-			'Util/Color',
-			'Util/Resizable',
-			'Util/String',
-			'Util/Tips',
-			'Util/TYPO3',
-			'Ajax/Ajax',
-			'DOM/DOM',
-			'Event/Event',
-			'Event/KeyMap',
-			'CSS/Parser',
-			'DOM/BookMark',
-			'DOM/Node',
-			'DOM/Selection',
-			'DOM/Walker',
-			'Configuration/Config',
-			'Toolbar/Button',
-			'Toolbar/ToolbarText',
-			'Toolbar/Select',
-			'Extjs/ColorPalette',
-			'Extjs/ux/ColorMenu',
-			'Extjs/ux/ColorPaletteField',
-			'LoremIpsum',
-			'Plugin/Plugin'
-		);
-		$components2 = array(
-			'Editor/Toolbar',
-			'Editor/Iframe',
-			'Editor/TextAreaContainer',
-			'Editor/StatusBar',
-			'Editor/Framework',
-			'Editor/Editor',
-			'HTMLArea',
-			'Util/Wrap.close',
-		);
-		foreach ($components as $component) {
-			$pageRenderer->addJsFile($this->getFullFileName('EXT:rtehtmlarea/Resources/Public/JavaScript/HTMLArea/' . $component . '.js'));
-		}
+	protected function loadRequireModulesForRTE() {
+		$this->resultArray['requireJsModules'] = array();
+		$this->resultArray['requireJsModules'][] = 'TYPO3/CMS/Rtehtmlarea/HTMLArea/HTMLArea';
 		foreach ($this->pluginEnabledCumulativeArray as $pluginId) {
 			/** @var RteHtmlAreaApi $plugin */
 			$plugin = $this->registeredPlugins[$pluginId];
 			$extensionKey = is_object($plugin) ? $plugin->getExtensionKey() : 'rtehtmlarea';
-			$fileName = 'EXT:' . $extensionKey . '/Resources/Public/JavaScript/Plugins/' . $pluginId . '.js';
-			$absolutePath = GeneralUtility::getFileAbsFileName($fileName);
-			if (file_exists($absolutePath)) {
-				$pageRenderer->addJsFile($this->getFullFileName($fileName));
-			}
-		}
-		foreach ($components2 as $component) {
-			$pageRenderer->addJsFile($this->getFullFileName('EXT:rtehtmlarea/Resources/Public/JavaScript/HTMLArea/' . $component . '.js'));
+			$requirePath = 'TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($extensionKey);
+			$this->resultArray['requireJsModules'][] = $requirePath . '/Plugins/' . $pluginId;
 		}
 	}
 
@@ -1029,9 +980,11 @@ class RichTextElement extends AbstractFormElement {
 				$labelArray[$pluginId] = $newLabels;
 			}
 		}
-		$javaScriptString = 'HTMLArea.I18N = new Object();' . LF;
+		$javaScriptString = 'TYPO3.jQuery(function() {';
+		$javaScriptString .= 'HTMLArea.I18N = new Object();' . LF;
 		$javaScriptString .= 'HTMLArea.I18N = ' . json_encode($labelArray);
-		return $this->writeTemporaryFile($this->language, 'js', $javaScriptString);
+		$javaScriptString .= '});';
+		$this->resultArray['additionalJavaScriptPost'][] = $javaScriptString;
 	}
 
 	/**
@@ -1350,13 +1303,6 @@ class RichTextElement extends AbstractFormElement {
 	 */
 	protected function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 
 }
