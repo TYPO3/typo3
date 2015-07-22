@@ -14,41 +14,62 @@ namespace TYPO3\CMS\IndexedSearch;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+
 /**
  * External standard parsers for indexed_search
  * MUST RETURN utf-8 content!
  */
 class FileContentParser {
 
-	// This value is also overridden from config.
+	/**
+	 * This value is also overridden from config.
+	 * zero: whole PDF file is indexed in one. positive value: Indicates number of pages at a time, eg. "5" would means 1-5,6-10,....
+	 * Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10
+	 *
+	 * @var int
+	 */
 	public $pdf_mode = -20;
 
-	// zero: whole PDF file is indexed in one. positive value: Indicates number of pages at a time, eg. "5" would means 1-5,6-10,.... Negative integer would indicate (abs value) number of groups. Eg "3" groups of 10 pages would be 1-4,5-8,9-10
-	// This array is configured in initialization:
+	/**
+	 * @var array
+	 */
 	public $app = array();
 
+	/**
+	 * @var array
+	 */
 	public $ext2itemtype_map = array();
 
+	/**
+	 * @var array
+	 */
 	public $supportedExtensions = array();
 
+	/**
+	 * @var \TYPO3\CMS\IndexedSearch\Indexer
+	 */
 	public $pObj;
 
-	// Reference to parent object (indexer class)
+	/**
+	 * @var \TYPO3\CMS\Lang\LanguageService|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
 	protected $langObject;
 
-	// Reference to LANG-Object
 	/**
 	 * Constructs this external parsers object
 	 */
 	public function __construct() {
 		// Set the language object to be used accordant to current TYPO3_MODE:
-		$this->langObject = TYPO3_MODE == 'FE' ? $GLOBALS['TSFE'] : $GLOBALS['LANG'];
+		$this->langObject = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE'] : $GLOBALS['LANG'];
 	}
 
 	/**
 	 * Initialize external parser for parsing content.
 	 *
-	 * @param string File extension
+	 * @param string $extension File extension
 	 * @return bool Returns TRUE if extension is supported/enabled, otherwise FALSE.
 	 */
 	public function initParser($extension) {
@@ -60,7 +81,7 @@ class FileContentParser {
 		$extOK = FALSE;
 		$mainExtension = '';
 		// Ignore extensions
-		$ignoreExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), TRUE);
+		$ignoreExtensions = GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), TRUE);
 		if (in_array($extension, $ignoreExtensions)) {
 			$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:ignoreExtensions'), $extension), 1);
 			return FALSE;
@@ -75,7 +96,7 @@ class FileContentParser {
 						$this->app['pdfinfo'] = $pdfPath . 'pdfinfo' . $exe;
 						$this->app['pdftotext'] = $pdfPath . 'pdftotext' . $exe;
 						// PDF mode:
-						$this->pdf_mode = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($indexerConfig['pdf_mode'], -100, 100);
+						$this->pdf_mode = MathUtility::forceIntegerInRange($indexerConfig['pdf_mode'], -100, 100);
 						$extOK = TRUE;
 					} else {
 						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:pdfToolsNotFound'), $pdfPath), 3);
@@ -99,7 +120,6 @@ class FileContentParser {
 				}
 				break;
 			case 'pps':
-
 			case 'ppt':
 				// MS PowerPoint
 				// ppthtml
@@ -131,15 +151,10 @@ class FileContentParser {
 				}
 				break;
 			case 'sxc':
-
 			case 'sxi':
-
 			case 'sxw':
-
 			case 'ods':
-
 			case 'odp':
-
 			case 'odt':
 				// Oasis OpenDocument Text
 				if ($indexerConfig['unzip']) {
@@ -169,17 +184,13 @@ class FileContentParser {
 				}
 				break;
 			case 'txt':
-
 			case 'csv':
-
 			case 'xml':
-
 			case 'tif':
 				// PHP EXIF
 				$extOK = TRUE;
 				break;
 			case 'html':
-
 			case 'htm':
 				// PHP strip-tags()
 				$extOK = TRUE;
@@ -187,7 +198,6 @@ class FileContentParser {
 				// making "html" the common "item_type"
 				break;
 			case 'jpg':
-
 			case 'jpeg':
 				// PHP EXIF
 				$extOK = TRUE;
@@ -201,73 +211,56 @@ class FileContentParser {
 			$this->ext2itemtype_map[$extension] = $mainExtension ?: $extension;
 			return TRUE;
 		}
+		return FALSE;
 	}
 
 	/**
 	 * Initialize external parser for backend modules
 	 * Doesn't evaluate if parser is configured right - more like returning POSSIBLE supported extensions (for showing icons etc) in backend and frontend plugin
 	 *
-	 * @param string File extension to initialize for.
+	 * @param string $extension File extension to initialize for.
 	 * @return bool Returns TRUE if the extension is supported and enabled, otherwise FALSE.
 	 */
 	public function softInit($extension) {
 		switch ($extension) {
 			case 'pdf':
-
 			case 'doc':
-
 			case 'pps':
-
 			case 'ppt':
-
 			case 'xls':
-
 			case 'sxc':
-
 			case 'sxi':
-
 			case 'sxw':
-
 			case 'ods':
-
 			case 'odp':
-
 			case 'odt':
-
 			case 'rtf':
-
 			case 'txt':
-
 			case 'html':
-
 			case 'htm':
-
 			case 'csv':
-
 			case 'xml':
-
 			case 'jpg':
-
 			case 'jpeg':
-
 			case 'tif':
 				// TIF images (EXIF comment)
 				return TRUE;
 				break;
 		}
+		return FALSE;
 	}
 
 	/**
 	 * Return title of entry in media type selector box.
 	 *
-	 * @param string File extension
+	 * @param string $extension File extension
 	 * @return string String with label value of entry in media type search selector box (frontend plugin).
 	 */
 	public function searchTypeMediaTitle($extension) {
 		// Read indexer-config
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 		// Ignore extensions
-		$ignoreExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), TRUE);
+		$ignoreExtensions = GeneralUtility::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), TRUE);
 		if (in_array($extension, $ignoreExtensions)) {
 			return FALSE;
 		}
@@ -286,7 +279,6 @@ class FileContentParser {
 				}
 				break;
 			case 'pps':
-
 			case 'ppt':
 				// MS PowerPoint
 				// ppthtml
@@ -344,15 +336,12 @@ class FileContentParser {
 				}
 				break;
 			case 'jpeg':
-
 			case 'jpg':
-
 			case 'tif':
 				// PHP EXIF
 				return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.Images'), $extension);
 				break;
 			case 'html':
-
 			case 'htm':
 				// PHP strip-tags()
 				return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.HTML'), $extension);
@@ -372,12 +361,13 @@ class FileContentParser {
 			default:
 				// Do nothing
 		}
+		return '';
 	}
 
 	/**
 	 * Returns TRUE if the input extension (item_type) is a potentially a multi-page extension
 	 *
-	 * @param string Extension / item_type string
+	 * @param string $extension Extension / item_type string
 	 * @return bool Return TRUE if multi-page
 	 */
 	public function isMultiplePageExtension($extension) {
@@ -387,6 +377,7 @@ class FileContentParser {
 				return TRUE;
 				break;
 		}
+		return FALSE;
 	}
 
 	/**
@@ -414,7 +405,7 @@ class FileContentParser {
 	 * @return array Standard content array (title, description, keywords, body keys)
 	 */
 	public function readFileContent($ext, $absFile, $cPKey) {
-		unset($contentArr);
+		$contentArr = NULL;
 		// Return immediately if initialization didn't set support up:
 		if (!$this->supportedExtensions[$ext]) {
 			return FALSE;
@@ -426,20 +417,20 @@ class FileContentParser {
 					$this->setLocaleForServerFileSystem();
 					// Getting pdf-info:
 					$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
 					if ((int)$pdfInfo['pages']) {
 						list($low, $high) = explode('-', $cPKey);
 						// Get pdf content:
-						$tempFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('Typo3_indexer');
+						$tempFileName = GeneralUtility::tempnam('Typo3_indexer');
 						// Create temporary name
 						@unlink($tempFileName);
 						// Delete if exists, just to be safe.
 						$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
-						\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+						CommandUtility::exec($cmd);
 						if (@is_file($tempFileName)) {
-							$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($tempFileName);
+							$content = GeneralUtility::getUrl($tempFileName);
 							unlink($tempFileName);
 						} else {
 							$content = '';
@@ -456,7 +447,7 @@ class FileContentParser {
 				if ($this->app['catdoc']) {
 					$this->setLocaleForServerFileSystem();
 					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$content = implode(LF, $res);
 					unset($res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
@@ -464,12 +455,11 @@ class FileContentParser {
 				}
 				break;
 			case 'pps':
-
 			case 'ppt':
 				if ($this->app['ppthtml']) {
 					$this->setLocaleForServerFileSystem();
 					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$content = implode(LF, $res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
@@ -482,7 +472,7 @@ class FileContentParser {
 				if ($this->app['xlhtml']) {
 					$this->setLocaleForServerFileSystem();
 					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$content = implode(LF, $res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
@@ -492,26 +482,21 @@ class FileContentParser {
 				}
 				break;
 			case 'sxi':
-
 			case 'sxc':
-
 			case 'sxw':
-
 			case 'ods':
-
 			case 'odp':
-
 			case 'odt':
 				if ($this->app['unzip']) {
 					$this->setLocaleForServerFileSystem();
 					// Read content.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$content_xml = implode(LF, $res);
 					unset($res);
 					// Read meta.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$meta_xml = implode(LF, $res);
 					unset($res);
 					$utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
@@ -519,7 +504,7 @@ class FileContentParser {
 					$contentArr['title'] = basename($absFile);
 					// Make sure the title doesn't expose the absolute path!
 					// Meta information
-					$metaContent = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2tree($meta_xml);
+					$metaContent = GeneralUtility::xml2tree($meta_xml);
 					$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
 					if (is_array($metaContent)) {
 						$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
@@ -538,7 +523,7 @@ class FileContentParser {
 				if ($this->app['unrtf']) {
 					$this->setLocaleForServerFileSystem();
 					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+					CommandUtility::exec($cmd, $res);
 					$fileContent = implode(LF, $res);
 					unset($res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
@@ -547,11 +532,10 @@ class FileContentParser {
 				}
 				break;
 			case 'txt':
-
 			case 'csv':
 				$this->setLocaleForServerFileSystem();
 				// Raw text
-				$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absFile);
+				$content = GeneralUtility::getUrl($absFile);
 				// @todo Implement auto detection of charset (currently assuming utf-8)
 				$contentCharset = 'utf-8';
 				$content = $this->pObj->convertHTMLToUtf8($content, $contentCharset);
@@ -561,16 +545,15 @@ class FileContentParser {
 				$this->setLocaleForServerFileSystem(TRUE);
 				break;
 			case 'html':
-
 			case 'htm':
-				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absFile);
+				$fileContent = GeneralUtility::getUrl($absFile);
 				$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 				$contentArr = $this->pObj->splitHTMLContent($fileContent);
 				break;
 			case 'xml':
 				$this->setLocaleForServerFileSystem();
 				// PHP strip-tags()
-				$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($absFile);
+				$fileContent = GeneralUtility::getUrl($absFile);
 				// Finding charset:
 				preg_match('/^[[:space:]]*<\\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i', substr($fileContent, 0, 200), $reg);
 				$charset = $reg[1] ? $this->pObj->csObj->parse_charset($reg[1]) : 'utf-8';
@@ -582,9 +565,7 @@ class FileContentParser {
 				$this->setLocaleForServerFileSystem(TRUE);
 				break;
 			case 'jpg':
-
 			case 'jpeg':
-
 			case 'tif':
 				$this->setLocaleForServerFileSystem();
 				// PHP EXIF
@@ -663,7 +644,7 @@ class FileContentParser {
 				$this->setLocaleForServerFileSystem();
 				// Getting pdf-info:
 				$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
-				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
+				CommandUtility::exec($cmd, $res);
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
 				if ((int)$pdfInfo['pages']) {
@@ -672,7 +653,7 @@ class FileContentParser {
 					if ($this->pdf_mode > 0) {
 						$iter = ceil($pdfInfo['pages'] / $this->pdf_mode);
 					} else {
-						$iter = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(abs($this->pdf_mode), 1, $pdfInfo['pages']);
+						$iter = MathUtility::forceIntegerInRange(abs($this->pdf_mode), 1, $pdfInfo['pages']);
 					}
 					// Traverse and create intervals.
 					for ($a = 0; $a < $iter; $a++) {
@@ -691,7 +672,7 @@ class FileContentParser {
 	/**
 	 * Analysing PDF info into a useable format.
 	 *
-	 * @param array Array of PDF content, coming from the pdfinfo tool
+	 * @param array $pdfInfoArray Array of PDF content, coming from the pdfinfo tool
 	 * @return array Result array
 	 * @access private
 	 * @see fileContentParts()
@@ -712,7 +693,7 @@ class FileContentParser {
 	/**
 	 * Removes some strange char(12) characters and line breaks that then to occur in the end of the string from external files.
 	 *
-	 * @param string String to clean up
+	 * @param string $string String to clean up
 	 * @return string String
 	 */
 	public function removeEndJunk($string) {
@@ -727,8 +708,8 @@ class FileContentParser {
 	/**
 	 * Return icon for file extension
 	 *
-	 * @param string File extension, lowercase.
-	 * @return string Relative file reference, resolvable by \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName()
+	 * @param string $extension File extension, lowercase.
+	 * @return string Relative file reference, resolvable by GeneralUtility::getFileAbsFileName()
 	 */
 	public function getIcon($extension) {
 		if ($extension === 'htm') {

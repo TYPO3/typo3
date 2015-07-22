@@ -25,11 +25,12 @@ namespace TYPO3\CMS\IndexedSearch\Example;
 class PluginHook {
 
 	/**
+	 * Is set to a reference to the parent object, "pi1/class.indexedsearch.php"
+	 *
 	 * @var \TYPO3\CMS\IndexedSearch\Controller\SearchFormController
 	 */
 	public $pObj;
 
-	// Is set to a reference to the parent object, "pi1/class.indexedsearch.php"
 	/**
 	 * EXAMPLE of how you can post process the initialized values in the frontend plugin.
 	 * The example reverses the order of elements in the ranking selector box. You can modify other values like this or add / remove items.
@@ -46,7 +47,7 @@ class PluginHook {
 	/**
 	 * Providing an alternative search algorithm!
 	 *
-	 * @param array Array of search words
+	 * @param array $sWArr Array of search words
 	 * @return array Array of first row, result rows, count
 	 */
 	public function getResultRows($sWArr) {

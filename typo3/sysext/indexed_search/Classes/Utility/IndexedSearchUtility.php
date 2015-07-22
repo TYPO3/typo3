@@ -141,7 +141,6 @@ class IndexedSearchUtility {
 	 * @param string $operator The possible operator to find in the internal operator array.
 	 * @param array $operatorTranslateTable an array of possible operators
 	 * @return string If found, the SQL operator for the localized input operator.
-	 * @access private
 	 */
 	static protected function getOperator($operator, $operatorTranslateTable) {
 		$operator = trim($operator);

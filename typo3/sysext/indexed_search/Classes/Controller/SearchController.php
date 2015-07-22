@@ -27,11 +27,21 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
-	// previously known as $this->piVars['sword']
+	/**
+	 * previously known as $this->piVars['sword']
+	 *
+	 * @var string
+	 */
 	protected $sword = NULL;
 
+	/**
+	 * @var array
+	 */
 	protected $searchWords = array();
 
+	/**
+	 * @var array
+	 */
 	protected $searchData;
 
 	/**
@@ -45,6 +55,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	protected $searchRootPageIdList = 0;
 
+	/**
+	 * @var int
+	 */
 	protected $defaultResultNumber = 10;
 
 	/**
@@ -274,7 +287,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			}
 		}
 		// Print a message telling which words in which sections we searched for
-		if (substr($this->searchData['sections'], 0, 2) == 'rl') {
+		if (substr($this->searchData['sections'], 0, 2) === 'rl') {
 			$result['searchedInSectionInfo'] = LocalizationUtility::translate('result.inSection', 'IndexedSearch') . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
 		}
 		return $result;

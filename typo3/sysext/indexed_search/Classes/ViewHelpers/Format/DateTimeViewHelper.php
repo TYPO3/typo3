@@ -1,7 +1,7 @@
 <?php
 namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 
-/**
+/*
  * This file is part of the TYPO3 CMS project.
  *
  * It is free software; you can redistribute it and/or modify it under
@@ -23,7 +23,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * DateTime viewhelper
  */
 class DateTimeViewHelper extends AbstractViewHelper implements CompilableInterface {
-
 
 	/**
 	 * Render the given timestamp as date & time

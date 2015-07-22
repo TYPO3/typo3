@@ -23,27 +23,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CrawlerHook {
 
-	// Static:
 	/**
+	 * Number of seconds to use as interval between queued indexing operations of URLs / files (types 2 & 3)
+	 *
 	 * @var int
 	 */
 	public $secondsPerExternalUrl = 3;
 
-	// Number of seconds to use as interval between queued indexing operations of URLs / files (types 2 & 3)
-	// Internal, dynamic:
 	/**
+	 * Counts up for each added URL (type 3)
+	 *
 	 * @var int
 	 */
 	public $instanceCounter = 0;
 
-	// Counts up for each added URL (type 3)
-	// Internal, static:
 	/**
 	 * @var string
 	 */
 	public $callBack = CrawlerHook::class;
 
-	// The object reference to this class.
 	/**
 	 * Initialization of crawler hook.
 	 * This function is asked for each instance of the crawler and we must check if something is timed to happen and if so put entry(s) in the crawlers log to start processing.
@@ -442,9 +440,9 @@ class CrawlerHook {
 	/**
 	 * Check if an input URL are allowed to be indexed. Depends on whether it is already present in the url log.
 	 *
-	 * @param string URL string to check
-	 * @param array Array of already indexed URLs (input url is looked up here and must not exist already)
-	 * @param string Base URL of the indexing process (input URL must be "inside" the base URL!)
+	 * @param string $url URL string to check
+	 * @param array $urlLog Array of already indexed URLs (input url is looked up here and must not exist already)
+	 * @param string $baseUrl Base URL of the indexing process (input URL must be "inside" the base URL!)
 	 * @return string Returls the URL if OK, otherwise FALSE
 	 */
 	public function checkUrl($url, $urlLog, $baseUrl) {
@@ -462,11 +460,11 @@ class CrawlerHook {
 	/**
 	 * Indexing External URL
 	 *
-	 * @param string URL, http://....
-	 * @param int Page id to relate indexing to.
-	 * @param array Rootline array to relate indexing to
-	 * @param int Configuration UID
-	 * @param int Set ID value
+	 * @param string $url URL, http://....
+	 * @param int $pageId Page id to relate indexing to.
+	 * @param array $rl Rootline array to relate indexing to
+	 * @param int $cfgUid Configuration UID
+	 * @param int $setId Set ID value
 	 * @return array URLs found on this page
 	 */
 	public function indexExtUrl($url, $pageId, $rl, $cfgUid, $setId) {
@@ -510,9 +508,9 @@ class CrawlerHook {
 	/**
 	 * Indexing Single Record
 	 *
-	 * @param array Record to index
-	 * @param array Configuration Record
-	 * @param array Rootline array to relate indexing to
+	 * @param array $r Record to index
+	 * @param array $cfgRec Configuration Record
+	 * @param array $rl Rootline array to relate indexing to
 	 * @return void
 	 */
 	public function indexSingleRecord($r, $cfgRec, $rl = NULL) {
@@ -543,7 +541,7 @@ class CrawlerHook {
 	 * Get rootline for closest TypoScript template root.
 	 * Algorithm same as used in Web > Template, Object browser
 	 *
-	 * @param int The page id to traverse rootline back from
+	 * @param int $id The page id to traverse rootline back from
 	 * @return array Array where the root lines uid values are found.
 	 */
 	public function getUidRootLineForClosestTemplate($id) {
@@ -567,7 +565,7 @@ class CrawlerHook {
 	/**
 	 * Generate the unix time stamp for next visit.
 	 *
-	 * @param array Index configuration record
+	 * @param array $cfgRec Index configuration record
 	 * @return int The next time stamp
 	 */
 	public function generateNextIndexingTime($cfgRec) {
@@ -585,15 +583,14 @@ class CrawlerHook {
 		// Now, find out how many blocks of the length of frequency there is until the next time:
 		$frequencyBlocksUntilNextTime = ceil(($currentTime - $lastSureOffset) / $frequencySeconds);
 		// Set next time to the offset + the frequencyblocks multiplied with the frequency length in seconds.
-		$nextTime = $lastSureOffset + $frequencyBlocksUntilNextTime * $frequencySeconds;
-		return $nextTime;
+		return $lastSureOffset + $frequencyBlocksUntilNextTime * $frequencySeconds;
 	}
 
 	/**
 	 * Checks if $url has any of the URls in the $url_deny "list" in it and if so, returns TRUE.
 	 *
-	 * @param string URL to test
-	 * @param string String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
+	 * @param string $url URL to test
+	 * @param string $url_deny String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
 	 * @return bool TRUE if there is a matching URL (hence, do not index!)
 	 */
 	public function checkDeniedSuburls($url, $url_deny) {
@@ -612,8 +609,8 @@ class CrawlerHook {
 	/**
 	 * Adding entry in queue for Hook
 	 *
-	 * @param array Configuration record
-	 * @param string Title/URL
+	 * @param array $cfgRec Configuration record
+	 * @param string $title Title/URL
 	 * @return void
 	 */
 	public function addQueueEntryForHook($cfgRec, $title) {
@@ -629,7 +626,7 @@ class CrawlerHook {
 	/**
 	 * Deletes all data stored by indexed search for a given page
 	 *
-	 * @param int Uid of the page to delete all pHash
+	 * @param int $id Uid of the page to delete all pHash
 	 * @return void
 	 */
 	public function deleteFromIndex($id) {
@@ -641,7 +638,14 @@ class CrawlerHook {
 				$pHashesToDelete[] = $pHashRow['phash'];
 			}
 			$where_clause = 'phash IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete)) . ')';
-			$tables = explode(',', 'index_debug,index_fulltext,index_grlist,index_phash,index_rel,index_section');
+			$tables = array(
+				'index_debug',
+				'index_fulltext',
+				'index_grlist',
+				'index_phash',
+				'index_rel',
+				'index_section',
+			);
 			foreach ($tables as $table) {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where_clause);
 			}
@@ -665,7 +669,7 @@ class CrawlerHook {
 	 */
 	public function processCmdmap_preProcess($command, $table, $id, $value, $pObj) {
 		// Clean up the index
-		if ($command == 'delete' && $table == 'pages') {
+		if ($command === 'delete' && $table === 'pages') {
 			$this->deleteFromIndex($id);
 		}
 	}
@@ -684,9 +688,9 @@ class CrawlerHook {
 		// Check if any fields are actually updated:
 		if (!empty($fieldArray)) {
 			// Translate new ids.
-			if ($status == 'new') {
+			if ($status === 'new') {
 				$id = $pObj->substNEWwithIDs[$id];
-			} elseif ($table == 'pages' && $status == 'update' && (array_key_exists('hidden', $fieldArray) && $fieldArray['hidden'] == 1 || array_key_exists('no_search', $fieldArray) && $fieldArray['no_search'] == 1)) {
+			} elseif ($table === 'pages' && $status === 'update' && (array_key_exists('hidden', $fieldArray) && $fieldArray['hidden'] == 1 || array_key_exists('no_search', $fieldArray) && $fieldArray['no_search'] == 1)) {
 				// If the page should be hidden or not indexed after update, delete index for this page
 				$this->deleteFromIndex($id);
 			}

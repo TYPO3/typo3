@@ -21,7 +21,6 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  */
 class DoubleMetaPhoneUtility {
 
-	//  properties
 	/**
 	 * @var string
 	 */
