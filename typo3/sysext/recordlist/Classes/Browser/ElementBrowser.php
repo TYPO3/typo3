@@ -907,7 +907,7 @@ class ElementBrowser {
 				}
 		}
 		$lang = $this->getLanguageService();
-		if (in_array('params', $allowedFields, TRUE)) {
+		if (in_array('params', $allowedFields, TRUE) && $this->act !== 'url') {
 			$content .= '
 				<!--
 					Selecting params for link:
