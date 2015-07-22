@@ -417,11 +417,8 @@ class ResourceCompressor {
 		// only create it, if it doesn't exist, yet
 		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
 			$contents = $this->compressCssString(GeneralUtility::getUrl($filenameAbsolute));
-			// we have to fix relative paths, if we aren't working on a file in our target directory
-			$relativeFilename = str_replace(PATH_site, '', $filenameAbsolute);
-			if (strpos($relativeFilename, $this->targetDirectory) === FALSE) {
-				$filenameRelativeToMainDir = substr($relativeFilename, strlen($this->backPath));
-				$contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filenameRelativeToMainDir) . '/');
+			if (strpos($filename, $this->targetDirectory) === FALSE) {
+				$contents = $this->cssFixRelativeUrlPaths($contents, PathUtility::dirname($filename) . '/');
 			}
 			$this->writeFileAndCompressed($targetFile, $contents);
 		}
