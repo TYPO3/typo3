@@ -5,7 +5,7 @@ if (TYPO3_MODE === 'BE') {
 	// Register wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_openid',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'wizard/'
+		'EXT:openid/wizard/'
 	);
 
 	// Add field to setup module

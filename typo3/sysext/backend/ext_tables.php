@@ -5,135 +5,135 @@ if (TYPO3_MODE === 'BE') {
 	// Main module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'main',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Main/'
+		'EXT:backend/Modules/Main/'
 	);
 
 	// Register record edit module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'record_edit',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/FormEngine/'
+		'EXT:backend/Modules/FormEngine/'
 	);
 
 	// Register record history module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'record_history',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/RecordHistory/'
+		'EXT:backend/Modules/RecordHistory/'
 	);
 
 	// Register login frameset
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'login_frameset',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/LoginFrameset/'
+		'EXT:backend/Modules/LoginFrameset/'
 	);
 
 	// Register logout
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'logout',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Logout/'
+		'EXT:backend/Modules/Logout/'
 	);
 
 	// Register file_navframe
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('file', 'file_navframe');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_navframe',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/FileSystemNavigationFrame/'
+		'EXT:backend/Modules/FileSystemNavigationFrame/'
 	);
 
 	// Register file_edit
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_edit',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Edit/'
+		'EXT:backend/Modules/File/Edit/'
 	);
 
 	// Register file_newfolder
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_newfolder',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Newfolder/'
+		'EXT:backend/Modules/File/Newfolder/'
 	);
 
 	// Register file_rename
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_rename',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Rename/'
+		'EXT:backend/Modules/File/Rename/'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_replace',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Replace/'
+		'EXT:backend/Modules/File/Replace/'
 	);
 
 	// Register file_rename
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_upload',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Upload/'
+		'EXT:backend/Modules/File/Upload/'
 	);
 
 	// Register tce_db
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'tce_db',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Database/'
+		'EXT:backend/Modules/File/Database/'
 	);
 
 	// Register tce_file
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'tce_file',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/File/Administration/'
+		'EXT:backend/Modules/File/Administration/'
 	);
 
 	// Register edit wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_edit',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/EditWizard/'
+		'EXT:backend/Modules/Wizards/EditWizard/'
 	);
 
 	// Register add wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_add',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/AddWizard/'
+		'EXT:backend/Modules/Wizards/AddWizard/'
 	);
 
 	// Register list wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_list',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/ListWizard/'
+		'EXT:backend/Modules/Wizards/ListWizard/'
 	);
 
 	// Register table wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_table',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/TableWizard/'
+		'EXT:backend/Modules/Wizards/TableWizard/'
 	);
 
 	// Register rte wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_rte',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/RteWizard/'
+		'EXT:backend/Modules/Wizards/RteWizard/'
 	);
 
 	// Register colorpicker wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_colorpicker',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/ColorpickerWizard/'
+		'EXT:backend/Modules/Wizards/ColorpickerWizard/'
 	);
 
 	// Register backend_layout wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_backend_layout',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Wizards/BackendLayoutWizard/'
+		'EXT:backend/Modules/Wizards/BackendLayoutWizard/'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
 		'web',
 		'layout',
 		'top',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Layout/',
+		'EXT:backend/Modules/Layout/',
 		array(
 			'script' => '_DISPATCH',
 			'access' => 'user,group',
 			'name' => 'web_layout',
 			'labels' => array(
 				'tabs_images' => array(
-					'tab' => '../../Resources/Public/Icons/module-page.svg',
+					'tab' => 'EXT:backend/Resources/Public/Icons/module-page.svg',
 				),
 				'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
 			),
@@ -143,37 +143,37 @@ if (TYPO3_MODE === 'BE') {
 	// Register new record
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'db_new',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/NewRecord/'
+		'EXT:backend/Modules/NewRecord/'
 	);
 
 	// Register new content element module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'new_content_element',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/NewContentElement/'
+		'EXT:backend/Modules/NewContentElement/'
 	);
 
 	// Register move element module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'move_element',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/MoveElement/'
+		'EXT:backend/Modules/MoveElement/'
 	);
 
 	// Register show item module
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'show_item',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/ShowItem/'
+		'EXT:backend/Modules/ShowItem/'
 	);
 
 	// Register browser
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'browser',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Browser/'
+		'EXT:backend/Modules/Browser/'
 	);
 
 	// Register dummy window
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'dummy',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/Dummy/'
+		'EXT:backend/Modules/Dummy/'
 	);
 
 	// Register BackendLayoutDataProvider for PageTs

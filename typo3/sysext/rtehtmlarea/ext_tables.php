@@ -64,24 +64,24 @@ if (TYPO3_MODE === 'BE') {
 	// Register RTE browse links wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'rtehtmlarea_wizard_browse_links',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/BrowseLinks/'
+		'EXT:rtehtmlarea/Modules/BrowseLinks/'
 	);
 
 	// Register RTE select image wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'rtehtmlarea_wizard_select_image',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/SelectImage/'
+		'EXT:rtehtmlarea/Modules/SelectImage/'
 	);
 
 	// Register RTE user elements wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'rtehtmlarea_wizard_user_elements',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/UserElements/'
+		'EXT:rtehtmlarea/Modules/UserElements/'
 	);
 
 	// Register RTE parse html wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'rtehtmlarea_wizard_parse_html',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Modules/ParseHtml/'
+		'EXT:rtehtmlarea/Modules/ParseHtml/'
 	);
 }

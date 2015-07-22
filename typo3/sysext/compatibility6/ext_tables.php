@@ -14,6 +14,6 @@ if (TYPO3_MODE === 'BE') {
 	// Register forms wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'wizard_forms',
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('compatibility6', 'Modules/Wizards/FormsWizard/')
+		'EXT:compatibility6/Modules/Wizards/FormsWizard/'
 	);
 }
