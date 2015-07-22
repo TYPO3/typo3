@@ -40,6 +40,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 		linefeedsPrepared: false,
 		currentCursorPosition: null,
 		extTsObjTree: {},
+		latestCursorNode: null,
 		codemirror: null,
 		parser: null,
 		plugins: [
@@ -300,10 +301,19 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 	};
 
 	/**
+	 * Event handler function executed after clicking in the editor.
+	 */
+	TsCodeCompletion.click = function() {
+		if (TsCodeCompletion.latestCursorNode !== TsCodeCompletion.getCursorNode()) {
+			TsCodeCompletion.endAutoCompletion();
+		}
+	};
+
+	/**
 	 * Eventhandler function executed after keystroke release
 	 * triggers CC on pressed dot and typing on
 	 *
-	 * @param event fired prototype event object
+	 * @param e fired prototype event object
 	 */
 	TsCodeCompletion.keyDown = function(e) {
 		if (!TsCodeCompletion.linefeedsPrepared) {
@@ -371,14 +381,14 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 
 		// retrieves the node right to the cursor
 		TsCodeCompletion.currentCursorPosition = TsCodeCompletion.codemirror.win.select.markSelection(TsCodeCompletion.codemirror);
-		var cursorNode = TsCodeCompletion.getCursorNode();
+		TsCodeCompletion.latestCursorNode = TsCodeCompletion.getCursorNode();
 
 		// the cursornode has to be stored cause inserted breaks have to be deleted after pressing enter if the codecompletion is active
-		var filter = TsCodeCompletion.getFilter(cursorNode);
+		var filter = TsCodeCompletion.getFilter(TsCodeCompletion.latestCursorNode);
 
-		if (TsCodeCompletion.compResult === null || cursorNode.innerHTML === '.') {
+		if (TsCodeCompletion.compResult === null || TsCodeCompletion.latestCursorNode.innerHTML === '.') {
 			// TODO: implement cases: operatorCompletion reference/copy path completion (formerly found in getCompletionResults())
-			var currentTsTreeNode = TsCodeCompletion.parser.buildTsObjTree(TsCodeCompletion.codemirror.editor.container.firstChild, cursorNode);
+			var currentTsTreeNode = TsCodeCompletion.parser.buildTsObjTree(TsCodeCompletion.codemirror.editor.container.firstChild, TsCodeCompletion.latestCursorNode);
 			TsCodeCompletion.compResult = CompletionResult.init({
 				tsRef: TsRef,
 				tsTreeNode: currentTsTreeNode
@@ -418,11 +428,11 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 			});
 
 			var wrapOffset = $('.t3e_iframe_wrap', document).offset(),
-				$cursorNode = $(cursorNode),
+				$cursorNode = $(TsCodeCompletion.latestCursorNode),
 				nodeOffset = $cursorNode.offset();
 
-			var leftpos = Math.round(wrapOffset.left + nodeOffset.left + cursorNode.offsetWidth) + 'px',
-				toppos = Math.round($cursorNode.position().top + cursorNode.offsetHeight - $cursorNode.scrollTop()) + 'px';
+			var leftpos = Math.round(wrapOffset.left + nodeOffset.left + TsCodeCompletion.latestCursorNode.offsetWidth) + 'px',
+				toppos = Math.round($cursorNode.position().top + TsCodeCompletion.latestCursorNode.offsetHeight - $cursorNode.scrollTop()) + 'px';
 
 			TsCodeCompletion.$codeCompleteBox.css({
 				left: leftpos,
@@ -567,6 +577,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 		TsCodeCompletion.parser = TsParser.init(TsCodeCompletion.tsRef, TsCodeCompletion.extTsObjTree);
 		TsCodeCompletion.tsRef.loadTsrefAsync();
 
+		$(TsCodeCompletion.codemirror.win).on('click', TsCodeCompletion.click);
 		$(TsCodeCompletion.codemirror.win).on('mousemove', TsCodeCompletion.saveMousePos);
 		$(TsCodeCompletion.codemirror.win).on('keydown', TsCodeCompletion.keyDown);
 		$(TsCodeCompletion.codemirror.win).on('keyup', TsCodeCompletion.keyUp);
