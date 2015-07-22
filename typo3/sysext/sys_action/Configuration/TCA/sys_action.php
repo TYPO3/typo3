@@ -20,7 +20,7 @@ return array(
 			'default' => 'mimetypes-x-sys_action'
 		),
 		'type' => 'type',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sys_action') . 'Resources/Public/Images/x-sys_action.png',
+		'iconfile' => 'EXT:sys_action/Resources/Public/Images/x-sys_action.png',
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,title,type,description,assign_to_groups'

@@ -9,7 +9,7 @@ return array(
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'delete' => 'deleted',
 		'title' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sys_note') . 'ext_icon.png',
+		'iconfile' => 'EXT:sys_note/ext_icon.png',
 		'sortby' => 'sorting',
 	),
 	'interface' => array(

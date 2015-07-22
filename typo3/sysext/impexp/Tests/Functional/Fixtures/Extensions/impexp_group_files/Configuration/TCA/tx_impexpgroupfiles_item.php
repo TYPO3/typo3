@@ -22,7 +22,7 @@ return array(
 			'endtime' => 'endtime',
 		),
 		'searchFields' => 'price,currency,symbol,',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp_group_files') . 'Resources/Public/Icons/icon_tx_impexpgroupfiles_item.gif'
+		'iconfile' => 'EXT:impexp_group_files/Resources/Public/Icons/icon_tx_impexpgroupfiles_item.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, images, image_references, flexform',

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * An abstract class implementing SpriteIconGeneratorInterface.
@@ -139,12 +140,19 @@ abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface {
 				if (isset($tcaCtrl['iconfile'])) {
 					// In CSS we need a path relative to the css file
 					// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
-					if (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
+					if (\TYPO3\CMS\Core\Utility\StringUtility::beginsWith($tcaCtrl['iconfile'], 'EXT:')) {
+						list($extensionKey, $relativePath) = explode('/', substr($tcaCtrl['iconfile'], 4), 2);
+						$pathInfo = PathUtility::pathinfo(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . $relativePath);
+						$path = PathUtility::getRelativePathTo($pathInfo['dirname']);
+						$icon = $path . $pathInfo['basename'];
+					} elseif (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
 						$icon = $tcaCtrl['iconfile'];
+						$icon = GeneralUtility::resolveBackPath($icon);
 					} else {
 						$icon = $skinPath . 'gfx/i/' . $tcaCtrl['iconfile'];
+						$icon = GeneralUtility::resolveBackPath($icon);
 					}
-					$icon = GeneralUtility::resolveBackPath($icon);
+
 					$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
 				}
 				// If records types are available, register them

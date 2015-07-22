@@ -14,7 +14,7 @@ return array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 		),
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('irre_tutorial') . 'Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
+		'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_offer.gif',
 		'versioningWS' => 2,
 		'origUid' => 't3_origuid',
 		'shadowColumnsForNewPlaceholders' => 'prices',
