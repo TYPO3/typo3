@@ -414,7 +414,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 			// init styles
 			TsCodeCompletion.$codeCompleteBox.css({
 				overflow: 'scroll',
-				height: (TsCodeCompletion.options.ccWords * $('#cc_word_0').height()) + 'px'
+				height: ((TsCodeCompletion.options.ccWords + 1) * $('#cc_word_0').height()) + 'px'
 			});
 
 			var wrapOffset = $('.t3e_iframe_wrap', document).offset(),
@@ -484,7 +484,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 				TsCodeCompletion.cc_down = TsCodeCompletion.proposals.length - 1;
 				TsCodeCompletion.cc_up = TsCodeCompletion.cc_down - (TsCodeCompletion.options.ccWords - 1);
 			}
-			TsCodeCompletion.$codeCompleteBox.scrollTop = TsCodeCompletion.cc_up * 16;
+			TsCodeCompletion.$codeCompleteBox.scrollTop(TsCodeCompletion.cc_up * 18);
 		}
 	};
 
@@ -510,7 +510,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 				TsCodeCompletion.cc_up = 0;
 				TsCodeCompletion.cc_down = TsCodeCompletion.options.ccWords - 1;
 			}
-			TsCodeCompletion.$codeCompleteBox.scrollTop = TsCodeCompletion.cc_up * 16;
+			TsCodeCompletion.$codeCompleteBox.scrollTop(TsCodeCompletion.cc_up * 18);
 		}
 	};
 
