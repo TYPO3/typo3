@@ -436,12 +436,11 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsParser', [
 	 * creates nodes if necessary, empties the value and childNodes-Array
 	 */
 	TsParser.deleteTreeNodeValue = function(path) {
-		var treeNode = TsPatser.getTreeNode(path);
+		var treeNode = TsParser.getTreeNode(path);
 		// currently the node is not deleted really, it's just not displayed cause value == null
 		// deleting it would be a cleaner solution
 		treeNode.value = null;
-		treeNode.childNodes = null;
-		treeNode = null;
+		treeNode.childNodes = {};
 	};
 
 	/**
