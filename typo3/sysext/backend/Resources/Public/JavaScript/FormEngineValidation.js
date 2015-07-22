@@ -237,11 +237,11 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	FormEngineValidation.validateField = function($field, value) {
 		value = value || FormEngineValidation.ltrim($field.val());
 
-		var $rules = $field.data('formengine-validation-rules');
+		var rules = $field.data('formengine-validation-rules');
 		var markParent = false;
 		var selected = 0;
 		var returnValue = value;
-		$.each($rules, function(k, rule) {
+		$.each(rules, function(k, rule) {
 			switch (rule.type) {
 				case 'required':
 					if (value === '') {
@@ -897,7 +897,8 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	 */
 	FormEngineValidation.markParentTab = function($element) {
 		var $panes = $element.parents('.tab-pane');
-		$.each($panes, function(k, $pane) {
+		$panes.each(function() {
+			var $pane = $(this);
 			var id = $pane.attr('id');
 			$(document)
 				.find('a[href="#' + id + '"]')
