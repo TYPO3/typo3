@@ -853,18 +853,7 @@ return array(
 	'LOG' => array(
 		'writerConfiguration' => array(
 			\TYPO3\CMS\Core\Log\LogLevel::WARNING => array(
-				\TYPO3\CMS\Core\Log\Writer\FileWriter::class => array(
-					'logFile' => 'typo3temp/logs/typo3.log'
-				)
-			)
-		),
-		'deprecated' => array(
-			'writerConfiguration' => array(
-				\TYPO3\CMS\Core\Log\LogLevel::WARNING => array(
-					\TYPO3\CMS\Core\Log\Writer\FileWriter::class => array(
-						'logFile' => 'typo3conf/deprecation.log'
-					)
-				)
+				\TYPO3\CMS\Core\Log\Writer\FileWriter::class => array()
 			)
 		)
 	),

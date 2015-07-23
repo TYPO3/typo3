@@ -36,7 +36,7 @@ class FileWriter extends AbstractWriter {
 	 *
 	 * @var string
 	 */
-	protected $defaultLogFile = 'typo3temp/logs/typo3.log';
+	protected $defaultLogFileTemplate = 'typo3temp/logs/typo3_%s.log';
 
 	/**
 	 * Log file handle storage
@@ -59,7 +59,7 @@ class FileWriter extends AbstractWriter {
 		// the parent constructor reads $options and sets them
 		parent::__construct($options);
 		if (empty($options['logFile'])) {
-			$this->setLogFile($this->defaultLogFile);
+			$this->setLogFile($this->getDefaultLogFileName());
 		}
 	}
 
@@ -215,4 +215,15 @@ class FileWriter extends AbstractWriter {
 		}
 	}
 
+	/**
+	 * Returns the path to the default log file.
+	 *
+	 * Uses the defaultLogFileTemplate and replaces the %s placeholder with a short MD5 hash
+	 * based on a static string and the current encryption key.
+	 *
+	 * @return string
+	 */
+	protected function getDefaultLogFileName() {
+		return sprintf($this->defaultLogFileTemplate, GeneralUtility::shortMD5('defaultLogFile' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
+	}
 }
