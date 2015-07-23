@@ -252,13 +252,11 @@ class AdminPanelView {
 		$row = $this->extGetLL('adminPanelTitle') . ': <span class="typo3-adminPanel-beuser">' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</span>';
 		$isVisible = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'];
 		$cssClassName = 'typo3-adminPanel-panel-' . ($isVisible ? 'open' : 'closed');
-		$header = '<tr class="typo3-adminPanel-header">' . '<td colspan="2" id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button fa"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></td>' . '</tr>';
+		$header = '<div class="typo3-adminPanel-header">' . '<div id="typo3-adminPanel-header" class="' . $cssClassName . '">' . '<span class="typo3-adminPanel-header-title">' . $row . '</span>' . $this->linkSectionHeader('top', '<span class="typo3-adminPanel-header-button fa"></span>', 'typo3-adminPanel-header-buttonWrapper') . '<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" /></div>' . '</div>';
 		if ($moduleContent && $this->extNeedUpdate) {
-			$footer = '<tr class="typo3-adminPanel-footer">
-						<td colspan="2">
+			$footer = '<div id="typo3-adminPanel-footer">
 							<input class="typo3-adminPanel-update btn btn-default" type="submit" value="' . $this->extGetLL('update') . '" />
-						</td>
-					</tr>';
+					</div>';
 		}
 		$query = !GeneralUtility::_GET('id') ? '<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />' : '';
 
@@ -279,7 +277,7 @@ class AdminPanelView {
 	TYPO3 Admin panel start
 -->
 <a id="TSFE_ADMIN_PANEL"></a>
-<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<table class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</table></form>';
+<form id="TSFE_ADMIN_PANEL_FORM" name="TSFE_ADMIN_PANEL_FORM" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '#TSFE_ADMIN_PANEL" method="get" onsubmit="document.forms.TSFE_ADMIN_PANEL_FORM[\'TSFE_ADMIN_PANEL[DUMMY]\'].value=Math.random().toString().substring(2,8)">' . $query . '<div class="typo3-adminPanel">' . $header . $moduleContent . $footer . '</div></form>';
 		if ($GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top']) {
 			$out .= '<script type="text/javascript" src="typo3/sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js"></script>';
 			$out .= '<script type="text/javascript">/*<![CDATA[*/' . GeneralUtility::minifyJavaScript('
@@ -403,13 +401,13 @@ class AdminPanelView {
 			$GLOBALS['BE_USER']->extPageInTreeInfo = array();
 			$GLOBALS['BE_USER']->extPageInTreeInfo[] = array($GLOBALS['TSFE']->page['uid'], htmlspecialchars($GLOBALS['TSFE']->page['title']), $depth + 1);
 			$GLOBALS['BE_USER']->extGetTreeList($GLOBALS['TSFE']->id, $depth, 0, $GLOBALS['BE_USER']->getPagePermsClause(1));
-			foreach ($GLOBALS['BE_USER']->extPageInTreeInfo as $row) {
-				$outTable .= '<tr>' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . IconUtility::getSpriteIcon('apps-pagetree-page-default') . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
+			foreach ($GLOBALS['BE_USER']->extPageInTreeInfo as $key => $row) {
+				$outTable .= '<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . IconUtility::getSpriteIcon('apps-pagetree-page-default') . htmlspecialchars($row[1]) . '</td><td>' . $GLOBALS['BE_USER']->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
 			}
-			$outTable = '<br /><table class="typo3-adminPanel-table"><thead><tr><th colspan="2">' . $this->extGetLL('cache_cacheEntries') . '</th></tr></thead>' . $outTable . '</table>';
+			$outTable = '<table class="typo3-adminPanel-table"><thead><tr><th colspan="2">' . $this->extGetLL('cache_cacheEntries') . '</th></tr></thead>' . $outTable . '</table>';
 			$outTable .= '<span class="fa fa-bolt clear-cache-icon"><!-- --></span><input class="btn btn-default clear-cache" type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
 
-			$out .= $this->extGetItem('', $outTable);
+			$out .= $this->extGetItem('', $outTable, '', 'typo3-adminPanel-tableRow', 'typo3-adminPanel-table-wrapper');
 		}
 		return $out;
 	}
@@ -472,7 +470,7 @@ class AdminPanelView {
 			$GLOBALS['TT']->printConf['flag_messages'] = $this->extGetFeAdminValue('tsdebug', 'displayMessages');
 			$GLOBALS['TT']->printConf['flag_content'] = $this->extGetFeAdminValue('tsdebug', 'displayContent');
 			$GLOBALS['TT']->printConf['flag_queries'] = $this->extGetFeAdminValue('tsdebug', 'displayQueries');
-			$out .= '<tr><td class="typo3-adminPanel-table-wrapper" colspan="2">' . $GLOBALS['TT']->printTSlog() . '</td></tr>';
+			$out .= $this->extGetItem('', $GLOBALS['TT']->printTSlog(), '', 'typo3-adminPanel-tableRow', 'typo3-adminPanel-table-wrapper scroll-table');
 		}
 		return $out;
 	}
@@ -522,12 +520,13 @@ class AdminPanelView {
 				$value = (string)$arr[1] !== '' ? $arr[1] : '';
 				$table .=
 					'<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">
-							<td class="typo3-adminPanel-section-content-title">' . $label . '</td>
-							<td class="typo3-adminPanel-section-content">' . htmlspecialchars($value) . '</td>
+							<td>' . $label . '</td>
+							<td>' . htmlspecialchars($value) . '</td>
 						</tr>';
 			}
 			$out .= $table;
-			$out = '<tr><td class="typo3-adminPanel-table-wrapper" colspan="2"><table class="typo3-adminPanel-table">' . $out . '</table></td></tr>';
+			$out = '<table class="typo3-adminPanel-table">' . $out . '</table>';
+			$out = $this->extGetItem('', $out, '', 'typo3-adminPanel-tableRow', 'typo3-adminPanel-table-wrapper');
 		}
 
 		$out = $head . $out;
@@ -550,7 +549,7 @@ class AdminPanelView {
 		$settingName = 'display_' . $sectionSuffix;
 		$isVisible = $GLOBALS['BE_USER']->uc['TSFE_adminConfig'][$settingName];
 		$cssClassName = 'typo3-adminPanel-section-' . ($isVisible ? 'open' : 'closed');
-		return '<tr class="typo3-adminPanel-section-title"><td colspan="2">' . $this->linkSectionHeader($sectionSuffix, $this->extGetLL($sectionSuffix), $cssClassName) . '<input type="hidden" name="TSFE_ADMIN_PANEL[' . $settingName . ']" value="' . $isVisible . '" /></td></tr>';
+		return '<div class="typo3-adminPanel-section-title"><div class="wrapper">' . $this->linkSectionHeader($sectionSuffix, $this->extGetLL($sectionSuffix), $cssClassName) . '<input type="hidden" name="TSFE_ADMIN_PANEL[' . $settingName . ']" value="' . $isVisible . '" /></div></div>';
 	}
 
 	/**
@@ -579,14 +578,17 @@ class AdminPanelView {
 	 * @param string $title Key to label
 	 * @param string $content The HTML content for the forth table cell.
 	 * @param string $checkbox The HTML for a checkbox or hidden fields.
+	 * @param string  $innerDivClass The Class attribute for the td element.
+	 * @param string  $outerDivClass The Class attribute for the tr element.
 	 * @return string HTML table row.
 	 * @see extGetHead()
 	 */
-	public function extGetItem($title, $content = '', $checkbox = '') {
+	public function extGetItem($title, $content = '', $checkbox = '', $outerDivClass = NULL, $innerDivClass = NULL) {
 		$title = $title ? '<label for="' . htmlspecialchars($title) . '">' . $this->extGetLL($title) . '</label>' : '';
-		$out = '<tr class="typo3-adminPanel-itemRow">
-					<td class="typo3-adminPanel-section-content">' . $checkbox . $title . $content . '</td>
-				</tr>';
+		$outerDivClass === NULL ? $out = '<div class="typo3-adminPanel-itemRow">' : $out = '<div class="' . $outerDivClass . '">';
+		$innerDivClass === NULL ? $out .= '<div class="typo3-adminPanel-section-content">' : $out .= '<div class="' . $innerDivClass . '">';
+		$out .= $checkbox . $title . $content . '</div>
+				</div>';
 		return $out;
 	}
 

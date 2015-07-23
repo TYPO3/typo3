@@ -118,6 +118,11 @@
  **/
 
 #TSFE_ADMIN_PANEL_FORM {
+	display: block;
+	max-width: 50%;
+}
+
+#TSFE_ADMIN_PANEL_FORM {
 	background-color: #fff;
 	box-shadow: 0 3px 15px #808080;
 	margin: 0;
@@ -136,8 +141,18 @@
 	margin: 0;
 	min-width: 315px;
 	padding: 0;
+	line-height: 0.8;
 }
 
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel * {
+	line-height: 1;
+}
+
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel .typo3-adminPanel-table * {
+	line-height: 1.55;
+}
+
+#TSFE_ADMIN_PANEL_FORM,
 #TSFE_ADMIN_PANEL_FORM table,
 #TSFE_ADMIN_PANEL_FORM a {
 	color: black;
@@ -146,29 +161,34 @@
 	text-decoration: none;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-header td {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-header {
+	line-height: 0.5;
+}
+
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-header {
 	border-top-right-radius: 4px;
 	border-top-left-radius: 4px;
 	cursor: move;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-header td,
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-footer td {
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-header,
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-footer {
+	display: inline-block;
+	width: 100%;
 	background-color: #222;
 	color: white;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-footer td {
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-footer {
 	padding-right: 5px;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-header td a,
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-footer td a {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-header a,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-footer a {
 	color: #fff;
 }
 
-
-#TSFE_ADMIN_PANEL_FORM tr .btn {
+#TSFE_ADMIN_PANEL_FORM .btn {
 	margin-top: 6px;
 	margin-bottom: 6px;
 }
@@ -202,18 +222,19 @@
 	content: "\f107";
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title td {
-	background-color: #ddd;
-	border-bottom: 1px solid #888;
-	border-top: 1px solid #888;
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .wrapper {
 	clear: left;
 	margin: 0;
 	padding: 0;
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #888;
+	background-color: #ddd;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title td a {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title a {
 	display: block;
-	height: 26px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	line-height: 25px;
 }
 
@@ -223,58 +244,53 @@
 	font-weight: 500;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title td a .typo3-adminPanel-label {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title a .typo3-adminPanel-label {
 	padding-top: 4px;
 	white-space: nowrap;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title td {
-	padding-top: 4px;
-	padding-bottom:4px;
-}
-
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title td:hover {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .wrapper:hover {
 	color: #fff;
 	background-color: #7e7e7e;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title td:hover a {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .wrapper:hover a {
 	color: #fff;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title .typo3-adminPanel-section-open,
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title .typo3-adminPanel-section-closed {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-open,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-closed {
 	display: inline-block;
 	width: 100%;
 	padding-left: 26px;
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title .typo3-adminPanel-section-open:before,
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title .typo3-adminPanel-section-closed:before {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-open:before,
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-closed:before {
 	margin-left: -13px;
 	padding-right: 13px;
 	font-size: 14px;
 	content: "\f0d8";
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-section-title .typo3-adminPanel-section-closed:before {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-title .typo3-adminPanel-section-closed:before {
 	content: "\f0d7";
 }
 
-#TSFE_ADMIN_PANEL_FORM tr.typo3-adminPanel-itemRow td {
-	padding: 0px 15px;
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-itemRow .typo3-adminPanel-section-content {
+	padding: 7px 15px;
 	line-height: 16px;
 }
 
-#TSFE_ADMIN_PANEL_FORM td.typo3-adminPanel-section-content {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-content {
 	padding-right: 11px;
 }
 
-#TSFE_ADMIN_PANEL_FORM td.typo3-adminPanel-section-content .toolbar span {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-content .toolbar span {
 	padding: 1px;
 }
 
-#TSFE_ADMIN_PANEL_FORM td.typo3-adminPanel-section-content label {
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-section-content label {
 	padding-right: 5px;
 }
 
@@ -285,11 +301,12 @@
 
 #TSFE_ADMIN_PANEL_FORM .clear-cache-icon:before {
 	position: absolute;
-	left: 11px;
+	left: 26px;
 	top: -11px;
 }
 
-#TSFE_ADMIN_PANEL_FORM .btn.clear-cache{
+#TSFE_ADMIN_PANEL_FORM .btn.clear-cache {
+	margin-left: 15px;
 	padding-left: 25px
 }
 
@@ -311,7 +328,7 @@
 	margin: 0;
 	vertical-align: inherit;
 	border-color: inherit;
-	padding: 5px;
+	padding: 0 15px;
 	text-align: left;
 	white-space: nowrap;
 }
@@ -333,6 +350,10 @@
 
 #TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table-wrapper {
 	padding: 10px 0;
+}
+
+#TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table-wrapper.scroll-table {
+	overflow-x: scroll;
 }
 
 #TSFE_ADMIN_PANEL_FORM .typo3-adminPanel-table .line-odd,
@@ -416,6 +437,10 @@
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+#TSFE_ADMIN_PANEL_FORM #typo3-adminPanel-footer .btn {
+	margin-bottom: 5px;
 }
 
 #TSFE_ADMIN_PANEL_FORM .btn:hover {
