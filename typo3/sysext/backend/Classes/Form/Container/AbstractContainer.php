@@ -273,8 +273,8 @@ abstract class AbstractContainer extends AbstractNode {
 		$fakeRow = array();
 		switch ($splitCondition[0]) {
 			case 'FIELD':
-				list($_sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splitCondition[1]);
-				$fieldValue = $flexFormData[$_sheetName][$flexFormLanguage][$fieldName];
+				list($sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splitCondition[1], FALSE, 2);
+				$fieldValue = $flexFormData[$sheetName][$flexFormLanguage][$fieldName];
 				$splitCondition[1] = $fieldName;
 				$displayCondition = join(':', $splitCondition);
 				$fakeRow = array($fieldName => $fieldValue);
