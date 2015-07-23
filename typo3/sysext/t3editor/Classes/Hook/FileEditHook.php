@@ -36,7 +36,7 @@ class FileEditHook {
 	 * @return \TYPO3\CMS\T3editor\T3editor
 	 */
 	protected function getT3editor() {
-		if ($this->t3editor == NULL) {
+		if ($this->t3editor === NULL) {
 			$this->t3editor = GeneralUtility::makeInstance(\TYPO3\CMS\T3editor\T3editor::class)->setAjaxSaveType($this->ajaxSaveType);
 		}
 		return $this->t3editor;
@@ -68,7 +68,7 @@ class FileEditHook {
 	public function preStartPageHook($parameters, $documentTemplate) {
 		if (GeneralUtility::_GET('M') === 'file_edit') {
 			$t3editor = $this->getT3editor();
-			$documentTemplate->JScode .= $t3editor->getJavascriptCode($documentTemplate);
+			$t3editor->getJavascriptCode($documentTemplate);
 			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
 		}
 	}
