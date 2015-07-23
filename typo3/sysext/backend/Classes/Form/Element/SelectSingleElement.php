@@ -39,22 +39,20 @@ class SelectSingleElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$field = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$field = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 		$config = $parameterArray['fieldConf']['config'];
 
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 
 		$this->resultArray = $this->initializeResultArray();
 
-		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
+		$selItems = $parameterArray['fieldConf']['config']['items'];
 
 		// Creating the label for the "No Matching Value" entry.
 		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
@@ -65,6 +63,8 @@ class SelectSingleElement extends AbstractFormElement {
 
 		// Wizards:
 		if (!$disabled) {
+			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
+			$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
 		}
 		$this->resultArray['html'] = $html;
@@ -87,14 +87,14 @@ class SelectSingleElement extends AbstractFormElement {
 		// Check against inline uniqueness
 		/** @var InlineStackProcessor $inlineStackProcessor */
 		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-		$inlineStackProcessor->initializeByGivenStructure($this->globalOptions['inlineStructure']);
+		$inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
 		$inlineParent = $inlineStackProcessor->getStructureLevel(-1);
 		$uniqueIds = NULL;
 		if (is_array($inlineParent) && $inlineParent['uid']) {
-			$inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
+			$inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 			$inlineFormName = $inlineStackProcessor->getCurrentStructureFormPrefix();
 			if ($inlineParent['config']['foreign_table'] == $table && $inlineParent['config']['foreign_unique'] == $field) {
-				$uniqueIds = $this->globalOptions['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
+				$uniqueIds = $this->data['inlineData']['unique'][$inlineObjectName . '-' . $table]['used'];
 				$parameterArray['fieldChangeFunc']['inlineUnique'] = 'inline.updateUnique(this,'
 					. GeneralUtility::quoteJSvalue($inlineObjectName . '-' . $table) . ','
 					. GeneralUtility::quoteJSvalue($inlineFormName) . ','
@@ -113,29 +113,29 @@ class SelectSingleElement extends AbstractFormElement {
 		$selectId = str_replace('.', '', uniqid('tceforms-select-', TRUE));
 		$selectedIndex = 0;
 		$selectedIcon = '';
-		$noMatchingValue = 1;
-		$onlySelectedIconShown = 0;
+		$selectedValueFound = FALSE;
+		$onlySelectedIconShown = FALSE;
 		$size = (int)$config['size'];
 
 		// Style set on <select/>
 		$out = '';
 		$options = '';
 		$disabled = FALSE;
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = TRUE;
-			$onlySelectedIconShown = 1;
+			$onlySelectedIconShown = TRUE;
 		}
 
 		// Icon configuration:
 		if ($config['suppress_icons'] === 'IF_VALUE_FALSE') {
-			$suppressIcons = !$parameterArray['itemFormElValue'] ? 1 : 0;
+			$suppressIcons = empty($parameterArray['itemFormElValue']);
 		} elseif ($config['suppress_icons'] === 'ONLY_SELECTED') {
-			$suppressIcons = 0;
-			$onlySelectedIconShown = 1;
+			$suppressIcons = FALSE;
+			$onlySelectedIconShown = TRUE;
 		} elseif ($config['suppress_icons']) {
-			$suppressIcons = 1;
+			$suppressIcons = TRUE;
 		} else {
-			$suppressIcons = 0;
+			$suppressIcons = FALSE;
 		}
 
 		// Prepare groups
@@ -143,6 +143,10 @@ class SelectSingleElement extends AbstractFormElement {
 		$selectItemGroupCount = 0;
 		$selectItemGroups = array();
 		$selectIcons = array();
+		$selectedValue = '';
+		if (!empty($parameterArray['itemFormElValue'])) {
+			$selectedValue = (string)$parameterArray['itemFormElValue'][0];
+		}
 		foreach ($selectItems as $item) {
 			if ($item[1] === '--div--') {
 				// IS OPTGROUP
@@ -157,11 +161,11 @@ class SelectSingleElement extends AbstractFormElement {
 				// IS ITEM
 				$title = htmlspecialchars($item['0'], ENT_COMPAT, 'UTF-8', FALSE);
 				$icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $title, $title) : '';
-				$selected = ((string)$parameterArray['itemFormElValue'] === (string)$item[1] ? 1 : 0);
+				$selected = $selectedValue === (string)$item[1];
 				if ($selected) {
 					$selectedIndex = $selectItemCounter;
 					$selectedIcon = $icon;
-					$noMatchingValue = 0;
+					$selectedValueFound = TRUE;
 				}
 				$selectItemGroups[$selectItemGroupCount]['items'][] = array(
 					'title' => $title,
@@ -193,9 +197,9 @@ class SelectSingleElement extends AbstractFormElement {
 		}
 
 		// No-matching-value:
-		if ($parameterArray['itemFormElValue'] && $noMatchingValue && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-			$noMatchingLabel = @sprintf($noMatchingLabel, $parameterArray['itemFormElValue']);
-			$options = '<option value="' . htmlspecialchars($parameterArray['itemFormElValue']) . '" selected="selected">' . htmlspecialchars($noMatchingLabel) . '</option>';
+		if ($selectedValue && !$selectedValueFound && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
+			$noMatchingLabel = @sprintf($noMatchingLabel, $selectedValue);
+			$options = '<option value="' . htmlspecialchars($selectedValue) . '" selected="selected">' . htmlspecialchars($noMatchingLabel) . '</option>';
 		} elseif (!$selectedIcon && $selectItemGroups[0]['items'][0]['icon']) {
 			$selectedIcon = $selectItemGroups[0]['items'][0]['icon'];
 		}

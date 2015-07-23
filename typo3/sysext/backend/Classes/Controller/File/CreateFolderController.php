@@ -145,7 +145,6 @@ class CreateFolderController implements \TYPO3\CMS\Core\Http\ControllerInterface
 		$this->content .= $this->doc->startPage($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
 		// Make page header:
 		$pageContent = $this->doc->header($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.pagetitle'));
-
 		if ($this->folderObject->checkActionPermission('add')) {
 			$code = '<form role="form" action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_file')) . '" method="post" name="editform">';
 			// Making the selector box for the number of concurrent folder-creations

@@ -25,7 +25,7 @@ class UnknownElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$type = $this->globalOptions['parameterArray']['fieldConf']['config']['type'];
+		$type = $this->data['parameterArray']['fieldConf']['config']['type'];
 		$resultArray = $this->initializeResultArray();
 		$resultArray['html'] = 'Unknown type: ' . $type . '<br />';
 		return $resultArray;

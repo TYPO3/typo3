@@ -35,9 +35,8 @@ TSconfig changes
 Code level
 ----------
 
-Most methods and properties from FormEngine except the main entry methods like `getMainFields()` are
-not available anymore. Classes like `InlineElement` are gone. New structures like a factory
-for elements and container have been introduced.
+Methods and properties from FormEngine are not available anymore. Classes like `InlineElement` are gone.
+New structures like a factory for elements and container have been introduced.
 While not too many extensions in the wild hook or code with FormEngine, those that do will probably throw
 fatal errors after upgrade. The hook `getSingleFieldClass` has been removed altogether.
 
@@ -53,8 +52,6 @@ Changed user functions and hooks
 * Hooks no longer get the key `form_type`. Use `type` instead.
 
 * Hook `getSingleFieldClass` has been dropped and no longer called.
-
-* Hook `getMainFieldsClass` is no longer called for inline child records.
 
 Breaking interface changes
 --------------------------

@@ -2896,13 +2896,13 @@ class DataHandler {
 		$newRelations = implode(',', $valueArray);
 		/** @var $dbAnalysis RelationHandler */
 		$dbAnalysis = $this->createRelationHandlerInstance();
-		$dbAnalysis->registerNonTableValues = $tcaFieldConf['allowNonIdValues'] ? 1 : 0;
+		$dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
 		$dbAnalysis->start($newRelations, $tables, '', 0, $currentTable, $tcaFieldConf);
 		if ($tcaFieldConf['MM']) {
 			if ($status == 'update') {
 				/** @var $oldRelations_dbAnalysis RelationHandler */
 				$oldRelations_dbAnalysis = $this->createRelationHandlerInstance();
-				$oldRelations_dbAnalysis->registerNonTableValues = $tcaFieldConf['allowNonIdValues'] ? 1 : 0;
+				$oldRelations_dbAnalysis->registerNonTableValues = !empty($tcaFieldConf['allowNonIdValues']);
 				// Db analysis with $id will initialize with the existing relations
 				$oldRelations_dbAnalysis->start('', $tables, $tcaFieldConf['MM'], $id, $currentTable, $tcaFieldConf);
 				$oldRelations = implode(',', $oldRelations_dbAnalysis->getValueArray());
@@ -5555,7 +5555,7 @@ class DataHandler {
 		$dontRemapTables = GeneralUtility::trimExplode(',', $conf['dontRemapTablesOnCopy'], TRUE);
 		// Convert value to list of references:
 		$dbAnalysis = $this->createRelationHandlerInstance();
-		$dbAnalysis->registerNonTableValues = $conf['type'] == 'select' && $conf['allowNonIdValues'] ? 1 : 0;
+		$dbAnalysis->registerNonTableValues = $conf['type'] == 'select' && $conf['allowNonIdValues'];
 		$dbAnalysis->start($value, $allowedTables, $conf['MM'], $MM_localUid, $table, $conf);
 		// Traverse those references and map IDs:
 		foreach ($dbAnalysis->itemArray as $k => $v) {

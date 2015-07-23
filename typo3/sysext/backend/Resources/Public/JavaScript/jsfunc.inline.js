@@ -66,7 +66,7 @@ var inline = {
 			inline.isLoading = true;
 			var headerIdentifier = '#' + escapedObjectId + '_header';
 			// add loading-indicator
-			require(['nprogress'], function(NProgress) {
+			require(['nprogress'], function (NProgress) {
 				inline.progress = NProgress;
 				inline.progress.configure({parent: headerIdentifier, showSpinner: false});
 				inline.progress.start();
@@ -233,47 +233,28 @@ var inline = {
 	},
 
 	processAjaxResponse: function (method, xhr, json) {
-		var addTag = null, restart = false, processedCount = 0, element = null, errorCatch = [], sourcesWaiting = [];
+		var addTag = null, processedCount = 0, element = null, errorCatch = [], sourcesWaiting = [];
 		if (!json && xhr) {
 			json = xhr.responseJSON;
 		}
 		// If there are elements the should be added to the <HEAD> tag (e.g. for RTEhtmlarea):
-		if (json.headData) {
+		if (json.stylesheetFiles) {
 			var head = inline.getDomHeadTag();
 			var headTags = inline.getDomHeadChildren(head);
-			TYPO3.jQuery.each(json.headData, function (index, addTag) {
-				if (restart) {
+			TYPO3.jQuery.each(json.stylesheetFiles, function (index, stylesheetFile) {
+				if (!stylesheetFile) {
 					return;
 				}
-				if (!addTag || (!addTag.innerHTML && inline.searchInDomTags(headTags, addTag))) {
-					return;
-				}
-
-				if (addTag.name == 'SCRIPT' && addTag.innerHTML && processedCount) {
-					restart = true;
-					return false;
-				} else {
-					if (addTag.name == 'SCRIPT' && addTag.innerHTML) {
-						try {
-							eval(addTag.innerHTML);
-						} catch (e) {
-							errorCatch.push(e);
-						}
-					} else {
-						element = inline.createNewDomElement(addTag);
-						// Set onload handler for external JS scripts:
-						if (addTag.name == 'SCRIPT' && element.src) {
-							element.onload = inline.sourceLoadedHandler(element);
-							sourcesWaiting.push(element.src);
-						}
-						head.appendChild(element);
-						processedCount++;
-					}
-					delete(json.headData[index]);
-				}
+				var element = document.createElement('link');
+				element['rel'] = 'stylesheet';
+				element['type'] = 'text/css';
+				element['href'] = stylesheetFile;
+				head.appendChild(element);
+				processedCount++;
+				delete(json.stylesheetFiles[index]);
 			});
 		}
-		if (restart || processedCount) {
+		if (processedCount) {
 			window.setTimeout(function () {
 				inline.reprocessAjaxResponse(method, json, sourcesWaiting);
 			}, 40);
@@ -406,13 +387,13 @@ var inline = {
 	},
 
 	getKeysFromHashMap: function (unique) {
-		return TYPO3.jQuery.map(unique, function(value, key) {
+		return TYPO3.jQuery.map(unique, function (value, key) {
 			return key;
 		});
 	},
 
 	getValuesFromHashMap: function (hashMap) {
-		return TYPO3.jQuery.map(hashMap, function(value, key) {
+		return TYPO3.jQuery.map(hashMap, function (value, key) {
 			return value;
 		});
 	},
@@ -601,17 +582,6 @@ var inline = {
 			}
 		});
 		return result;
-	},
-
-	// Create a new DOM element:
-	createNewDomElement: function (addTag) {
-		var element = document.createElement(addTag.name);
-		if (addTag.attributes) {
-			TYPO3.jQuery.map(addTag.attributes, function (value, key) {
-				element[key] = value;
-			});
-		}
-		return element;
 	},
 
 	changeSorting: function (objectId, direction) {
@@ -999,7 +969,7 @@ var inline = {
 			this.showElementsWithClassName('.inlineNewButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineNewRelationButton' + (md5 ? '.' + md5 : ''), objectParent);
 			this.showElementsWithClassName('.inlineNewFileUploadButton' + (md5 ? '.' + md5 : ''), objectParent);
-			this.showElementsWithClassName('.inlineForeignSelector' + (md5 ? '.'+md5 : ''), 't3-form-field-item');
+			this.showElementsWithClassName('.inlineForeignSelector' + (md5 ? '.' + md5 : ''), 't3-form-field-item');
 		}
 		TYPO3.FormEngine.Validation.validate();
 		return false;
@@ -1186,7 +1156,7 @@ var inline = {
 
 	getOptionsHash: function ($selectObj) {
 		var optionsHash = {};
-		$selectObj.find('option').each(function(i, option) {
+		$selectObj.find('option').each(function (i, option) {
 			optionsHash[option.value] = i;
 		});
 		return optionsHash;
@@ -1243,7 +1213,7 @@ var inline = {
 
 	fadeOutFadeIn: function (objectId) {
 		objectId = this.escapeObjectId(objectId);
-		TYPO3.jQuery('#' + objectId).fadeTo(500, 0.5, 'linear', function() {
+		TYPO3.jQuery('#' + objectId).fadeTo(500, 0.5, 'linear', function () {
 			TYPO3.jQuery('#' + objectId).fadeTo(500, 1, 'linear');
 		});
 	},
@@ -1276,7 +1246,7 @@ var inline = {
 	},
 
 	fadeAndRemove: function (element) {
-		TYPO3.jQuery('#' + this.escapeObjectId(element)).fadeOut(500, function() {
+		TYPO3.jQuery('#' + this.escapeObjectId(element)).fadeOut(500, function () {
 			TYPO3.jQuery(this).remove();
 		});
 	},

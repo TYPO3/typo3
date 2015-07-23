@@ -43,28 +43,28 @@ class SelectTreeElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$field = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$field = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 
 		// Field configuration from TCA:
 		$config = $parameterArray['fieldConf']['config'];
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 
 		$this->resultArray = $this->initializeResultArray();
 
-		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
+		$selItems = $parameterArray['fieldConf']['config']['items'];
 
 		$html = $this->renderField($table, $field, $row, $parameterArray, $config, $selItems);
 
 		// Wizards:
 		if (!$disabled) {
+			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
+			$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
 		}
 		$this->resultArray['html'] = $html;
@@ -81,20 +81,26 @@ class SelectTreeElement extends AbstractFormElement {
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
 	 * @param array $possibleSelectboxItems Items available for selection
 	 * @return string The HTML code for the TCEform field
+	 * @todo: This thing needs to be split and the data fetching should be moved to a data provider
 	 */
 	protected function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems) {
 		$backendUserAuthentication = $this->getBackendUserAuthentication();
-		$valueArray = array();
-		$selectedNodes = array();
+
+		$selectedNodes = [];
 		if (!empty($PA['itemFormElValue'])) {
-			$valueArray = explode(',', $PA['itemFormElValue']);
+			$selectedNodes = $PA['itemFormElValue'];
 		}
-		if (!empty($valueArray)) {
-			foreach ($valueArray as $selectedValue) {
-				$temp = explode('|', $selectedValue);
-				$selectedNodes[] = $temp[0];
+
+		$selectedNodesForApi = array();
+		foreach ($selectedNodes as $selectedNode) {
+			// @todo: this is ugly - the "old" pipe based value|label syntax is re-created here at the moment
+			foreach ($possibleSelectboxItems as $possibleSelectboxItem) {
+				if ((string)$possibleSelectboxItem[1] === (string)$selectedNode) {
+					$selectedNodesForApi[] = $selectedNode . '|' . rawurlencode($possibleSelectboxItem[0]);
+				}
 			}
 		}
+
 		$allowedUids = array();
 		foreach ($possibleSelectboxItems as $item) {
 			if ((int)$item[1] > 0) {
@@ -111,6 +117,9 @@ class SelectTreeElement extends AbstractFormElement {
 		$tree->setNodeRenderer($treeRenderer);
 		$treeData = $tree->render();
 		$itemArray = array();
+		/**
+		 * @todo: Small bug here: In the past, this was the "not processed list" of default items, but now it is
+		 * @todo: a full list of elements. This needs to be fixed later, so "additional" default items are shown again.
 		if (is_array($PA['fieldConf']['config']['items'])) {
 			foreach ($PA['fieldConf']['config']['items'] as $additionalItem) {
 				if ($additionalItem[1] !== '--div--') {
@@ -129,6 +138,7 @@ class SelectTreeElement extends AbstractFormElement {
 				}
 			}
 		}
+		 */
 		$itemArray[] = $treeData;
 		$treeData = json_encode($itemArray);
 		$id = md5($PA['itemFormElName']);
@@ -219,7 +229,7 @@ class SelectTreeElement extends AbstractFormElement {
 					tcaExclusiveKeys: "' . ($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
 					ucId: "' . md5(($table . '|' . $field)) . '",
 					selModel: TYPO3.Components.Tree.EmptySelectionModel,
-					disabled: ' . ($PA['fieldConf']['config']['readOnly'] || $this->isGlobalReadonly() ? 'true' : 'false') . '
+					disabled: ' . ($PA['fieldConf']['config']['readOnly'] ? 'true' : 'false') . '
 				});' . LF .
 				($autoSizeMax
 					? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
@@ -231,7 +241,7 @@ class SelectTreeElement extends AbstractFormElement {
 			});';
 		$formField = '
 			<div class="typo3-tceforms-tree">
-				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />
+				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars(implode(',', $selectedNodesForApi)) . '" />
 			</div>
 			<div id="tree_' . $id . '">
 

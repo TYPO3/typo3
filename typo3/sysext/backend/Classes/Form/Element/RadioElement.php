@@ -14,12 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-
 /**
- * Generation of TCEform elements of the type "radio"
+ * Render elements of type radio
  */
 class RadioElement extends AbstractFormElement {
 
@@ -29,58 +25,35 @@ class RadioElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$parameterArray = $this->globalOptions['parameterArray'];
-		$config = $parameterArray['fieldConf']['config'];
-		$html = '';
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($this->data['parameterArray']['fieldConf']['config']['readOnly']) {
 			$disabled = ' disabled';
 		}
 
-		// Get items for the array
-		$selectedItems = FormEngineUtility::initItemArray($parameterArray['fieldConf']);
-		if ($config['itemsProcFunc']) {
-			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
-			$selectedItems = $dataPreprocessor->procItems(
-				$selectedItems,
-				$parameterArray['fieldTSConfig']['itemsProcFunc.'],
-				$config,
-				$this->globalOptions['table'],
-				$this->globalOptions['databaseRow'],
-				$this->globalOptions['fieldName']
-			);
+		$html = [];
+		foreach ($this->data['parameterArray']['fieldConf']['config']['items'] as $itemNumber => $itemLabelAndValue) {
+			$label =  $itemLabelAndValue[0];
+			$value = $itemLabelAndValue[1];
+			$radioId = htmlspecialchars($this->data['parameterArray']['itemFormElID'] . '_' . $itemNumber);
+			$radioChecked = (string)$value === (string)$this->data['parameterArray']['itemFormElValue'] ? ' checked="checked"' : '';
+			$html[] = '<div class="radio' . $disabled . '">';
+			$html[] = 	'<label for="' . $radioId . '">';
+			$html[] = 		'<input type="radio"'
+								. ' name="' . htmlspecialchars($this->data['parameterArray']['itemFormElName']) . '"'
+								. ' id="' . $radioId . '"'
+								. ' value="' . htmlspecialchars($value) . '"'
+								. $radioChecked
+								. $this->data['parameterArray']['onFocus']
+								. $disabled
+								. ' onclick="' . htmlspecialchars(implode('', $this->data['parameterArray']['fieldChangeFunc'])) . '"'
+							. '/>'
+							. htmlspecialchars($label);
+			$html[] = 	'</label>';
+			$html[] = '</div>';
 		}
 
-		// Traverse the items, making the form elements
-		foreach ($selectedItems as $radioButton => $selectedItem) {
-			if (isset($parameterArray['fieldTSConfig']['altLabels.'][$radioButton])) {
-				$label = $this->getLanguageService()->sL(
-					$parameterArray['fieldTSConfig']['altLabels.'][$radioButton]
-				);
-			} else {
-				$label =  $selectedItem[0];
-			}
-			$radioId = htmlspecialchars($parameterArray['itemFormElID'] . '_' . $radioButton);
-			$radioOnClick = implode('', $parameterArray['fieldChangeFunc']);
-			$radioChecked = (string)$selectedItem[1] === (string)$parameterArray['itemFormElValue'] ? ' checked="checked"' : '';
-			$html .= '<div class="radio' . $disabled . '">'
-				. '<label for="' . $radioId . '">'
-				. '<input '
-				. 'type="radio" '
-				. 'name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
-				. 'id="' . $radioId . '" '
-				. 'value="' . htmlspecialchars($selectedItem[1]) . '" '
-				. $radioChecked . ' '
-				. $parameterArray['onFocus'] . ' '
-				. $disabled . ' '
-				. 'onclick="' . htmlspecialchars($radioOnClick) . '" '
-				. '/>'
-				. htmlspecialchars($label)
-				. '</label>'
-			. '</div>';
-		}
 		$resultArray = $this->initializeResultArray();
-		$resultArray['html'] = $html;
+		$resultArray['html'] = implode(LF, $html);
 		return $resultArray;
 	}
 

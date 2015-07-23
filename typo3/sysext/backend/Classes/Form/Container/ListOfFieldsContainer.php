@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Render a given list of field of a TCA table.
@@ -34,49 +32,42 @@ class ListOfFieldsContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$list = $this->globalOptions['fieldListToRender'];
+		$table = $this->data['tableName'];
+		$fieldListToRender = $this->data['fieldListToRender'];
+		$recordTypeValue = $this->data['recordTypeValue'];
 
-		if (!$GLOBALS['TCA'][$table]) {
-			return $this->initializeResultArray();
-		}
-
-		$languageService = $this->getLanguageService();
 		// Load the description content for the table if requested
 		if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
+			$languageService = $this->getLanguageService();
 			$languageService->loadSingleTableDescription($table);
 		}
 
-		// If this is a localized record, stuff data from original record to local registry, will then be given to child elements
-		$this->registerDefaultLanguageData($table, $row);
+		$fieldListToRender = array_unique(GeneralUtility::trimExplode(',', $fieldListToRender, TRUE));
 
-		$list = array_unique(GeneralUtility::trimExplode(',', $list, TRUE));
-		$typesFieldConfig = BackendUtility::getTCAtypes($table, $row, 1);
-		$finalFieldsConfiguration = array();
-		foreach ($list as $singleField) {
-			if (!is_array($GLOBALS['TCA'][$table]['columns'][$singleField])) {
-				continue;
+		$fieldsByShowitem = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
+		$fieldsByShowitem = GeneralUtility::trimExplode(',', $fieldsByShowitem, TRUE);
+
+		$finalFieldsList = array();
+		foreach ($fieldListToRender as $fieldName) {
+			$found = FALSE;
+			foreach ($fieldsByShowitem as $fieldByShowitem) {
+				$fieldByShowitemArray = $this->explodeSingleFieldShowItemConfiguration($fieldByShowitem);
+				if ($fieldByShowitemArray['fieldName'] === $fieldName) {
+					$found = TRUE;
+					$finalFieldsList[] = implode(';', $fieldByShowitemArray);
+					break;
+				}
 			}
-			if (isset($typesFieldConfig[$singleField]['origString'])) {
-				$fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($typesFieldConfig[$singleField]['origString']);
-				// Fields of sub palettes should not be rendered
-				$fieldConfiguration['paletteName'] = '';
-			} else {
-				$fieldConfiguration = array(
-					'fieldName' => $singleField,
-				);
+			if (!$found) {
+				// @todo: Field is shown even if it is not in type showitem list? Will be shown if field is in a palette.
+				$finalFieldsList[] = $fieldName;
 			}
-			$finalFieldsConfiguration[] = implode(';', $fieldConfiguration);
 		}
 
-		$options = $this->globalOptions;
-		$options['fieldsArray'] = $finalFieldsConfiguration;
+		$options = $this->data;
+		$options['fieldsArray'] = $finalFieldsList;
 		$options['renderType'] = 'paletteAndSingleContainer';
-		$options['recordTypeValue'] = $this->getRecordTypeValue($table, $row);
-		/** @var NodeFactory $nodeFactory */
-		$nodeFactory = $this->globalOptions['nodeFactory'];
-		return $nodeFactory->create($options)->render();
+		return $this->nodeFactory->create($options)->render();
 	}
 
 	/**

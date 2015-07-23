@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Generation of TCEform elements of the type "input"
@@ -36,10 +35,10 @@ class InputElement extends AbstractFormElement {
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$languageService = $this->getLanguageService();
 
-		$table = $this->globalOptions['table'];
-		$fieldName = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$fieldName = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 		$resultArray = $this->initializeResultArray();
 		$isDateField = FALSE;
 
@@ -71,7 +70,7 @@ class InputElement extends AbstractFormElement {
 		$dateFormats['datetimesec'] = $dateFormats['timesec'] . ' ' . $dateFormats['date'];
 
 		// readonly
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$itemFormElValue = $parameterArray['itemFormElValue'];
 			if (in_array('date', $evalList)) {
 				$config['format'] = 'date';
@@ -83,7 +82,7 @@ class InputElement extends AbstractFormElement {
 			if (in_array('password', $evalList)) {
 				$itemFormElValue = $itemFormElValue ? '*********' : '';
 			}
-			$options = $this->globalOptions;
+			$options = $this->data;
 			$options['parameterArray'] = array(
 				'fieldConf' => array(
 					'config' => $config,
@@ -91,9 +90,7 @@ class InputElement extends AbstractFormElement {
 				'itemFormElValue' => $itemFormElValue,
 			);
 			$options['renderType'] = 'none';
-			/** @var NodeFactory $nodeFactory */
-			$nodeFactory = $this->globalOptions['nodeFactory'];
-			return $nodeFactory->create($options)->render();
+			return $this->nodeFactory->create($options)->render();
 		}
 
 		if (in_array('datetime', $evalList, TRUE)

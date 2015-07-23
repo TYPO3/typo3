@@ -211,10 +211,10 @@ class RichTextElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$fieldName = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$fieldName = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 
 		$backendUser = $this->getBackendUserAuthentication();
 
@@ -228,7 +228,7 @@ class RichTextElement extends AbstractFormElement {
 			$this->vanillaRteTsConfig['properties'],
 			$table,
 			$fieldName,
-			$this->globalOptions['recordTypeValue']
+			$this->data['recordTypeValue']
 		);
 		$this->client = $this->clientInfo();
 		$this->domIdentifier = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $parameterArray['itemFormElName']);
@@ -240,9 +240,10 @@ class RichTextElement extends AbstractFormElement {
 		$skinFilename = trim($this->processedRteConfiguration['skin']) ?: 'EXT:rtehtmlarea/Resources/Public/Css/Skin/htmlarea.css';
 		$skinFilename = $this->getFullFileName($skinFilename);
 		$skinDirectory = dirname($skinFilename);
+
 		// jQuery UI Resizable style sheet and main skin stylesheet
-		$this->resultArray['additionalHeadTags'][] = '<link rel="stylesheet" type="text/css" href="' . $skinDirectory . '/jquery-ui-resizable.css' . '" />';
-		$this->resultArray['additionalHeadTags'][] = '<link rel="stylesheet" type="text/css" href="' . $skinFilename . '" />';
+		$this->resultArray['stylesheetFiles'][] = $skinDirectory . '/jquery-ui-resizable.css';
+		$this->resultArray['stylesheetFiles'][] = $skinFilename;
 
 		$this->enableRegisteredPlugins();
 
@@ -303,7 +304,7 @@ class RichTextElement extends AbstractFormElement {
 			$width = 530 + (isset($options['RTELargeWidthIncrement']) ? (int)$options['RTELargeWidthIncrement'] : 150);
 			/** @var InlineStackProcessor  $inlineStackProcessor */
 			$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-			$inlineStackProcessor->initializeByGivenStructure($this->globalOptions['inlineStructure']);
+			$inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
 			$inlineStructureDepth = $inlineStackProcessor->getStructureDepth();
 			$width -= $inlineStructureDepth > 0 ? ($inlineStructureDepth + 1) * 12 : 0;
 			$widthOverride = isset($backendUser->uc['rteWidth']) && trim($backendUser->uc['rteWidth']) ?: trim($this->processedRteConfiguration['RTEWidthOverride']);
@@ -325,14 +326,14 @@ class RichTextElement extends AbstractFormElement {
 		}
 		$rteDivStyle = 'position:relative; left:0px; top:0px; height:' . $height . '; width:' . $width . '; border: 1px solid black; padding: 2 ' . $paddingRight . ' 2 2;';
 
-		$itemFormElementName = $this->globalOptions['parameterArray']['itemFormElName'];
+		$itemFormElementName = $this->data['parameterArray']['itemFormElName'];
 
 		// This seems to result in:
 		//	_TRANSFORM_bodytext (the handled field name) in case the field is a direct DB field
 		//	_TRANSFORM_vDEF (constant string) in case the RTE is within a flex form
 		$triggerFieldName = preg_replace('/\\[([^]]+)\\]$/', '[_TRANSFORM_\\1]', $itemFormElementName);
 
-		$value = $this->transformDatabaseContentToEditor($this->globalOptions['parameterArray']['itemFormElValue']);
+		$value = $this->transformDatabaseContentToEditor($this->data['parameterArray']['itemFormElValue']);
 
 		$result = array();
 		// The hidden field tells the DataHandler that processing should be done on this value.
@@ -682,7 +683,7 @@ class RichTextElement extends AbstractFormElement {
 		$jsArray[] = 'RTEarea[editornumber].keepButtonGroupTogether = ' . (trim($this->processedRteConfiguration['keepButtonGroupTogether']) ? 'true;' : 'false;');
 		$jsArray[] = 'RTEarea[editornumber].disablePCexamples = ' . (trim($this->processedRteConfiguration['disablePCexamples']) ? 'true;' : 'false;');
 		$jsArray[] = 'RTEarea[editornumber].showTagFreeClasses = ' . (trim($this->processedRteConfiguration['showTagFreeClasses']) ? 'true;' : 'false;');
-		$jsArray[] = 'RTEarea[editornumber].tceformsNested = ' . (!empty($this->globalOptions) ? json_encode($this->globalOptions['tabAndInlineStack']) : '[]') . ';';
+		$jsArray[] = 'RTEarea[editornumber].tceformsNested = ' . (!empty($this->data) ? json_encode($this->data['tabAndInlineStack']) : '[]') . ';';
 		$jsArray[] = 'RTEarea[editornumber].dialogueWindows = new Object();';
 		if (isset($this->processedRteConfiguration['dialogueWindows.']['defaultPositionFromTop'])) {
 			$jsArray[] = 'RTEarea[editornumber].dialogueWindows.positionFromTop = ' . (int)$this->processedRteConfiguration['dialogueWindows.']['defaultPositionFromTop'] . ';';
@@ -1106,7 +1107,7 @@ class RichTextElement extends AbstractFormElement {
 	protected function addOnSubmitJavaScriptCode() {
 		$onSubmitCode = array();
 		$onSubmitCode[] = 'if (RTEarea["' . $this->domIdentifier . '"]) {';
-		$onSubmitCode[] = 	'document.editform["' . $this->globalOptions['parameterArray']['itemFormElName'] . '"].value = RTEarea["' . $this->domIdentifier . '"].editor.getHTML();';
+		$onSubmitCode[] = 	'document.editform["' . $this->data['parameterArray']['itemFormElName'] . '"].value = RTEarea["' . $this->domIdentifier . '"].editor.getHTML();';
 		$onSubmitCode[] = '} else {';
 		$onSubmitCode[] = 	'OK = 0;';
 		$onSubmitCode[] = '};';
@@ -1155,7 +1156,11 @@ class RichTextElement extends AbstractFormElement {
 		if ($this->language === 'default' || !$this->language) {
 			$this->language = 'en';
 		}
-		$this->contentLanguageUid = max($this->globalOptions['databaseRow']['sys_language_uid'], 0);
+		$currentLanguageUid = $this->data['databaseRow']['sys_language_uid'];
+		if (is_array($currentLanguageUid)) {
+			$currentLanguageUid = $currentLanguageUid[0];
+		}
+		$this->contentLanguageUid = (int)max($currentLanguageUid, 0);
 		if ($this->contentLanguageUid) {
 			$this->contentISOLanguage = $this->language;
 			if (ExtensionManagementUtility::isLoaded('static_info_tables')) {
@@ -1203,7 +1208,7 @@ class RichTextElement extends AbstractFormElement {
 				$deprecatedProperty,
 				$useProperty,
 				$version,
-				$this->globalOptions['databaseRow']['pid']
+				$this->data['databaseRow']['pid']
 			);
 			GeneralUtility::deprecationLog($message);
 			if ($this->processedRteConfiguration['logDeprecatedProperties.']['logAlsoToBELog']) {
@@ -1212,7 +1217,7 @@ class RichTextElement extends AbstractFormElement {
 					$deprecatedProperty,
 					$useProperty,
 					$version,
-					$this->globalOptions['databaseRow']['pid']
+					$this->data['databaseRow']['pid']
 				);
 				$backendUser->simplelog($message, 'rtehtmlarea');
 			}
@@ -1227,11 +1232,11 @@ class RichTextElement extends AbstractFormElement {
 	protected function RTEtsConfigParams() {
 		$parameters = BackendUtility::getSpecConfParametersFromArray($this->defaultExtras['rte_transform']['parameters']);
 		$result = array(
-			$this->globalOptions['table'],
-			$this->globalOptions['databaseRow']['uid'],
-			$this->globalOptions['fieldName'],
+			$this->data['tableName'],
+			$this->data['databaseRow']['uid'],
+			$this->data['fieldName'],
 			$this->pidOfVersionedMotherRecord,
-			$this->globalOptions['recordTypeValue'],
+			$this->data['recordTypeValue'],
 			$this->pidOfPageRecord,
 			$parameters['imgpath'],
 		);
@@ -1271,7 +1276,7 @@ class RichTextElement extends AbstractFormElement {
 			if ($parameters['mode']) {
 				/** @var RteHtmlParser $parseHTML */
 				$parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
-				$parseHTML->init($this->globalOptions['table'] . ':' . $this->globalOptions['fieldName'], $this->pidOfVersionedMotherRecord);
+				$parseHTML->init($this->data['table'] . ':' . $this->data['fieldName'], $this->pidOfVersionedMotherRecord);
 				$parseHTML->setRelPath('');
 				$value = $parseHTML->RTE_transform($value, $this->defaultExtras, 'rte', $this->processedRteConfiguration);
 			}

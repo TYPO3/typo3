@@ -35,8 +35,10 @@ class RelationHandler {
 
 	/**
 	 * If set, values that are not ids in tables are normally discarded. By this options they will be preserved.
+	 *
+	 * @var bool
 	 */
-	public $registerNonTableValues = 0;
+	public $registerNonTableValues = FALSE;
 
 	/**
 	 * Contains the table names as keys. The values are the id-values for each table.

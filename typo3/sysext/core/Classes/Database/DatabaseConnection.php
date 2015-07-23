@@ -932,8 +932,10 @@ class DatabaseConnection {
 	 *
 	 * @param string $str Input string
 	 * @return array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function splitGroupOrderLimit($str) {
+		GeneralUtility::logDeprecatedFunction();
 		// Prepending a space to make sure "[[:space:]]+" will find a space there
 		// for the first element.
 		$str = ' ' . $str;

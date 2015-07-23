@@ -273,6 +273,215 @@ return array(
 		'formEngine' => array(
 			'nodeRegistry' => array(), // Array: Registry to add or overwrite FormEngine nodes. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeInterface.
 			'nodeResolver' => array(), // Array: Additional node resolver. Main key is a timestamp of the date when an entry is added, sub keys type, priority and class are required. Class must implement TYPO3\CMS\Backend\Form\NodeResolverInterface.
+			'formDataGroup' => array( // Array: Registry of form data providers for form data groups
+				'tcaDatabaseRecord' => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class => array(),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(
+						\TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class,
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEffectivePid::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class => array(
+						'depends' => array(
+							// Language stuff depends on user ts, but it *may* also depend on new row defaults
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
+						),
+						'before' => array(
+							// GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageRootline::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class,
+						),
+					),
+				),
+				'flexFormSegment' => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class,
+						),
+					),
+				),
+			),
 		),
 	),
 	'EXT' => array( // Options related to the Extension Management
@@ -657,19 +866,19 @@ return array(
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::createNewRecord' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\FormInlineAjaxController::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::getRecordDetails' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\FormInlineAjaxController::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\FormInlineAjaxController::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_inline::setExpandedCollapsedState' => array(
-				'callbackMethod' => \TYPO3\CMS\Backend\Form\FormEngine::class . '->processInlineAjaxRequest',
+				'callbackMethod' => \TYPO3\CMS\Backend\Controller\FormInlineAjaxController::class . '->processInlineAjaxRequest',
 				'csrfTokenCheck' => TRUE
 			),
 			't3lib_TCEforms_suggest::searchRecord' => array(

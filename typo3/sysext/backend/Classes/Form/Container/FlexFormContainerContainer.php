@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Flex form container implementation
@@ -34,14 +33,14 @@ class FlexFormContainerContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$fieldName = $this->globalOptions['fieldName'];
-		$flexFormFormPrefix = $this->globalOptions['flexFormFormPrefix'];
-		$flexFormContainerElementCollapsed = $this->globalOptions['flexFormContainerElementCollapsed'];
-		$flexFormContainerTitle = $this->globalOptions['flexFormContainerTitle'];
-		$flexFormFieldIdentifierPrefix = $this->globalOptions['flexFormFieldIdentifierPrefix'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$row = $this->data['databaseRow'];
+		$fieldName = $this->data['fieldName'];
+		$flexFormFormPrefix = $this->data['flexFormFormPrefix'];
+		$flexFormContainerElementCollapsed = $this->data['flexFormContainerElementCollapsed'];
+		$flexFormContainerTitle = $this->data['flexFormContainerTitle'];
+		$flexFormFieldIdentifierPrefix = $this->data['flexFormFieldIdentifierPrefix'];
+		$parameterArray = $this->data['parameterArray'];
 
 		// Every container adds its own part to the id prefix
 		$flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMd5(uniqid('id', TRUE));
@@ -54,10 +53,10 @@ class FlexFormContainerContainer extends AbstractContainer {
 			. $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)
 			. '</span>';
 
-		$flexFormContainerCounter = $this->globalOptions['flexFormContainerCounter'];
+		$flexFormContainerCounter = $this->data['flexFormContainerCounter'];
 		$actionFieldName = '_ACTION_FLEX_FORM'
 			. $parameterArray['itemFormElName']
-			. $this->globalOptions['flexFormFormPrefix']
+			. $this->data['flexFormFormPrefix']
 			. '[_ACTION]'
 			. '[' . $flexFormContainerCounter . ']';
 		$toggleFieldName = 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']'
@@ -76,14 +75,12 @@ class FlexFormContainerContainer extends AbstractContainer {
 			$moveAndDeleteContent[] = '</div>';
 		}
 
-		$options = $this->globalOptions;
+		$options = $this->data;
 		$options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
 		// Append container specific stuff to field prefix
-		$options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' .  $this->globalOptions['flexFormContainerName'] . '][el]';
+		$options['flexFormFormPrefix'] =  $flexFormFormPrefix . '[' . $flexFormContainerCounter . '][' .  $this->data['flexFormContainerName'] . '][el]';
 		$options['renderType'] = 'flexFormElementContainer';
-		/** @var NodeFactory $nodeFactory */
-		$nodeFactory = $this->globalOptions['nodeFactory'];
-		$containerContentResult = $nodeFactory->create($options)->render();
+		$containerContentResult = $this->nodeFactory->create($options)->render();
 
 		$html = array();
 		$html[] = '<div id="' . $flexFormFieldIdentifierPrefix . '" class="t3-form-field-container-flexsections t3-flex-section">';

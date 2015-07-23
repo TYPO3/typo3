@@ -14,9 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Generation of TCEform elements of the type "check"
@@ -29,33 +27,21 @@ class CheckboxElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$config = $this->globalOptions['parameterArray']['fieldConf']['config'];
 		$html = '';
 		$disabled = FALSE;
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($this->data['parameterArray']['fieldConf']['config']['readOnly']) {
 			$disabled = TRUE;
 		}
 		// Traversing the array of items
-		$items = FormEngineUtility::initItemArray($this->globalOptions['parameterArray']['fieldConf']);
-		if ($config['itemsProcFunc']) {
-			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
-			$items = $dataPreprocessor->procItems(
-				$items,
-				$this->globalOptions['parameterArray']['fieldTSConfig']['itemsProcFunc.'],
-				$config,
-				$this->globalOptions['table'],
-				$this->globalOptions['databaseRow'],
-				$this->globalOptions['fieldName']
-			);
-		}
+		$items = $this->data['parameterArray']['fieldConf']['config']['items'];
 
 		$numberOfItems = count($items);
 		if ($numberOfItems === 0) {
 			$items[] = array('', '');
 			$numberOfItems = 1;
 		}
-		$formElementValue = (int)$this->globalOptions['parameterArray']['itemFormElValue'];
-		$cols = (int)$config['cols'];
+		$formElementValue = (int)$this->data['parameterArray']['itemFormElValue'];
+		$cols = (int)$this->data['parameterArray']['fieldConf']['config']['cols'];
 		if ($cols > 1) {
 			$colWidth = (int)floor(12 / $cols);
 			$colClass = "col-md-12";
@@ -85,25 +71,18 @@ class CheckboxElement extends AbstractFormElement {
 				);
 			}
 			$html .= '<div class="checkbox-row row">';
-			for ($counter = 0; $counter < $numberOfItems; $counter++) {
-				// use "default" for typical single checkboxes
-				$tsConfigKey = ($numberOfItems === 1 ? 'default' : $items[$counter][1]);
-				// useful for e.g. pages.l18n_cfg, where there is no value set
-				if ($tsConfigKey === '') {
-					$tsConfigKey = $counter;
-				}
-				if (isset($this->globalOptions['parameterArray']['fieldTSConfig']['altLabels.'][$tsConfigKey])) {
-					$label = $this->getLanguageService()->sL($this->globalOptions['parameterArray']['fieldTSConfig']['altLabels.'][$tsConfigKey]);
-				} else {
-					$label = $items[$counter][0];
-				}
+			$counter = 0;
+			// @todo: figure out in which cases checkbox items to not begin at 0 and why and when this would be useful
+			foreach ($items as $itemKey => $itemDefinition) {
+				$label = $itemDefinition[0];
 				$html .=
 					'<div class="checkbox-column ' . $colClass . '">'
-						. $this->renderSingleCheckboxElement($label, $counter,  $formElementValue, $numberOfItems, $this->globalOptions['parameterArray'], $disabled) .
+						. $this->renderSingleCheckboxElement($label, $itemKey,  $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled) .
 					'</div>';
-				if ($counter + 1 < $numberOfItems && !empty($colClear)) {
+				$counter = $counter + 1;
+				if ($counter < $numberOfItems && !empty($colClear)) {
 					foreach ($colClear as $rowBreakAfter => $clearClass) {
-						if (($counter + 1) % $rowBreakAfter === 0) {
+						if ($counter % $rowBreakAfter === 0) {
 							$html .= '<div class="clearfix '. $clearClass . '"></div>';
 						}
 					}
@@ -111,23 +90,15 @@ class CheckboxElement extends AbstractFormElement {
 			}
 			$html .= '</div>';
 		} else {
-			for ($counter = 0; $counter < $numberOfItems; $counter++) {
-				// use "default" for typical single checkboxes
-				$tsConfigKey = ($numberOfItems === 1 ? 'default' : $items[$counter][1]);
-				// useful for e.g. pages.l18n_cfg, where there is no value set
-				if ($tsConfigKey === '') {
-					$tsConfigKey = $counter;
-				}
-				if (isset($this->globalOptions['parameterArray']['fieldTSConfig']['altLabels.'][$tsConfigKey])) {
-					$label = $this->getLanguageService()->sL($this->globalOptions['parameterArray']['fieldTSConfig']['altLabels.'][$tsConfigKey]);
-				} else {
-					$label = $items[$counter][0];
-				}
-				$html .=  $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->globalOptions['parameterArray'], $disabled);
+			$counter = 0;
+			foreach ($items as $itemKey => $itemDefinition) {
+				$label = $itemDefinition[0];
+				$html .=  $this->renderSingleCheckboxElement($label, $counter, $formElementValue, $numberOfItems, $this->data['parameterArray'], $disabled);
+				$counter = $counter + 1;
 			}
 		}
 		if (!$disabled) {
-			$html .= '<input type="hidden" name="' . $this->globalOptions['parameterArray']['itemFormElName'] . '" value="' . htmlspecialchars($formElementValue) . '" />';
+			$html .= '<input type="hidden" name="' . $this->data['parameterArray']['itemFormElName'] . '" value="' . htmlspecialchars($formElementValue) . '" />';
 		}
 		$resultArray = $this->initializeResultArray();
 		$resultArray['html'] = $html;

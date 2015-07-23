@@ -14,6 +14,11 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Form\FormResultCompiler;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -21,7 +26,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -33,8 +37,6 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
-use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Backend\Tree\View\ContentLayoutPagePositionMap;
@@ -816,11 +818,12 @@ class PageLayoutController {
 		}
 		// Splitting the edit-record cmd value into table/uid:
 		$this->eRParts = explode(':', $edit_record);
+		$tableName = $this->eRParts[0];
 		// Delete-button flag?
-		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($this->eRParts[0] != 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] == 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
+		$this->deleteButton = MathUtility::canBeInterpretedAsInteger($this->eRParts[1]) && $edit_record && ($tableName !== 'pages' && $this->EDIT_CONTENT || $tableName === 'pages' && $this->CALC_PERMS & Permission::PAGE_DELETE);
 		// If undo-button should be rendered (depends on available items in sys_history)
 		$this->undoButton = FALSE;
-		$undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($this->eRParts[0], 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
+		$undoRes = $databaseConnection->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $databaseConnection->fullQuoteStr($tableName, 'sys_history') . ' AND recuid=' . (int)$this->eRParts[1], '', 'tstamp DESC', '1');
 		if ($this->undoButtonR = $databaseConnection->sql_fetch_assoc($undoRes)) {
 			$this->undoButton = TRUE;
 		}
@@ -843,58 +846,77 @@ class PageLayoutController {
 		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue(
 			BackendUtility::getModuleUrl('web_layout') . '&id=' . $this->id . '&edit_record='
 		) . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);') . '">' . implode('', $opt) . '</select>';
-		$content = '';
+
 		// Creating editing form:
-		if ($beUser->check('tables_modify', $this->eRParts[0]) && $edit_record && ($this->eRParts[0] !== 'pages' && $this->EDIT_CONTENT || $this->eRParts[0] === 'pages' && $this->CALC_PERMS & Permission::PAGE_SHOW)) {
+		$content = '';
+
+		if ($edit_record) {
 			// Splitting uid parts for special features, if new:
-			list($uidVal, $ex_pid, $ex_colPos) = explode('/', $this->eRParts[1]);
-			// Convert $uidVal to workspace version if any:
-			if ($uidVal != 'new') {
-				if ($draftRecord = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, $this->eRParts[0], $uidVal, 'uid')) {
-					$uidVal = $draftRecord['uid'];
+			list($uidVal, $neighborRecordUid, $ex_colPos) = explode('/', $this->eRParts[1]);
+
+			if ($uidVal === 'new') {
+				$command = 'new';
+				// Page id of this new record
+				$theUid = $this->id;
+				if ($neighborRecordUid) {
+					$theUid = $neighborRecordUid;
+				}
+			} else {
+				$command = 'edit';
+				$theUid = $uidVal;
+				// Convert $uidVal to workspace version if any:
+				$draftRecord = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, $tableName, $theUid, 'uid');
+				if ($draftRecord) {
+					$theUid = $draftRecord['uid'];
 				}
 			}
-			// Initializing transfer-data object:
-			$trData = GeneralUtility::makeInstance(DataPreprocessor::class);
-			$trData->addRawData = TRUE;
-			$trData->defVals[$this->eRParts[0]] = array(
+
+			// @todo: Hack because DatabaseInitializeNewRow reads from _GP directly
+			$GLOBALS['_GET']['defVals'][$tableName] = array(
 				'colPos' => (int)$ex_colPos,
 				'sys_language_uid' => (int)$this->current_sys_language
 			);
-			$trData->lockRecords = 1;
-			// 'new'
-			$trData->fetchRecord($this->eRParts[0], $uidVal == 'new' ? $this->id : $uidVal, $uidVal);
-			$new_unique_uid = '';
-			// Getting/Making the record:
-			reset($trData->regTableItems_data);
-			$rec = current($trData->regTableItems_data);
-			if ($uidVal == 'new') {
-				$new_unique_uid = uniqid('NEW', TRUE);
-				$rec['uid'] = $new_unique_uid;
-				$rec['pid'] = (int)$ex_pid ?: $this->id;
-				$recordAccess = TRUE;
-			} else {
-				$rec['uid'] = $uidVal;
-				// Checking internals access:
-				$recordAccess = $beUser->recordEditAccessInternals($this->eRParts[0], $uidVal);
-			}
-			if (!$recordAccess) {
-				// If no edit access, print error message:
-				$content = $this->doc->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg') . '<br /><br />' . ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : ''), 0, 1);
-			} elseif (is_array($rec)) {
-				// If the record is an array (which it will always be... :-)
-				// Create instance of TCEforms, setting defaults:
-				$tceForms = GeneralUtility::makeInstance(FormEngine::class);
-				// Render form, wrap it:
-				$panel = '';
-				$panel .= $tceForms->getMainFields($this->eRParts[0], $rec);
-				$panel = $tceForms->wrapTotal($panel, $rec, $this->eRParts[0]);
-				// Add hidden fields:
-				$theCode = $panel;
-				if ($uidVal == 'new') {
-					$theCode .= '<input type="hidden" name="data[' . $this->eRParts[0] . '][' . $rec['uid'] . '][pid]" value="' . $rec['pid'] . '" />';
+
+			/** @var TcaDatabaseRecord $formDataGroup */
+			$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+			/** @var FormDataCompiler $formDataCompiler */
+			$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+
+			try {
+				$formDataCompilerInput = [
+					'tableName' => $tableName,
+					'vanillaUid' => (int)$theUid,
+					'command' => $command,
+				];
+				$formData = $formDataCompiler->compile($formDataCompilerInput);
+
+				if ($command !== 'new') {
+					BackendUtility::lockRecords($tableName, $formData['databaseRow']['uid'], $tableName === 'tt_content' ? $formData['databaseRow']['pid'] : 0);
 				}
-				$theCode .= '
+
+				$formData['renderType'] = 'outerWrapContainer';
+				$formResult = $nodeFactory->create($formData)->render();
+
+				$panel = $formResult['html'];
+				$formResult['html'] = '';
+
+				/** @var FormResultCompiler $formResultCompiler */
+				$formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+				$formResultCompiler->mergeResult($formResult);
+
+				$row = $formData['databaseRow'];
+				$new_unique_uid = '';
+				if ($command === 'new') {
+					$new_unique_uid = $row['uid'];
+				}
+
+				// Add hidden fields:
+				if ($uidVal == 'new') {
+					$panel .= '<input type="hidden" name="data[' . $tableName . '][' . $row['uid'] . '][pid]" value="' . $row['pid'] . '" />';
+				}
+				$panel .= '
 					<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
 					<input type="hidden" name="edit_record" value="' . $edit_record . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? BackendUtility::getModuleUrl(
@@ -907,24 +929,34 @@ class PageLayoutController {
 					) : $this->R_URI)) . '" />
 					';
 				// Add JavaScript as needed around the form:
-				$theCode = $tceForms->printNeededJSFunctions_top() . $theCode . $tceForms->printNeededJSFunctions();
-				// Add warning sign if record was "locked":
-				if ($lockInfo = BackendUtility::isRecordLocked($this->eRParts[0], $rec['uid'])) {
-					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-					$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
-					/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-					$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-					/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
-					$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
-					$defaultFlashMessageQueue->enqueue($flashMessage);
+				$panel = $formResultCompiler->JStop() . $panel . $formResultCompiler->printNeededJSFunctions();
+				$content = $this->doc->section('', $panel);
+
+				// Display "is-locked" message:
+				if ($command === 'edit') {
+					$lockInfo = BackendUtility::isRecordLocked($tableName, $formData['databaseRow']['uid']);
+					if ($lockInfo) {
+						/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+						$flashMessage = GeneralUtility::makeInstance(FlashMessage::class, htmlspecialchars($lockInfo['msg']), '', FlashMessage::WARNING);
+						/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+						$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+						/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+						$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+						$defaultFlashMessageQueue->enqueue($flashMessage);
+					}
 				}
-				// Add whole form as a document section:
-				$content = $this->doc->section('', $theCode);
+			} catch (AccessDeniedException $e) {
+				// If no edit access, print error message:
+				$content = $this->doc->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg')
+					. '<br /><br />'
+					. ($beUser->errorMsg ? 'Reason: ' . $beUser->errorMsg . '<br /><br />' : ''), 0, 1
+				);
 			}
 		} else {
 			// If no edit access, print error message:
 			$content = $this->doc->section($lang->getLL('noAccess'), $lang->getLL('noAccess_msg') . '<br /><br />', 0, 1);
 		}
+
 		// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
 		if ($q_count) {
@@ -940,7 +972,7 @@ class PageLayoutController {
 		}
 
 		// Select element matrix:
-		if ($this->eRParts[0] == 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
+		if ($tableName === 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
 			$posMap = GeneralUtility::makeInstance(ContentLayoutPagePositionMap::class);
 			$posMap->cur_sys_language = $this->current_sys_language;
 			$HTMLcode = '';
@@ -951,6 +983,7 @@ class PageLayoutController {
 			$content .= $this->doc->section($lang->getLL('CEonThisPage'), $HTMLcode, 0, 1);
 			$content .= $this->doc->spacer(20);
 		}
+
 		return $content;
 	}
 

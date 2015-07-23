@@ -28,16 +28,15 @@ class UserElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$parameterArray = $this->globalOptions['parameterArray'];
-		$parameterArray['table'] = $this->globalOptions['table'];
-		$parameterArray['field'] = $this->globalOptions['fieldName'];
-		$parameterArray['row'] = $this->globalOptions['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
+		$parameterArray['table'] = $this->data['tableName'];
+		$parameterArray['field'] = $this->data['fieldName'];
+		$parameterArray['row'] = $this->data['databaseRow'];
 		$parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
 			? $parameterArray['fieldConf']['config']['parameters']
 			: array();
 		// Instance of FormEngine is kept here for backwards compatibility - but it is a dummy only
-		$dummyFormEngine = new FormEngine;
-		$parameterArray['pObj'] = $dummyFormEngine;
+		$parameterArray['pObj'] = $this;
 		$resultArray = $this->initializeResultArray();
 		$resultArray['html'] = GeneralUtility::callUserFunction(
 			$parameterArray['fieldConf']['config']['userFunc'],

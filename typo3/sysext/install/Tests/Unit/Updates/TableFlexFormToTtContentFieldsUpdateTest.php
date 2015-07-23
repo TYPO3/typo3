@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Tests\Unit\Updates;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophet;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -44,9 +43,8 @@ class TableFlexFormToTtContentFieldsUpdateTest extends BaseTestCase {
 
 	public function setUp() {
 		unset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']);
-		$prophet = new Prophet();
-		$this->packageManagerProphecy = $prophet->prophesize(\TYPO3\CMS\Core\Package\PackageManager::class);
-		$this->dbProphecy = $prophet->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
+		$this->packageManagerProphecy = $this->prophesize(\TYPO3\CMS\Core\Package\PackageManager::class);
+		$this->dbProphecy = $this->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 		$this->updateWizard = new UpdateWizard();
 		ExtensionManagementUtility::setPackageManager($this->packageManagerProphecy->reveal());

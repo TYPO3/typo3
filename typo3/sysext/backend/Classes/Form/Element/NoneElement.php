@@ -30,7 +30,7 @@ class NoneElement extends AbstractFormElement {
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function render() {
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$parameterArray = $this->data['parameterArray'];
 		$config = $parameterArray['fieldConf']['config'];
 		$itemValue = $parameterArray['itemFormElValue'];
 

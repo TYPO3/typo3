@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -40,15 +39,13 @@ class FlexFormElementContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$fieldName = $this->globalOptions['fieldName'];
-		$flexFormDataStructureArray = $this->globalOptions['flexFormDataStructureArray'];
-		$flexFormRowData = $this->globalOptions['flexFormRowData'];
-		$flexFormCurrentLanguage = $this->globalOptions['flexFormCurrentLanguage'];
-		$flexFormNoEditDefaultLanguage = $this->globalOptions['flexFormNoEditDefaultLanguage'];
-		$flexFormFormPrefix = $this->globalOptions['flexFormFormPrefix'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$row = $this->data['databaseRow'];
+		$fieldName = $this->data['fieldName'];
+		$flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
+		$flexFormRowData = $this->data['flexFormRowData'];
+		$flexFormFormPrefix = $this->data['flexFormFormPrefix'];
+		$parameterArray = $this->data['parameterArray'];
 
 		$languageService = $this->getLanguageService();
 		$resultArray = $this->initializeResultArray();
@@ -57,7 +54,7 @@ class FlexFormElementContainer extends AbstractContainer {
 				// No item array found at all
 				!is_array($flexFormFieldArray)
 				// Not a section or container and not a list of single items
-				|| (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['TCEforms']['config']))
+				|| (!isset($flexFormFieldArray['type']) && !is_array($flexFormFieldArray['config']))
 			) {
 				continue;
 			}
@@ -74,27 +71,29 @@ class FlexFormElementContainer extends AbstractContainer {
 					$sectionTitle = $languageService->sL($flexFormFieldArray['title']);
 				}
 
-				$options = $this->globalOptions;
+				$options = $this->data;
 				$options['flexFormDataStructureArray'] = $flexFormFieldArray['el'];
 				$options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
 				$options['flexFormSectionType'] = $flexFormFieldName;
 				$options['flexFormSectionTitle'] = $sectionTitle;
 				$options['renderType'] = 'flexFormSectionContainer';
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$sectionContainerResult = $nodeFactory->create($options)->render();
+				$sectionContainerResult = $this->nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
 			} else {
 				// Single element
+				// @todo: There is a bug in here - with langChildren = 1, "single" fields can be localized.
+				// @todo: This case is not handled correctly here, see for details method #2 of
+				// @todo: https://docs.typo3.org/typo3cms/TCAReference/Reference/Columns/Flex/Index.html#handling-languages-in-flexforms
+				// @todo: All data should be properly prepared by flex provider already
 				$vDEFkey = 'vDEF';
 
 				$displayConditionResult = TRUE;
-				if (!empty($flexFormFieldArray['TCEforms']['displayCond'])) {
+				if (!empty($flexFormFieldArray['displayCond'])) {
 					$conditionData = is_array($flexFormRowData) ? $flexFormRowData : array();
 					$conditionData['parentRec'] = $row;
 					/** @var $elementConditionMatcher ElementConditionMatcher */
 					$elementConditionMatcher = GeneralUtility::makeInstance(ElementConditionMatcher::class);
-					$displayConditionResult = $elementConditionMatcher->match($flexFormFieldArray['TCEforms']['displayCond'], $conditionData, $vDEFkey);
+					$displayConditionResult = $elementConditionMatcher->match($flexFormFieldArray['displayCond'], $conditionData, $vDEFkey);
 				}
 				if (!$displayConditionResult) {
 					continue;
@@ -102,10 +101,11 @@ class FlexFormElementContainer extends AbstractContainer {
 
 				// On-the-fly migration for flex form "TCA"
 				// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
+				// @todo: this migration should be done in flex provider?
 				$dummyTca = array(
 					'dummyTable' => array(
 						'columns' => array(
-							'dummyField' => $flexFormFieldArray['TCEforms'],
+							'dummyField' => $flexFormFieldArray,
 						),
 					),
 				);
@@ -118,25 +118,17 @@ class FlexFormElementContainer extends AbstractContainer {
 					array_unshift($messages, $context);
 					GeneralUtility::deprecationLog(implode(LF, $messages));
 				}
-				$flexFormFieldArray['TCEforms'] = $migratedTca['dummyTable']['columns']['dummyField'];
+				$flexFormFieldArray = $migratedTca['dummyTable']['columns']['dummyField'];
 
 				// Set up options for single element
 				$fakeParameterArray = array(
 					'fieldConf' => array(
-						'label' => $languageService->sL(trim($flexFormFieldArray['TCEforms']['label'])),
-						'config' => $flexFormFieldArray['TCEforms']['config'],
-						'defaultExtras' => $flexFormFieldArray['TCEforms']['defaultExtras'],
-						'onChange' => $flexFormFieldArray['TCEforms']['onChange'],
+						'label' => $languageService->sL(trim($flexFormFieldArray['label'])),
+						'config' => $flexFormFieldArray['config'],
+						'defaultExtras' => $flexFormFieldArray['defaultExtras'],
+						'onChange' => $flexFormFieldArray['onChange'],
 					),
 				);
-
-				// Force a none field if default language can not be edited
-				if ($flexFormNoEditDefaultLanguage && $flexFormCurrentLanguage === 'lDEF') {
-					$fakeParameterArray['fieldConf']['config'] = array(
-						'type' => 'none',
-						'rows' => 2
-					);
-				}
 
 				$alertMsgOnChange = '';
 				if (
@@ -165,31 +157,20 @@ class FlexFormElementContainer extends AbstractContainer {
 					$fakeParameterArray['itemFormElValue'] = $fakeParameterArray['fieldConf']['config']['default'];
 				}
 
-				$options = $this->globalOptions;
+				$options = $this->data;
 				$options['parameterArray'] = $fakeParameterArray;
-				$options['elementBaseName'] = $this->globalOptions['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
+				$options['elementBaseName'] = $this->data['elementBaseName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $vDEFkey . ']';
 
-				if (!empty($flexFormFieldArray['TCEforms']['config']['renderType'])) {
-					$options['renderType'] = $flexFormFieldArray['TCEforms']['config']['renderType'];
+				if (!empty($flexFormFieldArray['config']['renderType'])) {
+					$options['renderType'] = $flexFormFieldArray['config']['renderType'];
 				} else {
 					// Fallback to type if no renderType is given
-					$options['renderType'] = $flexFormFieldArray['TCEforms']['config']['type'];
+					$options['renderType'] = $flexFormFieldArray['config']['type'];
 				}
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$childResult = $nodeFactory->create($options)->render();
+				$childResult = $this->nodeFactory->create($options)->render();
 
 				$theTitle = htmlspecialchars($fakeParameterArray['fieldConf']['label']);
 				$defInfo = array();
-				if (!$flexFormNoEditDefaultLanguage) {
-					$previewLanguages = $this->globalOptions['additionalPreviewLanguages'];
-					foreach ($previewLanguages as $previewLanguage) {
-						$defInfo[] = '<div class="t3-form-original-language">';
-						$defInfo[] = 	FormEngineUtility::getLanguageIcon($table, $row, ('v' . $previewLanguage['ISOcode']));
-						$defInfo[] = 	$this->previewFieldValue($flexFormRowData[$flexFormFieldName][('v' . $previewLanguage['ISOcode'])], $fakeParameterArray['fieldConf'], $fieldName);
-						$defInfo[] = '</div>';
-					}
-				}
 
 				$languageIcon = '';
 				if ($vDEFkey !== 'vDEF') {

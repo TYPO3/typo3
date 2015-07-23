@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Generation of TCEform elements of the type "text"
@@ -41,10 +40,10 @@ class TextElement extends AbstractFormElement {
 	public function render() {
 		$languageService = $this->getLanguageService();
 
-		$table = $this->globalOptions['table'];
-		$fieldName = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$fieldName = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 		$resultArray = $this->initializeResultArray();
 		$backendUser = $this->getBackendUserAuthentication();
 
@@ -73,10 +72,10 @@ class TextElement extends AbstractFormElement {
 		// must be called after the cols and rows calculation, so the parameters are applied
 		// to read-only fields as well.
 		// @todo: Same as in InputElement ...
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$config['cols'] = $cols;
 			$config['rows'] = $rows;
-			$options = $this->globalOptions;
+			$options = $this->data;
 			$options['parameterArray'] = array(
 				'fieldConf' => array(
 					'config' => $config,
@@ -84,9 +83,7 @@ class TextElement extends AbstractFormElement {
 				'itemFormElValue' => $parameterArray['itemFormElValue'],
 			);
 			$options['renderType'] = 'none';
-			/** @var NodeFactory $nodeFactory */
-			$nodeFactory = $this->globalOptions['nodeFactory'];
-			return $nodeFactory->create($options)->render();
+			return $this->nodeFactory->create($options)->render();
 		}
 
 		$evalList = GeneralUtility::trimExplode(',', $config['eval'], TRUE);

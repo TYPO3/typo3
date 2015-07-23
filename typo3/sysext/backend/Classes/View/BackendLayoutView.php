@@ -259,7 +259,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 		$tsConfig = BackendUtility::getModTSconfig($id, 'TCEFORM.tt_content.colPos');
 		$tcaConfig = $GLOBALS['TCA']['tt_content']['columns']['colPos']['config'];
 		$tcaItems = $tcaConfig['items'];
-		$tcaItems = FormEngineUtility::addItems($tcaItems, $tsConfig['properties']['addItems.']);
+		$tcaItems = $this->addItems($tcaItems, $tsConfig['properties']['addItems.']);
 		if (isset($tcaConfig['itemsProcFunc']) && $tcaConfig['itemsProcFunc']) {
 			$tcaItems = $this->addColPosListLayoutItems($id, $tcaItems);
 		}
@@ -271,6 +271,38 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		return $tcaItems;
+	}
+
+	/**
+	 * Merges items into an item-array, optionally with an icon
+	 * example:
+	 * TCEFORM.pages.doktype.addItems.13 = My Label
+	 * TCEFORM.pages.doktype.addItems.13.icon = EXT:t3skin/icons/gfx/i/pages.gif
+	 *
+	 * @param array $items The existing item array
+	 * @param array $iArray An array of items to add. NOTICE: The keys are mapped to values, and the values and mapped to be labels. No possibility of adding an icon.
+	 * @return array The updated $item array
+	 * @internal
+	 */
+	protected function addItems($items, $iArray) {
+		$languageService = static::getLanguageService();
+		if (is_array($iArray)) {
+			foreach ($iArray as $value => $label) {
+				// if the label is an array (that means it is a subelement
+				// like "34.icon = mylabel.png", skip it (see its usage below)
+				if (is_array($label)) {
+					continue;
+				}
+				// check if the value "34 = mylabel" also has a "34.icon = myimage.png"
+				if (isset($iArray[$value . '.']) && $iArray[$value . '.']['icon']) {
+					$icon = $iArray[$value . '.']['icon'];
+				} else {
+					$icon = '';
+				}
+				$items[] = array($languageService->sL($label), $value, $icon);
+			}
+		}
+		return $items;
 	}
 
 	/**

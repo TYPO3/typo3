@@ -163,9 +163,6 @@ class ElementInformationController implements \TYPO3\CMS\Core\Http\ControllerInt
 					$this->access = is_array($this->pageInfo) ? 1 : 0;
 				}
 			}
-			/** @var $treatData \TYPO3\CMS\Backend\Form\DataPreprocessor */
-			$treatData = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Form\DataPreprocessor::class);
-			$treatData->renderRecord($this->table, $this->uid, 0, $this->row);
 		}
 	}
 

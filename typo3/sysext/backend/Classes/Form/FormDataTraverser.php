@@ -14,13 +14,21 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utility class for traversing related fields in the TCA.
+ *
+ * This thing basically resolves __row|field syntax for the placeholder stuff. It follows a
+ * given path and returns a value of a connected foreign record.
+ *
+ * @todo: This whole class is very hard to understand and hard to debug. It should be
+ * @todo: done as a data provider to work on prepared structures instead.
+ *
+ * @internal: Do not use in extensions, class will be changed / removed in the future
  */
 class FormDataTraverser {
 
@@ -85,7 +93,7 @@ class FormDataTraverser {
 		$fieldValue = '';
 		if (!empty($fieldNameArray)) {
 			$this->initializeOriginalLanguageUid();
-			$fieldValue = $this->getFieldValueRecursive($fieldNameArray);
+			$fieldValue = $this->getFieldValue($fieldNameArray);
 		}
 		return $fieldValue;
 	}
@@ -113,18 +121,27 @@ class FormDataTraverser {
 	 * @param array $fieldNameArray The field names that should be traversed.
 	 * @return mixed The value of the last field.
 	 */
-	protected function getFieldValueRecursive(array $fieldNameArray) {
+	protected function getFieldValue(array $fieldNameArray) {
 		$value = '';
 
+		$count = 0;
 		foreach ($fieldNameArray as $fieldName) {
+			$count = $count + 1;
 			// Skip if a defined field was actually not present in the database row
 			// Using array_key_exists here, since TYPO3 supports NULL values as well
-			if (!array_key_exists($fieldName, $this->currentRow)) {
+			if (!array_key_exists($fieldName, $this->currentRow) || $this->currentRow[$fieldName] === "0") {
 				$value = '';
 				break;
 			}
 
 			$value = $this->currentRow[$fieldName];
+			// @todo: the first value was not processed with old data preprocessor and contains no |
+			// @todo: this is simuluated here
+			if ($count === 1) {
+				$value = explode('|', $value);
+				$value = $value[0];
+			}
+
 			if (empty($value)) {
 				break;
 			}
@@ -258,18 +275,31 @@ class FormDataTraverser {
 	}
 
 	/**
-	 * Uses the DataPreprocessor to read a value from the database.
-	 *
-	 * The table name is read from the currentTable class variable.
+	 * Fetch a record from the database
 	 *
 	 * @param int $uid The UID of the record that should be fetched.
 	 * @return array|boolean FALSE if the record can not be accessed, otherwise the data of the requested record.
 	 */
 	protected function getRecordRow($uid) {
-		/** @var DataPreprocessor $dataPreprocessor */
-		$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
-		$dataPreprocessor->fetchRecord($this->currentTable, $uid, '');
-		return reset($dataPreprocessor->regTableItems_data);
+		$selectDataInput = [
+			'command' => 'edit',
+			'vanillaUid' => (int)$uid,
+			'tableName' => $this->currentTable,
+		];
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+		$compilerResult = $formDataCompiler->compile($selectDataInput);
+		$databaseRow = $compilerResult['databaseRow'];
+		$newDatabaseRow = [];
+		foreach ($databaseRow as $fieldName => $value) {
+			$newDatabaseRow[$fieldName] = $value;
+			if (is_array($value)) {
+				$newDatabaseRow[$fieldName] = implode(',', $value);
+			}
+		}
+		return $newDatabaseRow;
 	}
 
 	/**

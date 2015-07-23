@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Backend\Form;
 interface NodeInterface {
 
 	/**
-	 * Set global options from parent instance
+	 * All nodes get an instance of the NodeFactory and the main data array
 	 *
-	 * @param array $globalOptions Global options like 'readonly' for all elements
-	 * @return $this
+	 * @param NodeFactory $nodeFactory
+	 * @param array $data
 	 */
-	public function setGlobalOptions(array $globalOptions);
+	public function __construct(NodeFactory $nodeFactory, array $data);
 
 	/**
 	 * Main render method

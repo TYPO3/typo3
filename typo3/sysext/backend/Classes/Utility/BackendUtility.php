@@ -488,8 +488,10 @@ class BackendUtility {
 	 * Used for listing the exclude-fields in be_groups forms
 	 *
 	 * @return array Array of arrays with excludeFields (fieldname, table:fieldname) from all TCA entries and from FlexForms (fieldname, table:extkey;sheetname;fieldname)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function getExcludeFields() {
+		GeneralUtility::logDeprecatedFunction();
 		$finalExcludeArray = array();
 
 		// Fetch translations for table names
@@ -535,7 +537,7 @@ class BackendUtility {
 							continue;
 						}
 						foreach ($sheet['ROOT']['el'] as $fieldName => $field) {
-							// Use only excludeable fields
+							// Use only fields that have exclude flag set
 							if (empty($field['TCEforms']['exclude'])) {
 								continue;
 							}
@@ -548,7 +550,14 @@ class BackendUtility {
 			}
 			// Sort fields by the translated value
 			if (!empty($excludeArrayTable)) {
-				usort($excludeArrayTable, array(\TYPO3\CMS\Backend\Form\FlexFormsHelper::class, 'compareArraysByFirstValue'));
+				usort($excludeArrayTable, function (array $array1, array $array2) {
+					$array1 = reset($array1);
+					$array2 = reset($array2);
+					if (is_string($array1) && is_string($array2)) {
+						return strcasecmp($array1, $array2);
+					}
+					return 0;
+				});
 				$finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
 			}
 		}
@@ -561,8 +570,10 @@ class BackendUtility {
 	 * Used for listing these field/value pairs in be_groups forms
 	 *
 	 * @return array Array with information from all of $GLOBALS['TCA']
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function getExplicitAuthFieldValues() {
+		GeneralUtility::logDeprecatedFunction();
 		// Initialize:
 		$lang = static::getLanguageService();
 		$adLabel = array(
@@ -626,8 +637,10 @@ class BackendUtility {
 	 * which will represent the flag of this language.
 	 *
 	 * @return array Array with languages (title, uid, flagIcon - used with IconUtility::getSpriteIcon)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function getSystemLanguages() {
+		GeneralUtility::logDeprecatedFunction();
 		/** @var TranslationConfigurationProvider $translationConfigurationProvider */
 		$translationConfigurationProvider = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
 		$languages = $translationConfigurationProvider->getSystemLanguages();
@@ -812,10 +825,10 @@ class BackendUtility {
 	 * If no "type" field is configured in the "ctrl"-section of the $GLOBALS['TCA'] for the table, zero is used.
 	 * If zero is not an index in the "types" section of $GLOBALS['TCA'] for the table, then the $fieldValue returned will default to 1 (no matter if that is an index or not)
 	 *
-	 * Note: This method is very similar to \TYPO3\CMS\Backend\Form\FormEngine::getRTypeNum(),
+	 * Note: This method is very similar to the type determination of FormDataProvider/DatabaseRecordTypeValue,
 	 * however, it has two differences:
 	 * 1) The method in TCEForms also takes care of localization (which is difficult to do here as the whole infrastructure for language overlays is only in TCEforms).
-	 * 2) The $row array looks different in TCEForms, as in there it's not the raw record but the \TYPO3\CMS\Backend\Form\DataPreprocessor version of it, which changes e.g. how "select"
+	 * 2) The $row array looks different in TCEForms, as in there it's not the raw record but the prepared data from other providers is handled, which changes e.g. how "select"
 	 * and "group" field values are stored, which makes different processing of the "foreign pointer field" type field variant necessary.
 	 *
 	 * @param string $table Table name present in TCA
@@ -953,7 +966,7 @@ class BackendUtility {
 	 * @param bool $WSOL If set, workspace overlay is applied to records. This is correct behaviour for all presentation and export, but NOT if you want a TRUE reflection of how things are in the live workspace.
 	 * @param int $newRecordPidValue SPECIAL CASES: Use this, if the DataStructure may come from a parent record and the INPUT row doesn't have a uid yet (hence, the pid cannot be looked up). Then it is necessary to supply a PID value to search recursively in for the DS (used from TCEmain)
 	 * @return mixed If array, the data structure was found and returned as an array. Otherwise (string) it is an error message.
-	 * @see \TYPO3\CMS\Backend\Form\FormEngine::getSingleField_typeFlex()
+	 * @todo: All those nasty details should be covered with tests, also it is very unfortunate the final $srcPointer is not exposed
 	 */
 	static public function getFlexFormDS($conf, $row, $table, $fieldName = '', $WSOL = TRUE, $newRecordPidValue = 0) {
 		// Get pointer field etc from TCA-config:
@@ -1094,8 +1107,10 @@ class BackendUtility {
 	 * @param string $table The content table
 	 * @return array The data structures with speaking extension title
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields()
+	 *  @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function getRegisteredFlexForms($table = 'tt_content') {
+		GeneralUtility::logDeprecatedFunction();
 		if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
 			return array();
 		}
@@ -3410,8 +3425,11 @@ class BackendUtility {
 	}
 
 	/**
-	 * Returns information about whether the record from table, $table, with uid, $uid is currently locked (edited by another user - which should issue a warning).
-	 * Notice: Locking is not strictly carried out since locking is abandoned when other backend scripts are activated - which means that a user CAN have a record "open" without having it locked. So this just serves as a warning that counts well in 90% of the cases, which should be sufficient.
+	 * Returns information about whether the record from table, $table, with uid, $uid is currently locked
+	 * (edited by another user - which should issue a warning).
+	 * Notice: Locking is not strictly carried out since locking is abandoned when other backend scripts
+	 * are activated - which means that a user CAN have a record "open" without having it locked.
+	 * So this just serves as a warning that counts well in 90% of the cases, which should be sufficient.
 	 *
 	 * @param string $table Table name
 	 * @param int $uid Record uid
@@ -3422,8 +3440,12 @@ class BackendUtility {
 		if (!is_array($GLOBALS['LOCKED_RECORDS'])) {
 			$GLOBALS['LOCKED_RECORDS'] = array();
 			$db = static::getDatabaseConnection();
-			$res = $db->exec_SELECTquery('*', 'sys_lockedrecords', 'sys_lockedrecords.userid<>' . (int)static::getBackendUserAuthentication()->user['uid'] . '
-								AND sys_lockedrecords.tstamp > ' . ($GLOBALS['EXEC_TIME'] - 2 * 3600));
+			$res = $db->exec_SELECTquery(
+				'*',
+				'sys_lockedrecords',
+				'sys_lockedrecords.userid<>' . (int)static::getBackendUserAuthentication()->user['uid']
+					. ' AND sys_lockedrecords.tstamp > ' . ($GLOBALS['EXEC_TIME'] - 2 * 3600)
+			);
 			while ($row = $db->sql_fetch_assoc($res)) {
 				// Get the type of the user that locked this record:
 				if ($row['userid']) {
@@ -3442,9 +3464,19 @@ class BackendUtility {
 					$userName = $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.unknownUser');
 				}
 				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']] = $row;
-				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+				$GLOBALS['LOCKED_RECORDS'][$row['record_table'] . ':' . $row['record_uid']]['msg'] = sprintf(
+					$lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser'),
+					$userType,
+					$userName,
+					self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))
+				);
 				if ($row['record_pid'] && !isset($GLOBALS['LOCKED_RECORDS'][($row['record_table'] . ':' . $row['record_pid'])])) {
-					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'), $userType, $userName, self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
+					$GLOBALS['LOCKED_RECORDS']['pages:' . $row['record_pid']]['msg'] = sprintf(
+						$lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.lockedRecordUser_content'),
+						$userType,
+						$userName,
+						self::calcAge($GLOBALS['EXEC_TIME'] - $row['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears'))
+					);
 				}
 			}
 			$db->sql_free_result($res);
@@ -3455,16 +3487,18 @@ class BackendUtility {
 	/**
 	 * Returns select statement for MM relations (as used by TCEFORMs etc)
 	 *
-	 * @param array $fieldValue Configuration array for the field, taken from $GLOBALS['TCA']
+	 * @param array $fieldConfig Configuration array for the field, taken from $GLOBALS['TCA']
 	 * @param string $field Field name
 	 * @param array $TSconfig TSconfig array from which to get further configuration settings for the field name
 	 * @return string Part of query
 	 * @internal
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
-	static public function exec_foreign_table_where_query($fieldValue, $field = '', $TSconfig = array()) {
-		$foreign_table = $fieldValue['config']['foreign_table'];
+	static public function exec_foreign_table_where_query($fieldConfig, $field = '', $TSconfig = array()) {
+		GeneralUtility::logDeprecatedFunction();
+		$foreign_table = $fieldConfig['config']['foreign_table'];
 		$rootLevel = $GLOBALS['TCA'][$foreign_table]['ctrl']['rootLevel'];
-		$fTWHERE = $fieldValue['config']['foreign_table_where'];
+		$fTWHERE = $fieldConfig['config']['foreign_table_where'];
 		$fTWHERE = static::replaceMarkersInWhereClause($fTWHERE, $foreign_table, $field, $TSconfig);
 		$db = static::getDatabaseConnection();
 		$wgolParts = $db->splitGroupOrderLimit($fTWHERE);
@@ -3525,8 +3559,10 @@ class BackendUtility {
 	 * @param string $field Field name
 	 * @param array $tsConfig TSconfig array from which to get further configuration settings for the field name
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function replaceMarkersInWhereClause($whereClause, $table, $field = '', $tsConfig = array()) {
+		GeneralUtility::logDeprecatedFunction();
 		$db = static::getDatabaseConnection();
 		if (strstr($whereClause, '###REC_FIELD_')) {
 			$whereClauseParts = explode('###REC_FIELD_', $whereClause);

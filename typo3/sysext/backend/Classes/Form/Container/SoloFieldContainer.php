@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * An entry container to render just a single field.
@@ -24,6 +23,8 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
  * The container operates on $this->globalOptions['singleFieldToRender'] to render
  * this field. It initializes language stuff and prepares data in globalOptions for
  * processing of the single field in SingleFieldContainer.
+ *
+ * @todo: It should be possible to merge this container to ListOfFieldsContainer
  */
 class SoloFieldContainer extends AbstractContainer {
 
@@ -33,52 +34,34 @@ class SoloFieldContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$fieldToRender = $this->globalOptions['singleFieldToRender'];
-
-		if (!$GLOBALS['TCA'][$table]) {
-			return $this->initializeResultArray();
-		}
-
-		$languageService = $this->getLanguageService();
+		$table = $this->data['tableName'];
+		$fieldToRender = $this->data['singleFieldToRender'];
+		$recordTypeValue = $this->data['recordTypeValue'];
+		$resultArray = $this->initializeResultArray();
 
 		// Load the description content for the table if requested
 		if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
+			$languageService = $this->getLanguageService();
 			$languageService->loadSingleTableDescription($table);
 		}
 
-		// If this is a localized record, stuff data from original record to local registry, will then be given to child elements
-		$this->registerDefaultLanguageData($table, $row);
-
-		// Current type value of the record.
-		$recordTypeValue = $this->getRecordTypeValue($table, $row);
-
-		$excludeElements = $this->getExcludeElements($table, $row, $recordTypeValue);
-
-		$resultArray = $this->initializeResultArray();
-		if (isset($GLOBALS['TCA'][$table]['types'][$recordTypeValue])) {
-			$itemList = $GLOBALS['TCA'][$table]['types'][$recordTypeValue]['showitem'];
-			if ($itemList) {
-				$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
-				foreach ($fields as $fieldString) {
-					$fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
-					$fieldName = $fieldConfiguration['fieldName'];
-					if (!in_array($fieldName, $excludeElements, TRUE) && (string)$fieldName === (string)$fieldToRender) {
-						if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
-							$options = $this->globalOptions;
-							$options['fieldName'] = $fieldName;
-							$options['recordTypeValue'] = $recordTypeValue;
-
-							$options['renderType'] = 'singleFieldContainer';
-							/** @var NodeFactory $nodeFactory */
-							$nodeFactory = $this->globalOptions['nodeFactory'];
-							$resultArray = $nodeFactory->create($options)->render();
-						}
-					}
+		$itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
+		$fields = GeneralUtility::trimExplode(',', $itemList, TRUE);
+		foreach ($fields as $fieldString) {
+			$fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
+			$fieldName = $fieldConfiguration['fieldName'];
+			if ((string)$fieldName === (string)$fieldToRender) {
+				// Field is in showitem configuration
+				// @todo: This field is not rendered if it is "hidden" in a palette!
+				if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
+					$options = $this->data;
+					$options['fieldName'] = $fieldName;
+					$options['renderType'] = 'singleFieldContainer';
+					$resultArray = $this->nodeFactory->create($options)->render();
 				}
 			}
 		}
+
 		return $resultArray;
 	}
 

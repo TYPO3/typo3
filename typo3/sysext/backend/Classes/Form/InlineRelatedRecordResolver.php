@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -27,6 +28,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  *
  * This class contains various methods to fetch inline child records based on configurations
  * and to prepare new child records.
+ *
+ * @internal This class will vanish with further refactoring without further notice
  */
 class InlineRelatedRecordResolver {
 
@@ -48,7 +51,12 @@ class InlineRelatedRecordResolver {
 		$foreignTable = $config['foreign_table'];
 		$localizationMode = BackendUtility::getInlineLocalizationMode($table, $config);
 		if ($localizationMode !== FALSE) {
-			$language = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+			$language = $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+			if (is_array($language)) {
+				$language = (int)$language[0];
+			} else {
+				$language = (int)$language;
+			}
 			$transOrigPointer = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
 			$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
 
@@ -123,33 +131,29 @@ class InlineRelatedRecordResolver {
 	 *
 	 * @param int $pid The pid of the page the record should be stored (only relevant for NEW records)
 	 * @param string $table The table to fetch data from (= foreign_table)
-	 * @return array A record row from the database post-processed by \TYPO3\CMS\Backend\Form\DataPreprocessor
+	 * @return array A record row from the database
 	 */
 	public function getNewRecord($pid, $table) {
 		$record = $this->getRecord($table, $pid, 'new');
 		$record['uid'] = uniqid('NEW', TRUE);
-
 		$newRecordPid = $pid;
 		$pageTS = BackendUtility::getPagesTSconfig($pid);
+		// @todo: this is to force new foreign records to a different pid via pageTS - should be handled elsewhere
 		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && MathUtility::canBeInterpretedAsInteger($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
 			$newRecordPid = $pageTS['TCAdefaults.'][$table . '.']['pid'];
 		}
-
 		$record['pid'] = $newRecordPid;
-
 		return $record;
 	}
 
 	/**
 	 * Get a single record row for a TCA table from the database.
-	 * \TYPO3\CMS\Backend\Form\DataPreprocessor is used for "upgrading" the
-	 * values, especially the relations.
 	 * Used in inline context
 	 *
 	 * @param string $table The table to fetch data from (= foreign_table)
 	 * @param string $uid The uid of the record to fetch, or the pid if a new record should be created
 	 * @param string $cmd The command to perform, empty or 'new'
-	 * @return array A record row from the database post-processed by \TYPO3\CMS\Backend\Form\DataPreprocessor
+	 * @return array A record row from the database
 	 * @internal
 	 */
 	public function getRecord($table, $uid, $cmd = '') {
@@ -165,14 +169,19 @@ class InlineRelatedRecordResolver {
 				$uid = $workspaceVersion['uid'];
 			}
 		}
-		/** @var $trData DataPreprocessor */
-		$trData = GeneralUtility::makeInstance(DataPreprocessor::class);
-		$trData->addRawData = TRUE;
-		$trData->lockRecords = 1;
-		// If a new record should be created
-		$trData->fetchRecord($table, $uid, $cmd === 'new' ? 'new' : '');
-		$rec = reset($trData->regTableItems_data);
-		return $rec;
+
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+		$command = $cmd === 'new' ? 'new' : 'edit';
+		$formDataCompilerInput = [
+			'tableName' => $table,
+			'vanillaUid' => (int)$uid,
+			'command' => $command,
+		];
+		$formData = $formDataCompiler->compile($formDataCompilerInput);
+		return $formData['databaseRow'];
 	}
 
 	/**
@@ -187,7 +196,7 @@ class InlineRelatedRecordResolver {
 		$itemArray = FormEngineUtility::getInlineRelatedRecordsUidArray($itemList);
 		// Perform modification of the selected items array:
 		foreach ($itemArray as $uid) {
-			// Get the records for this uid using \TYPO3\CMS\Backend\Form\DataPreprocessor
+			// Get the records for this uid
 			if ($record = $this->getRecord($table, $uid)) {
 				$records[$uid] = $record;
 			}

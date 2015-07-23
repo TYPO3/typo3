@@ -23,11 +23,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractNode implements NodeInterface {
 
 	/**
-	 * A list of global options given from parent to child elements
+	 * Main data array to work on, given from parent to child elements
 	 *
 	 * @var array
 	 */
-	protected $globalOptions = array();
+	protected $data = array();
+
+	/**
+	 * Set data to data array.
+	 *
+	 * @todo: Should NOT set the nodeFactory instance, this is done by AbstractContainer only,
+	 * @todo: but not done for Element classes: Elements are tree leaves, they MUST
+	 * @todo: not create new nodes again.
+	 * @todo: Currently, AbstractFormElement still does that, but do not rely on the fact that
+	 * @todo: Element classes have an instance of NodeFactory at hand.
+	 *
+	 * @param NodeFactory $nodeFactory
+	 * @param array $data
+	 */
+	public function __construct(NodeFactory $nodeFactory, array $data) {
+		$this->data = $data;
+	}
 
 	/**
 	 * Handler for single nodes
@@ -35,17 +51,6 @@ abstract class AbstractNode implements NodeInterface {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	abstract public function render();
-
-	/**
-	 * Set global options from parent instance
-	 *
-	 * @param array $globalOptions Global options like 'readonly' for all elements
-	 * @return $this
-	 */
-	public function setGlobalOptions(array $globalOptions) {
-		$this->globalOptions = $globalOptions;
-		return $this;
-	}
 
 	/**
 	 * Initialize the array that is returned to parent after calling. This structure
@@ -59,7 +64,7 @@ abstract class AbstractNode implements NodeInterface {
 			'additionalJavaScriptPost' => array(),
 			'additionalJavaScriptSubmit' => array(),
 			'additionalHiddenFields' => array(),
-			'additionalHeadTags' => array(),
+			'stylesheetFiles' => array(),
 			// can hold strings or arrays, string = requireJS module, array = requireJS module + callback e.g. array('TYPO3/Foo/Bar', 'function() {}')
 			'requireJsModules' => array(),
 			'extJSCODE' => '',
@@ -91,8 +96,8 @@ abstract class AbstractNode implements NodeInterface {
 		foreach ($childReturn['additionalHiddenFields'] as $value) {
 			$existing['additionalHiddenFields'][] = $value;
 		}
-		foreach ($childReturn['additionalHeadTags'] as $value) {
-			$existing['additionalHeadTags'][] = $value;
+		foreach ($childReturn['stylesheetFiles'] as $value) {
+			$existing['stylesheetFiles'][] = $value;
 		}
 		if (!empty($childReturn['requireJsModules'])) {
 			foreach ($childReturn['requireJsModules'] as $module) {
@@ -128,7 +133,7 @@ abstract class AbstractNode implements NodeInterface {
 			/** @var FormDataTraverser $traverser */
 			$traverseFields = GeneralUtility::trimExplode('|', substr($value, 6));
 			$traverser = GeneralUtility::makeInstance(FormDataTraverser::class);
-			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row, $this->globalOptions['inlineFirstPid']);
+			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row, $this->data['inlineFirstPid']);
 		}
 
 		return $value;

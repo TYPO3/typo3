@@ -16,8 +16,10 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
+use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -27,6 +29,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
+ * Script is typically called after new child record was added and then adds the new child to select value of parent.
  */
 class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
@@ -164,14 +167,25 @@ class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\
 	public function main() {
 		if ($this->returnEditConf) {
 			if ($this->processDataFlag) {
-				// Preparing the data of the parent record...:
-				/** @var DataPreprocessor $dataPreprocessor */
-				$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
-				// 'new'
-				$dataPreprocessor->fetchRecord($this->P['table'], $this->P['uid'], '');
-				$current = reset($dataPreprocessor->regTableItems_data);
+
+				// This data processing is done here to basically just get the current record. It can be discussed
+				// if this isn't overkill here. In case this construct does not work out well, it would be less
+				// overhead to just BackendUtility::fetchRecord the current parent here.
+				/** @var OnTheFly $formDataGroup */
+				$formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
+				$formDataGroup->setProviderList([ DatabaseEditRow::class ]);
+				/** @var FormDataCompiler $formDataCompiler */
+				$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+				$input = [
+					'tableName' => $this->P['table'],
+					'vanillaUid' => (int)$this->P['uid'],
+					'command' => 'edit',
+				];
+				$result = $formDataCompiler->compile($input);
+				$currentParentRow = $result['databaseRow'];
+
 				// If that record was found (should absolutely be...), then init DataHandler and set, prepend or append the record
-				if (is_array($current)) {
+				if (is_array($currentParentRow)) {
 					/** @var DataHandler $dataHandler */
 					$dataHandler = GeneralUtility::makeInstance(DataHandler::class);
 					$dataHandler->stripslashes_values = FALSE;
@@ -181,7 +195,7 @@ class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\
 					// If the field is a flexForm field, work with the XML structure instead:
 					if ($this->P['flexFormPath']) {
 						// Current value of flexForm path:
-						$currentFlexFormData = GeneralUtility::xml2array($current[$this->P['field']]);
+						$currentFlexFormData = GeneralUtility::xml2array($currentParentRow[$this->P['field']]);
 						/** @var FlexFormTools $flexFormTools */
 						$flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
 						$currentFlexFormValue = $flexFormTools->getArrayValueByPath($this->P['flexFormPath'], $currentFlexFormData);
@@ -206,10 +220,10 @@ class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\
 								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId;
 								break;
 							case 'prepend':
-								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']] . ',' . $recordId;
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $currentParentRow[$this->P['field']] . ',' . $recordId;
 								break;
 							case 'append':
-								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $current[$this->P['field']];
+								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $recordId . ',' . $currentParentRow[$this->P['field']];
 								break;
 						}
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], TRUE));

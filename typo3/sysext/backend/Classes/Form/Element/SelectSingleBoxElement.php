@@ -39,20 +39,20 @@ class SelectSingleBoxElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$field = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$field = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 		// Field configuration from TCA:
 		$config = $parameterArray['fieldConf']['config'];
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		$this->resultArray = $this->initializeResultArray();
 		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
 		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
+		$selItems = $parameterArray['fieldConf']['config']['items'];
 
 		// Creating the label for the "No Matching Value" entry.
 		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
@@ -84,10 +84,10 @@ class SelectSingleBoxElement extends AbstractFormElement {
 	protected function getSingleField_typeSelect_singlebox($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel) {
 		$languageService = $this->getLanguageService();
 		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
-		$itemArray = array_flip(FormEngineUtility::extractValuesOnlyFromValueLabelList($parameterArray['itemFormElValue']));
+		$itemArray = array_flip($parameterArray['itemFormElValue']);
 		$item = '';
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// Traverse the Array of selector box items:

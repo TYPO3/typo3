@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle flex form sections.
@@ -42,11 +41,11 @@ class FlexFormSectionContainer extends AbstractContainer {
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$languageService = $this->getLanguageService();
 
-		$flexFormFieldsArray = $this->globalOptions['flexFormDataStructureArray'];
-		$flexFormRowData = $this->globalOptions['flexFormRowData'];
-		$flexFormFieldIdentifierPrefix = $this->globalOptions['flexFormFieldIdentifierPrefix'];
-		$flexFormSectionType = $this->globalOptions['flexFormSectionType'];
-		$flexFormSectionTitle = $this->globalOptions['flexFormSectionTitle'];
+		$flexFormFieldsArray = $this->data['flexFormDataStructureArray'];
+		$flexFormRowData = $this->data['flexFormRowData'];
+		$flexFormFieldIdentifierPrefix = $this->data['flexFormFieldIdentifierPrefix'];
+		$flexFormSectionType = $this->data['flexFormSectionType'];
+		$flexFormSectionTitle = $this->data['flexFormSectionTitle'];
 
 		$userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
 
@@ -71,19 +70,17 @@ class FlexFormSectionContainer extends AbstractContainer {
 						$sectionTitle = $languageService->sL($containerDataStructure['title']);
 					}
 
-					$options = $this->globalOptions;
+					$options = $this->data;
 					$options['flexFormRowData'] = $existingSectionContainerData['el'];
 					$options['flexFormDataStructureArray'] = $containerDataStructure['el'];
 					$options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
-					$options['flexFormFormPrefix'] = $this->globalOptions['flexFormFormPrefix'] . '[' . $flexFormSectionType . ']' . '[el]';
+					$options['flexFormFormPrefix'] = $this->data['flexFormFormPrefix'] . '[' . $flexFormSectionType . ']' . '[el]';
 					$options['flexFormContainerName'] = $existingSectionContainerDataStructureType;
 					$options['flexFormContainerCounter'] = $flexFormContainerCounter;
 					$options['flexFormContainerTitle'] = $sectionTitle;
 					$options['flexFormContainerElementCollapsed'] = (bool)$existingSectionContainerData['el']['_TOGGLE'];
 					$options['renderType'] = 'flexFormContainerContainer';
-					/** @var NodeFactory $nodeFactory */
-					$nodeFactory = $this->globalOptions['nodeFactory'];
-					$flexFormContainerContainerResult = $nodeFactory->create($options)->render();
+					$flexFormContainerContainerResult = $this->nodeFactory->create($options)->render();
 					$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormContainerContainerResult);
 				}
 			}
@@ -100,19 +97,18 @@ class FlexFormSectionContainer extends AbstractContainer {
 				$sectionTitle = $languageService->sL($flexFormFieldDefinition['title']);
 			}
 
-			$options = $this->globalOptions;
+			$options = $this->data;
+			// @todo: this should use the prepared templateRow parallel to the single elements to have support of default values!
 			$options['flexFormRowData'] = array();
 			$options['flexFormDataStructureArray'] = $flexFormFieldDefinition['el'];
 			$options['flexFormFieldIdentifierPrefix'] = $flexFormFieldIdentifierPrefix;
-			$options['flexFormFormPrefix'] = $this->globalOptions['flexFormFormPrefix'] . '[' . $flexFormSectionType . ']' . '[el]';
+			$options['flexFormFormPrefix'] = $this->data['flexFormFormPrefix'] . '[' . $flexFormSectionType . ']' . '[el]';
 			$options['flexFormContainerName'] = $flexFormContainerName;
 			$options['flexFormContainerCounter'] = $flexFormFieldIdentifierPrefix . '-form';
 			$options['flexFormContainerTitle'] = $sectionTitle;
 			$options['flexFormContainerElementCollapsed'] = FALSE;
 			$options['renderType'] = 'flexFormContainerContainer';
-			/** @var NodeFactory $nodeFactory */
-			$nodeFactory = $this->globalOptions['nodeFactory'];
-			$flexFormContainerContainerTemplateResult = $nodeFactory->create($options)->render();
+			$flexFormContainerContainerTemplateResult = $this->nodeFactory->create($options)->render();
 
 			$uniqueId = str_replace('.', '', uniqid('idvar', TRUE));
 			$identifierPrefixJs = 'replace(/' . $flexFormFieldIdentifierPrefix . '-/g,"' . $flexFormFieldIdentifierPrefix . '-"+' . $uniqueId . '+"-")';

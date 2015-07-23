@@ -97,7 +97,7 @@ class T3editorElement extends AbstractFormElement {
 
 		$this->resultArray = $this->initializeResultArray();
 
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$parameterArray = $this->data['parameterArray'];
 
 		$rows = MathUtility::forceIntegerInRange($parameterArray['fieldConf']['config']['rows'] ?: 10, 1, 40);
 		$this->setMode(isset($parameterArray['fieldConf']['config']['format']) ? $parameterArray['fieldConf']['config']['format'] : T3editor::MODE_MIXED);
@@ -118,7 +118,7 @@ class T3editorElement extends AbstractFormElement {
 			'text-monospace enable-tab',
 			$parameterArray['itemFormElValue'],
 			$attributeString,
-			$this->globalOptions['table'] . ' > ' . $this->globalOptions['fieldName'],
+			$this->data['tableName'] . ' > ' . $this->data['fieldName'],
 			array('target' => 0)
 		);
 
@@ -152,7 +152,7 @@ class T3editorElement extends AbstractFormElement {
 	 * Init the JavaScript code (header part) for editor
 	 */
 	protected function initJavascriptCode() {
-		$this->resultArray['additionalHeadTags'][] = '<link rel="stylesheet" href="' . $this->relExtPath . 'Resources/Public/Css/t3editor.css' . '" />';
+		$this->resultArray['stylesheetFiles'][] = $this->relExtPath . 'Resources/Public/Css/t3editor.css';
 		$this->resultArray['requireJsModules'][] = 'TYPO3/CMS/T3editor/T3editor';
 		if ($this->mode === self::MODE_TYPOSCRIPT) {
 			foreach ($this->codeCompletionComponents as $codeCompletionComponent) {

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle a flex form that has no tabs.
@@ -32,23 +31,29 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$fieldName = $this->globalOptions['fieldName']; // field name of the flex form field in DB
-		$parameterArray = $this->globalOptions['parameterArray'];
-		$flexFormDataStructureArray = $this->globalOptions['flexFormDataStructureArray'];
-		$flexFormSheetNameInRowData = 'sDEF';
-		$flexFormCurrentLanguage = $this->globalOptions['flexFormCurrentLanguage'];
-		$flexFormRowData = $this->globalOptions['flexFormRowData'];
-		$flexFormRowDataSubPart = $flexFormRowData['data'][$flexFormSheetNameInRowData][$flexFormCurrentLanguage];
+		$table = $this->data['tableName'];
+		$row = $this->data['databaseRow'];
+		$fieldName = $this->data['fieldName']; // field name of the flex form field in DB
+		$parameterArray = $this->data['parameterArray'];
+		$flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
+		$flexFormCurrentLanguage = $this->data['flexFormCurrentLanguage'];
+		$flexFormRowData = $this->data['flexFormRowData'];
 		$resultArray = $this->initializeResultArray();
+
+		// Flex ds was normalized in flex provider to always have a sheet.
+		// Determine this single sheet name, most often it ends up with sDEF, except if only one sheet was defined
+		$sheetName = array_pop(array_keys($flexFormDataStructureArray['sheets']));
+		$flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
+
 
 		// That was taken from GeneralUtility::resolveSheetDefInDS - no idea if it is important
 		unset($flexFormDataStructureArray['meta']);
 
+
 		// Evaluate display condition for this "sheet" if there is one
 		$displayConditionResult = TRUE;
-		if (!empty($flexFormDataStructureArray['ROOT']['TCEforms']['displayCond'])) {
+		// @todo: flex provider should remove the TCEforms sub array for display conditions here as well
+		if (!empty($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['TCEforms']['displayCond'])) {
 			$displayConditionDefinition = $flexFormDataStructureArray['ROOT']['TCEforms']['displayCond'];
 			$displayConditionResult = $this->evaluateFlexFormDisplayCondition(
 				$displayConditionDefinition,
@@ -60,7 +65,7 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 			return $resultArray;
 		}
 
-		if (!is_array($flexFormDataStructureArray['ROOT']['el'])) {
+		if (!is_array($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'])) {
 			$resultArray['html'] = 'Data Structure ERROR: No [\'ROOT\'][\'el\'] element found in flex form definition.';
 			return $resultArray;
 		}
@@ -75,16 +80,14 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 			}
 		}
 
-		$options = $this->globalOptions;
-		$options['flexFormDataStructureArray'] = $flexFormDataStructureArray['ROOT']['el'];
+		$options = $this->data;
+		$options['flexFormDataStructureArray'] = $flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'];
 		$options['flexFormRowData'] = $flexFormRowDataSubPart;
-		$options['flexFormFormPrefix'] = '[data][' . $flexFormSheetNameInRowData . '][' . $flexFormCurrentLanguage . ']';
+		$options['flexFormFormPrefix'] = '[data][' . $sheetName . '][' . $flexFormCurrentLanguage . ']';
 		$options['parameterArray'] = $parameterArray;
 
 		$options['renderType'] = 'flexFormElementContainer';
-		/** @var NodeFactory $nodeFactory */
-		$nodeFactory = $this->globalOptions['nodeFactory'];
-		return $nodeFactory->create($options)->render();
+		return $this->nodeFactory->create($options)->render();
 	}
 
 }

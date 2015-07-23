@@ -29,7 +29,11 @@ class ValueSliderWizard {
 	 */
 	public function renderWizard($params) {
 		$field = $params['field'];
-		$value = $params['row'][$field];
+		if (is_array($params['row'][$field])) {
+			$value = $params['row'][$field][0];
+		} else {
+			$value = $params['row'][$field];
+		}
 		// If Slider is used in a flexform
 		if (!empty($params['flexFormPath'])) {
 			$flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);

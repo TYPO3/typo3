@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle palettes and single fields.
@@ -45,7 +44,6 @@ class PaletteAndSingleContainer extends AbstractContainer {
 	 */
 	public function render() {
 		$languageService = $this->getLanguageService();
-		$table = $this->globalOptions['table'];
 
 		/**
 		 * The first code block creates a target structure array to later create the final
@@ -110,7 +108,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 		// Create an intermediate structure of rendered sub elements and elements nested in palettes
 		$targetStructure = array();
 		$mainStructureCounter = -1;
-		$fieldsArray = $this->globalOptions['fieldsArray'];
+		$fieldsArray = $this->data['fieldsArray'];
 		$this->resultArray = $this->initializeResultArray();
 		foreach ($fieldsArray as $fieldString) {
 			$fieldConfiguration = $this->explodeSingleFieldShowItemConfiguration($fieldString);
@@ -127,21 +125,18 @@ class PaletteAndSingleContainer extends AbstractContainer {
 					);
 				}
 			} else {
-				if (!is_array($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
+				if (!is_array($this->data['processedTca']['columns'][$fieldName])) {
 					continue;
 				}
 
-				$options = $this->globalOptions;
+				$options = $this->data;
 				$options['fieldName'] = $fieldName;
 
 				$options['renderType'] = 'singleFieldContainer';
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$childResultArray = $nodeFactory->create($options)->render();
+				$childResultArray = $this->nodeFactory->create($options)->render();
 
 				if (!empty($childResultArray['html'])) {
 					$mainStructureCounter ++;
-
 					$targetStructure[$mainStructureCounter] = array(
 						'type' => 'single',
 						'fieldName' => $fieldConfiguration['fieldName'],
@@ -162,7 +157,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 				$paletteName = $element['fieldName'];
 				$paletteElementsHtml = $this->renderInnerPaletteContent($element);
 
-				$isHiddenPalette = !empty($GLOBALS['TCA'][$table]['palettes'][$paletteName]['isHiddenPalette']);
+				$isHiddenPalette = !empty($this->data['processedTca']['palettes'][$paletteName]['isHiddenPalette']);
 
 				$paletteElementsHtml = '<div class="row">' . $paletteElementsHtml . '</div>';
 
@@ -189,17 +184,14 @@ class PaletteAndSingleContainer extends AbstractContainer {
 	 * @return array
 	 */
 	protected function createPaletteContentArray($paletteName) {
-		$table = $this->globalOptions['table'];
-		$excludeElements = $this->globalOptions['excludeElements'];
-
 		// palette needs a palette name reference, otherwise it does not make sense to try rendering of it
-		if (empty($paletteName) || empty($GLOBALS['TCA'][$table]['palettes'][$paletteName]['showitem'])) {
+		if (empty($paletteName) || empty($this->data['processedTca']['palettes'][$paletteName]['showitem'])) {
 			return array();
 		}
 
 		$resultStructure = array();
 		$foundRealElement = FALSE; // Set to true if not only line breaks were rendered
-		$fieldsArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['palettes'][$paletteName]['showitem'], TRUE);
+		$fieldsArray = GeneralUtility::trimExplode(',', $this->data['processedTca']['palettes'][$paletteName]['showitem'], TRUE);
 		foreach ($fieldsArray as $fieldString) {
 			$fieldArray = $this->explodeSingleFieldShowItemConfiguration($fieldString);
 			$fieldName = $fieldArray['fieldName'];
@@ -208,16 +200,14 @@ class PaletteAndSingleContainer extends AbstractContainer {
 					'type' => 'linebreak',
 				);
 			} else {
-				if (in_array($fieldName, $excludeElements, TRUE) || !is_array($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
+				if (!is_array($this->data['processedTca']['columns'][$fieldName])) {
 					continue;
 				}
-				$options = $this->globalOptions;
+				$options = $this->data;
 				$options['fieldName'] = $fieldName;
 
 				$options['renderType'] = 'singleFieldContainer';
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$singleFieldContentArray = $nodeFactory->create($options)->render();
+				$singleFieldContentArray = $this->nodeFactory->create($options)->render();
 
 				if (!empty($singleFieldContentArray['html'])) {
 					$foundRealElement = TRUE;
@@ -368,7 +358,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 			$paletteFieldClasses[] = $class;
 		}
 
-		$label = BackendUtility::wrapInHelp($this->globalOptions['table'], $fieldName, htmlspecialchars($element['fieldLabel']));
+		$label = BackendUtility::wrapInHelp($this->data['tableName'], $fieldName, htmlspecialchars($element['fieldLabel']));
 
 		$content = array();
 		$content[] = '<div class="' . implode(' ', $paletteFieldClasses) . '">';
@@ -390,15 +380,22 @@ class PaletteAndSingleContainer extends AbstractContainer {
 	 */
 	protected function getSingleFieldLabel($fieldName, $labelFromShowItem) {
 		$languageService = $this->getLanguageService();
-		$table = $this->globalOptions['table'];
+		$table = $this->data['tableName'];
 		$label = $labelFromShowItem;
-		if (!empty($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'])) {
-			$label = $GLOBALS['TCA'][$table]['columns'][$fieldName]['label'];
+		if (!empty($this->data['processedTca']['columns'][$fieldName]['label'])) {
+			$label = $this->data['processedTca']['columns'][$fieldName]['label'];
 		}
 		if (!empty($labelFromShowItem)) {
 			$label = $labelFromShowItem;
 		}
-		$fieldTSConfig = FormEngineUtility::getTSconfigForTableRow($table, $this->globalOptions['databaseRow'], $fieldName);
+
+		$fieldTSConfig = [];
+		if (isset($this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'])
+			&& is_array($this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'])
+		) {
+			$fieldTSConfig = $this->data['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.'];
+		}
+
 		if (!empty($fieldTSConfig['label'])) {
 			$label = $fieldTSConfig['label'];
 		}
@@ -415,11 +412,10 @@ class PaletteAndSingleContainer extends AbstractContainer {
 	 * @return bool TRUE if user and noTableWrapping is set
 	 */
 	protected function isUserNoTableWrappingField($element) {
-		$table = $this->globalOptions['table'];
 		$fieldName = $element['fieldName'];
 		if (
-			$GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] === 'user'
-			&& !empty($GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['noTableWrapping'])
+			$this->data['processedTca']['columns'][$fieldName]['config']['type'] === 'user'
+			&& !empty($this->data['processedTca']['columns'][$fieldName]['config']['noTableWrapping'])
 		) {
 			return TRUE;
 		}

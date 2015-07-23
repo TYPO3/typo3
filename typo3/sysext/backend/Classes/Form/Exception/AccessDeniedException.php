@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Backend\Form\Exception;
 use TYPO3\CMS\Backend\Form\Exception;
 
 /**
- * Access denied form exception for container or elements
+ * Access denied exception.
+ * This indicated a recoverable error that should be changed to a user message.
+ * This abstract exception is extended by more fine grained exceptions.
  */
-class AccessDeniedException extends Exception {
+abstract class AccessDeniedException extends Exception {
 
 }

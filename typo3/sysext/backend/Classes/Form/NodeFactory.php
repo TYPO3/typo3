@@ -29,10 +29,9 @@ class NodeFactory {
 	 * @var array
 	 */
 	protected $nodeTypes = array(
-		'flex' => Container\FlexFormContainer::class,
+		'flex' => Container\FlexFormLanguageContainer::class,
 		'flexFormContainerContainer' => Container\FlexFormContainerContainer::class,
 		'flexFormElementContainer' => Container\FlexFormElementContainer::class,
-		'flexFormLanguageContainer' => Container\FlexFormLanguageContainer::class,
 		'flexFormNoTabsContainer' => Container\FlexFormNoTabsContainer::class,
 		'flexFormSectionContainer' => Container\FlexFormSectionContainer::class,
 		'flexFormTabsContainer' => Container\FlexFormTabsContainer::class,
@@ -41,6 +40,7 @@ class NodeFactory {
 		'inlineRecordContainer' => Container\InlineRecordContainer::class,
 		'listOfFieldsContainer' => Container\ListOfFieldsContainer::class,
 		'noTabsContainer' => Container\NoTabsContainer::class,
+		'outerWrapContainer' => Container\OuterWrapContainer::class,
 		'paletteAndSingleContainer' => Container\PaletteAndSingleContainer::class,
 		'singleFieldContainer' => Container\SingleFieldContainer::class,
 		'soloFieldContainer' => Container\SoloFieldContainer::class,
@@ -85,18 +85,18 @@ class NodeFactory {
 	/**
 	 * Create a node depending on type
 	 *
-	 * @param array $globalOptions All information to decide which class should be instantiated and given down to sub nodes
+	 * @param array $data All information to decide which class should be instantiated and given down to sub nodes
 	 * @return AbstractNode
 	 * @throws Exception
 	 */
-	public function create(array $globalOptions) {
-		if (empty($globalOptions['renderType'])) {
+	public function create(array $data) {
+		if (empty($data['renderType'])) {
 			throw new Exception('No renderType definition found', 1431452406);
 		}
-		$type = $globalOptions['renderType'];
+		$type = $data['renderType'];
 
 		if ($type === 'select') {
-			$config = $globalOptions['parameterArray']['fieldConf']['config'];
+			$config = $data['parameterArray']['fieldConf']['config'];
 			$maxItems = (int)$config['maxitems'];
 			if (isset($config['renderMode']) && $config['renderMode'] === 'tree') {
 				$type = 'selectTree';
@@ -119,7 +119,7 @@ class NodeFactory {
 			// it will be taken and loop is aborted, otherwise resolver with next lower priority is called.
 			foreach ($this->nodeResolver[$type] as $priority => $resolverClassName) {
 				/** @var NodeResolverInterface $resolver */
-				$resolver = $this->instantiate($resolverClassName);
+				$resolver = $this->instantiate($resolverClassName, $data);
 				if (!$resolver instanceof NodeResolverInterface) {
 					throw new Exception(
 						'Node resolver for type ' . $type . ' at priority ' . $priority . ' must implement NodeResolverInterface',
@@ -131,7 +131,7 @@ class NodeFactory {
 				// so they also shouldn't know the output of a different resolving class.
 				// Additionally, the globalOptions array is NOT given by reference here, changing config is a
 				// task of container classes alone and must not be abused here.
-				$newClassName = $resolver->setGlobalOptions($globalOptions)->resolve();
+				$newClassName = $resolver->resolve();
 				if ($newClassName !== NULL) {
 					$className = $newClassName;
 					break;
@@ -140,11 +140,11 @@ class NodeFactory {
 		}
 
 		/** @var AbstractNode $nodeInstance */
-		$nodeInstance = $this->instantiate($className);
+		$nodeInstance = $this->instantiate($className, $data);
 		if (!$nodeInstance instanceof NodeInterface) {
 			throw new Exception('Node of type ' . get_class($nodeInstance) . ' must implement NodeInterface', 1431872546);
 		}
-		return $nodeInstance->setGlobalOptions($globalOptions);
+		return $nodeInstance;
 	}
 
 	/**
@@ -233,10 +233,11 @@ class NodeFactory {
 	 * Instantiate given class name
 	 *
 	 * @param string $className Given class name
+	 * @param array $data Main data array
 	 * @return object
 	 */
-	protected function instantiate($className) {
-		return GeneralUtility::makeInstance($className);
+	protected function instantiate($className, array $data) {
+		return GeneralUtility::makeInstance($className, $this, $data);
 	}
 
 }

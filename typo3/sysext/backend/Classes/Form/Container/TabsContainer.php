@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Render all tabs of a record that has tabs.
@@ -37,7 +36,7 @@ class TabsContainer extends AbstractContainer {
 		$docTemplate = $this->getDocumentTemplate();
 
 		// All the fields to handle in a flat list
-		$fieldsArray = $this->globalOptions['fieldsArray'];
+		$fieldsArray = $this->data['fieldsArray'];
 
 		// Create a nested array from flat fieldArray list
 		$tabsArray = array();
@@ -66,7 +65,7 @@ class TabsContainer extends AbstractContainer {
 		$tabsContent = array();
 		$resultArray = $this->initializeResultArray();
 
-		$tabId = 'TCEforms:' . $this->globalOptions['table'] . ':' . $this->globalOptions['databaseRow']['uid'];
+		$tabId = 'TCEforms:' . $this->data['tableName'] . ':' . $this->data['databaseRow']['uid'];
 		// @todo: This duplicates parts of the docTemplate code
 		$tabIdString = $docTemplate->getDynTabMenuId($tabId);
 
@@ -77,7 +76,7 @@ class TabsContainer extends AbstractContainer {
 
 			// Merge elements of this tab into a single list again and hand over to
 			// palette and single field container to render this group
-			$options = $this->globalOptions;
+			$options = $this->data;
 			$options['tabAndInlineStack'][] = array(
 				'tab',
 				$tabIdString . '-' . $tabCounter,
@@ -87,9 +86,7 @@ class TabsContainer extends AbstractContainer {
 				$options['fieldsArray'][] = implode(';', $element);
 			}
 			$options['renderType'] = 'paletteAndSingleContainer';
-			/** @var NodeFactory $nodeFactory */
-			$nodeFactory = $this->globalOptions['nodeFactory'];
-			$childArray = $nodeFactory->create($options)->render();
+			$childArray = $this->nodeFactory->create($options)->render();
 
 			$tabsContent[] = array(
 				'label' => $tabWithLabelAndElements['label'],

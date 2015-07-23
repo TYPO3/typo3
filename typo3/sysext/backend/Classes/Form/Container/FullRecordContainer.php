@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * A container rendering a "full record". This is an entry container used as first
@@ -34,42 +33,20 @@ class FullRecordContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-
-		if (!$GLOBALS['TCA'][$table]) {
-			return $this->initializeResultArray();
-		}
-
-		$languageService = $this->getLanguageService();
+		$table = $this->data['tableName'];
+		$row = $this->data['databaseRow'];
+		$recordTypeValue = $this->data['recordTypeValue'];
 
 		// Load the description content for the table if requested
-		if ($GLOBALS['TCA'][$table]['interface']['always_description']) {
+		if (!empty($this->data['processedTca']['interface']['always_description'])) {
+			$languageService = $this->getLanguageService();
 			$languageService->loadSingleTableDescription($table);
 		}
 
-		// If this is a localized record, stuff data from original record to local registry, will then be given to child elements
-		$this->registerDefaultLanguageData($table, $row);
-
-		// Current type value of the record.
-		$recordTypeValue = $this->getRecordTypeValue($table, $row);
-
 		// List of items to be rendered
-		$itemList = '';
-		if ($GLOBALS['TCA'][$table]['types'][$recordTypeValue]) {
-			$itemList = $GLOBALS['TCA'][$table]['types'][$recordTypeValue]['showitem'];
-			// Inline may override the type value - setting is given down from InlineRecordContainer if so - used primarily for FAL
-			$overruleTypesArray = $this->globalOptions['overruleTypesArray'];
-			if (isset($overruleTypesArray[$recordTypeValue]['showitem'])) {
-				$itemList = $overruleTypesArray[$recordTypeValue]['showitem'];
-			}
-		}
+		$itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
 
 		$fieldsArray = GeneralUtility::trimExplode(',', $itemList, TRUE);
-		// Add fields and remove excluded fields
-		$fieldsArray = $this->mergeFieldsWithAddedFields($fieldsArray, $this->getFieldsToAdd($table, $row, $recordTypeValue), $table);
-		$excludeElements = $this->getExcludeElements($table, $row, $recordTypeValue);
-		$fieldsArray = $this->removeExcludeElementsFromFieldArray($fieldsArray, $excludeElements);
 
 		// Streamline the fields array
 		// First, make sure there is always a --div-- definition for the first element
@@ -95,91 +72,15 @@ class FullRecordContainer extends AbstractContainer {
 			$hasTabs = FALSE;
 		}
 
-		$options = $this->globalOptions;
-		$options['fieldsArray'] = $fieldsArray;
-		// Palettes may contain elements that should be excluded, resolved in PaletteContainer
-		$options['excludeElements'] = $excludeElements;
-		$options['recordTypeValue'] = $recordTypeValue;
-		$options['defaultLanguageData'] = $this->defaultLanguageData;
-		$options['defaultLanguageDataDiff'] = $this->defaultLanguageDataDiff;
-		$options['additionalPreviewLanguageData'] = $this->additionalPreviewLanguageData;
-
+		$data = $this->data;
+		$data['fieldsArray'] = $fieldsArray;
 		if ($hasTabs) {
-			$options['renderType'] = 'tabsContainer';
-			/** @var NodeFactory $nodeFactory */
-			$nodeFactory = $this->globalOptions['nodeFactory'];
-			$resultArray = $nodeFactory->create($options)->render();
+			$data['renderType'] = 'tabsContainer';
 		} else {
-			$options['renderType'] = 'noTabsContainer';
-			/** @var NodeFactory $nodeFactory */
-			$nodeFactory = $this->globalOptions['nodeFactory'];
-			$resultArray = $nodeFactory->create($options)->render();
+			$data['renderType'] = 'noTabsContainer';
 		}
 
-		return $resultArray;
-	}
-
-	/**
-	 * Finds possible field to add to the form, based on subtype fields.
-	 *
-	 * @param string $table Table name, MUST be in $GLOBALS['TCA']
-	 * @param array $row A record from table.
-	 * @param string $typeNum A "type" pointer value, probably the one calculated based on the record array.
-	 * @return array An array containing two values: 1) Another array containing field names to add and 2) the subtype value field.
-	 */
-	protected function getFieldsToAdd($table, $row, $typeNum) {
-		$addElements = array();
-		$subTypeField = '';
-		if ($GLOBALS['TCA'][$table]['types'][$typeNum]['subtype_value_field']) {
-			$subTypeField = $GLOBALS['TCA'][$table]['types'][$typeNum]['subtype_value_field'];
-			if (trim($GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_addlist'][$row[$subTypeField]])) {
-				$addElements = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['types'][$typeNum]['subtypes_addlist'][$row[$subTypeField]], TRUE);
-			}
-		}
-		return array($addElements, $subTypeField);
-	}
-
-	/**
-	 * Merges the current [types][showitem] array with the array of fields to add for the current subtype field of the "type" value.
-	 *
-	 * @param array $fields A [types][showitem] list of fields, exploded by ",
-	 * @param array $fieldsToAdd The output from getFieldsToAdd()
-	 * @param string $table The table name, if we want to consider its palettes when positioning the new elements
-	 * @return array Return the modified $fields array.
-	 */
-	protected function mergeFieldsWithAddedFields($fields, $fieldsToAdd, $table = '') {
-		if (!empty($fieldsToAdd[0])) {
-			$c = 0;
-			$found = FALSE;
-			foreach ($fields as $fieldInfo) {
-				list($fieldName, $label, $paletteName) = GeneralUtility::trimExplode(';', $fieldInfo);
-				if ($fieldName === $fieldsToAdd[1]) {
-					$found = TRUE;
-				} elseif ($fieldName === '--palette--' && $paletteName && $table !== '') {
-					// Look inside the palette
-					if (is_array($GLOBALS['TCA'][$table]['palettes'][$paletteName])) {
-						$itemList = $GLOBALS['TCA'][$table]['palettes'][$paletteName]['showitem'];
-						if ($itemList) {
-							$paletteFields = GeneralUtility::trimExplode(',', $itemList, TRUE);
-							foreach ($paletteFields as $info) {
-								$fieldParts = GeneralUtility::trimExplode(';', $info);
-								$theField = $fieldParts[0];
-								if ($theField === $fieldsToAdd[1]) {
-									$found = TRUE;
-									break 1;
-								}
-							}
-						}
-					}
-				}
-				if ($found) {
-					array_splice($fields, $c + 1, 0, $fieldsToAdd[0]);
-					break;
-				}
-				$c++;
-			}
-		}
-		return $fields;
+		return $this->nodeFactory->create($data)->render();
 	}
 
 	/**

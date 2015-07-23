@@ -39,30 +39,29 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$field = $this->globalOptions['fieldName'];
-		$row = $this->globalOptions['databaseRow'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$field = $this->data['fieldName'];
+		$row = $this->data['databaseRow'];
+		$parameterArray = $this->data['parameterArray'];
 		// Field configuration from TCA:
 		$config = $parameterArray['fieldConf']['config'];
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		$this->resultArray = $this->initializeResultArray();
-		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		$selItems = FormEngineUtility::getSelectItems($table, $field, $row, $parameterArray);
 
 		// Creating the label for the "No Matching Value" entry.
 		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 
-		$html = $this->getSingleField_typeSelect_multiple($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel);
+		$html = $this->getSingleField_typeSelect_multiple($table, $field, $parameterArray, $config, $noMatchingLabel);
 
 		// Wizards:
 		if (!$disabled) {
+			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
+			$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
 			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
 		}
 		$this->resultArray['html'] = $html;
@@ -74,18 +73,17 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 	 *
 	 * @param string $table See getSingleField_typeSelect()
 	 * @param string $field See getSingleField_typeSelect()
-	 * @param array $row See getSingleField_typeSelect()
 	 * @param array $parameterArray See getSingleField_typeSelect()
 	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param array $selItems Items available for selection
 	 * @param string $noMatchingLabel Label for no-matching-value
 	 * @return string The HTML code for the item
 	 */
-	protected function getSingleField_typeSelect_multiple($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel) {
+	protected function getSingleField_typeSelect_multiple($table, $field, $parameterArray, $config, $noMatchingLabel) {
 		$languageService = $this->getLanguageService();
+		$selItems = $parameterArray['fieldConf']['config']['items'];
 		$item = '';
 		$disabled = '';
-		if ($this->isGlobalReadonly() || $config['readOnly']) {
+		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// Setting this hidden field (as a flag that JavaScript can read out)
@@ -100,45 +98,38 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		// Get "removeItems":
 		$removeItems = GeneralUtility::trimExplode(',', $parameterArray['fieldTSConfig']['removeItems'], TRUE);
 		// Get the array with selected items:
-		$itemArray = GeneralUtility::trimExplode(',', $parameterArray['itemFormElValue'], TRUE);
-
-		// Possibly filter some items:
-		$itemArray = ArrayUtility::keepItemsInArray(
-			$itemArray,
-			$parameterArray['fieldTSConfig']['keepItems'],
-			function ($value) {
-				$parts = explode('|', $value, 2);
-				return rawurldecode($parts[0]);
-			}
-		);
+		$itemsArray = $parameterArray['itemFormElValue'];
 
 		// Perform modification of the selected items array:
-		foreach ($itemArray as $tk => $tv) {
-			$tvP = explode('|', $tv, 2);
-			$evalValue = $tvP[0];
-			$isRemoved = in_array($evalValue, $removeItems)
+		// @todo: this part should probably be moved to TcaSelectValues provider?!
+		foreach ($itemsArray as $itemNumber => $itemValue) {
+			$itemArray = array(
+				0 => $itemValue,
+				1 => '',
+			);
+			$itemIcon = NULL;
+			$isRemoved = in_array($itemValue, $removeItems)
 				|| $config['type'] == 'select' && $config['authMode']
-				&& !$this->getBackendUserAuthentication()->checkAuthMode($table, $field, $evalValue, $config['authMode']);
+				&& !$this->getBackendUserAuthentication()->checkAuthMode($table, $field, $itemValue, $config['authMode']);
 			if ($isRemoved && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-				$tvP[1] = rawurlencode(@sprintf($noMatchingLabel, $evalValue));
+				$itemArray[1] = rawurlencode(@sprintf($noMatchingLabel, $itemValue));
 			} else {
-				if (isset($parameterArray['fieldTSConfig']['altLabels.'][$evalValue])) {
-					$tvP[1] = rawurlencode($languageService->sL($parameterArray['fieldTSConfig']['altLabels.'][$evalValue]));
+				if (isset($parameterArray['fieldTSConfig']['altLabels.'][$itemValue])) {
+					$itemArray[1] = rawurlencode($languageService->sL($parameterArray['fieldTSConfig']['altLabels.'][$itemValue]));
 				}
-				if (isset($parameterArray['fieldTSConfig']['altIcons.'][$evalValue])) {
-					$tvP[2] = $parameterArray['fieldTSConfig']['altIcons.'][$evalValue];
+				if (isset($parameterArray['fieldTSConfig']['altIcons.'][$itemValue])) {
+					$itemArray[2] = $parameterArray['fieldTSConfig']['altIcons.'][$itemValue];
 				}
 			}
-			if ($tvP[1] == '') {
-				// Case: flexform, default values supplied, no label provided (bug #9795)
+			if ($itemArray[1] === '') {
 				foreach ($selItems as $selItem) {
-					if ($selItem[1] == $tvP[0]) {
-						$tvP[1] = html_entity_decode($selItem[0]);
+					if ($selItem[1] == $itemValue) {
+						$itemArray[1] = $selItem[0];
 						break;
 					}
 				}
 			}
-			$itemArray[$tk] = implode('|', $tvP);
+			$itemsArray[$itemNumber] = implode('|', $itemArray);
 		}
 
 		// size must be at least two, as there are always maxitems > 1 (see parent function)
@@ -147,7 +138,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		} else {
 			$size = 2;
 		}
-		$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
+		$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemsArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 
 		$itemsToSelect = '';
 		$filterTextfield = '';
@@ -235,7 +226,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			'rightbox' => $itemsToSelect,
 			'readOnly' => $disabled
 		);
-		$item .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemArray, '', $params, $parameterArray['onFocus']);
+		$item .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemsArray, '', $params, $parameterArray['onFocus']);
 		return $item;
 	}
 

@@ -112,6 +112,46 @@ class DependencyOrderingServiceTest extends UnitTestCase {
 					],
 				]
 			],
+			'multiple dependencies' => [
+				[ // $items
+					1 => [
+						'depends' => [ 3, 2, 4 ],
+					],
+					2 => [],
+					3 => [
+						'depends' => [ 2 ],
+					],
+				],
+				'before',
+				'depends',
+				[ // $expectedOrderedItems
+					2 => [],
+					3 => [
+						'depends' => [ 2 ],
+					],
+					1 => [
+						'depends' => [ 3, 2, 4 ],
+					],
+				],
+			],
+			'direct dependency is moved up' => [
+				[ // $items
+					1 => [],
+					2 => [],
+					3 => [
+						'depends' => [ 1 ],
+					],
+				],
+				'before',
+				'depends',
+				[ // $expectedOrderedItems
+					1 => [],
+					3 => [
+						'depends' => [ 1 ],
+					],
+					2 => [],
+				],
+			],
 		];
 	}
 

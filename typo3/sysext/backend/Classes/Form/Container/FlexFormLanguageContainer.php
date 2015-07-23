@@ -14,20 +14,16 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Handle flex form language overlays.
  *
- * This container is falled from the entry FlexFormContainer. For each existing language overlay
- * it forks a FlexFormTabsContainer or a FlexFormNoTabsContainer for rendering a full flex form
- * record of the specific language.
+ * Entry container to a flex form element. This container is created by
+ * SingleFieldContainer if a type='flexform' field is rendered.
+ *
+ * For each existing language overlay it forks a FlexFormTabsContainer or a
+ * FlexFormNoTabsContainer for rendering a full flex form record of the specific language.
  */
 class FlexFormLanguageContainer extends AbstractContainer {
 
@@ -35,58 +31,36 @@ class FlexFormLanguageContainer extends AbstractContainer {
 	 * Entry method
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
+	 * @todo: Implement langChildren=1 case where each single element is localized and not the whole thing.
 	 */
 	public function render() {
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$flexFormDataStructureArray = $this->globalOptions['flexFormDataStructureArray'];
-		$flexFormRowData = $this->globalOptions['flexFormRowData'];
+		$table = $this->data['tableName'];
+		$row = $this->data['databaseRow'];
+		$flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
+		$flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
 
 		// Determine available languages
+		// @todo: Would be better to have evaluated langChildren & langDisable in meta already, prepared by data provider
 		$langChildren = (bool)$flexFormDataStructureArray['meta']['langChildren'];
 		$langDisabled = (bool)$flexFormDataStructureArray['meta']['langDisable'];
-		$flexFormRowData['meta']['currentLangId'] = array();
-		// Look up page language overlays
-		$checkPageLanguageOverlay = (bool)$this->getBackendUserAuthentication()->getTSConfigVal('options.checkPageLanguageOverlay');
-		$pageOverlays = array();
-		if ($checkPageLanguageOverlay) {
-			$whereClause = 'pid=' . (int)$row['pid'] . BackendUtility::deleteClause('pages_language_overlay')
-				. BackendUtility::versioningPlaceholderClause('pages_language_overlay');
-			$pageOverlays = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'pages_language_overlay', $whereClause, '', '', '', 'sys_language_uid');
-		}
-		$languages = $this->getAvailableLanguages();
-		foreach ($languages as $langInfo) {
-			if (
-				$this->getBackendUserAuthentication()->checkLanguageAccess($langInfo['uid'])
-				&& (!$checkPageLanguageOverlay || $langInfo['uid'] <= 0 || is_array($pageOverlays[$langInfo['uid']]))
-			) {
-				$flexFormRowData['meta']['currentLangId'][] = $langInfo['ISOcode'];
-			}
-		}
-		if (!is_array($flexFormRowData['meta']['currentLangId']) || empty($flexFormRowData['meta']['currentLangId'])) {
-			$flexFormRowData['meta']['currentLangId'] = array('DEF');
-		}
-		$flexFormRowData['meta']['currentLangId'] = array_unique($flexFormRowData['meta']['currentLangId']);
-		$flexFormNoEditDefaultLanguage = FALSE;
+
+		$availableLanguageCodes = $flexFormDataStructureArray['meta']['availableLanguageCodes'];
+		// @todo: Would be better to have $languagesOnSheetLevel and $languagesOnElementLevel prepared in meta already
 		if ($langChildren || $langDisabled) {
-			$availableLanguages = array('DEF');
+			$languagesOnSheetLevel = [ 'DEF' ];
 		} else {
-			if (!in_array('DEF', $flexFormRowData['meta']['currentLangId'])) {
-				array_unshift($flexFormRowData['meta']['currentLangId'], 'DEF');
-				$flexFormNoEditDefaultLanguage = TRUE;
-			}
-			$availableLanguages = $flexFormRowData['meta']['currentLangId'];
+			$languagesOnSheetLevel = $availableLanguageCodes;
 		}
 
 		// Tabs or no tabs - that's the question
 		$hasTabs = FALSE;
-		if (is_array($flexFormDataStructureArray['sheets'])) {
+		if (count($flexFormDataStructureArray['sheets']) > 1) {
 			$hasTabs = TRUE;
 		}
 
 		$resultArray = $this->initializeResultArray();
 
-		foreach ($availableLanguages as $lKey) {
+		foreach ($languagesOnSheetLevel as $lKey) {
 			// Add language as header
 			if (!$langChildren && !$langDisabled) {
 				$resultArray['html'] .= LF . '<strong>' . FormEngineUtility::getLanguageIcon($table, $row, ('v' . $lKey)) . $lKey . ':</strong>';
@@ -95,87 +69,23 @@ class FlexFormLanguageContainer extends AbstractContainer {
 			// Default language "lDEF", other options are "lUK" or whatever country code
 			$flexFormCurrentLanguage = 'l' . $lKey;
 
-			$options = $this->globalOptions;
+			$options = $this->data;
 			$options['flexFormCurrentLanguage'] = $flexFormCurrentLanguage;
-			$options['flexFormNoEditDefaultLanguage'] = $flexFormNoEditDefaultLanguage;
+			$options['flexFormDataStructureArray'] = $flexFormDataStructureArray;
+			$options['flexFormRowData'] = $flexFormRowData;
 			if (!$hasTabs) {
 				$options['renderType'] = 'flexFormNoTabsContainer';
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$flexFormNoTabsResult = $nodeFactory->create($options)->render();
+				$flexFormNoTabsResult = $this->nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormNoTabsResult);
 			} else {
 				$options['renderType'] = 'flexFormTabsContainer';
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
-				$flexFormTabsContainerResult = $nodeFactory->create($options)->render();
+				$flexFormTabsContainerResult = $this->nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
 			}
 		}
 		$resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngineFlexForm';
 
 		return $resultArray;
-	}
-
-	/**
-	 * Returns an array of available languages (to use for FlexForms)
-	 *
-	 * @return array
-	 */
-	protected function getAvailableLanguages() {
-		$isLoaded = ExtensionManagementUtility::isLoaded('static_info_tables');
-
-		// Find all language records in the system
-		$db = $this->getDatabaseConnection();
-		$res = $db->exec_SELECTquery(
-			'language_isocode,static_lang_isocode,title,uid',
-			'sys_language',
-			'pid=0 AND hidden=0' . BackendUtility::deleteClause('sys_language'),
-			'',
-			'title'
-		);
-
-		// Traverse them
-		$output = array(
-			0 => array(
-				'uid' => 0,
-				'title' => 'Default language',
-				'ISOcode' => 'DEF',
-			)
-		);
-
-		while ($row = $db->sql_fetch_assoc($res)) {
-			$output[$row['uid']] = $row;
-			if (!empty($row['language_isocode'])) {
-				$output[$row['uid']]['ISOcode'] = $row['language_isocode'];
-			} elseif ($isLoaded && $row['static_lang_isocode']) {
-				GeneralUtility::deprecationLog('Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in language field "language_isocode" in your sys_language records.');
-				$rr = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-				if ($rr['lg_iso_2']) {
-					$output[$row['uid']]['ISOcode'] = $rr['lg_iso_2'];
-				}
-			}
-			if (!$output[$row['uid']]['ISOcode']) {
-				unset($output[$row['uid']]);
-			}
-		}
-		$db->sql_free_result($res);
-
-		return $output;
-	}
-
-	/**
-	 * @return BackendUserAuthentication
-	 */
-	protected function getBackendUserAuthentication() {
-		return $GLOBALS['BE_USER'];
-	}
-
-	/**
-	 * @return DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

@@ -268,6 +268,7 @@ class SuggestWizard {
 			}
 
 			$flexfieldTCAConfig = $GLOBALS['TCA'][$table]['columns'][$parts[0]]['config'];
+			// @todo: should be done via data preparation, resolveAllSheetsInDS() can be deprecated then
 			$flexformDSArray = BackendUtility::getFlexFormDS($flexfieldTCAConfig, $row, $table);
 			$flexformDSArray = GeneralUtility::resolveAllSheetsInDS($flexformDSArray);
 			$flexformElement = $parts[count($parts) - 2];

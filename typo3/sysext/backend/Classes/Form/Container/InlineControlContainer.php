@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -21,7 +25,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -29,7 +32,6 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 /**
  * Inline element entry container.
@@ -62,9 +64,13 @@ class InlineControlContainer extends AbstractContainer {
 	protected $iconFactory;
 
 	/**
-	 * Construct to initialize class variables.
+	 * Container objects give $nodeFactory down to other containers.
+	 *
+	 * @param NodeFactory $nodeFactory
+	 * @param array $data
 	 */
-	public function __construct() {
+	public function __construct(NodeFactory $nodeFactory, array $data) {
+		parent::__construct($nodeFactory, $data);
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
@@ -76,17 +82,17 @@ class InlineControlContainer extends AbstractContainer {
 	public function render() {
 		$languageService = $this->getLanguageService();
 
-		$this->inlineData = $this->globalOptions['inlineData'];
+		$this->inlineData = $this->data['inlineData'];
 
 		/** @var InlineStackProcessor $inlineStackProcessor */
 		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
 		$this->inlineStackProcessor = $inlineStackProcessor;
-		$inlineStackProcessor->initializeByGivenStructure($this->globalOptions['inlineStructure']);
+		$inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
 
-		$table = $this->globalOptions['table'];
-		$row = $this->globalOptions['databaseRow'];
-		$field = $this->globalOptions['fieldName'];
-		$parameterArray = $this->globalOptions['parameterArray'];
+		$table = $this->data['tableName'];
+		$row = $this->data['databaseRow'];
+		$field = $this->data['fieldName'];
+		$parameterArray = $this->data['parameterArray'];
 
 		$resultArray = $this->initializeResultArray();
 		$html = '';
@@ -132,11 +138,12 @@ class InlineControlContainer extends AbstractContainer {
 		// e.g. data[<table>][<uid>][<field>]
 		$nameForm = $inlineStackProcessor->getCurrentStructureFormPrefix();
 		// e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
-		$nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
+		$nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
 		// Get the records related to this inline record
+		/** @var InlineRelatedRecordResolver $inlineRelatedRecordResolver */
 		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-		$relatedRecords = $inlineRelatedRecordResolver->getRelatedRecords($table, $field, $row, $parameterArray, $config, $this->globalOptions['inlineFirstPid']);
+		$relatedRecords = $inlineRelatedRecordResolver->getRelatedRecords($table, $field, $row, $parameterArray, $config, $this->data['inlineFirstPid']);
 
 		// Set the first and last record to the config array
 		$relatedRecordsUids = array_keys($relatedRecords['records']);
@@ -162,7 +169,7 @@ class InlineControlContainer extends AbstractContainer {
 				'hmac' => GeneralUtility::hmac(serialize($config)),
 			),
 		);
-		$this->inlineData['nested'][$nameObject] = $this->globalOptions['tabAndInlineStack'];
+		$this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];
 
 		// If relations are required to be unique, get the uids that have already been used on the foreign side of the relation
 		if ($config['foreign_unique']) {
@@ -231,18 +238,16 @@ class InlineControlContainer extends AbstractContainer {
 		$relationList = array();
 		if (!empty($relatedRecords['records'])) {
 			foreach ($relatedRecords['records'] as $rec) {
-				$options = $this->globalOptions;
+				$options = $this->data;
 				$options['inlineRelatedRecordToRender'] = $rec;
 				$options['inlineRelatedRecordConfig'] = $config;
 				$options['inlineData'] = $this->inlineData;
 				$options['inlineStructure'] = $inlineStackProcessor->getStructure();
 				$options['renderType'] = 'inlineRecordContainer';
-				/** @var NodeFactory $nodeFactory */
-				$nodeFactory = $this->globalOptions['nodeFactory'];
 				try {
 					// This container may raise an access denied exception, to not kill further processing,
 					// just a simple "empty" return is created here to ignore this field.
-					$childArray = $nodeFactory->create($options)->render();
+					$childArray = $this->nodeFactory->create($options)->render();
 				} catch (AccessDeniedException $e) {
 					$childArray = $this->initializeResultArray();
 				}
@@ -330,63 +335,37 @@ class InlineControlContainer extends AbstractContainer {
 	 * @return mixed Array of possible record items; FALSE if type is "group/db", then everything could be "possible
 	 */
 	protected function getPossibleRecords($table, $field, $row, $conf, $checkForConfField = 'foreign_selector') {
-		$backendUser = $this->getBackendUserAuthentication();
-		$languageService = $this->getLanguageService();
-
-		// ctrl configuration from TCA:
-		$tcaTableCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 		// Field configuration from TCA:
 		$foreign_check = $conf[$checkForConfField];
 		$foreignConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($conf, $foreign_check);
 		$PA = $foreignConfig['PA'];
-		$config = $PA['fieldConf']['config'];
 		if ($foreignConfig['type'] == 'select') {
-			// Getting the selector box items from the system
-			$selItems = FormEngineUtility::addSelectOptionsToItemArray(
-				FormEngineUtility::initItemArray($PA['fieldConf']),
-				$PA['fieldConf'],
-				FormEngineUtility::getTSconfigForTableRow($table, $row),
-				$field
-			);
+			$pageTsConfig['TCEFORM.']['dummyTable.']['dummyField.'] = $PA['fieldTSConfig'];
+			$selectDataInput = [
+				'tableName' => 'dummyTable',
+				'command' => 'edit',
+				'pageTsConfigMerged' => $pageTsConfig,
+				'vanillaTableTca' => [
+					'ctrl' => [],
+					'columns' => [
+						'dummyField' => $PA['fieldConf'],
+					],
+				],
+				'processedTca' => [
+					'ctrl' => [],
+					'columns' => [
+						'dummyField' => $PA['fieldConf'],
+					],
+				],
+			];
 
-			// Possibly filter some items:
-			$selItems = ArrayUtility::keepItemsInArray(
-				$selItems,
-				$PA['fieldTSConfig']['keepItems'],
-				function ($value) {
-					return $value[1];
-				}
-			);
-
-			// Possibly add some items:
-			$selItems = FormEngineUtility::addItems($selItems, $PA['fieldTSConfig']['addItems.']);
-			if (isset($config['itemsProcFunc']) && $config['itemsProcFunc']) {
-				$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
-				$selItems = $dataPreprocessor->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
-			}
-			// Possibly remove some items:
-			$removeItems = GeneralUtility::trimExplode(',', $PA['fieldTSConfig']['removeItems'], TRUE);
-			foreach ($selItems as $tk => $p) {
-				// Checking languages and authMode:
-				$languageDeny = $tcaTableCtrl['languageField'] && (string)$tcaTableCtrl['languageField'] === $field && !$backendUser->checkLanguageAccess($p[1]);
-				$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !$backendUser->checkAuthMode($table, $field, $p[1], $config['authMode']);
-				if (in_array($p[1], $removeItems) || $languageDeny || $authModeDeny) {
-					unset($selItems[$tk]);
-				} else {
-					if (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
-						$selItems[$tk][0] = htmlspecialchars($languageService->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
-					}
-					if (isset($PA['fieldTSConfig']['altIcons.'][$p[1]])) {
-						$selItems[$tk][2] = $PA['fieldTSConfig']['altIcons.'][$p[1]];
-					}
-				}
-				// Removing doktypes with no access:
-				if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
-					if (!($backendUser->isAdmin() || GeneralUtility::inList($backendUser->groupData['pagetypes_select'], $p[1]))) {
-						unset($selItems[$tk]);
-					}
-				}
-			}
+			/** @var OnTheFly $formDataGroup */
+			$formDataGroup = GeneralUtility::makeInstance(OnTheFly::class);
+			$formDataGroup->setProviderList([ TcaSelectItems::class ]);
+			/** @var FormDataCompiler $formDataCompiler */
+			$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+			$compilerResult = $formDataCompiler->compile($selectDataInput);
+			$selItems = $compilerResult['processedTca']['columns']['dummyField']['config']['items'];
 		} else {
 			$selItems = FALSE;
 		}
@@ -423,7 +402,7 @@ class InlineControlContainer extends AbstractContainer {
 	 */
 	protected function getLevelInteractionLink($type, $objectPrefix, $conf = array()) {
 		$languageService = $this->getLanguageService();
-		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
+		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 		$attributes = array();
 		switch ($type) {
 			case 'newRecord':
@@ -523,8 +502,8 @@ class InlineControlContainer extends AbstractContainer {
 		ArrayUtility::mergeRecursiveWithOverrule($config, $conf);
 		$foreign_table = $config['foreign_table'];
 		$allowed = $config['allowed'];
-		$objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']) . '-' . $foreign_table;
-		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);
+		$objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $foreign_table;
+		$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 		$mode = 'db';
 		$showUpload = FALSE;
 		if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
@@ -571,7 +550,7 @@ class InlineControlContainer extends AbstractContainer {
 				$maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
 				$item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
 					' . $buttonStyle . '
-					data-dropzone-target="#' . htmlspecialchars($this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid'])) . '"
+					data-dropzone-target="#' . htmlspecialchars($this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid'])) . '"
 					data-insert-dropzone-before="1"
 					data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
 					data-file-allowed="' . htmlspecialchars($allowed) . '"
@@ -618,7 +597,7 @@ class InlineControlContainer extends AbstractContainer {
 		// @todo $disabled is not present - should be read from config?
 		$disabled = FALSE;
 		if (!$disabled) {
-			$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->globalOptions['inlineFirstPid']);;
+			$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);;
 			// Create option tags:
 			$opt = array();
 			$styleAttrValue = '';

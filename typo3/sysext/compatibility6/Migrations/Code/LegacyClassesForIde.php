@@ -264,17 +264,7 @@ class SC_wizard_table extends \TYPO3\CMS\Backend\Controller\Wizard\TableControll
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class t3lib_transferData extends \TYPO3\CMS\Backend\Form\DataPreprocessor {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 interface t3lib_tceformsInlineHook extends \TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class t3lib_TCEforms extends \TYPO3\CMS\Backend\Form\FormEngine {}
 
 /**
  * @deprecated since 6.0, removed since 7.0
@@ -295,11 +285,6 @@ class t3lib_TCEforms_Suggest_DefaultReceiver extends \TYPO3\CMS\Backend\Form\Wiz
  * @deprecated since 6.0, removed since 7.0
  */
 class t3lib_TCEforms_ValueSlider extends \TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class t3lib_TCEforms_Flexforms extends \TYPO3\CMS\Backend\Form\FlexFormsHelper {}
 
 /**
  * @deprecated since 6.0, removed since 7.0

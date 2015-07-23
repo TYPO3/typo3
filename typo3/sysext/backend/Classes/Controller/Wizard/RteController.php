@@ -16,6 +16,10 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Form\FormResultCompiler;
+use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Form\FormEngine;
@@ -139,66 +143,73 @@ class RteController extends AbstractWizardController implements \TYPO3\CMS\Core\
 		}
 		// If all parameters are available:
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
-			// Getting the raw record (we need only the pid-value from here...)
-			$rawRecord = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
-			BackendUtility::fixVersioningPid($this->P['table'], $rawRecord);
+			/** @var TcaDatabaseRecord $formDataGroup */
+			$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+			/** @var FormDataCompiler $formDataCompiler */
+			$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+			/** @var NodeFactory $nodeFactory */
+			$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+
+			$formDataCompilerInput = [
+				'vanillaUid' => (int)$this->P['uid'],
+				'tableName' => $this->P['table'],
+				'command' => 'edit',
+				'disabledWizards' => TRUE,
+			];
+
+			$formData = $formDataCompiler->compile($formDataCompilerInput);
+
+			$formData['fieldListToRender'] = $this->P['field'];
+			$formData['renderType'] = 'outerWrapContainer';
+			$formResult = $nodeFactory->create($formData)->render();
+
+			/** @var FormResultCompiler $formResultCompiler */
+			$formResultCompiler = GeneralUtility::makeInstance(FormResultCompiler::class);
+			$formResultCompiler->mergeResult($formResult);
 
 			// override the default jumpToUrl
 			$this->doc->JScodeArray['jumpToUrl'] = '
-		function jumpToUrl(URL,formEl) {
-			if (document.editform) {
-				if (!TBE_EDITOR.isFormChanged()) {
-					window.location.href = URL;
-				} else if (formEl) {
-					if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
+				function jumpToUrl(URL,formEl) {
+					if (document.editform) {
+						if (!TBE_EDITOR.isFormChanged()) {
+							window.location.href = URL;
+						} else if (formEl) {
+							if (formEl.type=="checkbox") formEl.checked = formEl.checked ? 0 : 1;
+						}
+					} else {
+						window.location.href = URL;
+					}
 				}
-			} else {
-				window.location.href = URL;
-			}
-		}
-';
+			';
 
 			// Setting JavaScript of the pid value for viewing:
 			if ($this->popView) {
-				$this->doc->JScode = $this->doc->wrapScriptTags(BackendUtility::viewOnClick($rawRecord['pid'], '', BackendUtility::BEgetRootLine($rawRecord['pid'])));
+				$this->doc->JScode = $this->doc->wrapScriptTags(
+					BackendUtility::viewOnClick($formData['databaseRow']['pid'], '', BackendUtility::BEgetRootLine($formData['databaseRow']['pid']))
+				);
 			}
-			// Initialize FormEngine - for rendering the field:
-			/** @var FormEngine $formEngine */
-			$formEngine = GeneralUtility::makeInstance(FormEngine::class);
-			// SPECIAL: Disables all wizards - we are NOT going to need them.
-			$formEngine->disableWizards = 1;
-			// Fetching content of record:
-			/** @var DataPreprocessor $dataPreprocessor */
-			$dataPreprocessor = GeneralUtility::makeInstance(DataPreprocessor::class);
-			$dataPreprocessor->lockRecords = 1;
-			$dataPreprocessor->fetchRecord($this->P['table'], $this->P['uid'], '');
-			// Getting the processed record content out:
-			$processedRecord = reset($dataPreprocessor->regTableItems_data);
-			$processedRecord['uid'] = $this->P['uid'];
-			$processedRecord['pid'] = $rawRecord['pid'];
-			// TSconfig, setting width:
-			$fieldTSConfig = FormEngineUtility::getTSconfigForTableRow($this->P['table'], $processedRecord, $this->P['field']);
-			if ((string)$fieldTSConfig['RTEfullScreenWidth'] !== '') {
-				$width = $fieldTSConfig['RTEfullScreenWidth'];
+
+			$pageTsConfigMerged = $formData['pageTsConfigMerged'];
+			if ((string)$pageTsConfigMerged['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'] !== '') {
+				$width = (string)$pageTsConfigMerged['TCEFORM.'][$this->P['table'] . '.'][$this->P['field'] . '.']['RTEfullScreenWidth'];
 			} else {
 				$width = '100%';
 			}
 			// Get the form field and wrap it in the table with the buttons:
-			$formContent = $formEngine->getSoloField($this->P['table'], $processedRecord, $this->P['field']);
+			$formContent = $formResult['html'];
 			$formContent = '
-
-			<!-- RTE wizard: -->
 				<table border="0" cellpadding="0" cellspacing="0" width="' . $width . '" id="typo3-rtewizard">
 					<tr>
 						<td width="' . $width . '" colspan="2" id="c-formContent">' . $formContent . '</td>
 						<td></td>
 					</tr>
 				</table>';
+
 			// Adding hidden fields:
 			$formContent .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI) . '" />
 						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />';
 			// Finally, add the whole setup:
-			$this->content .= $formEngine->printNeededJSFunctions_top() . $formContent . $formEngine->printNeededJSFunctions();
+			$this->content .= $formResultCompiler->JStop() . $formContent . $formResultCompiler->printNeededJSFunctions();
 		} else {
 			// ERROR:
 			$this->content .= $this->doc->section($this->getLanguageService()->getLL('forms_title'), '<span class="text-danger">' . $this->getLanguageService()->getLL('table_noData', TRUE) . '</span>', 0, 1);
