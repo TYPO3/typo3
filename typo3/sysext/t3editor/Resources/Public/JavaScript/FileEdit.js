@@ -20,7 +20,14 @@ define('TYPO3/CMS/T3editor/FileEdit', ['jquery', 'TYPO3/CMS/T3editor/T3editor'],
 		$('.t3-icon-document-save, .t3-icon-document-save-close').each(function() {
 			var $link = $(this).parent('a');
 			if ($link) {
-				$link.removeAttr('onclick');
+
+				// Only remove onclick for save, save and close needs to have document.editform.submit to be removed
+				if ($link.children('span').hasClass('t3-icon-document-save')) {
+					$link.removeAttr('onclick');
+				} else {
+					var onClick = $link.attr('onclick');
+					$link.attr('onclick', onClick.replace('document.editform.submit();', ''));
+				}
 
 				$link.on('click', function(e) {
 					e.preventDefault();
@@ -32,6 +39,7 @@ define('TYPO3/CMS/T3editor/FileEdit', ['jquery', 'TYPO3/CMS/T3editor/T3editor'],
 						T3editor.saveFunction(T3editor.instances[0]);
 					} else {
 						T3editor.updateTextarea(T3editor.instances[0]);
+						document.editform.submit();
 					}
 					return false;
 				});

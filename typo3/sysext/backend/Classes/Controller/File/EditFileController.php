@@ -227,7 +227,7 @@ class EditFileController {
 		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
 		// Save and Close button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-save-close');
-		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=' . GeneralUtility::quoteJSvalue(htmlspecialchars($this->returnUrl)) . '; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
+		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->returnUrl)) . '; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
 		// Cancel button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-close');
 		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
