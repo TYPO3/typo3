@@ -11,7 +11,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['indexed_
 
 // Registers "new" extbase based FE plugin and hide layout, select_key, pages and recursive fields in BE
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'indexed_search',
+	'TYPO3.CMS.IndexedSearch',
 	'Pi2',
 	'Indexed Search (experimental)'
 );

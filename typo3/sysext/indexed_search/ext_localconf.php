@@ -1,6 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+// register pibase plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
 	'indexed_search',
 	'setup',
@@ -10,6 +11,7 @@ plugin.tx_indexedsearch.userFunc = ' . \TYPO3\CMS\IndexedSearch\Controller\Searc
 	')
 );
 
+// add default rendering for pibase plugin
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript(
 	'indexed_search',
 	'setup',
@@ -17,7 +19,9 @@ plugin.tx_indexedsearch.userFunc = ' . \TYPO3\CMS\IndexedSearch\Controller\Searc
 	'defaultContentRendering'
 );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.indexed_search', 'Pi2', array('Search' => 'form,search'), array('Search' => 'form,search'));
+// register extbase plugin
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('TYPO3.CMS.IndexedSearch', 'Pi2', array('Search' => 'form,search'), array('Search' => 'form,search'));
+
 // Attach to hooks:
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'][] = \TYPO3\CMS\IndexedSearch\Indexer::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['headerNoCache']['tx_indexedsearch'] = \TYPO3\CMS\IndexedSearch\Hook\TypoScriptFrontendHook::class . '->headerNoCache';
