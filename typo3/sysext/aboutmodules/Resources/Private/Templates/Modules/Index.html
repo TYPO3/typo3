@@ -12,53 +12,55 @@
 	{warningMessages -> f:format.raw()}
 
 	<f:for each="{modules}" as="mainModule">
-		<h2>{mainModule.label}</h2>
-		<div class="container-fuid">
-			<div class="row">
-				<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
-					<div class="col-xs-12 col-sm-6">
-						<div class="submodule media clearfix">
-							<a
-								href="#"
-								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-								title="{subModule.shortDescription}"
-								class="pull-left"
-							>
-								<span class="typo3-app-icon">
-									<span>
+		<f:if condition="{mainModule.subModules}">
+			<h2>{mainModule.label}</h2>
+			<div class="container-fuid">
+				<div class="row">
+					<f:for each="{mainModule.subModules}" as="subModule" iteration="subModuleIterator">
+						<div class="col-xs-12 col-sm-6">
+							<div class="submodule media clearfix">
+								<a
+									href="#"
+									onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+									title="{subModule.shortDescription}"
+									class="pull-left"
+								>
+									<span class="typo3-app-icon">
 										<span>
-											<img src="../{subModule.icon}" alt="{subModule.label}" class="media-object" />
+											<span>
+												<img src="../{subModule.icon}" alt="{subModule.label}" class="media-object" />
+											</span>
 										</span>
 									</span>
-								</span>
-							</a>
+								</a>
 
-							<div class="media-body">
-								<strong>
-									<a
-										href="#"
-										onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
-										title="{subModule.shortDescription}"
-										>{subModule.label}</a>
-								</strong><br>
+								<div class="media-body">
+									<strong>
+										<a
+											href="#"
+											onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+											title="{subModule.shortDescription}"
+											>{subModule.label}</a>
+									</strong><br>
 
-								<f:if condition="{subModule.shortDescription}">
-									<small class="text-muted">{subModule.shortDescription}</small><br>
-								</f:if>
+									<f:if condition="{subModule.shortDescription}">
+										<small class="text-muted">{subModule.shortDescription}</small><br>
+									</f:if>
 
-								{subModule.longDescription -> f:format.raw()}
+									{subModule.longDescription -> f:format.raw()}
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<f:if condition="{subModuleIterator.isEven}">
-						<f:if condition="{subModuleIterator.isLast} == 0">
-							</div><div class="row">
+						<f:if condition="{subModuleIterator.isEven}">
+							<f:if condition="{subModuleIterator.isLast} == 0">
+								</div><div class="row">
+							</f:if>
 						</f:if>
-					</f:if>
-				</f:for>
+					</f:for>
+				</div>
 			</div>
-		</div>
+		</f:if>
 	</f:for>
 
 	<p class="end-text text-info">
