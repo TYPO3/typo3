@@ -367,7 +367,7 @@ class ElementInformationController {
 
 					$rowValue = '<span class="pull-left">' . $icon . '</span>' .
 					'<strong>' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</strong><br />'
-					. ($GLOBALS['BE_USER']->user['realName']) ? $GLOBALS['BE_USER']->user['realName'] : '';
+					. ($GLOBALS['BE_USER']->user['realName'] ? htmlspecialchars($GLOBALS['BE_USER']->user['realName']) : '');
 				}
 			}
 
