@@ -12,6 +12,12 @@
 			<trans-unit id="installExtension">
 				<source>Install Extension</source>
 			</trans-unit>
+			<trans-unit id="composerMode.title">
+				<source>Composer mode</source>
+			</trans-unit>
+			<trans-unit id="composerMode.message">
+				<source>The system is set to composer mode. Please notice that it might break if you try to add an extension with the Extension Manager. You should rather use composer to add further extensions to your system.</source>
+			</trans-unit>
 			<trans-unit id="installedExtensions">
 				<source>Installed Extensions</source>
 			</trans-unit>

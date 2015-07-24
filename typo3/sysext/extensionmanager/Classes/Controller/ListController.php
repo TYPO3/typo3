@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
@@ -66,11 +68,31 @@ class ListController extends AbstractController {
 	}
 
 	/**
+	 * Adds an information about composer mode
+	 */
+	protected function addComposerModeNotification() {
+		if (Bootstrap::getInstance()->usesComposerClassLoading()) {
+			$this->addFlashMessage(
+				LocalizationUtility::translate(
+					'composerMode.message',
+					'extensionmanager'
+				),
+				LocalizationUtility::translate(
+					'composerMode.title',
+					'extensionmanager'
+				),
+				FlashMessage::WARNING
+			);
+		}
+	}
+
+	/**
 	 * Shows list of extensions present in the system
 	 *
 	 * @return void
 	 */
 	public function indexAction() {
+		$this->addComposerModeNotification();
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$this->view->assign('extensions', $availableAndInstalledExtensions);
 		$this->handleTriggerArguments();
@@ -110,6 +132,7 @@ class ListController extends AbstractController {
 	 * @return void
 	 */
 	public function terAction($search = '') {
+		$this->addComposerModeNotification();
 		if (!empty($search)) {
 			$extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
 		} else {
@@ -127,6 +150,7 @@ class ListController extends AbstractController {
 	 * @return void
 	 */
 	public function distributionsAction() {
+		$this->addComposerModeNotification();
 		$importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
 		if ($importExportInstalled) {
 			try {
