@@ -1481,7 +1481,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			if (GeneralUtility::getApplicationContext()->isDevelopment()) {
 				$this->requireJsConfig['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
 			} else {
-				$this->requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::shortMD5(TYPO3_version);
+				$this->requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
 			}
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
