@@ -110,7 +110,9 @@ abstract class AbstractFormElement extends AbstractNode {
 	 * @param string $itemName The field name
 	 * @param array $specConf Special configuration if available.
 	 * @param bool $RTE Whether the RTE could have been loaded.
+	 *
 	 * @return string The new item value.
+	 * @throws \InvalidArgumentException
 	 */
 	protected function renderWizards($itemKinds, $wizConf, $table, $row, $field, $PA, $itemName, $specConf, $RTE = FALSE) {
 		// Return not changed main item directly if wizards are disabled
@@ -150,6 +152,11 @@ abstract class AbstractFormElement extends AbstractNode {
 		$buttonWizards = array();
 		$otherWizards = array();
 		foreach ($wizConf as $wizardIdentifier => $wizardConfiguration) {
+			if (!isset($wizardConfiguration['module']['name']) && isset($wizardConfiguration['script'])) {
+				throw new \InvalidArgumentException('The way registering a wizard in TCA has changed in 6.2 and was removed in CMS 7. '
+					. 'Please set module[name]=module_name instead of using script=path/to/sctipt.php in your TCA. ', 1437750231);
+			}
+
 			// If an identifier starts with "_", this is a configuration option like _POSITION and not a wizard
 			if ($wizardIdentifier[0] === '_') {
 				continue;
