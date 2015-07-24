@@ -54,6 +54,6 @@ which is replaced by :php:`$defaultLogFileTemplate` and the :php:`getDefaultLogF
 Migration
 =========
 
-Adjust the log configuration according to your needs in your :code:`AdditionalConfiguration.php`.
+Adjust the log configuration according to your needs in your :code:`LocalConfiguration.php`.
 
 Adjust any Extension code affected by the changes if needed.

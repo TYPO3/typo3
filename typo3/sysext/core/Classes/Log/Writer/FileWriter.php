@@ -224,6 +224,6 @@ class FileWriter extends AbstractWriter {
 	 * @return string
 	 */
 	protected function getDefaultLogFileName() {
-		return sprintf($this->defaultLogFileTemplate, GeneralUtility::shortMD5('defaultLogFile' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']));
+		return sprintf($this->defaultLogFileTemplate, substr(GeneralUtility::hmac($this->defaultLogFileTemplate, 'defaultLogFile'), 0, 10));
 	}
 }
