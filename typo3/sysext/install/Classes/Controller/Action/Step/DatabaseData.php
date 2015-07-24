@@ -55,10 +55,9 @@ class DatabaseData extends AbstractStepAction {
 		$this->importDatabaseData();
 
 		// Insert admin user
-		$hashedPassword = $this->getHashedPassword($password);
 		$adminUserFields = array(
 			'username' => $username,
-			'password' => $hashedPassword,
+			'password' => $this->getHashedPassword($password),
 			'admin' => 1,
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'crdate' => $GLOBALS['EXEC_TIME']
@@ -66,7 +65,7 @@ class DatabaseData extends AbstractStepAction {
 		$this->getDatabaseConnection()->exec_INSERTquery('be_users', $adminUserFields);
 
 		// Set password as install tool password
-		$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $hashedPassword);
+		$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $this->getHashedPassword($password));
 
 		return $result;
 	}
