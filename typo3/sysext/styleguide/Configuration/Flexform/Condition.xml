@@ -1,0 +1,57 @@
+<T3DataStructure>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sheet1>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>sheet 1</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <switchableControllerActions>
+                        <TCEforms>
+                            <label>select view</label>
+                            <onChange>reload</onChange>
+                            <config>
+                                <type>select</type>
+                                <items type="array">
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">foo</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">bar</numIndex>
+                                        <numIndex index="1">ControllerName->actionname;</numIndex>
+                                    </numIndex>
+                                </items>
+                                <maxitems>1</maxitems>
+                                <size>1</size>
+                            </config>
+                        </TCEforms>
+                    </switchableControllerActions>
+                </el>
+            </ROOT>
+        </sheet1>
+        <sheet2>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>sheet 2</sheetTitle>
+                    <displayCond><![CDATA[FIELD:sheet1.switchableControllerActions:=:ControllerName->actionname;]]></displayCond>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.foo>
+                        <TCEforms>
+                            <label>foo</label>
+                            <config>
+                                <type>input</type>
+                            </config>
+                        </TCEforms>
+                    </settings.foo>
+                </el>
+            </ROOT>
+        </sheet2>
+    </sheets>
+</T3DataStructure>
