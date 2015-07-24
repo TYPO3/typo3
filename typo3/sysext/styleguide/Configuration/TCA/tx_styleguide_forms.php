@@ -1746,6 +1746,16 @@ return array(
 				),
 			),
 		),
+		'flex_5' => array(
+			'exclude' => 1,
+			'label' => 'FLEX: 5 condition',
+			'config' => array(
+				'type' => 'flex',
+				'ds' => array(
+					'default' => 'FILE:EXT:styleguide/Configuration/Flexform/Condition.xml',
+				),
+			),
+		),
 
 
 		'inline_1' => array(
@@ -2612,7 +2622,7 @@ return array(
 				--div--;User,
 					user_1, user_2,
 				--div--;Flex,
-					flex_1, flex_2, flex_3, flex_4,
+					flex_1, flex_2, flex_3, flex_4, flex_5,
 				--div--;Inline,
 					inline_1, inline_2, inline_3,
 				--div--;Palettes,
