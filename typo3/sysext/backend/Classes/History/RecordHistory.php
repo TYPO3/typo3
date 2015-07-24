@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\History;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 
 /**
  * Class for the record history display module show_rechis
@@ -374,6 +375,10 @@ class RecordHistory {
 			return 0;
 		}
 		$i = 0;
+
+		/** @var Avatar $avatar */
+		$avatar = GeneralUtility::makeInstance(Avatar::class);
+
 		foreach ($this->changeLog as $sysLogUid => $entry) {
 			// stop after maxSteps
 			if ($i > $this->maxSteps && $this->maxSteps) {
@@ -396,7 +401,8 @@ class RecordHistory {
 			// add time
 			$singleLine[] = htmlspecialchars(BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $entry['tstamp'], $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')));
 			// add age
-			$singleLine[] = htmlspecialchars($userName);
+			$userEntry = is_array($be_user_array[$entry['user']]) ? $be_user_array[$entry['user']] : NULL;
+			$singleLine[] = $avatar->render($userEntry) . ' ' . htmlspecialchars($userName);
 			// add user name
 			$singleLine[] = $this->linkPage($this->generateTitle($entry['tablename'], $entry['recuid']), array('element' => $entry['tablename'] . ':' . $entry['recuid']), '', $GLOBALS['LANG']->getLL('linkRecordHistory', 1));
 			// add record UID

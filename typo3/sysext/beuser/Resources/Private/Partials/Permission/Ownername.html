@@ -1,3 +1,4 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
 <span id="o_{pageId}">
 	<a
 		class="ug_selector changeowner"
@@ -21,6 +22,7 @@
 							A user name can be resolved
 						</f:comment>
 						{username -> f:format.crop(maxCharacters:20)}
+						<be:avatar backendUser="{userId}" />
 					</f:then>
 					<f:else>
 						<f:comment>
