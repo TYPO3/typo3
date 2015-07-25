@@ -22,14 +22,15 @@
 			<f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control" />
 		</div>
 	</form>
-	<table id="typo3-extension-list" class="table table-striped table-hover typo3-extension-list">
+	<div class="table-fit">
+		<table id="typo3-extension-list" class="table table-striped table-hover typo3-extension-list">
 		<thead>
 			<tr>
 				<th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
 				<th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
 				<th><f:translate key="extensionList.header.extensionName"/></th>
-				<th class="hidden-xs hidden-sm"><f:translate key="extensionList.header.extensionKey"/></th>
-				<th class="hidden-xs"><f:translate key="extensionList.header.extensionVersion"/></th>
+				<th><f:translate key="extensionList.header.extensionKey"/></th>
+				<th><f:translate key="extensionList.header.extensionVersion"/></th>
 				<th><f:translate key="extensionList.header.extensionState"/></th>
 				<th><f:translate key="extensionList.header.extensionActions"/></th>
 			</tr>
@@ -86,16 +87,16 @@
 					</f:if>
 					<em:configureExtension extension="{extension}" forceConfiguration="0" showDescription="1">{extension.title}</em:configureExtension>
 				</td>
-				<td class="hidden-xs hidden-sm">
+				<td>
 					{extensionKey}
 				</td>
-				<td class="hidden-xs">
+				<td>
 					{extension.version}
 				</td>
 				<td>
 					<span class="label label-{extension.state}">{extension.state}</span>
 				</td>
-				<td class="icons nowrap">
+				<td>
 					<div class="btn-group">
 						<em:processAvailableActions extension="{extension}">
 							<em:configureExtension class="btn btn-default" extension="{extension}"><f:be.buttons.icon icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
@@ -110,6 +111,7 @@
 			</f:for>
 		</tbody>
 	</table>
+	</div>
 </f:section>
 
 
