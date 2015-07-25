@@ -1,0 +1,59 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+</f:section>
+
+<f:section name="headline">
+	<f:translate key="avatar" />
+</f:section>
+
+<f:section name="content">
+	<p clas="lead">Make the backend your backend and upload your personal profile picture.<br>
+		Backend users can change their profile pictures within setup module.</p>
+
+	<h2>Simple</h2>
+
+	<p>Displays backend user avatar picture or static image fall-back for users without pictures.</p>
+
+	<table class="table" style="width: auto;">
+		<tr>
+			<td>
+				<be:avatar />
+			</td>
+			<td>
+				<strong>{backendUser.username}</strong><br>
+				{backendUser.realName}
+			</td>
+		</tr>
+	</table>
+
+	<div class="example code">
+		&#123;namespace be = TYPO3\CMS\Backend\ViewHelpers&#125;<br>
+		<span class="tag-border">&lt;</span><span class="tag-name">be:avatar</span> /<span class="tag-border">&gt;</span>
+	</div>
+
+	<h2>Icon overlay and click menu</h2>
+
+	<p>When icon overlay is used always bind click menu on the avatar icon. Please consider backend users can only be modified by administrator users.
+		Please use icon overlay only in views that are available for administrators only and bind click menu.</p>
+
+	<table class="table" style="width: auto;">
+		<tr>
+			<td>
+				<be:avatar showIcon="true" />
+			</td>
+			<td>
+				<strong>{backendUser.username}</strong><br>
+				{backendUser.realName}
+			</td>
+		</tr>
+	</table>
+
+	<div class="example code">
+		&#123;namespace be = TYPO3\CMS\Backend\ViewHelpers&#125;<br>
+		<span class="tag-border">&lt;</span><span class="tag-name">be:avatar</span> <span class="tag-attribute">showIcon</span>=<span class="tag-attribute-value">"true"</span> /<span class="tag-border">&gt;</span>
+	</div>
+
+</f:section>

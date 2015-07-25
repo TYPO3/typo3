@@ -103,6 +103,16 @@ class StyleguideController extends ActionController {
 	}
 
 	/**
+	 * Avatar
+	 */
+	public function avatarAction() {
+		$this->view->assign(
+			'backendUser',
+			$GLOBALS['BE_USER']->user
+		);
+	}
+
+	/**
 	 * Tabs
 	 */
 	public function tabAction() {

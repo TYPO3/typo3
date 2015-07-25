@@ -18,6 +18,9 @@
 			<trans-unit id="forms" xml:space="preserve">
 				<source>Forms</source>
 			</trans-unit>
+			<trans-unit id="avatar" xml:space="preserve">
+				<source>Avatar</source>
+			</trans-unit>
 			<trans-unit id="typography" xml:space="preserve">
 				<source>Typography</source>
 			</trans-unit>
