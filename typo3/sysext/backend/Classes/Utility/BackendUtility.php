@@ -143,7 +143,7 @@ class BackendUtility {
 	 * @param string $table Table name (not necessarily in TCA)
 	 * @param string $where WHERE clause
 	 * @param string $fields $fields is a list of fields to select, default is '*'
-	 * @return array First row found, if any, FALSE otherwise
+	 * @return array|bool First row found, if any, FALSE otherwise
 	 */
 	static public function getRecordRaw($table, $where = '', $fields = '*') {
 		$row = FALSE;
@@ -4217,8 +4217,18 @@ class BackendUtility {
 	 * @internal
 	 */
 	static public function ADMCMD_previewCmds($pageinfo) {
+		$simUser = '';
+		$simTime = '';
 		if ($pageinfo['fe_group'] > 0) {
 			$simUser = '&ADMCMD_simUser=' . $pageinfo['fe_group'];
+		} elseif ((int)$pageinfo['fe_group'] === -2) {
+			// -2 means "show at any login". We simulate first available fe_group.
+			/** @var \TYPO3\CMS\Frontend\Page\PageRepository $sysPage */
+			$sysPage = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$activeFeGroupRow = BackendUtility::getRecordRaw('fe_groups', '1=1' . $sysPage->enableFields('fe_groups'), 'uid');
+			if (!empty($activeFeGroupRow)) {
+				$simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
+			}
 		}
 		if ($pageinfo['starttime'] > $GLOBALS['EXEC_TIME']) {
 			$simTime = '&ADMCMD_simTime=' . $pageinfo['starttime'];
