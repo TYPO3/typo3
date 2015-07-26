@@ -2675,9 +2675,9 @@ For these options to make sense, they should only be used when "config.sys_langu
 		</property>
 		<property name="special" type="HMENU_SPECIAL">
 			<description><![CDATA["directory" / "list" / "updated" / "browse" / "rootline" / "keywords" / "language"
-			(See tsref for details:
-			<a href="http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/11/#id4080403">
-			http://typo3.org/documentation/document-library/references/doc_core_tsref/4.1.0/view/8/11/#id4080403</a> )]]></description>
+			(See TSref for details:
+			<a href="http://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Hmenu/#hmenu-special-property">
+			http://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/Hmenu/#hmenu-special-property</a> )]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>

@@ -65,7 +65,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 	/**
 	 * Resizes the image (if required) and returns its path. If the image was not resized, the path will be equal to $src
 	 *
-	 * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4164427
+	 * @see http://docs.typo3.org/typo3cms/TyposcriptReference/ContentObjects/ImgResource/
 	 * @param string $src
 	 * @param FileInterface|AbstractFileFolder $image
 	 * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.

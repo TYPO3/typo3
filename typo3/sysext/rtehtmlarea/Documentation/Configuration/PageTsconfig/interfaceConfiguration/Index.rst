@@ -2543,18 +2543,15 @@ proc
 
    Property
          proc
-   
+
    Data type
          ->PROC
-   
+
    Description
          Customization of the server processing of the content - also called
          'transformations'.
-         
-         See `http://typo3.org/documentation/document-library/core-
-         documentation/doc\_core\_api/current/view/5/2/
-         <http://typo3.org/documentation/document-library/core-
-         documentation/doc_core_api/current/view/5/2/>`_
+
+         See :ref:`t3api:transformations`
 
 
 

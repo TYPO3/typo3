@@ -42,7 +42,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
  * foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
  * </output>
  *
- * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
+ * @see http://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Parsefunc/
  */
 class HtmlViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -13,7 +13,7 @@
 				<source>For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
-				<source>Inside TYPO3 | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/</source>
+				<source>Inside TYPO3 | http://docs.typo3.org/typo3cms/InsideTypo3Reference/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/login.png</source>
@@ -39,7 +39,7 @@ When you click the little "+" or "-" icons next to the main modules, you can col
 				<source>be_groups:groupMods,
 be_users:userMods,
 _MOD_user_setup:option_noMenuMode,
-More about Modules | http://typo3.org/documentation/document-library/doc_tut_quickstart/Backend_and_frontend/</source>
+More about Modules | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/BackendAndFrontend/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_menu_modules.image" xml:space="preserve">
@@ -93,8 +93,8 @@ Clicking the title of a page is another option. It will load the right frame of 
 			</trans-unit>
 			<trans-unit id="_pagetree.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:list_module,
-More about the Page Tree | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/
-Rendering Page trees [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Rendering_page_trees/
+More about the Page Tree | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/
+Rendering Page trees [Technical] | http://docs.typo3.org/typo3cms/CoreApiReference/JavaScript/UsingExtjs/PageTree/
 Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_01.gif
 Clicking Icons or Titles? (Animation) | FILE:EXT:welcome/modsub/ani_06.gif
 Creating pages (Animation) | FILE:EXT:welcome/modsub/ani_07.gif
@@ -136,9 +136,9 @@ The administrator needs to allow backend users to access the File modules and in
 				<source>be_groups:groupMods,
 be_groups:file_mountpoints,
 be_users:file_mountpoints,
-Managing files in TYPO3 | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
-Uploading Files | http://typo3.org/documentation/document-library/doc_tut_quickstart/Uploading_images_to/,
-Details about file mounts | http://typo3.org/documentation/document-library/doc_core_inside/More_about_File_Moun/,
+Managing files in TYPO3 | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Uploading Files | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/,
+Details about file mounts | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/,
 sys_filemounts,
 xMOD_csh_corebe:filelist_module</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
@@ -194,8 +194,8 @@ If you click the tabel title in the listing you will enter single-table mode. In
 xMOD_csh_corebe:list_module_root,
 xMOD_csh_corebe:filelist_module,
 xMOD_csh_corebe:TCEforms
-Selective Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Selective_editing/
-The List module ("Inside TYPO3") | http://typo3.org/documentation/document-library/doc_core_inside/List_module/,</source>
+Selective Editing | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/SelectiveEditing/
+The List module ("Inside TYPO3") | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/,</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_module.image" xml:space="preserve">
@@ -231,7 +231,7 @@ Usually records that are located in the page tree root are somehow "global" for 
 			</trans-unit>
 			<trans-unit id="_list_module_root.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:list_module
-The List module ("Inside TYPO3") | http://typo3.org/documentation/document-library/doc_core_inside/List_module/</source>
+The List module ("Inside TYPO3") | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/ListModule/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_module_root.image" xml:space="preserve">
@@ -252,10 +252,10 @@ When "Admin"-users wants to create a new record in the page tree root they will 
 			<trans-unit id="_list_clipboard.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:list_module,
 xMOD_csh_corebe:filelist_clipboard,
-Using the clipboard | http://typo3.org/documentation/document-library/doc_tut_quickstart/Using_the_List_modul/
-Numeric Clipboard pads | http://typo3.org/documentation/document-library/doc_tut_quickstart/The_numeric_clipboar/
-Clipboard details [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Clipboard/,
-Accessing clipboard in scripts [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Accessing_the_clipbo/</source>
+Using the clipboard | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/UsingTheListModuleEffectively/
+Numeric Clipboard pads | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheListModuleAndClipboard/TheNumericClipboardPads-ManagingManyElements/
+Clipboard details [Technical] | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/,
+Accessing clipboard in scripts [Technical] | http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/Clipboard/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_list_clipboard.image" xml:space="preserve">
@@ -329,7 +329,7 @@ xMOD_csh_corebe:new_pages</source>
 			<trans-unit id="_new_pages.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:new_regular,
 xMOD_csh_corebe:new_ce,
-How to create a new page | http://typo3.org/documentation/document-library/doc_tut_quickstart/New_page/</source>
+How to create a new page | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_new_pages.image" xml:space="preserve">
@@ -353,9 +353,9 @@ To access the "Create new page wizard" in the first place, just click the link i
 			<trans-unit id="_new_ce.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:new_pages,
 xMOD_csh_corebe:new_regular,
-How to create new page content | http://typo3.org/documentation/document-library/doc_tut_quickstart/New_page/
-More about Content Element types | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/
-Adding Custom elements [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Adding_elements_to_t/</source>
+How to create new page content | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/
+More about Content Element types | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/
+Adding Custom elements [Technical] | http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_new_ce.image" xml:space="preserve">
@@ -381,7 +381,7 @@ You can access the Content Element wizard from the Create new record dialog.</so
 			<trans-unit id="_move_el_pages.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:move_el_cs,
 xMOD_csh_corebe:new_pages,
-Moving pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Move_page/</source>
+Moving pages | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/NewPage/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_move_el_pages.image" xml:space="preserve">
@@ -434,7 +434,7 @@ If you want to extend the number of history states to above the default 20 you c
 			</trans-unit>
 			<trans-unit id="_history_log.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:history_sum,
-Configuring History using Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/MOD/
+Configuring History using Page TSconfig | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Mod/
 Undo/History article | http://typo3.org/documentation/tips-tricks/the-undohistory-feature/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -507,12 +507,12 @@ Another way of editing records in TYPO3 is using the website frontend. Depending
 You can customize the TCEforms in many ways using User TSconfig and Page TSconfig. See links below.</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms.seeAlso" xml:space="preserve">
-				<source>Editing pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+				<source>Editing pages | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
 Frontend Editing | http://typo3.org/documentation/document-library/doc_tut_quickstart/Frontend_editing/,
 xMOD_csh_corebe:list_module
-User TSconfig related to forms | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/
-Page TSconfig related to forms | http://typo3.org/documentation/document-library/doc_core_tsconfig/RTE/
-Linking to the edit forms [Technical] | http://typo3.org/documentation/document-library/doc_core_api/Links_to_edit_record/</source>
+User TSconfig related to forms | http://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/
+Page TSconfig related to forms | http://docs.typo3.org/typo3cms/CoreApiReference/Rte/Transformations/Tsconfig/
+Linking to the edit forms [Technical] | http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/EditLinks/</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/core_30.png,
@@ -550,7 +550,7 @@ This is an example of three Content Elements being edited at the same time. You 
 If cache options are not available for you, you should ask your administrator to enable it for you. (Admins: See link below to TSconfig.)</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms_cacheSelector.seeAlso" xml:space="preserve">
-				<source>User TSconfig (See "clearCache.pages/.all") | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
+				<source>User TSconfig (See "clearCache.pages/.all") | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/Options/</source>
 			</trans-unit>
 			<trans-unit id="_TCEforms_cacheSelector.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/core_36.png,</source>
@@ -574,8 +574,8 @@ Shows the permissions settings for owner / group / everybody. You will be able t
 			</trans-unit>
 			<trans-unit id="_perm_module.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:perm_module_setting,
-User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/
-Permission system in TYPO3 [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Access_Control_optio/,
+User Management How-to | http://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/
+Permission system in TYPO3 [Technical] | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/AccessControlOptions/,
 _MOD_user_setup:option_helpText</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
@@ -610,7 +610,7 @@ Allows users to create sub-pages to this page.</source>
 			</trans-unit>
 			<trans-unit id="_perm_module_setting.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:perm_module,
-User Management Howto | http://typo3.org/documentation/document-library/doc_tut_quickstart/Setting_up_user_perm/</source>
+User Management Howto | http://docs.typo3.org/typo3cms/GettingStartedTutorial/UserManagement/SettingUpUserPermissions/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_perm_module_setting.image" xml:space="preserve">
@@ -660,7 +660,7 @@ When you click a file icon you see a context menu appear over it. Here you can p
 			</trans-unit>
 			<trans-unit id="_filelist_clipboard.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:list_clipboard,
-About the Clipboard [Technical] | http://typo3.org/documentation/document-library/doc_core_inside/Clipboard/</source>
+About the Clipboard [Technical] | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/GeneralInterfaceFeatures/Clipboard/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_filelist_clipboard.image" xml:space="preserve">
@@ -792,7 +792,7 @@ Notice that file uploads may take a significant amount of time, even if you have
 			</trans-unit>
 			<trans-unit id="_file_upload.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:filelist_module,
-Howto upload files | http://typo3.org/documentation/document-library/doc_tut_quickstart/Uploading_images_to/</source>
+How-to upload files | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/UploadingImagesToTheArchive/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_upload.image" xml:space="preserve">
@@ -820,7 +820,7 @@ The most typical application of the Form wizard is with Content Elements of the 
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:wizard_table_wiz,
-Form Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizards_Configuratio/,</source>
+Form Wizard details [Technical]| http://docs.typo3.org/typo3cms/CoreApiReference/ApiOverview/Examples/ContentElementWizard/,</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz.image" xml:space="preserve">
@@ -852,7 +852,7 @@ Usually you enter the Form Wizard by clicking the form wizard icon next for a te
 				<source>Notice: In order to enter a recipient address you need access to the "Subheader" field in the Content Elements. Yes, its quite strange, but so it is. Ask your administrator for access if you don't have it.</source>
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz_formmail_info.seeAlso" xml:space="preserve">
-				<source>Howto create Mail Forms | http://typo3.org/documentation/document-library/doc_tut_quickstart/Email_form/</source>
+				<source>How-to create Mail Forms | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EmailForm/</source>
 			</trans-unit>
 			<trans-unit id="_wizard_forms_wiz_formmail_info.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/core_61.png,</source>
@@ -870,7 +870,7 @@ You can also disable the setting "Small fields" below the wizard if you want lar
 			</trans-unit>
 			<trans-unit id="_wizard_table_wiz.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:wizard_forms_wiz,
-Table Wizard details [Technical]| http://typo3.org/documentation/document-library/doc_core_api/Wizard_scripts_in_th/</source>
+Table Wizard details [Technical]| http://docs.typo3.org/typo3cms/TCAReference/AdditionalFeatures/CoreWizardScripts/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_wizard_table_wiz.image" xml:space="preserve">
@@ -903,7 +903,7 @@ Only "Admin"-users can access the shortcut frame in TYPO3 by default. Other user
 Editing pages from an id is easy with the shortcut frame. Simply enter an integer number and that page will be loaded for editing. If you enter "[table]:[id]" then it will try to edit a record from the [table] table, for example "tt_content:123" will look for content element 123 (for admins only). Finally, if you enter a string that doesn't match a page or other record the Web&gt;List module will be invoked doing a search in the first database mount you have.</source>
 			</trans-unit>
 			<trans-unit id="_shortcuts.seeAlso" xml:space="preserve">
-				<source>User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
+				<source>User TSconfig -&gt;SETUP | http://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
 			</trans-unit>
 			<trans-unit id="_shortcuts.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/core_64.png,
@@ -928,7 +928,7 @@ You can name shortcuts, you can even group them and share them. If you want to e
 				<source>In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</source>
 			</trans-unit>
 			<trans-unit id="_bookmarks.seeAlso" xml:space="preserve">
-				<source>User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</source>
+				<source>User TSconfig -&gt;SETUP | http://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/Options/</source>
 			</trans-unit>
 			<trans-unit id="_bookmarks.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/core_64.png,

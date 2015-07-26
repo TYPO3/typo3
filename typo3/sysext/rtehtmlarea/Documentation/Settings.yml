@@ -4,8 +4,20 @@
 
 ---
 conf.py:
-  copyright: 1997-2013
   project: htmlArea RTE
   version: 6.2
   release: 6.2
+  intersphinx_mapping:
+    t3tca:
+    - http://docs.typo3.org/typo3cms/TCAReference/
+    - null
+    t3tsref:
+    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - null
+    t3api:
+    - http://docs.typo3.org/typo3cms/CoreApiReference/
+    - null
+    t3tsconfig:
+    - http://docs.typo3.org/typo3cms/TSconfigReference/
+    - null
 ...
