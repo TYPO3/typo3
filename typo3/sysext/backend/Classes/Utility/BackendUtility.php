@@ -149,7 +149,7 @@ class BackendUtility {
 	 * @param string $table Table name (not necessarily in TCA)
 	 * @param string $where WHERE clause
 	 * @param string $fields $fields is a list of fields to select, default is '*'
-	 * @return array First row found, if any, FALSE otherwise
+	 * @return array|bool First row found, if any, FALSE otherwise
 	 */
 	static public function getRecordRaw($table, $where = '', $fields = '*') {
 		$row = FALSE;
@@ -4418,6 +4418,14 @@ class BackendUtility {
 		$simTime = '';
 		if ($pageInfo['fe_group'] > 0) {
 			$simUser = '&ADMCMD_simUser=' . $pageInfo['fe_group'];
+		} elseif ((int)$pageInfo['fe_group'] === -2) {
+			// -2 means "show at any login". We simulate first available fe_group.
+			/** @var PageRepository $sysPage */
+			$sysPage = GeneralUtility::makeInstance(PageRepository::class);
+			$activeFeGroupRow = BackendUtility::getRecordRaw('fe_groups', '1=1' . $sysPage->enableFields('fe_groups'), 'uid');
+			if (!empty($activeFeGroupRow)) {
+				$simUser = '&ADMCMD_simUser=' . $activeFeGroupRow['uid'];
+			}
 		}
 		if ($pageInfo['starttime'] > $GLOBALS['EXEC_TIME']) {
 			$simTime = '&ADMCMD_simTime=' . $pageInfo['starttime'];
