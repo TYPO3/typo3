@@ -73,7 +73,7 @@
 				<source>&lt;b&gt;Add key&lt;/b&gt;&lt;/a&gt; "%s" to Object List</source>
 			</trans-unit>
 			<trans-unit id="back">
-				<source>&lt; Back</source>
+				<source>Back</source>
 			</trans-unit>
 			<trans-unit id="browse">
 				<source>Browse:</source>

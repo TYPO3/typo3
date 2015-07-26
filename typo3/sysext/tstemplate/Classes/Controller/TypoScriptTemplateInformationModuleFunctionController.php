@@ -274,8 +274,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 
 			// Edit all icon:
 			$editOnClick = BackendUtility::editOnClick('&createExtension=0&edit[sys_template][' . $tplRow['uid'] . ']=edit');
-			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $lang->getLL('editTemplateRecord'))) . $lang->getLL('editTemplateRecord');
-			$outCode .= '<br /><a href="#" onclick="' . htmlspecialchars($editOnClick) . '"><strong>' . $icon . '</strong></a>';
+			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $lang->getLL('editTemplateRecord'))) . '&nbsp;' . $lang->getLL('editTemplateRecord');
+			$outCode .= '<br /><a class="btn btn-default" href="#" onclick="' . htmlspecialchars($editOnClick) . '"><strong>' . $icon . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);
 
 				// hook	after compiling the output

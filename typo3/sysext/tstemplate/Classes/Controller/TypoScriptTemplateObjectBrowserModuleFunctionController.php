@@ -330,21 +330,32 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			if ($existTemplate) {
 				// Value
 				$out = '';
-				$out .= htmlspecialchars($this->pObj->sObj) . ' =<br />';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $documentTemplate->formWidth(40) . ' />';
-				$out .= '<input class="btn btn-default" type="submit" name="update_value" value="' . $lang->getLL('updateButton') . '" />';
+				$out .= '<div class="form-group">';
+				$out .= '	<label>' . htmlspecialchars($this->pObj->sObj) . ' =' . '</label>';
+				$out .= '	<input class="form-control" type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $documentTemplate->formWidth(40) . ' />';
+				$out .= '	<input class="btn btn-default" type="submit" name="update_value" value="' . $lang->getLL('updateButton') . '" />';
+				$out .= '</div>';
 				$theOutput .= $this->pObj->doc->section($lang->getLL('editProperty'), $out, 0, 0);
 				// Property
-				$out = '<span class="text-nowrap">' . htmlspecialchars($this->pObj->sObj) . '.';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $documentTemplate->formWidth(20) . ' /> = </span><br />';
-				$out .= '<input type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $documentTemplate->formWidth(40) . ' />';
-				$out .= '<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
+				$out = '<div class="form-group">';
+				$out .= '	<label>' . htmlspecialchars($this->pObj->sObj) . '.';
+				$out .= '		<input class="form-control" type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $documentTemplate->formWidth(20) . ' /> = ';
+				$out .= '	</label>';
+				$out .= '	<input class="form-control" type="text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $documentTemplate->formWidth(40) . ' />';
+				$out .= '	<input class="btn btn-default" type="submit" name="add_property" value="' . $lang->getLL('addButton') . '" />';
+				$out .= '</div>';
 				$theOutput .= $this->pObj->doc->spacer(20);
 				$theOutput .= $this->pObj->doc->section($lang->getLL('addProperty'), $out, 0, 0);
 				// clear
-				$out = htmlspecialchars($this->pObj->sObj) . ' <strong>' . $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('clear'), 'toUpper') . '</strong> &nbsp;&nbsp;';
-				$out .= '<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
-				$out .= '<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
+				$out = '<div class="form-group">';
+				$out .= '	<div class="checkbox">';
+				$out .= '		<label>';
+				$out .= '			' . htmlspecialchars($this->pObj->sObj) . $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('clear'), 'toUpper');
+				$out .= '			<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
+				$out .= '		</label>';
+				$out .= '		<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
+				$out .= '	</div>';
+				$out .= '</div>';
 				$theOutput .= $this->pObj->doc->spacer(20);
 				$theOutput .= $this->pObj->doc->section($lang->getLL('clearObject'), $out, 0, 0);
 				$theOutput .= $this->pObj->doc->spacer(10);
@@ -375,7 +386,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			}
 			// back
 			$out = $lang->getLL('back');
-			$out = '<a href="' . htmlspecialchars($aHref) . '"><strong>' . $out . '</strong></a>';
+			$out = '<a href="' . htmlspecialchars($aHref) . '" class="btn btn-default"><strong><i class="fa fa-chevron-left"></i>&nbsp;' . $out . '</strong></a>';
 			$theOutput .= $this->pObj->doc->divider(5);
 			$theOutput .= $this->pObj->doc->section('', $out);
 		} else {
