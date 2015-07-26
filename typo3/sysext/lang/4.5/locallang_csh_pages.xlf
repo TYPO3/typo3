@@ -21,7 +21,7 @@ Depending on the 'Type,' a page may also represent general storage for database 
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe:pagetree,
 tt_content,
-About pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Pagetree/</source>
+About pages | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageTree/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
@@ -63,7 +63,7 @@ The restrictions that apply to each Page Type is defined in the global array $PA
 			</trans-unit>
 			<trans-unit id="_doktype.seeAlso" xml:space="preserve">
 				<source>be_groups:pagetypes_select,
-About $PAGES_TYPES | http://typo3.org/documentation/document-library/doc_core_api/PAGES_TYPES/</source>
+About $PAGES_TYPES | http://docs.typo3.org/typo3cms/CoreApiReference/PageTypes/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_doktype.image">
@@ -88,7 +88,7 @@ It is recommended that only admin users have access to this field!</source>
 			</trans-unit>
 			<trans-unit id="_TSconfig.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info:tsconfig_hierarchy,
-More about Page TSconfig | http://typo3.org/documentation/document-library/doc_core_tsconfig/Page_TSconfig/</source>
+More about Page TSconfig | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_TSconfig.image">
@@ -130,7 +130,7 @@ If you click the red "+" the page will be mounted temporarily in the navigation 
 A General Record Storage Page is typically a page of the "Folder" type.</source>
 			</trans-unit>
 			<trans-unit id="_storage_pid.seeAlso">
-				<source>The Storage Folder | http://typo3.org/documentation/document-library/doc_tut_ftb1/The_Storage_Folder/</source>
+				<source>The Storage Folder | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/SpecialPages/Index.html#folders</source>
 			</trans-unit>
 			<trans-unit id="editlock.description">
 				<source>If set, non-admin users cannot edit the page properties or any records on the page, but may still edit subpages. They cannot create new records or pages on the page either.</source>

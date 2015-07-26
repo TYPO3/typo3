@@ -67,7 +67,7 @@ The configuration is subject to being overridden in other groups and by the TSco
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>fe_users,
-About access restricting pages | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_restricted_pa/</source>
+About access restricting pages | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/PasswordProtectedPages/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:context_help/Resources/Public/Images/cshimages/fegroups_3.png,

@@ -20,8 +20,8 @@ A module is a backend application which has it's own position in the administrat
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>xMOD_csh_corebe,
-Core / Extension Architecture | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/
-Managing Extensions | http://typo3.org/documentation/document-library/doc_core_inside/Backend_user_setup/</source>
+Core / Extension Architecture | http://docs.typo3.org/typo3cms/InsideTypo3Reference/
+Managing Extensions | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Extensions/ManagingExtensions/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="loaded.alttitle">
@@ -224,8 +224,8 @@ The Kickstarter is NOT an editor! When a new extension is started you cannot - a
 			</trans-unit>
 			<trans-unit id="_makenew.seeAlso" xml:space="preserve">
 				<source>Register Extension Keys | http://typo3.org/extensions/register-extension-keys/
-Extension API | http://typo3.org/documentation/document-library/doc_core_api/Introduction-f289e83016/
-Documentation Matrix | http://typo3.org/documentation/document-library/Matrix/</source>
+Extension API | http://docs.typo3.org/typo3cms/CoreApiReference/ExtensionArchitecture/
+Documentation Matrix | http://docs.typo3.org/typo3cms/</source>
 			</trans-unit>
 			<trans-unit id="_makenew.image">
 				<source>EXT:lang/cshimages/em_9.png</source>

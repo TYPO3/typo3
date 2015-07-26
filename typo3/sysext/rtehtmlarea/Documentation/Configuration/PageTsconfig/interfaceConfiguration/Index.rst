@@ -1902,7 +1902,7 @@ buttons.link.properties.target.default
 .. _buttons-link-type-properties-target-default:
 
 buttons.link.[ *type* ].properties.target.default
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. container:: table-row
 
@@ -2608,10 +2608,11 @@ contentCSS
          fileadmin/styles/my\_contentCSS.css
 
          Multiple files may be specified by using contentCSS.[id-string].
-         For example:
+         For example::
+
          contentCSS {
-         	file1 = fileadmin/myStylesheet1.css
-         	file2 = fileadmin/myStylesheet2.css
+             file1 = fileadmin/myStylesheet1.css
+             file2 = fileadmin/myStylesheet2.css
          }
 
 
@@ -2633,10 +2634,7 @@ proc
          Customization of the server processing of the content - also called
          'transformations'.
 
-         See `http://typo3.org/documentation/document-library/core-
-         documentation/doc\_core\_api/current/view/5/2/
-         <http://typo3.org/documentation/document-library/core-
-         documentation/doc_core_api/current/view/5/2/>`_
+         See :ref:`t3api:transformations`
 
 
 

@@ -10,7 +10,7 @@
 				<source>"Page Content" records are sortable and can be rearranged. The "Language" and "Column" selectors of the "Page Content" records determines when and where they appear. If you do not change the value of the "Language" and "Column" selectors the Content Element will appear in the default configuration.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
-				<source>Page Content Principles | http://typo3.org/documentation/document-library/doc_tut_quickstart/Page_content/,
+				<source>Page Content Principles | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
 _MOD_web_layout</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
@@ -81,7 +81,7 @@ This is plain HTML content. Anything added in the HTML Code of this Content Elem
 			<trans-unit id="_CType.seeAlso" xml:space="preserve">
 				<source>tt_content:colPos,
 tt_content:sys_language_uid,
-About Content Elements | http://typo3.org/documentation/document-library/doc_tut_quickstart/Content_element_type/</source>
+About Content Elements | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_CType.image">
@@ -306,7 +306,7 @@ tt_content:imagecaption,
 tt_content:image_effects,
 tt_content:image_frames,
 tt_content:image_compression,
-Using images ("Getting Started") | http://typo3.org/documentation/document-library/doc_tut_quickstart/Managing_files_in_TY/
+Using images ("Getting Started") | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>

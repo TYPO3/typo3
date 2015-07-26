@@ -10,7 +10,7 @@
 				<source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
 			</trans-unit>
 			<trans-unit id="_username.seeAlso">
-				<source>Creating Frontend Users and Groups | http://typo3.org/documentation/document-library/doc_tut_quickstart/Create_users_group/</source>
+				<source>Creating Frontend Users and Groups | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
 			</trans-unit>
 			<trans-unit id="password.description">
 				<source>Enter the password for the username above. This is needed to login.</source>
@@ -120,7 +120,7 @@ return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
 				<source>TypoScript syntax, without conditions and constants.</source>
 			</trans-unit>
 			<trans-unit id="_TSconfig.seeAlso" xml:space="preserve">
-				<source>TSconfig for TSFE | http://typo3.org/documentation/document-library/doc_core_tsconfig/TCEMAIN/
+				<source>TSconfig for TSFE | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
 pages:TSconfig,
 fe_groups:TSconfig,
 be_users:TSconfig,

@@ -12,9 +12,9 @@ Notice that by each release of TYPO3 you should reinstall the Static Templates t
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>sys_template
-TSref | http://typo3.org/documentation/document-library/doc_core_tsref/
-TypoScript by Example | http://typo3.org/documentation/document-library/doc_core_tsbyex/
-Install/Upgrade | http://typo3.org/documentation/document-library/doc_inst_upgr/,
+TSref | http://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+Install/Upgrade | http://docs.typo3.org/typo3cms/InstallationGuide/,
 sys_template:include_static</source>
 			</trans-unit>
 			<trans-unit id="_.image">

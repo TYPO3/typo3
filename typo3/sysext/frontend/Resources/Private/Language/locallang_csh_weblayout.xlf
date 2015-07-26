@@ -36,14 +36,14 @@ For instance "mod.web_layout.tt_content.colPos_list = 0,3" will set the display 
 There are many other options for customization of the Page module in the object path "mod.web_layout" and Administrators should refer to the "TSconfig" reference linked to below.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
-				<source>Configuring the Page module [Technical] | http://typo3.org/documentation/document-library/doc_core_tsconfig/TSFE/,
+				<source>Configuring the Page module [Technical] | http://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TSFE/,
 xMOD_csh_corebe:history_log,
 xMOD_csh_corebe:new_ce,
 xMOD_csh_corebe:move_el_pages,
 xMOD_csh_corebe:new_pages,
 xMOD_csh_corebe:TCEforms,
 About the page module | http://typo3.org/documentation/tips-tricks/the-new-page-editing-concept/
-Editing a page | http://typo3.org/documentation/document-library/doc_tut_quickstart/Edit_page/
+Editing a page | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/
 The Page Module (Animation) | Using the page tree (Animation) | FILE:EXT:welcome/modsub/ani_05.gif</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">

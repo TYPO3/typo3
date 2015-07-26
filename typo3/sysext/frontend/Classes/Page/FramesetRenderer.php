@@ -62,7 +62,7 @@ class FramesetRenderer {
 	 * @param int $typeNum The typenumber to use for the link.
 	 * @return string String with attributes for the frame-tag. With a prefixed space character.
 	 * @access private
-	 * @link http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/7/9/
+	 * @link http://docs.typo3.org/typo3cms/TyposcriptReference/Setup/Frameset/
 	 */
 	public function frameParams($setup, $typeNum) {
 		$paramStr = '';
