@@ -212,7 +212,7 @@ class ExtensionManagerConfigurationUtility {
 				$this->setErrorLevel('warning');
 				$problems[] = $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSalted') . '<br />
 					<strong><i>' . $lang->getLL('ext.saltedpasswords.configuration.label.warning') . '</i></strong> ' .
-					$lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNote');
+					$lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNoteForBackend');
 			} else {
 				// Inform the user that things like openid won't work anymore
 				$this->setErrorLevel('info');
@@ -318,7 +318,7 @@ class ExtensionManagerConfigurationUtility {
 					$this->setErrorLevel('warning');
 					$problems[] = nl2br($lang->getLL('ext.saltedpasswords.configuration.message.infoForceSalted')) .
 						'<strong><i>' . $lang->getLL('ext.saltedpasswords.configuration.label.important') .
-						'</i></strong> ' . $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNote');
+						'</i></strong> ' . $lang->getLL('ext.saltedpasswords.configuration.message.warningForceSaltedNoteForFrontend');
 				} else {
 					// Inform the user that things like openid won't work anymore
 					$this->setErrorLevel('info');

@@ -97,7 +97,7 @@ Use the Install Tool to set the Security-Level for the backend to "normal" ($TYP
 			<trans-unit id="ext.saltedpasswords.configuration.label.warning">
 				<source>WARNING:</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNote">
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNoteForBackend">
 				<source>This may lock you out of the backend!</source>
 			</trans-unit>
 			<trans-unit id="ext.saltedpasswords.configuration.message.infoOnlyBackendAuthService">
@@ -136,10 +136,7 @@ It is not possible to set "updatePasswd" and "forceSalted" at the same time. Ple
 			<trans-unit id="ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured">
 				<source>The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it. Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel] to "normal" in the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured">
-				<source>The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it. Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel] to "normal" in the Install Tool.</source>
-			</trans-unit>
-			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNote">
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNoteForFrontend">
 				<source>Because of this, it is not possible to login with users not having a salted password hash (e.g. existing frontend users).</source>
 			</trans-unit>
 			<trans-unit id="ext.saltedpasswords.configuration.message.infoOnlyFrontendAuthService">
