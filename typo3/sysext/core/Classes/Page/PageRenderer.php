@@ -1486,7 +1486,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			// first, load all paths for the namespaces, and configure contrib libs.
 			$this->requireJsConfig['paths'] = array(
 				'jquery-ui' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery-ui',
-				'jquery' => $this->backPath . rtrim($this->jQueryPath, '/'),
 				'datatables' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/jquery.dataTables',
 				'nprogress' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/nprogress',
 				'moment' => $this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/moment',
@@ -2029,7 +2028,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 				// make sure the global TYPO3 is available
 				$inlineSettings = 'var TYPO3 = TYPO3 || {};' . CRLF . $inlineSettings;
 				$out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
-				if (TYPO3_MODE === 'BE') {
+				// Add language module only if also jquery is guaranteed to be there
+				if (TYPO3_MODE === 'BE' && !empty($this->jQueryVersions)) {
 					$this->loadRequireJsModule('TYPO3/CMS/Lang/Lang');
 				}
 			}

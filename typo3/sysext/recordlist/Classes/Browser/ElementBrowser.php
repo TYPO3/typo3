@@ -369,8 +369,10 @@ class ElementBrowser {
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
-		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree');
+		$pageRenderer = $this->getPageRenderer();
+		$pageRenderer->loadJquery();
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree');
 	}
 
 	/**
