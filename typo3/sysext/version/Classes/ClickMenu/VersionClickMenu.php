@@ -15,11 +15,26 @@ namespace TYPO3\CMS\Version\ClickMenu;
  */
 
 use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * "Versioning" item added to click menu of elements.
  */
 class VersionClickMenu {
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Initialize
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Main function, adding the item to input menuItems array
@@ -43,7 +58,7 @@ class VersionClickMenu {
 			$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $uid));
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS['LANG']->getLLL('title', $LL),
-				$backRef->excludeIcon('<span class="t3-icon fa fa-refresh"></span>'),
+				$backRef->excludeIcon($this->iconFactory->getIcon('actions-version-open', Icon::SIZE_SMALL)),
 				$backRef->urlRefForCM($url),
 				TRUE
 			);

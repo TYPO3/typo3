@@ -13,6 +13,10 @@ namespace TYPO3\CMS\Version\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,14 +40,13 @@ class VersionView {
 		}
 		if ($GLOBALS['BE_USER']->workspace == 0) {
 			// Get Current page record:
-			$curPage = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id);
+			$curPage = BackendUtility::getRecord('pages', $id);
 			// If the selected page is not online, find the right ID
 			$onlineId = $curPage['pid'] == -1 ? $curPage['t3ver_oid'] : $id;
 			// Select all versions of online version:
-			$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
+			$versions = BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
 			// If more than one was found...:
 			if (count($versions) > 1) {
-				$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.label', TRUE) . '</strong>';
 				// Create selector box entries:
 				$opt = array();
 				foreach ($versions as $vRow) {
@@ -55,39 +58,49 @@ class VersionView {
 					}
 					$opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $vRow['uid']))) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 				}
+				/** @var $iconFactory \TYPO3\CMS\Core\Imaging\IconFactory */
+				$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 				// Add management link:
-				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', TRUE) . '" onclick="window.location.href=\'' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '\';" />';
+				$management = '
+					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '">
+						' . $iconFactory->getIcon('actions-version-open', Icon::SIZE_SMALL) . '
+						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', TRUE) . '
+					</a>';
 				// Create onchange handler:
 				$onChange = 'window.location.href=this.options[this.selectedIndex].value;';
 				// Controls:
 				if ($id == $onlineId) {
-					$controls = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', TRUE) . '</strong>';
+					$controls = '<strong class="text-success">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.online', TRUE) . '</strong>';
 				} elseif (!$noAction) {
 					$href = $GLOBALS['TBE_TEMPLATE']->issueCommand(
 						'&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id . '&cmd[pages][' . $onlineId . '][version][action]=swap',
 						GeneralUtility::linkThisScript(array('id' => $onlineId))
 					);
-					$controls = '<a href="' . htmlspecialchars($href) . '" class="text-nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-version', array(
-						'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', TRUE),
-						'style' => 'margin-left:5px;vertical-align:bottom;'
-					)) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap', TRUE) . '</strong></a>';
+					$controls = '
+						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', TRUE) . '">
+							' . $iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL) . '
+							' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap', TRUE) . '
+						</a>';
 				}
 				// Write out HTML code:
 				return '
 					<!--
 						Version selector:
 					-->
-					<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
-						<tr>
-							<td>' . $selectorLabel . '</td>
-							<td>
-								<select onchange="' . htmlspecialchars($onChange) . '">
-									' . implode('', $opt) . '
-								</select></td>
-							<td>' . $controls . '</td>
-							<td>' . $management . '</td>
-						</tr>
-					</table>
+					<div id="typo3-version-selector" class="form-inline form-inline-spaced">
+						<div class="form-group">
+							<label for="version-selector">' . $GLOBALS['LANG']->sL('LLL:EXT:version/Resources/Private/Language/locallang.xlf:versionSelect.label', TRUE) . '</label>
+							<select id="version-selector" class="form-control" onchange="' . htmlspecialchars($onChange) . '">
+								' . implode('', $opt) . '
+							</select>
+						</div>
+						<div class="form-group">
+							' . $controls . '
+						</div>
+						<div class="form-group">
+							' . $management . '
+						</div>
+					</div>
 				';
 			}
 		}

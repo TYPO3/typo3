@@ -50,6 +50,12 @@ table {
 // Default table styling
 //
 .table {
+	.table {
+		+ .table {
+			margin-top: 6px;
+		}
+		margin: 0;
+	}
 	background-color: @table-bg;
 	border: 1px solid @table-border-color;
 	* {

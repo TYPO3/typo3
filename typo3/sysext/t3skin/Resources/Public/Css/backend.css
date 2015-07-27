@@ -10476,6 +10476,12 @@ table {
   background-color: #fafafa;
   border: 1px solid #cccccc;
 }
+.table .table {
+  margin: 0;
+}
+.table .table + .table {
+  margin-top: 6px;
+}
 .table * {
   box-sizing: border-box;
 }
@@ -10749,8 +10755,8 @@ fieldset[disabled] .table .btn-default.active {
 .panel .panel-heading {
   font-weight: bold;
 }
-.panel .table,
-.panel .table-fit {
+.panel > .table,
+.panel > .table-fit {
   border: 0;
   margin: 0;
 }
@@ -13823,41 +13829,11 @@ div.typo3-module-lang div.progress-bar {
   margin-left: 6px;
   display: block;
 }
-div.workspace-info {
+.workspace-info {
   padding: 7px;
 }
-table.workspace-overview td {
+.workspace-overview td {
   vertical-align: top;
-}
-table.ver-subtree tr td img {
-  vertical-align: middle;
-}
-.t3-version-infolayer {
-  z-index: 1;
-  visibility: hidden;
-  position: absolute;
-}
-table.ver-verElement {
-  width: 100%;
-}
-.ver-wl-details-table {
-  width: 100%;
-  margin: 5px 0 10px;
-}
-.ver-wl-details {
-  padding: 0 2px;
-  vertical-align: top;
-}
-.ver-wl-details-label {
-  width: 150px;
-  vertical-align: top;
-}
-.ver-wl-details-user-list-label {
-  width: 100px;
-}
-#ver-wl-new-workspace-icon {
-  margin-right: 5px;
-  float: left;
 }
 input.c-inputButton,
 img.c-inputButton {
@@ -13925,16 +13901,6 @@ table.typo3-dblist-overview td.c-tableDescription {
 }
 table.typo3-dblist-overview td.c-tableDescription img {
   margin-right: 10px;
-}
-table#typo3-versionSelector {
-  margin-bottom: 5px;
-  margin-top: 5px;
-  padding: 5px;
-}
-table#typo3-versionSelector td {
-  padding-left: 2px;
-  padding-right: 2px;
-  vertical-align: middle;
 }
 div#typo3-newRecordLink,
 div.typo3-newRecordLink,
@@ -14047,88 +14013,6 @@ pre.ts-hl .ts-linenum {
 }
 #typo3-pagetree .workspace-info {
   background-color: #ffec97;
-  font-weight: bold;
-}
-table#typo3-versionSelector {
-  background-color: #ffec97;
-  border: 1px solid #a2aab8;
-}
-.ver-element div.treeLinkItem,
-.ver-versions div.treeLinkItem,
-.ver-page div.treeLinkItem {
-  background-color: #ffec97;
-}
-.ver-branch div.treeLinkItem,
-.ver-branchpoint div.treeLinkItem {
-  background-color: #ff9999;
-}
-.ver-element ul div.treeLinkItem,
-.ver-versions ul div.treeLinkItem,
-.ver-page ul div.treeLinkItem,
-.ver-branch div.treeLinkItem,
-.ver-branchpoint div.treeLinkItem {
-  background-color: transparent;
-}
-table.ver-subtree a {
-  text-decoration: none;
-}
-table.ver-subtree tr td.iconTitle {
-  white-space: nowrap;
-}
-table.ver-subtree tr td.diffCell {
-  white-space: normal;
-}
-table.ver-subtree table.diffTable {
-  background-color: white;
-  border: 1px solid black;
-}
-table.ver-subtree tr.typo3-ver td.iconTitle,
-table.ver-subtree tr.typo3-ver td.diffCell,
-table.ver-subtree tr.typo3-ver td.cmdCell {
-  background-color: #c5c1b5;
-}
-table.ver-subtree tr.typo3-ver-hl td.iconTitle,
-table.ver-subtree tr.typo3-ver-hl td.diffCell,
-table.ver-subtree tr.typo3-ver-hl td.cmdCell {
-  background-color: #999;
-}
-table.ver-subtree tr.typo3-ver-new td {
-  background-color: #eee;
-  color: #666;
-}
-table.ver-subtree tr.typo3-ver-noComp td {
-  font-style: italic;
-}
-table.ver-subtree div.diffLayer,
-div.logLayer {
-  background-color: white;
-  border: 1px solid black;
-}
-table.ver-subtree,
-table.ver-verElement td.c-diffCell {
-  border: 1px solid #666;
-}
-.ver-wl-table {
-  border: 1px solid black;
-}
-.ver-wl-details-table {
-  border: 1px solid #cccccc;
-}
-.ver-wl-details {
-  background-color: #ffffff;
-}
-.ver-wl-details-label {
-  background-color: #ffffff;
-  white-space: nowrap;
-}
-#ver-wl-new-workspace-icon {
-  border: none;
-}
-.ver-wl-mp-inacessible {
-  color: #7c7c7c;
-  font-style: italic;
-}
-.ver-wl-current-user {
   font-weight: bold;
 }
 .t3icon-ext-upload {

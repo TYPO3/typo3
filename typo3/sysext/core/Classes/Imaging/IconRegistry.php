@@ -188,6 +188,30 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'square-o',
 			)
 		),
+		'actions-page-open' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'pencil-square-o',
+			)
+		),
+		'actions-system-list-open' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'list-alt',
+			)
+		),
+		'actions-version-open' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'refresh',
+			)
+		),
+		'actions-version-swap-version' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exchange',
+			)
+		),
 		'actions-unmarkstate' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -195,7 +219,15 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
-		// OVERLAYS
+		// Status
+		'status-status-current' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-right text-danger',
+			)
+		),
+
+		// Overlays
 		'overlay-read-only' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
