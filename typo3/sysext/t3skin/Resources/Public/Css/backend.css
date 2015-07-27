@@ -10074,12 +10074,6 @@ body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
 .slider-disabled .slider-track {
   cursor: not-allowed;
 }
-span.spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  background-image: url('../../../../images/spinner/f1f1f1.gif');
-}
 span.checkbox-spinner {
   position: absolute;
   margin-left: -20px;
