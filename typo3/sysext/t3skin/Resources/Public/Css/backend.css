@@ -12320,6 +12320,16 @@ iframe {
 [id="typo3-menu"] .typo3-module-menu-group-icon {
   background-color: transparent;
 }
+[id="typo3-menu"] .typo3-module-menu-group-icon > span {
+  line-height: 28px;
+}
+[id="typo3-menu"] .typo3-module-menu-group-icon > span > .t3-icon {
+  width: 28px;
+  height: 28px;
+}
+[id="typo3-menu"] .typo3-module-menu-group-icon > span > .t3-icon:before {
+  line-height: 28px;
+}
 [id="typo3-menu"] .typo3-module-menu-group-icon:after {
   display: none;
 }

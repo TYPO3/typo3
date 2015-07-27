@@ -111,6 +111,16 @@
 	}
 	.typo3-module-menu-group-icon {
 		background-color: transparent;
+		> span {
+			line-height: @app-icon-height;
+			> .t3-icon {
+				width: @app-icon-width;
+				height: @app-icon-height;
+				&:before {
+					line-height: @app-icon-height;
+				}
+			}
+		}
 		&:after {
 			display: none;
 		}
