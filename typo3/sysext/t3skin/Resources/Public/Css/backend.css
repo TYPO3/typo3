@@ -8783,9 +8783,6 @@ iframe,
   max-width: none!important;
   max-height: none!important;
 }
-.t3-help-link {
-  display: inline!important;
-}
 .typo3-csh-inline {
   padding: 4px;
 }
@@ -10096,7 +10093,6 @@ span.checkbox-spinner {
   margin-left: 2px;
 }
 .nav-tabs > li > a {
-  display: block!important;
   margin-right: 0;
   -webkit-transition: all 0.25s ease-in-out;
   -o-transition: all 0.25s ease-in-out;
