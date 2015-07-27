@@ -8,7 +8,7 @@ CREATE TABLE tx_scheduler_task (
 	description text NOT NULL,
 	nextexecution int(11) unsigned DEFAULT '0' NOT NULL,
 	lastexecution_time int(11) unsigned DEFAULT '0' NOT NULL,
-	lastexecution_failure text NOT NULL,
+	lastexecution_failure text,
 	lastexecution_context char(3) DEFAULT '' NOT NULL,
 	serialized_task_object blob,
 	serialized_executions blob,
