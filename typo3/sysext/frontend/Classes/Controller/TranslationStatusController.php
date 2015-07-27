@@ -223,7 +223,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$editIco = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 				. '" title="' . $lang->sL(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageProperties'
-				) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+				) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
 			$editIco = '';
 		}
@@ -247,11 +247,15 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$tCells[] = '<td>&nbsp;</td>';
 				}
 				// Create new overlay records:
-				$params = '\'' .
-					$newOL_js[$langRow['uid']] .
-					'+\'&columnsOnly=title,hidden,sys_language_uid&defVals[pages_language_overlay][sys_language_uid]=' .
-					$langRow['uid'];
-				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+				$params = '&columnsOnly=title,hidden,sys_language_uid&overrideVals[pages_language_overlay][sys_language_uid]=' . $langRow['uid'];
+				$onClick = BackendUtility::editOnClick($params);
+				if (!empty($newOL_js[$langRow['uid']])) {
+					$onClickArray = explode('\'', $onClick);
+					$lastElement = array_pop($onClickArray);
+					array_push($onClickArray, $newOL_js[$langRow['uid']] . $lastElement);
+					$onClick = implode('\'', $onClickArray);
+				}
+				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars($onClick)
 					. '" title="' . $lang->sL(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
 					) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a></td>';
