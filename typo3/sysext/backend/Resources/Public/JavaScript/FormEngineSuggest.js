@@ -23,16 +23,20 @@ define('TYPO3/CMS/Backend/FormEngineSuggest', ['jquery', 'jquery/autocomplete'],
 			pid = $searchField.data('pid'),
 			newRecordRow = $searchField.data('recorddata'),
 			minimumCharacters = $searchField.data('minchars'),
-			url = TYPO3.settings.ajaxUrls['t3lib_TCEforms_suggest::searchRecord']
-				  + '&table=' + table
-				  + '&field=' + field
-				  + '&uid=' + uid
-				  + '&pid=' + pid
-				  + '&newRecordRow=' + newRecordRow;
+			url = TYPO3.settings.ajaxUrls['t3lib_TCEforms_suggest::searchRecord'],
+			params = {
+				'table': table,
+				'field': field,
+				'uid': uid,
+				'pid': pid,
+				'newRecordRow': newRecordRow
+			};
 
 		$searchField.autocomplete({
 			// ajax options
 			serviceUrl: url,
+			params: params,
+			type: 'POST',
 			paramName: 'value',
 			dataType: 'json',
 			minChars: minimumCharacters,
