@@ -254,9 +254,9 @@ class SuggestWizard {
 	 * @param string $table
 	 * @param string &$field The field identifier, either a simple table field or a Flexform field path separated with |
 	 * @param array $row The row we're dealing with; optional (only required for Flexform records)
-	 * @param array &$fieldConfig
+	 * @param array|NULL &$fieldConfig
 	 */
-	protected function overrideFieldNameAndConfigurationForFlexform($table, &$field, array $row, array &$fieldConfig) {
+	protected function overrideFieldNameAndConfigurationForFlexform($table, &$field, array $row, &$fieldConfig) {
 		// check if field is a flexform reference
 		if (strpos($field, '|') === FALSE) {
 			$fieldConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
