@@ -288,11 +288,15 @@ class FolderTreeView extends AbstractTreeView {
 				$firstHtml = '';
 			} else {
 				// Only show and link icon if storage is browseable
-				$link = '';
-				if ($this->thisScript) {
-					$link = ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"';
+				if (get_class($this) !== ElementBrowserFolderTreeView::class) {
+					$link = '';
+					if ($this->thisScript) {
+						$link = ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"';
+					}
+					$firstHtml = '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
+				} else {
+					$firstHtml = $this->PMiconATagWrap('', $cmd, !$isOpen);
 				}
-				$firstHtml = '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
 			}
 			// Mark a storage which is not online, as offline
 			// maybe someday there will be a special icon for this
@@ -313,7 +317,8 @@ class FolderTreeView extends AbstractTreeView {
 				'row' => $row,
 				'bank' => $this->bank,
 				// hasSub is TRUE when the root of the storage is expanded
-				'hasSub' => $isOpen && $storageObject->isBrowsable()
+				'hasSub' => $isOpen && $storageObject->isBrowsable(),
+				'invertedDepth' => 1000,
 			);
 			// If the mount is expanded, go down:
 			if ($isOpen && $storageObject->isBrowsable()) {

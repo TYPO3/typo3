@@ -160,6 +160,9 @@ define(['jquery'], function($) {
 
 		// selects the activated item again, in case it collapsed and got expanded again
 		reSelectActiveItem: function() {
+			if (!top.fsMod) {
+				return;
+			}
 			var $activeItem = $('#' + top.fsMod.navFrameHighlightedID[this.frameSetModule]);
 			if ($activeItem.length) {
 				$activeItem.addClass(Tree.highlightClass);
