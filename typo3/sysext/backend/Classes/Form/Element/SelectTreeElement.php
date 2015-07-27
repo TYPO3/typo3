@@ -226,9 +226,9 @@ class SelectTreeElement extends AbstractFormElement {
 				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
 				: 'tree' . $id . '.height = ' . $height . ';'
 			) . LF .
-			'(function() {
-					tree' . $id . '.render("tree_' . $id . '");
-				}).defer(200);
+			'window.setTimeout(function() {
+				tree' . $id . '.render("tree_' . $id . '");
+			}, 200);
 		');
 		$formField = '
 			<div class="typo3-tceforms-tree">
