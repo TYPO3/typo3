@@ -3,7 +3,7 @@ return array(
 	'ctrl' => array(
 		'title' => 'Form engine tests - rte_4 inline_1 child 1',
 		'label' => 'text_1',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
+		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

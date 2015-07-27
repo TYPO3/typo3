@@ -9,7 +9,7 @@ return array(
 		'delete' => 'deleted',
 		'sortby' => 'sorting',
 		'default_sortby' => 'ORDER BY crdate',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('styleguide') . 'Resources/Public/Icons/tx_styleguide_forms.png',
+		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png',
 
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
