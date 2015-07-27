@@ -13068,9 +13068,6 @@ iframe {
 #typo3-dblist-sysnotes .single-note:hover .header span {
   color: #d7d7d7;
 }
-.contentelement-wizard a {
-  display: inline-block;
-}
 .typo3-extensionmanager-headerRowLeft {
   float: left;
 }
