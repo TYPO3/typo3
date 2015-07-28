@@ -5636,11 +5636,6 @@ page.30.value = Here goes the footer]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="adminPanelStyles" type="boolean">
-			<description><![CDATA[Will include CSS styles for the Admin Panel.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="bgImg" type="imgResource">
 			<description><![CDATA[Background image on the page. This is automatically added to the body-tag.]]></description>
 			<default><![CDATA[

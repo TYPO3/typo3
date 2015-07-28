@@ -538,20 +538,6 @@ class PageGenerator {
 			$style .= '
 	BODY {margin: ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px;}';
 		}
-		if ($tsfe->pSetup['adminPanelStyles']) {
-			$style .= '
-
-	/* Default styles for the Admin Panel */
-	TABLE.typo3-adminPanel { border: 1px solid black; background-color: #F6F2E6; }
-	TABLE.typo3-adminPanel TR.typo3-adminPanel-hRow TD { background-color: #9BA1A8; }
-	TABLE.typo3-adminPanel TR.typo3-adminPanel-itemHRow TD { background-color: #ABBBB4; }
-	TABLE.typo3-adminPanel TABLE, TABLE.typo3-adminPanel TD { border: 0px; }
-	TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: black; }
-	TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }
-	TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
-	TABLE.typo3-editPanel TD { border: 0px; }
-			';
-		}
 		// CSS_inlineStyle from TS
 		$style .= trim($tsfe->pSetup['CSS_inlineStyle']);
 		$style .= $tsfe->cObj->cObjGet($tsfe->pSetup['cssInline.'], 'cssInline.');
