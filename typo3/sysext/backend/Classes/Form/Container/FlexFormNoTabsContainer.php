@@ -52,7 +52,8 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 			$displayConditionDefinition = $flexFormDataStructureArray['ROOT']['TCEforms']['displayCond'];
 			$displayConditionResult = $this->evaluateFlexFormDisplayCondition(
 				$displayConditionDefinition,
-				$flexFormRowDataSubPart
+				$flexFormRowDataSubPart,
+				$flexFormCurrentLanguage
 			);
 		}
 		if (!$displayConditionResult) {

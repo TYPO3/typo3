@@ -262,9 +262,10 @@ abstract class AbstractContainer extends AbstractNode {
 	 *
 	 * @param string $displayCondition The condition to evaluate
 	 * @param array $flexFormData Given data the condition is based on
+	 * @param string $flexFormLanguage Flex form language key
 	 * @return bool TRUE if condition matched
 	 */
-	protected function evaluateFlexFormDisplayCondition($displayCondition, $flexFormData) {
+	protected function evaluateFlexFormDisplayCondition($displayCondition, $flexFormData, $flexFormLanguage) {
 		$elementConditionMatcher = GeneralUtility::makeInstance(ElementConditionMatcher::class);
 
 		$splitCondition = GeneralUtility::trimExplode(':', $displayCondition);
@@ -272,11 +273,10 @@ abstract class AbstractContainer extends AbstractNode {
 		$fakeRow = array();
 		switch ($splitCondition[0]) {
 			case 'FIELD':
-				// @todo: Not 100% sure if that is correct this way
 				list($_sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splitCondition[1]);
-				$fieldValue = $flexFormData[$fieldName];
+				$fieldValue = $flexFormData[$_sheetName][$flexFormLanguage][$fieldName];
 				$splitCondition[1] = $fieldName;
-				$dataStructure['ROOT']['TCEforms']['displayCond'] = join(':', $splitCondition);
+				$displayCondition = join(':', $splitCondition);
 				$fakeRow = array($fieldName => $fieldValue);
 				break;
 			case 'HIDE_FOR_NON_ADMINS':
