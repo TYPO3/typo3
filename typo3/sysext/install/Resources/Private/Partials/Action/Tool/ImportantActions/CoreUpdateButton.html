@@ -40,7 +40,15 @@
 					</div>
 				</div>
 				<div class="message-body">
-					This feature is disabled in this installation (through the environment variable <code>TYPO3_DISABLE_CORE_UPDATER=1</code>)
+					This feature is disabled in this installation.<br />
+					<f:if condition="{composerMode}">
+						<f:then>
+							(Composer Mode is active. Please update using composer commands.)
+						</f:then>
+						<f:else>
+							(The environment variable was set <code>TYPO3_DISABLE_CORE_UPDATER=1</code>.)
+						</f:else>
+					</f:if>
 				</div>
 			</div>
 		</f:else>

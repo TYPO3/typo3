@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -92,7 +93,7 @@ class CoreUpdateService {
 	 */
 	public function isCoreUpdateEnabled() {
 		$coreUpdateDisabled = getenv('TYPO3_DISABLE_CORE_UPDATER') ?: (getenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER') ?: FALSE);
-		return !$coreUpdateDisabled;
+		return !Bootstrap::getInstance()->usesComposerClassLoading() && !$coreUpdateDisabled;
 	}
 
 	/**

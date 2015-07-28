@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -73,6 +74,7 @@ class ImportantActions extends Action\AbstractAction {
 		$coreUpdateService = $this->objectManager->get(\TYPO3\CMS\Install\Service\CoreUpdateService::class);
 		$this->view
 			->assign('enableCoreUpdate', $coreUpdateService->isCoreUpdateEnabled())
+			->assign('composerMode', Bootstrap::getInstance()->usesComposerClassLoading())
 			->assign('operatingSystem', $operatingSystem)
 			->assign('cgiDetected', GeneralUtility::isRunningOnCgiServerApi())
 			->assign('databaseName', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'])
