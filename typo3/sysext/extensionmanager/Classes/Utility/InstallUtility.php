@@ -515,9 +515,12 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		);
 		if ($extensionUpdates->count() > 0) {
 			foreach ($extensionUpdates as $extensionUpdate) {
-				$this->dependencyUtility->checkDependencies($extensionUpdate);
-				if (!$this->dependencyUtility->hasDependencyErrors()) {
-					return $extensionUpdate;
+				try {
+					$this->dependencyUtility->checkDependencies($extensionUpdate);
+					if (!$this->dependencyUtility->hasDependencyErrors()) {
+						return $extensionUpdate;
+					}
+				} catch (ExtensionManagerException $e) {
 				}
 			}
 		}
