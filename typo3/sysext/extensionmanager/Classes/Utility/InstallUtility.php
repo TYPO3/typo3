@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
  * Extension Manager Install Utility
@@ -431,9 +433,12 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		);
 		if ($extensionUpdates->count() > 0) {
 			foreach ($extensionUpdates as $extensionUpdate) {
-				$this->dependencyUtility->checkDependencies($extensionUpdate);
-				if (!$this->dependencyUtility->hasDependencyErrors()) {
-					return $extensionUpdate;
+				try {
+					$this->dependencyUtility->checkDependencies($extensionUpdate);
+					if (!$this->dependencyUtility->hasDependencyErrors()) {
+						return $extensionUpdate;
+					}
+				} catch (ExtensionManagerException $e) {
 				}
 			}
 		}
