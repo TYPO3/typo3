@@ -296,12 +296,11 @@ class Bootstrap {
 	 */
 	protected function sendResponse() {
 		if ($this->response instanceof \Psr\Http\Message\ResponseInterface) {
-			// Send the response headers only if no header was sent before
-			if (!headers_sent() && empty(headers_list())) {
+			if (!headers_sent()) {
 				foreach ($this->response->getHeaders() as $name => $values) {
 					header($name . ': ' . implode(', ', $values), FALSE);
 				}
-				// Send the response type
+				// send the response type
 				header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() . ' ' . $this->response->getReasonPhrase());
 			}
 			echo $this->response->getBody()->__toString();
