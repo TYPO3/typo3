@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Script Class for the New Content element wizard
@@ -238,9 +239,11 @@ class NewContentElementController {
 					}
 
 					$icon = $wInfo['icon'];
-					if (strpos($wInfo['icon'], '..') === FALSE) {
+					if (strpos($wInfo['icon'], '..') === FALSE && !GeneralUtility::isAbsPath($icon)) {
 						$icon = GeneralUtility::getFileAbsFileName($icon, TRUE, TRUE);
-						$icon = substr($icon, strlen(PATH_typo3));
+						$pathInfo = PathUtility::pathinfo($icon);
+						$path = PathUtility::getRelativePathTo($pathInfo['dirname']);
+						$icon = $path . $pathInfo['basename'];
 					}
 					$menuItems[$key]['content'] .= '
 						<div class="media">
