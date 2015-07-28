@@ -1608,7 +1608,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// Traverse page translations and add icon for each language that does NOT yet exist:
 			$lNew = '';
 			foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
-				if ($this->isEditable && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
+				if ($this->isEditable($table) && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
 					$url = substr($this->listURL(), strlen($this->backPath));
 					$href = $this->getModule()->doc->issueCommand(
 						'&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
