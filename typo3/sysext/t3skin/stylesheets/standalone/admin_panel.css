@@ -15,7 +15,12 @@
   font-weight: normal;
   font-style: normal;
 }
-.fa, .fa:before {
+
+/*!
+ * Font Awesome icons are prefixed with #TSFE_ADMIN_PANEL_FORM to prevent issues with
+ * CSS from the website that uses Font Awesome too.
+ */
+#TSFE_ADMIN_PANEL_FORM .fa, .fa:before {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: 15px;
@@ -24,55 +29,55 @@
   -moz-osx-font-smoothing: grayscale;
   transform: translate(0, 0);
 }
-.fa-pencil:before {
+#TSFE_ADMIN_PANEL_FORM .fa-pencil:before {
   content: "\f040";
 }
-.fa-angle-up:before {
+#TSFE_ADMIN_PANEL_FORM .fa-angle-up:before {
   content: "\f106";
 }
-.fa-angle-down:before {
+#TSFE_ADMIN_PANEL_FORM .fa-angle-down:before {
   content: "\f107";
 }
-.fa-toggle-off:before {
+#TSFE_ADMIN_PANEL_FORM .fa-toggle-off:before {
   content: "\f204";
 }
-.fa-toggle-on:before {
+#TSFE_ADMIN_PANEL_FORM .fa-toggle-on:before {
   content: "\f205";
 }
-.fa-google-plus-square:before {
+#TSFE_ADMIN_PANEL_FORM .fa-google-plus-square:before {
   content: "\f0d4";
 }
-.fa-trash:before {
+#TSFE_ADMIN_PANEL_FORM .fa-trash:before {
   content: "\f1f8";
 }
-.fa-history:before {
+#TSFE_ADMIN_PANEL_FORM .fa-history:before {
   content: "\f1da";
 }
-.fa-list-alt:before {
+#TSFE_ADMIN_PANEL_FORM .fa-list-alt:before {
   content: "\f022";
 }
-.fa-plus-square:before {
+#TSFE_ADMIN_PANEL_FORM .fa-plus-square:before {
   content: "\f0fe";
 }
-.fa-arrows:before {
+#TSFE_ADMIN_PANEL_FORM .fa-arrows:before {
   content: "\f047";
 }
-.fa-exclamation-circle:before {
+#TSFE_ADMIN_PANEL_FORM .fa-exclamation-circle:before {
     content: "\f06a";
 }
-.fa-exclamation-triangle:before {
+#TSFE_ADMIN_PANEL_FORM .fa-exclamation-triangle:before {
     content: "\f071";
 }
-.fa-info-circle:before {
+#TSFE_ADMIN_PANEL_FORM .fa-info-circle:before {
     content: "\f05a";
 }
-.fa-caret-down:before {
+#TSFE_ADMIN_PANEL_FORM .fa-caret-down:before {
     content: "\f0d7";
 }
-.fa-caret-up:before {
+#TSFE_ADMIN_PANEL_FORM .fa-caret-up:before {
     content: "\f0d8";
 }
-.fa-bolt:before {
+#TSFE_ADMIN_PANEL_FORM .fa-bolt:before {
 	content: "\f0e7";
 }
 
