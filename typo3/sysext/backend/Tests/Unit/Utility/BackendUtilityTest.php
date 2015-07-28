@@ -1223,7 +1223,7 @@ class BackendUtilityTest extends UnitTestCase {
 				),
 				array(
 					'origUid' => 1,
-					'field2' => 'basic',
+					'field2' => 'fdas',
 					'field3' => 'trans',
 				)
 			),
@@ -1231,7 +1231,7 @@ class BackendUtilityTest extends UnitTestCase {
 				'foo',
 				array(
 					'origUid' => 1,
-					'field2' => 'fdas',
+					'field2' => '',
 					'field3' => 'trans',
 				),
 				array(
