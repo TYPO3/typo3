@@ -163,7 +163,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 				'template' => 'all'
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			$this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" name="editForm" class="form-inline">';
+			$this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" name="editForm" class="form">';
 
 			// JavaScript
 			$this->doc->JScode = '
@@ -187,7 +187,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
 				.ts-typoscript { width: 100%; }
-				.tsob-menu-row2 {margin-top: 10px;}
 				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
 				.tst-analyzer-options { margin:5px 0; }
 			';

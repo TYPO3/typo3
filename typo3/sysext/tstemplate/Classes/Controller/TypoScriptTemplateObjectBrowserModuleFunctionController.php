@@ -475,7 +475,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$theOutput .= '</div>';
 
 			// second row options
-			$menu = '<div class="tsob-menu-row2">';
+			$menu = '<div id="typo3-listOptions">';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_showComments">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
 			$menu .= $lang->getLL('displayComments') . '</label></div>';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
@@ -483,12 +483,12 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_fixedLgd">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_fixedLgd]', $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'], '', '', 'id="checkTs_browser_fixedLgd"');
 			$menu .= $lang->getLL('cropLines') . '</label></div>';
 			if ($bType == 'setup' && !$this->pObj->MOD_SETTINGS['ts_browser_fixedLgd']) {
-				$menu .= '<div class="form-inline form-inline-spaced"><label>' . $lang->getLL('displayConstants') . '</label>';
+				$menu .= '<div class="form"><label>' . $lang->getLL('displayConstants') . '</label>';
 				$menu .= BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_const]', $this->pObj->MOD_SETTINGS['ts_browser_const'], $this->pObj->MOD_MENU['ts_browser_const']);
 				$menu .= '</div>';
 			}
 			$menu .= '</div>';
-			$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), '<span class="text-nowrap">' . $menu . '</span>', 0, 1);
+			$theOutput .= $this->pObj->doc->section($lang->getLL('displayOptions'), $menu, 0, 1);
 			// Conditions:
 			if (is_array($templateService->sections) && !empty($templateService->sections)) {
 				$theOutput .= $this->pObj->doc->section($lang->getLL('conditions'), '', 0, 1);
@@ -498,7 +498,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 					$out .= '<input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />' . $templateService->substituteCMarkers(htmlspecialchars($val));
 					$out .= '</label></div>';
 				}
-				$theOutput .=  '<div class="tsob-menu-row2">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $lang->getLL('setConditions') . '" />';
+				$theOutput .=  '<div id="typo3-listOptions">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $lang->getLL('setConditions') . '" />';
 			}
 			// Ending section:
 			$theOutput .= $this->pObj->doc->sectionEnd();
