@@ -145,7 +145,7 @@
 				<source>php /path/to/your/typo3/cli_dispatch.phpsh lowlevel_refindex -e</source>
 			</trans-unit>
 			<trans-unit id="checkScript_more">
-				<source>Make sure that a BE user with the name _cli_lowlevel exists. For more details see: /path/to/your/typo3/sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</source>
+				<source>Make sure that a BE user with the name _cli_lowlevel exists. For more details see: /path/to/your/typo3/sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt or /path/to/your/typo3/sysext/lowlevel/README.rst (since TYPO3 7 LTS).</source>
 			</trans-unit>
 			<trans-unit id="checkScript_information">
 				<source>If you run these commands from the command line, make sure that a BE user with the name _cli_lowlevel exists.</source>
