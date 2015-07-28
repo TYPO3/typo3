@@ -781,7 +781,7 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 		// order would be destroyed and possible limits not met anymore)
 		if (!empty($pageRepository->versioningWorkspaceId)
 			&& !empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])
-			&& $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] >= 2
+			&& (int)$GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] >= 2
 			&& count($rows) === 1
 		) {
 			$movePlaceholder = $this->databaseHandle->exec_SELECTgetSingleRow(
