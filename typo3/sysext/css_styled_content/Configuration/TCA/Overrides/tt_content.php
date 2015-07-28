@@ -400,14 +400,6 @@ array_splice(
 $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(
 	$GLOBALS['TCA']['tt_content']['palettes'],
 	array(
-		'10' => array(
-			'showitem' => '
-				table_bgColor,
-				table_border,
-				table_cellspacing,
-				table_cellpadding
-			'
-		),
 		'header' => array(
 			'showitem' => '
 				header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_formlabel,
@@ -581,7 +573,6 @@ $GLOBALS['TCA']['tt_content']['types']['table']['showitem'] = '
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,rowDescription,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.5,
-		--palette--;;10,
 		cols,
 		bodytext,
 		pi_flexform,
