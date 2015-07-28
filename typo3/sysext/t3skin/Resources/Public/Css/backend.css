@@ -9018,6 +9018,9 @@ table.typo3-CSM tr.typo3-CSM-itemRow td .t3-icon {
 table.typo3-CSM tr.typo3-CSM-itemRow td img {
   display: block;
 }
+table.typo3-CSM tr.typo3-CSM-itemRow:hover {
+  background-color: #e9e9e9;
+}
 table.typo3-CSM td.typo3-CSM-item {
   white-space: nowrap;
 }
