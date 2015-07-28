@@ -88,7 +88,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef', ['jquery'], function (
 			if (typeof arr['extends'] !== 'undefined') {
 				TsRef.typeTree[typeId]['extends'] = arr['extends'];
 			}
-			for (propName in arr.properties) {
+			for (var propName in arr.properties) {
 				var propType = arr.properties[propName].type;
 				TsRef.typeTree[typeId].properties[propName] = new TsRef.TsRefProperty(typeId, propName, propType);
 			}
@@ -121,9 +121,9 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef', ['jquery'], function (
 					TsRef.addPropertiesToType(TsRef.typeTree[exts[i]], TsRef.typeTree[exts[i]]['extends'], maxRecDepth-1);
 				}
 				var properties = TsRef.typeTree[exts[i]].properties;
-				for (propName in properties) {
+				for (var propName in properties) {
 					// only add this property if it was not already added by a supertype (subtypes override supertypes)
-					if (typeof addToType.properties[propName] !== 'undefined') {
+					if (typeof addToType.properties[propName] === 'undefined') {
 						addToType.properties[propName] = properties[propName];
 					}
 				}
