@@ -816,9 +816,6 @@ class DatabaseConnection {
 		if ($allowNull && $str === NULL) {
 			return 'NULL';
 		}
-		if (is_bool($str)) {
-			$str = (int)$str;
-		}
 
 		return '\'' . $this->link->real_escape_string($str) . '\'';
 	}
