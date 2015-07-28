@@ -55,6 +55,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, '/', '/')
 		));
 		$mockedStorage->expects($this->any())->method('checkFolderActionPermission')->will($this->returnValue(TRUE));
+		$mockedStorage->expects($this->any())->method('isBrowsable')->will($this->returnValue(TRUE));
 		return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $identifier, $identifier);
 	}
 
