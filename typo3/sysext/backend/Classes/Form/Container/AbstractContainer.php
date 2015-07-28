@@ -160,11 +160,9 @@ abstract class AbstractContainer extends AbstractNode {
 	protected function overrideTypeWithValueFromDefaultLanguageRecord($table, array $row, $field, $fieldConf) {
 		$value = $row[$field];
 		if (is_array($this->defaultLanguageData[$table . ':' . $row['uid']])) {
-			// @todo: Is this a bug? Currently the field from default lang is picked in mergeIfNotBlank mode if the
-			// @todo: default value is not empty, but imho it should only be picked if the language overlay record *is* empty?!
 			if (
 				$fieldConf['l10n_mode'] === 'exclude'
-				|| $fieldConf['l10n_mode'] === 'mergeIfNotBlank' && trim($this->defaultLanguageData[$table . ':' . $row['uid']][$field]) !== ''
+				|| ($fieldConf['l10n_mode'] === 'mergeIfNotBlank' && trim($row[$field] === ''))
 			) {
 				$value = $this->defaultLanguageData[$table . ':' . $row['uid']][$field];
 			}
