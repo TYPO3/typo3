@@ -23,39 +23,39 @@ Example
 
 .. code-block:: typoscript
 
-mod {
-	web_layout {
-		BackendLayouts {
-			exampleKey {
-				title = Example
-				config {
-					backend_layout {
-						colCount = 1
-						rowCount = 2
-						rows {
-							1 {
-								columns {
-									1 {
-										name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.3
-										colPos = 3
-										colspan = 1
+	mod {
+		web_layout {
+			BackendLayouts {
+				exampleKey {
+					title = Example
+					config {
+						backend_layout {
+							colCount = 1
+							rowCount = 2
+							rows {
+								1 {
+									columns {
+										1 {
+											name = LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos.I.3
+											colPos = 3
+											colspan = 1
+										}
 									}
 								}
-							}
-							2 {
-								columns {
-									1 {
-										name = Main
-										colPos = 0
-										colspan = 1
+								2 {
+									columns {
+										1 {
+											name = Main
+											colPos = 0
+											colspan = 1
+										}
 									}
 								}
 							}
 						}
 					}
+					icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif
 				}
-				icon = EXT:example_extension/Resources/Public/Images/BackendLayouts/default.gif
 			}
 		}
 	}
-}
