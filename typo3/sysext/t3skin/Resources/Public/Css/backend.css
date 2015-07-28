@@ -10869,8 +10869,8 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   line-height: 1.75em;
   position: relative;
 }
-.list-tree li .list-tree-group {
-  padding-right: 15px;
+.list-tree li .list-tree-group > .pull-right {
+  padding-left: 15px;
 }
 .list-tree li.active > .list-tree-group,
 .list-tree li.active > .list-tree-group a {
