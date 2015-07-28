@@ -1014,20 +1014,6 @@ class BackendUtilityTest extends UnitTestCase {
 				),
 				' AND dummytable.uid=42'
 			),
-			'replaceMarkersInWhereClause replaces current record cid with integer' => array(
-				' AND dummytable.uid=###THIS_CID###',
-				array(
-					'_THIS_CID' => 42
-				),
-				' AND dummytable.uid=42'
-			),
-			'replaceMarkersInWhereClause replaces current record cid with string' => array(
-				' AND dummytable.uid=###THIS_CID###',
-				array(
-					'_THIS_CID' => '42string'
-				),
-				' AND dummytable.uid=42'
-			),
 			'replaceMarkersInWhereClause replaces storage pid with integer' => array(
 				' AND dummytable.uid=###STORAGE_PID###',
 				array(
@@ -1088,7 +1074,6 @@ class BackendUtilityTest extends UnitTestCase {
 				' AND dummytable.uid=###REC_FIELD_uid###' .
 				' AND dummytable.pid=###CURRENT_PID###' .
 				' AND dummytable.l18n_parent=###THIS_UID###' .
-				' AND dummytable.cid=###THIS_CID###' .
 				' AND dummytable.storage_pid=###STORAGE_PID###' .
 				' AND dummytable.siteroot=###SITEROOT###' .
 				' AND dummytable.config_uid=###PAGE_TSCONFIG_ID###' .
@@ -1101,7 +1086,6 @@ class BackendUtilityTest extends UnitTestCase {
 					),
 					'_CURRENT_PID' => '1',
 					'_THIS_UID' => 2,
-					'_THIS_CID' => 3,
 					'_STORAGE_PID' => 4,
 					'_SITEROOT' => 5,
 					'dummyfield' => array(
@@ -1111,7 +1095,7 @@ class BackendUtilityTest extends UnitTestCase {
 					)
 				),
 				' AND dummytable.title=\'Hello World\' AND dummytable.uid=\'42\' AND dummytable.pid=1' .
-				' AND dummytable.l18n_parent=2 AND dummytable.cid=3 AND dummytable.storage_pid=4' .
+				' AND dummytable.l18n_parent=2 AND dummytable.storage_pid=4' .
 				' AND dummytable.siteroot=5 AND dummytable.config_uid=6 AND dummytable.idlist IN (1,2,3)' .
 				' AND dummytable.string=\'string\'',
 			),

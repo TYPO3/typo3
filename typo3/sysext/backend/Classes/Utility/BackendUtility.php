@@ -3499,7 +3499,6 @@ class BackendUtility {
 	 * Special markers are:
 	 * ###REC_FIELD_[field name]###
 	 * ###THIS_UID### - is current element uid (zero if new).
-	 * ###THIS_CID###
 	 * ###CURRENT_PID### - is the current page id (pid of the record).
 	 * ###STORAGE_PID###
 	 * ###SITEROOT###
@@ -3533,7 +3532,6 @@ class BackendUtility {
 			array (
 				'###CURRENT_PID###',
 				'###THIS_UID###',
-				'###THIS_CID###',
 				'###STORAGE_PID###',
 				'###SITEROOT###',
 				'###PAGE_TSCONFIG_ID###',
@@ -3543,7 +3541,6 @@ class BackendUtility {
 			array(
 				(int)$tsConfig['_CURRENT_PID'],
 				(int)$tsConfig['_THIS_UID'],
-				(int)$tsConfig['_THIS_CID'],
 				(int)$tsConfig['_STORAGE_PID'],
 				(int)$tsConfig['_SITEROOT'],
 				(int)$tsConfig[$field]['PAGE_TSCONFIG_ID'],
@@ -3585,7 +3582,6 @@ class BackendUtility {
 		}
 		$res['_CURRENT_PID'] = $cPid;
 		$res['_THIS_UID'] = $row['uid'];
-		$res['_THIS_CID'] = $row['cid'];
 		// So the row will be passed to foreign_table_where_query()
 		$res['_THIS_ROW'] = $row;
 		$rootLine = self::BEgetRootLine($TScID, '', TRUE);
