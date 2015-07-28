@@ -144,6 +144,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		$humanReadableField.on('change', function() {
 			FormEngineValidation.updateInputField($(this).attr('name'));
 		});
+		$humanReadableField.on('keyup', FormEngineValidation.validate);
 
 		$checkboxField.data('main-field', fieldName);
 		$checkboxField.data('config', config);
