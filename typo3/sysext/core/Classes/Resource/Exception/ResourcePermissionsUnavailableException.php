@@ -19,5 +19,5 @@ namespace TYPO3\CMS\Core\Resource\Exception;
  *
  * Extending \RuntimeException for backwards compatibility.
  */
-class ResourcePermissionsException extends \RuntimeException {
+class ResourcePermissionsUnavailableException extends \TYPO3\CMS\Core\Resource\Exception {
 }

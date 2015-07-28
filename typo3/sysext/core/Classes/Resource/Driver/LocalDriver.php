@@ -1174,13 +1174,13 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 *
 	 * @param string $identifier
 	 * @return array
-	 * @throws Exception\ResourcePermissionsException
+	 * @throws Exception\ResourcePermissionsUnavailableException
 	 */
 	public function getPermissions($identifier) {
 		$path = $this->getAbsolutePath($identifier);
 		$permissionBits = fileperms($path);
 		if ($permissionBits === FALSE) {
-			throw new Exception\ResourcePermissionsException('Error while fetching permissions for ' . $path, 1319455097);
+			throw new Exception\ResourcePermissionsUnavailableException('Error while fetching permissions for ' . $path, 1319455097);
 		}
 		return array(
 			'r' => (bool)is_readable($path),

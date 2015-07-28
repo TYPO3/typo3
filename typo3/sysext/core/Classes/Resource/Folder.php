@@ -375,7 +375,7 @@ class Folder implements FolderInterface {
 	public function checkActionPermission($action) {
 		try {
 			return $this->getStorage()->checkFolderActionPermission($action, $this);
-		} catch (Exception\ResourcePermissionsException $e) {
+		} catch (Exception\ResourcePermissionsUnavailableException $e) {
 			return FALSE;
 		}
 	}
