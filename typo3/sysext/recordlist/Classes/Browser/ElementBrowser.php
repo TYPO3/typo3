@@ -2121,8 +2121,8 @@ class ElementBrowser {
 		$lang = $this->getLanguageService();
 		if (!$folder->getStorage()->isPublic()) {
 			// Print this warning if the folder is NOT a web folder
-			return $this->barheader($lang->getLL('files'))
-				. $this->getMsgBox($lang->getLL('noWebFolder'), 'status-dialog-warning');
+			return GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noWebFolder'), $lang->getLL('files'), FlashMessage::WARNING)
+				->render();
 		}
 		$out = '';
 
@@ -2138,9 +2138,11 @@ class ElementBrowser {
 		// Init row-array:
 		$lines = array();
 		// Add "drag-n-drop" message:
+		$infoText = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('findDragDrop'), '', FlashMessage::INFO)
+			->render();
 		$lines[] = '
 			<tr>
-				<td colspan="2">' . $this->getMsgBox($lang->getLL('findDragDrop')) . '</td>
+				<td colspan="2">' . $infoText . '</td>
 			</tr>';
 		// Traverse files:
 		foreach ($files as $fileObject) {
@@ -2225,24 +2227,6 @@ class ElementBrowser {
 		return '
 			<!-- Bar header: -->
 			<h3>' . htmlspecialchars($str) . '</h3>
-			';
-	}
-
-	/**
-	 * Displays a message box with the input message
-	 *
-	 * @param string $inputMessage Input message to show (will be htmlspecialchars()'ed inside of this function)
-	 * @param string $icon Sprite sprite name. Default is 'actions-document-info'.
-	 * @return string HTML for the message (wrapped in a table).
-	 */
-	public function getMsgBox($inputMessage, $icon = 'actions-document-info') {
-		return '
-			<!-- Message box -->
-			<table cellspacing="0" class="bgColor4" id="typo3-msgBox">
-				<tr>
-					<td>' . IconUtility::getSpriteIcon($icon) . htmlspecialchars($inputMessage) . '</td>
-				</tr>
-			</table>
 			';
 	}
 

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
 
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Service\MagicImageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -487,7 +488,8 @@ class SelectImage extends ElementBrowser {
 				// Add help message
 				$helpMessage = $this->getHelpMessage($this->act);
 				if ($helpMessage) {
-					$this->content .= $this->getMsgBox($helpMessage);
+					$this->content .= GeneralUtility::makeInstance(FlashMessage::class, $helpMessage, '', FlashMessage::INFO)
+						->render();
 				}
 				// Adding create folder + upload form if applicable
 				if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
