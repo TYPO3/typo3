@@ -228,7 +228,7 @@ class FileController {
 		$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
 		/** @var Folder $fileTargetObject */
 		$fileTargetObject = $fileFactory->retrieveFileOrFolderObject($fileTarget);
-		$processedFileName = $fileTargetObject->getStorage()->processUploadedFileName($fileTargetObject, $fileName);
+		$processedFileName = $fileTargetObject->getStorage()->sanitizeFileName($fileName, $fileTargetObject);
 
 		$result = FALSE;
 		if ($fileTargetObject->hasFile($processedFileName)) {

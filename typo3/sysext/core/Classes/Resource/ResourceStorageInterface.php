@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Resource;
  */
 interface ResourceStorageInterface {
 
+	const SIGNAL_SanitizeFileName = 'sanitizeFileName';
 	const SIGNAL_PreFileAdd = 'preFileAdd';
 	const SIGNAL_PostFileAdd = 'postFileAdd';
 	const SIGNAL_PostFileCreate = 'postFileCreate';

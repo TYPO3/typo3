@@ -1054,26 +1054,23 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
-	 * Process uploaded file name
+	 * Clean a fileName from not allowed characters
 	 *
+	 * @param string $fileName The name of the file to be add, If not set, the local file name is used
 	 * @param Folder $targetFolder The target folder where the file should be added
-	 * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
 	 *
 	 * @throws \InvalidArgumentException
 	 * @throws Exception\ExistingTargetFileNameException
 	 * @return FileInterface
 	 */
-	public function processUploadedFileName(Folder $targetFolder, $targetFileName) {
-
+	public function sanitizeFileName($fileName, Folder $targetFolder = NULL) {
 		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
-		$targetFileName = $this->driver->sanitizeFileName($targetFileName);
-
-		$this->assureFileAddPermissions($targetFolder, $targetFileName);
+		$fileName = $this->driver->sanitizeFileName($fileName);
 
 		// The file name could be changed by an external slot
-		$targetFileName = $this->emitPreFileAddSignal($targetFileName, $targetFolder);
+		$fileName = $this->emitSanitizeFileNameSignal($fileName, $targetFolder);
 
-		return $targetFileName;
+		return $fileName;
 	}
 
 
@@ -1098,13 +1095,11 @@ class ResourceStorage implements ResourceStorageInterface {
 			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
 		$targetFolder = $targetFolder ?: $this->getDefaultFolder();
-		$targetFileName = $this->driver->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath));
+		$targetFileName = $this->sanitizeFileName($targetFileName ?: PathUtility::basename($localFilePath), $targetFolder);
+
+		$targetFileName = $this->emitPreFileAddSignal($targetFileName, $targetFolder, $localFilePath);
 
 		$this->assureFileAddPermissions($targetFolder, $targetFileName);
-
-		// We do not care whether the file exists yet because $targetFileName may be changed by an
-		// external slot and only then we should check how to proceed according to $conflictMode
-		$targetFileName = $this->emitPreFileAddSignal($targetFileName, $targetFolder, $localFilePath);
 
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
 			throw new Exception\ExistingTargetFileNameException('File "' . $targetFileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
@@ -2255,6 +2250,18 @@ class ResourceStorage implements ResourceStorageInterface {
 	}
 
 	/**
+	 * Emits sanitize fileName signal.
+	 *
+	 * @param string $fileName
+	 * @param Folder $targetFolder
+	 * @return string Modified target file name
+	 */
+	protected function emitSanitizeFileNameSignal($fileName, Folder $targetFolder) {
+		list($fileName) = $this->getSignalSlotDispatcher()->dispatch(ResourceStorage::class, self::SIGNAL_SanitizeFileName, array($fileName, $targetFolder, $this, $this->driver));
+		return $fileName;
+	}
+
+	/**
 	 * Emits file pre-add signal.
 	 *
 	 * @param string $targetFileName
@@ -2262,7 +2269,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param string $sourceFilePath
 	 * @return string Modified target file name
 	 */
-	protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath = '') {
+	protected function emitPreFileAddSignal($targetFileName, Folder $targetFolder, $sourceFilePath) {
 		$this->getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Core\Resource\ResourceStorage::class, self::SIGNAL_PreFileAdd, array(&$targetFileName, $targetFolder, $sourceFilePath, $this, $this->driver));
 		return $targetFileName;
 	}
