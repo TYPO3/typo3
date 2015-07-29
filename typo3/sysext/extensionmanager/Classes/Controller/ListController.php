@@ -71,7 +71,7 @@ class ListController extends AbstractController {
 	 * Adds an information about composer mode
 	 */
 	protected function addComposerModeNotification() {
-		if (Bootstrap::getInstance()->usesComposerClassLoading()) {
+		if (Bootstrap::usesComposerClassLoading()) {
 			$this->addFlashMessage(
 				LocalizationUtility::translate(
 					'composerMode.message',

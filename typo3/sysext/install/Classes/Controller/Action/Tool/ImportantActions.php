@@ -74,7 +74,7 @@ class ImportantActions extends Action\AbstractAction {
 		$coreUpdateService = $this->objectManager->get(\TYPO3\CMS\Install\Service\CoreUpdateService::class);
 		$this->view
 			->assign('enableCoreUpdate', $coreUpdateService->isCoreUpdateEnabled())
-			->assign('composerMode', Bootstrap::getInstance()->usesComposerClassLoading())
+			->assign('composerMode', Bootstrap::usesComposerClassLoading())
 			->assign('operatingSystem', $operatingSystem)
 			->assign('cgiDetected', GeneralUtility::isRunningOnCgiServerApi())
 			->assign('databaseName', $GLOBALS['TYPO3_CONF_VARS']['DB']['database'])

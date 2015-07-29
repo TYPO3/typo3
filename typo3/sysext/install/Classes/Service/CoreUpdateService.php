@@ -93,7 +93,7 @@ class CoreUpdateService {
 	 */
 	public function isCoreUpdateEnabled() {
 		$coreUpdateDisabled = getenv('TYPO3_DISABLE_CORE_UPDATER') ?: (getenv('REDIRECT_TYPO3_DISABLE_CORE_UPDATER') ?: FALSE);
-		return !Bootstrap::getInstance()->usesComposerClassLoading() && !$coreUpdateDisabled;
+		return !Bootstrap::usesComposerClassLoading() && !$coreUpdateDisabled;
 	}
 
 	/**
