@@ -13,68 +13,95 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Resizes a given image (if required) and renders the respective img tag
- * In general just calls the parent image view helper but catches
- * the "file does not exist" exception thrown by the file abstraction layer
+ * Render an img tag for given image src. If $src doesn't exist and
+ * $fallbackImage is given check if that file exists and render img tag.
+ *
+ * If no existing file is found no tag is rendered.
  *
  * = Examples =
  *
  * <code title="Default">
- * <f:image src="EXT:myext/Resources/Public/typo3_logo.png" alt="alt text" />
+ *     <em:image src="EXT:myext/Resources/Public/typo3_logo.png" alt="alt text" />
  * </code>
  * <output>
- * <img alt="alt text" src="typo3conf/ext/myext/Resources/Public/typo3_logo.png" width="396" height="375" />
- * or (in BE mode):
- * <img alt="alt text" src="../typo3conf/ext/viewhelpertest/Resources/Public/typo3_logo.png" width="396" height="375" />
- * </output>
- *
- * <code title="Inline notation">
- * {f:image(src: 'EXT:viewhelpertest/Resources/Public/typo3_logo.png', alt: 'alt text', minWidth: 30, maxWidth: 40)}
- * </code>
- * <output>
- * <img alt="alt text" src="../typo3temp/pics/f13d79a526.png" width="40" height="38" />
- * (depending on your TYPO3s encryption key)
+ *     <img alt="alt text" src="../typo3conf/ext/myext/Resources/Public/typo3_logo.png" />
  * </output>
  *
  * <code title="non existing image">
- * <f:image src="NonExistingImage.png" alt="foo" />
+ *     <f:image src="NonExistingImage.png" alt="foo" />
  * </code>
  * <output>
- * Could not get image resource for "NonExistingImage.png".
  * </output>
  *
  * @internal
  */
-class ImageViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper {
+class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+
+	/**
+	 * @var string
+	 */
+	protected $tagName = 'img';
+
+	/**
+	 * Initialize arguments.
+	 *
+	 * @return void
+	 */
+	public function initializeArguments() {
+		parent::initializeArguments();
+		$this->registerUniversalTagAttributes();
+		$this->registerTagAttribute('alt', 'string', 'Specifies an alternate text for an image', FALSE);
+	}
 
 	/**
 	 * Resizes a given image (if required) and renders the respective img tag
 	 *
 	 * @param string $src
-	 * @param string $width width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-	 * @param string $height height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.
-	 * @param int $minWidth minimum width of the image
-	 * @param int $minHeight minimum height of the image
-	 * @param int $maxWidth maximum width of the image
-	 * @param int $maxHeight maximum height of the image
+	 * @param int $width width of the image
+	 * @param int $height height of the image
 	 * @param string $fallbackImage an optional fallback image if the $src image cannot be loaded
 	 * @return string rendered tag.
 	 */
-	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL, $fallbackImage = '') {
-		$image = '';
-		try {
-			$image = parent::render($src, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
-		} catch (\Exception $e) {
-			if ($fallbackImage !== '') {
-				$image = static::render($fallbackImage, $width, $height, $minWidth, $minHeight, $maxWidth, $maxHeight);
-			}
-			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
-			$logger = $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger(__CLASS__);
-			$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, $e->getMessage());
+	public function render($src, $width = NULL, $height = NULL, $fallbackImage = '') {
+		$content = '';
+		$uri = $this->getImageUri($src);
+
+		if (empty($uri) && $fallbackImage !== '') {
+			$uri = $this->getImageUri($fallbackImage);
 		}
-		return $image;
+
+		if (!empty($uri)) {
+			if ($width) {
+				$this->tag->addAttribute('width', (int)$width);
+			}
+			if ($height) {
+				$this->tag->addAttribute('height', (int)$height);
+			}
+			$this->tag->addAttribute('src', $uri);
+			$content = $this->tag->render();
+		}
+
+		return $content;
 	}
 
+	/**
+	 * Get image uri
+	 *
+	 * @param string $src
+	 * @return string
+	 */
+	protected function getImageUri($src) {
+		$uri = GeneralUtility::getFileAbsFileName($src);
+		if ($uri !== '' && !file_exists($uri)) {
+			$uri = '';
+		}
+		if ($uri !== '') {
+			$uri = '../' . PathUtility::stripPathSitePrefix($uri);
+		}
+		return $uri;
+	}
 }

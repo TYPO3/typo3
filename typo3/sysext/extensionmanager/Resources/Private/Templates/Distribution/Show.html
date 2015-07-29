@@ -13,9 +13,12 @@
 	<div class="distribution-detail">
 		<div class="distribution-detail-previewpane">
 			<em:image
-				src="EXT:{extension.extensionKey}/Resources/Public/Images/DistributionWelcome.png" alt="{distribution.title}"
+				src="EXT:{extension.extensionKey}/Resources/Public/Images/DistributionWelcome.png"
+				fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
+				alt="{distribution.title}"
 				class="distribution-detail-preview"
-				/>
+				width="300"
+			/>
 		</div>
 		<div class="distribution-detail-body">
 			<div class="distribution-detail-header">
