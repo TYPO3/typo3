@@ -1635,7 +1635,8 @@ class DataHandler {
 		if ((int)$id !== 0) {
 			// Get current value:
 			$curValueRec = $this->recordInfo($table, $id, $field);
-			if (isset($curValueRec[$field])) {
+			// isset() won't work here, since values can be NULL
+			if (array_key_exists($field, $curValueRec)) {
 				$curValue = $curValueRec[$field];
 			}
 		}
@@ -3396,12 +3397,14 @@ class DataHandler {
 				$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 				// Preparation/Processing of the value:
 				// "pid" is hardcoded of course:
+				// isset() won't work here, since values can be NULL in each of the arrays
+				// except setDefaultOnCopyArray, since we exploded that from a string
 				if ($field == 'pid') {
 					$value = $destPid;
-				} elseif (isset($overrideValues[$field])) {
+				} elseif (array_key_exists($field, $overrideValues)) {
 					// Override value...
 					$value = $overrideValues[$field];
-				} elseif (isset($copyAfterFields[$field])) {
+				} elseif (array_key_exists($field, $copyAfterFields)) {
 					// Copy-after value if available:
 					$value = $copyAfterFields[$field];
 				} elseif ($GLOBALS['TCA'][$table]['ctrl']['setToDefaultOnCopy'] && isset($setDefaultOnCopyArray[$field])) {
