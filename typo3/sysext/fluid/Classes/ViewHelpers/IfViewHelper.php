@@ -84,13 +84,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
 class IfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
-	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
-	 *
-	 * @param bool $condition View helper condition
-	 * @return string the rendered string
-	 * @api
+	 * @return void
 	 */
-	public function render($condition) {
-		return parent::render();
+	public function initializeArguments() {
+		$this->registerArgument('condition', 'boolean', 'Condition to be evaluated.');
 	}
+
 }

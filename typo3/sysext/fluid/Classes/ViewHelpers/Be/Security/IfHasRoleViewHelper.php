@@ -63,15 +63,14 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
 class IfHasRoleViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
-	 * renders <f:then> child if the current logged in BE user belongs to the specified role (aka usergroup)
+	 * Initializes the "role" argument.
+	 * Renders <f:then> child if the current logged in BE user belongs to the specified role (aka usergroup)
 	 * otherwise renders <f:else> child.
 	 *
-	 * @param string $role The usergroup (either the usergroup uid or its title)
-	 * @return string the rendered string
-	 * @api
+	 * @return void
 	 */
-	public function render($role) {
-		return parent::render();
+	public function initializeArguments() {
+		$this->registerArgument('role', 'string', 'The usergroup (either the usergroup uid or its title).');
 	}
 
 	/**
