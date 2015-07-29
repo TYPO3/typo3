@@ -46,7 +46,9 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 		plugins: [
 			'TYPO3/CMS/T3editor/Plugins/CodeCompletion/DescriptionPlugin'
 		],
-		$codeCompleteBox: $('<div />', {class: 't3e_codeCompleteBox'}).hide()
+		$codeCompleteBox: $('<div />', {class: 't3e_codeCompleteWrap'}).append(
+			$('<div />', {class: 't3e_codeCompleteBox'})
+		)
 	};
 
 	/**
@@ -260,12 +262,13 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 	 * Eventhandler function executed after keystroke release
 	 * triggers CC on pressed dot and typing on
 	 *
-	 * @param event fired prototype event object
+	 * @param e fired prototype event object
 	 * @type void
 	 */
 	TsCodeCompletion.keyUp = function(e) {
 		// 190 = .
 		if (e.which === 190) {
+			TsCodeCompletion.initCodeCompletion();
 			TsCodeCompletion.refreshCodeCompletion();
 		} else if (TsCodeCompletion.cc === 1) {
 			// 38 = KEYUP, 40 = KEYDOWN
@@ -362,8 +365,18 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 		} else { // if autocompletion is deactivated and ctrl+space is pressed
 			if (e.which === 32 && (e.ctrlKey || e.metaKey)) {
 				e.preventDefault();
+				TsCodeCompletion.initCodeCompletion();
 				TsCodeCompletion.refreshCodeCompletion();
 			}
+		}
+	};
+
+	/**
+	 * Initializes the code completion
+	 */
+	TsCodeCompletion.initCodeCompletion = function() {
+		if (TsCodeCompletion.outerDiv.has(TsCodeCompletion.$codeCompleteBox).length === 0) {
+			TsCodeCompletion.outerDiv.append(TsCodeCompletion.$codeCompleteBox);
 		}
 	};
 
@@ -417,17 +430,17 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 			}
 
 			// put HTML and show box
-			TsCodeCompletion.$codeCompleteBox.html($ul);
-			TsCodeCompletion.$codeCompleteBox.show();
-			TsCodeCompletion.$codeCompleteBox.scrollTop(0);
+			var $codeCompleteBox = TsCodeCompletion.$codeCompleteBox.find('.t3e_codeCompleteBox');
+			$codeCompleteBox.html($ul);
+			$codeCompleteBox.scrollTop(0);
 
 			// init styles
-			TsCodeCompletion.$codeCompleteBox.css({
+			$codeCompleteBox.css({
 				overflow: 'scroll',
 				height: ((TsCodeCompletion.options.ccWords + 1) * $('#cc_word_0').height()) + 'px'
 			});
 
-			var wrapOffset = $('.t3e_iframe_wrap', document).offset(),
+			var wrapOffset = TsCodeCompletion.codemirror.options.originalTextarea.parent().find('.t3e_iframe_wrap').offset(),
 				$cursorNode = $(TsCodeCompletion.latestCursorNode),
 				nodeOffset = $cursorNode.offset();
 
@@ -461,7 +474,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 	 */
 	TsCodeCompletion.endAutoCompletion = function() {
 		TsCodeCompletion.cc = 0;
-		TsCodeCompletion.$codeCompleteBox.hide();
+		TsCodeCompletion.$codeCompleteBox.remove();
 		// force full refresh
 		TsCodeCompletion.compResult = null;
 		for (var i = 0; i < TsCodeCompletion.plugins.length; i++) {
@@ -494,7 +507,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 				TsCodeCompletion.cc_down = TsCodeCompletion.proposals.length - 1;
 				TsCodeCompletion.cc_up = TsCodeCompletion.cc_down - (TsCodeCompletion.options.ccWords - 1);
 			}
-			TsCodeCompletion.$codeCompleteBox.scrollTop(TsCodeCompletion.cc_up * 18);
+			TsCodeCompletion.$codeCompleteBox.find('.t3e_codeCompleteBox').scrollTop(TsCodeCompletion.cc_up * 18);
 		}
 	};
 
@@ -520,7 +533,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 				TsCodeCompletion.cc_up = 0;
 				TsCodeCompletion.cc_down = TsCodeCompletion.options.ccWords - 1;
 			}
-			TsCodeCompletion.$codeCompleteBox.scrollTop(TsCodeCompletion.cc_up * 18);
+			TsCodeCompletion.$codeCompleteBox.find('.t3e_codeCompleteBox').scrollTop(TsCodeCompletion.cc_up * 18);
 		}
 	};
 
@@ -570,17 +583,25 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 	};
 
 	$(document).on('t3editor:init', function(e, codemirror, $outerDiv) {
-		$outerDiv.append(TsCodeCompletion.$codeCompleteBox);
-		TsCodeCompletion.outerDiv = $outerDiv;
 		TsCodeCompletion.codemirror = codemirror;
+		TsCodeCompletion.outerDiv = $outerDiv;
 
 		TsCodeCompletion.parser = TsParser.init(TsCodeCompletion.tsRef, TsCodeCompletion.extTsObjTree);
 		TsCodeCompletion.tsRef.loadTsrefAsync();
 
-		$(TsCodeCompletion.codemirror.win).on('click', TsCodeCompletion.click);
-		$(TsCodeCompletion.codemirror.win).on('mousemove', TsCodeCompletion.saveMousePos);
-		$(TsCodeCompletion.codemirror.win).on('keydown', TsCodeCompletion.keyDown);
-		$(TsCodeCompletion.codemirror.win).on('keyup', TsCodeCompletion.keyUp);
+		$(codemirror.win)
+			.on('click', TsCodeCompletion.click)
+			.on('mousemove', TsCodeCompletion.saveMousePos)
+			.on('keydown', function(e) {
+				TsCodeCompletion.codemirror = codemirror;
+				TsCodeCompletion.outerDiv = $outerDiv;
+				TsCodeCompletion.keyDown(e);
+			})
+			.on('keyup', function(e) {
+				TsCodeCompletion.codemirror = codemirror;
+				TsCodeCompletion.outerDiv = $outerDiv;
+				TsCodeCompletion.keyUp(e);
+			});
 
 		TsCodeCompletion.loadExtTemplatesAsync();
 		TsCodeCompletion.loadPluginArray();

@@ -30,7 +30,9 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/DescriptionPlugin', [
 		DescriptionPlugin.codeCompleteBox = pluginContext.codeCompleteBox;
 		DescriptionPlugin.codemirror = pluginContext.codemirror;
 
-		DescriptionPlugin.codeCompleteBox.parent().append(DescriptionPlugin.$descriptionBox);
+		if (DescriptionPlugin.codeCompleteBox.has(DescriptionPlugin.$descriptionBox).length === 0) {
+			DescriptionPlugin.codeCompleteBox.append(DescriptionPlugin.$descriptionBox);
+		}
 	};
 
 	DescriptionPlugin.afterMouseOver = function(currWordObj, compResult) {
@@ -101,10 +103,9 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/DescriptionPlugin', [
 		DescriptionPlugin.$descriptionBox.addClass('descriptionBox');
 
 		var addX = 18,
-			leftOffset = parseInt(DescriptionPlugin.codeCompleteBox.css('left')) + parseInt(DescriptionPlugin.codeCompleteBox.width()) + addX;
+			leftOffset = parseInt(DescriptionPlugin.codeCompleteBox.width()) + addX;
 
 		DescriptionPlugin.$descriptionBox.css({
-			top: DescriptionPlugin.codeCompleteBox.css('top'),
 			left: leftOffset + 'px'
 		});
 

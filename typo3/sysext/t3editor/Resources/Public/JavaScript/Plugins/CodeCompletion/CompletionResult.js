@@ -54,7 +54,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/CompletionResult', ['jquery'],
 			value = CompletionResult.tsTreeNode.getValue();
 
 		// first get the childNodes of the Node (=properties defined by the user)
-		for (key in childNodes) {
+		for (var key in childNodes) {
 			if (typeof childNodes[key].value !== 'undefined' && childNodes[key].value !== null) {
 				var propObj = {};
 				propObj.word = key;
@@ -76,7 +76,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/CompletionResult', ['jquery'],
 
 		// then get the tsref properties
 		var props = CompletionResult.tsRef.getPropertiesFromTypeId(CompletionResult.tsTreeNode.getValue());
-		for (key in props) {
+		for (var key in props) {
 			// show just the TSREF properties - no properties of the array-prototype and no properties which have been defined by the user
 			if (typeof props[key].value !== 'undefined' && defined[key] !== true) {
 				var propObj = {};

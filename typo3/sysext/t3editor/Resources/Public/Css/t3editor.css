@@ -54,11 +54,13 @@ div.CodeMirror-line-numbers {
 	height: 20px;
 	float: left;
 }
-.t3e_codeCompleteBox {
+.t3e_codeCompleteWrap {
 	position: absolute;
 	top: 0; left: 0;
-	background-color: #EFEFF4;
 	z-index:190;
+}
+.t3e_codeCompleteBox {
+	background-color: #EFEFF4;
 	border:2px solid silver;
 	padding:0px;
 }
