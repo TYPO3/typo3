@@ -1114,9 +1114,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$type = 'text/javascript';
 		}
 		if (!isset($this->jsFiles[$file])) {
-			if (strpos($file, 'ajax.php?') !== FALSE) {
-				$compress = FALSE;
-			}
 			$this->jsFiles[$file] = array(
 				'file' => $file,
 				'type' => $type,
@@ -1151,9 +1148,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			$type = 'text/javascript';
 		}
 		if (!isset($this->jsFiles[$file])) {
-			if (strpos($file, 'ajax.php?') !== FALSE) {
-				$compress = FALSE;
-			}
 			$this->jsFiles[$file] = array(
 				'file' => $file,
 				'type' => $type,
