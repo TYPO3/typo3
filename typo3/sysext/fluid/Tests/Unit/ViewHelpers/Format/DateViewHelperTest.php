@@ -258,14 +258,14 @@ class DateViewHelperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (!setlocale(LC_COLLATE, $locale)) {
 			$this->markTestSkipped('Locale ' . $locale . ' is not available.');
 		}
-		$this->setLocale($locale);
+		$this->setCustomLocale($locale);
 		$this->assertEquals($expected, $viewHelper->render($timestamp, $format));
 	}
 
 	/**
 	 * @param string $locale
 	 */
-	protected function setLocale($locale) {
+	protected function setCustomLocale($locale) {
 		setlocale(LC_CTYPE, $locale);
 		setlocale(LC_MONETARY, $locale);
 		setlocale(LC_TIME, $locale);
