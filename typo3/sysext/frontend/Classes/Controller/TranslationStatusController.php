@@ -250,10 +250,10 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				$params = '&columnsOnly=title,hidden,sys_language_uid&overrideVals[pages_language_overlay][sys_language_uid]=' . $langRow['uid'];
 				$onClick = BackendUtility::editOnClick($params);
 				if (!empty($newOL_js[$langRow['uid']])) {
-					$onClickArray = explode('\'', $onClick);
+					$onClickArray = explode('?', $onClick, 2);
 					$lastElement = array_pop($onClickArray);
-					array_push($onClickArray, $newOL_js[$langRow['uid']] . $lastElement);
-					$onClick = implode('\'', $onClickArray);
+					array_push($onClickArray, '\'' . $newOL_js[$langRow['uid']] . ' + \'&' . $lastElement);
+					$onClick = implode('?', $onClickArray);
 				}
 				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars($onClick)
 					. '" title="' . $lang->sL(
