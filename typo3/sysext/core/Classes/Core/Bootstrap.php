@@ -297,11 +297,21 @@ class Bootstrap {
 	protected function sendResponse() {
 		if ($this->response instanceof \Psr\Http\Message\ResponseInterface) {
 			if (!headers_sent()) {
+				// headers already set by legacy code
+				$headers = array_flip(array_map(function($value) { return strtolower(explode(':', $value, 2)[0]); }, headers_list()));
 				foreach ($this->response->getHeaders() as $name => $values) {
-					header($name . ': ' . implode(', ', $values), FALSE);
+					// if the header has already been set, do not overwrite it
+					if (!isset($headers[strtolower($name)])) {
+						header($name . ': ' . implode(', ', $values), FALSE);
+					}
 				}
-				// send the response type
-				header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() . ' ' . $this->response->getReasonPhrase());
+				// Send the response type only if it's different from 200.
+				// This is a safety net if a non 200 status code has already been sent.
+				// In case we have some non 200 code via the response object though, we write the header in any case.
+				$statusCode = $this->response->getStatusCode();
+				if ($statusCode !== 200) {
+					header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $statusCode . ' ' . $this->response->getReasonPhrase());
+				}
 			}
 			echo $this->response->getBody()->__toString();
 		}
