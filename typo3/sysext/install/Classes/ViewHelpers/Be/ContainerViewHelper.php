@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Install\ViewHelpers\Be;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableClickMenu="false" loadExtJs="true" loadExtJsTheme="false" enableExtJsDebug="true">your module content</f:be.container>
+ * <f:be.container pageTitle="foo">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with proper head & body tags.
@@ -45,32 +45,17 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
 	 *
 	 * @param string $pageTitle title tag of the module. Not required by default, as BE modules are shown in a frame
-	 * @param bool $enableClickMenu If TRUE, loads clickmenu.js required by BE context menus. Defaults to TRUE
-	 * @param bool $loadExtJs specifies whether to load ExtJS library. Defaults to FALSE
-	 * @param bool $loadExtJsTheme whether to load ExtJS "grey" theme. Defaults to FALSE
-	 * @param bool $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param array $addCssFiles Custom CSS files to be loaded
 	 * @param array $addJsFiles Custom JavaScript files to be loaded
-	 * @param array $triggers Defined triggers to be forwarded to client (e.g. refreshing backend widgets)
 	 *
 	 * @return string
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $addCssFiles = array(), $addJsFiles = array(), $triggers = array()) {
+	public function render($pageTitle = '', $addCssFiles = array(), $addJsFiles = array()) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $this->getPageRenderer();
 
-		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
-		if ($enableClickMenu) {
-			$doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/clickmenu.js');
-		}
-		if ($loadExtJs) {
-			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme);
-			if ($enableExtJsDebug) {
-				$pageRenderer->enableExtJsDebug();
-			}
-		}
 		if (is_array($addCssFiles) && !empty($addCssFiles)) {
 			foreach ($addCssFiles as $addCssFile) {
 				$pageRenderer->addCssFile($addCssFile);
@@ -80,13 +65,6 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			foreach ($addJsFiles as $addJsFile) {
 				$pageRenderer->addJsFile($addJsFile);
 			}
-		}
-		// Handle triggers
-		if (!empty($triggers[\TYPO3\CMS\Extensionmanager\Controller\AbstractController::TRIGGER_RefreshModuleMenu])) {
-			$pageRenderer->addJsInlineCode(
-				\TYPO3\CMS\Extensionmanager\Controller\AbstractController::TRIGGER_RefreshModuleMenu,
-				'if (top.TYPO3ModuleMenu.refreshMenu) { top.TYPO3ModuleMenu.refreshMenu(); }'
-			);
 		}
 		$output = $this->renderChildren();
 		$output = $doc->startPage($pageTitle) . $output;
