@@ -905,9 +905,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						// The "edit marked" link:
 						$editIdList = implode(',', $currentIdList);
 						$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
-						$params = '&edit[' . $table . '][' . $editIdList . ']=edit';
-						$onClick = htmlspecialchars(BackendUtility::editOnClick($params, '', -1));
-						$cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . $onClick . '" title="'
+						$params = 'edit[' . $table . '][' . $editIdList . ']=edit';
+						$onClick = BackendUtility::editOnClick('', '', -1);
+						$onClickArray = explode('?', $onClick, 2);
+						$lastElement = array_pop($onClickArray);
+						array_push($onClickArray, $params . '&' . $lastElement);
+						$onClick = implode('?', $onClickArray);
+						$cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 							. $lang->getLL('clip_editMarked', TRUE) . '">'
 							. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 						// The "Delete marked" link:
