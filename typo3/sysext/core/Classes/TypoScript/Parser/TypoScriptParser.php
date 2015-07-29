@@ -562,6 +562,15 @@ class TypoScriptParser {
 				$sort_flags = SORT_REGULAR;
 				if (in_array('numeric', $arguments)) {
 					$sort_flags = SORT_NUMERIC;
+					// If the sorting modifier "numeric" is given, all values
+					// are checked and an exception is thrown if a non-numeric value is given
+					// otherwise there is a different behaviour between PHP7 and PHP 5.x
+					// See also the warning on http://us.php.net/manual/en/function.sort.php
+					foreach ($elements as $element) {
+						if (!is_numeric($element)) {
+							throw new \InvalidArgumentException('The list "' . $currentValue . '" should be sorted numerically but contains a non-numeric value', 1438191758);
+						}
+					}
 				}
 				sort($elements, $sort_flags);
 				if (in_array('descending', $arguments)) {

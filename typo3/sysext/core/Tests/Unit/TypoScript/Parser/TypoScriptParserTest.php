@@ -193,9 +193,9 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'sortList sorts a list numeric' => array(
 				'sortList',
-				'10,0,100,-20,abc',
+				'10,0,100,-20',
 				'numeric',
-				'-20,0,abc,10,100',
+				'-20,0,10,100',
 			),
 			'sortList sorts a list descending' => array(
 				'sortList',
@@ -205,9 +205,9 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			),
 			'sortList sorts a list numeric descending' => array(
 				'sortList',
-				'10,100,0,20,abc,-20',
+				'10,100,0,20,-20',
 				'descending,numeric',
-				'100,20,10,0,abc,-20',
+				'100,20,10,0,-20',
 			),
 			'sortList ignores invalid modifier arguments' => array(
 				'sortList',
@@ -225,6 +225,36 @@ class TypoScriptParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function executeValueModifierReturnsModifiedResult($modifierName, $currentValue, $modifierArgument, $expected) {
 		$actualValue = $this->typoScriptParser->_call('executeValueModifier', $modifierName, $modifierArgument, $currentValue);
 		$this->assertEquals($expected, $actualValue);
+	}
+
+
+	/**
+	 * Data provider for executeValueModifierThrowsException
+	 *
+	 * @return array modifier name, modifier arguments, current value, expected result
+	 */
+	public function executeValueModifierInvalidDataProvider() {
+		return array(
+			'sortList sorts a list numeric' => array(
+				'sortList',
+				'10,0,100,-20,abc',
+				'numeric',
+			),
+			'sortList sorts a list numeric descending' => array(
+				'sortList',
+				'10,100,0,20,abc,-20',
+				'descending,numeric',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider executeValueModifierInvalidDataProvider
+	 */
+	public function executeValueModifierThrowsException($modifierName, $currentValue, $modifierArgument) {
+		$this->setExpectedException('InvalidArgumentException', 'The list "' . $currentValue . '" should be sorted numerically but contains a non-numeric value');
+		$this->typoScriptParser->_call('executeValueModifier', $modifierName, $modifierArgument, $currentValue);
 	}
 
 	/**
