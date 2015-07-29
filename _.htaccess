@@ -314,6 +314,11 @@ AddDefaultCharset utf-8
 	</IfModule>
 </FilesMatch>
 
+# Block access to vcs directories
+<IfModule mod_alias.c>
+	RedirectMatch 404 /\.(?:git|svn|hg)/
+</IfModule>
+
 ### End: Rewriting and Access ###
 
 
