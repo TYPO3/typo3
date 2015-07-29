@@ -55,9 +55,6 @@ class RequestBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockRequest;
 
 	protected function setUp() {
-		if (PHP_VERSION_ID >= 70000) {
-			$this->markTestSkipped('Skipped because of PHP 7 memory bug.');
-		}
 		$this->requestBuilder = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder::class, array('dummy'));
 		$this->configuration = array(
 			'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
