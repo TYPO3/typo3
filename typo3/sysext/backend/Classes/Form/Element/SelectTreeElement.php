@@ -169,10 +169,10 @@ class SelectTreeElement extends AbstractFormElement {
 		}
 		/** @var $pageRenderer PageRenderer */
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-		$pageRenderer->loadExtJs();
 		$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/tree.js');
 		$pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('lang') . 'locallang_csh_corebe.xlf', 'tcatree');
-		$pageRenderer->addExtOnReadyCode('
+		$pageRenderer->addJsInlineCode('treefoo','
+		Ext.onReady(function() {
 			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . $treeData . ';
 			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
 				id: "' . $id . '",
@@ -229,7 +229,7 @@ class SelectTreeElement extends AbstractFormElement {
 			'window.setTimeout(function() {
 				tree' . $id . '.render("tree_' . $id . '");
 			}, 200);
-		');
+		});');
 		$formField = '
 			<div class="typo3-tceforms-tree">
 				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />
