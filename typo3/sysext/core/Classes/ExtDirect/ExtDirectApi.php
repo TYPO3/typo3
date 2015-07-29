@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\ExtDirect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -130,13 +131,11 @@ class ExtDirectApi {
 	 * @return string
 	 */
 	public function getRoutingUrl($namespace) {
-		$url = '';
 		if (TYPO3_MODE === 'FE') {
-			$url = GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=');
+			$url = GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=' . rawurlencode($namespace));
 		} else {
-			$url = GeneralUtility::locationHeaderUrl(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'ajax.php?ajaxID=ExtDirect::route&namespace=');
+			$url = BackendUtility::getAjaxUrl('ExtDirect::route', array('namespace' => $namespace));
 		}
-		$url .= rawurlencode($namespace);
 		return $url;
 	}
 
@@ -144,7 +143,6 @@ class ExtDirectApi {
 	 * Generates the API or reads it from cache
 	 *
 	 * @param array $filterNamespaces
-	 * @param bool $checkGetParam
 	 * @return string $javascriptNamespaces
 	 */
 	protected function getExtDirectApi(array $filterNamespaces) {
