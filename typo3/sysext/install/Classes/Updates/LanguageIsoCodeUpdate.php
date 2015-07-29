@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Install\Updates;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Update sys_language records to use the newly created
@@ -33,7 +34,7 @@ class LanguageIsoCodeUpdate extends AbstractUpdate {
 	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
-		if ($this->isWizardDone()) {
+		if ($this->isWizardDone() || !ExtensionManagementUtility::isLoaded('static_info_tables')) {
 			return FALSE;
 		}
 
