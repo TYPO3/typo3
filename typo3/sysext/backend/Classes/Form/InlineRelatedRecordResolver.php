@@ -99,6 +99,8 @@ class InlineRelatedRecordResolver {
 					$foreignTranslationPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
 				}
 				// Duplicate child records of default language in form
+				// this case becomes true for the pages translation, in case the default language
+				// record has entries in media field.
 				foreach ($recordsOriginal as $record) {
 					if (!empty($foreignLanguageField)) {
 						$record[$foreignLanguageField] = $language;
@@ -108,7 +110,7 @@ class InlineRelatedRecordResolver {
 					}
 					$newId = uniqid('NEW', TRUE);
 					$record['uid'] = $newId;
-					$record['pid'] = $$inlineFirstPid;
+					$record['pid'] = $inlineFirstPid;
 					$relatedRecords['records'][$newId] = $record;
 				}
 			}
