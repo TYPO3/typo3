@@ -53,13 +53,13 @@ if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
 		\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
 		'hasInstalledExtensions',
 		\TYPO3\CMS\Core\Core\ClassLoadingInformation::class,
-		'writeClassLoadingInformation'
+		'dumpClassLoadingInformation'
 	);
 	$signalSlotDispatcher->connect(
 		\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,
 		'afterExtensionUninstall',
 		\TYPO3\CMS\Core\Core\ClassLoadingInformation::class,
-		'writeClassLoadingInformation'
+		'dumpClassLoadingInformation'
 	);
 }
 

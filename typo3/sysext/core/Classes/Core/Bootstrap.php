@@ -411,7 +411,7 @@ class Bootstrap {
 	 */
 	public function ensureClassLoadingInformationExists() {
 		if (!self::$usesComposerClassLoading && !ClassLoadingInformation::classLoadingInformationExists()) {
-			ClassLoadingInformation::writeClassLoadingInformation();
+			ClassLoadingInformation::dumpClassLoadingInformation();
 			ClassLoadingInformation::registerClassLoadingInformation();
 		}
 		return $this;

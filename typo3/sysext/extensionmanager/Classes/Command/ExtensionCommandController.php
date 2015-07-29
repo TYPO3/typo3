@@ -74,12 +74,12 @@ class ExtensionCommandController extends CommandController {
 	 *
 	 * @return void
 	 */
-	public function updateClassLoadingInformationCommand() {
+	public function dumpClassLoadingInformationCommand() {
 		if (Bootstrap::usesComposerClassLoading()) {
 			$this->output->outputLine('<error>Class loading information is managed by composer. Use "composer dump-autoload" command to update the information.</error>');
 			$this->quit(1);
 		} else {
-			ClassLoadingInformation::writeClassLoadingInformation();
+			ClassLoadingInformation::dumpClassLoadingInformation();
 			$this->output->outputLine('Class Loading information has been updated.');
 		}
 	}

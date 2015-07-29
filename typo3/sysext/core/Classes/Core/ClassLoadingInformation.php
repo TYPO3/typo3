@@ -62,7 +62,7 @@ class ClassLoadingInformation {
 	/**
 	 * Puts all information compiled by the ClassLoadingInformationGenerator to files
 	 */
-	static public function writeClassLoadingInformation() {
+	static public function dumpClassLoadingInformation() {
 		self::ensureAutoloadInfoDirExists();
 		/** @var ClassLoadingInformationGenerator  $generator */
 		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class);
