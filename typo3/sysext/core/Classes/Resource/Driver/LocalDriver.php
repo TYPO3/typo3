@@ -840,6 +840,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function replaceFile($fileIdentifier, $localFilePath) {
 		$filePath = $this->getAbsolutePath($fileIdentifier);
 		$result = rename($localFilePath, $filePath);
+		GeneralUtility::fixPermissions($filePath);
 		if ($result === FALSE) {
 			throw new \RuntimeException('Replacing file ' . $fileIdentifier . ' with ' . $localFilePath . ' failed.', 1315314711);
 		}
