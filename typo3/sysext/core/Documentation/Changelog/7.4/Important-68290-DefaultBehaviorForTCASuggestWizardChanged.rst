@@ -5,7 +5,7 @@ Important: #68290 - Default behavior for TCA suggest wizard changed
 Description
 ===========
 
-The suggest wizard searches now by default in the whole word instead only the beginning. This might have performance
+The suggest wizard by default searches in the whole word instead only the beginning now. This might have performance
 implications for large sites with a lot of records and/or sites that have a lot of tables that are searched, as the
 search is done with a ``LIKE "%searchterm%"``.
 

@@ -5,9 +5,9 @@ Important: #67445 - DBAL support for ALTER TABLE ADD/DROP KEY added
 Description
 ===========
 
-The prefix used to build the name of indexes in a database/schema has
+The prefix used to build the name of indexes in a database schema has
 been changed. The prefix is used to ensure that an index name is unique
-within a database/schema.
+within a database schema.
 
 Formerly the requested index name was prepended with the table name to
 which the index was added. In some cases this results in index names that
