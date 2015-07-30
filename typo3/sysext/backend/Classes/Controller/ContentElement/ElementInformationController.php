@@ -681,7 +681,7 @@ class ElementInformationController {
 				$infoData[] = '
 				<tr>
 					<td class="col-icon"></td>
-					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . $row['recuid'] . ')</td>
+					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
 					<td>' . htmlspecialchars($lang->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title']) ?: $row['tablename']) . '</td>
 					<td></td>
 					<td>' . htmlspecialchars($this->getLabelForTableColumn($row['tablename'], $row['field'])) . '</td>
@@ -740,10 +740,11 @@ class ElementInformationController {
 		}
 		foreach ($rows as $row) {
 			$record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
-			$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
-			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-			$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit');
-			$infoData[] = '
+			if ($record) {
+				$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
+				$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
+				$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit');
+				$infoData[] = '
 				<tr>
 					<td class="col-icon">
 						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '">
@@ -764,6 +765,21 @@ class ElementInformationController {
 					<td>' . htmlspecialchars($row['ref_string']) . '</td>
 					<td class="col-control">' . $actions . '</td>
 				</tr>';
+			} else {
+				$infoData[] = '
+				<tr>
+					<td class="col-icon"></td>
+					<td class="col-title">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:show_item.php.missing_record') . ' (uid=' . (int)$row['recuid'] . ')</td>
+					<td>' . $lang->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>
+					<td></td>
+					<td>' . htmlspecialchars($this->getLabelForTableColumn($table, $row['field'])) . '</td>
+					<td>' . htmlspecialchars($row['flexpointer']) . '</td>
+					<td>' . htmlspecialchars($row['softref_key']) . '</td>
+					<td>' . htmlspecialchars($row['sorting']) . '</td>
+					<td>' . htmlspecialchars($row['ref_string']) . '</td>
+					<td class="col-control"></td>
+				</tr>';
+			}
 		}
 
 		if (empty($infoData)) {
