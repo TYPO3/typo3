@@ -6,7 +6,7 @@ Description
 ===========
 
 Method ``GeneralUtility::realLLfile()`` was just a wrapper around LocalizationFactory
-and has been deprecated.
+and has been marked as deprecated.
 
 
 Impact

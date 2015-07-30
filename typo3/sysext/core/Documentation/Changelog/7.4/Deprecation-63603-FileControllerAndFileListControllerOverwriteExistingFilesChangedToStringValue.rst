@@ -5,7 +5,8 @@ Deprecation: #63603 - FileController and FileListController overwriteExistingFil
 Description
 ===========
 
-The GET/POST param to tell the FileController and FileListController to override a file or not switched from a bool value to a string with the possibilities ``cancel``, ``replace`` and ``changeName``.
+The GET/POST param to tell the FileController and FileListController whether to override a file or not switched from a bool
+value to a string with the possibilities ``cancel``, ``replace`` and ``changeName``.
 
 
 Impact

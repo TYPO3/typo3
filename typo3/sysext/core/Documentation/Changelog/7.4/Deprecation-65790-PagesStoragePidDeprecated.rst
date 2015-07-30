@@ -5,11 +5,11 @@ Deprecation: #65790 - Remove pages.storage_pid and logic
 Description
 ===========
 
-The DB field "pages.storage_pid" and its TCA definition are moved to the compatibility6 extension as the field
+The DB field "pages.storage_pid" and its TCA definition have been moved to the compatibility6 extension as the field
 and its functionality is discouraged.
 
-Additionally the method ``getStorageSiterootPids()`` within the PHP class TypoScriptFrontendController is marked
-for deprecation. The method is currently only used if the Frontend Login plugin is used without setting
+Additionally the method ``getStorageSiterootPids()`` within the PHP class ``TypoScriptFrontendController`` has been marked
+as deprecated. The method is currently only used if the Frontend Login plugin is used without setting
 a specific folder where the fe_users records are stored in.
 
 
@@ -20,7 +20,7 @@ Any usage of this field in any TypoScript, page or the usage of the method menti
 extension will only work if the compatibility6 extension is installed.
 
 The Frontend Login functionality will throw a deprecation warning if the TypoScript option
-``plugin.tx_felogin.storagePid`` (via TypoScript directly or the flexform configuraiton within the plugin) is not set.
+``plugin.tx_felogin.storagePid`` (via TypoScript directly or the flexform configuration within the plugin) is not set.
 
 
 Affected installations

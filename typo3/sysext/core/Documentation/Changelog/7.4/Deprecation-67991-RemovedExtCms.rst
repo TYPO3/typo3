@@ -5,7 +5,7 @@ Deprecation: #67991 - Removed ext:cms
 Description
 ===========
 
-Extension ``cms`` was removed. Most functionality has been moved to extension ``frontend`` with version 6.0 already.
+Extension ``cms`` has been removed. Most functionality has been moved to extension ``frontend`` with version 6.0 already.
 The rest of the files have now been moved to other extensions, extension ``cms`` does not exist anymore.
 
 

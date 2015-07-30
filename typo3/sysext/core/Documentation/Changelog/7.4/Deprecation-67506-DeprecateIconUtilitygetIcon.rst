@@ -5,7 +5,7 @@ Deprecation: #67506 - Deprecate IconUtility::getIcon
 Description
 ===========
 
-The method ``IconUtility::getIcon()`` which was used for generating overlaid icons for records has been marked for deprecation.
+The method ``IconUtility::getIcon()`` which was used for generating overlaid icons for records has been marked as deprecated.
 
 
 Impact

@@ -5,7 +5,7 @@ Deprecation: #68098 - Deprecate GeneralUtility methods
 Description
 ===========
 
-The following methods within GeneralUtility have been marked as deprecated and will be removed in TYPO3 CMS v8.
+The following methods within ``GeneralUtility`` have been marked as deprecated and will be removed in TYPO3 CMS v8.
 
 .. code-block:: php
 

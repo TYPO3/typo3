@@ -5,7 +5,7 @@ Deprecation: #67769 - Deprecate QueryGenerator::formatQ()
 Description
 ===========
 
-The method ``QueryGenerator::formatQ()``, which was used to format a query string, has been marked for deprecation.
+The method ``QueryGenerator::formatQ()`` which was used to format a query string, has been marked as deprecated.
 
 
 Impact

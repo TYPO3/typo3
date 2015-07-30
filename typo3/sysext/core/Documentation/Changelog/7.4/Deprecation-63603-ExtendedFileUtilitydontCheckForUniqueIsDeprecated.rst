@@ -5,7 +5,8 @@ Deprecation: #63603 - ExtendedFileUtility::$dontCheckForUnique is deprecated
 Description
 ===========
 
-The ExtendedFileUtility ``$dontCheckForUnique`` flag is deprecated and replaced by ``$fileUtility->setExistingFileConflictMode()`` with the possible options ``cancel``, ``replace`` and ``changeName``.
+The ExtendedFileUtility ``$dontCheckForUnique`` flag has been marked as deprecated and replaced by
+``$fileUtility->setExistingFileConflictMode()`` with the possible options ``cancel``, ``replace`` and ``changeName``.
 
 
 Impact

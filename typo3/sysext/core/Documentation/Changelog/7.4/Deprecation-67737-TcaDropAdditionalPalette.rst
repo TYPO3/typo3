@@ -6,9 +6,9 @@ Description
 ===========
 
 The ``showitem`` string of ``TCA`` ``types`` allowed to define an "additional palette" as third
-semicolon separated name of a field. Such a palette is then rendered after the main field.
-This handling is dropped and existing "additional palettes" are migrated to a
-"normal" palette definition directly after the field.
+semicolon separated name of a field. Such a palette was then rendered after the main field.
+This handling has been dropped and existing "additional palettes" were migrated to a "normal" palette definition
+directly after the field.
 
 Before:
 
@@ -22,8 +22,8 @@ Before:
 
 
 The behavior before was: If the field ``aField`` is rendered, then the
-palette ``anAdditionalPaletteName`` is rendered, too. This functionality is dropped, the
-migrated field now looks like:
+palette ``anAdditionalPaletteName`` is rendered, too. This functionality has been dropped, the migrated field now looks
+like this:
 
 .. code-block:: php
 

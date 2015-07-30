@@ -5,7 +5,7 @@ Deprecation: #67790 - Deprecate QueryGenerator::JSbottom()
 Description
 ===========
 
-The method ``QueryGenerator::JSbottom()``, which was used to append JavaScript code, has been marked for deprecation.
+The method ``QueryGenerator::JSbottom()`` which was used to append JavaScript code has been marked as deprecated.
 
 
 Impact
@@ -23,4 +23,4 @@ Instances which make use of ``QueryGenerator::JSbottom()``.
 Migration
 =========
 
-No migration, use requireJS module and register the module through pageRenderer.
+No migration, use requireJS modules and register the module through ``pageRenderer``.

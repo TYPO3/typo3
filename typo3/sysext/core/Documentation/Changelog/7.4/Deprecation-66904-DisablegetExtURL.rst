@@ -5,7 +5,7 @@ Deprecation: #66904 - $disable Option in PageRepository->getExtURL()
 Description
 ===========
 
-The second parameter ``$disable`` within ``PageRepository->getExtURL()`` has been marked for deprecation.
+The second parameter ``$disable`` within ``PageRepository->getExtURL()`` has been marked as deprecated.
 
 
 Affected Installations

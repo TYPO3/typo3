@@ -5,9 +5,8 @@ Deprecation: #67471 - Deprecate init.php
 Description
 ===========
 
-In order to move all unneeded files from typo3/, the originally much-used init.php
-is now deprecated in favor of using the bootstrap initialization code directly in
-the TYPO3 Backend.
+In order to move all unneeded files from typo3/, the often used init.php has been deprecated in favor of using the
+bootstrap initialization code directly in the TYPO3 Backend.
 
 
 Impact
