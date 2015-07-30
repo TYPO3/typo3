@@ -35,6 +35,11 @@ class ClassLoadingInformation {
 	const AUTOLOAD_INFO_DIR = 'typo3temp/autoload/';
 
 	/**
+	 * Base directory storing all autoload information in testing context
+	 */
+	const AUTOLOAD_INFO_DIR_TESTS = 'typo3temp/autoload-tests/';
+
+	/**
 	 * Name of file that contains all classes-filename mappings
 	 */
 	const AUTOLOAD_CLASSMAP_FILENAME = 'autoload_classmap.php';
@@ -56,7 +61,7 @@ class ClassLoadingInformation {
 	 * @return bool
 	 */
 	static public function classLoadingInformationExists() {
-		return file_exists(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSMAP_FILENAME);
+		return file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
 	}
 
 	/**
@@ -67,11 +72,11 @@ class ClassLoadingInformation {
 		/** @var ClassLoadingInformationGenerator  $generator */
 		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class);
 		$classInfoFiles = $generator->buildAutoloadInformationFiles();
-		GeneralUtility::writeFile(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
-		GeneralUtility::writeFile(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
+		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
+		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
 
 		$classAliasMapFile = $generator->buildClassAliasMapFile();
-		GeneralUtility::writeFile(PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
+		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
 	}
 
 	/**
@@ -81,7 +86,7 @@ class ClassLoadingInformation {
 	static public function registerClassLoadingInformation() {
 		$composerClassLoader = static::getClassLoader();
 
-		$dynamicClassAliasMapFile = PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSALIASMAP_FILENAME;
+		$dynamicClassAliasMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME;
 		if (file_exists($dynamicClassAliasMapFile)) {
 			$classAliasMap = require $dynamicClassAliasMapFile;
 			if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
@@ -89,7 +94,7 @@ class ClassLoadingInformation {
 			}
 		}
 
-		$dynamicClassMapFile = PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_CLASSMAP_FILENAME;
+		$dynamicClassMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME;
 		if (file_exists($dynamicClassMapFile)) {
 			$classMap = require $dynamicClassMapFile;
 			if (is_array($classMap)) {
@@ -97,7 +102,7 @@ class ClassLoadingInformation {
 			}
 		}
 
-		$dynamicPsr4File = PATH_site . self::AUTOLOAD_INFO_DIR . self::AUTOLOAD_PSR4_FILENAME;
+		$dynamicPsr4File = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME;
 		if (file_exists($dynamicPsr4File)) {
 			$psr4 = require $dynamicPsr4File;
 			if (is_array($psr4)) {
@@ -132,6 +137,17 @@ class ClassLoadingInformation {
 	}
 
 	/**
+	 * @return string
+	 */
+	static protected function getClassLoadingInformationDirectory() {
+		if (Bootstrap::getInstance()->getApplicationContext()->isTesting()) {
+			return PATH_site . self::AUTOLOAD_INFO_DIR_TESTS;
+		} else {
+			return PATH_site . self::AUTOLOAD_INFO_DIR;
+		}
+	}
+
+	/**
 	 * Get class name for alias
 	 *
 	 * @param string $alias
@@ -147,18 +163,21 @@ class ClassLoadingInformation {
 
 	/**
 	 * Ensures the defined path for class information files exists
+	 * And clears it in case we're in testing context
 	 */
 	static protected function ensureAutoloadInfoDirExists() {
-		$autoloadInfoDir = PATH_site . self::AUTOLOAD_INFO_DIR;
+		$autoloadInfoDir = self::getClassLoadingInformationDirectory();
 		if (!file_exists($autoloadInfoDir)) {
 			GeneralUtility::mkdir_deep($autoloadInfoDir);
+		} elseif (Bootstrap::getInstance()->getApplicationContext()->isTesting()) {
+			GeneralUtility::flushDirectory($autoloadInfoDir, TRUE);
 		}
 	}
 
 	/**
 	 * Internal method calling the bootstrap to fetch the composer class loader
 	 *
-	 * @return ComposerClassLoader
+	 * @return ClassAliasLoader|ComposerClassLoader
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	static protected function getClassLoader() {
