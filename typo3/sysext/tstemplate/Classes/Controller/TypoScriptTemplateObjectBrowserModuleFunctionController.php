@@ -328,6 +328,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 		if ($this->pObj->sObj) {
 			list($theSetup, $theSetupValue) = $templateService->ext_getSetup($theSetup, $this->pObj->sObj ? $this->pObj->sObj : '');
 			if ($existTemplate) {
+				// Inline Form Area Begin
+				$theOutput .= '<div class="form-inline form-inline-spaced">';
 				// Value
 				$out = '';
 				$out .= '<div class="form-group">';
@@ -350,7 +352,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				$out = '<div class="form-group">';
 				$out .= '	<div class="checkbox">';
 				$out .= '		<label>';
-				$out .= '			' . htmlspecialchars($this->pObj->sObj) . $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('clear'), 'toUpper');
+				$out .= '			' . htmlspecialchars($this->pObj->sObj) . ' ' . $lang->csConvObj->conv_case($lang->charSet, $lang->getLL('clear'), 'toUpper');
 				$out .= '			<input type="checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
 				$out .= '		</label>';
 				$out .= '		<input class="btn btn-default" type="submit" name="clear_object" value="' . $lang->getLL('clearButton') . '" />';
@@ -359,6 +361,8 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 				$theOutput .= $this->pObj->doc->spacer(20);
 				$theOutput .= $this->pObj->doc->section($lang->getLL('clearObject'), $out, 0, 0);
 				$theOutput .= $this->pObj->doc->spacer(10);
+				// Inline Form Area End
+				$theOutput .= '</div>';
 			} else {
 				$noTemplateMessage = GeneralUtility::makeInstance(FlashMessage::class, $lang->getLL('noCurrentTemplate'), $lang->getLL('edit'), FlashMessage::ERROR);
 				$this->addFlashMessage($noTemplateMessage);
