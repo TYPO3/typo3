@@ -206,7 +206,8 @@
 			"TYPO3\\CMS\\Scheduler\\Tests\\": "typo3/sysext/scheduler/Tests/",
 			"TYPO3\\CMS\\Sv\\Tests\\": "typo3/sysext/sv/Tests/",
 			"TYPO3\\CMS\\Workspaces\\Tests\\": "typo3/sysext/workspaces/Tests/"
-		}
+		},
+		"classmap": ["typo3/sysext/extbase/Tests/Unit/Object/Container/Fixtures/"]
 	},
 	"include-path": [
 		"typo3/vendor/pear/http_request2/"

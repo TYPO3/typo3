@@ -29,6 +29,7 @@
 	"autoload-dev": {
 		"psr-4": {
 			"TYPO3\\CMS\\Extbase\\Tests\\": "Tests/"
-		}
+		},
+		"classmap": ["Tests/Unit/Object/Container/Fixtures/"]
 	}
 }

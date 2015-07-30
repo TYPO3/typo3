@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once __DIR__ . '/../../../../../core/Tests/Functional/DataHandling/FAL/AbstractActionTestCase.php';
-
 /**
  * Functional test for the DataHandler
  */

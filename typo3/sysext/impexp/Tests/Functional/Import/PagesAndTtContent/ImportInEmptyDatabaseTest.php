@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import\PagesAndTtContent;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once __DIR__ . '/../AbstractImportTestCase.php';
-
 /**
  * Functional test for the ImportExport
  */

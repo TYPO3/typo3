@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\FAL\Modify;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once dirname(dirname(__FILE__)) . '/AbstractActionTestCase.php';
-
 /**
  * Functional test for the DataHandler
  */

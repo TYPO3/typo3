@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Export\PagesAndTtContentWithRteImage
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
-require_once __DIR__ . '/../AbstractExportTestCase.php';
-
 /**
  * Functional test for the ImportExport
  */

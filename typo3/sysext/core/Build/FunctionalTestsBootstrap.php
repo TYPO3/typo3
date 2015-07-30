@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Build;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\BaseTestCase;
+
 /**
  * This file is defined in FunctionalTests.xml and called by phpunit
  * before instantiating the test suites, it must also be included
@@ -53,11 +55,10 @@ class FunctionalTestsBootstrap {
 		if (!class_exists('PHPUnit_Framework_TestCase')) {
 			die('PHPUnit wasn\'t found. Please check your settings and command.');
 		}
-		$testsDirectory = __DIR__ . '/../Tests/';
-		require_once($testsDirectory . 'BaseTestCase.php');
-		require_once($testsDirectory . 'FunctionalTestCase.php');
-		require_once($testsDirectory . 'FunctionalTestCaseBootstrapUtility.php');
-		require_once($testsDirectory . 'Exception.php');
+		if (!class_exists(BaseTestCase::class)) {
+			// PHPUnit is invoked globally, so we need to include the project autoload file
+			require_once __DIR__ . '/../../../vendor/autoload.php';
+		}
 
 		return $this;
 	}

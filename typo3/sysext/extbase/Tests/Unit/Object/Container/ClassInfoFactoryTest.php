@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
-
 /**
  * Test case
  */

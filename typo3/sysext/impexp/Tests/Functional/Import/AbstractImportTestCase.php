@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-require_once __DIR__ . '/../../../../core/Tests/Functional/DataHandling/AbstractDataHandlerActionTestCase.php';
-
 /**
  * Functional test for the ImportExport
  */

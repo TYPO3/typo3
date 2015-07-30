@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once __DIR__ . '/../../../../core/Tests/Functional/DataHandling/AbstractDataHandlerActionTestCase.php';
-
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
 /**

@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRRE\CSV;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once __DIR__ . '/../../../../../../core/Tests/Functional/DataHandling/AbstractDataHandlerActionTestCase.php';
-
 /**
  * Functional test for the DataHandler
  */

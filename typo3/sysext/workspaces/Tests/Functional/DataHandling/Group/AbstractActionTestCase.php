@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Group;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once __DIR__ . '/../../../../../core/Tests/Functional/DataHandling/Group/AbstractActionTestCase.php';
-
 /**
  * Functional test for the DataHandler
  */

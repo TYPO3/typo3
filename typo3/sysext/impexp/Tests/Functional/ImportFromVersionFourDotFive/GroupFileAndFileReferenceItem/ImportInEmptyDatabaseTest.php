@@ -14,8 +14,6 @@ namespace TYPO3\CMS\Impexp\Tests\Functional\ImportFromVersionFourDotFive\GroupFi
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once __DIR__ . '/../../Import/AbstractImportTestCase.php';
-
 /**
  * Functional test for the ImportExport
  */

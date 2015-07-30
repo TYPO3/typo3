@@ -14,9 +14,6 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-require_once 'Fixtures/Testclasses.php';
-require_once 'Fixtures/ContainerConstructorInjectionTestFixtures.php';
-
 /**
  * Test case
  */
