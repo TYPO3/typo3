@@ -13644,7 +13644,7 @@ input.smallCheckboxes {
   vertical-align: middle;
   width: 12px;
 }
-div#typo3-listOptions {
+div.typo3-listOptions {
   margin: 0 0 24px 0;
 }
 .t3-list-table-header-icon-down {

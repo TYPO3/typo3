@@ -402,7 +402,7 @@ class FileListController {
 					<!--
 						Listing options for extended view, clipboard and thumbnails
 					-->
-					<div id="typo3-listOptions">
+					<div class="typo3-listOptions">
 				';
 				// Add "display bigControlPanel" checkbox:
 				if ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {

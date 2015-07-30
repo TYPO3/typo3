@@ -479,7 +479,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$theOutput .= '</div>';
 
 			// second row options
-			$menu = '<div id="typo3-listOptions">';
+			$menu = '<div class="typo3-listOptions">';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_showComments">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
 			$menu .= $lang->getLL('displayComments') . '</label></div>';
 			$menu .= '<div class="checkbox"><label for="checkTs_browser_alphaSort">' . BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_browser_alphaSort]', $this->pObj->MOD_SETTINGS['ts_browser_alphaSort'], '', '', 'id="checkTs_browser_alphaSort"');
@@ -502,7 +502,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 					$out .= '<input class="checkbox" type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />' . $templateService->substituteCMarkers(htmlspecialchars($val));
 					$out .= '</label></div>';
 				}
-				$theOutput .=  '<div id="typo3-listOptions">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $lang->getLL('setConditions') . '" />';
+				$theOutput .=  '<div class="typo3-listOptions">' . $out . '</div><input class="btn btn-default" type="submit" name="Submit" value="' . $lang->getLL('setConditions') . '" />';
 			}
 			// Ending section:
 			$theOutput .= $this->pObj->doc->sectionEnd();

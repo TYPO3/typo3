@@ -475,7 +475,7 @@ class RecordList {
 					<!--
 						Listing options for extended view, clipboard and localization view
 					-->
-					<div id="typo3-listOptions">
+					<div class="typo3-listOptions">
 						<form action="" method="post">';
 
 			// Add "display bigControlPanel" checkbox:
