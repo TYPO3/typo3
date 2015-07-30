@@ -10566,56 +10566,6 @@ fieldset[disabled] .table .btn-default.active {
 .typo3-TCEforms .typo3-csh-link {
   margin-left: 5px;
 }
-div.typo3-TCEforms-suggest label {
-  margin-right: 5px;
-}
-div.typo3-TCEforms-suggest-indicator {
-  left: 230px;
-  position: relative;
-  top: -18px;
-}
-div.typo3-TCEforms-suggest-choices {
-  background-color: white;
-  border: 1px solid #888;
-  position: absolute;
-  width: 250px;
-  z-index: 4000;
-}
-div.typo3-TCEforms-suggest-choices ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-div.typo3-TCEforms-suggest-choices li {
-  cursor: pointer;
-  background-color: #efeff4;
-  background-repeat: no-repeat;
-  background-position: 4px center;
-  list-style-type: none;
-  display: block;
-  margin: 0;
-  padding: 4px 2px 4px 24px;
-}
-div.typo3-TCEforms-suggest-choices li.selected {
-  background-color: #ffb !important;
-}
-div.typo3-TCEforms-suggest-choices li.pages {
-  background-color: #fcc;
-}
-div.typo3-TCEforms-suggest-choices li.suggest-noresults {
-  height: auto;
-}
-div.typo3-TCEforms-suggest-choices span.suggest-uid {
-  margin-left: 0.3em;
-  font-size: 0.9em;
-}
-div.typo3-TCEforms-suggest-choices span.suggest-path {
-  font-size: 0.9em;
-  margin-top: 0.3em;
-}
-div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
-  border-bottom: none;
-}
 .t3-form-field-container-inline-placeHolder .t3-form-field-header-inline > span {
   display: none;
 }
