@@ -91,7 +91,7 @@ class ViewHelperVariableContainer {
 	 * @api
 	 */
 	public function exists($viewHelperName, $key) {
-		return isset($this->objects[$viewHelperName][$key]);
+		return isset($this->objects[$viewHelperName]) && array_key_exists($key, $this->objects[$viewHelperName]);
 	}
 
 	/**

@@ -89,4 +89,28 @@ class ViewHelperVariableContainerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 		$this->assertSame($view, $this->viewHelperVariableContainer->getView());
 	}
 
+
+	/**
+	 * @test
+	 */
+	public function existsReturnsFalseIfTheSpecifiedKeyDoesNotExist() {
+		$this->assertFalse($this->viewHelperVariableContainer->exists('TYPO3\Fluid\ViewHelper\NonExistent', 'nonExistentKey'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function existsReturnsTrueIfTheSpecifiedKeyExists() {
+		$this->viewHelperVariableContainer->add('TYPO3\Fluid\ViewHelper\NonExistent', 'someKey', 'someValue');
+		$this->assertTrue($this->viewHelperVariableContainer->exists('TYPO3\Fluid\ViewHelper\NonExistent', 'someKey'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function existsReturnsTrueIfTheSpecifiedKeyExistsAndIsNull() {
+		$this->viewHelperVariableContainer->add('TYPO3\Fluid\ViewHelper\NonExistent', 'someKey', NULL);
+		$this->assertTrue($this->viewHelperVariableContainer->exists('TYPO3\Fluid\ViewHelper\NonExistent', 'someKey'));
+	}
+
 }
