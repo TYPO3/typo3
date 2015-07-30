@@ -42,8 +42,15 @@ class SchedulerCliController {
 	public function __construct() {
 		$this->cli = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Controller\CommandLineController::class);
 		$this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+
+		// Empty options array here because Scheduler uses "-s" as argument too
+		$this->cli->cli_options = array();
 		$this->cli->cli_options[] = array('-h', 'Show this output');
 		$this->cli->cli_options[] = array('--help', 'Same as -h');
+		$this->cli->cli_options[] = array('-s', 'Stop the task which is passed with -i option');
+		$this->cli->cli_options[] = array('-i', 'UID of an task');
+		$this->cli->cli_options[] = array('-f', 'Force execution of the task which is passed with -i option');
+
 		// Setting help texts:
 		$this->cli->cli_help['name'] = 'scheduler -- Start the TYPO3 Scheduler from the command line';
 		$this->cli->cli_help['synopsis'] = '###OPTIONS###';
