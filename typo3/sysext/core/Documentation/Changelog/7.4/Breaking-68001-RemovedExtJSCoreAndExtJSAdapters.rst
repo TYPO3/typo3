@@ -6,7 +6,7 @@ Description
 ===========
 
 The functionality of "ExtCore", which acts as a slim ExtJS base functionality similar to what libraries like underscore.js or jQuery do,
-but has just aged, has been completely removed from the TYPO3 Core.
+but is just dated, has been completely removed from the TYPO3 Core.
 
 The custom adapters which have previously been shipped with ExtJS to allow jQuery functionality to be used
 with ExtJS underneath have been removed without substitution. The adapters are not compatible with supported
@@ -28,7 +28,11 @@ Calling the methods ``loadExtCore()``, ``enableExtCoreDebug()``, ``getExtCorePat
 Affected Installations
 ======================
 
-Instances that use ExtCore in the TYPO3 Frontend, extensions that use ``<f:be.container>`` with an ExtJS Adapter or use the PageRenderer object directly to load custom ExtJS or ExtCore.
+Instances that use ExtCore in the TYPO3 Frontend
+
+Extensions that use ``<f:be.container>`` with an ExtJS Adapter
+
+Extensions that use the ``PageRenderer`` object directly to load custom ExtJS or ExtCore.
 
 
 Migration

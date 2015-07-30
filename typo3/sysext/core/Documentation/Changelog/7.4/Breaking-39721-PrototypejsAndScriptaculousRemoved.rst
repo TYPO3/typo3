@@ -13,11 +13,11 @@ Impact
 
 Any TYPO3 Extension that uses prototype.js or scriptaculous for usage in the Backend or Frontend will not work anymore.
 
-The TypoScript properties ``page.javascriptLibs.Prototype`` and ``page.javascriptLibs.Scriptaculous.*`` are removed
-and have no effect anymore, leading to not including prototype in Websites where this TypoScript option is set.
+The TypoScript properties ``page.javascriptLibs.Prototype`` and ``page.javascriptLibs.Scriptaculous.*`` have been removed
+and have no effect anymore, leading to not including prototype in websites where this TypoScript option is set.
 This might lead to broken websites when updating.
 
-The shipped Fluid ViewHelper for backend modules does not have the according properties anymore and will throw a fatal
+The shipped Fluid ViewHelper for backend modules does no longer have the according properties anymore and will throw a fatal
 error:
 
 .. code-block:: html
@@ -35,16 +35,22 @@ Using the PageRenderer directly in any module, and calling one of the related me
 	PageRenderer->loadPrototype()
 	PageRenderer->loadScriptaculous()
 
-Including the JavaScript files in a custom extension or custom frontend without using the API will lead to a 404
+Including the JavaScript files in a custom extension or custom frontend without using the API will lead to a 404 error
 when referencing one of the files.
 
 
 Affected Installations
 ======================
 
-Instances that use prototype.js or scriptaculous in the Frontend. Instances with third-party extensions that
-require these libraries or set one of the options in the mentioned ViewHelper. Instances that link to one of the
-JavaScript files directly. Instances that use the PageRenderer API directly and use on of the methods above.
+Instances that use prototype.js or scriptaculous in the Frontend.
+
+Instances with third-party extensions that
+
+require these libraries or set one of the options in the mentioned ViewHelper.
+
+Instances that link to one of the JavaScript files directly.
+
+Instances that use the PageRenderer API directly and use on of the methods above.
 
 
 Migration

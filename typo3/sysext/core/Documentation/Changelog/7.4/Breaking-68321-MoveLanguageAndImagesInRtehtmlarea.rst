@@ -5,13 +5,13 @@ Breaking: #68321 - Move language and images in rtehtmlarea
 Description
 ===========
 
-All language files and images are moved.
+All language files and images have been moved.
 
 
 Impact
 ======
 
-Labels and images may be not displayed if TypoScript from the sample files are used.
+Labels and images may be not displayed if TypoScript from the sample files is used.
 
 
 Affected Installations

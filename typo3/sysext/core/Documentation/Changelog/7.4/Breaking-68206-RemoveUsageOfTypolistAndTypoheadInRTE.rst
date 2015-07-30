@@ -5,8 +5,8 @@ Breaking: #68206 - Remove usage of typolist and typohead in RTE
 Description
 ===========
 
-The transformation for the tags ``typolist`` and ``typohead`` are removed from the RTE.
-The option and method ``internalizeFontTags`` from RteHtmlParser have been removed.
+The transformation for the tags ``typolist`` and ``typohead`` have been removed from the RTE.
+The option and method ``internalizeFontTags()`` from RteHtmlParser have been removed.
 
 Impact
 ======
@@ -19,11 +19,11 @@ Affected Installations
 ======================
 
 All installations using the custom tags ``typolist`` and ``typohead``.
-All installations that use the method ``internalizeFontTags`` will throw an fatal error.
+All installations that use the method ``internalizeFontTags()`` will throw an fatal error.
 
 
 Migration
 =========
 
 Substitute the tags by a tag ``ul```or ``header``.
-Remove any usage of ``internalizeFontTags``
+Remove any usage of ``internalizeFontTags()``

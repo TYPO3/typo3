@@ -32,15 +32,15 @@ any more.
 Affected Installations
 ======================
 
--	All installations with custom ``cObject`` implementations which make use of the ``cache.`` property.
+All installations with custom ``cObject`` implementations which make use of the ``cache.`` property.
 
--	Installations that purposely rely on the content object being evaluated before the cache is tried.
+Installations that purposely rely on the content object being evaluated before the cache is tried.
 
--	Installations that rely on the order of the ``cache.`` evaluation.
+Installations that rely on the order of the ``cache.`` evaluation.
 
--	Installations that make use of the hook
-	``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']``
-	on top level ``cache.``.
+Installations that make use of the hook
+``$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap_cacheStore']``
+on top level ``cache.``.
 
 
 Migration

@@ -5,7 +5,7 @@ Breaking: #68178 - Drop $GLOBALS['TYPO3_CONF_VARS']['SYS]['form_enctype']
 Description
 ===========
 
-Setting ``$GLOBALS['TYPO3_CONF_VARS']['SYS]['form_enctype']`` has been dropped.
+Setting ``$GLOBALS['TYPO3_CONF_VARS']['SYS]['form_enctype']`` has been dropped without replacement.
 
 
 Impact

@@ -5,7 +5,8 @@ Breaking: #67753 - Drop "Show secondary options"
 Description
 ===========
 
-When editing records, the checkbox at the bottom "Show secondary options (palettes)" has been dropped, palettes are now always shown and the collapse buttons are no longer rendered.
+When editing records, the checkbox at the bottom "Show secondary options (palettes)" has been dropped, palettes are now
+always shown and the collapse buttons are no longer rendered.
 
 
 Impact
@@ -32,7 +33,7 @@ Setting ``canNotCollapse`` in ``ctrl`` and ``palettes`` section are obsolete and
 PHP
 ---
 
-The following method has been dropped, if an extension calls it, a ``PHP`` fatal error will be thrown.
+The following method has been dropped. If an extension calls it, a PHP fatal error will be thrown.
 This was an internal method and external usage is unlikely:
 
 .. code-block:: php
@@ -40,7 +41,7 @@ This was an internal method and external usage is unlikely:
 	\TYPO3\CMS\Backend\Controller\EditDocumentController->functionMenus()
 
 
-The following properties have been dropped, calling those may trigger a ``PHP`` warning level error, external usage is unlikely:
+The following properties have been dropped, calling those may trigger a PHP warning level error, external usage is unlikely:
 
 .. code-block:: php
 

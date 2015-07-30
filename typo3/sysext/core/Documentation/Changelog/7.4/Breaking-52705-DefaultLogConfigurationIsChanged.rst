@@ -8,7 +8,7 @@ Description
 FileWriter behavior has changed
 -------------------------------
 
-The FileWriter of the logging Framework now appends a hash to its default log file which is used when no log file
+The FileWriter of the logging Framework now appends a hash to its default log file which is used when no log file name
 is provided in the configuration.
 
 The new default log file might now look like this (the hash depends on the current encryption key):

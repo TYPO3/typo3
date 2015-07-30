@@ -11,14 +11,14 @@ Due to adjustments of the Core eID scripts a few methods have been adjusted.
 
 ``ExtDirectEidController::routeAction`` is now protected and has a changed signature.
 
-The following methods are removed:
+The following methods have been removed:
 
-* ``ExtDirectEidController::actionIsAllowed``
-* ``ExtDirectEidController::render``
-* ``EidUtility::isEidRequest``
-* ``EidUtility::getEidScriptPath``
+* ``ExtDirectEidController::actionIsAllowed()``
+* ``ExtDirectEidController::render()``
+* ``EidUtility::isEidRequest()``
+* ``EidUtility::getEidScriptPath()``
 
-Additionally every call to a not registered eID key will result in a fatal error.
+Additionally calling an non-existent eID key will result in a fatal error.
 
 Impact
 ======
@@ -29,10 +29,10 @@ All third party code using those methods will cause a fatal PHP error.
 Affected Installations
 ======================
 
-All installations using third party code accessing one of the adjusted (removed) methods.
+All installations using third party code accessing one of the adjusted (or removed) methods.
 
 
 Migration
 =========
 
-No replacement for the mentioned methods is provided. Consider migrating your eID script to the new PSR-7 compliant model.
+No replacement for the mentioned methods is provided. Consider migrating your eID scripts to the new PSR-7 compliant model.
