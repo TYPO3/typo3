@@ -9,16 +9,21 @@
 //
 // Trees Variables
 //
-@tree-indentation: 0.5em;
+@tree-indentation: 16px;
+@tree-intendation-space: 5px;
+@tree-line-height: 23px;
 @tree-border: #666666;
+@tree-bg: white;
+@tree-control-size: 20px;
+@tree-control-icon-size: 12px;
 
 
 //
-// Trees
+// Tree
 //
 .list-tree,
 .list-tree ul {
-	margin-left: @tree-indentation;
+	margin-left: (@tree-indentation / 2);
 	padding: 0;
 	list-style: none;
 	position: relative;
@@ -28,7 +33,7 @@
 		width: 0;
 		position: absolute;
 		top: 0;
-		bottom: 1em;
+		bottom: ceil(@tree-line-height / 2);
 		left: 0;
 		margin-bottom: -2px;
 		border-left: 1px dotted @tree-border;
@@ -48,26 +53,26 @@
 			}
 		}
 		&:before {
-			content: "";
+			content: '';
 			display: block;
-			width: @tree-indentation * 1.6;
+			width: ceil(@tree-indentation - @tree-intendation-space);
 			height: 0;
 			border-top: 1px dotted @tree-border;
 			margin-top: -2px;
 			position: absolute;
-			top: 1em;
+			top: ceil(@tree-line-height / 2) + 1;
 			left: 2px;
 		}
 		&:last-child:before {
-			background: white;
+			background: @tree-bg;
 			height: auto;
-			top: 1em;
 			left: 0;
+			width: ceil(@tree-indentation - @tree-intendation-space) + 2;
 			bottom: 0;
 		}
 		margin: 0;
-		padding-left: @tree-indentation * 2.5;
-		line-height: 1.75em;
+		padding-left: @tree-indentation;
+		line-height: @tree-line-height;
 		position: relative;
 	}
 }
@@ -75,22 +80,86 @@
 	font-weight: bold;
 }
 .list-tree-control {
+	.user-select(none);
+	position: relative;
+	display: block;
+	float: left;
+	margin-top: ceil(@tree-line-height / 2) - ceil(@tree-control-size / 2);
+	margin-left: -(@tree-indentation + ceil(@tree-control-size / 2));
+	text-align: center;
+	line-height: @tree-control-size;
+	width: @tree-control-size;
+	height: @tree-control-size;
+	&:before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-top: -(@tree-control-icon-size / 2);
+		margin-left: -(@tree-control-icon-size / 2);
+		width: @tree-control-icon-size;
+		height: @tree-control-icon-size;
+		background-color: @tree-bg;
+	}
 	&:active,
 	&:focus,
 	&:hover {
+		outline: none;
 		text-decoration: none;
 	}
 	> .fa {
-		font-size: 1.1em;
 		display: inline-block;
 		text-align: center;
-		width: @tree-indentation * 2;
+		cursor: pointer;
 	}
 	&.list-tree-control-open > .fa:before {
 		content: "\f0d7";
 	}
 	&.list-tree-control-closed > .fa:before {
 		content: "\f0da";
+	}
+}
+.list-tree-root {
+	margin-left: 0;
+	&:before {
+		display: none;
+	}
+	> li {
+		padding-left: 0;
+		&:before {
+			display: none;
+		}
+		> .list-tree-group {
+			> .list-tree-control {
+				display: none;
+			}
+		}
+	}
+}
+
+
+//
+// Tree Variations
+//
+#imp-exp-mod {
+	.list-tree li:last-child:before,
+	.list-tree-control:before {
+		background-color: #f1f1f1;
+	}
+}
+#typo3-browse-links-php {
+	.list-tree li:last-child:before,
+	.list-tree-control:before {
+		background-color: #ececec;
+	}
+}
+#ext-backend-Modules-FileSystemNavigationFrame-index-php {
+	.list-tree li:last-child:before,
+	.list-tree-control:before {
+		background-color: #f5f5f5;
+	}
+	.list-tree-root {
+		margin-left: (@tree-indentation / 2);
 	}
 }
 
@@ -163,57 +232,6 @@ body#typo3-alt-db-navframe-php div.c-notice {
 	width: 95%;
 }
 
-/** CSS-based tree for Foldertree */
-ul.list-tree-root {
-	li:last-child:before {
-		background-color: #ececec;
-	}
-
-	&:before {
-		border: 0;
-	}
-
-	> li:before {
-		border: 0;
-	}
-
-	> li {
-		border-left: 0;
-	}
-}
-
-// change background color for folder nav frame
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php ul.list-tree-root li:last-child:before {
-	background-color: #f5f5f5;
-}
-
-body#imp-exp-mod ul.list-tree-root {
-	> li:first-child {
-		padding-left: 0;
-	}
-	ul li:last-child:before {
-		background-color: #f1f1f1;
-	}
-}
-
-ul.flat-tree-root li:last-child:before {
-	background-color: #f1f1f1;
-}
-
-//
-// Configuration trees, used in Admin Tools => Configuration
-//
-
-table.t3-tree-config {
-	background: #ececec;
-	background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
-	border: 1px solid #adadad;
-	min-width: 500px;
-
-	.t3-tree-config-header {
-		text-align: left;
-	}
-}
 
 //
 // AJAX Page Tree
@@ -227,7 +245,7 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 
 body#typo3-pagetree #typo3-inner-docbody,
 body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
-	padding: 10px 0;
+	padding: 10px 0 10px 10px;
 }
 
 ul.tree {

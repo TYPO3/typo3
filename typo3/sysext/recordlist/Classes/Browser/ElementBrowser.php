@@ -1608,7 +1608,7 @@ class ElementBrowser {
 			$db = $this->getDatabaseConnection();
 			$picon = IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
 			$picon .= BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE);
-			$out .= $picon . '<ul class="list-tree flat-tree-root">';
+			$out .= $picon . '<ul class="list-tree list-tree-root">';
 			// Look up tt_content elements from the expanded page:
 			$res = $db->exec_SELECTquery(
 				'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
@@ -1795,7 +1795,7 @@ class ElementBrowser {
 		$c = 0;
 
 		if (!empty($items)) {
-			$out .= '<ul class="list-tree flat-tree-root">';
+			$out .= '<ul class="list-tree list-tree-root">';
 			foreach ($items as $fileOrFolderObject) {
 				$c++;
 				if ($renderFolders) {
