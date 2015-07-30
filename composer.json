@@ -34,7 +34,7 @@
 		"ext-session": "*",
 		"ext-xml": "*",
 		"psr/log": "1.0.*@dev",
-		"pear/http_request2": "dev-trunk#674ca38c44e0da062799bde776751424f754d0bc",
+		"pear/http_request2": "~2.2.1",
 		"phpwhois/idna-convert": "~0.8.2",
 		"swiftmailer/swiftmailer": "~5.4.1",
 		"symfony/console": "~2.5.11",
