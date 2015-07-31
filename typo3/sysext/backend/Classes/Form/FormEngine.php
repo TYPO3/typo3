@@ -1253,7 +1253,9 @@ class FormEngine {
 			}
 			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
+			// Load tree stuff here
 			$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/tree.js');
+			$pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('lang') . 'locallang_csh_corebe.xlf', 'tcatree');
 			$pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
 			if (ExtensionManagementUtility::isLoaded('rtehtmlarea')) {
 				// This js addition is hackish ... it will always load this file even if not RTE
