@@ -23,7 +23,7 @@ TYPO3\CMS\Backend\Http\Application
 All incoming web requests for any regular Backend call inside typo3/*. This handles three types of Request Handlers:
 - The AJAX Request Handler, which is triggered on requests with an "ajaxID" GET Parameter given.
 - The Backend Module Request Handler, which handles all types of modules triggered on requests with an "M" GET Parameter
-- The regular Request handler for typical other backend calls, e.g. index.php or backend.php.
+- The regular Request handler for typical other backend calls on index.php.
 The Application checks if all configuration is given, otherwise redirects to the TYPO3 Install Tool.
 
 \TYPO3\CMS\Backend\Console\Application

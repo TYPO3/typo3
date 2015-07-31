@@ -5,15 +5,15 @@ Feature: #67932 - New rsaauth API
 Description
 ===========
 
-The rsaauth API was rewritten to be more generic and can now be used easily in more
-parts of the core as well as in third party extensions.
+The rsaauth API has been rewritten to be more generic and can now be used easily in more parts of the core as well as
+in third party extensions.
 
 
 Impact
 ======
 
-Form fields (e.g. password fields) can be encrypted before transmission. This helps to improve the security of
-your and your user's data.
+Form fields (e.g. password fields) can be encrypted before transmission. This helps to improve the security of your and
+your user's data.
 
 
 Examples

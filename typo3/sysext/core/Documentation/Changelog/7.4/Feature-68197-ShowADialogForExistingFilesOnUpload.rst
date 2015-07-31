@@ -5,7 +5,8 @@ Feature: #68197 - Show a dialog for existing files on upload
 Description
 ===========
 
-The "Shall existing files be overwritten?" confirm dialog when uploading files in the "Files" backend module has been replaced by a modal window that appears when there are really file conflicts.
+The "Shall existing files be overwritten?" confirm dialog when uploading files in the "Files" backend module has been
+replaced by a modal window that appears when there are really file conflicts.
 
 
 Impact

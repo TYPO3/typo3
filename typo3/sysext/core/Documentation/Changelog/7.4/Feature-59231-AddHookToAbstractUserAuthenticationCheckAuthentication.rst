@@ -6,8 +6,8 @@ Description
 ===========
 
 Hook to post-process login failures in ``AbstractUserAuthentication::checkAuthentication``.
-By default the process sleeps for five seconds in case of failing. Using this hook
-different solutions for brute force protection could be implemented.
+By default the process sleeps for five seconds in case of failing. By using this hook, different solutions for
+brute force protection can be implemented.
 
 Register like this:
 

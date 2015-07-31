@@ -5,7 +5,7 @@ Feature: #67360 - Custom attribute name and multiple values for meta tags
 Description
 ===========
 
-`page.meta` is extented to support different attribute names like `property` used for OG tags. You may also supply
+``page.meta`` is extented to support different attribute names like ``property`` used for OG tags. You may also supply
 multiple values for one name, which results in multiple meta tags with the same name to be rendered.
 
 See http://ogp.me/ for more information about the Open Graph protocol and its properties.

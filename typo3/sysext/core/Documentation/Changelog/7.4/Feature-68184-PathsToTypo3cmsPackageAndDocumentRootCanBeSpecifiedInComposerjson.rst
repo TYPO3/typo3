@@ -6,7 +6,7 @@ Description
 ===========
 
 With the new composer installer it is possible to specify the path of the document root
-and also the path of the typo3/cms package
+and also the path of the typo3/cms package.
 
 It can be specified in the extra section of your composer root package like that:
 

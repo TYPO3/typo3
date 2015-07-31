@@ -5,7 +5,8 @@ Feature: #66070 - Configure anchor for pagination widget
 Description
 ===========
 
-This feature allows to add a key "section" to the configuration of a fluid pagination widget. The anchor gets appended to every link of the pagination widget. The "widget.link" viewHelper used by the pagination widget already supports this.
+This feature allows to add a key "section" to the configuration of a fluid pagination widget. The anchor gets appended
+to every link of the pagination widget. The "widget.link" viewHelper used by the pagination widget already supports this.
 
 Examples
 --------
@@ -22,4 +23,5 @@ The following example will render the page browser having a section parameter "#
 Impact
 ======
 
-If the "section" attribute does not get specified or no configuration is supplied at all then no section parameter (#section) will get appended to the links and the pagination widget behaves as usual.
+If the "section" attribute does not get specified or no configuration is supplied at all then no section parameter
+(#section) will get appended to the links and the pagination widget behaves as usual.
