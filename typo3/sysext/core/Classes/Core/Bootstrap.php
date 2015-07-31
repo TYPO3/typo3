@@ -297,20 +297,15 @@ class Bootstrap {
 	protected function sendResponse() {
 		if ($this->response instanceof \Psr\Http\Message\ResponseInterface) {
 			if (!headers_sent()) {
-				// headers already set by legacy code
-				$headers = array_flip(array_map(function($value) { return strtolower(explode(':', $value, 2)[0]); }, headers_list()));
 				foreach ($this->response->getHeaders() as $name => $values) {
-					// if the header has already been set, do not overwrite it
-					if (!isset($headers[strtolower($name)])) {
-						header($name . ': ' . implode(', ', $values), FALSE);
-					}
+					header($name . ': ' . implode(', ', $values));
 				}
-				// Send the response type only if it's different from 200.
-				// This is a safety net if a non 200 status code has already been sent.
-				// In case we have some non 200 code via the response object though, we write the header in any case.
-				$statusCode = $this->response->getStatusCode();
-				if ($statusCode !== 200) {
-					header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $statusCode . ' ' . $this->response->getReasonPhrase());
+				// If the response code was not changed by legacy code (still is 200)
+				// then allow the PSR-7 response object to explicitly set it.
+				// Otherwise let legacy code take precedence.
+				// This code path can be deprecated once we expose the response object to third party code
+				if (http_response_code() === 200) {
+					header('HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() . ' ' . $this->response->getReasonPhrase());
 				}
 			}
 			echo $this->response->getBody()->__toString();
