@@ -247,18 +247,17 @@ class NewContentElementController {
 					}
 					$menuItems[$key]['content'] .= '
 						<div class="media">
-							' . $content . '
-							<div class="media-left">
-								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+							<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+								' . $content . '
+								<div class="media-left">
 									<img' . IconUtility::skinImg($this->doc->backPath, $icon) . ' alt="" />
-								</a>
-							</div>
-							<div class="media-body">
-								<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
-									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>
-									<br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) .
-								'</a>
-							</div>
+								</div>
+								<div class="media-body">
+									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>' .
+									'<br />' .
+									nl2br(htmlspecialchars(trim($wInfo['description']))) .
+								'</div>
+							</a>
 						</div>';
 					$cc++;
 				}
