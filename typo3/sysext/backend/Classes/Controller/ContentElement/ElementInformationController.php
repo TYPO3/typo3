@@ -396,16 +396,22 @@ class ElementInformationController
                     /** @var Avatar $avatar */
                     $avatar = GeneralUtility::makeInstance(Avatar::class);
                     $icon = $avatar->render($creatorRecord);
-
-                    $rowValue = '<span class="pull-left">' . $icon . '</span>' .
-                    '<strong>' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</strong><br />'
-                    . ($GLOBALS['BE_USER']->user['realName'] ? htmlspecialchars($GLOBALS['BE_USER']->user['realName']) : '');
+                    $rowValue = '
+                        <div class="media">
+                            <div class="media-left">
+                                ' . $icon . '
+                            </div>
+                            <div class="media-body">
+                                <strong>' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</strong><br>
+                                ' . ($GLOBALS['BE_USER']->user['realName'] ? htmlspecialchars($GLOBALS['BE_USER']->user['realName']) : '') . '
+                            </div>
+                        </div>';
                 }
             }
 
             $tableRows[] = '
 				<tr>
-					<th>' . rtrim($fieldLabel, ':') . '</th>
+					<th class="col-nowrap">' . rtrim($fieldLabel, ':') . '</th>
 					<td>' . ($name === 'cruser_id' ? $rowValue : htmlspecialchars($rowValue)) . '</td>
 				</tr>';
         }
@@ -434,7 +440,7 @@ class ElementInformationController
             $itemLabel = $lang->sL(BackendUtility::getItemLabel($this->table, $name), true);
             $tableRows[] = '
 				<tr>
-					<th>' . $itemLabel . '</th>
+					<th class="col-nowrap">' . $itemLabel . '</th>
 					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
         }

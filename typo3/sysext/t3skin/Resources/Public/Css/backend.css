@@ -10702,7 +10702,7 @@ fieldset[disabled] .table .btn-default.active {
 .table .col-nowrap,
 .table .col-control,
 .table .col-clipboard {
-  white-space: nowrap;
+  white-space: nowrap!important;
 }
 .table .col-control,
 .table .col-clipboard {
