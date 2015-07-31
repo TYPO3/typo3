@@ -127,6 +127,21 @@ class PageRepository {
 	);
 
 	/**
+	 * Computed properties that are added to database rows.
+	 *
+	 * @var array
+	 */
+	protected $computedPropertyNames = array(
+		'_LOCALIZED_UID',
+		'_MP_PARAM',
+		'_ORIG_uid',
+		'_ORIG_pid',
+		'_PAGES_OVERLAY',
+		'_PAGES_OVERLAY_UID',
+		'_PAGES_OVERLAY_LANGUAGE',
+	);
+
+	/**
 	 * Named constants for "magic numbers" of the field doktype
 	 */
 	const DOKTYPE_DEFAULT = 1;
@@ -1192,7 +1207,9 @@ class PageRepository {
 			$movePldSwap = $this->movePlhOL($table, $row);
 			// implode(',',array_keys($row)) = Using fields from original record to make
 			// sure no additional fields are selected. This is best for eg. getPageOverlay()
-			if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], implode(',', array_keys($row)), $bypassEnableFieldsCheck)) {
+			// Computed properties are excluded since those would lead to SQL errors.
+			$fieldNames = implode(',', array_keys($this->purgeComputedProperties($row)));
+			if ($wsAlt = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, $table, $row['uid'], $fieldNames, $bypassEnableFieldsCheck)) {
 				if (is_array($wsAlt)) {
 					// Always fix PID (like in fixVersioningPid() above). [This is usually not
 					// the important factor for versioning OL]
@@ -1428,6 +1445,22 @@ class PageRepository {
 		}
 
 		return $references;
+	}
+
+	/**
+	 * Purges computed properties from database rows,
+	 * such as _ORIG_uid or _ORIG_pid for instance.
+	 *
+	 * @param array $row
+	 * @return array
+	 */
+	protected function purgeComputedProperties(array $row) {
+		foreach ($this->computedPropertyNames as $computedPropertyName) {
+			if (array_key_exists($computedPropertyName, $row)) {
+				unset($row[$computedPropertyName]);
+			}
+		}
+		return $row;
 	}
 
 	/**
