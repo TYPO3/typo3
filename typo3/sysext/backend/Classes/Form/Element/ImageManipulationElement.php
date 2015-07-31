@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -52,6 +51,7 @@ class ImageManipulationElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
+		$resultArray = $this->initializeResultArray();
 		$languageService = $this->getLanguageService();
 
 		$row = $this->globalOptions['databaseRow'];
@@ -133,11 +133,8 @@ class ImageManipulationElement extends AbstractFormElement {
 
 			$content .= $this->getImageManipulationInfoTable($parameterArray['itemFormElValue']);
 
-			/** @var $pageRenderer PageRenderer */
-			$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-			$pageRenderer->loadRequireJsModule(
-				'TYPO3/CMS/Backend/ImageManipulation',
-				'function(ImageManipulation){ImageManipulation.initializeTrigger()}' // Initialize after load
+			$resultArray['requireJsModules'][] = array(
+				'TYPO3/CMS/Backend/ImageManipulation' => 'function(ImageManipulation){ImageManipulation.initializeTrigger()}'
 			);
 		}
 
@@ -150,7 +147,6 @@ class ImageManipulationElement extends AbstractFormElement {
 		$item .= '<div class="media-body">' . $content . '</div>';
 		$item .= '</div>';
 
-		$resultArray = $this->initializeResultArray();
 		$resultArray['html'] = $item;
 		return $resultArray;
 	}
