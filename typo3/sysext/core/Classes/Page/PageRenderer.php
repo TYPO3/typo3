@@ -1623,7 +1623,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $fileRef Input is a file-reference (see GeneralUtility::getFileAbsFileName). That file is expected to be a 'locallang.xlf' file containing a valid XML TYPO3 language structure.
 	 * @param string $selectionPrefix Prefix to select the correct labels (default: '')
-	 * @param string $stripFromSelectionName Sub-prefix to be removed from label names in the result (default: '')
+	 * @param string $stripFromSelectionName String to be removed from the label names in the output. (default: '')
 	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
 	 * @return void
 	 */
@@ -2331,8 +2331,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$labelsFromFile = array();
 		$allLabels = $this->readLLfile($fileRef, $errorMode);
-		// Regular expression to strip the selection prefix and possibly something from the label name:
-		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
 		if ($allLabels !== FALSE) {
 			// Merge language specific translations:
 			if ($this->lang !== 'default' && isset($allLabels[$this->lang])) {
@@ -2342,10 +2340,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			// Iterate through all locallang labels:
 			foreach ($labels as $label => $value) {
-				if ($selectionPrefix === '') {
-					$labelsFromFile[$label] = $value;
-				} elseif (strpos($label, $selectionPrefix) === 0) {
-					preg_replace($labelPattern, '', $label);
+				// If $selectionPrefix is set, only respect labels that start with $selectionPrefix
+				if ($selectionPrefix === '' || strpos($label, $selectionPrefix) === 0) {
+					// Remove substring $stripFromSelectionName from label
+					$label = str_replace($stripFromSelectionName, '', $label);
 					$labelsFromFile[$label] = $value;
 				}
 			}

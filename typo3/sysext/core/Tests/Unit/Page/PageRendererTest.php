@@ -148,4 +148,104 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
 	}
 
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function includeLanguageFileForInlineThrowsExceptionIfLangIsNotSet() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
+		$subject->_set('charSet', 'utf-8');
+		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
+	}
+
+	/**
+	 * @test
+	 * @expectedException \RuntimeException
+	 */
+	public function includeLanguageFileForInlineThrowsExceptionIfCharSetIsNotSet() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('dummy'), array(), '', FALSE);
+		$subject->_set('lang', 'default');
+		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
+	}
+
+	/**
+	 * @test
+	 */
+	public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead() {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', FALSE);
+		$subject->_set('lang', 'default');
+		$subject->_set('charSet', 'utf-8');
+		$subject->_set('inlineLanguageLabels', array());
+		$subject->method('readLLfile')->willReturn(FALSE);
+		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
+		$this->assertEquals(array(), $subject->_get('inlineLanguageLabels'));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider() {
+		$llFileContent = array(
+			'default' => array(
+				'inline_label_first_Key' => 'first',
+				'inline_label_second_Key' => 'second',
+				'thirdKey' => 'third'
+			)
+		);
+		return array(
+			'No processing' => array(
+				$llFileContent,
+				'',
+				'',
+				$llFileContent['default']
+			),
+			'Respect $selectionPrefix' => array(
+				$llFileContent,
+				'inline_',
+				'',
+				array(
+					'inline_label_first_Key' => 'first',
+					'inline_label_second_Key' => 'second'
+				)
+			),
+			'Respect $stripFromSelectionName' => array(
+				$llFileContent,
+				'',
+				'inline_',
+				array(
+					'label_first_Key' => 'first',
+					'label_second_Key' => 'second',
+					'thirdKey' => 'third'
+				)
+			),
+			'Respect $selectionPrefix and $stripFromSelectionName' => array(
+				$llFileContent,
+				'inline_',
+				'inline_label_',
+				array(
+					'first_Key' => 'first',
+					'second_Key' => 'second'
+				)
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabelsProvider
+	 * @test
+	 */
+	public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels($llFileContent, $selectionPrefix, $stripFromSelectionName, $expectation) {
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
+		$subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Page\PageRenderer::class, array('readLLfile'), array(), '', FALSE);
+		$subject->_set('lang', 'default');
+		$subject->_set('charSet', 'utf-8');
+		$subject->_set('inlineLanguageLabels', array());
+		$subject->method('readLLfile')->willReturn($llFileContent);
+		$subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
+		$this->assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
+	}
+
 }
