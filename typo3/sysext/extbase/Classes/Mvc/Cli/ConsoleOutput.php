@@ -273,7 +273,7 @@ class ConsoleOutput {
 	 */
 	protected function getDialogHelper() {
 		if ($this->dialogHelper === NULL) {
-			$this->dialogHelper = new DialogHelper();
+			$this->dialogHelper = new DialogHelper(FALSE);
 			$helperSet = new HelperSet(array(new FormatterHelper()));
 			$this->dialogHelper->setHelperSet($helperSet);
 		}
@@ -287,7 +287,7 @@ class ConsoleOutput {
 	 */
 	protected function getProgressHelper() {
 		if ($this->progressHelper === NULL) {
-			$this->progressHelper = new ProgressHelper();
+			$this->progressHelper = new ProgressHelper(FALSE);
 		}
 		return $this->progressHelper;
 	}
@@ -299,7 +299,7 @@ class ConsoleOutput {
 	 */
 	protected function getTableHelper() {
 		if ($this->tableHelper === NULL) {
-			$this->tableHelper = new TableHelper();
+			$this->tableHelper = new TableHelper(FALSE);
 		}
 		return $this->tableHelper;
 	}
