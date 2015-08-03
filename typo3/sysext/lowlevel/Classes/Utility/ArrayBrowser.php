@@ -169,8 +169,7 @@ class ArrayBrowser {
 				. '&varname=' . urlencode($variableName)))
 				. '#varname">' . $label . '</a>';
 		}
-
-		return $label;
+		return '<span class="list-tree-label">' . $label . '</span>';
 	}
 
 	/**

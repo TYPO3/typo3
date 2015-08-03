@@ -1606,9 +1606,16 @@ class ElementBrowser {
 			// Create header for listing, showing the page title/icon:
 			$mainPageRec = BackendUtility::getRecordWSOL('pages', $expPageId);
 			$db = $this->getDatabaseConnection();
-			$picon = IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
-			$picon .= BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE);
-			$out .= $picon . '<ul class="list-tree list-tree-root">';
+			$out .= '
+				<ul class="list-tree list-tree-root list-tree-root-clean">
+					<li class="list-tree-control-open">
+						<span class="list-tree-group">
+							<span class="list-tree-icon">' . IconUtility::getSpriteIconForRecord('pages', $mainPageRec) . '</span>
+							<span class="list-tree-title">' . BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE) . '</span>
+						</span>
+						<ul>
+				';
+
 			// Look up tt_content elements from the expanded page:
 			$res = $db->exec_SELECTquery(
 				'uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext',
@@ -1626,14 +1633,29 @@ class ElementBrowser {
 				$icon = IconUtility::getSpriteIconForRecord('tt_content', $row);
 				$selected = '';
 				if ($this->curUrlInfo['act'] == 'page' && $this->curUrlInfo['cElement'] == $row['uid']) {
-					$selected = ' class="bg-success"';
+					$selected = ' class="active"';
 				}
 				// Putting list element HTML together:
-				$out .= '<li>'
-					. '<a href="#"' . $selected . ' onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">'
-					. $icon . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a></li>';
+				$out .= '
+					<li' . $selected . '>
+						<span class="list-tree-group">
+							<span class="list-tree-icon">
+								' . $icon . '
+							</span>
+							<span class="list-tree-title">
+								<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">
+									' . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '
+								</a>
+							</span>
+						</span>
+					</li>
+					';
 			}
-			$out .= '</ul>';
+			$out .= '
+						</ul>
+					</li>
+				</ul>
+				';
 		}
 		return $out;
 	}
@@ -1784,8 +1806,11 @@ class ElementBrowser {
 		if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
 			$selected = ' class="bg-success"';
 		}
-		$out .= '<a href="#"' . $selected . ' title="' . htmlspecialchars($folder->getIdentifier()) . '" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">'
-			. $folderIcon . '</a><br />';
+		$out .= '
+			<a href="#"' . $selected . ' title="' . htmlspecialchars($folder->getIdentifier()) . '" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">
+				' . $folderIcon . '
+			</a>
+			';
 		// Get files from the folder:
 		if ($renderFolders) {
 			$items = $folder->getSubfolders();
@@ -1820,14 +1845,16 @@ class ElementBrowser {
 				if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder')
 					&& $currentIdentifier == $fileIdentifier
 				) {
-					$selected = ' class="bg-success"';
+					$selected = ' class="active"';
 				}
 				// Put it all together for the file element:
 				$out .=
-					'<li><a href="#"' . $selected . ' title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">' .
-						$icon .
-						htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) .
-					'</a></li>';
+					'<li' . $selected . '>
+						<a href="#"title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" onclick="return link_folder(\'' . $itemUid . '\');">
+							' .	$icon . '
+							' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '
+						</a>
+					</li>';
 			}
 			$out .= '</ul>';
 		}

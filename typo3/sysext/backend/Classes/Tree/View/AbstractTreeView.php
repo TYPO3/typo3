@@ -426,7 +426,12 @@ abstract class AbstractTreeView {
 			}
 
 			$idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($treeItem['row']) . '_' . $treeItem['bank']);
-			$out .= '<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group">' . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>';
+			$out .= '
+				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
+					<span class="list-tree-group">
+						<span class="list-tree-icon">' . $treeItem['HTML'] . '</span>
+						<span class="list-tree-title">' .$this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $treeItem['bank']) . '</span>
+					</span>';
 
 			if (!$treeItem['hasSub']) {
 				$out .= '</li>';
@@ -446,7 +451,7 @@ abstract class AbstractTreeView {
 				}
 			}
 		}
-		$out = '<ul class="list-tree list-tree-root">' . $out . '</ul>';
+		$out = '<ul class="list-tree list-tree-root list-tree-root-clean">' . $out . '</ul>';
 		return $out;
 	}
 

@@ -50,9 +50,9 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	public function wrapTitle($title, $v, $ext_pArrPages = '') {
 		if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
 			$aOnClick = 'return link_typo3Page(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($v['uid']) . ');';
-			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
+			return '<span class="list-tree-title"><a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a></span>';
 		} else {
-			return '<span class="text-muted">' . $title . '</span>';
+			return '<span class="list-tree-title text-muted">' . $title . '</span>';
 		}
 	}
 
@@ -85,11 +85,16 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 			$selected = '';
 			if ($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
 				$selected = ' bg-success';
+				$classAttr .= ' active';
 			}
 			$aOnClick = 'return jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
 			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="pull-right" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
-			$out .= '<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '><span class="list-tree-group' . $selected . '">' . $cEbullet . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $this->ext_pArrPages) . '</span>';
-
+			$out .= '
+				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
+					<span class="list-tree-group' . $selected . '">
+						' . $cEbullet . $treeItem['HTML'] . $this->wrapTitle($this->getTitleStr($treeItem['row'], $titleLen), $treeItem['row'], $this->ext_pArrPages) . '
+					</span>
+				';
 			if (!$treeItem['hasSub']) {
 				$out .= '</li>';
 			}

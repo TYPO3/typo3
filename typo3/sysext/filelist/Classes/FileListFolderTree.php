@@ -35,7 +35,7 @@ class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	public function wrapIcon($theFolderIcon, $folderObject) {
 		$theFolderIcon = parent::wrapIcon($theFolderIcon, $folderObject);
 		// Wrap icon in a drag/drop span.
-		return '<span class="dragIcon" id="dragIconID_' . $this->getJumpToParam($folderObject) . '">' . $theFolderIcon . '</span>';
+		return '<span class="list-tree-icon dragIcon" id="dragIconID_' . $this->getJumpToParam($folderObject) . '">' . $theFolderIcon . '</span> ';
 	}
 
 	/**
@@ -50,7 +50,7 @@ class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 	public function wrapTitle($title, $folderObject, $bank = 0) {
 		$theFolderTitle = parent::wrapTitle($title, $folderObject, $bank);
 		// Wrap title in a drag/drop span.
-		return '<span class="dragTitle" id="dragTitleID_' . $this->getJumpToParam($folderObject) . '">' . $theFolderTitle . '</span>';
+		return '<span class="list-tree-title dragTitle" id="dragTitleID_' . $this->getJumpToParam($folderObject) . '">' . $theFolderTitle . '</span>';
 	}
 
 }

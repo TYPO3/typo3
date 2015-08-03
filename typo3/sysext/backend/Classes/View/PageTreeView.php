@@ -79,7 +79,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$thePageIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $thePageIcon . '</a>';
 		}
 		// Wrap icon in a drag/drop span.
-		$dragDropIcon = '<span class="dragIcon" id="dragIconID_' . $row['uid'] . '">' . $thePageIcon . '</span>';
+		$dragDropIcon = '<span class="list-tree-icon dragIcon" id="dragIconID_' . $row['uid'] . '">' . $thePageIcon . '</span> ';
 		// Add Page ID:
 		$pageIdStr = '';
 		if ($this->ext_showPageId) {
@@ -119,7 +119,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 
 		$thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . GeneralUtility::implodeAttributes($clickMenuParts) . '>' . $title . '</a>';
 		// Wrap title in a drag/drop span.
-		return '<span class="dragTitle" id="dragTitleID_' . $row['uid'] . '">' . $thePageTitle . '</span>';
+		return '<span class="list-tree-title dragTitle" id="dragTitleID_' . $row['uid'] . '">' . $thePageTitle . '</span>';
 	}
 
 	/**

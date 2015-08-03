@@ -475,7 +475,9 @@ class ExtendedTemplateService extends TemplateService {
 						$label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($ln) . '">' . $label . '</a>';
 					}
 				}
-				$HTML .= '<span class="list-tree-group">[' . $label . ']</span>';
+				$HTML .= '
+					<span class="list-tree-group">
+						<span class="list-tree-label">[' . $label . ']</span>';
 				if (isset($arr[$key])) {
 					$theValue = $arr[$key];
 					if ($this->fixedLgd) {
@@ -485,9 +487,9 @@ class ExtendedTemplateService extends TemplateService {
 					}
 					// The value has matched the search string
 					if ($this->tsbrowser_searchKeys[$depth] & 2) {
-						$HTML .= '&nbsp;=&nbsp;<strong class="text-danger">' . htmlspecialchars($theValue) . '</strong>';
+						$HTML .= ' = <span class="list-tree-value text-danger">' . htmlspecialchars($theValue) . '</span>';
 					} else {
-						$HTML .= '&nbsp;=&nbsp;<strong>' . htmlspecialchars($theValue) . '</strong>';
+						$HTML .= ' = <span class="list-tree-value">' . htmlspecialchars($theValue) . '</span>';
 					}
 					if ($this->ext_regComments && isset($arr[$key . '..'])) {
 						$comment = $arr[$key . '..'];
@@ -505,6 +507,7 @@ class ExtendedTemplateService extends TemplateService {
 						}
 					}
 				}
+				$HTML .= '</span>';
 				if ($deeper) {
 					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData, '', $arr[$key], $alphaSort);
 				}

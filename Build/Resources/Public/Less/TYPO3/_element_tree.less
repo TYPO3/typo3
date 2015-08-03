@@ -10,8 +10,8 @@
 // Trees Variables
 //
 @tree-indentation: 16px;
-@tree-intendation-space: 5px;
-@tree-line-height: 23px;
+@tree-intendation-space: 6px;
+@tree-line-height: 21px;
 @tree-border: #666666;
 @tree-bg: white;
 @tree-control-size: 20px;
@@ -23,7 +23,7 @@
 //
 .list-tree,
 .list-tree ul {
-	margin-left: (@tree-indentation / 2);
+	margin-left: ceil((@tree-indentation / 2));
 	padding: 0;
 	list-style: none;
 	position: relative;
@@ -41,21 +41,26 @@
 }
 .list-tree {
 	li {
-		.list-tree-group {
-			> .pull-right {
-				padding-left: 15px;
-			}
-		}
 		&.active {
-			> .list-tree-group,
-			> .list-tree-group a {
-				.text-danger();
+			> .list-tree-group {
+				&:before {
+					content: '';
+					position: absolute;
+					right: -@tree-intendation-space;
+					left: -@tree-intendation-space;
+					top: -1px;
+					bottom: -1px;
+					display: block;
+					border: 1px solid rgba(0,0,0,0.25);
+					background-color: rgba(255,255,255,0.75);
+					border-radius: 2px;
+				}
 			}
 		}
 		&:before {
 			content: '';
 			display: block;
-			width: ceil(@tree-indentation - @tree-intendation-space);
+			width: ceil(@tree-indentation - @tree-intendation-space - 1px);
 			height: 0;
 			border-top: 1px dotted @tree-border;
 			margin-top: -2px;
@@ -67,7 +72,7 @@
 			background: @tree-bg;
 			height: auto;
 			left: 0;
-			width: ceil(@tree-indentation - @tree-intendation-space) + 2;
+			width: ceil(@tree-indentation - @tree-intendation-space) + 1;
 			bottom: 0;
 		}
 		margin: 0;
@@ -76,8 +81,22 @@
 		position: relative;
 	}
 }
+.list-tree-group {
+	position: relative;
+	display: block;
+	> span {
+		position: relative;
+	}
+}
 .list-tree-value {
 	font-weight: bold;
+}
+.list-tree-icon {
+	top: -2px;
+}
+.list-tree-show {
+	float: right;
+	margin-left: @tree-intendation-space;
 }
 .list-tree-control {
 	.user-select(none);
@@ -95,8 +114,8 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		margin-top: -(@tree-control-icon-size / 2);
-		margin-left: -(@tree-control-icon-size / 2);
+		margin-top: ceil(-(@tree-control-icon-size / 2));
+		margin-left: ceil(-(@tree-control-icon-size / 2));
 		width: @tree-control-icon-size;
 		height: @tree-control-icon-size;
 		background-color: @tree-bg;
@@ -125,15 +144,23 @@
 		display: none;
 	}
 	> li {
-		padding-left: 0;
+		padding-left: @tree-control-size;
 		&:before {
 			display: none;
 		}
 		> .list-tree-group {
 			> .list-tree-control {
-				display: none;
+				margin-left: -@tree-control-size;
+				&:before {
+					background-color: transparent;
+				}
 			}
 		}
+	}
+}
+.list-tree-root-clean {
+	> li {
+		padding-left: 0;
 	}
 }
 
@@ -141,25 +168,34 @@
 //
 // Tree Variations
 //
-#imp-exp-mod {
+[id=imp-exp-mod] {
 	.list-tree li:last-child:before,
 	.list-tree-control:before {
 		background-color: #f1f1f1;
 	}
 }
-#typo3-browse-links-php {
+[id=typo3-browse-links-php] {
 	.list-tree li:last-child:before,
 	.list-tree-control:before {
 		background-color: #ececec;
 	}
 }
-#ext-backend-Modules-FileSystemNavigationFrame-index-php {
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] {
 	.list-tree li:last-child:before,
 	.list-tree-control:before {
 		background-color: #f5f5f5;
 	}
-	.list-tree-root {
-		margin-left: (@tree-indentation / 2);
+	[id=typo3-inner-docbody] {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+[id=ext-lowlevel-Modules-Configuration-index-php] {
+	.active {
+		> .list-tree-group {
+			display: inline-block;
+			color: @brand-danger;
+		}
 	}
 }
 
@@ -243,9 +279,8 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 	padding: 0;
 }
 
-body#typo3-pagetree #typo3-inner-docbody,
-body#ext-backend-Modules-FileSystemNavigationFrame-index-php #typo3-inner-docbody {
-	padding: 10px 0 10px 10px;
+#typo3-pagetree #typo3-inner-docbody {
+	padding: 10px 0;
 }
 
 ul.tree {
