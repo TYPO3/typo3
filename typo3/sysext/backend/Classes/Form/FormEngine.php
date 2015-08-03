@@ -399,7 +399,10 @@ class FormEngine {
 			$this->hiddenFieldAccum[] = $element;
 		}
 		foreach ($resultArray['additionalHeadTags'] as $element) {
-			$this->additionalCode_pre[] = $element;
+			// prevent multiple include of the same files
+			if (!in_array($element, $this->additionalCode_pre)) {
+				$this->additionalCode_pre[] = $element;
+			}
 		}
 
 		if (!empty($resultArray['inlineData'])) {
@@ -1284,7 +1287,10 @@ class FormEngine {
 				\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
 				'file_upload'
 			);
-
+			// Load codemirror for T3Editor
+			if (ExtensionManagementUtility::isLoaded('t3editor')) {
+				$this->loadJavascriptLib('sysext/t3editor/Resources/Public/JavaScript/Contrib/codemirror/js/codemirror.js');
+			}
 			// We want to load jQuery-ui inside our js. Enable this using requirejs.
 			$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
 			$out .= '

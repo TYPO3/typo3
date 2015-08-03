@@ -1,9 +1,11 @@
 .CodeMirror-wrapping {
 	position: relative;
 }
+
 .CodeMirror-wrapping div {
 	line-height: 13px !important;
 }
+
 div.CodeMirror-line-numbers {
 	line-height: 13px !important;
 	font-size: 10px;
@@ -16,21 +18,25 @@ div.CodeMirror-line-numbers {
 .TSREF_type_label, .TSREF_description_label{
 	font-weight: bold;
 }
+
 .t3e_codeCompleteBox ul li span.word_definedTSREFProperty {
 	color:#DF4E00;
 	font-size:0.95em;
 	font-weight:bold;
 }
+
 .t3e_codeCompleteBox ul li span.word_undefinedTSREFProperty {
 	color:#FF8400;
 	font-size:0.95em;
 	font-weight:bold;
 }
+
 .t3e_codeCompleteBox ul li span.word_userProperty {
 	color:#7c7c7c;
 	font-size:0.95em;
 	font-weight:bold;
 }
+
 .t3e_descriptionBox{
 	height: 160px;
 	width: 260px;
@@ -39,42 +45,46 @@ div.CodeMirror-line-numbers {
 	background-color: #EFEFF4;
 	z-index:190;
 	border:2px solid silver;
-	padding:0px;
+	padding:0;
 }
+
 .t3e_toolbar{
 	position:absolute;
 	right:50px;
-	top:0pt;
+	top:0;
 	width:200px;
-	/*border: 1px solid #CCCCCC;*/
 }
+
 .t3e_toolbar_icon{
 	border: 1px solid #CCCCCC;
 	width: 20px;
 	height: 20px;
 	float: left;
 }
+
 .t3e_codeCompleteWrap {
 	position: absolute;
 	top: 0; left: 0;
 	z-index:190;
 }
+
 .t3e_codeCompleteBox {
 	background-color: #EFEFF4;
 	border:2px solid silver;
-	padding:0px;
+	padding:0;
 }
+
 .t3e_codeCompleteBox ul{
 	list-style-type: none;
-	padding:0px;
-	margin:0px;
+	padding:0;
+	margin:0;
 
 }
 .t3e_codeCompleteBox ul li{
 	padding-left:2px;
 	padding-right:2px;
 	font-weight:bold;
-	cursor: pointer; cursor: hand;
+	cursor: pointer;
 }
 .t3e_codeCompleteBox ul li.active{
 	padding-left:2px;
@@ -87,22 +97,16 @@ div.CodeMirror-line-numbers {
 	border: 1px solid gray;
 	position: relative;
 	background-color: #EFEFF4;
-	background-image: url('../../Public/Icons/spinner.gif');
-	background-position: 49% 50%;
-	background-repeat: no-repeat;
-	margin-right: 10px;
 }
 
 .t3e_modalOverlay {
 	position: absolute;
 	top: 0; left: 0;
 	background-color: #EFEFF4;
-	background-image: url('../../Public/Icons/spinner.gif');
-	background-position: 49% 50%;
-	background-repeat: no-repeat;
 	z-index:200;
 	width: 100%;
 	height: 100%;
+	text-align: center;
 }
 .t3e_autoCompleteBox {
 	position: absolute;
@@ -110,18 +114,18 @@ div.CodeMirror-line-numbers {
 	background-color: #EFEFF4;
 	z-index:190;
 	border:2px solid silver;
-	padding:0px;
+	padding:0;
 }
 .t3e_autoCompleteBox ul{
 	list-style-type: none;
-	padding:0px;
-	margin:0px;
+	padding:0;
+	margin:0;
 }
 .t3e_autoCompleteBox ul li{
 	padding-left:2px;
 	padding-right:2px;
 	font-weight:bold;
-	cursor: pointer; cursor: hand;
+	cursor: pointer;
 }
 .t3e_autoCompleteBox ul li.active{
 	padding-left:2px;
@@ -152,19 +156,12 @@ div.CodeMirror-line-numbers {
 	padding-right: 20px;
 }
 
-
-
-
-
 .t3e_statusbar_wrap {
 	clear: both;
 	font-size: 0.9em;
 	padding-left: 3px;
 	padding-top: 3px;
 	background-color:#B8BEC9;
-	background-image: url(../../../../t3skin/icons/gfx/alt_menu_mainitem_bg.gif);
-	background-position:left top;
-	background-repeat:repeat-x;
 	height: 20px;
 }
 .t3e_statusbar_wrap span {
@@ -178,11 +175,9 @@ div.CodeMirror-line-numbers {
 	padding: 4px 14px 0 14px;
 }
 
-
 .t3e_clickable {
-	cursor:pointer;cursor:hand;
+	cursor: hand;
 }
-
 
 .t3e_statusbar_overlay {
 	position: absolute; bottom: 20px; right: 17px;
@@ -190,7 +185,7 @@ div.CodeMirror-line-numbers {
 	background-color: #EFEFF4;
 	width: 180px;
 	height: 70%;
-	padding: 5px 0px 10px 0px;
+	padding: 5px 0 10px 0;
 	border-left: 1px solid gray;
 	border-right: 1px solid gray;
 	border-top: 1px solid gray;
@@ -207,10 +202,10 @@ div.CodeMirror-line-numbers {
 .t3e_statusbar_overlay ul li {
 	color: #212121;
 	padding: 2px 6px 2px 6px;
-	cursor:pointer;cursor:hand;
+	cursor: hand;
 }
 .t3e_statusbar_overlay ul li label {
-	cursor:pointer;cursor:hand;
+	cursor:pointer;
 }
 .t3e_statusbar_overlay ul li:hover {
 	background-color: #cfcfcf;

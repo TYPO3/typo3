@@ -99,6 +99,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function setModeByFile($file) {
 		$fileInfo = GeneralUtility::split_fileref($file);
+		// @TODO: @FIXME: the method setModeByType returns void, so this method will never return a string
 		return $this->setModeByType($fileInfo['fileext']);
 	}
 
