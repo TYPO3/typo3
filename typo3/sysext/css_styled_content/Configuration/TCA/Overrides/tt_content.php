@@ -534,7 +534,7 @@ $GLOBALS['TCA']['tt_content']['types']['textpic']['columnsOverrides']['bodytext'
 // Field arrangement for CE "image"
 $GLOBALS['TCA']['tt_content']['types']['image']['showitem'] = '
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,rowDescription
+		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,rowDescription,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.images,
 		image,
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.imagelinks;imagelinks,
@@ -623,7 +623,7 @@ $GLOBALS['TCA']['tt_content']['types']['menu']['showitem'] = '
 // Field arrangement for CE "shortcut"
 $GLOBALS['TCA']['tt_content']['types']['shortcut']['showitem'] = '
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-		header,rowDescription;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.shortcut_formlabel,
+		header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.shortcut_formlabel,rowDescription,
 		records;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records_formlabel,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
@@ -653,7 +653,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['showitem'] = '
 // Field arrangement for CE "div"
 $GLOBALS['TCA']['tt_content']['types']['div']['showitem'] = '
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-		header,rowDescription;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,
+		header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.div_formlabel,rowDescription,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
@@ -665,7 +665,7 @@ $GLOBALS['TCA']['tt_content']['types']['div']['showitem'] = '
 // Field arrangement for CE "html"
 $GLOBALS['TCA']['tt_content']['types']['html']['showitem'] = '
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
-		header,rowDescription;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.html_formlabel,
+		header;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.ALT.html_formlabel,rowDescription,
 		bodytext;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:bodytext.ALT.html_formlabel,
 	--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
 		--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.frames;frames,
