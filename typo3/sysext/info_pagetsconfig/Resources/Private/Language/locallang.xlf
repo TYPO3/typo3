@@ -52,7 +52,7 @@
 				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="sort_alphabetic">
-				<source>Sort alphabetically:</source>
+				<source>Sort alphabetically</source>
 			</trans-unit>
 			<trans-unit id="pagetitle">
 				<source>Pagetitle:</source>
