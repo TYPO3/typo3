@@ -15,6 +15,7 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
 
@@ -217,7 +218,7 @@ class IndexSearchRepository {
 			// Total search-result count
 			$count = $this->getDatabaseConnection()->sql_num_rows($res);
 			// The pointer is set to the result page that is currently being viewed
-			$pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->numberOfResults));
+			$pointer = MathUtility::forceIntegerInRange($this->resultpagePointer, 0, floor($count / $this->numberOfResults));
 			// Initialize result accumulation variables:
 			$c = 0;
 			// Result pointer: Counts up the position in the current search-result
@@ -329,6 +330,7 @@ class IndexSearchRepository {
 		$c = 0;
 		// This array accumulates the phash-values
 		$totalHashList = array();
+		$this->wSelClauses = array();
 		// Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
 		foreach ($searchWords as $k => $v) {
 			// Making the query for a single search word based on the search-type
@@ -339,7 +341,6 @@ class IndexSearchRepository {
 				$theType = 20;
 			}
 			$this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType);
-			$wSel = '';
 			// Perform search for word:
 			switch ($theType) {
 				case '1':
@@ -381,8 +382,6 @@ class IndexSearchRepository {
 					// Distinct word
 					$res = $this->searchDistinct($sWord);
 			}
-			// Accumulate the word-select clauses
-			$this->wSelClauses[] = $wSel;
 			// If there was a query to do, then select all phash-integers which resulted from this.
 			if ($res) {
 				// Get phash list by searching for it:
@@ -442,6 +441,7 @@ class IndexSearchRepository {
 		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
 		$wildcard_right = $mode & self::WILDCARD_RIGHT ? '%' : '';
 		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $this->getDatabaseConnection()->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
+		$this->wSelClauses[] = $wSel;
 		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
@@ -453,6 +453,7 @@ class IndexSearchRepository {
 	 */
 	protected function searchDistinct($sWord) {
 		$wSel = 'IW.wid=' . $this->md5inthash($sWord);
+		$this->wSelClauses[] = $wSel;
 		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
@@ -463,6 +464,7 @@ class IndexSearchRepository {
 	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	protected function searchSentence($sWord) {
+		$this->wSelClauses[] = '1=1';
 		return $this->getDatabaseConnection()->exec_SELECTquery(
 			'ISEC.phash',
 			'index_section ISEC, index_fulltext IFT',
@@ -481,6 +483,7 @@ class IndexSearchRepository {
 	 */
 	protected function searchMetaphone($sWord) {
 		$wSel = 'IW.metaphone=' . $sWord;
+		$this->wSelClauses[] = $wSel;
 		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
 
@@ -682,8 +685,11 @@ class IndexSearchRepository {
 					$grsel = 'SUM(IR.freq) AS order_val';
 					$orderBy = 'order_val' . $this->getDescendingSortOrderFlag();
 			}
-			// So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
-			$wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
+			$wordSel = '';
+			if (!empty($this->wSelClauses)) {
+				// So, words are imploded into an OR statement (no "sentence search" should be done here - may deselect results)
+				$wordSel = '(' . implode(' OR ', $this->wSelClauses) . ') AND ';
+			}
 			$res = $this->getDatabaseConnection()->exec_SELECTquery(
 				'ISEC.*, IP.*, ' . $grsel,
 				'index_words IW,
