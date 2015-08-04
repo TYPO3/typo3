@@ -1809,7 +1809,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 					if (is_array($specRowConf['pageIcon.'])) {
 						$this->iconFileNameCache[$it] = $this->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon.']);
 					} else {
-						$icon = 'EXT:indexed_search/pi/res/pages.gif';
+						$icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
 					}
 				} elseif ($this->external_parsers[$it]) {
 					$icon = $this->external_parsers[$it]->getIcon($it);
@@ -2084,7 +2084,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function makeAccessIndication($id) {
 		if (is_array($this->fe_groups_required[$id]) && !empty($this->fe_groups_required[$id])) {
-			return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', TRUE), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
+			return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'Resources/Public/Icons/FileTypes/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', TRUE), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
 		}
 	}
 

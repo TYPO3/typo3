@@ -717,7 +717,7 @@ class FileContentParser {
 		} elseif ($extension === 'jpeg') {
 			$extension = 'jpg';
 		}
-		return 'EXT:indexed_search/pi/res/' . $extension . '.gif';
+		return 'EXT:indexed_search/Resources/Public/Icons/FileTypes/' . $extension . '.gif';
 	}
 
 }

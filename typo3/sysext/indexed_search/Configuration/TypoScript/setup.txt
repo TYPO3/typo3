@@ -72,9 +72,9 @@ plugin.tx_indexedsearch {
 
 		specialConfiguration {
 			0.pageIcon = IMAGE
-			0.pageIcon.file = typo3/sysext/indexed_search/pi/res/pages.gif
+			0.pageIcon.file = typo3/sysext/indexed_search/Resources/Public/Icons/FileTypes/pages.gif
 			1.pageIcon = IMAGE
-			1.pageIcon.file = typo3/sysext/indexed_search/pi/res/pdf.gif
+			1.pageIcon.file = typo3/sysext/indexed_search/Resources/Public/Icons/FileTypes/pdf.gif
 		}
 */
 		defaultOptions {

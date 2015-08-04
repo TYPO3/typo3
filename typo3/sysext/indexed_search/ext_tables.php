@@ -15,12 +15,12 @@ if (TYPO3_MODE === 'BE') {
 		array(
 			'access' => 'admin',
 			'icon'   => 'EXT:indexed_search/Resources/Public/Icons/module-indexed_search.svg',
-			'labels' => 'LLL:EXT:indexed_search/mod/locallang_mod.xlf',
+			'labels' => 'LLL:EXT:indexed_search/Resources/Private/Language/locallang_mod.xlf',
 		)
 	);
 
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_indexed_search_pi_wizicon'] =
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'pi/class.tx_indexed_search_pi_wizicon.php';
+		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Resources/PHP/class.tx_indexed_search_pi_wizicon.php';
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('index_config');

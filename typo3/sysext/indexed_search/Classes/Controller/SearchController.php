@@ -456,7 +456,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			// check if the access is restricted
 			if (is_array($this->requiredFrontendUsergroups[$pathId]) && !empty($this->requiredFrontendUsergroups[$pathId])) {
 				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search')
-					. 'pi/res/locked.gif" width="12" height="15" vspace="5" title="'
+					. 'Resources/Public/Icons/FileTypes/locked.gif" width="12" height="15" vspace="5" title="'
 					. sprintf(LocalizationUtility::translate('result.memberGroups', 'IndexedSearch'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId])))
 					. '" alt="" />';
 			}
@@ -595,7 +595,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					if (is_array($specRowConf['pageIcon'])) {
 						$this->iconFileNameCache[$imageType] = $GLOBALS['TSFE']->cObj->cObjGetSingle('IMAGE', $specRowConf['pageIcon']);
 					} else {
-						$icon = 'EXT:indexed_search/pi/res/pages.gif';
+						$icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
 					}
 				} elseif ($this->externalParsers[$imageType]) {
 					$icon = $this->externalParsers[$imageType]->getIcon($imageType);

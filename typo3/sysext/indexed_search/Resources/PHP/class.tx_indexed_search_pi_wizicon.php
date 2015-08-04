@@ -25,7 +25,7 @@ class tx_indexed_search_pi_wizicon {
 	 */
 	public function proc($wizardItems) {
 		$wizardItems['plugins_tx_indexed_search'] = array(
-			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('indexed_search') . 'pi/ce_wiz.png',
+			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('indexed_search') . 'Resources/Public/Images/ce_wiz.png',
 			'title' => $GLOBALS['LANG']->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_title'),
 			'description' => $GLOBALS['LANG']->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf:pi_wizard_description'),
 			'params' => '&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=indexed_search'

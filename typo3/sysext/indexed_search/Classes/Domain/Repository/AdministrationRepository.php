@@ -526,7 +526,7 @@ class AdministrationRepository {
 		if (!isset($this->iconFileNameCache[$itemType])) {
 			$icon = '';
 			if ($itemType === '0') {
-				$icon = 'EXT:indexed_search/pi/res/pages.gif';
+				$icon = 'EXT:indexed_search/Resources/Public/Icons/FileTypes/pages.gif';
 			} elseif ($this->external_parsers[$itemType]) {
 				$icon = $this->external_parsers[$itemType]->getIcon($itemType);
 			}
