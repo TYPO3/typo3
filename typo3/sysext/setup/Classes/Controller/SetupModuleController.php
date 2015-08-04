@@ -921,7 +921,7 @@ class SetupModuleController {
 					'pid' => 0,
 					'table_local' => 'sys_file',
 				);
-				$storeRec['be_users'][(int)$beUserId] = array('avatar' => 'NEW1234');
+				$storeRec['be_users'][(int)$beUserId]['avatar'] = 'NEW1234';
 			}
 		}
 	}
