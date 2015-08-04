@@ -23,7 +23,6 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * Needed to recursively fetch a page tree
 	 *
 	 * @var \TYPO3\CMS\Core\Database\QueryGenerator
-	 * @inject
 	 */
 	protected $queryGenerator;
 
@@ -37,6 +36,13 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	 * @var int
 	 */
 	protected $currentPageId;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator
+	 */
+	public function injectQueryGenerator(\TYPO3\CMS\Core\Database\QueryGenerator $queryGenerator) {
+		$this->queryGenerator = $queryGenerator;
+	}
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.

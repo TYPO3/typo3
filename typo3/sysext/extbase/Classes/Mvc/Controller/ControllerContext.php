@@ -49,15 +49,27 @@ class ControllerContext {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Messaging\FlashMessageService
-	 * @inject
 	 */
 	protected $flashMessageService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-	 * @inject
 	 */
 	protected $extensionService;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService
+	 */
+	public function injectFlashMessageService(\TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService) {
+		$this->flashMessageService = $flashMessageService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+	 */
+	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
+	}
 
 	/**
 	 * Set the request of the controller

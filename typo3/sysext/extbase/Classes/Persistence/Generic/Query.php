@@ -50,25 +50,22 @@ class Query implements QueryInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
+
 	 */
 	protected $persistenceManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-	 * @inject
 	 */
 	protected $qomFactory;
 
@@ -108,6 +105,34 @@ class Query implements QueryInterface {
 	 * @var QuerySettingsInterface
 	 */
 	protected $querySettings;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 */
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
+	 */
+	public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory) {
+		$this->qomFactory = $qomFactory;
+	}
 
 	/**
 	 * Constructs a query object working on the given class name

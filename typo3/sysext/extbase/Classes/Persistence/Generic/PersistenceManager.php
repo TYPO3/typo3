@@ -46,21 +46,39 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface
-	 * @inject
 	 */
 	protected $queryFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
-	 * @inject
 	 */
 	protected $backend;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 * @inject
 	 */
 	protected $persistenceSession;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
+	 */
+	public function injectQueryFactory(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend
+	 */
+	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend) {
+		$this->backend = $backend;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession
+	 */
+	public function injectPersistenceSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $persistenceSession) {
+		$this->persistenceSession = $persistenceSession;
+	}
 
 	/**
 	 * Create new instance

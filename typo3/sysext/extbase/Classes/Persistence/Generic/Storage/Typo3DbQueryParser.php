@@ -34,7 +34,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
@@ -47,7 +46,6 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Cache\CacheManager
-	 * @inject
 	 */
 	protected $cacheManager;
 
@@ -58,9 +56,29 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-	 * @inject
 	 */
 	protected $environmentService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 */
+	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager) {
+		$this->cacheManager = $cacheManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
 
 	/**
 	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']

@@ -25,13 +25,11 @@ class QueryResult implements QueryResultInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
 	 */
 	protected $persistenceManager;
 
@@ -50,6 +48,20 @@ class QueryResult implements QueryResultInterface {
 	 * @transient
 	 */
 	protected $queryResult;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 */
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
 
 	/**
 	 * Constructor

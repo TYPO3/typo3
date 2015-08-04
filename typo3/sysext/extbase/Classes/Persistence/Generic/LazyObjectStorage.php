@@ -34,7 +34,6 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
@@ -63,6 +62,13 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\ObjectStorage imp
 	 * @var bool
 	 */
 	protected $isInitialized = FALSE;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
 
 	/**
 	 * Returns the state of the initialization

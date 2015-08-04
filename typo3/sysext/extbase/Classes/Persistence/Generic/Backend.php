@@ -25,7 +25,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
-	 * @inject
 	 */
 	protected $session;
 
@@ -56,25 +55,21 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-	 * @inject
 	 */
 	protected $qomFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface
-	 * @inject
 	 */
 	protected $storageBackend;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
@@ -92,9 +87,50 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session
+	 */
+	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
+		$this->session = $session;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
+	 */
+	public function injectQomFactory(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory) {
+		$this->qomFactory = $qomFactory;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
+	 */
+	public function injectStorageBackend(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend) {
+		$this->storageBackend = $storageBackend;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
 
 	/**
 	 * Constructs the backend

@@ -63,9 +63,15 @@ class PersistentObjectConverter extends ObjectConverter {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
 	 */
 	protected $persistenceManager;
+
+		/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 */
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
 
 	/**
 	 * We can only convert if the $targetType is either tagged with entity or value object.

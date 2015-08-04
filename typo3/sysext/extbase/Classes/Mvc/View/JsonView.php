@@ -42,7 +42,6 @@ class JsonView extends AbstractView {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
 
@@ -160,9 +159,22 @@ class JsonView extends AbstractView {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
 	 */
 	protected $persistenceManager;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 */
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
 
 	/**
 	 * Specifies which variables this JsonView should render

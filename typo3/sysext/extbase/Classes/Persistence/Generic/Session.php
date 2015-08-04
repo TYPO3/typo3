@@ -49,9 +49,15 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
 
 	/**
 	 * Constructs a new Session

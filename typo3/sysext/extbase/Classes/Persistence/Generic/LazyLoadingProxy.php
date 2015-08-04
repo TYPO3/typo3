@@ -24,7 +24,6 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
@@ -48,6 +47,13 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	 * @var mixed
 	 */
 	private $fieldValue;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
 
 	/**
 	 * Constructs this proxy instance.

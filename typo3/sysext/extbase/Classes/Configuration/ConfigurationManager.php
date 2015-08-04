@@ -24,7 +24,6 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
@@ -35,9 +34,22 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-	 * @inject
 	 */
 	protected $environmentService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
 
 	/**
 	 * Initializes the object

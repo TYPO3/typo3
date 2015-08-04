@@ -21,7 +21,6 @@ class Arguments extends \ArrayObject {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
@@ -34,6 +33,13 @@ class Arguments extends \ArrayObject {
 	 * @var array
 	 */
 	protected $argumentShortNames = array();
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Constructor. If this one is removed, reflection breaks.

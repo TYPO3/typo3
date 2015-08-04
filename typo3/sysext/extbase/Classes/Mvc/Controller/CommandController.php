@@ -76,7 +76,6 @@ class CommandController implements CommandControllerInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
 
@@ -99,6 +98,13 @@ class CommandController implements CommandControllerInterface {
 		$this->arguments = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class);
 		$this->userAuthentication = isset($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER'] : NULL;
 		$this->output = $this->objectManager->get(ConsoleOutput::class);
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
 	}
 
 	/**

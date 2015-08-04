@@ -24,7 +24,6 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
@@ -72,21 +71,46 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
 	 */
 	protected $configurationManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-	 * @inject
 	 */
 	protected $extensionService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-	 * @inject
 	 */
 	protected $environmentService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+	 */
+	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
 
 	/**
 	 * @throws MvcException

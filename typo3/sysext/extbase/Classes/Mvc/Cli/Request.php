@@ -24,7 +24,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
@@ -76,6 +75,13 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @var string
 	 */
 	protected $callingScript;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * @param string $callingScript

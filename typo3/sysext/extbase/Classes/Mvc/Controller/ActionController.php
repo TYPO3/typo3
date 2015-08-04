@@ -31,13 +31,11 @@ class ActionController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\CacheService
-	 * @inject
 	 */
 	protected $cacheService;
 
@@ -93,7 +91,6 @@ class ActionController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService
-	 * @inject
 	 * @api
 	 */
 	protected $mvcPropertyMappingConfigurationService;
@@ -113,6 +110,27 @@ class ActionController extends AbstractController {
 	 * @api
 	 */
 	protected $response;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
+	 */
+	public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService) {
+		$this->cacheService = $cacheService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService
+	 */
+	public function injectMvcPropertyMappingConfigurationService(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService) {
+		$this->mvcPropertyMappingConfigurationService = $mvcPropertyMappingConfigurationService;
+	}
 
 	/**
 	 * Handles a request. The result output is returned by altering the given response.

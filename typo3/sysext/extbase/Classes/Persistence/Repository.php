@@ -25,7 +25,6 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
 	 */
 	protected $persistenceManager;
 
@@ -48,6 +47,13 @@ class Repository implements RepositoryInterface, \TYPO3\CMS\Core\SingletonInterf
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
 	 */
 	protected $defaultQuerySettings = NULL;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager
+	 */
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
 
 	/**
 	 * Constructs a new Repository

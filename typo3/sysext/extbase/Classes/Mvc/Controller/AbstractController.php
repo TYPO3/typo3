@@ -28,7 +28,6 @@ abstract class AbstractController implements ControllerInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
 
@@ -73,7 +72,6 @@ abstract class AbstractController implements ControllerInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-	 * @inject
 	 */
 	protected $validatorResolver;
 
@@ -81,6 +79,20 @@ abstract class AbstractController implements ControllerInterface {
 	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
 	 */
 	protected $arguments;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
+	 */
+	public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver) {
+		$this->validatorResolver = $validatorResolver;
+	}
 
 	/**
 	 * An array of supported request types. By default only web requests are supported.

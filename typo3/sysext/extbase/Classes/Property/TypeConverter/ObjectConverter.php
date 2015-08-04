@@ -53,22 +53,28 @@ class ObjectConverter extends AbstractTypeConverter implements \TYPO3\CMS\Core\S
 	protected $priority = 0;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
-	 */
-	protected $objectManager;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Object\Container\Container
-	 * @inject
 	 */
 	protected $objectContainer;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-	 * @inject
 	 */
 	protected $reflectionService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\Container\Container $objectContainer
+	 */
+	public function injectObjectContainer(\TYPO3\CMS\Extbase\Object\Container\Container $objectContainer) {
+		$this->objectContainer = $objectContainer;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
+	 */
+	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
 
 	/**
 	 * Only convert non-persistent types

@@ -32,9 +32,15 @@ class CollectionValidator extends GenericObjectValidator {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
-	 * @inject
 	 */
 	protected $validatorResolver;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver
+	 */
+	public function injectValidatorResolver(\TYPO3\CMS\Extbase\Validation\ValidatorResolver $validatorResolver) {
+		$this->validatorResolver = $validatorResolver;
+	}
 
 	/**
 	 * Checks if the given value is valid according to the validator, and returns

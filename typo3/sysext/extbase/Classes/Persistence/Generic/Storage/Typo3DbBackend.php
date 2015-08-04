@@ -32,7 +32,6 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
 
@@ -52,19 +51,16 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
 	 */
 	protected $configurationManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\CacheService
-	 * @inject
 	 */
 	protected $cacheService;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Cache\CacheManager
-	 * @inject
 	 */
 	protected $cacheManager;
 
@@ -80,13 +76,11 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-	 * @inject
 	 */
 	protected $environmentService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser
-	 * @inject
 	 */
 	protected $queryParser;
 
@@ -96,6 +90,48 @@ class Typo3DbBackend implements BackendInterface, \TYPO3\CMS\Core\SingletonInter
 	 * @var array
 	 */
 	protected $queryRuntimeCache = array();
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\CacheService $cacheService
+	 */
+	public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService) {
+		$this->cacheService = $cacheService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 */
+	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager) {
+		$this->cacheManager = $cacheManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser $queryParser
+	 */
+	public function injectQueryParser(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser $queryParser) {
+		$this->queryParser = $queryParser;
+	}
 
 	/**
 	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']

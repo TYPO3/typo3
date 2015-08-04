@@ -25,13 +25,11 @@ class Argument {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
-	 * @inject
 	 */
 	protected $propertyMapper;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration
-	 * @inject
+	 * @var MvcPropertyMappingConfiguration
 	 */
 	protected $propertyMappingConfiguration;
 
@@ -90,6 +88,20 @@ class Argument {
 	 * @var \TYPO3\CMS\Extbase\Error\Result
 	 */
 	protected $validationResults = NULL;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper
+	 */
+	public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper) {
+		$this->propertyMapper = $propertyMapper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration $propertyMappingConfiguration
+	 */
+	public function injectPropertyMappingConfiguration(MvcPropertyMappingConfiguration $propertyMappingConfiguration) {
+		$this->propertyMappingConfiguration = $propertyMappingConfiguration;
+	}
 
 	/**
 	 * Constructs this controller argument

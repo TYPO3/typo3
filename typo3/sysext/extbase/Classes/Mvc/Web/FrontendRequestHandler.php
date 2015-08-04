@@ -21,15 +21,27 @@ class FrontendRequestHandler extends AbstractRequestHandler {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
 	 */
 	protected $configurationManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
-	 * @inject
 	 */
 	protected $extensionService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+	 */
+	public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService) {
+		$this->extensionService = $extensionService;
+	}
 
 	/**
 	 * Handles the web request. The response will automatically be sent to the client.

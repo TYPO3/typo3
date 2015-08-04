@@ -28,15 +28,27 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
-	 * @inject
 	 */
 	protected $resourceFactory;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
-	 * @inject
 	 */
 	protected $environmentService;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory
+	 */
+	public function injectResourceFactory(\TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory) {
+		$this->resourceFactory = $resourceFactory;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
+	 */
+	public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService) {
+		$this->environmentService = $environmentService;
+	}
 
 	/**
 	 * Create a processed file
