@@ -884,7 +884,7 @@ class RichTextElement extends AbstractFormElement {
 	 * @param string $requiringClass: class requiring at some iteration level from the initial requiring class
 	 * @param string $initialClass: initial class from which a circular relationship is being searched
 	 * @param int $recursionLevel: depth of recursive call
-	 * @return boolean TRUE, if a circular relationship is found
+	 * @return bool TRUE, if a circular relationship is found
 	 */
 	protected function hasCircularDependency(&$classesArray, $requiringClass, $initialClass, $recursionLevel = 0) {
 		if (is_array($classesArray['requires'][$requiringClass])) {

@@ -905,7 +905,7 @@ class FormEngine {
 	 * The "entry" pid for inline records. Nested inline records can potentially hang around on different
 	 * pid's, but the entry pid is needed for AJAX calls, so that they would know where the action takes place on the page structure.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	protected function getInlineFirstPid() {
 		$table = $this->table;

@@ -494,7 +494,7 @@ class t3lib_object_tests_initializable extends \TYPO3\CMS\Extbase\DomainObject\A
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInitialized() {
 		return $this->initialized;

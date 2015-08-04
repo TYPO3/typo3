@@ -494,7 +494,7 @@ class Clipboard {
 	 *
 	 * @param string  $str String (already htmlspecialchars()'ed)
 	 * @param string  $pad Pad reference
-	 * @param boolean $active is currently active
+	 * @param bool $active is currently active
 	 * @return string HTML output (htmlspecialchar'ed content inside of tags.)
 	 */
 	public function padTitleWrap($str, $pad, $active) {

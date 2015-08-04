@@ -445,7 +445,7 @@ class SingleFieldContainer extends AbstractContainer {
 	/**
 	 * Rendering of inline fields should be skipped under certain circumstances
 	 *
-	 * @return boolean TRUE if field should be skipped based on inline configuration
+	 * @return bool TRUE if field should be skipped based on inline configuration
 	 */
 	protected function inlineFieldShouldBeSkipped() {
 		$table = $this->globalOptions['table'];

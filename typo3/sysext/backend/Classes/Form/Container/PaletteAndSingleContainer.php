@@ -412,7 +412,7 @@ class PaletteAndSingleContainer extends AbstractContainer {
 	 * TRUE if field is of type user and to wrapping is requested
 	 *
 	 * @param array $element Current element from "target structure" array
-	 * @return boolean TRUE if user and noTableWrapping is set
+	 * @return bool TRUE if user and noTableWrapping is set
 	 */
 	protected function isUserNoTableWrappingField($element) {
 		$table = $this->globalOptions['table'];

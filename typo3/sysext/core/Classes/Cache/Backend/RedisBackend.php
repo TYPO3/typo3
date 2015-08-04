@@ -504,7 +504,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface {
 	 * Helper method to catch invalid identifiers and tags
 	 *
 	 * @param mixed $variable Variable to be checked
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canBeUsedInStringContext($variable) {
 		return is_scalar($variable) || (is_object($variable) && method_exists($variable, '__toString'));

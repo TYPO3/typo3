@@ -26,7 +26,7 @@ interface ToolbarItemInterface {
 	 * Checks whether the user has access to this toolbar item
 	 * @TODO: Split into two methods a permission method and a "hasContent" or similar
 	 *
-	 * @return boolean TRUE if user has access, FALSE if not
+	 * @return bool TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess();
 
@@ -73,7 +73,7 @@ interface ToolbarItemInterface {
 	 * By default, extensions should return 50 to be sorted between main core
 	 * items and other items that should be on the very right.
 	 *
-	 * @return integer 0 .. 100
+	 * @return int 0 .. 100
 	 */
 	public function getIndex();
 

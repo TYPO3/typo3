@@ -493,7 +493,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	 * @param string  $folderIdentifier
 	 * @param bool $recursive
 	 * @param array   $folderNameFilterCallbacks callbacks for filtering the items
-	 * @return integer Number of folders in folder
+	 * @return int Number of folders in folder
 	 */
 	public function countFoldersInFolder($folderIdentifier, $recursive = FALSE, array $folderNameFilterCallbacks = array()) {
 		return count($this->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $folderNameFilterCallbacks));

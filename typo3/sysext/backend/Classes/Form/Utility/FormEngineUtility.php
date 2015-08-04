@@ -654,7 +654,7 @@ class FormEngineUtility {
 	 * Get inlineFirstPid from a given objectId string
 	 *
 	 * @param string $domObjectId The id attribute of an element
-	 * @return integer|NULL Pid or null
+	 * @return int|NULL Pid or null
 	 * @internal
 	 */
 	static public function getInlineFirstPidFromDomObjectId($domObjectId) {

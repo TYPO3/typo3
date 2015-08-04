@@ -2087,7 +2087,7 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param Folder  $folder
 	 * @param bool $useFilters
 	 * @param bool $recursive
-	 * @return integer Number of subfolders
+	 * @return int Number of subfolders
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
 	public function countFoldersInFolder(Folder $folder, $useFilters = TRUE, $recursive = FALSE) {

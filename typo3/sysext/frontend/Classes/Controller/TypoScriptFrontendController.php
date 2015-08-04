@@ -4732,7 +4732,7 @@ class TypoScriptFrontendController {
 	/**
 	 * Fetches the originally requested id, fallsback to $this->id
 	 *
-	 * @return integer the originally requested page uid
+	 * @return int the originally requested page uid
 	 * @see fetch_the_id()
 	 */
 	public function getRequestedId() {
