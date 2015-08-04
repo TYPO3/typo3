@@ -10857,7 +10857,6 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   margin-left: -6px;
   width: 12px;
   height: 12px;
-  background-color: white;
 }
 .list-tree-control:active,
 .list-tree-control:focus,
@@ -10869,6 +10868,12 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   display: inline-block;
   text-align: center;
   cursor: pointer;
+}
+.list-tree-control > .fa:before {
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  display: block;
 }
 .list-tree-control.list-tree-control-open > .fa:before {
   content: "\f0d7";
@@ -10898,15 +10903,15 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
   padding-left: 0;
 }
 [id=imp-exp-mod] .list-tree li:last-child:before,
-[id=imp-exp-mod] .list-tree-control:before {
+[id=imp-exp-mod] .list-tree-control > .fa:before {
   background-color: #f1f1f1;
 }
 [id=typo3-browse-links-php] .list-tree li:last-child:before,
-[id=typo3-browse-links-php] .list-tree-control:before {
+[id=typo3-browse-links-php] .list-tree-control > .fa:before {
   background-color: #ececec;
 }
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .list-tree li:last-child:before,
-[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .list-tree-control:before {
+[id=ext-backend-Modules-FileSystemNavigationFrame-index-php] .list-tree-control > .fa:before {
   background-color: #f5f5f5;
 }
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php] [id=typo3-inner-docbody] {

@@ -118,7 +118,6 @@
 		margin-left: ceil(-(@tree-control-icon-size / 2));
 		width: @tree-control-icon-size;
 		height: @tree-control-icon-size;
-		background-color: @tree-bg;
 	}
 	&:active,
 	&:focus,
@@ -130,6 +129,12 @@
 		display: inline-block;
 		text-align: center;
 		cursor: pointer;
+		&:before {
+			width: @tree-control-icon-size;
+			height: @tree-control-icon-size;
+			background-color: @tree-bg;
+			display: block;
+		}
 	}
 	&.list-tree-control-open > .fa:before {
 		content: "\f0d7";
@@ -170,19 +175,19 @@
 //
 [id=imp-exp-mod] {
 	.list-tree li:last-child:before,
-	.list-tree-control:before {
+	.list-tree-control > .fa:before {
 		background-color: #f1f1f1;
 	}
 }
 [id=typo3-browse-links-php] {
 	.list-tree li:last-child:before,
-	.list-tree-control:before {
+	.list-tree-control > .fa:before {
 		background-color: #ececec;
 	}
 }
 [id=ext-backend-Modules-FileSystemNavigationFrame-index-php] {
 	.list-tree li:last-child:before,
-	.list-tree-control:before {
+	.list-tree-control > .fa:before {
 		background-color: #f5f5f5;
 	}
 	[id=typo3-inner-docbody] {
