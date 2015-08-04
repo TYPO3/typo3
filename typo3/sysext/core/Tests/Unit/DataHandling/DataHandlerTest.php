@@ -763,4 +763,16 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
 	}
 
+	/**
+	 * @test
+	 */
+	public function checkValueForInputConvertsNullToEmptyString() {
+		$previousLanguageService = $GLOBALS['LANG'];
+		$GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+		$GLOBALS['LANG']->init('default');
+		$expectedResult = array('value' => '');
+		$this->assertSame($expectedResult, $this->subject->_call('checkValueForInput', NULL, array('type' => 'string', 'max' => 40), 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
+		$GLOBALS['LANG'] = $previousLanguageService;
+	}
+
 }

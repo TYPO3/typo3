@@ -1804,7 +1804,7 @@ class DataHandler {
 		}
 		// Secures the string-length to be less than max.
 		if ((int)$tcaFieldConf['max'] > 0) {
-			$value = $GLOBALS['LANG']->csConvObj->substr($GLOBALS['LANG']->charSet, $value, 0, (int)$tcaFieldConf['max']);
+			$value = $GLOBALS['LANG']->csConvObj->substr($GLOBALS['LANG']->charSet, (string)$value, 0, (int)$tcaFieldConf['max']);
 		}
 		// Checking range of value:
 		if ($tcaFieldConf['range'] && $value != $tcaFieldConf['checkbox'] && (int)$value !== (int)$tcaFieldConf['default']) {
