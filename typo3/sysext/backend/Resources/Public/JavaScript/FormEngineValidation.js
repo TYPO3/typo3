@@ -488,10 +488,31 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		$(FormEngineValidation.rulesSelector).each(function() {
 			var $field = $(this);
 			var newValue = FormEngineValidation.validateField($field);
-			if (newValue.length) {
+			if (newValue.length && $field.val() !== newValue) {
 				$field.val(newValue);
+				FormEngineValidation.setCaretPosition($field, 0);
 			}
 		});
+	};
+
+	/**
+	 * Set the caret position in a text field
+	 */
+	FormEngineValidation.setCaretPosition = function($element, caretPos) {
+		var elem = $element.get(0);
+
+		if (elem.createTextRange) {
+			var range = elem.createTextRange();
+			range.move('character', caretPos);
+			range.select();
+		} else {
+			if (elem.selectionStart) {
+				elem.focus();
+				elem.setSelectionRange(caretPos, caretPos);
+			} else {
+				elem.focus();
+			}
+		}
 	};
 
 	/**
