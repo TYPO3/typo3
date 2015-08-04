@@ -416,7 +416,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 
 				// replace file icon
 				if (data.result.upload[0].iconClasses) {
-					me.$iconCol.html('<span class="' + data.result.upload[0].iconClasses + '">&nbsp;</span>');
+					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.result.upload[0].id + '" data-listframe="1"><span class="' + data.result.upload[0].iconClasses + '">&nbsp;</span></a>');
 				}
 
 				if (me.dragUploader.irreObjectUid) {
