@@ -10819,6 +10819,7 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .list-tree-group {
   position: relative;
   display: block;
+  white-space: nowrap;
 }
 .list-tree-group > span {
   position: relative;
