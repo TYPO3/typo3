@@ -10,12 +10,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'uploadfolder' => 0,
 	'createDirs' => '',
 	'clearCacheOnLoad' => 0,
-	'version' => '7.4.0',
+	'version' => '7.5.0',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.4.0-7.4.99',
-			'sv' => '7.4.0-7.4.99',
-			'setup' => '7.4.0-7.4.99',
+			'typo3' => '7.5.0-7.5.99',
+			'sv' => '7.5.0-7.5.99',
+			'setup' => '7.5.0-7.5.99',
 		),
 		'conflicts' => array(
 			'naw_openid' => '',
