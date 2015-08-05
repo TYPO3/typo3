@@ -1457,7 +1457,8 @@ return array(
 				'uploadfolder' => 'uploads/pics/',
 				'disable_controls' => 'upload', // @TODO: Documented feature has no effect since upload field in form is not shown anymore (since fal?)
 				'max_size' => 2000,
-				// @todo: does maxitems = 1 default hit here?
+				// @todo: does maxitems = 1 default hit here? YES!
+				'maxitems' => 999,
 			),
 		),
 		'group_6' => array(
@@ -1502,7 +1503,7 @@ return array(
 				'internal_type' => 'file',
 				'allowed' => 'jpg',
 				'uploadfolder' => 'uploads/pics/',
-				'maxitems' => 2, // @TODO: Warning sign is missing if too many entries are added
+				'maxitems' => 4,
 			),
 		),
 		'group_10' => array(
