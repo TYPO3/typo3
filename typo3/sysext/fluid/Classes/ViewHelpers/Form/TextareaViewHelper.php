@@ -59,11 +59,13 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	public function render() {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
+		$this->setRespectSubmittedDataValue(TRUE);
 
 		$this->tag->forceClosingTag(TRUE);
 		$this->tag->addAttribute('name', $name);
-		$this->tag->setContent(htmlspecialchars($this->getValue()));
+		$this->tag->setContent(htmlspecialchars($this->getValueAttribute()));
 
+		$this->addAdditionalIdentityPropertiesIfNeeded();
 		$this->setErrorClassAttribute();
 
 		return $this->tag->render();

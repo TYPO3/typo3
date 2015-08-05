@@ -318,11 +318,11 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	public function selectOnDomainObjectsCreatesExpectedOptions() {
 		$mockPersistenceManager = $this->getMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
+		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(2));
 		$this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
-		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName[__identity]');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName[__identity]');
 		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="1">Ingmar</option>' . chr(10) . '<option value="2" selected="selected">Sebastian</option>' . chr(10) . '<option value="3">Robert</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
 

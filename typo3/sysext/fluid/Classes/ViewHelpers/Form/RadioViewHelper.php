@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /*                                                                        *
@@ -58,8 +59,12 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
+		$this->registerTagAttribute(
+			'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+		);
+		$this->registerArgument(
+			'errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error'
+		);
 		$this->overrideArgument('value', 'string', 'Value of input tag. Required for radio buttons', TRUE);
 		$this->registerUniversalTagAttributes();
 	}
@@ -75,13 +80,17 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 		$this->tag->addAttribute('type', 'radio');
 
 		$nameAttribute = $this->getName();
-		$valueAttribute = $this->getValue();
-		if ($checked === NULL && $this->isObjectAccessorMode()) {
-			if ($this->hasMappingErrorOccurred()) {
-				$propertyValue = $this->getLastSubmittedFormData();
-			} else {
-				$propertyValue = $this->getPropertyValue();
-			}
+		$valueAttribute = $this->getValueAttribute();
+
+		$propertyValue = NULL;
+		if ($this->hasMappingErrorOccurred()) {
+			$propertyValue = $this->getLastSubmittedFormData();
+		}
+		if ($checked === NULL && $propertyValue === NULL) {
+			$propertyValue = $this->getPropertyValue();
+		}
+
+		if ($propertyValue !== NULL) {
 
 			// no type-safe comparison by intention
 			$checked = $propertyValue == $valueAttribute;
@@ -90,7 +99,7 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
 		$this->tag->addAttribute('name', $nameAttribute);
 		$this->tag->addAttribute('value', $valueAttribute);
-		if ($checked) {
+		if ($checked === TRUE) {
 			$this->tag->addAttribute('checked', 'checked');
 		}
 

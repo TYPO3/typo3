@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /*                                                                        *
@@ -10,6 +11,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 /**
  * View Helper which creates a simple checkbox (<input type="checkbox">).
  *
@@ -55,8 +57,12 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
+		$this->registerTagAttribute(
+			'disabled', 'string', 'Specifies that the input element should be disabled when the page loads'
+		);
+		$this->registerArgument(
+			'errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error'
+		);
 		$this->overrideArgument('value', 'string', 'Value of input tag. Required for checkboxes', TRUE);
 		$this->registerUniversalTagAttributes();
 	}
@@ -74,35 +80,37 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 		$this->tag->addAttribute('type', 'checkbox');
 
 		$nameAttribute = $this->getName();
-		$valueAttribute = $this->getValue();
-		if ($this->isObjectAccessorMode()) {
-			if ($this->hasMappingErrorOccurred()) {
-				$propertyValue = $this->getLastSubmittedFormData();
-			} else {
-				$propertyValue = $this->getPropertyValue();
-			}
-
-			if ($propertyValue instanceof \Traversable) {
-				$propertyValue = iterator_to_array($propertyValue);
-			}
-			if (is_array($propertyValue)) {
-				$propertyValue = array_map(array($this, 'convertToPlainValue'), $propertyValue);
-				if ($checked === NULL) {
-					$checked = in_array($valueAttribute, $propertyValue);
-				}
-				$nameAttribute .= '[]';
-			} elseif ($multiple === TRUE) {
-				$nameAttribute .= '[]';
-			} elseif ($checked === NULL && $propertyValue !== NULL) {
-				$checked = (bool)$propertyValue === (bool)$valueAttribute;
-			}
+		$valueAttribute = $this->getValueAttribute();
+		$propertyValue = NULL;
+		if ($this->hasMappingErrorOccurred()) {
+			$propertyValue = $this->getLastSubmittedFormData();
 		}
+		if ($checked === NULL && $propertyValue === NULL) {
+			$propertyValue = $this->getPropertyValue();
+		}
+
+		if ($propertyValue instanceof \Traversable) {
+			$propertyValue = iterator_to_array($propertyValue);
+		}
+		if (is_array($propertyValue)) {
+			$propertyValue = array_map(array($this, 'convertToPlainValue'), $propertyValue);
+			if ($checked === NULL) {
+				$checked = in_array($valueAttribute, $propertyValue);
+			}
+			$nameAttribute .= '[]';
+		} elseif ($multiple === TRUE) {
+			$nameAttribute .= '[]';
+		} elseif ($propertyValue !== NULL) {
+			$checked = (boolean) $propertyValue === (boolean) $valueAttribute;
+		}
+
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
 		$this->tag->addAttribute('name', $nameAttribute);
 		$this->tag->addAttribute('value', $valueAttribute);
-		if ($checked) {
+		if ($checked === TRUE) {
 			$this->tag->addAttribute('checked', 'checked');
 		}
+
 		$this->setErrorClassAttribute();
 		$hiddenField = $this->renderHiddenFieldForEmptyValue();
 		return $hiddenField . $this->tag->render();

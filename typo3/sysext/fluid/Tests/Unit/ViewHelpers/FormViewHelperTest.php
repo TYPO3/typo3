@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /*                                                                        *
@@ -21,10 +22,12 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
 /**
  * Test for the Form view helper
  */
-class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase {
+class FormViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\ExtensionService
