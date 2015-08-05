@@ -37,12 +37,12 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var int
 	 */
-	protected $iconWidth = 0;
+	protected $iconWidth = 28;
 
 	/**
 	 * @var int
 	 */
-	protected $iconHeight = 0;
+	protected $iconHeight = 28;
 
 	/**
 	 * @var int

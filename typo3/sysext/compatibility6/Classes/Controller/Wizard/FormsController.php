@@ -855,7 +855,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 		// Add a cell which will set a minimum width:
 		$lines[] = '
 			<tr>
-				<td nowrap="nowrap"><img src="clear.gif" width="70" height="1" alt="" /></td>
+				<td nowrap="nowrap"><span style="width: 70px; height: 1px;"></span></td>
 				<td></td>
 			</tr>';
 		// Wrap in table and return:

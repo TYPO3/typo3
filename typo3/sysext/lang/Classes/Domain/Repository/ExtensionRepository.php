@@ -55,8 +55,12 @@ class ExtensionRepository {
 					$this->getExtensionIconWithPath($entry)
 				);
 				$extension->setVersionFromString($entry['version']);
-				$extension->setIconWidth($entry['ext_icon_width']);
-				$extension->setIconHeight($entry['ext_icon_height']);
+				if ($entry['ext_icon_width'] > 0) {
+					$extension->setIconWidth($entry['ext_icon_width']);
+				}
+				if ($entry['ext_icon_height'] > 0) {
+					$extension->setIconHeight($entry['ext_icon_height']);
+				}
 
 				$this->extensions[$entry['key']] = $extension;
 			}
@@ -103,7 +107,7 @@ class ExtensionRepository {
 			$extensionIcon = ExtensionManagementUtility::getExtensionIcon(PATH_site . $extensionEntry['siteRelPath'] . '/');
 		}
 		if (empty($extensionIcon)) {
-			$extensionIcon = '/typo3/clear.gif';
+			$extensionIcon = '/typo3/sysext/core/ext_icon.png';
 		} else {
 			$extensionIcon = '../' . $extensionEntry['siteRelPath'] . '/' . $extensionIcon;
 		}
