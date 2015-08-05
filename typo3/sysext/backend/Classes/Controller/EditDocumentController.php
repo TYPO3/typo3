@@ -507,7 +507,7 @@ class EditDocumentController {
 	 * @return bool TRUE, then save the document (data submitted)
 	 */
 	public function doProcessData() {
-		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);
+		$out = $this->doSave || isset($_POST['_savedok']) || isset($_POST['_saveandclosedok']) || isset($_POST['_savedokview']) || isset($_POST['_savedoknew']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);
 		return $out;
 	}
 
@@ -615,7 +615,7 @@ class EditDocumentController {
 				$this->fixWSversioningInEditConf($tce->autoVersionIdMap);
 			}
 			// If a document is saved and a new one is created right after.
-			if (isset($_POST['_savedoknew_x']) && is_array($this->editconf)) {
+			if (isset($_POST['_savedoknew']) && is_array($this->editconf)) {
 				// Finding the current table:
 				reset($this->editconf);
 				$nTable = key($this->editconf);
@@ -636,7 +636,7 @@ class EditDocumentController {
 				$this->compileStoreDat();
 			}
 			// If a preview is requested
-			if (isset($_POST['_savedokview_x'])) {
+			if (isset($_POST['_savedokview'])) {
 				// Get the first table and id of the data array from DataHandler
 				$table = reset(array_keys($this->data));
 				$id = reset(array_keys($this->data[$table]));
@@ -647,11 +647,11 @@ class EditDocumentController {
 				$this->previewData['table'] = $table;
 				$this->previewData['id'] = $id;
 			}
-			$tce->printLogErrorMessages(isset($_POST['_saveandclosedok_x']) || isset($_POST['_translation_savedok_x']) ? $this->retUrl : $this->R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars));
+			$tce->printLogErrorMessages(isset($_POST['_saveandclosedok']) || isset($_POST['_translation_savedok_x']) ? $this->retUrl : $this->R_URL_parts['path'] . '?' . GeneralUtility::implodeArrayForUrl('', $this->R_URL_getvars));
 		}
 		//  || count($tce->substNEWwithIDs)... If any new items has been save, the document is CLOSED
 		// because if not, we just get that element re-listed as new. And we don't want that!
-		if (isset($_POST['_saveandclosedok_x']) || isset($_POST['_translation_savedok_x']) || $this->closeDoc < 0) {
+		if (isset($_POST['_saveandclosedok']) || isset($_POST['_translation_savedok_x']) || $this->closeDoc < 0) {
 			$this->closeDocument(abs($this->closeDoc));
 		}
 	}
@@ -734,7 +734,7 @@ class EditDocumentController {
 			}
 		';
 
-		$previewCode = isset($_POST['_savedokview_x']) && $this->popViewId ? $this->generatePreviewCode() : '';
+		$previewCode = isset($_POST['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '';
 
 		$this->doc->JScode = $this->doc->wrapScriptTags($javascript . $previewCode);
 		// Setting up the context sensitive menu:

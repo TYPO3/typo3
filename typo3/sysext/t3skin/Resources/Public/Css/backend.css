@@ -9067,6 +9067,8 @@ div#contentMenu1 {
 #typo3-docheader .buttongroup .c-inputButton {
   color: inherit;
   padding: 0;
+}
+#typo3-docheader .buttongroup input.c-inputButton {
   text-indent: -1000px;
 }
 #typo3-docheader select {
