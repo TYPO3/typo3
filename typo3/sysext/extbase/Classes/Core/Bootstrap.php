@@ -186,6 +186,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	}
 
 	/**
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\CommandException Is thrown if the response object defined an exit code > 0
 	 * @return string
 	 */
 	protected function handleRequest() {
@@ -204,6 +205,9 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 			$content = $response->shutdown();
 			$this->resetSingletons();
 			$this->objectManager->get(\TYPO3\CMS\Extbase\Service\CacheService::class)->clearCachesOfRegisteredPageIds();
+			if ($this->isInCliMode() && $response->getExitCode()) {
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('The request has been terminated as the response defined an exit code.', $response->getExitCode());
+			}
 		}
 
 		return $content;
