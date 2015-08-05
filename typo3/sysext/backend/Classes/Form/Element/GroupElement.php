@@ -90,6 +90,20 @@ class GroupElement extends AbstractFormElement {
 
 		$html = '<input type="hidden" class="t3js-group-hidden-field" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
 
+		// Define parameters for all types below
+		$commonParameters = array(
+			'size' => $size,
+			'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
+			'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
+			'maxitems' => $maxitems,
+			'style' => isset($config['selectedListStyle'])
+				? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
+				: '',
+			'readOnly' => $disabled,
+			'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
+			'noList' => $noList,
+		);
+
 		// Acting according to either "file" or "db" type:
 		switch ((string)$config['internal_type']) {
 			case 'file_reference':
@@ -171,22 +185,12 @@ class GroupElement extends AbstractFormElement {
 					}
 				}
 				// Creating the element:
-				$params = array(
-					'size' => $size,
+				$params = array_merge($commonParameters, array(
 					'allowed' => $allowed,
 					'disallowed' => $disallowed,
-					'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
-					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-					'maxitems' => $maxitems,
-					'style' => isset($config['selectedListStyle'])
-						? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-						: '',
 					'thumbnails' => $thumbnails,
-					'readOnly' => $disabled,
-					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
-					'noList' => $noList,
 					'noDelete' => $noDelete
-				);
+				));
 				$html .= $this->dbFileIcons(
 					$parameterArray['itemFormElName'],
 					'file',
@@ -225,18 +229,7 @@ class GroupElement extends AbstractFormElement {
 				// Array of folder items:
 				$itemArray = GeneralUtility::trimExplode(',', $parameterArray['itemFormElValue'], TRUE);
 				// Creating the element:
-				$params = array(
-					'size' => $size,
-					'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
-					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-					'maxitems' => $maxitems,
-					'style' => isset($config['selectedListStyle'])
-						? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-						: '',
-					'readOnly' => $disabled,
-					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
-					'noList' => $noList
-				);
+				$params = $commonParameters;
 				$html .= $this->dbFileIcons(
 					$parameterArray['itemFormElName'],
 					'folder',
@@ -293,21 +286,11 @@ class GroupElement extends AbstractFormElement {
 					}
 				}
 				// Creating the element:
-				$params = array(
-					'size' => $size,
-					'dontShowMoveIcons' => isset($config['hideMoveIcons']) || $maxitems <= 1,
-					'autoSizeMax' => MathUtility::forceIntegerInRange($config['autoSizeMax'], 0),
-					'maxitems' => $maxitems,
-					'style' => isset($config['selectedListStyle'])
-						? ' style="' . htmlspecialchars($config['selectedListStyle']) . '"'
-						: '',
+				$params = array_merge($commonParameters, array(
 					'info' => $info,
 					'allowedTables' => $allowedTables,
 					'thumbnails' => $thumbnails,
-					'readOnly' => $disabled,
-					'noBrowser' => $noList || isset($config['disable_controls']) && GeneralUtility::inList($config['disable_controls'], 'browser'),
-					'noList' => $noList
-				);
+				));
 				$html .= $this->dbFileIcons(
 					$parameterArray['itemFormElName'],
 					'db',
