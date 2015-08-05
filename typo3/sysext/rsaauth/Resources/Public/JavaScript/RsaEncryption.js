@@ -111,9 +111,8 @@
 			if (form.submit.call) {
 				form.submit.call(rsaEncryption.form);
 			} else {
-				var fields = rsaEncryption.form.getElementsByTagName('*');
-				for (var j = fields.length; j--;) {
-					var submitField = fields[j];
+				for (var j = rsaEncryption.form.elements.length; j--;) {
+					var submitField = rsaEncryption.form.elements[j];
 					if (submitField.nodeName.toLowerCase() === 'input' && submitField.type === "submit") {
 						submitField.click();
 					}
@@ -132,12 +131,10 @@
 
 		documentReadyFunctionCalled = true;
 		rng_seed_time();
-		var forms = document.getElementsByTagName('form');
-		for (var i = forms.length; i--;) {
-			var form = forms[i];
-			var fields = form.getElementsByTagName('*');
-			for (var j = fields.length; j--;) {
-				var field = fields[j];
+		for (var i = document.forms.length; i--;) {
+			var form = document.forms[i];
+			for (var j = form.elements.length; j--;) {
+				var field = form.elements[j];
 				if (field.nodeName.toLowerCase() === 'input') {
 					var dataAttribute = field.getAttribute('data-rsa-encryption');
 					if (dataAttribute || dataAttribute === '' && field.outerHTML.match(/ data-rsa-encryption=""/)) {
