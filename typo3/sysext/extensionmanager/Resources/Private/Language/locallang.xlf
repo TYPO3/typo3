@@ -377,6 +377,9 @@
 			<trans-unit id="extensionList.distribution.lastUpdated">
 				<source>Last Update:</source>
 			</trans-unit>
+			<trans-unit id="extensionList.showUnsuitableDistributions">
+				<source>Show also distributions that are not suitable for this TYPO3 version</source>
+			</trans-unit>
 			<trans-unit id="extensionList.officialDistribution">
 				<source>Official distribution</source>
 			</trans-unit>

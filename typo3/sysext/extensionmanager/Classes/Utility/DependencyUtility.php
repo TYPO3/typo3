@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  */
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
@@ -522,6 +523,39 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		return $dependentExtensions;
+	}
+
+	/**
+	 * Get extensions (out of a given list) that are suitable for the current TYPO3 version
+	 *
+	 * @param array $extensions List of extensions to check
+	 * @return array List of extensions suitable for current TYPO3 version
+	 */
+	public function getExtensionsSuitableForTypo3Version(array $extensions) {
+		$suitableExtensions = array();
+		/** @var Extension $extension */
+		foreach ($extensions as $extension) {
+			/** @var Dependency $dependency */
+			foreach ($extension->getDependencies() as $dependency) {
+				if ($dependency->getIdentifier() === 'typo3' && $this->isDependencySatisfiedByTypo3Version($dependency)) {
+					array_push($suitableExtensions, $extension);
+				}
+			}
+		}
+		return $suitableExtensions;
+	}
+
+	/**
+	 * Checks if given dependency is satisfied by current TYPO3 version
+	 *
+	 * @param Dependency $dependency
+	 * @return bool
+	 */
+	protected function isDependencySatisfiedByTypo3Version(Dependency $dependency) {
+		$numericTypo3Version = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
+		$numericLowestVersion = VersionNumberUtility::convertVersionNumberToInteger($dependency->getLowestVersion());
+		$numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($dependency->getHighestVersion());
+		return MathUtility::isIntegerInRange($numericTypo3Version, $numericLowestVersion, $numericHighestVersion);
 	}
 
 }

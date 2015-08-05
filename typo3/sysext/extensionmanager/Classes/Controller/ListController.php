@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
@@ -147,9 +148,10 @@ class ListController extends AbstractController {
 	/**
 	 * Action for listing all possible distributions
 	 *
+	 * @param bool $showUnsuitableDistributions
 	 * @return void
 	 */
-	public function distributionsAction() {
+	public function distributionsAction($showUnsuitableDistributions = FALSE) {
 		$this->addComposerModeNotification();
 		$importExportInstalled = ExtensionManagementUtility::isLoaded('impexp');
 		if ($importExportInstalled) {
@@ -167,12 +169,23 @@ class ListController extends AbstractController {
 			}
 
 			$officialDistributions = $this->extensionRepository->findAllOfficialDistributions();
-			$this->view->assign('officialDistributions', $officialDistributions);
+			if (!$showUnsuitableDistributions) {
+				$suitableOfficialDistributions = $this->dependencyUtility->getExtensionsSuitableForTypo3Version($officialDistributions->toArray());
+				$this->view->assign('officialDistributions', $suitableOfficialDistributions);
+			} else {
+				$this->view->assign('officialDistributions', $officialDistributions);
+			}
 
 			$communityDistributions = $this->extensionRepository->findAllCommunityDistributions();
-			$this->view->assign('communityDistributions', $communityDistributions);
+			if (!$showUnsuitableDistributions) {
+				$suitableCommunityDistributions = $this->dependencyUtility->getExtensionsSuitableForTypo3Version($communityDistributions->toArray());
+				$this->view->assign('communityDistributions', $suitableCommunityDistributions);
+			} else {
+				$this->view->assign('communityDistributions', $communityDistributions);
+			}
 		}
 		$this->view->assign('enableDistributionsView', $importExportInstalled);
+		$this->view->assign('showUnsuitableDistributions', $showUnsuitableDistributions);
 	}
 
 	/**
