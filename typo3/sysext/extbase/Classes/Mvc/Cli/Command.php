@@ -89,15 +89,23 @@ class Command {
 			unset($classNameParts[1]);
 			$classNameParts = array_values($classNameParts);
 		}
-		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
+		$numberOfClassNameParts = count($classNameParts);
+		if ($numberOfClassNameParts < 3) {
+			throw new \InvalidArgumentException(
+				'Controller class names must at least consist of three parts: vendor, extension name and path.',
+				1438782187
+			);
+		}
+		if (strpos($classNameParts[$numberOfClassNameParts - 1], 'CommandController') === FALSE) {
 			throw new \InvalidArgumentException(
 				'Invalid controller class name "' . $controllerClassName . '". Class name must end with "CommandController".',
 				1305100019
 			);
 		}
+
 		$this->extensionName = $classNameParts[1];
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($this->extensionName);
-		$this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[3], 0, -17) . ':' . $controllerCommandName);
+		$this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[$numberOfClassNameParts - 1], 0, -17) . ':' . $controllerCommandName);
 	}
 
 	/**
