@@ -56,7 +56,7 @@ abstract class AbstractRequestHandler implements \TYPO3\CMS\Extbase\Mvc\RequestH
 	/**
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 */
-	public function injectExtensionService(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
