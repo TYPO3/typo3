@@ -764,7 +764,7 @@ class DataPreprocessor {
 			$subres = BackendUtility::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig, 'neg_');
 			while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
 				// Resolve move-placeholder, to check the right uid against $dataIds
-				BackendUtility::workspaceOL($fieldConfig['config']['nes_foreign_table'], $subrow);
+				BackendUtility::workspaceOL($fieldConfig['config']['neg_foreign_table'], $subrow);
 				$recordList[-$subrow['uid']] = BackendUtility::getRecordTitle($fieldConfig['config']['neg_foreign_table'], $subrow);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($subres);
