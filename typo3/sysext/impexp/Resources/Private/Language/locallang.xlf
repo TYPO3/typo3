@@ -162,6 +162,9 @@
 			<trans-unit id="makesavefo_save">
 				<source>Save</source>
 			</trans-unit>
+			<trans-unit id="pleaseConfirm">
+				<source>Please confirm</source>
+			</trans-unit>
 			<trans-unit id="makesavefo_areYouSure">
 				<source>Are you sure?</source>
 			</trans-unit>

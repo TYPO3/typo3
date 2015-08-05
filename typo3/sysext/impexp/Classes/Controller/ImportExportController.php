@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Impexp\Controller;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -96,6 +97,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
+		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
 		$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="multipart/form-data">'
 			. '<input type="hidden" name="id" value="' . $this->id . '" />';
@@ -764,10 +767,11 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						' . $this->lang->getLL('makesavefo_selectPreset', TRUE) . '<br/>
 						' . $this->renderSelectBox('preset[select]', '', $opt) . '
 						<br/>
+						<input type="hidden" name="not-set" value="1" id="t3js-submit-field" />
 						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_load', TRUE) . '" name="preset[load]" />
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_save', TRUE) . '" name="preset[save]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_delete', TRUE) . '" name="preset[delete]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
-						<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('makesavefo_merge', TRUE) . '" name="preset[merge]" onclick="return confirm(\'' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '\');" />
+						<input class="btn btn-default t3js-confirm-trigger" type="button" value="' . $this->lang->getLL('makesavefo_save', TRUE) . '" name="preset[save]" data-title="' . $this->lang->getLL('pleaseConfirm', TRUE) . '" data-message="' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '" />
+						<input class="btn btn-default t3js-confirm-trigger" type="button" value="' . $this->lang->getLL('makesavefo_delete', TRUE) . '" name="preset[delete]" data-title="' . $this->lang->getLL('pleaseConfirm', TRUE) . '" data-message="' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '" />
+						<input class="btn btn-default t3js-confirm-trigger" type="button" value="' . $this->lang->getLL('makesavefo_merge', TRUE) . '" name="preset[merge]" data-title="' . $this->lang->getLL('pleaseConfirm', TRUE) . '" data-message="' . $this->lang->getLL('makesavefo_areYouSure', TRUE) . '" />
 						<br/>
 						' . $this->lang->getLL('makesavefo_titleOfNewPreset', TRUE) . '
 						<input type="text" name="tx_impexp[preset][title]" value="'
@@ -978,10 +982,9 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				</tr>';
 			$newImport = !$inData['import_file']
 				? '<input class="btn btn-default" type="submit" value="' . $this->lang->getLL('importdata_preview', TRUE) . '" />' . ($inData['file']
-					? ' - <input class="btn btn-default" type="submit" value="' . ($inData['do_update']
+					? ' - <input type="hidden" name="not-set" value="1" id="t3js-submit-field" /><input class="btn btn-default t3js-confirm-trigger" type="button" value="' . ($inData['do_update']
 						? $this->lang->getLL('importdata_update_299e', TRUE)
-						: $this->lang->getLL('importdata_import', TRUE)) . '" name="tx_impexp[import_file]" onclick="return confirm(\''
-							. $this->lang->getLL('importdata_areYouSure', TRUE) . '\');" />'
+						: $this->lang->getLL('importdata_import', TRUE)) . '" name="tx_impexp[import_file]" data-title="' . $this->lang->getLL('pleaseConfirm', TRUE) . '" data-message="' . $this->lang->getLL('importdata_areYouSure', TRUE) . '" />'
 					: '')
 				: '<input class="btn btn-default" type="submit" name="tx_impexp[new_import]" value="' . $this->lang->getLL('importdata_newImport', TRUE) . '" />';
 			$row[] = '<tr>
