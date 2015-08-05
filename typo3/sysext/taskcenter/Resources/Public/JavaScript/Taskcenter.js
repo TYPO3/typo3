@@ -38,6 +38,11 @@ define('TYPO3/CMS/Taskcenter/Taskcenter', ['jquery', 'jquery-ui/sortable'], func
 		itemParent.toggleClass('expanded', state);
 		itemParent.toggleClass('collapsed', !state);
 		item.toggle(state);
+		if (state) {
+			element.find('i.fa').removeClass('fa-caret-down').addClass('fa-caret-up');
+		} else {
+			element.find('i.fa').removeClass('fa-caret-up').addClass('fa-caret-down');
+		}
 
 		$.ajax({
 			url: TYPO3.settings.ajaxUrls['Taskcenter::saveCollapseState'],

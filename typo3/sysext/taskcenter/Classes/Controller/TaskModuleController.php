@@ -268,9 +268,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$active = (string)$this->MOD_SETTINGS['function'] == $item['uid'] ? ' active-task' : '';
 				// Main menu: Render additional syntax to sort tasks
 				if ($mainMenu) {
-					$dragIcon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE)));
-					$section = '<div class="down">&nbsp;</div>
-								<div class="drag">' . $dragIcon . '</div>';
+					$section = '<div class="down"><i class="fa fa-caret-down fa-fw"></i></div>
+								<div class="drag"><i class="fa fa-arrows"></i></div>';
 					$backgroundClass = 't3-row-header ';
 				} else {
 					$backgroundClass = '';
