@@ -3012,7 +3012,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_bytes($content = '', $conf = array()) {
-		return GeneralUtility::formatSize($content, $conf['bytes.']['labels']);
+		return GeneralUtility::formatSize($content, $conf['bytes.']['labels'], $conf['bytes.']['base']);
 	}
 
 	/**
