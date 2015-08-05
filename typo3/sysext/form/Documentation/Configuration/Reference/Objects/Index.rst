@@ -6870,6 +6870,35 @@ TEXTLINE
 Creates a single-line text input control.
 
 
+.. _reference-textline-placeholder:
+
+placeholder
+'''''''''''
+
+.. container:: table-row
+
+   Property
+         placeholder
+
+   Data type
+         string
+
+   Description
+         The value of the placeholder attribute of the object.
+
+         **Example:**
+
+         ::
+
+            10 = TEXTLINE
+            10 {
+               name = name
+               label.value = Name
+               placeholder = Please enter your name.
+            }
+
+
+
 .. _reference-textline-label:
 
 label

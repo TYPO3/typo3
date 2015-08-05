@@ -10,8 +10,8 @@ The GalleryProcessor uses the files already present in the processedData array f
 
 .. code-block:: typoscript
 
-	tt_content.text_media.20 = FLUIDTEMPLATE
-	tt_content.image.20 {
+	tt_content.textmedia.20 = FLUIDTEMPLATE
+	tt_content.textmedia.20 {
 		file = EXT:myextension/Resources/Private/Templates/ContentObjects/Image.html
 
 		dataProcessing {
@@ -60,5 +60,4 @@ The GalleryProcessor uses the files already present in the processedData array f
 				as = gallery
 			}
 		}
-
 	}
