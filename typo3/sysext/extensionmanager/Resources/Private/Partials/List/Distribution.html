@@ -6,12 +6,24 @@
 				<em:typo3Dependency extension="{distribution}" />
 			</div>
 		</f:if>
-		<em:image
-				src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
-				fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
-				height="225"
-				width="300"
-			/>
+		<f:if condition="{official}">
+			<f:then>
+				<em:image
+						src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
+						fallbackImage="EXT:extensionmanager/Resources/Public/Images/OfficialDistribution.png"
+						height="225"
+						width="300"
+						/>
+			</f:then>
+			<f:else>
+				<em:image
+						src="EXT:{distribution.extensionKey}/Resources/Public/Images/Distribution.png" alt="{distribution.title}"
+						fallbackImage="EXT:extensionmanager/Resources/Public/Images/Distribution.png"
+						height="225"
+						width="300"
+						/>
+			</f:else>
+		</f:if>
 		<div class="distribution-hover">
 			<div class="distribution-hover-inner">
 				<dl class="dl-horizontal">
