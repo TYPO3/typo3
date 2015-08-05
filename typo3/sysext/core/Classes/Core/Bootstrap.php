@@ -1056,7 +1056,6 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function initializeBackendAuthentication($proceedIfNoUserIsLoggedIn = FALSE) {
-		$GLOBALS['BE_USER']->checkCLIuser();
 		$GLOBALS['BE_USER']->backendCheckLogin($proceedIfNoUserIsLoggedIn);
 		return $this;
 	}

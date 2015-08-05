@@ -2274,8 +2274,10 @@ This is a dump of the failures:
 	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
 	 *
 	 * @return bool Returns TRUE if a CLI user was loaded, otherwise FALSE!
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. Please implement this functionality in your own application directly from the outside
 	 */
 	public function checkCLIuser() {
+		GeneralUtility::logDeprecatedFunction();
 		// First, check if cliMode is enabled:
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 			if (!$this->user['uid']) {

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Console;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Console\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Picks up requests only when coming from the CLI mode.
  * Resolves the "cliKey" which is registered inside $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys]
  * and includes the CLI-based script or exits if no valid "cliKey" is found.
+ * Also logs into the system as a backend user which needs to be added to the database called _CLI_mymodule
  */
 class CliRequestHandler implements RequestHandlerInterface {
 
@@ -44,38 +47,63 @@ class CliRequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles any commandline request
 	 *
-	 * @param \Symfony\Component\Console\Input\InputInterface $request
+	 * @param InputInterface $request
 	 * @return void
 	 */
-	public function handleRequest(\Symfony\Component\Console\Input\InputInterface $request) {
-		$commandLineKey = $this->getCommandLineKeyOrDie();
-		$commandLineScript = $this->getIncludeScriptByCommandLineKey($commandLineKey);
-
-		$this->boot();
+	public function handleRequest(InputInterface $request) {
+		$output = new ConsoleOutput();
+		$exitCode = 0;
 
 		try {
+			$command = $this->validateCommandLineKeyFromInput($request);
+
+			// try and look up if the CLI command user exists, throws an exception if the CLI
+			// user cannot be found
+			list($commandLineScript, $commandLineName) = $this->getIncludeScriptByCommandLineKey($command);
+			$this->boot($commandLineName);
+
+			// include the CLI script
 			include($commandLineScript);
+
+		} catch (\InvalidArgumentException $e) {
+			$output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
+			$output->writeln('');
+			$output->writeln('Valid keys are:');
+			$output->writeln('');
+			$cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
+			asort($cliKeys);
+			foreach ($cliKeys as $key => $value) {
+				$output->writeln('  ' . $value);
+			}
+			$exitCode = $e->getCode();
+
+		} catch (\RuntimeException $e) {
+			$output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
+			$exitCode = $e->getCode();
+
 		} catch (\Exception $e) {
-			fwrite(STDERR, $e->getMessage() . LF);
-			exit(99);
+			$output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
+			$exitCode = $e->getCode();
 		}
+
+		exit($exitCode);
 	}
 
 	/**
 	 * Execute TYPO3 bootstrap
+	 *
+	 * @throws \RuntimeException when the _CLI_ user cannot be authenticated properly
 	 */
-	protected function boot() {
-		// Evaluate the constant for skipping the BE user check for the bootstrap
-		if (defined('TYPO3_PROCEED_IF_NO_USER') && TYPO3_PROCEED_IF_NO_USER) {
-			$proceedIfNoUserIsLoggedIn = TRUE;
-		} else {
-			$proceedIfNoUserIsLoggedIn = FALSE;
-		}
-
+	protected function boot($commandLineName) {
 		$this->bootstrap
 			->loadExtensionTables(TRUE)
-			->initializeBackendUser()
-			->initializeBackendAuthentication($proceedIfNoUserIsLoggedIn)
+			->initializeBackendUser();
+
+		// Checks for a user called starting with _CLI_ e.g. "_CLI_lowlevel"
+		$this->loadCommandLineBackendUser($commandLineName);
+
+		$this->bootstrap
+			->initializeBackendAuthentication()
 			->initializeLanguageObject();
 
 		// Make sure output is not buffered, so command-line output and interaction can take place
@@ -87,36 +115,23 @@ class CliRequestHandler implements RequestHandlerInterface {
 	 * First argument is a key that points to the script configuration.
 	 * If it is not set or not valid, the script exits with an error message.
 	 *
+	 * @param InputInterface $input an instance of the input given to the CLI call
 	 * @return string the CLI key in use
+	 * @throws \InvalidArgumentException
 	 */
-	protected function getCommandLineKeyOrDie() {
-		$cliKey = $_SERVER['argv'][1];
-		$errorMessage = '';
+	protected function validateCommandLineKeyFromInput(InputInterface $input) {
+		$cliKey = $input->getFirstArgument();
 		if (empty($cliKey)) {
-			$errorMessage = 'This script must have a \'cliKey\' as first argument.';
+			throw new \InvalidArgumentException('This script must have a command as first argument.', 1);
 		} elseif (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey])) {
-			$errorMessage = 'The supplied \'cliKey\' is not valid.';
+			throw new \InvalidArgumentException('This supplied command is not valid.', 1);
 		}
-
-		// exit with an error message
-		if (!empty($errorMessage)) {
-			$errorMessage .= ' Valid keys are:
-
-';
-			$cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
-			asort($cliKeys);
-			foreach ($cliKeys as $key => $value) {
-				$errorMessage .= '  ' . $value . LF;
-			}
-			fwrite(STDERR, $errorMessage . LF);
-			die(1);
-		}
-
 		return $cliKey;
 	}
 
 	/**
-	 * Define cli-related parameters and return the include script.
+	 * Define cli-related parameters and return the include script as well as the command line name. Used for
+	 * authentication against the backend user in the "laodCommandLineBackendUser()" action.
 	 *
 	 * @param string $cliKey the CLI key
 	 * @return string the absolute path to the include script
@@ -124,24 +139,47 @@ class CliRequestHandler implements RequestHandlerInterface {
 	protected function getIncludeScriptByCommandLineKey($cliKey) {
 		list($commandLineScript, $commandLineName) = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey];
 		$commandLineScript = GeneralUtility::getFileAbsFileName($commandLineScript);
-		// Note: These constants are not in use anymore
+		// Note: These constants are not in use anymore, and marked for deprecation and will be removed in TYPO3 CMS 8
 		define('TYPO3_cliKey', $cliKey);
 		define('TYPO3_cliInclude', $commandLineScript);
-		$GLOBALS['MCONF']['name'] = $commandLineName;
 		// This is a compatibility layer: Some cli scripts rely on this, like ext:phpunit cli
+		// This layer will be removed in TYPO3 CMS 8
 		$GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
 		$GLOBALS['temp_cliKey'] = array_shift($_SERVER['argv']);
 		array_unshift($_SERVER['argv'], $GLOBALS['temp_cliScriptPath']);
-		return $commandLineScript;
+		return array($commandLineScript, $commandLineName);
+	}
+
+	/**
+	 * If the backend script is in CLI mode, it will try to load a backend user named by the CLI module name (in lowercase)
+	 *
+	 * @param string $commandLineName the name of the module registered inside $TYPO3_CONF_VARS[SC_OPTIONS][GLOBAL][cliKeys] as second parameter
+	 * @throws \RuntimeException if a non-admin Backend user could not be loaded
+	 */
+	protected function loadCommandLineBackendUser($commandLineName) {
+		if ($GLOBALS['BE_USER']->user['uid']) {
+			throw new \RuntimeException('Another user was already loaded which is impossible in CLI mode!', 3);
+		}
+		if (!\TYPO3\CMS\Core\Utility\StringUtility::beginsWith($commandLineName, '_CLI_')) {
+			throw new \RuntimeException('Module name, "' . $commandLineName . '", was not prefixed with "_CLI_"', 3);
+		}
+		$userName = strtolower($commandLineName);
+		$GLOBALS['BE_USER']->setBeUserByName($userName);
+		if (!$GLOBALS['BE_USER']->user['uid']) {
+			throw new \RuntimeException('No backend user named "' . $userName . '" was found!', 3);
+		}
+		if ($GLOBALS['BE_USER']->isAdmin()) {
+			throw new \RuntimeException('CLI backend user "' . $userName . '" was ADMIN which is not allowed!', 3);
+		}
 	}
 
 	/**
 	 * This request handler can handle any CLI request.
 	 *
-	 * @param \Symfony\Component\Console\Input\InputInterface $request
+	 * @param InputInterface $request
 	 * @return bool If the request is a CLI request, TRUE otherwise FALSE
 	 */
-	public function canHandleRequest(\Symfony\Component\Console\Input\InputInterface $request) {
+	public function canHandleRequest(InputInterface $request) {
 		return defined('TYPO3_cliMode') && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
 	}
 
