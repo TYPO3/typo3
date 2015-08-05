@@ -105,7 +105,15 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule) {
 		var shouldCreateShortcut = true;
 		if (typeof confirmationText !== 'undefined') {
-			shouldCreateShortcut = window.confirm(confirmationText);
+			// @todo: translations
+			top.TYPO3.Modal.confirm('Create bookmark', confirmationText)
+				.on('confirm.button.ok', function() {
+					shouldCreateShortcut = true;
+					$(this).trigger('modal-dismiss');
+				})
+				.on('confirm.button.cancel', function() {
+					$(this).trigger('modal-dismiss');
+				});
 		}
 
 		if (shouldCreateShortcut) {
