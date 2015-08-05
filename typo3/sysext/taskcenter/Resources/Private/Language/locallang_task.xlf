@@ -48,6 +48,9 @@
 			<trans-unit id="lCancel">
 				<source>Cancel</source>
 			</trans-unit>
+			<trans-unit id="lDelete_warning_title">
+				<source>Please confirm</source>
+			</trans-unit>
 			<trans-unit id="lDelete_warning">
 				<source>Are you sure you want to delete this user?</source>
 			</trans-unit>

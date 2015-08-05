@@ -14,6 +14,7 @@ namespace TYPO3\CMS\SysAction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -84,6 +85,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				// Output depends on the type
 				switch ($record['type']) {
 					case 1:
+						$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+						$pageRenderer->loadRequireJsModule('TYPO3/CMS/SysAction/ActionTask');
 						$content .= $this->viewNewBackendUser($record);
 						break;
 					case 2:
@@ -401,9 +404,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$href = $this->moduleUrl . '&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . (int)$sysActionUid . '&be_users_uid=' . (int)$userId;
 		$link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
 		// Link to delete the user record
-		$onClick = ' onClick="return confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->getLL('lDelete_warning')) . ');"';
 		$link .= '
-				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" ' . $onClick . '>'
+				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" class="t3js-confirm-trigger" data-title="' . $this->getLanguageService()->getLL('lDelete_warning_title', TRUE) . '" data-message="' . $this->getLanguageService()->getLL('lDelete_warning', TRUE) . '">'
 					. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') .
 				'</a>';
 		return $link;
