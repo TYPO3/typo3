@@ -329,6 +329,15 @@ class ActionTest extends AbstractActionTestCase
 
     /**
      * @test
+     */
+    public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
+    {
+        parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
+        $this->assertAssertionDataSet('localizeContentOfRelationWLocalizeReferencesAtParentLocalization');
+    }
+
+    /**
+     * @test
      * See DataSet/moveContentOfRelationToDifferentPage.csv
      */
     public function moveContentOfRelationToDifferentPage(): void

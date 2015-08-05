@@ -210,8 +210,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
     {
         $GLOBALS['TCA']['tt_content']['columns'][self::FIELD_ContentElement]['config']['localizeReferencesAtParentLocalization'] = true;
-        // @todo: https://forge.typo3.org/issues/41713 - localizeReferencesAtParentLocalization in type=group relies on foreign_table being set
-        $GLOBALS['TCA']['tt_content']['columns'][self::FIELD_ContentElement]['config']['foreign_table'] = self::TABLE_Element;
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }

@@ -316,4 +316,14 @@ class ActionTest extends AbstractActionTestCase
             ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentElement)
             ->setTable(self::TABLE_Element)->setField('title')->setValues('Element #2', 'Element #3'));
     }
+
+    /**
+     * @test
+     */
+    public function localizeContentOfRelationWithLocalizeReferencesAtParentLocalization()
+    {
+        parent::localizeContentOfRelationWithLocalizeReferencesAtParentLocalization();
+        $this->actionService->publishRecord(self::TABLE_Content, 299);
+        $this->assertAssertionDataSet('localizeContentOfRelationWLocalizeReferencesAtParentLocalization');
+    }
 }

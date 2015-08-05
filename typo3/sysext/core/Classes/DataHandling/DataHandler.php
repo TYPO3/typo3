@@ -3753,33 +3753,45 @@ class DataHandler implements LoggerAwareInterface
     protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language)
     {
         $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
+        $allowedTablesArray = GeneralUtility::trimExplode(',', $allowedTables, true);
         $prependName = $conf['type'] === 'group' ? ($conf['prepend_tname'] ?? '') : '';
-        $mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
-        $localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
-        // Localize referenced records of select fields:
-        $localizingNonManyToManyFieldReferences = empty($mmTable) && $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
-        /** @var RelationHandler $dbAnalysis */
+        $mmTable = !empty($conf['MM']) ? $conf['MM'] : '';
+
         $dbAnalysis = $this->createRelationHandlerInstance();
         $dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
         $purgeItems = false;
-        if ($language > 0 && $localizingNonManyToManyFieldReferences) {
+
+        // Check if referenced records of select or group fields should also be localized in general.
+        // A further check is done in the loop below for each table name.
+        if ($language > 0 && $mmTable === '' && !empty($conf['localizeReferencesAtParentLocalization'])) {
+            // Check whether allowed tables can be localized.
+            $localizeTables = [];
+            foreach ($allowedTablesArray as $allowedTable) {
+                $localizeTables[$allowedTable] = BackendUtility::isTableLocalizable($allowedTable);
+            }
+
             foreach ($dbAnalysis->itemArray as $index => $item) {
-                // Since select fields can reference many records, check whether there's already a localization:
+                // No action required, if referenced tables cannot be localized (current value will be used).
+                if (empty($localizeTables[$item['table']])) {
+                    continue;
+                }
+
+                // Since select or group fields can reference many records, check whether there's already a localization.
                 $recordLocalization = BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
                 if ($recordLocalization) {
                     $dbAnalysis->itemArray[$index]['id'] = $recordLocalization[0]['uid'];
-                } elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize-' . (string)$language) === false) {
+                } elseif ($this->isNestedElementCallRegistered($item['table'], $item['id'], 'localize-' . $language) === false) {
                     $dbAnalysis->itemArray[$index]['id'] = $this->localize($item['table'], $item['id'], $language);
                 }
             }
             $purgeItems = true;
         }
 
-        if ($purgeItems || $mmTable) {
+        if ($purgeItems || $mmTable !== '') {
             $dbAnalysis->purgeItemArray();
             $value = implode(',', $dbAnalysis->getValueArray($prependName));
         }
-        // Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected
+        // Setting the value in this array will notify the remapListedDBRecords() function that this field MAY need references to be corrected.
         if ($value) {
             $this->registerDBList[$table][$uid][$field] = $value;
         }
