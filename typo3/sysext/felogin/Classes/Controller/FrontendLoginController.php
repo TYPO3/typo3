@@ -344,7 +344,8 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
 							$_params = array(
 								'user' => $user,
-								'newPassword' => $newPass
+								'newPassword' => $newPass,
+								'newPasswordUnencrypted' => $newPass
 							);
 							foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'] as $_funcRef) {
 								if ($_funcRef) {
