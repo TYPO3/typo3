@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Database\PreparedStatement;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -481,23 +482,23 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * Creates a shortcut through an AJAX call
 	 *
 	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Oject of type AjaxRequestHandler
+	 * @param AjaxRequestHandler $ajaxObj Oject of type AjaxRequestHandler
+	 *
 	 * @return void
 	 */
 	public function createAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
-		$databaseConnection = $this->getDatabaseConnection();
 		$languageService = $this->getLanguageService();
-		$shortcutCreated = 'failed';
+
 		// Default name
 		$shortcutName = 'Shortcut';
 		$shortcutNamePrepend = '';
 		$url = GeneralUtility::_POST('url');
-		$module = GeneralUtility::_POST('module');
-		$motherModule = GeneralUtility::_POST('motherModName');
+
 		// Determine shortcut type
 		$url = rawurldecode($url);
 		$queryParts = parse_url($url);
 		$queryParameters = GeneralUtility::explodeUrl2Array($queryParts['query'], TRUE);
+
 		// Proceed only if no scheme is defined, as URL is expected to be relative
 		if (empty($queryParts['scheme'])) {
 			if (is_array($queryParameters['edit'])) {
@@ -516,11 +517,12 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				$shortcut['table'] = '';
 				$shortcut['recordid'] = 0;
 			}
-			// Lookup the title of this page and use it as default description
 
+			// Lookup the title of this page and use it as default description
 			$pageId = (int)($shortcut['pid'] ?: ($shortcut['recordid'] ?: $this->getLinkedPageId($url)));
 			if ($pageId) {
 				$page = BackendUtility::getRecord('pages', $pageId);
+
 				if (!empty($page)) {
 					// Set the name to the title of the page
 					if ($shortcut['type'] === 'other') {
@@ -531,6 +533,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				}
 			} else {
 				$dirName = urldecode($pageId);
+
 				if (preg_match('/\\/$/', $dirName)) {
 					// If $pageId is a string and ends with a slash,
 					// assume it is a fileadmin reference and set
@@ -538,25 +541,96 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					$shortcutName .= ' ' . basename($dirName);
 				}
 			}
-			// adding the shortcut
-			if ($module && $url) {
-				if ($shortcutName === 'Shortcut' && !empty($languageService->moduleLabels['labels'][$module . '_tablabel'])) {
-					$shortcutName = $languageService->moduleLabels['labels'][$module . '_tablabel'];
-				}
-				$fieldValues = array(
-					'userid' => $this->getBackendUser()->user['uid'],
-					'module_name' => $module . '|' . $motherModule,
-					'url' => $url,
-					'description' => $shortcutName,
-					'sorting' => $GLOBALS['EXEC_TIME']
-				);
-				$databaseConnection->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
-				if ($databaseConnection->sql_affected_rows() == 1) {
-					$shortcutCreated = 'success';
-				}
-			}
-			$ajaxObj->addContent('create', $shortcutCreated);
+
+			$this->tryAddingTheShortcut($ajaxObj, $url, $shortcutName);
 		}
+	}
+
+	/**
+	 * Try to adding a shortcut
+	 *
+	 * @param AjaxRequestHandler $ajaxObj Oject of type AjaxRequestHandler
+	 * @param string $url
+	 * @param string $shortcutName
+	 *
+	 * @return void
+	 */
+	protected function tryAddingTheShortcut(AjaxRequestHandler $ajaxObj, $url, $shortcutName) {
+		$module = GeneralUtility::_POST('module');
+		$shortcutCreated = 'failed';
+
+		if (!empty($module) && !empty($url)) {
+			$shortcutCreated = 'alreadyExists';
+
+			if (!$this->shortcutExists($url)) {
+				$shortcutCreated = $this->addShortcut($url, $shortcutName, $module);
+			}
+		}
+
+		$ajaxObj->addContent('create', $shortcutCreated);
+	}
+
+	/**
+	 * Add a shortcut now with some user stuffs
+	 *
+	 * @param string $url
+	 * @param string $shortcutName
+	 * @param string $module
+	 *
+	 * @return string
+	 */
+	protected function addShortcut($url, $shortcutName, $module) {
+		// Shorts
+		$db = $this->getDatabaseConnection();
+		$lS = $this->getLanguageService();
+
+		if ($shortcutName === 'Shortcut' && !empty($lS->moduleLabels['labels'][$module . '_tablabel'])) {
+			$shortcutName = $lS->moduleLabels['labels'][$module . '_tablabel'];
+		}
+
+		$motherModule = GeneralUtility::_POST('motherModName');
+		$fieldValues = [
+			'userid' => $this->getBackendUser()->user['uid'],
+			'module_name' => $module . '|' . $motherModule,
+			'url' => $url,
+			'description' => $shortcutName,
+			'sorting' => $GLOBALS['EXEC_TIME']
+		];
+
+		$db->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
+
+		$shortcutCreated = 'failed';
+		if ($db->sql_affected_rows() === 1) {
+			$shortcutCreated = 'success';
+		}
+
+		return $shortcutCreated;
+	}
+
+	/**
+	 * Exists already a shortcut entry for this TYPO3 url?
+	 *
+	 * @param string $url
+	 *
+	 * @return bool
+	 */
+	protected function shortcutExists($url) {
+		$statement = $this->getDatabaseConnection()->prepare_SELECTquery(
+			'uid',
+			'sys_be_shortcuts',
+			'userid = :userid AND url = :url'
+		);
+
+		$statement->bindValues([
+			':userid' => $this->getBackendUser()->user['uid'],
+			':url' => $url
+		]);
+
+		$statement->execute();
+		$rows = $statement->fetch(PreparedStatement::FETCH_ASSOC);
+		$statement->free();
+
+		return !empty($rows);
 	}
 
 	/**
