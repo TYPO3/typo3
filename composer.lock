@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d3f58d0523e76748072a590be255017",
+    "hash": "67334195c29a2d5cfb17e446317824f6",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -62,34 +62,37 @@
         },
         {
             "name": "helhum/class-alias-loader",
-            "version": "1.1.10",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helhum/class-alias-loader.git",
-                "reference": "a5206c1ccfdaeac401eca76a723bfee06e38a111"
+                "reference": "28e9155b8ab3f2871f32899d4fa355fd14daba95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helhum/class-alias-loader/zipball/a5206c1ccfdaeac401eca76a723bfee06e38a111",
-                "reference": "a5206c1ccfdaeac401eca76a723bfee06e38a111",
+                "url": "https://api.github.com/repos/helhum/class-alias-loader/zipball/28e9155b8ab3f2871f32899d4fa355fd14daba95",
+                "reference": "28e9155b8ab3f2871f32899d4fa355fd14daba95",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0"
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.3.7"
             },
             "require-dev": {
-                "composer/composer": "dev-master"
+                "composer/composer": "dev-master",
+                "mikey179/vfsstream": "1.4.*@dev",
+                "phpunit/phpunit": "~4.7.0"
             },
             "type": "composer-plugin",
             "extra": {
-                "class": "Helhum\\ClassAliasLoader\\Composer\\Plugin",
+                "class": "Helhum\\ClassAliasLoader\\Plugin",
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Helhum\\ClassAliasLoader\\": "Classes/"
+                    "Helhum\\ClassAliasLoader\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -110,7 +113,7 @@
                 "classloader",
                 "composer"
             ],
-            "time": "2015-07-08 08:08:04"
+            "time": "2015-08-06 22:03:20"
         },
         {
             "name": "pear/http_request2",

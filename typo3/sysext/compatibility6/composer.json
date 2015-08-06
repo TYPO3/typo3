@@ -13,9 +13,11 @@
 		"compatibility6": "*"
 	},
 	"extra": {
-		"class-alias-maps": [
-			"Migrations/Code/ClassAliasMap.php"
-		]
+		"helhum/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		}
 	},
 	"autoload": {
 		"psr-4": {

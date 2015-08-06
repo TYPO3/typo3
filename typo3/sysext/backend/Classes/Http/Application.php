@@ -50,7 +50,7 @@ class Application implements ApplicationInterface {
 	/**
 	 * Constructor setting up legacy constant and register available Request Handlers
 	 *
-	 * @param \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\Composer\ClassAliasLoader $classLoader an instance of the class loader
+	 * @param \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\ClassAliasLoader $classLoader an instance of the class loader
 	 */
 	public function __construct($classLoader) {
 		$this->defineLegacyConstants();
