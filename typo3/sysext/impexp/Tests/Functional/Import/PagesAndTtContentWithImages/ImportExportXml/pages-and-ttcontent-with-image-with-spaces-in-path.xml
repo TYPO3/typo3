@@ -236,7 +236,7 @@
 				<field index="title" type="NULL"></field>
 				<field index="description" type="NULL"></field>
 				<field index="alternative" type="NULL"></field>
-				<field index="link" type="NULL"></field>
+				<field index="link"></field>
 			</fieldlist>
 			<related index="rels" type="array">
 				<field index="uid_local" type="array">
