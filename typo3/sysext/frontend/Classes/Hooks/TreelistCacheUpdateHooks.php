@@ -100,7 +100,7 @@ class TreelistCacheUpdateHooks {
 	 * @return void
 	 */
 	public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $tceMain) {
-		$action = (string)$commandValue['action'];
+		$action = (is_array($commandValue) && isset($commandValue['action'])) ? (string)$commandValue['action'] : '';
 		if ($table === 'pages' && ($command === 'delete' || ($command === 'version' && $action === 'swap'))) {
 
 			$affectedRecord = BackendUtility::getRecord($table, $recordId, '*', '', FALSE);
