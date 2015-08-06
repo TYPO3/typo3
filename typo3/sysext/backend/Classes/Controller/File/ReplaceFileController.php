@@ -122,7 +122,6 @@ class ReplaceFileController {
 		// Setting template object
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_replace.html');
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function backToList() {	//
 				top.goToModule("file_list");

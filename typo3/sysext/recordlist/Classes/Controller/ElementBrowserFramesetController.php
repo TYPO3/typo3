@@ -66,7 +66,7 @@ class ElementBrowserFramesetController {
 		$documentTemplate->startPage($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:TYPO3_Element_Browser'));
 
 		// URL for the inner main frame:
-		$url = $GLOBALS['BACK_PATH'] . $moduleUrl . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);
+		$url = $moduleUrl . rawurlencode($mode) . '&bparams=' . rawurlencode($bparams);
 
 		// Create the frameset for the window
 		// Formerly there were a ' onunload="closing();"' in the <frameset> tag - but it failed on Safari browser on Mac unless the handler was "onUnload"

@@ -44,7 +44,6 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper {
 		} else {
 			/** @var $doc DocumentTemplate */
 			$doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-			$doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->viewHelperVariableContainer->add(AbstractBackendViewHelper::class, 'DocumentTemplate', $doc);
 		}
 

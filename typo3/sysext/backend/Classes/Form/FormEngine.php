@@ -866,7 +866,6 @@ class FormEngine {
 		// Create an instance of the document template object
 		// @todo: resolve clash getDocumentTemplate() / getControllerDocumenttemplate()
 		$GLOBALS['SOBE']->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Initialize FormEngine (rendering the forms)
 		// @todo: check if this is still needed, simplify
 		$GLOBALS['SOBE']->tceforms = $this;

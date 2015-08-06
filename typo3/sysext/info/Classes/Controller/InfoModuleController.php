@@ -75,7 +75,6 @@ class InfoModuleController extends BaseScriptClass {
 	 */
 	public function main() {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 		// The page will show only if there is a valid page and if this page
 		// may be viewed by the user
@@ -146,7 +145,7 @@ class InfoModuleController extends BaseScriptClass {
 		// View page
 		$buttons['view'] = '<a href="#" ' .
 			'onclick="' . htmlspecialchars(
-				BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'],
+				BackendUtility::viewOnClick($this->pageinfo['uid'], '',
 					BackendUtility::BEgetRootLine($this->pageinfo['uid']))
 			) . '" ' .
 			'title="' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' .

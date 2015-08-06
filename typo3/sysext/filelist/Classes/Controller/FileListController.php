@@ -272,7 +272,6 @@ class FileListController {
 	public function main() {
 		// Initialize the template object
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:filelist/Resources/Private/Templates/file_list.html');
 
 		$pageRenderer = $this->getPageRenderer();

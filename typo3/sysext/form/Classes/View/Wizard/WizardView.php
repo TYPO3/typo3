@@ -56,7 +56,6 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$GLOBALS['SOBE'] = $this;
 		// Define the document template object
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:form/Resources/Private/Templates/Wizard.html');
 		$this->getPageRenderer()->enableConcatenateFiles();
 		$this->getPageRenderer()->enableCompressCss();

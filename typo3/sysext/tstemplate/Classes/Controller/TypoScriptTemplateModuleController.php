@@ -151,7 +151,6 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 
 		/** @var DocumentTemplate doc */
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
 		$this->doc->addStyleSheet('module', 'sysext/tstemplate/Resources/Public/Css/styles.css');
 

@@ -368,7 +368,6 @@ class ElementBrowser {
 		// Creating backend template object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadJquery();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');

@@ -160,7 +160,6 @@ class HelpModuleController {
 		}
 
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:cshmanual/Resources/Private/Templates/cshmanual.html');
 
 		$markers = array('CONTENT' => $this->content);

@@ -182,7 +182,6 @@ class NewRecordController {
 		$this->pagesOnly = GeneralUtility::_GP('pagesOnly');
 		// Create instance of template class for output
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_new.html');
 		$this->doc->JScode = '';
 		// Setting up the context sensitive menu:

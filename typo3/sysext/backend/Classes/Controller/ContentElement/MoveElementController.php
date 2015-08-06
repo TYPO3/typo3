@@ -106,7 +106,6 @@ class MoveElementController {
 		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		// Starting the document template object:
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/move_el.html');
 		$this->doc->JScode = '';
 		// Starting document content (header):

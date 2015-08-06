@@ -57,11 +57,6 @@ class DatabaseIntegrityCheck {
 	public $rec_idArray = array();
 
 	/**
-	 * @var string
-	 */
-	public $backPath = '';
-
-	/**
 	 * @var array
 	 */
 	public $checkFileRefs = array();

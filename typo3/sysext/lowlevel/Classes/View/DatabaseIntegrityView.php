@@ -69,7 +69,6 @@ class DatabaseIntegrityView extends BaseScriptClass {
 		$this->MCONF['name'] = 'system_dbint';
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/dbint.html');
 		$this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
 	}
@@ -323,7 +322,6 @@ class DatabaseIntegrityView extends BaseScriptClass {
 
 		/** @var $admin DatabaseIntegrityCheck */
 		$admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-		$admin->backPath = $GLOBALS['BACK_PATH'];
 		$admin->genTree(0);
 
 		// Pages stat
@@ -365,7 +363,6 @@ class DatabaseIntegrityView extends BaseScriptClass {
 		$admin->lostRecords($id_list);
 		if ($admin->fixLostRecord(GeneralUtility::_GET('fixLostRecords_table'), GeneralUtility::_GET('fixLostRecords_uid'))) {
 			$admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-			$admin->backPath = $GLOBALS['BACK_PATH'];
 			$admin->genTree(0);
 			$id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
 			$id_list = rtrim($id_list, ',');
@@ -421,7 +418,6 @@ class DatabaseIntegrityView extends BaseScriptClass {
 	 */
 	public function func_relations() {
 		$admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-		$admin->backPath = $GLOBALS['BACK_PATH'];
 		$fkey_arrays = $admin->getGroupFields('');
 		$admin->selectNonEmptyRecordsWithFkeys($fkey_arrays);
 		$fileTest = $admin->testFileRefs();

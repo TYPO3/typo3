@@ -53,7 +53,6 @@ class ParseHtmlController {
 	 */
 	public function init() {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = '';
 		$this->modData = $GLOBALS['BE_USER']->getModuleData($GLOBALS['MCONF']['name'], 'ses');
 		if (GeneralUtility::_GP('OC_key')) {

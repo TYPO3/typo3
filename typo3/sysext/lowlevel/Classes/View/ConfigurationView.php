@@ -56,7 +56,6 @@ class ConfigurationView extends BaseScriptClass {
 	public function init() {
 		$this->menuConfig();
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		$this->doc->form = '<form action="" method="post">';
 		$this->doc->addStyleSheet('module', 'sysext/lowlevel/Resources/Public/Css/styles.css');

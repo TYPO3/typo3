@@ -79,7 +79,6 @@ class BackendLayoutWizardController {
 		$uid = (int)$this->P['uid'];
 		// Initialize document object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->loadExtJS();
 		$pageRenderer->addJsFile(ExtensionManagementUtility::extRelPath('backend') . 'Resources/Public/JavaScript/grideditor.js');

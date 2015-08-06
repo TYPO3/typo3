@@ -519,7 +519,6 @@ class PageLayoutController {
 
 			// Start document template object:
 			$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 
 			// override the default jumpToUrl
@@ -669,7 +668,6 @@ class PageLayoutController {
 		} else {
 			// If no access or id value, create empty document:
 			$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/db_layout.html');
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';

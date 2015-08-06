@@ -138,7 +138,6 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$this->REQUEST_URI = str_replace('&sendToReview=1', '', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		// Draw the header.
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:version/Resources/Private/Templates/version.html');
 		// Add styles
 		$this->doc->inDocStylesArray[$GLOBALS['MCONF']['name']] = '

@@ -131,7 +131,6 @@ class FileSystemNavigationFrameController {
 		$this->doHighlight = !$this->getBackendUser()->getTSConfigVal('options.pageTree.disableTitleHighlight');
 		// Create template object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_file_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
 		// Adding javascript code for drag&drop and the filetree as well as the click menu code
