@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+
+	RewriteEngine On
+
+	# Store the current location in an environment variable CWD to use
+	# mod_rewrite in .htaccess files without knowing the RewriteBase
+	RewriteCond $0#%{REQUEST_URI} ([^#]*)#(.*)\1$
+	RewriteRule ^.*$ - [E=CWD:%2]
+
+	# Redirect install tool files
+	RewriteRule ^install(\/?.*)$ %{ENV:CWD}sysext/install/Start/Install.php [R=307,L]
+
+	# Redirect old entry points
+	RewriteRule ^(ajax|alt_clickmenu|alt_db_navframe|alt_doc|alt_file_navframe|browser|db_new|dummy|init|login_frameset|logout|mod|move_el|show_item|tce_db|tce_file|thumbs)\.php$ %{ENV:CWD}deprecated.php [L]
+</IfModule>

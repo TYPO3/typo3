@@ -2248,7 +2248,8 @@ This is a dump of the failures:
 	public function backendCheckLogin($proceedIfNoUserIsLoggedIn = FALSE) {
 		if (empty($this->user['uid'])) {
 			if ($proceedIfNoUserIsLoggedIn === FALSE) {
-				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($GLOBALS['BACK_PATH']);
+				$url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir;
+				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($url);
 			}
 		} else {
 			// ...and if that's the case, call these functions
