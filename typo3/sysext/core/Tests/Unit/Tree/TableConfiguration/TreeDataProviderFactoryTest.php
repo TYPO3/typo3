@@ -13,20 +13,24 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
+use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
 
 /**
- * Testcase for TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory
+ * Test case
  */
-class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class TreeDataProviderFactoryTest extends UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory
+	 * @var TreeDataProviderFactory
 	 */
 	protected $subject;
 
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory();
+		$this->subject = new TreeDataProviderFactory();
 		$GLOBALS['TCA'] = array();
 		$GLOBALS['TCA']['foo'] = array();
 		$GLOBALS['TCA']['foo']['ctrl'] = array();
@@ -95,18 +99,16 @@ class TreeDataProviderFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor() {
-		$dataProviderMockClassName = $this->getUniqueId('tx_coretest_tree_data_provider');
-		$tcaConfiguration = array('treeConfig' => array('dataProvider' => $dataProviderMockClassName), 'internal_type' => 'foo');
-		$classCode = 'class ' . $dataProviderMockClassName . ' {
-			function __construct($configuration) {
-				if (!is_array($configuration)) throw new Exception(\'Failed asserting that the constructor arguments are an array\');
-				if ($configuration !== ' . var_export($tcaConfiguration, TRUE) . ') throw new Exception(\'Failed asserting that the constructor arguments are correctly passed\');
-			}
-		}';
-		eval($classCode);
-		$dataProvider = $this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
+		$dataProviderMockClassName = TreeDataProviderWithConfigurationFixture::class;
 
-		$this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
+		$tcaConfiguration = [
+			'treeConfig' => [
+				'dataProvider' => $dataProviderMockClassName,
+			],
+			'internal_type' => 'foo',
+		];
+		$this->setExpectedException(\RuntimeException::class, $this->anything(), 1438875249);
+		$this->subject->getDataProvider($tcaConfiguration, 'foo', 'bar', array('uid' => 1));
 	}
 
 }
