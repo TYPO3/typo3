@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  */
 
 /**
- * Utility for dealing with ext_emconf
+ * Utility for Downloading Extensions
  */
 class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

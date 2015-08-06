@@ -28,6 +28,18 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 	protected $tagName = 'form';
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
+	 */
+	protected $configurationUtility;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
+	 */
+	public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility) {
+		$this->configurationUtility = $configurationUtility;
+	}
+
+	/**
 	 * Renders a download link
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
@@ -55,13 +67,15 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		), 'Download');
 		$this->tag->addAttribute('data-href', $uri);
 
+		$automaticInstallation = $this->configurationUtility->getCurrentConfiguration('extensionmanager')['automaticInstallation']['value'];
+		$labelKeySuffix = $automaticInstallation ? '' : '.downloadOnly';
 		$label = '
 			<div class="btn-group">
 				<button
-					title="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '"
+					title="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit' . $labelKeySuffix, 'extensionmanager') . '"
 					type="submit"
 					class="btn btn-default"
-					value="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '"
+					value="' . LocalizationUtility::translate('extensionList.downloadViewHelper.submit' . $labelKeySuffix, 'extensionmanager') . '"
 				>
 					<span class="t3-icon fa fa-cloud-download"></span>
 				</button>

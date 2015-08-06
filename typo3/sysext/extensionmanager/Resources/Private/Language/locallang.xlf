@@ -329,6 +329,9 @@
 			<trans-unit id="extensionList.downloadViewHelper.submit">
 				<source>Import and Install</source>
 			</trans-unit>
+			<trans-unit id="extensionList.downloadViewHelper.submit.downloadOnly">
+				<source>Import</source>
+			</trans-unit>
 			<trans-unit id="extensionList.showAllVersions.label">
 				<source>Show all versions</source>
 			</trans-unit>

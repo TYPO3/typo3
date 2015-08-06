@@ -105,34 +105,41 @@ class DownloadController extends AbstractController {
 		$title = '';
 		$hasDependencies = FALSE;
 		$hasErrors = FALSE;
-		try {
-			$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
-			if (!empty($dependencyTypes)) {
-				$hasDependencies = TRUE;
-				$message = '<p>' . $this->translate('downloadExtension.dependencies.headline') . '</p>';
-				foreach ($dependencyTypes as $dependencyType => $dependencies) {
-					$extensions = '';
-					foreach ($dependencies as $extensionKey => $dependency) {
-						$extensions .= $this->translate('downloadExtension.dependencies.extensionWithVersion', array(
-								$extensionKey, $dependency->getVersion()
-							)) . '<br />';
+		if ($this->configurationUtility->getCurrentConfiguration('extensionmanager')['automaticInstallation']['value']) {
+			$action = 'installFromTer';
+			try {
+				$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
+				if (!empty($dependencyTypes)) {
+					$hasDependencies = TRUE;
+					$message = '<p>' . $this->translate('downloadExtension.dependencies.headline') . '</p>';
+					foreach ($dependencyTypes as $dependencyType => $dependencies) {
+						$extensions = '';
+						foreach ($dependencies as $extensionKey => $dependency) {
+							$extensions .= $this->translate('downloadExtension.dependencies.extensionWithVersion', array(
+									$extensionKey, $dependency->getVersion()
+								)) . '<br />';
+						}
+						$message .= $this->translate('downloadExtension.dependencies.typeHeadline',
+							array(
+								$this->translate('downloadExtension.dependencyType.' . $dependencyType),
+								$extensions
+							)
+						);
 					}
-					$message .= $this->translate('downloadExtension.dependencies.typeHeadline',
-						array(
-							$this->translate('downloadExtension.dependencyType.' . $dependencyType),
-							$extensions
-						)
-					);
+					$title = $this->translate('downloadExtension.dependencies.resolveAutomatically');
 				}
-				$title = $this->translate('downloadExtension.dependencies.resolveAutomatically');
+				$this->view->assign('dependencies', $dependencyTypes);
+			} catch (\Exception $e) {
+				$hasErrors = TRUE;
+				$title = $this->translate('downloadExtension.dependencies.errorTitle');
+				$message = $e->getMessage();
 			}
-			$this->view->assign('dependencies', $dependencyTypes);
-		} catch (\Exception $e) {
-			$hasErrors = TRUE;
-			$title = $this->translate('downloadExtension.dependencies.errorTitle');
-			$message = $e->getMessage();
+		} else {
+			// if automatic installation is deactivated, no dependency check is needed (download only)
+			$action = 'installExtensionWithoutSystemDependencyCheck';
 		}
 		$this->view->assign('extension', $extension)
+			->assign('action', $action)
 			->assign('hasDependencies', $hasDependencies)
 			->assign('hasErrors', $hasErrors)
 			->assign('message', $message)
@@ -282,7 +289,7 @@ class DownloadController extends AbstractController {
 	}
 
 	/**
-	 * Install an action from TER
+	 * Install an extension from TER
 	 * Downloads the extension, resolves dependencies and installs it
 	 *
 	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
