@@ -47,18 +47,18 @@ Use an icon
 To use an icon, you need at least the icon identifier. The default size is small which currently means an icon with 16x16px.
 The third parameter can be used to add an additional icon as overlay, which can be any registered icon.
 
-The ``IconFactory`` provides only the following constants for Icon sizes:
+The ``Icon`` class provides only the following constants for Icon sizes:
 
-* ``IconFactory::SIZE_SMALL`` which currently means 16x16 px
-* ``IconFactory::SIZE_DEFAULT`` which currently means 32x32 px
-* ``IconFactory::SIZE_LARGE`` which currently means 48x48 px
+* ``Icon::SIZE_SMALL`` which currently means 16x16 px
+* ``Icon::SIZE_DEFAULT`` which currently means 32x32 px
+* ``Icon::SIZE_LARGE`` which currently means 48x48 px
 
 All the sizes can change in future, so please make use of the constants for an unified layout.
 
 .. code-block:: php
 
-	$iconApi = GeneralUtility::makeInstance(IconFactory::class);
-	$iconApi->getIcon($identifier, IconFactory::SIZE_SMALL, $overlay)->render();
+	$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	$iconFactory->getIcon($identifier, Icon::SIZE_SMALL, $overlay)->render();
 
 
 ViewHelper

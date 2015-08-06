@@ -29,13 +29,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $icons = array(
-		// @TODO: replace default icon before merge!
-		// default icon, fallback
+		// Default icon, fallback
 		'default-not-found' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'times-circle',
-				'additionalClasses' => 'fa-fw'
 			)
 		),
 
@@ -44,35 +42,30 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'times',
-				'additionalClasses' => 'fa-fw'
 			)
 		),
 		'actions-document-export-csv' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'download',
-				'additionalClasses' => 'fa-fw'
 			)
 		),
 		'actions-document-export-t3d' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'download',
-				'additionalClasses' => 'fa-fw'
 			)
 		),
 		'actions-document-import-t3d' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'upload',
-				'additionalClasses' => 'fa-fw'
 			)
 		),
 		'actions-document-open' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'pencil',
-				'additionalClasses' => 'fa-fw'
 			)
 		),
 
@@ -81,7 +74,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'minus-circle',
-				'additionalClasses' => ''
 			)
 		),
 	);

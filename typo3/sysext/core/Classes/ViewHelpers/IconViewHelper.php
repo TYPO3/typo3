@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -22,7 +23,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Displays sprite icon identified by iconName key
- * @internal
  */
 class IconViewHelper extends AbstractViewHelper implements CompilableInterface {
 
@@ -34,7 +34,7 @@ class IconViewHelper extends AbstractViewHelper implements CompilableInterface {
 	 * @param string $overlay
 	 * @return string
 	 */
-	public function render($identifier, $size = IconFactory::SIZE_SMALL, $overlay = NULL) {
+	public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = NULL) {
 		return static::renderStatic(
 			array(
 				'identifier' => $identifier,
@@ -58,9 +58,9 @@ class IconViewHelper extends AbstractViewHelper implements CompilableInterface {
 		$identifier = $arguments['identifier'];
 		$size = $arguments['size'];
 		$overlay = $arguments['overlay'];
-		/** @var IconFactory $iconApi */
-		$iconApi = GeneralUtility::makeInstance(IconFactory::class);
-		return $iconApi->getIcon($identifier, $size, $overlay)->render();
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		return $iconFactory->getIcon($identifier, $size, $overlay)->render();
 	}
 
 }
