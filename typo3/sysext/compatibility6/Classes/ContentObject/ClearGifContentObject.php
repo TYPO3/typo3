@@ -38,11 +38,7 @@ class ClearGifContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 		if (!$wrap) {
 			$wrap = '|<br />';
 		}
-		$theValue = $this->cObj->wrap('<img
-			src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
-			width="' . $width . '"
-			height="' . $height . '"' . $this->cObj->getBorderAttr(' border="0"') . '
-			alt="" />', $wrap);
+		$theValue = $this->cObj->wrap('<span style="width: ' . $width . 'px; height: ' . $height . 'px;"></span>', $wrap);
 		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}

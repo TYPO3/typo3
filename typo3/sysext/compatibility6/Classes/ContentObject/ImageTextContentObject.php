@@ -308,14 +308,14 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 				$tablecode .= '<tr>';
 				if ($txtMarg && $align == 'right') {
 					// If right aligned, the textborder is added on the right side
-					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $txtMarg . '" height="1" alt="" title="" />' . ($editIconsHTML ? '<br />' . $editIconsHTML : '') . '</td>';
+					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><span style="width: ' . $txtMarg . 'px; height: 1px;"></span>' . ($editIconsHTML ? '<br />' . $editIconsHTML : '') . '</td>';
 					$editIconsHTML = '';
 					$flag = 1;
 				}
-				$tablecode .= '<td colspan="' . $colspan . '"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $tableWidth . '" height="1" alt="" /></td>';
+				$tablecode .= '<td colspan="' . $colspan . '"><span style="width: ' . $tableWidth . 'px; height: 1px;"></span></td>';
 				if ($txtMarg && $align == 'left') {
 					// If left aligned, the textborder is added on the left side
-					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $txtMarg . '" height="1" alt="" title="" />' . ($editIconsHTML ? '<br />' . $editIconsHTML : '') . '</td>';
+					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><span style="width: ' . $txtMarg . 'px; height: 1px;"></span>' . ($editIconsHTML ? '<br />' . $editIconsHTML : '') . '</td>';
 					$editIconsHTML = '';
 					$flag = 1;
 				}
@@ -329,7 +329,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			for ($c = 0; $c < $rowCount; $c++) {
 				// If this is NOT the first time in the loop AND if space is required, a row-spacer is added. In case of "noRows" rowspacing is done further down.
 				if ($c && $rowspacing) {
-					$tablecode .= '<tr><td colspan="' . $colspan . '"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $rowspacing . '"' . $this->cObj->getBorderAttr(' border="0"') . ' alt="" title="" /></td></tr>';
+					$tablecode .= '<tr><td colspan="' . $colspan . '"><span style="width: 1px; height: ' . $rowspacing . 'px;"></span></td></tr>';
 				}
 				// starting row
 				$tablecode .= '<tr>';
@@ -338,9 +338,9 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 					// If this is NOT the first iteration AND if column space is required. In case of "noCols", the space is done without a separate cell.
 					if ($b && $colspacing) {
 						if (!$noCols) {
-							$tablecode .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $colspacing . '" height="1"' . $this->cObj->getBorderAttr(' border="0"') . ' alt="" title="" /></td>';
+							$tablecode .= '<td><span style="width: ' . $colspacing . 'px; height: 1px;"></span></td>';
 						} else {
-							$colSpacer = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($border ? $colspacing - 6 : $colspacing) . '" height="' . ($imageRowsMaxHeights[$c] + ($border ? $borderThickness * 2 : 0)) . '"' . $this->cObj->getBorderAttr(' border="0"') . ' align="' . ($border ? 'left' : 'top') . '" alt="" title="" />';
+							$colSpacer = '<span style="width: ' . ($border ? $colspacing - 6 : $colspacing) . 'px; height: ' . ($imageRowsMaxHeights[$c] + ($border ? $borderThickness * 2 : 0)) . 'px;"></span>';
 							$colSpacer = '<td valign="top">' . $colSpacer . '</td>';
 							// added 160301, needed for the new "noCols"-table...
 							$tablecode .= $colSpacer;
@@ -367,7 +367,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 						if ($imgsTag[$imgIndex]) {
 							// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
 							if ($rowspacing && $noRows && $a) {
-								$tablecode .= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $rowspacing . '" alt="" title="" /><br />';
+								$tablecode .= '<span style="width: 1px; height: ' . $rowspacing . 'px;"></span><br />';
 							}
 							if ($legacyCaptionSplit) {
 								$thisCaption = $captionArray[$imgIndex];

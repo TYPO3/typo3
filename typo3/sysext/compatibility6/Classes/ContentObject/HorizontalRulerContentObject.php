@@ -44,22 +44,15 @@ class HorizontalRulerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 			summary=""><tr>';
 		if ($spaceBefore) {
 			$theValue .= '<td width="1">
-				<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
-				width="' . $spaceBefore . '"
-				height="1" alt="" title="" />
+				<span style="width: ' . $spaceBefore . 'px; height: 1px;"></span>
 			</td>';
 		}
 		$theValue .= '<td bgcolor="' . $lineColor . '">
-			<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
-			width="1"
-			height="' . $lineThickness . '"
-			alt="" title="" />
+			<span style="width: 1px; height: ' . $lineThickness . 'px;"></span>
 		</td>';
 		if ($spaceAfter) {
 			$theValue .= '<td width="1">
-				<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
-				width="' . $spaceAfter . '"
-				height="1" alt="" title="" />
+				<span style="width: ' . $spaceAfter . 'px; height: 1px;"></span>
 			</td>';
 		}
 		$theValue .= '</tr></table>';

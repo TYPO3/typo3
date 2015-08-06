@@ -73,17 +73,17 @@ class ColumnsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					if ($gapLine) {
 						$gapSurround = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($gapWidth - $gapLine) / 2, 1, 1000);
 						// right gap
-						$content .= '<td' . $tdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $gapSurround . '" height="1" alt="" title="" /></td>';
+						$content .= '<td' . $tdPar . '><span style="width: ' . $gapSurround . 'px; height: 1px;"></span></td>';
 						$tdRowCount++;
 						// line:
 						$GtdPar = $gapConf['gapLineCol'] ? ' bgcolor="' . $gapConf['gapLineCol'] . '"' : ' bgcolor="black"';
-						$content .= '<td' . $GtdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $gapLine . '" height="1" alt="" title="" /></td>';
+						$content .= '<td' . $GtdPar . '><span style="width: ' . $gapLine . 'px; height: 1px;"></span></td>';
 						$tdRowCount++;
 						// left gap
-						$content .= '<td' . $tdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $gapSurround . '" height="1" alt="" title="" /></td>';
+						$content .= '<td' . $tdPar . '><span style="width: ' . $gapSurround . 'px; height: 1px;"></span></td>';
 						$tdRowCount++;
 					} else {
-						$content .= '<td' . $tdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $gapWidth . '" height="1" alt="" title="" /></td>';
+						$content .= '<td' . $tdPar . '><span style="width: ' . $gapWidth . 'px; height: 1px;"></span></td>';
 						$tdRowCount++;
 					}
 				}

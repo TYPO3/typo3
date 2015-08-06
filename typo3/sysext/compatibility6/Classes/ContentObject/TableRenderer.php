@@ -204,7 +204,7 @@ class TableRenderer {
 				if ($cols + $xoff > 1) {
 					$colspan = ' colspan="' . ($cols + $xoff) . '"';
 				}
-				$res .= '<tr><td' . $colspan . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $offArr[1] . '" alt="" title="" /></td></tr>';
+				$res .= '<tr><td' . $colspan . '><span style="width: 1px; height: ' . $offArr[1] . 'px;"></span></td></tr>';
 			}
 			// The rows:
 			if ($rows > 1) {
@@ -212,13 +212,13 @@ class TableRenderer {
 			}
 			$res .= '<tr>';
 			if ($offArr[0]) {
-				$res .= '<td' . $rowspan . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" height="1" width="' . $offArr[0] . '" alt="" title="" /></td>';
+				$res .= '<td' . $rowspan . '><span style="width: ' . $offArr[0] . 'px; height: 1px;"></span></td>';
 			}
 			if ($this->lm) {
 				$res .= '<td' . $rowspan . ' ' . $this->lmTDparams . '>' . $this->lm . '</td>';
 			}
 			if ($cMargArr[0]) {
-				$res .= '<td' . $rowspan . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" height="1" width="' . $cMargArr[0] . '" alt="" title="" /></td>';
+				$res .= '<td' . $rowspan . '><span style="width: ' . $cMargArr[0] . 'px; height: 1px;"></span></td>';
 			}
 			// Content...
 			$middle = array();
@@ -226,26 +226,26 @@ class TableRenderer {
 				$middle[] = '<td ' . $this->tmTDparams . '>' . $this->tm . '</td>';
 			}
 			if ($cMargArr[1]) {
-				$middle[] = '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $cMargArr[1] . '" alt="" title="" /></td>';
+				$middle[] = '<td><span style="width: 1px; height: ' . $cMargArr[1] . 'px;"></span></td>';
 			}
 			if ($this->content) {
 				$middle[] = '<td ' . $this->contentTDparams . '>' . $this->content . '</td>';
 			}
 			if ($cMargArr[3]) {
-				$middle[] = '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $cMargArr[3] . '" alt="" title="" /></td>';
+				$middle[] = '<td><span style="width: 1px; height: ' . $cMargArr[3] . 'px;"></span></td>';
 			}
 			if ($this->bm) {
 				$middle[] = '<td ' . $this->bmTDparams . '>' . $this->bm . '</td>';
 			}
 			if ($this->contentW) {
-				$middle[] = '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" height="1" width="' . $this->contentW . '" alt="" title="" /></td>';
+				$middle[] = '<td><span style="width: ' . $this->contentW . 'px; height: 1px;"></span></td>';
 			}
 			if (isset($middle[0])) {
 				$res .= $middle[0];
 			}
 			// Left of content
 			if ($cMargArr[2]) {
-				$res .= '<td' . $rowspan . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" height="1" width="' . $cMargArr[2] . '" alt="" title="" /></td>';
+				$res .= '<td' . $rowspan . '><span style="width: ' . $cMargArr[2] . 'px; height: 1px;"></span></td>';
 			}
 			if ($this->rm) {
 				$res .= '<td' . $rowspan . ' ' . $this->rmTDparams . '>' . $this->rm . '</td>';
