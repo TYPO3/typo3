@@ -1962,9 +1962,12 @@ class ElementBrowser {
 				$bulkCheckBox = '';
 			}
 			// Create link to showing details about the file in a window:
-			$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid='
-				. rawurlencode($fileObject->getCombinedIdentifier())
-				. '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+			$Ahref = BackendUtility::getModuleUrl('show_item', array(
+				'type' => 'file',
+				'table' => '_FILE',
+				'uid' => $fileObject->getCombinedIdentifier(),
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			));
 			$ATag2 = '<a href="' . htmlspecialchars($Ahref) . '">';
 			$ATag2_e = '</a>';
 			// Combine the stuff:
