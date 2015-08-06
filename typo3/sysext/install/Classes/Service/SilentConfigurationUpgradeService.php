@@ -33,13 +33,11 @@ class SilentConfigurationUpgradeService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager = NULL;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 * @inject
 	 */
 	protected $configurationManager = NULL;
 
@@ -97,6 +95,20 @@ class SilentConfigurationUpgradeService {
 		// #68178
 		'SYS/form_enctype',
 	);
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
 
 	/**
 	 * Executed configuration upgrades. Single upgrade methods must throw a

@@ -23,9 +23,15 @@ class ExtensionModelUtility {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Map a legacy extension array to an object

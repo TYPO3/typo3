@@ -24,6 +24,9 @@ use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
  */
 class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
+	/**
+	 * @var array
+	 */
 	public $viewHelperMapping = array(
 		'int' => 'renderIntegerField',
 		'int+' => 'renderPositiveIntegerField',
@@ -40,6 +43,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		'default' => 'renderTextField' // only for backwards compatibility, many extensions depend on that
 	);
 
+	/**
+	 * @var string
+	 */
 	public $tagName = 'input';
 
 	/**

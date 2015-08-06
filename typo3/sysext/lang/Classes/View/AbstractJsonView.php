@@ -20,10 +20,16 @@ namespace TYPO3\CMS\Lang\View;
 abstract class AbstractJsonView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Render template content

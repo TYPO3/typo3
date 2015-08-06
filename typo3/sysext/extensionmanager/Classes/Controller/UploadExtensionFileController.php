@@ -26,25 +26,21 @@ class UploadExtensionFileController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-	 * @inject
 	 */
 	protected $configurationUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
-	 * @inject
 	 */
 	protected $fileHandlingUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility
-	 * @inject
 	 */
 	protected $terUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
-	 * @inject
 	 */
 	protected $managementService;
 
@@ -57,6 +53,34 @@ class UploadExtensionFileController extends AbstractController {
 	 * @var bool
 	 */
 	protected $removeFromOriginalPath = FALSE;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
+	 */
+	public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility) {
+		$this->configurationUtility = $configurationUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
+	 */
+	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
+		$this->fileHandlingUtility = $fileHandlingUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility $terUtility
+	 */
+	public function injectTerUtility(\TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility $terUtility) {
+		$this->terUtility = $terUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
+	 */
+	public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService) {
+		$this->managementService = $managementService;
+	}
 
 	/**
 	 * Remove backup folder before destruction

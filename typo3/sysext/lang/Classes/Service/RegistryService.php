@@ -21,7 +21,6 @@ class RegistryService {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Registry
-	 * @inject
 	 */
 	protected $registry;
 
@@ -29,6 +28,13 @@ class RegistryService {
 	 * @var string
 	 */
 	protected $namespaceIdentifier = 'TYPO3\\CMS\\Lang';
+
+	/**
+	 * @param \TYPO3\CMS\Core\Registry $registry
+	 */
+	public function injectRegistry(\TYPO3\CMS\Core\Registry $registry) {
+		$this->registry = $registry;
+	}
 
 	/**
 	 * Set namespace

@@ -21,7 +21,6 @@ class ModuleData {
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
-	 * @inject
 	 */
 	protected $demand;
 
@@ -29,6 +28,13 @@ class ModuleData {
 	 * @var array
 	 */
 	protected $compareUserList = array();
+
+	/**
+	 * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
+	 */
+	public function injectDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand) {
+		$this->demand = $demand;
+	}
 
 	/**
 	 * @return \TYPO3\CMS\Beuser\Domain\Model\Demand

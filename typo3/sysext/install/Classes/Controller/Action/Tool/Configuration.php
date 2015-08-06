@@ -23,15 +23,27 @@ class Configuration extends Action\AbstractAction {
 
 	/**
 	 * @var \TYPO3\CMS\Install\Configuration\FeatureManager
-	 * @inject
 	 */
 	protected $featureManager;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 * @inject
 	 */
 	protected $configurationManager = NULL;
+
+	/**
+	 * @param \TYPO3\CMS\Install\Configuration\FeatureManager $featureManager
+	 */
+	public function injectFeatureManager(\TYPO3\CMS\Install\Configuration\FeatureManager $featureManager) {
+		$this->featureManager = $featureManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
 
 	/**
 	 * Executes the tool

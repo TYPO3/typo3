@@ -138,9 +138,15 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
-	 * @inject
 	 */
 	protected $typoScriptService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
+	 */
+	public function injectTypoScriptService(\TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService) {
+		$this->typoScriptService = $typoScriptService;
+	}
 
 	/**
 	 * sets up all necessary object for searching

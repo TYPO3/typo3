@@ -23,13 +23,11 @@ class LanguageRepository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Localization\Locales
-	 * @inject
 	 */
 	protected $locales;
 
@@ -50,9 +48,29 @@ class LanguageRepository {
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Service\RegistryService
-	 * @inject
 	 */
 	protected $registryService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Localization\Locales $locales
+	 */
+	public function injectLocales(\TYPO3\CMS\Core\Localization\Locales $locales) {
+		$this->locales = $locales;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
+	 */
+	public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService) {
+		$this->registryService = $registryService;
+	}
 
 	/**
 	 * Constructor of the language repository

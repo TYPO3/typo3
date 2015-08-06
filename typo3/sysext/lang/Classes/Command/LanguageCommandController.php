@@ -24,15 +24,27 @@ class LanguageCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Service\RegistryService
-	 * @inject
 	 */
 	protected $registryService;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
+	 */
+	public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService) {
+		$this->registryService = $registryService;
+	}
 
 	/**
 	 * Update language file for each extension

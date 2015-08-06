@@ -21,9 +21,15 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Get default configuration from ext_conf_template of an extension

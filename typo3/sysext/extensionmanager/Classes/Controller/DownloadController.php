@@ -24,39 +24,75 @@ class DownloadController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
-	 * @inject
 	 */
 	protected $fileHandlingUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
-	 * @inject
 	 */
 	protected $managementService;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
-	 * @inject
 	 */
 	protected $installUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
-	 * @inject
 	 */
 	protected $downloadUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-	 * @inject
 	 */
 	protected $configurationUtility;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
+	 */
+	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
+		$this->fileHandlingUtility = $fileHandlingUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
+	 */
+	public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService) {
+		$this->managementService = $managementService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+	 */
+	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
+		$this->installUtility = $installUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility
+	 */
+	public function injectDownloadUtility(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility) {
+		$this->downloadUtility = $downloadUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
+	 */
+	public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility) {
+		$this->configurationUtility = $configurationUtility;
+	}
 
 	/**
 	 * Check extension dependencies

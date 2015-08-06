@@ -25,15 +25,27 @@ class SqlExpectedSchemaService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager = NULL;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
 
 	/**
 	 * Get expected schema array

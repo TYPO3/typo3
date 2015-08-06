@@ -26,37 +26,31 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
-	 * @inject
 	 */
 	protected $downloadQueue;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
-	 * @inject
 	 */
 	protected $dependencyUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
-	 * @inject
 	 */
 	protected $installUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility
-	 * @inject
 	 */
 	protected $extensionModelUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
-	 * @inject
 	 */
 	protected $downloadUtility;
 
@@ -69,6 +63,48 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var bool
 	 */
 	protected $skipDependencyCheck = FALSE;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue $downloadQueue
+	 */
+	public function injectDownloadQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue $downloadQueue) {
+		$this->downloadQueue = $downloadQueue;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
+	 */
+	public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility) {
+		$this->dependencyUtility = $dependencyUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+	 */
+	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
+		$this->installUtility = $installUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility
+	 */
+	public function injectExtensionModelUtility(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility) {
+		$this->extensionModelUtility = $extensionModelUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+	 */
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
+		$this->listUtility = $listUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility
+	 */
+	public function injectDownloadUtility(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility) {
+		$this->downloadUtility = $downloadUtility;
+	}
 
 	/**
 	 * @param string $extensionKey

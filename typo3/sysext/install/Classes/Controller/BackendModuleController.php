@@ -27,7 +27,6 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 
 	/**
 	 * @var \TYPO3\CMS\Install\Service\EnableFileService
-	 * @inject
 	 */
 	protected $enableFileService;
 
@@ -35,6 +34,13 @@ class BackendModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @var \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
 	 */
 	protected $formProtection;
+
+	/**
+	 * @param \TYPO3\CMS\Install\Service\EnableFileService $enableFileService
+	 */
+	public function injectEnableFileService(\TYPO3\CMS\Install\Service\EnableFileService $enableFileService) {
+		$this->enableFileService = $enableFileService;
+	}
 
 	/**
 	 * Set formprotection property

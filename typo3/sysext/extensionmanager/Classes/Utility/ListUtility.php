@@ -32,33 +32,63 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
-	 * @inject
 	 */
 	protected $emConfUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
-	 * @inject
 	 */
 	protected $installUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Package\PackageManager
-	 * @inject
 	 */
 	protected $packageManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
+	 */
+	public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility) {
+		$this->emConfUtility = $emConfUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+	 */
+	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
+		$this->installUtility = $installUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
+	 */
+	public function injectPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager) {
+		$this->packageManager = $packageManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
 
 	/**
 	 * Returns the list of available, but not necessarily loaded extensions

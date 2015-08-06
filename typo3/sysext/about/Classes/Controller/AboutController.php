@@ -21,9 +21,15 @@ class AboutController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 	/**
 	 * @var \TYPO3\CMS\About\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
+
+	/**
+	 * @param \TYPO3\CMS\About\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\About\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
 
 	/**
 	 * Main action: Show standard information

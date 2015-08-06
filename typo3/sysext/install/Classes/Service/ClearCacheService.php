@@ -24,9 +24,15 @@ class ClearCacheService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager = NULL;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * This clear cache implementation follows a pretty brutal approach.

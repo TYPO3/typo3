@@ -30,9 +30,15 @@ class ExtensionCommandController extends CommandController {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
 
 	/**
 	 * Installs an extension by key

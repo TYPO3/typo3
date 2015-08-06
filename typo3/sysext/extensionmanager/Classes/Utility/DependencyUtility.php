@@ -28,31 +28,26 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
-	 * @inject
 	 */
 	protected $emConfUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
-	 * @inject
 	 */
 	protected $managementService;
 
@@ -75,6 +70,41 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var bool
 	 */
 	protected $skipDependencyCheck = FALSE;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+	 */
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
+		$this->listUtility = $listUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
+	 */
+	public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility) {
+		$this->emConfUtility = $emConfUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
+	 */
+	public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService) {
+		$this->managementService = $managementService;
+	}
 
 	/**
 	 * @param string $localExtensionStorage

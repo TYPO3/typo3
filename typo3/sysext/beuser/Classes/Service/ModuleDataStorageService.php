@@ -27,9 +27,15 @@ class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Loads module data for user settings or returns a fresh object initially

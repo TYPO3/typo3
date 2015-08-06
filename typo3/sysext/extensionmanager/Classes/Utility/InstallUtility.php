@@ -27,69 +27,135 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	public $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Install\Service\SqlSchemaMigrationService
-	 * @inject
 	 */
 	public $installToolSqlParser;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
-	 * @inject
 	 */
 	protected $dependencyUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
-	 * @inject
 	 */
 	protected $fileHandlingUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility
-	 * @inject
 	 */
 	protected $databaseUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	public $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Package\PackageManager
-	 * @inject
 	 */
 	protected $packageManager;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Cache\CacheManager
-	 * @inject
 	 */
 	protected $cacheManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Registry
-	 * @inject
 	 */
 	protected $registry;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Install\Service\SqlSchemaMigrationService $installToolSqlParser
+	 */
+	public function injectInstallToolSqlParser(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService $installToolSqlParser) {
+		$this->installToolSqlParser = $installToolSqlParser;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
+	 */
+	public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility) {
+		$this->dependencyUtility = $dependencyUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
+	 */
+	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
+		$this->fileHandlingUtility = $fileHandlingUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+	 */
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
+		$this->listUtility = $listUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility
+	 */
+	public function injectDatabaseUtility(\TYPO3\CMS\Extensionmanager\Utility\DatabaseUtility $databaseUtility) {
+		$this->databaseUtility = $databaseUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
+	 */
+	public function injectPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager) {
+		$this->packageManager = $packageManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Cache\CacheManager $cacheManager
+	 */
+	public function injectCacheManager(\TYPO3\CMS\Core\Cache\CacheManager $cacheManager) {
+		$this->cacheManager = $cacheManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Registry $registry
+	 */
+	public function injectRegistry(\TYPO3\CMS\Core\Registry $registry) {
+		$this->registry = $registry;
+	}
 
 	/**
 	 * Helper function to install an extension

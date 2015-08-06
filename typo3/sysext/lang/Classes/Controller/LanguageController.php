@@ -21,27 +21,51 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository
-	 * @inject
 	 */
 	protected $languageRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Service\TranslationService
-	 * @inject
 	 */
 	protected $translationService;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Service\RegistryService
-	 * @inject
 	 */
 	protected $registryService;
+
+	/**
+	 * @param \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $languageRepository
+	 */
+	public function injectLanguageRepository(\TYPO3\CMS\Lang\Domain\Repository\LanguageRepository $languageRepository) {
+		$this->languageRepository = $languageRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Lang\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Lang\Service\TranslationService $translationService
+	 */
+	public function injectTranslationService(\TYPO3\CMS\Lang\Service\TranslationService $translationService) {
+		$this->translationService = $translationService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Lang\Service\RegistryService $registryService
+	 */
+	public function injectRegistryService(\TYPO3\CMS\Lang\Service\RegistryService $registryService) {
+		$this->registryService = $registryService;
+	}
 
 	/**
 	 * List languages

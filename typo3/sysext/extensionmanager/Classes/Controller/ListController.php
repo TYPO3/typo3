@@ -30,33 +30,63 @@ class ListController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Page\PageRenderer
-	 * @inject
 	 */
 	protected $pageRenderer;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
-	 * @inject
 	 */
 	protected $dependencyUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-	 * @inject
 	 */
 	protected $configurationUtility;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+	 */
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
+		$this->listUtility = $listUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
+	 */
+	public function injectPageRenderer(\TYPO3\CMS\Core\Page\PageRenderer $pageRenderer) {
+		$this->pageRenderer = $pageRenderer;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
+	 */
+	public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility) {
+		$this->dependencyUtility = $dependencyUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
+	 */
+	public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility) {
+		$this->configurationUtility = $configurationUtility;
+	}
 
 	/**
 	 * Add the needed JavaScript files for all actions

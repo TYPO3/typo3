@@ -24,13 +24,11 @@ class CoreVersionService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Core\Registry
-	 * @inject
 	 */
 	protected $registry;
 
@@ -40,6 +38,20 @@ class CoreVersionService {
 	 * @var string
 	 */
 	protected $downloadBaseUri;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Core\Registry $registry
+	 */
+	public function injectRegistry(\TYPO3\CMS\Core\Registry $registry) {
+		$this->registry = $registry;
+	}
 
 	/**
 	 * @return mixed

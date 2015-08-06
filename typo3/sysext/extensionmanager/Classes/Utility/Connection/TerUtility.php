@@ -30,9 +30,15 @@ class TerUtility {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility
-	 * @inject
 	 */
 	protected $configurationUtility;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility
+	 */
+	public function injectConfigurationUtility(\TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility $configurationUtility) {
+		$this->configurationUtility = $configurationUtility;
+	}
 
 	/**
 	 * Fetches an extension from the given mirror

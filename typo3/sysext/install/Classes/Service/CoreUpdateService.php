@@ -41,13 +41,11 @@ class CoreUpdateService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Install\Service\CoreVersionService
-	 * @inject
 	 */
 	protected $coreVersionService;
 
@@ -76,6 +74,20 @@ class CoreUpdateService {
 	 * @var string
 	 */
 	protected $downloadBaseUri;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService
+	 */
+	public function injectCoreVersionService(\TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService) {
+		$this->coreVersionService = $coreVersionService;
+	}
 
 	/**
 	 * Initialize update paths

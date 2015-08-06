@@ -23,34 +23,52 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * documentRepository
-	 *
 	 * @var \TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository
-	 * @inject
 	 */
 	protected $documentRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Documentation\Service\DocumentationService
-	 * @inject
 	 */
 	protected $documentationService;
 
 	/**
-	 * languageUtility
-	 *
 	 * @var \TYPO3\CMS\Documentation\Utility\LanguageUtility
-	 * @inject
 	 */
 	protected $languageUtility;
 
 	/**
-	 * Signal Slot dispatcher
-	 *
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
+
+	/**
+	 * @param \TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository $documentRepository
+	 */
+	public function injectDocumentRepository(\TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository $documentRepository) {
+		$this->documentRepository = $documentRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Documentation\Service\DocumentationService $documentationService
+	 */
+	public function injectDocumentationService(\TYPO3\CMS\Documentation\Service\DocumentationService $documentationService) {
+		$this->documentationService = $documentationService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Documentation\Utility\LanguageUtility $languageUtility
+	 */
+	public function injectLanguageUtility(\TYPO3\CMS\Documentation\Utility\LanguageUtility $languageUtility) {
+		$this->languageUtility = $languageUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
 
 	/**
 	 * Lists the available documents.

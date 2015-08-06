@@ -24,7 +24,6 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
@@ -32,6 +31,13 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 	 * @var string
 	 */
 	protected $tagName = 'a';
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Renders a link to the update script screen if the extension has one

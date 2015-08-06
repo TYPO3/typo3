@@ -22,27 +22,51 @@ abstract class AbstractCoreUpdate extends AbstractAjaxAction {
 
 	/**
 	 * @var \TYPO3\CMS\Install\View\JsonView
-	 * @inject
 	 */
 	protected $view = NULL;
 
 	/**
 	 * @var \TYPO3\CMS\Install\Service\CoreUpdateService
-	 * @inject
 	 */
 	protected $coreUpdateService;
 
 	/**
 	 * @var \TYPO3\CMS\Install\Status\StatusUtility
-	 * @inject
 	 */
 	protected $statusUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Install\Service\CoreVersionService
-	 * @inject
 	 */
 	protected $coreVersionService;
+
+	/**
+	 * @param \TYPO3\CMS\Install\View\JsonView $view
+	 */
+	public function injectView(\TYPO3\CMS\Install\View\JsonView $view) {
+		$this->view = $view;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Install\Service\CoreUpdateService $coreUpdateService
+	 */
+	public function injectCoreUpdateService(\TYPO3\CMS\Install\Service\CoreUpdateService $coreUpdateService) {
+		$this->coreUpdateService = $coreUpdateService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Install\Status\StatusUtility $statusUtility
+	 */
+	public function injectStatusUtility(\TYPO3\CMS\Install\Status\StatusUtility $statusUtility) {
+		$this->statusUtility = $statusUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService
+	 */
+	public function injectCoreVersionService(\TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService) {
+		$this->coreVersionService = $coreVersionService;
+	}
 
 	/**
 	 * Initialize the handle action, sets up fluid stuff and assigns default variables.

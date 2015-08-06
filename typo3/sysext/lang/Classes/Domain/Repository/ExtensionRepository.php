@@ -23,13 +23,11 @@ class ExtensionRepository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
 	 */
 	protected $objectManager;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
 	 */
 	protected $listUtility;
 
@@ -37,6 +35,20 @@ class ExtensionRepository {
 	 * @var array
 	 */
 	protected $extensions = array();
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+	 */
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
+		$this->listUtility = $listUtility;
+	}
 
 	/**
 	 * Returns all objects of this repository

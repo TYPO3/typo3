@@ -31,13 +31,11 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Service\TerService
-	 * @inject
 	 */
 	protected $terService;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 * @inject
 	 */
 	protected $signalSlotDispatcher;
 
@@ -47,8 +45,21 @@ class TranslationService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $mirrorUrl = '';
 
 	/**
+	 * @param \TYPO3\CMS\Lang\Service\TerService $terService
+	 */
+	public function injectTerService(\TYPO3\CMS\Lang\Service\TerService $terService) {
+		$this->terService = $terService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
 	 * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $helper The helper
-	 * @return void
 	 */
 	public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $helper) {
 		$this->mirrorUrl = $helper->getMirrors(FALSE)->getMirrorUrl();

@@ -24,9 +24,15 @@ class BackendUserGroupController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository
-	 * @inject
 	 */
 	protected $backendUserGroupRepository;
+
+	/**
+	 * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository
+	 */
+	public function injectBackendUserGroupRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository) {
+		$this->backendUserGroupRepository = $backendUserGroupRepository;
+	}
 
 	/**
 	 * Initialize actions

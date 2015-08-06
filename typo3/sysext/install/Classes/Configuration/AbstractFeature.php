@@ -21,7 +21,6 @@ abstract class AbstractFeature {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 * @inject
 	 */
 	protected $objectManager = NULL;
 
@@ -44,6 +43,13 @@ abstract class AbstractFeature {
 	 * @var array List of $POST values
 	 */
 	protected $postValues = array();
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Initialize presets of feature

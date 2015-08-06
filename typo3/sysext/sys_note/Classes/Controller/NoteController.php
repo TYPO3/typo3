@@ -21,15 +21,27 @@ class NoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	/**
 	 * @var \TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository
-	 * @inject
 	 */
 	protected $sysNoteRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
-	 * @inject
 	 */
 	protected $backendUserRepository;
+
+	/**
+	 * @param \TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository $sysNoteRepository
+	 */
+	public function injectSysNoteRepository(\TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository $sysNoteRepository) {
+		$this->sysNoteRepository = $sysNoteRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository $backendUserRepository
+	 */
+	public function injectBackendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository $backendUserRepository) {
+		$this->backendUserRepository = $backendUserRepository;
+	}
 
 	/**
 	 * Render notes by single PID or PID list

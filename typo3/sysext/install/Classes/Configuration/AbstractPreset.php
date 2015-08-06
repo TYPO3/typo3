@@ -21,7 +21,6 @@ abstract class AbstractPreset implements PresetInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
-	 * @inject
 	 */
 	protected $configurationManager = NULL;
 
@@ -44,6 +43,13 @@ abstract class AbstractPreset implements PresetInterface {
 	 * @var array List of $POST values
 	 */
 	protected $postValues = array();
+
+	/**
+	 * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
 
 	/**
 	 * Set POST values

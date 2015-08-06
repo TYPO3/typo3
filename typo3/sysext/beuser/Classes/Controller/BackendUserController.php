@@ -29,27 +29,51 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Service\ModuleDataStorageService
-	 * @inject
 	 */
 	protected $moduleDataStorageService;
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository
-	 * @inject
 	 */
 	protected $backendUserRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository
-	 * @inject
 	 */
 	protected $backendUserGroupRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository
-	 * @inject
 	 */
 	protected $backendUserSessionRepository;
+
+	/**
+	 * @param \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService
+	 */
+	public function injectModuleDataStorageService(\TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService) {
+		$this->moduleDataStorageService = $moduleDataStorageService;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository $backendUserRepository
+	 */
+	public function injectBackendUserRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository $backendUserRepository) {
+		$this->backendUserRepository = $backendUserRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository
+	 */
+	public function injectBackendUserGroupRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository) {
+		$this->backendUserGroupRepository = $backendUserGroupRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository $backendUserSessionRepository
+	 */
+	public function injectBackendUserSessionRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository $backendUserSessionRepository) {
+		$this->backendUserSessionRepository = $backendUserSessionRepository;
+	}
 
 	/**
 	 * Load and persist module data

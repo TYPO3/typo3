@@ -25,21 +25,39 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
-	 * @inject
 	 */
 	protected $emConfUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
-	 * @inject
 	 */
 	protected $installUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\LanguageService
-	 * @inject
 	 */
 	protected $languageService;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
+	 */
+	public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility) {
+		$this->emConfUtility = $emConfUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+	 */
+	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
+		$this->installUtility = $installUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Lang\LanguageService $languageService
+	 */
+	public function injectLanguageService(\TYPO3\CMS\Lang\LanguageService $languageService) {
+		$this->languageService = $languageService;
+	}
 
 	/**
 	 * Initialize method - loads language file

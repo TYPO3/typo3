@@ -31,9 +31,15 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
-	 * @inject
 	 */
 	protected $dataMapper;
+
+	/**
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper
+	 */
+	public function injectDataMapper(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
 
 	/**
 	 * Do not include pid in queries

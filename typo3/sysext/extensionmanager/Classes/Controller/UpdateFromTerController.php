@@ -21,27 +21,51 @@ class UpdateFromTerController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
-	 * @inject
 	 */
 	protected $repositoryHelper;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
-	 * @inject
 	 */
 	protected $repositoryRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
 	 */
 	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
-	 * @inject
 	 */
 	protected $extensionRepository;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper
+	 */
+	public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper) {
+		$this->repositoryHelper = $repositoryHelper;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository
+	 */
+	public function injectRepositoryRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository) {
+		$this->repositoryRepository = $repositoryRepository;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+	 */
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
+		$this->listUtility = $listUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
 
 	/**
 	 * Update extension list from TER

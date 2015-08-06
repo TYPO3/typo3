@@ -72,7 +72,6 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 
 	/**
 	 * @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository
-	 * @inject
 	 */
 	protected $logEntryRepository = NULL;
 
@@ -80,6 +79,13 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @var PageRenderer
 	 */
 	protected $pageRenderer;
+
+	/**
+	 * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
+	 */
+	public function injectLogEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository) {
+		$this->logEntryRepository = $logEntryRepository;
+	}
 
 	/**
 	 * init all actions

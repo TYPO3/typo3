@@ -21,9 +21,15 @@ class DistributionController extends AbstractController {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Package\PackageManager
-	 * @inject
 	 */
 	protected $packageManager;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
+	 */
+	public function injectPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager) {
+		$this->packageManager = $packageManager;
+	}
 
 	/**
 	 * Shows information about the distribution
