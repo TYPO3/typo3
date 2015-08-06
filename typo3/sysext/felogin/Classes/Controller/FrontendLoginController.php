@@ -408,7 +408,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		$res = $this->databaseConnection->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('felogin_forgotHash' => $randHashDB));
 		// Send hashlink to user
 		$this->conf['linkPrefix'] = -1;
-		$isAbsRelPrefix = !empty($this->frontendController->absRefPrefix);
+		$isAbsRefPrefix = !empty($this->frontendController->absRefPrefix);
 		$isBaseURL = !empty($this->frontendController->baseUrl);
 		$isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
 		$link = $this->pi_getPageLink($this->frontendController->id, '', array(
@@ -419,11 +419,11 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		if ($isFeloginBaseURL) {
 			// First priority, use specific base URL
 			// "absRefPrefix" must be removed first, otherwise URL will be prepended twice
-			if (!empty($this->frontendController->absRefPrefix)) {
+			if ($isAbsRefPrefix) {
 				$link = substr($link, strlen($this->frontendController->absRefPrefix));
 			}
 			$link = $this->conf['feloginBaseURL'] . $link;
-		} elseif ($isAbsRelPrefix) {
+		} elseif ($isAbsRefPrefix) {
 			// Second priority
 			// absRefPrefix must not necessarily contain a hostname and URL scheme, so add it if needed
 			$link = GeneralUtility::locationHeaderUrl($link);
