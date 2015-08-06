@@ -91,7 +91,7 @@ class SystemEnvironmentBuilder {
 		// TYPO3 external links
 		define('TYPO3_URL_GENERAL', 'http://typo3.org/');
 		define('TYPO3_URL_ORG', 'http://typo3.org/');
-		define('TYPO3_URL_LICENSE', 'http://typo3.org/licenses');
+		define('TYPO3_URL_LICENSE', 'http://typo3.org/typo3-cms/overview/licenses/');
 		define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/CMS/');
 		define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
 		define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
