@@ -160,7 +160,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 				var table = $table.data('table');
 				var $rowElements = $anchorElement.closest('tr[data-uid]');
 				var uid = $rowElements.data('uid');
-				var $translatedRowElements = $table.find('[data-l10parent=' + uid + ']').closest('tr[data-uid]');
+				var $translatedRowElements = $table.find('[data-l10nparent=' + uid + ']').closest('tr[data-uid]');
 				$rowElements = $rowElements.add($translatedRowElements);
 
 				$rowElements.fadeTo('slow', 0.4, function() {

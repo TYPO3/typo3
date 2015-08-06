@@ -206,9 +206,10 @@ abstract class AbstractRecordList {
 		$colType = ($colType === 'th') ? 'th' : 'td';
 		$noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
 		// Start up:
+		$parent = isset($data['parent']) ? (int)$data['parent'] : 0;
 		$out = '
 		<!-- Element, begin: -->
-		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '">';
+		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $parent . '">';
 		// Show icon and lines
 		if ($this->showIcon) {
 			$out .= '

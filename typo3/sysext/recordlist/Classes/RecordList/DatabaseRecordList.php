@@ -821,6 +821,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
 		// Create element in table cells:
 		$theData['uid'] = $row['uid'];
+		if (
+			isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+			&& isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
+			&& !isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])
+		) {
+			$theData['parent'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+		}
 		$rowOutput .= $this->addelement(1, $theIcon, $theData, $row_bgColor);
 		// Finally, return table row element:
 		return $rowOutput;
