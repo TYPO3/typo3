@@ -323,7 +323,6 @@ class SetupModuleController {
 		}
 		// Create instance of object for output of data
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('EXT:setup/Resources/Private/Templates/setup.html');
 		$this->doc->form = '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="multipart/form-data">';
 		$this->doc->addStyleSheet('module', 'sysext/setup/Resources/Public/Css/styles.css');

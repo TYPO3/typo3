@@ -62,11 +62,6 @@ abstract class AbstractRecordList {
 	public $oddColumnsCssClass = '';
 
 	/**
-	 * @var string
-	 */
-	public $backPath = '';
-
-	/**
 	 * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
 	 *
 	 * @var array

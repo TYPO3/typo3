@@ -34,13 +34,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
-	 * Back path to typo3 main dir
-	 *
-	 * @var string
-	 */
-	public $backPath;
-
-	/**
 	 * Array containing submitted data when editing or adding a task
 	 *
 	 * @var array
@@ -95,7 +88,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->MCONF = array(
 			'name' => $this->moduleName,
 		);
-		$this->backPath = $GLOBALS['BACK_PATH'];
 		$this->cshKey = '_MOD_' . $this->moduleName;
 		$this->backendTemplatePath = ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Backend/SchedulerModule/';
 		$this->view = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
@@ -117,7 +109,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Initialize document
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Module.html');
-		$this->doc->backPath = $this->backPath;
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->bodyTagAdditions = 'class="tx_scheduler_mod1"';
 

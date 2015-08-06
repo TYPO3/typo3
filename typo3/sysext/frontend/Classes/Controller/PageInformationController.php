@@ -53,7 +53,6 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 	public function main() {
 		$dblist = GeneralUtility::makeInstance(PageLayoutView::class);
 		$dblist->descrTable = '_MOD_' . $GLOBALS['MCONF']['name'];
-		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->thumbs = 0;
 		$dblist->script = BackendUtility::getModuleUrl('web_info');
 		$dblist->showIcon = 0;

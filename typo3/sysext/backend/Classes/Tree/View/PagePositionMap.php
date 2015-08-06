@@ -36,11 +36,6 @@ class PagePositionMap {
 	 */
 	public $dontPrintPageInsertIcons = 0;
 
-	/**
-	 * @var string
-	 */
-	public $backPath = '';
-
 	// How deep the position page tree will go.
 	/**
 	 * @var int

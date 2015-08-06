@@ -776,7 +776,6 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			// Initialize the dblist object:
 			$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\SysAction\ActionList::class);
 			$dblist->script = GeneralUtility::getIndpEnv('REQUEST_URI');
-			$dblist->backPath = $GLOBALS['BACK_PATH'];
 			$dblist->calcPerms = $this->getBackendUser()->calcPerms($this->pageinfo);
 			$dblist->thumbs = $this->getBackendUser()->uc['thumbnailsByDefault'];
 			$dblist->returnUrl = $this->taskObject->returnUrl;
@@ -853,10 +852,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			if ($dblist->HTMLcode) {
 				// Making field select box (when extended view for a single table is enabled):
 				if ($dblist->table) {
-					$tmpBackpath = $GLOBALS['BACK_PATH'];
-					$GLOBALS['BACK_PATH'] = '';
 					$content .= $dblist->fieldSelectBox($dblist->table);
-					$GLOBALS['BACK_PATH'] = $tmpBackpath;
 				}
 			}
 		} else {

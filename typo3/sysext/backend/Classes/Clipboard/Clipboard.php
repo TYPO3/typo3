@@ -66,11 +66,6 @@ class Clipboard {
 	public $current = '';
 
 	/**
-	 * @var string
-	 */
-	public $backPath = '';
-
-	/**
 	 * @var int
 	 */
 	public $lockToNormal = 0;
@@ -93,7 +88,6 @@ class Clipboard {
 	 * @return void
 	 */
 	public function initializeClipboard() {
-		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Get data
 		$clipData = $this->getBackendUser()->getModuleData('clipboard', $this->getBackendUser()->getTSConfigVal('options.saveClipboard') ? '' : 'ses');
 		// NumberTabs
@@ -529,7 +523,7 @@ class Clipboard {
 				$str = '<span class="text-muted">' . $str . '</span>';
 			} else {
 				if (ExtensionManagementUtility::isLoaded('filelist')) {
-					$str = '<a href="' . htmlspecialchars(($this->backPath . BackendUtility::getModuleUrl('file_list') . '&id=' . dirname($rec))) . '">' . $str . '</a>';
+					$str = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('file_list', array('id' => dirname($rec)))) . '">' . $str . '</a>';
 				}
 			}
 		}

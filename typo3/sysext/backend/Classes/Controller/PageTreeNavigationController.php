@@ -59,11 +59,6 @@ class PageTreeNavigationController {
 	/**
 	 * @var string
 	 */
-	public $backPath;
-
-	/**
-	 * @var string
-	 */
 	public $currentSubScript;
 
 	/**
@@ -101,8 +96,6 @@ class PageTreeNavigationController {
 	 * @return void
 	 */
 	protected function init() {
-		// Setting backPath
-		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
 		$this->cMR = (bool)GeneralUtility::_GP('cMR');
 		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');

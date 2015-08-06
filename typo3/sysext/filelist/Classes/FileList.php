@@ -572,7 +572,7 @@ class FileList extends AbstractRecordList {
 	 * @return string HTML
 	 */
 	public function linkWrapDir($title, Folder $folderObject) {
-		$href = $this->backPath . $this->script . '&id=' . rawurlencode($folderObject->getCombinedIdentifier());
+		$href = $this->script . '&id=' . rawurlencode($folderObject->getCombinedIdentifier());
 		$onclick = ' onclick="' . htmlspecialchars(('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
 		// Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
 		if ((string)$title === strip_tags($title)) {
@@ -608,7 +608,7 @@ class FileList extends AbstractRecordList {
 
 	/**
 	 * Returns list URL; This is the URL of the current script with id and imagemode parameters, that's all.
-	 * The URL however is not relative (with the backpath), otherwise GeneralUtility::sanitizeLocalUrl() would say that
+	 * The URL however is not relative, otherwise GeneralUtility::sanitizeLocalUrl() would say that
 	 * the URL would be invalid
 	 *
 	 * @return string URL
@@ -695,7 +695,7 @@ class FileList extends AbstractRecordList {
 										'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
 										'returnUrl' => $this->listURL()
 									];
-									$returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters, $this->backPath) . BackendUtility::getUrlToken('editRecord');
+									$returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters) . BackendUtility::getUrlToken('editRecord');
 									$href = $GLOBALS['SOBE']->doc->issueCommand(
 										'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
 										$returnUrl
@@ -799,7 +799,7 @@ class FileList extends AbstractRecordList {
 			$params = '&SET[sort]=' . $col . '&SET[reverse]=0';
 			$sortArrow = '';
 		}
-		$href = GeneralUtility::resolveBackPath(($GLOBALS['BACK_PATH'] . $this->script)) . '&id=' . rawurlencode($folderIdentifier) . $params;
+		$href = GeneralUtility::resolveBackPath($this->script) . '&id=' . rawurlencode($folderIdentifier) . $params;
 		return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
 	}
 

@@ -157,13 +157,6 @@ class PageLayoutController {
 	public $doc;
 
 	/**
-	 * Back path of the module
-	 *
-	 * @var string
-	 */
-	public $backPath;
-
-	/**
 	 * "Pseudo" Description -table name
 	 *
 	 * @var string
@@ -316,7 +309,6 @@ class PageLayoutController {
 		// Setting module configuration / page select clause
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
-		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Get session data
 		$sessionData = $this->getBackendUser()->getSessionData(RecordList::class);
 		$this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';
@@ -941,7 +933,6 @@ class PageLayoutController {
 		// Select element matrix:
 		if ($this->eRParts[0] == 'tt_content' && MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
 			$posMap = GeneralUtility::makeInstance(ContentLayoutPagePositionMap::class);
-			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			$posMap->cur_sys_language = $this->current_sys_language;
 			$HTMLcode = '';
 			// CSH:
@@ -962,7 +953,6 @@ class PageLayoutController {
 	public function renderListContent() {
 		/** @var $dbList \TYPO3\CMS\Backend\View\PageLayoutView */
 		$dbList = GeneralUtility::makeInstance(PageLayoutView::class);
-		$dbList->backPath = $GLOBALS['BACK_PATH'];
 		$dbList->thumbs = $this->imagemode;
 		$dbList->no_noWrap = 1;
 		$dbList->descrTable = $this->descrTable;

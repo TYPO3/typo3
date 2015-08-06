@@ -76,15 +76,6 @@ class AbstractWizardController {
 	}
 
 	/**
-	 * Returns the backpath
-	 *
-	 * @return string
-	 */
-	protected function getBackPath() {
-		return $GLOBALS['BACK_PATH'];
-	}
-
-	/**
 	 * Returns an instance of DocumentTemplate
 	 *
 	 * @return DocumentTemplate

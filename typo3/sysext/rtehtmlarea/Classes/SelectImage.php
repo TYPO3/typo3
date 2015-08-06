@@ -152,7 +152,7 @@ class SelectImage extends ElementBrowser {
 			SelectImage.RTEtsConfigParams = ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
 			SelectImage.bparams = ' . GeneralUtility::quoteJSvalue($this->bparams) . ';
 		}');
-		$this->getPageRenderer()->addCssFile($this->doc->backPath . ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		$this->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$this->doc->getContextMenuCode();
 	}
 

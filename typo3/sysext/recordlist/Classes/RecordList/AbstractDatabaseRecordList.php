@@ -610,7 +610,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 	 * @return string HTML for thumbnails, if any.
 	 */
 	public function thumbCode($row, $table, $field) {
-		return BackendUtility::thumbCode($row, $table, $field, $this->backPath);
+		return BackendUtility::thumbCode($row, $table, $field);
 	}
 
 	/**
@@ -1042,7 +1042,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 			$localizedRecord = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('uid', $table, $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . (int)$language . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . (int)$orig_uid . BackendUtility::deleteClause($table) . BackendUtility::versioningPlaceholderClause($table));
 			if (is_array($localizedRecord)) {
 				// Create parameters and finally run the classic page module for creating a new page translation
-				$url = substr($this->listURL(), strlen($this->backPath));
+				$url = $this->listURL();
 				$editUserAccountUrl = BackendUtility::getModuleUrl(
 					'record_edit',
 					array(

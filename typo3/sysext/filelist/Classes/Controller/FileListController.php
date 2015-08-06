@@ -283,7 +283,6 @@ class FileListController {
 
 			// Create filelisting object
 			$this->filelist = GeneralUtility::makeInstance(FileList::class);
-			$this->filelist->backPath = $GLOBALS['BACK_PATH'];
 			// Apply predefined values for hidden checkboxes
 			// Set predefined value for DisplayBigControlPanel:
 			$backendUser = $this->getBackendUser();

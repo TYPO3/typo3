@@ -166,13 +166,6 @@ abstract class AbstractTreeView {
 	public $domIdPrefix = 'row';
 
 	/**
-	 * Back path for icons
-	 *
-	 * @var string
-	 */
-	public $backPath;
-
-	/**
 	 * If TRUE, HTML code is also accumulated in ->tree array during rendering of the tree.
 	 * If 2, then also the icon prefix code (depthData) is stored
 	 *
@@ -288,7 +281,6 @@ abstract class AbstractTreeView {
 
 	/**
 	 * Initialize the tree class. Needs to be overwritten
-	 * Will set ->fieldsArray, ->backPath and ->clause
 	 *
 	 * @param string Record WHERE clause
 	 * @param string Record ORDER BY field
@@ -297,8 +289,6 @@ abstract class AbstractTreeView {
 	public function init($clause = '', $orderByFields = '') {
 		// Setting BE_USER by default
 		$this->BE_USER = $GLOBALS['BE_USER'];
-		// Setting backpath.
-		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting clause
 		if ($clause) {
 			$this->clause = $clause;

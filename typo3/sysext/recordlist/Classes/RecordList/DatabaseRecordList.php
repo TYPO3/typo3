@@ -240,7 +240,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				);
 			}
 			if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
-				$onClick = htmlspecialchars(BackendUtility::viewOnClick($this->id, $this->backPath, BackendUtility::BEgetRootLine($this->id)));
+				$onClick = htmlspecialchars(BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)));
 				$buttons['view'] = '<a href="#" onclick="' . $onClick . '" title="'
 					. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
 					. IconUtility::getSpriteIcon('actions-document-view') . '</a>';
@@ -968,7 +968,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 								$tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 								$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc)
-									? $this->backPath . ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?id=' . $this->id
+									? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?id=' . $this->id
 									: BackendUtility::getModuleUrl('new_content_element', array('id' => $this->id));
 
 								$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
@@ -1215,7 +1215,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				. htmlspecialchars(
 					BackendUtility::viewOnClick(
 						($table === 'tt_content' ? $this->id : $row['uid']),
-						$this->backPath,
+						'',
 						'',
 						($table === 'tt_content' ? '#' . $row['uid'] : '')
 					)
@@ -1240,7 +1240,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
 		// "Move" wizard link for pages/tt_content elements:
 		if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
-			$onClick = 'return jumpExt(\'' . $this->backPath . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
+			$onClick = 'return jumpExt(\'' . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
 			$linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), TRUE);
 			$spriteIcon = $table === 'tt_content' ? 'actions-document-move' : 'actions-page-move';
 			$moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . IconUtility::getSpriteIcon($spriteIcon) . '</a>';
@@ -1250,7 +1250,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($this->isEditable($table)) {
 			// "Revert" link (history/undo)
 			$moduleUrl = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $row['uid']));
-			$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($this->backPath . $moduleUrl) . ',\'#latest\');';
+			$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
 			$historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 				. $this->getLanguageService()->getLL('history', TRUE) . '">'
 				. IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
@@ -1264,7 +1264,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					if (count($vers) > 1) {
 						$versionIcon = count($vers) - 1;
 					}
-					$href = $this->backPath . BackendUtility::getModuleUrl('web_txversionM1', array(
+					$href = BackendUtility::getModuleUrl('web_txversionM1', array(
 						'table' => $table, 'uid' => $row['uid']
 					));
 					$versionAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
@@ -1620,7 +1620,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$lNew = '';
 			foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
 				if ($this->isEditable($table) && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
-					$url = substr($this->listURL(), strlen($this->backPath));
+					$url = $this->listURL();
 					$href = $this->getModule()->doc->issueCommand(
 						'&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
 						$url . '&justLocalized=' . rawurlencode($table . ':' . $row['uid'] . ':' . $lUid_OnPage)

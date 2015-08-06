@@ -40,11 +40,6 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	protected $pagesTsConfig = array();
 
 	/**
-	 * @var string
-	 */
-	protected $backPath = '';
-
-	/**
 	 * The type select HTML
 	 */
 	protected $typeSelectHtml = '';
@@ -59,7 +54,6 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		$theCode = '';
 		$this->tsConfig = BackendUtility::getPagesTSconfig($this->pObj->id);
 		$this->pagesTsConfig = isset($this->tsConfig['TCEFORM.']['pages.']) ? $this->tsConfig['TCEFORM.']['pages.'] : array();
-		$this->backPath = $GLOBALS['BACK_PATH'];
 
 		// Create new pages here?
 		$pageRecord = BackendUtility::getRecord('pages', $this->pObj->id, 'uid', ' AND ' . $this->getBackendUser()->getPagePermsClause(8));
@@ -263,7 +257,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			foreach ($items as $item) {
 				$label = $this->getLanguageService()->sL($item[0], TRUE);
 				$value = $item[1];
-				$icon = (!empty($item[2]) ? '<img src="' . IconUtility::skinImg($this->backPath, 'gfx/' . $item[2], '', 1) . '" />' : '');
+				$icon = (!empty($item[2]) ? '<img src="' . IconUtility::skinImg('', 'gfx/' . $item[2], '', 1) . '" />' : '');
 				$groupContent .= '<option value="' . htmlspecialchars($value) . '" data-icon="' . htmlspecialchars($icon) . '">' . $label . '</option>';
 			}
 			$groupLabel = $this->getLanguageService()->sL($groupLabel, TRUE);

@@ -53,8 +53,8 @@ class PreviewController extends AbstractController {
 		));
 		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
 		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
-		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/notifications.js');
-		$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/iframepanel.js');
+		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/notifications.js');
+		$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/iframepanel.js');
 		$resourcePathJavaScript = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/JavaScript/';
 		$jsFiles = array(
 			'Ext.ux.plugins.TabStripContainer.js',

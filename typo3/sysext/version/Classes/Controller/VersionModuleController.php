@@ -482,12 +482,12 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$adminLink .= '<a href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'' . $pageModule . '\'); return false;">' . IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			$adminLink .= '<a href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'web_list\'); return false;">' . IconUtility::getSpriteIcon('actions-system-list-open') . '</a>';
 			// "View page" icon is added:
-			$adminLink .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['uid'], $this->doc->backPath, BackendUtility::BEgetRootLine($row['uid']))) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			$adminLink .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['uid'], '', BackendUtility::BEgetRootLine($row['uid']))) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		} else {
 			if ($row['pid'] == -1) {
 				$getVars = '&ADMCMD_vPrev[' . rawurlencode(($table . ':' . $row['t3ver_oid'])) . ']=' . $row['uid'];
 				// "View page" icon is added:
-				$adminLink .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['_REAL_PID'], $this->doc->backPath, BackendUtility::BEgetRootLine($row['_REAL_PID']), '', '', $getVars)) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+				$adminLink .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['_REAL_PID'], '', BackendUtility::BEgetRootLine($row['_REAL_PID']), '', '', $getVars)) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			}
 		}
 		return $adminLink;

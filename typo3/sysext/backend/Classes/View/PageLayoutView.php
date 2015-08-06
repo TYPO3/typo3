@@ -523,7 +523,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 									'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
 							} else {
 								$params = '&edit[tt_content][' . -$row['uid'] . ']=new';
-								$onClick = BackendUtility::editOnClick($params, $this->backPath);
+								$onClick = BackendUtility::editOnClick($params);
 							}
 							$singleElementHTML .= '
 								<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
@@ -672,7 +672,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				// "View page" icon is added:
 				$viewLink = '';
 				if (!VersionState::cast($this->getPageLayoutController()->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-					$onClick = BackendUtility::viewOnClick($this->id, $this->backPath, BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP));
+					$onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP));
 					$viewLink = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 				}
 				// Language overlay page header:
@@ -2046,7 +2046,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return string HTML for thumbnails, if any.
 	 */
 	public function getThumbCodeUnlinked($row, $table, $field) {
-		return BackendUtility::thumbCode($row, $table, $field, $this->backPath, '', NULL, 0, '', '', FALSE);
+		return BackendUtility::thumbCode($row, $table, $field, '', '', NULL, 0, '', '', FALSE);
 	}
 
 	/**

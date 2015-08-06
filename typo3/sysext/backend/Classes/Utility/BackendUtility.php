@@ -1639,7 +1639,7 @@ class BackendUtility {
 	 * @param bool $linkInfoPopup Whether to wrap with a link opening the info popup
 	 * @return string Thumbnail image tag.
 	 */
-	static public function thumbCode($row, $table, $field, $backPath, $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '', $linkInfoPopup = TRUE) {
+	static public function thumbCode($row, $table, $field, $backPath = '', $thumbScript = '', $uploaddir = NULL, $abs = 0, $tparams = '', $size = '', $linkInfoPopup = TRUE) {
 		// Check and parse the size parameter
 		$size = trim($size);
 		$sizeParts = array(64, 64);
@@ -2782,13 +2782,13 @@ class BackendUtility {
 	 * REMEMBER to always htmlspecialchar() content in href-properties to ampersands get converted to entities (XHTML requirement and XSS precaution)
 	 *
 	 * @param string $params Parameters sent along to EditDocumentController. This requires a much more details description which you must seek in Inside TYPO3s documentation of the FormEngine API. And example could be '&edit[pages][123] = edit' which will show edit form for page record 123.
-	 * @param string $backPath (unused)
+	 * @param string $_ (unused)
 	 * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
 	 *
 	 * @return string
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::issueCommand()
 	 */
-	static public function editOnClick($params, $backPath = '', $requestUri = '') {
+	static public function editOnClick($params, $_ = '', $requestUri = '') {
 		if ($requestUri == -1) {
 			$returnUrl = 'T3_THIS_LOCATION';
 		} else {

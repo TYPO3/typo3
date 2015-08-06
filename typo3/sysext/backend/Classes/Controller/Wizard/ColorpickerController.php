@@ -160,7 +160,6 @@ class ColorpickerController extends AbstractWizardController {
 		}
 		// Initialize document object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->backPath = $this->getBackPath();
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function checkReference() {	//
 				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"]) {

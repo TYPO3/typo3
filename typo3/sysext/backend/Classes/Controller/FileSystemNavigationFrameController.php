@@ -45,11 +45,6 @@ class FileSystemNavigationFrameController {
 	 */
 	public $doc;
 
-	/**
-	 * @var string
-	 */
-	public $backPath;
-
 	// Internal, static: GPvar:
 	/**
 	 * @var string
@@ -86,8 +81,6 @@ class FileSystemNavigationFrameController {
 	 * @return void
 	 */
 	protected function init() {
-		// Setting backPath
-		$this->backPath = $GLOBALS['BACK_PATH'];
 		// Setting GPvars:
 		$this->currentSubScript = GeneralUtility::_GP('currentSubScript');
 		$this->cMR = GeneralUtility::_GP('cMR');

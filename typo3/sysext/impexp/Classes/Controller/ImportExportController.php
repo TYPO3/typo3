@@ -167,7 +167,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					// View
 					$onClick = BackendUtility::viewOnClick(
 						$this->pageinfo['uid'],
-						$this->doc->backPath,
+						'',
 						BackendUtility::BEgetRootLine($this->pageinfo['uid'])
 					);
 					$title = $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE);
@@ -1120,7 +1120,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						// Check that the image really is an image and not a malicious PHP script...
 						if (getimagesize($fileName)) {
 							// Create icon tag:
-							$iconTag = '<img src="' . $this->doc->backPath . '../' . PathUtility::stripPathSitePrefix($fileName)
+							$iconTag = '<img src="../' . PathUtility::stripPathSitePrefix($fileName)
 								. '" ' . $import->dat['header']['thumbnail']['imgInfo'][3]
 								. ' vspace="5" style="border: solid black 1px;" alt="" />';
 							$trow[] = '<tr class="bgColor4">

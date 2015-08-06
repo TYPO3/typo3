@@ -164,7 +164,6 @@ class NewContentElementController {
 			// Init position map object:
 			$posMap = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class);
 			$posMap->cur_sys_language = $this->sys_language;
-			$posMap->backPath = $GLOBALS['BACK_PATH'];
 			// If a column is pre-set:
 			if (isset($this->colPos)) {
 				if ($this->uid_pid < 0) {
@@ -249,7 +248,7 @@ class NewContentElementController {
 							<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
 								' . $content . '
 								<div class="media-left">
-									<img' . IconUtility::skinImg($this->doc->backPath, $icon) . ' alt="" />
+									<img' . IconUtility::skinImg('', $icon) . ' alt="" />
 								</div>
 								<div class="media-body">
 									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>' .

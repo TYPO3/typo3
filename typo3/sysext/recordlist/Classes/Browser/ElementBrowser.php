@@ -1716,7 +1716,6 @@ class ElementBrowser {
 			$dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
 		}
 		$dbList->thisScript = $this->thisScript;
-		$dbList->backPath = $GLOBALS['BACK_PATH'];
 		$dbList->thumbs = 0;
 		$dbList->localizationView = 1;
 		$dbList->setIsEditable(FALSE);

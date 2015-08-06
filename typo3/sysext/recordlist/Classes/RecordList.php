@@ -304,7 +304,6 @@ class RecordList {
 		// Initialize the dblist object:
 		/** @var $dblist RecordList\DatabaseRecordList */
 		$dblist = GeneralUtility::makeInstance(RecordList\DatabaseRecordList::class);
-		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->script = BackendUtility::getModuleUrl('web_list');
 		$dblist->calcPerms = $calcPerms;
 		$dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];

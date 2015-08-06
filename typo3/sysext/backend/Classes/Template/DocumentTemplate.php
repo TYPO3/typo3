@@ -40,13 +40,6 @@ class DocumentTemplate {
 
 	// Vars you typically might want to/should set from outside after making instance of this class:
 	/**
-	 * 'backPath' pointing back to the PATH_typo3
-	 *
-	 * @var string
-	 */
-	public $backPath = '';
-
-	/**
 	 * This can be set to the HTML-code for a formtag.
 	 * Useful when you need a form to span the whole page; Inserted exactly after the body-tag.
 	 *
@@ -529,17 +522,17 @@ function jumpToUrl(URL) {
 	 * If the BE_USER has access to Web>List then a link to that module is shown as well (with return-url)
 	 *
 	 * @param int $id The page id
-	 * @param string $backPath The current "BACK_PATH" (the back relative to the typo3/ directory)
+	 * @param string $_ @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return string HTML string with linked icon(s)
 	 */
-	public function viewPageIcon($id, $backPath) {
+	public function viewPageIcon($id, $_ = '') {
 		// If access to Web>List for user, then link to that module.
 		$str = BackendUtility::getListViewLink(array(
 			'id' => $id,
 			'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 		), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
 		// Make link to view page
-		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, $backPath, BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, '', BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		return $str;
 	}
 
@@ -549,7 +542,7 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $params is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
 	 * @param string|int $redirectUrl Redirect URL, default is to use GeneralUtility::getIndpEnv('REQUEST_URI'), -1 means to generate an URL for JavaScript using T3_THIS_LOCATION
-	 * @return string URL to tce_db.php + parameters (backpath is taken from $this->backPath)
+	 * @return string URL to BackendUtility::getModuleUrl('tce_db') + parameters
 	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
@@ -588,10 +581,7 @@ function jumpToUrl(URL) {
 		if (is_array($row) && $row['uid']) {
 			$iconImgTag = IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
 			$title = strip_tags(BackendUtility::getRecordTitle($table, $row));
-			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'], $this->backPath);
-			if ($table == 'pages') {
-				$path .= ' - ' . BackendUtility::titleAttribForPages($row, '', 0);
-			}
+			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid']);
 		} else {
 			$iconImgTag = IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
@@ -786,7 +776,6 @@ function jumpToUrl(URL) {
 				}
 			}
 		}
-		$this->pageRenderer->backPath = $this->backPath;
 		// alternative template for Header and Footer
 		if ($this->pageHeaderFooterTemplateFile) {
 			$file = GeneralUtility::getFileAbsFileName($this->pageHeaderFooterTemplateFile, TRUE);
@@ -828,7 +817,7 @@ function jumpToUrl(URL) {
 		// add docstyles
 		$this->docStyle();
 		if ($this->extDirectStateProvider) {
-			$this->pageRenderer->addJsFile($this->backPath . 'sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
+			$this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
 		}
 		// Add jsCode for overriding the console with a debug panel connection
 		$this->pageRenderer->addJsInlineCode('consoleOverrideWithDebugPanel', 'if (typeof top.Ext === "object") {
@@ -867,7 +856,7 @@ function jumpToUrl(URL) {
 		// Note: please do not reference "bootstrap" outside of the TYPO3 Core (not in your own extensions)
 		// as this is preliminary as long as Twitter bootstrap does not support AMD modules
 		// this logic will be changed once Twitter bootstrap 4 is included
-		$this->pageRenderer->addJsFile($this->backPath . 'sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap.js');
+		$this->pageRenderer->addJsFile('sysext/core/Resources/Public/JavaScript/Contrib/bootstrap/bootstrap.js');
 
 		// hook for additional headerData
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {
@@ -1116,10 +1105,10 @@ function jumpToUrl(URL) {
 		$this->inDocStylesArray = array();
 
 		if ($this->styleSheetFile) {
-			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile);
+			$this->pageRenderer->addCssFile($this->styleSheetFile);
 		}
 		if ($this->styleSheetFile2) {
-			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile2);
+			$this->pageRenderer->addCssFile($this->styleSheetFile2);
 		}
 
 		if ($inDocStyles !== '') {
@@ -1127,7 +1116,7 @@ function jumpToUrl(URL) {
 		}
 
 		if ($this->styleSheetFile_post) {
-			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_post);
+			$this->pageRenderer->addCssFile($this->styleSheetFile_post);
 		}
 	}
 
@@ -1141,12 +1130,7 @@ function jumpToUrl(URL) {
 	 * @return void
 	 */
 	public function addStyleSheet($key, $href, $title = '', $relation = 'stylesheet') {
-		if (strpos($href, '://') !== FALSE || $href[0] === '/') {
-			$file = $href;
-		} else {
-			$file = $this->backPath . $href;
-		}
-		$this->pageRenderer->addCssFile($file, $relation, 'screen', $title);
+		$this->pageRenderer->addCssFile($href, $relation, 'screen', $title);
 	}
 
 	/**
@@ -1470,15 +1454,14 @@ function jumpToUrl(URL) {
 	}
 
 	/**
-	 * Includes a javascript library that exists in the core /typo3/ directory. The
-	 * backpath is automatically applied
+	 * Includes a javascript library that exists in the core /typo3/ directory
 	 *
 	 * @param string $lib: Library name. Call it with the full path like "sysext/core/Resources/Public/JavaScript/QueryGenerator.js" to load it
 	 * @return void
 	 */
 	public function loadJavascriptLib($lib) {
 		// @todo: maybe we can remove this one as well
-		$this->pageRenderer->addJsFile($this->backPath . $lib);
+		$this->pageRenderer->addJsFile($lib);
 	}
 
 	/**
@@ -1673,7 +1656,7 @@ function jumpToUrl(URL) {
 		if (GeneralUtility::isFirstPartOfStr($filename, 'EXT:')) {
 			$filename = GeneralUtility::getFileAbsFileName($filename, TRUE, TRUE);
 		} elseif (!GeneralUtility::isAbsPath($filename)) {
-			$filename = GeneralUtility::resolveBackPath($this->backPath . $filename);
+			$filename = GeneralUtility::resolveBackPath($filename);
 		} elseif (!GeneralUtility::isAllowedAbsPath($filename)) {
 			$filename = '';
 		}
@@ -1955,7 +1938,7 @@ function jumpToUrl(URL) {
 	* @return string
 	*/
 	protected function getBackendFavicon() {
-		return $GLOBALS['TBE_STYLES']['favicon'] ?: $this->backPath . 'sysext/backend/Resources/Public/Icons/favicon.ico';
+		return $GLOBALS['TBE_STYLES']['favicon'] ?: 'sysext/backend/Resources/Public/Icons/favicon.ico';
 	}
 
 }
