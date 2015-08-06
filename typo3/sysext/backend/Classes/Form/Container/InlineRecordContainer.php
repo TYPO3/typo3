@@ -255,7 +255,7 @@ class InlineRecordContainer extends AbstractContainer {
 			}
 
 			// Display Warning FlashMessage if it is not suppressed
-			if (!isset($config['appearance']['suppressCombinationWarning']) || empty($config['appearance']['suppressCombinationWarning']))
+			if (!isset($config['appearance']['suppressCombinationWarning']) || empty($config['appearance']['suppressCombinationWarning'])) {
 				$combinationWarningMessage = 'LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination';
 				if (!empty($config['appearance']['overwriteCombinationWarningMessage'])) {
 					$combinationWarningMessage = $config['appearance']['overwriteCombinationWarningMessage'];

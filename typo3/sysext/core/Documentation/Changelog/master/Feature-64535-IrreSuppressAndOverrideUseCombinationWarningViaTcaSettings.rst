@@ -5,7 +5,7 @@ Feature: #64535 - IRRE: Suppress and override useCombination warning via TCA set
 Description
 ===========
 
-When using ``useCombation=TRUE`` there is always a FlashMessage warning displayed.
+When using ``useCombination=TRUE`` there is always a FlashMessage warning displayed.
 It is now possible to override the default warning message with a custom message or
 to suppress the FlashMessage completely via TCA setting.
 
