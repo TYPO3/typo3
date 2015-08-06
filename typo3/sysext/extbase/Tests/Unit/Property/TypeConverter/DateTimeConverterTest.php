@@ -21,6 +21,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\DateTimeSubFixture;
+
 /**
  * Test case
  */
@@ -390,15 +392,7 @@ class DateTimeConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function convertFromSupportsDateTimeSubClasses() {
-		$className = $this->getUniqueId('DateTimeSubClass');
-		eval('
-			class ' . $className . ' extends \\DateTime {
-				static public function createFromFormat($format, $time, $timezone = NULL) {
-					return new ' . $className . '();
-				}
-				public function foo() { return "Bar"; }
-			}
-		');
+		$className = DateTimeSubFixture::class;
 		$date = $this->converter->convertFrom('2005-08-15T15:52:01+00:00', $className);
 
 		$this->assertInstanceOf($className, $date);

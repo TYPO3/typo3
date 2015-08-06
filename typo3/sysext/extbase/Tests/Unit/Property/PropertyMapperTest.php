@@ -21,6 +21,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderOne;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderOneInterface;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThree;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThreeInterface;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderTwo;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderTwoInterface;
+
 /**
  * Test case
  */
@@ -178,24 +185,12 @@ class PropertyMapperTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function dataProviderForObjectTypeConverters() {
 		$data = array();
 
-		$className1 = $this->getUniqueId('TYPO3_Flow_Testclass1_', FALSE);
-		$className2 = $this->getUniqueId('TYPO3_Flow_Testclass2_', FALSE);
-		$className3 = $this->getUniqueId('TYPO3_Flow_Testclass3_', FALSE);
+		$className2 = DataProviderTwo::class;
+		$className3 = DataProviderThree::class;
 
-		$interfaceName1 = $this->getUniqueId('TYPO3_Flow_TestInterface1_', FALSE);
-		$interfaceName2 = $this->getUniqueId('TYPO3_Flow_TestInterface2_', FALSE);
-		$interfaceName3 = $this->getUniqueId('TYPO3_Flow_TestInterface3_', FALSE);
-
-		eval("
-			interface $interfaceName2 {}
-			interface $interfaceName1 {}
-
-			interface $interfaceName3 extends $interfaceName2 {}
-
-			class $className1 implements $interfaceName1 {}
-			class $className2 extends $className1 {}
-			class $className3 extends $className2 implements $interfaceName3 {}
-		");
+		$interfaceName1 = DataProviderOneInterface::class;
+		$interfaceName2 = DataProviderTwoInterface::class;
+		$interfaceName3 = DataProviderThreeInterface::class;
 
 		// The most specific converter should win
 		$data[] = array(

@@ -22,6 +22,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  *                                                                        */
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectEntityFixture;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectFixture;
+use TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\PersistentObjectValueObjectFixture;
 
 /**
  * Test case
@@ -112,13 +115,12 @@ class PersistentObjectConverterTest extends UnitTestCase {
 	 * @dataProvider dataProviderForCanConvert
 	 */
 	public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($isEntity, $isValueObject, $expected) {
-		$className = $this->getUniqueId('Test_Class');
+		$className = PersistentObjectFixture::class;
+
 		if ($isEntity) {
-			eval("class {$className} extends \\" . \TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class . " {}");
+			$className = PersistentObjectEntityFixture::class;
 		} elseif ($isValueObject) {
-			eval("class {$className} extends \\" . \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject::class . " {}");
-		} else {
-			eval("class {$className} {}");
+			$className = PersistentObjectValueObjectFixture::class;
 		}
 		$this->assertEquals($expected, $this->converter->canConvertFrom('myInputData', $className));
 	}
