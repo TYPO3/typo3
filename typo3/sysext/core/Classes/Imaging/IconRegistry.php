@@ -68,6 +68,13 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'arrows',
 			)
 		),
+
+		'actions-document-new' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'plus-square',
+			)
+		),
 		'actions-document-open' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -115,7 +122,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \InvalidArgumentException
 	 */
 	public function registerIcon($identifier, $iconProviderClassName, array $options = array()) {
-		if (!in_array(IconProviderInterface::class, class_implements($iconProviderClassName))) {
+		if (!in_array(IconProviderInterface::class, class_implements($iconProviderClassName), TRUE)) {
 			throw new \InvalidArgumentException('An IconProvider must implement ' . IconProviderInterface::class, 1437425803);
 		}
 		$this->icons[$identifier] = array(

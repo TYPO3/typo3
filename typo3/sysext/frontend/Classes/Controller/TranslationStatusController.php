@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Frontend\Controller;
 
 /*
@@ -17,12 +18,26 @@ namespace TYPO3\CMS\Frontend\Controller;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class for displaying translation status of pages in the tree.
  */
 class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Construct for initialize class variables
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Returns the menu array
@@ -258,7 +273,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars($onClick)
 					. '" title="' . $lang->sL(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
-					) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a></td>';
+					) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a></td>';
 			}
 		}
 

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Filelist\Controller;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -497,6 +499,9 @@ class FileListController {
 	 * @return array All available buttons as an assoc. array
 	 */
 	public function getButtons() {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		$buttons = array(
 			'csh' => '',
 			'shortcut' => '',
@@ -531,7 +536,7 @@ class FileListController {
 						'target' => $this->folderObject->getCombinedIdentifier(),
 						'returnUrl' => $this->filelist->listURL(),
 					)
-				)) . '" title="' . $this->getLanguageService()->makeEntities($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE)) . '">' . IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+				)) . '" title="' . $this->getLanguageService()->makeEntities($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.new', TRUE)) . '">' . $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a>';
 		}
 		return $buttons;
 	}

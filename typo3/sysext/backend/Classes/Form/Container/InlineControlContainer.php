@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -53,6 +55,18 @@ class InlineControlContainer extends AbstractContainer {
 	 * @var InlineStackProcessor
 	 */
 	protected $inlineStackProcessor;
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Construct to initialize class variables.
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Entry method
@@ -638,8 +652,8 @@ class InlineControlContainer extends AbstractContainer {
 				}
 				$item .= '
 				<span class="input-group-btn">
-					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '">
-						' . IconUtility::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText . '
+					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" . title="' . $createNewRelationText .'">
+						' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . $createNewRelationText . '
 					</a>
 				</span>';
 			} else {

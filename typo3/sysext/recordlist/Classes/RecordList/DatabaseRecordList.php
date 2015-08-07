@@ -264,7 +264,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');');
 				$buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
 					. $lang->getLL('newRecordGeneral', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+					. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a>';
 			}
 			// If edit permissions are set, see
 			// \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -1301,9 +1301,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
 					if ($this->showNewRecLink($table)) {
 						$params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
+						$icon = ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
 						$newAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 							. '" title="' . $this->getLanguageService()->getLL('new' . ($table == 'pages ' ? 'Page' : 'Record'), TRUE) . '">'
-							. ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
+							. $icon . '</a>';
 						$this->addActionToCellGroup($cells, $newAction, 'new');
 					}
 				}

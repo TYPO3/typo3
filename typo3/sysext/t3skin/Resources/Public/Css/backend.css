@@ -7532,6 +7532,8 @@ button.close {
   position: relative;
   display: inline-block;
   overflow: hidden;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 .icon img {
   display: block;
@@ -7540,53 +7542,62 @@ button.close {
 }
 .icon-markup {
   position: absolute;
-  height: 100%;
-  width: 100%;
+  display: block;
   text-align: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .icon-overlay {
   position: absolute;
   bottom: 0;
   right: 0;
-  height: 50%;
-  width: 50%;
+  height: 60%;
+  width: 60%;
   text-align: center;
+}
+.icon-unify {
+  display: block;
 }
 .icon-size-small {
   height: 16px;
   width: 16px;
+  line-height: 16px;
 }
 .icon-size-small .icon-unify {
   line-height: 16px;
   font-size: 14px;
 }
 .icon-size-small .icon-overlay .icon-unify {
-  line-height: 8px;
-  font-size: 7px;
+  line-height: 10px;
+  font-size: 9px;
 }
 .icon-size-default {
   height: 32px;
   width: 32px;
+  line-height: 32px;
 }
 .icon-size-default .icon-unify {
   line-height: 32px;
   font-size: 28px;
 }
 .icon-size-default .icon-overlay .icon-unify {
-  line-height: 16px;
-  font-size: 14px;
+  line-height: 20px;
+  font-size: 18px;
 }
 .icon-size-large {
   height: 48px;
   width: 48px;
+  line-height: 48px;
 }
 .icon-size-large .icon-unify {
   line-height: 48px;
   font-size: 42px;
 }
 .icon-size-large .icon-overlay .icon-unify {
-  line-height: 24px;
-  font-size: 21px;
+  line-height: 30px;
+  font-size: 26px;
 }
 .icon-default-not-found {
   color: #c83c3c;

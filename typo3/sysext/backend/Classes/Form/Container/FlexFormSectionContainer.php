@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
@@ -36,6 +38,8 @@ class FlexFormSectionContainer extends AbstractContainer {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$languageService = $this->getLanguageService();
 
 		$flexFormFieldsArray = $this->globalOptions['flexFormDataStructureArray'];
@@ -124,7 +128,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 			$onClickInsert[] = 'return false;';
 
 			$containerTemplateHtml[] = '<a href="#" onclick="' . htmlspecialchars(implode(LF, $onClickInsert)) . '">';
-			$containerTemplateHtml[] = 	IconUtility::getSpriteIcon('actions-document-new');
+			$containerTemplateHtml[] = 	$iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
 			$containerTemplateHtml[] = 	htmlspecialchars(GeneralUtility::fixed_lgd_cs($sectionTitle, 30));
 			$containerTemplateHtml[] = '</a>';
 			$containerTemplatesHtml[] = implode(LF, $containerTemplateHtml);

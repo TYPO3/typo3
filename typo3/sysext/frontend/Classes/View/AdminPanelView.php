@@ -619,8 +619,10 @@ class AdminPanelView {
 			if ($GLOBALS['TSFE']->sys_language_uid) {
 				$params = '&sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid;
 			}
-			$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->extGetLL('edit_newContentElement', FALSE)));
-			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
+			$icon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
+			$link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '"' .
+				$toolBar .= 'title="' . $this->extGetLL('edit_newContentElement', FALSE) .  '"">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = $iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL);

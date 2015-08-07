@@ -1,10 +1,11 @@
 {namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<a href="{bu:editRecord(parameters: 'edit[be_groups][0]=new&returnUrl={returnUrl}')}"><be:spriteManagerIcon iconName="actions-document-new" /></a>
+	<a href="{bu:editRecord(parameters: 'edit[be_groups][0]=new&returnUrl={returnUrl}')}"><core:icon identifier="actions-document-new" /></a>
 </f:section>
 
 <f:section name="headline">

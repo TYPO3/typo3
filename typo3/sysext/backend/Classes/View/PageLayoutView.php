@@ -19,6 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -169,6 +171,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @var int
 	 */
 	public $ext_CALC_PERMS;
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Construct to initialize class variables.
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/*****************************************
 	 *
@@ -453,7 +467,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				if ($this->getPageLayoutController()->pageIsNotLockedForEditors()) {
 					$link = '<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
 						. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-						. IconUtility::getSpriteIcon('actions-document-new')
+						. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)
 						. ' '
 						. $this->getLanguageService()->getLL('content', TRUE) . '</a>';
 				}
@@ -528,7 +542,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$singleElementHTML .= '
 								<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 									. $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-									. IconUtility::getSpriteIcon('actions-document-new')
+									. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)
 									. ' '
 									. $this->getLanguageService()->getLL('content', TRUE) . '</a>
 							';
@@ -788,7 +802,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$onClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $this->id . ']=new');
 			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" '
 				. 'title="' . $this->getLanguageService()->getLL('new', TRUE) . '">'
-				. IconUtility::getSpriteIcon('actions-document-new') . '</a>';
+				. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a>';
 		}
 		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
 		// Render Items

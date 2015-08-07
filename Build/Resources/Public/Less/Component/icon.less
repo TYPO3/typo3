@@ -26,7 +26,6 @@
 @icon-size-large:        48px;
 @icon-unify-modifier:    0.86;
 
-
 //
 // Component
 //
@@ -34,6 +33,8 @@
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
+	vertical-align: middle;
+	white-space: nowrap;
 	img {
 		display: block;
 		height: 100%;
@@ -42,17 +43,23 @@
 }
 .icon-markup {
 	position: absolute;
-	height: 100%;
-	width: 100%;
+	display: block;
 	text-align: center;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 .icon-overlay {
 	position: absolute;
 	bottom: 0;
 	right: 0;
-	height: 50%;
-	width: 50%;
+	height: 60%;
+	width: 60%;
 	text-align: center;
+}
+.icon-unify {
+	display: block;
 }
 
 //
@@ -62,14 +69,15 @@
 	.icon-size-@{identifier} {
 		height: @size;
 		width: @size;
+		line-height: @size;
 		.icon-unify {
 			line-height: @size;
 			font-size: ceil(@size * @icon-unify-modifier);
 		}
 		.icon-overlay {
 			.icon-unify {
-				line-height: ceil(@size / 2);
-				font-size: ceil(ceil(@size / 2) * @icon-unify-modifier);
+				line-height: ceil(@size / 1.6);
+				font-size: ceil(ceil(@size / 1.6) * @icon-unify-modifier);
 			}
 		}
 	}

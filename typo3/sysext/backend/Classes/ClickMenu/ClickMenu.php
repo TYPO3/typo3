@@ -152,9 +152,9 @@ class ClickMenu {
 	 * @param BackendUserAuthentication $backendUser
 	 */
 	public function __construct(LanguageService $languageService = NULL, BackendUserAuthentication $backendUser = NULL) {
-			$this->languageService = $languageService ?: $GLOBALS['LANG'];
-			$this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
-		}
+		$this->languageService = $languageService ?: $GLOBALS['LANG'];
+		$this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
+	}
 
 	/**
 	 * Initialize click menu

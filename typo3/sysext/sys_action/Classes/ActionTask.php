@@ -14,6 +14,8 @@ namespace TYPO3\CMS\SysAction;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -43,9 +45,15 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected $moduleUrl;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct(\TYPO3\CMS\Taskcenter\Controller\TaskModuleController $taskObject) {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->moduleUrl = BackendUtility::getModuleUrl('user_task');
 		$this->taskObject = $taskObject;
 		$this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
@@ -210,7 +218,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			);
 			$content .= '<p>' .
 				'<a href="' . $link . '" title="' . $this->getLanguageService()->getLL('new-sys_action') . '">' .
-				\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('class' => 'icon', 'title' => $this->getLanguageService()->getLL('new-sys_action'))) .
+				$this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) .
 				$this->getLanguageService()->getLL('new-sys_action') .
 				'</a></p>';
 		}
@@ -776,6 +784,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			// Initialize the dblist object:
 			$dblist = GeneralUtility::makeInstance(\TYPO3\CMS\SysAction\ActionList::class);
 			$dblist->script = GeneralUtility::getIndpEnv('REQUEST_URI');
+			$dblist->backPath = $GLOBALS['BACK_PATH'];
 			$dblist->calcPerms = $this->getBackendUser()->calcPerms($this->pageinfo);
 			$dblist->thumbs = $this->getBackendUser()->uc['thumbnailsByDefault'];
 			$dblist->returnUrl = $this->taskObject->returnUrl;
@@ -852,7 +861,10 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			if ($dblist->HTMLcode) {
 				// Making field select box (when extended view for a single table is enabled):
 				if ($dblist->table) {
+					$tmpBackpath = $GLOBALS['BACK_PATH'];
+					$GLOBALS['BACK_PATH'] = '';
 					$content .= $dblist->fieldSelectBox($dblist->table);
+					$GLOBALS['BACK_PATH'] = $tmpBackpath;
 				}
 			}
 		} else {

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -351,6 +353,8 @@ class NewRecordController {
 	 * @return void
 	 */
 	public function regularNew() {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$lang = $this->getLanguageService();
 		// Initialize array for accumulating table rows:
 		$this->tRows = array();
@@ -404,7 +408,7 @@ class NewRecordController {
 		$iconFile = array();
 		// New tables (but not pages) INSIDE this pages
 		$isAdmin = $this->getBackendUserAuthentication()->isAdmin();
-		$newContentIcon = IconUtility::getSpriteIcon('actions-document-new');
+		$newContentIcon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
 		if ($this->newContentInto) {
 			if (is_array($GLOBALS['TCA'])) {
 				$groupName = '';
