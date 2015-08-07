@@ -62,6 +62,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'upload',
 			)
 		),
+		'actions-document-move' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'arrows',
+			)
+		),
 		'actions-document-open' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

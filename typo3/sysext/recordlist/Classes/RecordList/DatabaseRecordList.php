@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -190,6 +192,18 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 	 * @var bool
 	 */
 	protected $editable = TRUE;
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform
@@ -1242,8 +1256,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
 			$onClick = 'return jumpExt(\'' . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
 			$linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), TRUE);
-			$spriteIcon = $table === 'tt_content' ? 'actions-document-move' : 'actions-page-move';
-			$moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . IconUtility::getSpriteIcon($spriteIcon) . '</a>';
+			$icon = ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-move') : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
+			$moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon . '</a>';
 			$this->addActionToCellGroup($cells, $moveAction, 'move');
 		}
 		// If the table is NOT a read-only table, then show these links:

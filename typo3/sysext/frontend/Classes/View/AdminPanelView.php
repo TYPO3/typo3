@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Frontend\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -598,6 +600,9 @@ class AdminPanelView {
 	 * @return string A string containing images wrapped in <a>-tags linking them to proper functions.
 	 */
 	public function ext_makeToolBar() {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 		$tsConfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
@@ -618,8 +623,10 @@ class AdminPanelView {
 			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl)) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
-			$icon = IconUtility::getSpriteIcon('actions-document-move', array('title' => $this->extGetLL('edit_move_page', FALSE)));
-			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
+			$icon = $iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL);
+			$link = BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl]);
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) .
+			$toolBar .= '" title="' . $this->extGetLL('edit_move_page', FALSE) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_NEW) {
 			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));
