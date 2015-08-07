@@ -64,7 +64,7 @@ class Clickmenu {
 				$urlParameters['tx_impexp']['external_ref']['tables'][] = '_ALL';
 			}
 			$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
-			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-export-t3d')), $backRef->urlRefForCM($url), 1);
+			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL)), $backRef->urlRefForCM($url), 1);
 			if ($table == 'pages') {
 				$urlParameters = array(
 					'id' => $uid,

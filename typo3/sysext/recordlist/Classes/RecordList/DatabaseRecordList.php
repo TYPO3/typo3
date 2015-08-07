@@ -305,7 +305,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$buttons['export'] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]='
 							. rawurlencode($this->table . ':' . $this->id)) . '" title="'
 						. $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.export', TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-document-export-t3d') . '</a>';
+						. $this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 			// Reload
