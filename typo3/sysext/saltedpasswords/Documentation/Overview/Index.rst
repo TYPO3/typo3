@@ -1,4 +1,4 @@
-﻿.. ==================================================
+.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -63,6 +63,10 @@ The extension provides several types of hashing method:
   chosen blowfish hashing, you need to make sure blowfish is available
   on the server you might move to in future. Otherwise, users won't be
   able to login any longer.
+
+- **PBKDF2 key derivation** This method provides increased security in
+  comparison to MD5 salted hashing. Use this setting if you have higher
+  requirements on password security. This requires a PHP > 5.5.0.
 
 
 .. _server-environment:

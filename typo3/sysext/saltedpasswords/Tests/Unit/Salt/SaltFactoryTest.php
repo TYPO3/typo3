@@ -118,6 +118,16 @@ class SaltFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
+    public function objectInstanceForPbkdf2Salts()
+    {
+        $saltPbkdf2 = '$pbkdf2-sha256$6400$0ZrzXitFSGltTQnBWOsdAw$Y11AchqV4b0sUisdZd0Xr97KWoymNE0LNNrnEgY4H9M';
+        $this->objectInstance = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($saltPbkdf2);
+        $this->assertTrue(get_class($this->objectInstance) == \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class || is_subclass_of($this->objectInstance, \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class));
+    }
+
+    /**
+     * @test
+     */
     public function resettingFactoryInstanceSucceeds()
     {
         $defaultClassNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod();

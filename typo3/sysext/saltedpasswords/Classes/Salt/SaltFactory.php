@@ -63,7 +63,8 @@ class SaltFactory
         return array(
             \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt::class,
             \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\BlowfishSalt::class,
-            \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class
+            \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class => \TYPO3\CMS\Saltedpasswords\Salt\PhpassSalt::class,
+            \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class => \TYPO3\CMS\Saltedpasswords\Salt\Pbkdf2Salt::class
         );
     }
 

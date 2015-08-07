@@ -21,6 +21,9 @@
 			<trans-unit id="ext.saltedpasswords.title.blowfishsalt">
 				<source>Blowfish salted hashing (advanced)</source>
 			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.pbkdf2salt">
+				<source>PBKDF2 key derivation (advanced)</source>
+			</trans-unit>
 			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name">
 				<source>Convert user passwords to salted hashes</source>
 			</trans-unit>
