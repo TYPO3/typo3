@@ -3651,7 +3651,7 @@ class ImportExport {
 			if ($table === 'pages') {
 				$viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
 				if ($viewID) {
-					$pInfo['title'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($viewID, $GLOBALS['BACK_PATH'])) . 'return false;">' . $pInfo['title'] . '</a>';
+					$pInfo['title'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($viewID)) . 'return false;">' . $pInfo['title'] . '</a>';
 				}
 			}
 		}

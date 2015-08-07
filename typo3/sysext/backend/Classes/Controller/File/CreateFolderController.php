@@ -79,8 +79,6 @@ class CreateFolderController {
 	 */
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
-		$GLOBALS['BACK_PATH'] = '';
-
 		$this->init();
 	}
 

@@ -140,7 +140,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			// DEFAULT language:
 			// "View page" link is created:
 			$viewPageLink = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick(
-					$data['row']['uid'], $GLOBALS['BACK_PATH'], '', '', '', '&L=###LANG_UID###')
+					$data['row']['uid'], '', '', '', '', '&L=###LANG_UID###')
 				) . '" title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
 				IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			$status = $data['row']['l18n_cfg'] & 1 ? 'danger' : 'success';

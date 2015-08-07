@@ -64,7 +64,7 @@ class ConfigurationForm extends ExtendedTemplateService {
 	 * @param string $backPath BackPath is the backReference from current position to typo3/ dir
 	 * @return array
 	 */
-	public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs, $backPath) {
+	public function ext_initTSstyleConfig($configTemplate, $pathRel, $pathAbs, $backPath = '') {
 		// Do not log time-performance information
 		$this->tt_track = 0;
 		$this->constants = array($configTemplate, '');

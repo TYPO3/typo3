@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\TypoScript\ConfigurationForm;
+
 /**
  * Utility for dealing with ext_emconf and ext_conf_template settings
  */
@@ -118,14 +120,14 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if ((string)$rawConfigurationString !== '') {
 			$extensionPathInformation = $this->getExtensionPathInformation($extensionKey);
 
-			$tsStyleConfig = $this->objectManager->get(\TYPO3\CMS\Core\TypoScript\ConfigurationForm::class);
+			/** @var ConfigurationForm $tsStyleConfig */
+			$tsStyleConfig = $this->objectManager->get(ConfigurationForm::class);
 			$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
 
 			$theConstants = $tsStyleConfig->ext_initTSstyleConfig(
 				$rawConfigurationString,
 				$extensionPathInformation['siteRelPath'],
-				PATH_site . $extensionPathInformation['siteRelPath'],
-				$GLOBALS['BACK_PATH']
+				PATH_site . $extensionPathInformation['siteRelPath']
 			);
 
 			// Loop through configuration items, see if it is assigned to a sub category

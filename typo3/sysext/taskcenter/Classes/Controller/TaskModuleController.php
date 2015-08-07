@@ -238,11 +238,11 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$absIconPath = GeneralUtility::getFileAbsFilename($item['icon']);
 						// If the file indeed exists, assemble relative path to it
 						if (file_exists($absIconPath)) {
-							$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
+							$icon = '../' . str_replace(PATH_site, '', $absIconPath);
 							$icon = '<img src="' . $icon . '" title="' . $title . '" alt="' . $title . '" />';
 						}
 						if (@is_file($icon)) {
-							$icon = '<img' . IconUtility::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
+							$icon = '<img' . IconUtility::skinImg('', $icon, 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
 						}
 					} else {
 						$icon = $item['icon'];

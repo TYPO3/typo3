@@ -70,8 +70,6 @@ class FileUploadController {
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
-		$GLOBALS['BACK_PATH'] = '';
-
 		$this->init();
 	}
 

@@ -100,7 +100,7 @@ class PermissionController extends ActionController {
 		$view->assign(
 			'previewUrl',
 			BackendUtility::viewonclick(
-				$this->pageInfo['uid'], $GLOBALS['BACK_PATH'],
+				$this->pageInfo['uid'], '',
 				BackendUtility::BEgetRootLine($this->pageInfo['uid'])
 			)
 		);
@@ -168,7 +168,7 @@ class PermissionController extends ActionController {
 		$this->view->assign('viewTree', $tree->tree);
 
 		// CSH for permissions setting
-		$this->view->assign('cshItem', BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH']));
+		$this->view->assign('cshItem', BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module'));
 	}
 
 	/**

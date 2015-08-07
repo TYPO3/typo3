@@ -106,7 +106,6 @@ class ElementInformationController {
 	 * Constructor
 	 */
 	public function __construct() {
-		$GLOBALS['BACK_PATH'] = '';
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();

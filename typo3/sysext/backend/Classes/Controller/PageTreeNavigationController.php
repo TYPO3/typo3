@@ -85,8 +85,6 @@ class PageTreeNavigationController {
 	public function __construct() {
 		GeneralUtility::deprecationLog('PageTreeNavigationController is deprecated in favor of new pagetrees');
 		$GLOBALS['SOBE'] = $this;
-		$GLOBALS['BACK_PATH'] = '';
-
 		$this->init();
 	}
 

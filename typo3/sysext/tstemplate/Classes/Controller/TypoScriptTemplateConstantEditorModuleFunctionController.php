@@ -59,7 +59,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
 
 		$templateService->init();
 		$templateService->ext_localGfxPrefix = ExtensionManagementUtility::extPath('tstemplate');
-		$templateService->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/';
+		$templateService->ext_localWebGfxPrefix = ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/';
 
 		// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 		$GLOBALS['tplRow'] = $templateService->ext_getFirstTemplate($pageId, $template_uid);

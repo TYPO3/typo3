@@ -64,7 +64,6 @@ class ElementBrowserController {
 	 */
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
-		$GLOBALS['BACK_PATH'] = '';
 
 		// Creating backend template object:
 		// this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...

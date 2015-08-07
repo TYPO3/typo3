@@ -516,8 +516,8 @@ class FileListController {
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module');
 		// Upload button (only if upload to this directory is allowed)
 		if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('add', 'File') && $this->folderObject->checkActionPermission('write')) {
-			$buttons['upload'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH']
-				. BackendUtility::getModuleUrl(
+			$buttons['upload'] = '<a href="' . htmlspecialchars(
+				BackendUtility::getModuleUrl(
 					'file_upload',
 					array(
 						'target' => $this->folderObject->getCombinedIdentifier(),
@@ -529,8 +529,8 @@ class FileListController {
 		if ($this->folderObject && $this->folderObject->checkActionPermission('write')
 			&& ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File') || $this->folderObject->checkActionPermission('add'))
 		) {
-			$buttons['new'] = '<a href="' . htmlspecialchars($GLOBALS['BACK_PATH']
-				. BackendUtility::getModuleUrl(
+			$buttons['new'] = '<a href="' . htmlspecialchars(
+				BackendUtility::getModuleUrl(
 					'file_newfolder',
 					array(
 						'target' => $this->folderObject->getCombinedIdentifier(),

@@ -531,7 +531,7 @@ class PageLayoutController {
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages' . (int)$this->id . '_"+top.fsMod.currentBank; ' . (int)$this->id . ';
-			' . ($this->popView ? BackendUtility::viewOnClick($this->id, $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->id)) : '') . '
+			' . ($this->popView ? BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)) : '') . '
 
 				function deleteRecord(table,id,url) {	//
 					if (confirm(' . GeneralUtility::quoteJSvalue($lang->getLL('deleteWarning')) . ')) {
@@ -1129,7 +1129,7 @@ class PageLayoutController {
 		);
 		// View page
 		if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		}
 		// Shortcut
 		if ($this->getBackendUser()->mayMakeShortcut()) {
@@ -1214,7 +1214,6 @@ class PageLayoutController {
 					$buttons['undo'] = '<a href="#"
 						onclick="' . htmlspecialchars('window.location.href=' .
 							GeneralUtility::quoteJSvalue(
-								$GLOBALS['BACK_PATH'] .
 								BackendUtility::getModuleUrl(
 									'record_history',
 									array(
@@ -1230,7 +1229,6 @@ class PageLayoutController {
 					$buttons['history_record'] = '<a href="#"
 						onclick="' . htmlspecialchars('jumpToUrl(' .
 							GeneralUtility::quoteJSvalue(
-								$GLOBALS['BACK_PATH'] .
 								BackendUtility::getModuleUrl(
 									'record_history',
 									array(

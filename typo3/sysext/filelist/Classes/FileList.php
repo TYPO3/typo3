@@ -688,7 +688,7 @@ class FileList extends AbstractRecordList {
 									$data = array(
 										'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
 									);
-									$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), $GLOBALS['BACK_PATH'], $this->listUrl());
+									$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), '', $this->listUrl());
 									$languageCode .= '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '">' . $flagButtonIcon . '</a>';
 								} else {
 									$parameters = [

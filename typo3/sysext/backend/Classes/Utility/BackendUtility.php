@@ -2629,12 +2629,12 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name
 	 * @param string $field Field name
-	 * @param string $BACK_PATH UNUSED
+	 * @param string $_ UNUSED
 	 * @param bool $force Force display of icon no matter BE_USER setting for help
 	 * @return string HTML content for a help icon/text
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use cshItem() instead
 	 */
-	static public function helpTextIcon($table, $field, $BACK_PATH = '', $force = FALSE) {
+	static public function helpTextIcon($table, $field, $_ = '', $force = FALSE) {
 		GeneralUtility::logDeprecatedFunction();
 		if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
 			return self::wrapInHelp($table, $field);
@@ -2760,12 +2760,12 @@ class BackendUtility {
 	 *
 	 * @param string $table Table name ('_MOD_'+module name)
 	 * @param string $field Field name (CSH locallang main key)
-	 * @param string $BACK_PATH Back path, not needed anymore, don't use
+	 * @param string $_ (unused)
 	 * @param string $wrap Wrap code for icon-mode, splitted by "|". Not used for full-text mode.
 	 * @return string HTML content for help text
 	 * @see helpTextIcon()
 	 */
-	static public function cshItem($table, $field, $BACK_PATH = NULL, $wrap = '') {
+	static public function cshItem($table, $field, $_ = '', $wrap = '') {
 		static::getLanguageService()->loadSingleTableDescription($table);
 		if (is_array($GLOBALS['TCA_DESCR'][$table])
 			&& is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {

@@ -56,7 +56,7 @@ class VersionView {
 					$opt[] = '<option value="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $vRow['uid']))) . '"' . ($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>';
 				}
 				// Add management link:
-				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', TRUE) . '" onclick="window.location.href=\'' . htmlspecialchars($GLOBALS['BACK_PATH'] . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '\';" />';
+				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', TRUE) . '" onclick="window.location.href=\'' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '\';" />';
 				// Create onchange handler:
 				$onChange = 'window.location.href=this.options[this.selectedIndex].value;';
 				// Controls:
