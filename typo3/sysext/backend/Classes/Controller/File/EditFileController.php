@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,9 +73,15 @@ class EditFileController {
 	protected $fileObject;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$GLOBALS['SOBE'] = $this;
 		$this->init();
 	}
@@ -226,7 +234,7 @@ class EditFileController {
 		$theIcon = IconUtility::getSpriteIcon('actions-document-save-close');
 		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->returnUrl)) . '; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
 		// Cancel button
-		$theIcon = IconUtility::getSpriteIcon('actions-document-close');
+		$theIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL);
 		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
 		return $buttons;
 	}

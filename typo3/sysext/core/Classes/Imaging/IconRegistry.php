@@ -41,7 +41,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'times',
+				'name' => 'close',
 			)
 		),
 		'actions-document-edit-access' => array(

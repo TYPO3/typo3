@@ -302,7 +302,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 						. '</button>';
 					// CLOSE button
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
-					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  IconUtility::getSpriteIcon('actions-document-close') .'</a>';
+					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) .'</a>';
 				}
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button

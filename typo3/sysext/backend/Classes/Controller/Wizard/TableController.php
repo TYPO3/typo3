@@ -19,6 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -104,9 +106,15 @@ class TableController extends AbstractWizardController {
 	public $tableParsing_delimiter;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
@@ -188,7 +196,8 @@ class TableController extends AbstractWizardController {
 			// CSH Buttons
 			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons');
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
+			$title = 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '"';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '); return false;')) . '" ' . $title . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 			// Save
 			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<button class="c-inputButton" name="savedok" value="1"></button>', 'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)));
 			// Save & Close

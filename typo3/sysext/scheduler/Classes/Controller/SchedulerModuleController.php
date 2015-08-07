@@ -978,7 +978,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						. ' data-button-close-text="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '"'
 						. ' data-content="' . $this->getLanguageService()->getLL('msg.stop', TRUE) . '"'
 						. ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
-						IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+						$this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 					$runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task', TRUE) . '" class="icon">' .
 						IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
 
@@ -1528,7 +1528,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 		}
 		if ($this->CMD === 'add' || $this->CMD === 'edit') {
-			$buttons['close'] = '<a href="#" onclick="document.location=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->moduleUri)) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+			$buttons['close'] = '<a href="#" onclick="document.location=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->moduleUri)) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 			$buttons['save'] = '<button name="CMD" value="save" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save') . '</button>';
 			$buttons['saveclose'] = '<button name="CMD" value="saveclose" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-close') . '</button>';
 			$buttons['savenew'] = '<button name="CMD" value="savenew" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-new') . '</button>';

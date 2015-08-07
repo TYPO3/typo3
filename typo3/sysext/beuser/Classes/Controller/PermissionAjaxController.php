@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -37,9 +39,15 @@ class PermissionAjaxController {
 	protected $conf = array();
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * The constructor of this class
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_perm.xlf');
 		// Configuration, variable assignment
 		$this->conf['page'] = GeneralUtility::_POST('page');
@@ -182,7 +190,7 @@ class PermissionAjaxController {
 		$options = '<option value="0"></option>' . $options;
 		$selector = '<select name="new_page_owner" id="new_page_owner">' . $options . '</select>';
 		$saveButton = '<a class="saveowner" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '" title="Change owner">' . IconUtility::getSpriteIcon('actions-document-save') . '</a>';
-		$cancelButton = '<a class="restoreowner" data-page="' . $page . '"  data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '"' . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '') . ' title="Cancel">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+		$cancelButton = '<a class="restoreowner" data-page="' . $page . '"  data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '"' . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 		return '<span id="' . $elementId . '">' . $selector . $saveButton . $cancelButton . '</span>';
 	}
 
@@ -224,7 +232,7 @@ class PermissionAjaxController {
 		$options = '<option value="0"></option>' . $options;
 		$selector = '<select name="new_page_group" id="new_page_group">' . $options . '</select>';
 		$saveButton = '<a class="savegroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '" title="Change group">' . IconUtility::getSpriteIcon('actions-document-save') . '</a>';
-		$cancelButton = '<a class="restoregroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '"' . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '') . ' title="Cancel">' . IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+		$cancelButton = '<a class="restoregroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '"' . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 		return '<span id="' . $elementId . '">' . $selector . $saveButton . $cancelButton . '</span>';
 	}
 

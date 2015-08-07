@@ -37,7 +37,7 @@
 							arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
 							data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:lang/locallang_common.xlf:cancel\')}'}"
 						>
-							<be:spriteManagerIcon iconName="actions-document-close" />
+							<core:icon identifier="actions-document-close" size="small"/>
 							<f:translate key="endSession" />
 						</f:link.action>
 					</f:else>

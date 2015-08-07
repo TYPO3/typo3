@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Form\View\Wizard;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -309,6 +311,9 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 * @return array all available buttons as an assoc. array
 	 */
 	protected function getButtons() {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		$buttons = array(
 			'csh' => '',
 			'csh_buttons' => '',
@@ -323,9 +328,11 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons');
 		// Close
 		$getPostVariables = GeneralUtility::_GP('P');
-		$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array(
-			'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE)
-		)) . '</a>';
+		$title = 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '"';
+		$onClick = htmlspecialchars('jumpToUrl(unescape(\'' .
+			rawurlencode(GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl'])) . '\')); return false;');
+		$buttons['close'] = '<a href="#" onclick="' . $onClick . '" ' . $title . '>' .
+			$iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 		return $buttons;
 	}
 

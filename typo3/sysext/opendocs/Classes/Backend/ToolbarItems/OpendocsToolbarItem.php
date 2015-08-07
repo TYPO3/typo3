@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Opendocs\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,9 +37,15 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 	protected $recentDocs;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->getLanguageService()->includeLLFile('EXT:opendocs/Resources/Private/Language/locallang.xlf');
 		$this->loadDocsFromUserSession();
 		$pageRenderer = $this->getPageRenderer();
@@ -145,7 +153,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		if (!$isRecentDoc) {
 			$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE);
 			// Open document
-			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
+			$closeIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL);
 			$entry = '
 				<li class="opendoc">
 					<a href="#" class="dropdown-list-link dropdown-link-list-add-close" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>
