@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Console\RequestHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Command Line Interface Request Handler dealing with "cliKey"-based Commands from the cli_dispatch.phpsh script.
@@ -47,15 +48,15 @@ class CliRequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles any commandline request
 	 *
-	 * @param InputInterface $request
+	 * @param InputInterface $input
 	 * @return void
 	 */
-	public function handleRequest(InputInterface $request) {
-		$output = new ConsoleOutput();
+	public function handleRequest(InputInterface $input) {
+		$output = GeneralUtility::makeInstance(ConsoleOutput::class);
 		$exitCode = 0;
 
 		try {
-			$command = $this->validateCommandLineKeyFromInput($request);
+			$command = $this->validateCommandLineKeyFromInput($input);
 
 			// try and look up if the CLI command user exists, throws an exception if the CLI
 			// user cannot be found
@@ -169,7 +170,7 @@ class CliRequestHandler implements RequestHandlerInterface {
 		if ($GLOBALS['BE_USER']->user['uid']) {
 			throw new \RuntimeException('Another user was already loaded which is impossible in CLI mode!', 3);
 		}
-		if (!\TYPO3\CMS\Core\Utility\StringUtility::beginsWith($commandLineName, '_CLI_')) {
+		if (!StringUtility::beginsWith($commandLineName, '_CLI_')) {
 			throw new \RuntimeException('Module name, "' . $commandLineName . '", was not prefixed with "_CLI_"', 3);
 		}
 		$userName = strtolower($commandLineName);
@@ -185,11 +186,11 @@ class CliRequestHandler implements RequestHandlerInterface {
 	/**
 	 * This request handler can handle any CLI request.
 	 *
-	 * @param InputInterface $request
-	 * @return bool If the request is a CLI request, TRUE otherwise FALSE
+	 * @param InputInterface $input
+	 * @return bool Always TRUE
 	 */
-	public function canHandleRequest(InputInterface $request) {
-		return defined('TYPO3_cliMode') && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) && (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI);
+	public function canHandleRequest(InputInterface $input) {
+		return TRUE;
 	}
 
 	/**
@@ -198,6 +199,6 @@ class CliRequestHandler implements RequestHandlerInterface {
 	 * @return int The priority of the request handler.
 	 */
 	public function getPriority() {
-		return 50;
+		return 20;
 	}
 }

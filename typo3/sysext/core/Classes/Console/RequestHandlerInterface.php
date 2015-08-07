@@ -24,22 +24,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface RequestHandlerInterface {
 
 	/**
-	 * Handles a raw request
+	 * Handles a CLI request
 	 *
-	 * @param InputInterface $request
+	 * @param InputInterface $input
 	 * @return NULL|OutputInterface
 	 * @api
 	 */
-	public function handleRequest(InputInterface $request);
+	public function handleRequest(InputInterface $input);
 
 	/**
 	 * Checks if the request handler can handle the given request.
 	 *
-	 * @param InputInterface $request
+	 * @param InputInterface $input
 	 * @return bool TRUE if it can handle the request, otherwise FALSE
 	 * @api
 	 */
-	public function canHandleRequest(InputInterface $request);
+	public function canHandleRequest(InputInterface $input);
 
 	/**
 	 * Returns the priority - how eager the handler is to actually handle the
