@@ -56,6 +56,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'download',
 			)
 		),
+		'actions-document-history-open' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'history',
+			)
+		),
 		'actions-document-info' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

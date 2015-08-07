@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -103,9 +105,15 @@ class ElementInformationController {
 	protected $titleTag;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$GLOBALS['SOBE'] = $this;
 
 		$this->init();
@@ -570,7 +578,7 @@ class ElementInformationController {
 			) . '; return false;';
 		$pageActionIcons .= '
 			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($historyOnClick) . '">
-				' . IconUtility::getSpriteIcon('actions-document-history-open') . '
+				' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '
 			</a>';
 
 		if ($table === 'pages') {

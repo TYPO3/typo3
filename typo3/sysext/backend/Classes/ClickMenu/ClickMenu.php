@@ -567,7 +567,7 @@ class ClickMenu {
 	 */
 	public function DB_history($table, $uid) {
 		$url = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $uid));
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_history')), IconUtility::getSpriteIcon('actions-document-history-open'), $this->urlRefForCM($url, 'returnUrl'), 0);
+		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_history')), $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 
 	/**

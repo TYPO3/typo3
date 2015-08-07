@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -297,6 +299,11 @@ class PageLayoutController {
 	 * @internal
 	 */
 	public $contentElementCache = array();
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
 
 	/**
 	 * Initializing the module
@@ -1106,6 +1113,9 @@ class PageLayoutController {
 	 * @return array all available buttons as an assoc. array
 	 */
 	protected function getButtons($function = '') {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		$lang = $this->getLanguageService();
 		$buttons = array(
 			'view' => '',
@@ -1237,7 +1247,7 @@ class PageLayoutController {
 									)
 								) . '#latest'
 							) . ');return false;') . '"
-						title="' . $lang->getLL('recordHistory', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
+						title="' . $lang->getLL('recordHistory', TRUE) . '">' . $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 		}

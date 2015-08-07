@@ -612,8 +612,9 @@ class AdminPanelView {
 		$id = $GLOBALS['TSFE']->id;
 		$returnUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
 
-		$icon = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $this->extGetLL('edit_recordHistory', FALSE)));
-		$toolBar = '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl))) . '#latest">' . $icon . '</a>';
+		$icon = $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL);
+		$link = BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl));
+		$toolBar = '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '#latest" title="' . $this->extGetLL('edit_recordHistory') . '">' . $icon . '</a>';
 		if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
 			$params = '';
 			if ($GLOBALS['TSFE']->sys_language_uid) {
@@ -621,14 +622,12 @@ class AdminPanelView {
 			}
 			$icon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
 			$link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
-			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '"' .
-				$toolBar .= 'title="' . $this->extGetLL('edit_newContentElement', FALSE) .  '"">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_newContentElement') .  '"">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = $iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL);
 			$link = BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl]);
-			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) .
-			$toolBar .= '" title="' . $this->extGetLL('edit_move_page', FALSE) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_move_page') . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_NEW) {
 			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));

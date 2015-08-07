@@ -1267,7 +1267,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
 			$historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 				. $this->getLanguageService()->getLL('history', TRUE) . '">'
-				. IconUtility::getSpriteIcon('actions-document-history-open') . '</a>';
+				. $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</a>';
 			$this->addActionToCellGroup($cells, $historyAction, 'history');
 			// Versioning:
 			if (ExtensionManagementUtility::isLoaded('version') && !ExtensionManagementUtility::isLoaded('workspaces')) {
