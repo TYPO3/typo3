@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Dbal\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 require_once __DIR__ . '/../../../../adodb/adodb/adodb.inc.php';
 require_once __DIR__ . '/../../../../adodb/adodb/drivers/adodb-mssql.inc.php';
 require_once __DIR__ . '/../../../../adodb/adodb/drivers/adodb-oci8.inc.php';
@@ -45,6 +47,8 @@ abstract class AbstractTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Inject SqlParser - Its logic is tested with the tests, too.
 		$sqlParser = $this->getAccessibleMock(\TYPO3\CMS\Dbal\Database\SqlParser::class, array('dummy'), array(), '', FALSE);
 		$sqlParser->_set('databaseConnection', $subject);
+		$sqlParser->_set('sqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Adodb::class, $subject));
+		$sqlParser->_set('nativeSqlCompiler', GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlCompilers\Mysql::class, $subject));
 		$subject->SQLparser = $sqlParser;
 
 		// Mock away schema migration service from install tool

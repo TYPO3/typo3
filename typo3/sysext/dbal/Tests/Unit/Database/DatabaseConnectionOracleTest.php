@@ -131,7 +131,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$parseString .= 'VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\');';
 		$components = $this->subject->SQLparser->_callRef('parseINSERT', $parseString);
 		$this->assertTrue(is_array($components), $components);
-		$insert = $this->subject->SQLparser->_callRef('compileINSERT', $components);
+		$insert = $this->subject->SQLparser->compileSQL($components);
 		$expected = array(
 			'uid' => '1',
 			'pid' => '0',
@@ -151,7 +151,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		$parseString = 'INSERT INTO static_territories VALUES (\'1\', \'0\', \'2\', \'0\', \'Africa\'),(\'2\', \'0\', \'9\', \'0\', \'Oceania\'),' . '(\'3\', \'0\', \'19\', \'0\', \'Americas\'),(\'4\', \'0\', \'142\', \'0\', \'Asia\');';
 		$components = $this->subject->SQLparser->_callRef('parseINSERT', $parseString);
 		$this->assertTrue(is_array($components), $components);
-		$insert = $this->subject->SQLparser->_callRef('compileINSERT', $components);
+		$insert = $this->subject->SQLparser->compileSQL($components);
 		$insertCount = count($insert);
 		$this->assertEquals(4, $insertCount);
 		for ($i = 0; $i < $insertCount; $i++) {
@@ -643,7 +643,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		';
 		$components = $this->subject->SQLparser->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
-		$sqlCommands = $this->subject->SQLparser->_call('compileCREATETABLE', $components);
+		$sqlCommands = $this->subject->SQLparser->compileSQL($components);
 		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
 		$this->assertEquals(6, count($sqlCommands));
 		$expected = $this->cleanSql('
@@ -683,7 +683,7 @@ class DatabaseConnectionOracleTest extends AbstractTestCase {
 		';
 		$components = $this->subject->SQLparser->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
-		$sqlCommands = $this->subject->SQLparser->_call('compileCREATETABLE', $components);
+		$sqlCommands = $this->subject->SQLparser->compileSQL($components);
 		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
 		$this->assertEquals(4, count($sqlCommands));
 		$expected = $this->cleanSql('

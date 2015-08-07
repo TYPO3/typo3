@@ -145,7 +145,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	/**
 	 * SQL parser
 	 *
-	 * @var \TYPO3\CMS\Core\Database\SqlParser
+	 * @var \TYPO3\CMS\Dbal\Database\SqlParser
 	 */
 	public $SQLparser;
 
@@ -209,7 +209,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	public function __construct() {
 		// Set SQL parser object for internal use:
-		$this->SQLparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\SqlParser::class, $this);
+		$this->SQLparser = GeneralUtility::makeInstance(\TYPO3\CMS\Dbal\Database\SqlParser::class, $this);
 		$this->installerSql = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\SqlSchemaMigrationService::class);
 		$this->queryCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('dbal');
 		// Set internal variables with configuration:
@@ -936,7 +936,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * Executes a query.
 	 * EXPERIMENTAL since TYPO3 4.4.
 	 *
-	 * @param array $queryParts SQL parsed by method parseSQL() of \TYPO3\CMS\Core\Database\SqlParser
+	 * @param array $queryParts SQL parsed by method parseSQL() of \TYPO3\CMS\Dbal\Database\SqlParser
 	 * @return \mysqli_result|object MySQLi result object / DBAL object
 	 * @see self::sql_query()
 	 */
@@ -3417,7 +3417,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Generic mapping of table/field names arrays (as parsed by \TYPO3\CMS\Core\Database\SqlParser)
+	 * Generic mapping of table/field names arrays (as parsed by \TYPO3\CMS\Dbal\Database\SqlParser)
 	 *
 	 * @param array $sqlPartArray Array with parsed SQL parts; Takes both fields, tables, where-parts, group and order-by. Passed by reference.
 	 * @param string $defaultTable Default table name to assume if no table is found in $sqlPartArray
@@ -3612,10 +3612,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	}
 
 	/**
-	 * Will do table/field mapping on a general \TYPO3\CMS\Core\Database\SqlParser-compliant SQL query
+	 * Will do table/field mapping on a general \TYPO3\CMS\Dbal\Database\SqlParser-compliant SQL query
 	 * (May still not support all query types...)
 	 *
-	 * @param array $parsedQuery Parsed QUERY as from \TYPO3\CMS\Core\Database\SqlParser::parseSQL(). NOTICE: Passed by reference!
+	 * @param array $parsedQuery Parsed QUERY as from \TYPO3\CMS\Dbal\Database\SqlParser::parseSQL(). NOTICE: Passed by reference!
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @see \TYPO3\CMS\Core\Database\SqlParser::parseSQL()
