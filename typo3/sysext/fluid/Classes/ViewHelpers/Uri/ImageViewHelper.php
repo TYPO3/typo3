@@ -116,13 +116,14 @@ class ImageViewHelper extends AbstractViewHelper  implements CompilableInterface
 		if (is_null($src) && is_null($image) || !is_null($src) && !is_null($image)) {
 			throw new Exception('You must either specify a string src or a File object.', 1382284105);
 		}
+
+		$imageService = self::getImageService();
+		$image = $imageService->getImage($src, $image, $treatIdAsReference);
+
 		if ($crop === NULL) {
 			$crop = $image instanceof FileReference ? $image->getProperty('crop') : NULL;
 		}
 
-		$imageService = self::getImageService();
-
-		$image = $imageService->getImage($src, $image, $treatIdAsReference);
 		$processingInstructions = array(
 			'width' => $arguments['width'],
 			'height' => $arguments['height'],
