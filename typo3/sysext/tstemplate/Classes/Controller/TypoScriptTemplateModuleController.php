@@ -297,7 +297,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 						. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
 						. '</button>';
 					// SAVE AND CLOSE button
-					$buttons['save_close'] = '<button class="c-inputButton" name="saveclose">'
+					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="saveclose">'
 						. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
 						. '</button>';
 					// CLOSE button

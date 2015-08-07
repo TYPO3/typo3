@@ -179,10 +179,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			// Update template ?
 			$POST = GeneralUtility::_POST();
 			if (
-				$POST['submit']
-				|| MathUtility::canBeInterpretedAsInteger($POST['submit_x']) && MathUtility::canBeInterpretedAsInteger($POST['submit_y'])
-				|| $POST['saveclose']
-				|| MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])
+				isset($POST['submit'])
+				|| isset($POST['saveclose'])
 			) {
 				// Set the data to be saved
 				$recData = array();
@@ -239,7 +237,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$theOutput .= $this->pObj->doc->spacer(10);
 			$numberOfRows = 35;
 			// If abort pressed, nothing should be edited:
-			if ($POST['saveclose'] || MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
+			if (isset($POST['saveclose'])) {
 				unset($e);
 			}
 			if (isset($e['constants'])) {
