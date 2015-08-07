@@ -182,7 +182,7 @@ body#ext-taskcenter-task-index-php h3 {
 	padding: 5px;
 }
 
-#taskcenter-item ul .link a: hover {
+#taskcenter-item ul .link a:hover {
 	text-decoration: underline;
 }
 
