@@ -48,6 +48,7 @@ class DatabaseCheck {
 		if ($this->isDbalEnabled() || !$this->getDatabaseConnection()) {
 			return $statusArray;
 		}
+		$statusArray[] = $this->checkMysqlVersion();
 		$statusArray[] = $this->checkInvalidSqlModes();
 		return $statusArray;
 	}
@@ -72,6 +73,36 @@ class DatabaseCheck {
 		} else {
 			$status = new Status\OkStatus();
 			$status->setTitle('No incompatible SQL modes found.');
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Check minimum MySQL version
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkMysqlVersion() {
+		$minimumMysqlVersion = '5.5.0';
+		$currentMysqlVersion = '';
+		$resource = $this->getDatabaseConnection()->sql_query('SHOW VARIABLES LIKE \'version\';');
+		if ($resource !== FALSE) {
+			$result = $this->getDatabaseConnection()->sql_fetch_row($resource);
+			if (isset($result[1])) {
+				$currentMysqlVersion = $result[1];
+			}
+		}
+		if (version_compare($currentMysqlVersion, $minimumMysqlVersion) < 0) {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('MySQL version too low');
+			$status->setMessage(
+				'Your MySQL version ' . $currentMysqlVersion . ' is too old. TYPO3 CMS does not run' .
+				' with this version. Update to at least MySQL ' . $minimumMysqlVersion
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('MySQL version is fine');
 		}
 
 		return $status;
