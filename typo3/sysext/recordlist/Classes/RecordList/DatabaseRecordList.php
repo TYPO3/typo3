@@ -1250,7 +1250,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// "Info": (All records)
 		$onClick = 'top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;';
 		$viewBigAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('showInfo', TRUE) . '">'
-			. IconUtility::getSpriteIcon('actions-document-info') . '</a>';
+			. $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . '</a>';
 		$this->addActionToCellGroup($cells, $viewBigAction, 'viewBig');
 		// "Move" wizard link for pages/tt_content elements:
 		if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {

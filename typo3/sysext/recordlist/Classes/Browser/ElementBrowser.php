@@ -1992,7 +1992,7 @@ class ElementBrowser {
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td>' . $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $ATag_e . '</td>
-						<td nowrap="nowrap">' . $ATag2 . IconUtility::getSpriteIcon('actions-document-info', array('title' => $lang->getLL('info', TRUE))) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
+						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 					</tr>';
 				$lines[] = '
@@ -2004,7 +2004,7 @@ class ElementBrowser {
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td>' . $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $ATag_e . '</td>
-						<td nowrap="nowrap">' . $ATag2 . IconUtility::getSpriteIcon('actions-document-info', array('title' => $lang->getLL('info', TRUE))) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
+						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td>&nbsp;</td>
 					</tr>';
 			}

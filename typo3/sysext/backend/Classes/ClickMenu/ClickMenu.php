@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -148,12 +150,18 @@ class ClickMenu {
 	protected $backendUser;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * @param LanguageService $languageService Language Service to inject
 	 * @param BackendUserAuthentication $backendUser
 	 */
 	public function __construct(LanguageService $languageService = NULL, BackendUserAuthentication $backendUser = NULL) {
 		$this->languageService = $languageService ?: $GLOBALS['LANG'];
 		$this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -546,7 +554,7 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_info($table, $uid) {
-		return $this->linkItem($this->label('info'), IconUtility::getSpriteIcon('actions-document-info'), 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . ');');
+		return $this->linkItem($this->label('info'), $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL), 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . ');');
 	}
 
 	/**

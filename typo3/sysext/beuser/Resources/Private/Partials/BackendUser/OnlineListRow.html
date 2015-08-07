@@ -1,5 +1,6 @@
 {namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 
 <f:for each="{onlineUser.sessions}" as="session" iteration="it">
 	<tr>
@@ -42,7 +43,7 @@
 					</f:else>
 				</f:if>
 				<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
-					<be:spriteManagerIcon iconName="actions-document-info" />
+					<core:icon identifier="actions-document-info" size="small"/>
 				</a>
 			</div>
 		</td>

@@ -175,7 +175,10 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 					FALSE,
 					TRUE
 				);
-				$editActionLink = '<a class="edit" href="' . $link . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->getLanguageService()->getLL('edit-sys_action'))) . $this->getLanguageService()->getLL('edit-sys_action') . '</a>';
+				$title = 'title="' . $this->getLanguageService()->getLL('edit-sys_action') . '"';
+				$icon = $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL);
+				$editActionLink = '<a class="edit" href="' . $link . '"' . $title . '>';
+				$editActionLink .= $icon . $this->getLanguageService()->getLL('edit-sys_action') . '</a>';
 			}
 			$actionList[] = array(
 				'uid' => $actionRow['uid'],
@@ -743,7 +746,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 							. '&id=' . '&SET[function]=search' . '&SET[search]=query'
 							. '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1')
 						. '">'
-						. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info')
+						. $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)
 						. $this->getLanguageService()->getLL(($queryIsEmpty ? 'action_createQuery'
 						: 'action_editQuery')) . '</a><br /><br />';
 				}
