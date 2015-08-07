@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\OnlyClassNameSpecifiedFixture;
+use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\SlotMethodDoesNotExistFixture;
+
 /**
  * Test case
  */
@@ -86,9 +89,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified() {
-		$slotClassName = $this->getUniqueId('Mock_');
-		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
-		$mockSlot = new $slotClassName();
+		$slotClassName = OnlyClassNameSpecifiedFixture::class;
+		$mockSlot = new OnlyClassNameSpecifiedFixture();
 		$mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
@@ -237,9 +239,8 @@ class DispatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist() {
-		$slotClassName = $this->getUniqueId('Mock_');
-		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
-		$mockSlot = new $slotClassName();
+		$slotClassName = SlotMethodDoesNotExistFixture::class;
+		$mockSlot = new SlotMethodDoesNotExistFixture();
 		$mockObjectManager = $this->getMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
