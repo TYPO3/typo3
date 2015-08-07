@@ -14,10 +14,25 @@ namespace TYPO3\CMS\Impexp;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Adding Import/Export clickmenu item
  */
 class Clickmenu {
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Construct
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Processing of clickmenu items
@@ -59,7 +74,7 @@ class Clickmenu {
 					),
 				);
 				$url = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('xMOD_tximpexp', $urlParameters);
-				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
+				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon($this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)), $backRef->urlRefForCM($url), 1);
 			}
 		}
 		return array_merge($menuItems, $localItems);

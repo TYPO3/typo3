@@ -24,6 +24,8 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -253,6 +255,18 @@ class ElementBrowser {
 	 * @var PageRenderer
 	 */
 	protected $pageRenderer = NULL;
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	* Construct
+	*/
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Sets the script url depending on being a module or script request
@@ -2520,8 +2534,9 @@ class ElementBrowser {
 		$labelImportSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:importSelection', TRUE);
 		// Getting flag for showing/not showing thumbnails:
 		$noThumbsInEB = $this->getBackendUser()->getTSConfigVal('options.noThumbsInEB');
-		$out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()">'
-			. IconUtility::getSpriteIcon('actions-document-import-t3d', array('title' => $labelImportSelection))
+		$out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()"'
+			. 'title="' . $labelImportSelection . '">'
+			. $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)
 			. $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
 			. '<a href="#" onclick="BrowseLinks.Selector.toggle()">'
 			. IconUtility::getSpriteIcon('actions-document-select', array('title' => $labelToggleSelection))
