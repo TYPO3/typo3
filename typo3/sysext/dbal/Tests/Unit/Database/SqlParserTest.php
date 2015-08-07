@@ -1012,6 +1012,23 @@ class SqlParserTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see http://forge.typo3.org/issues/66929
+	 */
+	public function createTableSupportsDateAndTimeTypes() {
+		$parseString = 'CREATE TABLE fe_users (' .
+			'testdate date DEFAULT \'0000-00-00\',' .
+			'testdatetime datetime DEFAULT \'0000-00-00 00:00:00\',' .
+			'testtimestamp timestamp DEFAULT \'0000-00-00 00:00:00\',' .
+			'testtime time DEFAULT \'00:00:00\',' .
+			'testyear year DEFAULT \'0000\')';
+
+		$components = $this->subject->_callRef('parseCREATETABLE', $parseString);
+		$actual = $this->subject->compileSQL($components);
+		$this->assertEquals($this->cleanSql($parseString), $actual);
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/21730
 	 */
 	public function indexMayContainALengthRestrictionInAlterTable() {

@@ -1433,7 +1433,7 @@ class SqlParser {
 		$this->parse_error = '';
 		$result = array();
 		// Field type:
-		if ($result['fieldType'] = $this->nextPart($parseString, '^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|float|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob)([[:space:],]+|\\()')) {
+		if ($result['fieldType'] = $this->nextPart($parseString, '^(int|smallint|tinyint|mediumint|bigint|double|numeric|decimal|float|varchar|char|text|tinytext|mediumtext|longtext|blob|tinyblob|mediumblob|longblob|date|datetime|time|year|timestamp)([[:space:],]+|\\()')) {
 			// Looking for value:
 			if ($parseString[0] === '(') {
 				$parseString = substr($parseString, 1);
