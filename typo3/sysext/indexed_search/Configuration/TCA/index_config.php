@@ -74,10 +74,11 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.depth.I.0', '0'),
-					array('LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.depth.I.1', '1'),
-					array('LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.depth.I.2', '2'),
-					array('LLL:EXT:indexed_search/Resources/Private/Language/locallang_db.xlf:index_config.depth.I.3', '3')
+					array('LLL:EXT:lang/locallang_core.xlf:labels.depth_0', '0'),
+					array('LLL:EXT:lang/locallang_core.xlf:labels.depth_1', '1'),
+					array('LLL:EXT:lang/locallang_core.xlf:labels.depth_2', '2'),
+					array('LLL:EXT:lang/locallang_core.xlf:labels.depth_3', '3'),
+					array('LLL:EXT:lang/locallang_core.xlf:labels.depth_4', '4')
 				),
 				'size' => 1,
 				'maxitems' => 1

@@ -535,12 +535,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$opt = array(
 				'-2' => $this->lang->getLL('makeconfig_tablesOnThisPage'),
 				'-1' => $this->lang->getLL('makeconfig_expandedTree'),
-				'0' => $this->lang->getLL('makeconfig_onlyThisPage'),
-				'1' => $this->lang->getLL('makeconfig_1Level'),
-				'2' => $this->lang->getLL('makeconfig_2Levels'),
-				'3' => $this->lang->getLL('makeconfig_3Levels'),
-				'4' => $this->lang->getLL('makeconfig_4Levels'),
-				'999' => $this->lang->getLL('makeconfig_infinite')
+				'0' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+				'1' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+				'2' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+				'3' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+				'4' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
+				'999' => $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi'),
 			);
 			$row[] = '
 				<tr class="bgColor4">

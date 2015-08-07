@@ -48,10 +48,11 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		$lang = $this->getLanguageService();
 		$menuArray = array(
 			'depth' => array(
-				0 => $lang->getLL('depth_0'),
-				1 => $lang->getLL('depth_1'),
-				2 => $lang->getLL('depth_2'),
-				3 => $lang->getLL('depth_3'),
+				0 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_0'),
+				1 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
+				2 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
+				3 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+				4 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
 				999 => $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 			)
 		);

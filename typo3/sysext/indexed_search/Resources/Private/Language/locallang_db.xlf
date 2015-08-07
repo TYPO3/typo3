@@ -30,18 +30,6 @@
 			<trans-unit id="index_config.type">
 				<source>Type:</source>
 			</trans-unit>
-			<trans-unit id="index_config.depth.I.0">
-				<source>Single page</source>
-			</trans-unit>
-			<trans-unit id="index_config.depth.I.1">
-				<source>1 Level</source>
-			</trans-unit>
-			<trans-unit id="index_config.depth.I.2">
-				<source>2 Levels</source>
-			</trans-unit>
-			<trans-unit id="index_config.depth.I.3">
-				<source>3 Levels</source>
-			</trans-unit>
 			<trans-unit id="index_config.depth">
 				<source>Depth:</source>
 			</trans-unit>

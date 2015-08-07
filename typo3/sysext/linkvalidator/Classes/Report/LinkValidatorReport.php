@@ -331,6 +331,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			1 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_1'),
 			2 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_2'),
 			3 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_3'),
+			4 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_4'),
 			999 => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.depth_infi')
 		);
 		foreach ($availableOptions as $optionValue => $optionLabel) {
