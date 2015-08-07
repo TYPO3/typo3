@@ -44,10 +44,10 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'times',
 			)
 		),
-		'actions-document-export-csv' => array(
+		'actions-document-edit-access' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'download',
+				'name' => 'clock-o',
 			)
 		),
 		'actions-document-export-t3d' => array(

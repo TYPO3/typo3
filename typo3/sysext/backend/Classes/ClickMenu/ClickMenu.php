@@ -666,7 +666,7 @@ class ClickMenu {
 			'columnsOnly' => rawurlencode((implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : ''))),
 			'edit[' . $table . '][' . $uid . ']' => 'edit'
 		));
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editAccess')), IconUtility::getSpriteIcon('actions-document-edit-access'), $this->urlRefForCM($url, 'returnUrl'), 1);
+		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editAccess')), $this->iconFactory->getIcon('actions-document-edit-access', Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 1);
 	}
 
 	/**
