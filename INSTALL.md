@@ -263,7 +263,7 @@ TYPO3 core and the extensions up to date.
 * Please refer to official TYPO3 Security Guide for further information
   about security-related topics of TYPO3 CMS and the resources compiled by
   the Security Team.
-  http://docs.typo3.org/typo3cms/SecurityGuide/
+  https://docs.typo3.org/typo3cms/SecurityGuide/
   http://typo3.org/teams/security/resources/
 
 Installation FAQ

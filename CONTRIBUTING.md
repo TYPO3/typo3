@@ -17,5 +17,5 @@ If you like to contribute to our [documentation][5], use the "Edit me on GitHub"
 [2]: https://git.typo3.org/Packages/TYPO3.CMS.git
 [3]: https://review.typo3.org/#/q/project:Packages/TYPO3.CMS,n,z
 [4]: https://github.com/TYPO3/TYPO3.CMS
-[5]: http://docs.typo3.org/typo3cms/
+[5]: https://docs.typo3.org/typo3cms/
 [6]: https://github.com/TYPO3-Documentation

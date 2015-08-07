@@ -93,8 +93,8 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/CMS/');
 		define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
 		define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
-		define('TYPO3_URL_DOCUMENTATION_TSREF', 'http://docs.typo3.org/typo3cms/TyposcriptReference/');
-		define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'http://docs.typo3.org/typo3cms/TSconfigReference/');
+		define('TYPO3_URL_DOCUMENTATION_TSREF', 'https://docs.typo3.org/typo3cms/TyposcriptReference/');
+		define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'https://docs.typo3.org/typo3cms/TSconfigReference/');
 		define('TYPO3_URL_CONSULTANCY', 'http://typo3.org/support/professional-services/');
 		define('TYPO3_URL_CONTRIBUTE', 'http://typo3.org/contribute/');
 		define('TYPO3_URL_SECURITY', 'http://typo3.org/teams/security/');

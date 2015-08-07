@@ -12,9 +12,9 @@ When a user is a member of many groups (including sub-groups) then the permissio
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>be_users,
-"Inside TYPO3" about users / groups | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
-How to set up a backend user | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
-Setting up groups (from "Getting Started") | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+"Inside TYPO3" about users / groups | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/UsersAndGroups/,
+How to set up a backend user | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/SettingUpANewUser/,
+Setting up groups (from "Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:lang/cshimages/be_groups_2.png,
@@ -78,7 +78,7 @@ be_users:options,
 be_users,
 sys_filemounts,
 xMOD_csh_corebe:filelist_module,
-More about File Mounts | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
+More about File Mounts | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/AccessControl/MoreAboutFileMounts/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_file_mountpoints.image" xml:space="preserve">
@@ -190,7 +190,7 @@ Of course it does not make any sense to add fields from tables which are not inc
 			</trans-unit>
 			<trans-unit id="_non_exclude_fields.seeAlso" xml:space="preserve">
 				<source>be_groups:inc_access_lists,
-Examples from "Getting Started" | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
+Examples from "Getting Started" | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_non_exclude_fields.image">
@@ -226,7 +226,7 @@ This list of modules is added to any modules selected in other member groups of 
 			<trans-unit id="_groupMods.seeAlso" xml:space="preserve">
 				<source>be_users:userMods,
 be_groups:inc_access_lists,
-Backend Interface | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</source>
+Backend Interface | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/Backend/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_groupMods.image" xml:space="preserve">
@@ -274,8 +274,8 @@ be_groups:non_exclude_fields</source>
 fe_users:TSconfig
 fe_groups:TSconfig
 pages:TSconfig,
-TSconfig Reference| http://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
-TypoScript Syntax | http://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+TSconfig Reference| https://docs.typo3.org/typo3cms/TSconfigReference/UserTsconfig/,
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_TSconfig.image" xml:space="preserve">

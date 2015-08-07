@@ -13,8 +13,8 @@ It's very important to read how to do all this in the documents listed below! Al
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>static_template
-TSref | http://docs.typo3.org/typo3cms/TyposcriptReference/
-TypoScript in 45 min| http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
 				<source>EXT:context_help/Resources/Public/Images/cshimages/systemplate.png,
@@ -58,10 +58,10 @@ The Web&gt;Template module contains tools which will help you to edit and valida
 			</trans-unit>
 			<trans-unit id="_config.seeAlso" xml:space="preserve">
 				<source>static_template:config,
-TSref | http://docs.typo3.org/typo3cms/TyposcriptReference/
-Getting Started | http://docs.typo3.org/typo3cms/GettingStartedTutorial/
-TypoScript in 45 min| http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
-TypoScript Syntax | http://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
+TSref | https://docs.typo3.org/typo3cms/TyposcriptReference/
+Getting Started | https://docs.typo3.org/typo3cms/GettingStartedTutorial/
+TypoScript in 45 min| https://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/
+TypoScript Syntax | https://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="resources.description">

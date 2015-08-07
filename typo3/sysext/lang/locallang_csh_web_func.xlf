@@ -14,7 +14,7 @@
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
 				<source>_MOD_web_info,
-More about the Web&gt;Functions module | http://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/FunctionsModule/,,
+More about the Web&gt;Functions module | https://docs.typo3.org/typo3cms/InsideTypo3Reference/CoreArchitecture/CoreModules/FunctionsModule/,,
 _MOD_web_func:tx_funcwizards,
 _MOD_web_func:tx_wizardsortpages</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>

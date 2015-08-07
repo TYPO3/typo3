@@ -44,4 +44,4 @@ Make sure you access the Backend via HTTPS or install the rsaauth system extensi
 
 Also refer to the `TYPO3 Security Guide`_
 
-.. _TYPO3 Security Guide: http://docs.typo3.org/typo3cms/SecurityGuide/GuidelinesAdministrators/EncryptedCommunication/Index.html
+.. _TYPO3 Security Guide: https://docs.typo3.org/typo3cms/SecurityGuide/GuidelinesAdministrators/EncryptedCommunication/Index.html

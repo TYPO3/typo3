@@ -71,7 +71,7 @@ Download Documentation
 ======================
 
 This view is only accessible to TYPO3 administrators. It shows a form to retrieve rendered documentation for loaded
-extensions and to fetch a copy of official TYPO3 manuals, guides and references from http://docs.typo3.org.
+extensions and to fetch a copy of official TYPO3 manuals, guides and references from https://docs.typo3.org.
 
 
 Configuration

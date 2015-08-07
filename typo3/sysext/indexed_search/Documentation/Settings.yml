@@ -22,6 +22,6 @@ conf.py:
   latex_show_pagerefs: True
   intersphinx_mapping:
     t3tsref:
-    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - https://docs.typo3.org/typo3cms/TyposcriptReference/
     - null
 ...

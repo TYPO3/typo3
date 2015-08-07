@@ -10,7 +10,7 @@
 				<source>"Page content" records is ordered and can thus be rearranged. Also notice that the "Language" and "Column" selector of the "Page content" records determines where and in which situation they appear. If you do not change the value of the "Language" and "Column" selectors you are most sure that the element will appear by default.</source>
 			</trans-unit>
 			<trans-unit id="_.seeAlso" xml:space="preserve">
-				<source>Page Content principles | http://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
+				<source>Page Content principles | https://docs.typo3.org/typo3cms/GettingStartedTutorial/GeneralPrinciples/PageContent/,
 _MOD_web_layout</source>
 			</trans-unit>
 			<trans-unit id="_.image" xml:space="preserve">
@@ -85,7 +85,7 @@ This is plain HTML content. Everything put here will be displayed directly on th
 			<trans-unit id="_CType.seeAlso" xml:space="preserve">
 				<source>tt_content:colPos,
 tt_content:sys_language_uid,
-About Content Elements | http://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
+About Content Elements | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/EditPageContent/</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="_CType.image">
@@ -318,7 +318,7 @@ tt_content:imagecaption,
 tt_content:image_effects,
 tt_content:image_frames,
 tt_content:image_compression,
-Using images ("Getting Started") | http://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
+Using images ("Getting Started") | https://docs.typo3.org/typo3cms/GettingStartedTutorial/TheFileModuleOrImageArchives/ManagingFilesInTypo3/
 Using images (Animation) | FILE:EXT:welcome/modsub/ani_10.gif</source>
 				<note from="developer">A part of this string is an internal text, which must not be changed. Just copy this part into the translation field and do not change it. For more information have a look at the Tutorial.</note>
 			</trans-unit>

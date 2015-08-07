@@ -67,7 +67,7 @@ started:
 * https://wiki.typo3.org is a collaborative wiki, providing access to
   all kind of information around the TYPO3 ecosphere.
 
-* http://docs.typo3.org/: TYPO3 is one of the most thoroughly
+* https://docs.typo3.org/: TYPO3 is one of the most thoroughly
   documented OpenSource products around, with manuals covering basic
   tutorials, TypoScript, administration, development, core structure, etc.
   You should make the time to locate the various documents, and read those
