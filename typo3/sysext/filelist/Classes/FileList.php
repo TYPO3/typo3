@@ -274,8 +274,7 @@ class FileList extends AbstractRecordList {
 						if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $folderObject)) {
 							$addPasteButton = FALSE;
 						}
-						$fileInfo = $clipBoardElement->getStorage()->getFileInfoByIdentifier(substr(strstr($element, ':'), 1));
-						$elToConfirm[$key] = $fileInfo['name'];
+						$elToConfirm[$key] = $clipBoardElement->getName();
 					}
 					if ($addPasteButton) {
 						$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
@@ -414,8 +413,7 @@ class FileList extends AbstractRecordList {
 							if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $this->folderObject)) {
 								$addPasteButton = FALSE;
 							}
-							$fileInfo = $clipBoardElement->getStorage()->getFileInfoByIdentifier(substr(strstr($element, ':'), 1));
-							$elToConfirm[$key] = $fileInfo['name'];
+							$elToConfirm[$key] = $clipBoardElement->getName();
 						}
 						if ($addPasteButton) {
 							$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', 1) . '">' . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
@@ -858,8 +856,7 @@ class FileList extends AbstractRecordList {
 				if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $fileOrFolderObject)) {
 					$addPasteButton = FALSE;
 				}
-				$fileInfo = $clipBoardElement->getStorage()->getFileInfoByIdentifier(substr(strstr($element, ':'), 1));
-				$elToConfirm[$key] = $fileInfo['name'];
+				$elToConfirm[$key] = $clipBoardElement->getName();
 			}
 			if ($addPasteButton) {
 				$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullName, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';

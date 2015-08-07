@@ -942,9 +942,8 @@ class ClickMenu {
 				$selItem = reset($elArr);
 				$clickedFileOrFolder = ResourceFactory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
 				$fileOrFolderInClipBoard = ResourceFactory::getInstance()->retrieveFileOrFolderObject($selItem);
-				$fileInfo = $fileOrFolderInClipBoard->getStorage()->getFileInfoByIdentifier(substr(strstr($selItem, ':'), 1));
 				$elInfo = array(
-					$fileInfo['name'],
+					$fileOrFolderInClipBoard->getName(),
 					$clickedFileOrFolder->getName(),
 					$this->clipObj->currentMode()
 				);
