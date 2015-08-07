@@ -103,12 +103,27 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 	 * when finished it reloads the menu
 	 */
 	ShortcutMenu.createShortcut = function(moduleName, url, confirmationText, motherModule) {
-		var shouldCreateShortcut = true;
 		if (typeof confirmationText !== 'undefined') {
 			// @todo: translations
 			top.TYPO3.Modal.confirm('Create bookmark', confirmationText)
 				.on('confirm.button.ok', function() {
-					shouldCreateShortcut = true;
+					var $toolbarItemIcon = $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector);
+					var $spinner = ShortcutMenu.$spinnerElement.clone();
+					var $existingItem = $toolbarItemIcon.replaceWith($spinner);
+
+					$.ajax({
+						url: TYPO3.settings.ajaxUrls['ShortcutMenu::create'],
+						type: 'post',
+						data: {
+							module: moduleName,
+							url: url,
+							motherModName: motherModule
+						},
+						cache: false
+					}).done(function() {
+						ShortcutMenu.refreshMenu();
+						$spinner.replaceWith($existingItem);
+					});
 					$(this).trigger('modal-dismiss');
 				})
 				.on('confirm.button.cancel', function() {
@@ -116,25 +131,6 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 				});
 		}
 
-		if (shouldCreateShortcut) {
-			var $toolbarItemIcon = $(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector);
-			var $spinner = ShortcutMenu.$spinnerElement.clone();
-			var $existingItem = $toolbarItemIcon.replaceWith($spinner);
-
-			$.ajax({
-				url: TYPO3.settings.ajaxUrls['ShortcutMenu::create'],
-				type: 'post',
-				data: {
-					module: moduleName,
-					url: url,
-					motherModName: motherModule
-				},
-				cache: false
-			}).done(function() {
-				ShortcutMenu.refreshMenu();
-				$spinner.replaceWith($existingItem);
-			});
-		}
 	};
 
 	/**
