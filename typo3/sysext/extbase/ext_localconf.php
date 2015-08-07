@@ -34,7 +34,10 @@ unset($extbaseObjectContainer);
 if (TYPO3_MODE === 'BE') {
 	// registers Extbase at the cli_dispatcher with key "extbase".
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['extbase'] = array(
-		'EXT:extbase/Scripts/CommandLineLauncher.php',
+		function() {
+			$bootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+			echo $bootstrap->run('', array());
+		},
 		'_CLI_lowlevel'
 	);
 	// register help command

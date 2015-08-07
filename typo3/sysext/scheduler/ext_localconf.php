@@ -3,7 +3,10 @@ defined('TYPO3_MODE') or die();
 
 // Register the Scheduler as a possible key for CLI calls
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['scheduler'] = array(
-	'EXT:scheduler/Resources/PHP/scheduler_cli_dispatch.php',
+	function() {
+		$schedulerCliController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Controller\SchedulerCliController::class);
+		$schedulerCliController->run();
+	},
 	'_CLI_scheduler'
 );
 // Get the extensions's configuration

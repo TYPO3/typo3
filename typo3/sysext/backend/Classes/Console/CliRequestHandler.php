@@ -62,8 +62,15 @@ class CliRequestHandler implements RequestHandlerInterface {
 			list($commandLineScript, $commandLineName) = $this->getIncludeScriptByCommandLineKey($command);
 			$this->boot($commandLineName);
 
-			// include the CLI script
-			include($commandLineScript);
+			if (is_callable($commandLineScript)) {
+				if ($commandLineScript instanceof \Closure) {
+					$commandLineScript->bindTo($this);
+				}
+				call_user_func($commandLineScript);
+			} else {
+				// include the CLI script
+				include($commandLineScript);
+			}
 
 		} catch (\InvalidArgumentException $e) {
 			$output->writeln('<error>Oops, an error occurred: ' . $e->getMessage() . '</error>');
@@ -138,10 +145,12 @@ class CliRequestHandler implements RequestHandlerInterface {
 	 */
 	protected function getIncludeScriptByCommandLineKey($cliKey) {
 		list($commandLineScript, $commandLineName) = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$cliKey];
-		$commandLineScript = GeneralUtility::getFileAbsFileName($commandLineScript);
-		// Note: These constants are not in use anymore, and marked for deprecation and will be removed in TYPO3 CMS 8
-		define('TYPO3_cliKey', $cliKey);
-		define('TYPO3_cliInclude', $commandLineScript);
+		if (!is_callable($commandLineScript)) {
+			$commandLineScript = GeneralUtility::getFileAbsFileName($commandLineScript);
+			// Note: These constants are not in use anymore, and marked for deprecation and will be removed in TYPO3 CMS 8
+			define('TYPO3_cliKey', $cliKey);
+			define('TYPO3_cliInclude', $commandLineScript);
+		}
 		// This is a compatibility layer: Some cli scripts rely on this, like ext:phpunit cli
 		// This layer will be removed in TYPO3 CMS 8
 		$GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
