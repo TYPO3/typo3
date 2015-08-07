@@ -642,9 +642,22 @@ function jumpToUrl(URL) {
 			$motherModule = '\'\'';
 		}
 		$confirmationText = GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark'));
-		$url = GeneralUtility::quoteJSvalue(rawurlencode($pathInfo['path'] . '?' . $storeUrl));
-		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) . ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ');return false;';
-		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
+
+		$shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
+		$shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
+
+		if ($shortcutExist) {
+			return '<a class="active" title="">' .
+				IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
+		}
+
+		$url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
+		$onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) .
+			', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
+
+		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' .
+			IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 	}
 
 	/**

@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\PreparedStatement;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -4525,6 +4526,33 @@ class BackendUtility {
 	 */
 	static public function isRootLevelRestrictionIgnored($table) {
 		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
+	}
+
+	/**
+	 * Exists already a shortcut entry for this TYPO3 url?
+	 *
+	 * @param string $url
+	 *
+	 * @return bool
+	 */
+	static public function shortcutExists($url) {
+		$statement = self::getDatabaseConnection()->prepare_SELECTquery(
+			'uid',
+			'sys_be_shortcuts',
+			'userid = :userid AND url = :url'
+		);
+
+		$statement->bindValues([
+			':userid' => self::getBackendUserAuthentication()->user['uid'],
+			':url' => $url
+		]
+		);
+
+		$statement->execute();
+		$rows = $statement->fetch(PreparedStatement::FETCH_ASSOC);
+		$statement->free();
+
+		return !empty($rows);
 	}
 
 	/**

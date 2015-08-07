@@ -9157,6 +9157,12 @@ div#contentMenu1 {
 #typo3-docheader a:hover {
   color: #000;
 }
+#typo3-docheader a.active {
+  color: #c3c3c3;
+}
+#typo3-docheader a.active span {
+  cursor: default;
+}
 #typo3-docheader .typo3-docheader-functions,
 #typo3-docheader .typo3-docheader-buttons {
   color: #2d2d2d;

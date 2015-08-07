@@ -562,7 +562,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		if (!empty($module) && !empty($url)) {
 			$shortcutCreated = 'alreadyExists';
 
-			if (!$this->shortcutExists($url)) {
+			if (!BackendUtility::shortcutExists($url)) {
 				$shortcutCreated = $this->addShortcut($url, $shortcutName, $module);
 			}
 		}
