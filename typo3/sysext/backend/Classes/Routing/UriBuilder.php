@@ -82,7 +82,7 @@ class UriBuilder {
 
 		// Add the Route path as &route=XYZ
 		$parameters = array(
-			'route' => rawurlencode($route->getPath())
+			'route' => $route->getPath()
 		) + $parameters;
 
 		return $this->buildUri($parameters, $referenceType);

@@ -36,7 +36,7 @@ class Router implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * All routes used in the Backend
 	 *
-	 * @var array|null
+	 * @var Route[]
 	 */
 	protected $routes = array();
 
@@ -53,7 +53,7 @@ class Router implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Fetch all registered routes, only use in UriBuilder
 	 *
-	 * @return array|null
+	 * @return Route[]
 	 */
 	public function getRoutes() {
 		return $this->routes;
@@ -67,7 +67,6 @@ class Router implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws ResourceNotFoundException If the resource could not be found
 	 */
 	public function match($pathInfo) {
-		$pathInfo = rawurldecode($pathInfo);
 		foreach ($this->routes as $routeIdentifier => $route) {
 			// This check is done in a simple way as there are no parameters yet (get parameters only)
 			if ($route->getPath() === $pathInfo) {
