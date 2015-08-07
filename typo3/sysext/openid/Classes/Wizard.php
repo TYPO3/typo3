@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Openid;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -25,7 +27,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * OpenID selection wizard for the backend
  */
-class Wizard extends OpenidService {
+class Wizard extends OpenidService implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * OpenID of the user after authentication
@@ -49,11 +51,38 @@ class Wizard extends OpenidService {
 	protected $parentFormFieldChangeFunc;
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * Process the wizard and render HTML to response
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->processWizard();
+		$content = $this->renderContent();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($content);
+		return $response;
+	}
+
+	/**
 	 * Run the wizard and output HTML.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function main() {
+		GeneralUtility::logDeprecatedFunction();
+		$this->processWizard();
+		$this->renderHtml();
+	}
+
+	/**
+	 * Run the wizard
+	 */
+	protected function processWizard(){
 		$p = GeneralUtility::_GP('P');
 		if (isset($p['itemName'])) {
 			$this->parentFormItemName = $p['itemName'];
@@ -78,15 +107,14 @@ class Wizard extends OpenidService {
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
 				sprintf(
-					$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:error.setup'),
-					htmlspecialchars($openIDIdentifier)
+						$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:error.setup'),
+						htmlspecialchars($openIDIdentifier)
 				),
 				$this->getLanguageService()->sL('LLL:EXT:openid/Resources/Private/Language/locallang.xlf:title.error'),
 				FlashMessage::ERROR
 			);
 			$flashMessageService->getMessageQueueByIdentifier()->enqueue($flashMessage);
 		}
-		$this->renderHtml();
 	}
 
 	/**
@@ -158,11 +186,11 @@ class Wizard extends OpenidService {
 	}
 
 	/**
-	 * Render HTML with message and OpenID form and output it
+	 * Render HTML with message and OpenID form
 	 *
-	 * @return void
+	 * @return string
 	 */
-	protected function renderHtml() {
+	protected function renderContent() {
 		// use FLUID standalone view for wizard content
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
 		$view->getRequest()->setControllerExtensionName('openid');
@@ -190,8 +218,17 @@ class Wizard extends OpenidService {
 			$view->assign('openid_url', $_REQUEST['openid_url']);
 		}
 
+		return $view->render();
+	}
+
+	/**
+	 * Render HTML and output it
+	 *
+	 * @return void
+	 */
+	protected function renderHtml(){
 		header('HTTP/1.0 200 OK');
-		echo $view->render();
+		echo $this->renderContent();
 	}
 
 	/**

@@ -2,11 +2,6 @@
 defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
-	// Register wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_openid',
-		'EXT:openid/wizard/'
-	);
 
 	// Add field to setup module
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(

@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Compatibility6\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -105,7 +108,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * The XML/phpArray structure is the internal format of the wizard.
  */
-class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController {
+class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * document template object
@@ -189,6 +192,22 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
+	}
+
+	/**
 	 * Main function for rendering the form wizard HTML
 	 *
 	 * @return void
@@ -214,8 +233,10 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 
@@ -305,7 +326,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				$cfgArr = $this->cfgString2CfgArray($bodyText);
 			}
 			// If a save button has been pressed, then save the new field content:
-			if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
+			if (isset($_POST['savedok']) || isset($_POST['saveandclosedok'])) {
 				// Make TCEmain object:
 				$tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
 				$tce->stripslashes_values = 0;
@@ -321,7 +342,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				// Re-load the record content:
 				$row = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
 				// If the save/close button was pressed, then redirect the screen:
-				if ($_POST['saveandclosedok_x']) {
+				if (isset($_POST['saveandclosedok'])) {
 					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 				}
 			}

@@ -60,28 +60,3 @@ if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::i
 	));
 	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang.xlf:rteSettings,rteWidth,rteHeight,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
 }
-if (TYPO3_MODE === 'BE') {
-	// Register RTE browse links wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'rtehtmlarea_wizard_browse_links',
-		'EXT:rtehtmlarea/Modules/BrowseLinks/'
-	);
-
-	// Register RTE select image wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'rtehtmlarea_wizard_select_image',
-		'EXT:rtehtmlarea/Modules/SelectImage/'
-	);
-
-	// Register RTE user elements wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'rtehtmlarea_wizard_user_elements',
-		'EXT:rtehtmlarea/Modules/UserElements/'
-	);
-
-	// Register RTE parse html wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'rtehtmlarea_wizard_parse_html',
-		'EXT:rtehtmlarea/Modules/ParseHtml/'
-	);
-}

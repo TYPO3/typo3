@@ -272,7 +272,12 @@ class ElementBrowser {
 	 * Sets the script url depending on being a module or script request
 	 */
 	protected function determineScriptUrl() {
-		if ($moduleName = GeneralUtility::_GP('M')) {
+		if ($routePath = GeneralUtility::_GP('route')) {
+			$router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
+			$route = $router->match($routePath);
+			$uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+			$this->thisScript = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
+		} elseif ($moduleName = GeneralUtility::_GP('M')) {
 			$this->thisScript = BackendUtility::getModuleUrl($moduleName);
 		} else {
 			$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
