@@ -23,20 +23,41 @@ class TypoScriptFrontendControllerHook {
 	/**
 	 * @param array $params
 	 * @param \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $pObj
-	 * @return mixed
+	 * @return void
 	 */
 	public function hook_eofe($params, $pObj) {
-		if ($pObj->fePreview != 2) {
+		// 2 means preview of a non-live workspace
+		if ($pObj->fePreview !== 2) {
 			return;
 		}
-		$previewParts = $GLOBALS['TSFE']->cObj->cObjGetSingle('FLUIDTEMPLATE', array(
+
+		$backendDomain = $this->getBackendUserAuthentication()->getSessionData('workspaces.backend_domain');
+		if (empty($backendDomain)) {
+			$backendDomain = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+		}
+
+		$previewParts = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle('FLUIDTEMPLATE', array(
 			'file' => 'EXT:workspaces/Resources/Private/Templates/Preview/Preview.html',
 			'variables.' => array(
 				'backendDomain' => 'TEXT',
-				'backendDomain.' => array('value' => $GLOBALS['BE_USER']->getSessionData('workspaces.backend_domain'))
+				'backendDomain.' => array('value' => $backendDomain)
 			)
 		));
-		$GLOBALS['TSFE']->content = str_ireplace('</body>', $previewParts . '</body>', $GLOBALS['TSFE']->content);
+		$this->getTypoScriptFrontendController()->content = str_ireplace('</body>', $previewParts . '</body>', $this->getTypoScriptFrontendController()->content);
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		return $GLOBALS['TSFE'];
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+	 */
+	protected function getBackendUserAuthentication() {
+		return $GLOBALS['BE_USER'];
 	}
 
 }
