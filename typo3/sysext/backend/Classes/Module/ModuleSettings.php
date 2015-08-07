@@ -54,6 +54,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *   ),
  *   'another id' => ...
  * )
+ *
+ * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.
  */
 class ModuleSettings {
 
@@ -112,6 +114,14 @@ class ModuleSettings {
 	 * Init / setup
 	 *
 	 ********************************/
+
+	/**
+	 * Default constructor
+	 */
+	public function __construct() {
+		GeneralUtility::deprecationLog('Class ModuleSettings is deprecated since TYPO3 CMS 7 and will be removed with TYPO3 CMS 8');
+	}
+
 	/**
 	 * Initializes the object
 	 *
