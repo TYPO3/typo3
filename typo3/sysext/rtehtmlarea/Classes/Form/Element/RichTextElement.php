@@ -821,9 +821,13 @@ class RichTextElement extends AbstractFormElement {
 		if (is_array($RTEProperties['classes.'])) {
 			foreach ($RTEProperties['classes.'] as $className => $conf) {
 				$className = rtrim($className, '.');
-				$label = $this->getLanguageService()->sL(trim($conf['name']));
-				$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
-				$classesArray['labels'][$className] = trim($conf['name']) ? $label : '';
+
+				$label = '';
+				if (!empty($conf['name'])) {
+					$label = $this->getLanguageService()->sL(trim($conf['name']));
+					$label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
+				}
+				$classesArray['labels'][$className] = $label;
 				$classesArray['values'][$className] = str_replace('\\\'', '\'', $conf['value']);
 				if (isset($conf['noShow'])) {
 					$classesArray['noShow'][$className] = $conf['noShow'];
