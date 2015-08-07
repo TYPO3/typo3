@@ -1036,7 +1036,11 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 		if (is_array($RTEProperties['classes.'])) {
 			foreach ($RTEProperties['classes.'] as $className => $conf) {
 				$className = rtrim($className, '.');
-				$classesArray['labels'][$className] = $this->getPageConfigLabel($conf['name'], FALSE);
+				$label = '';
+				if (!empty($conf['name'])) {
+					$label = $this->getPageConfigLabel($conf['name'], FALSE);
+				}
+				$classesArray['labels'][$className] = $label;
 				$classesArray['values'][$className] = str_replace('\\\'', '\'', $conf['value']);
 				if (isset($conf['noShow'])) {
 					$classesArray['noShow'][$className] = $conf['noShow'];
