@@ -946,7 +946,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$onClick = htmlspecialchars(('checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;'));
 						$cells['markAll'] = '<a class="btn btn-default" rel="" href="#" onclick="' . $onClick . '" title="'
 							. $lang->getLL('clip_markRecords', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-document-select') . '</a>';
+							. $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>';
 					} else {
 						$cells['empty'] = '';
 					}

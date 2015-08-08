@@ -80,7 +80,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'arrows',
 			)
 		),
-
 		'actions-document-new' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -97,6 +96,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'clipboard',
+			)
+		),
+		'actions-document-select' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check-square-o',
 			)
 		),
 		'actions-document-view' => array(

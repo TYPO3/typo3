@@ -919,7 +919,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// Header row
 			$table[] =
 				'<thead><tr>'
-					. '<th><a href="#" id="checkall" title="' . $this->getLanguageService()->getLL('label.checkAll', TRUE) . '" class="icon">' . IconUtility::getSpriteIcon('actions-document-select') . '</a></th>'
+					. '<th><a href="#" id="checkall" title="' . $this->getLanguageService()->getLL('label.checkAll', TRUE) . '" class="icon">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a></th>'
 					. '<th>' . $this->getLanguageService()->getLL('label.id', TRUE). '</th>'
 					. '<th>' . $this->getLanguageService()->getLL('task', TRUE). '</th>'
 					. '<th>' . $this->getLanguageService()->getLL('label.type', TRUE). '</th>'

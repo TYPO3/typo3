@@ -2546,8 +2546,8 @@ class ElementBrowser {
 			. 'title="' . $labelImportSelection . '">'
 			. $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)
 			. $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
-			. '<a href="#" onclick="BrowseLinks.Selector.toggle()">'
-			. IconUtility::getSpriteIcon('actions-document-select', array('title' => $labelToggleSelection))
+			. '<a href="#" onclick="BrowseLinks.Selector.toggle()" title="' . $labelToggleSelection . '">'
+			. $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)
 			. $labelToggleSelection . '</a>' . '</div>';
 		if (!$noThumbsInEB && $this->selectedFolder) {
 			// MENU-ITEMS, fetching the setting for thumbnails from File>List module:

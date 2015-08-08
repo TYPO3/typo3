@@ -193,10 +193,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-document-paste-after',
 	'actions-document-paste-into',
 	'actions-document-save',
-	'actions-document-save-cleartranslationcache',
+	'actions-document-save-cleartranslationcache', // Not used in core!
 	'actions-document-save-close',
 	'actions-document-save-new',
-	'actions-document-save-translation',
+	'actions-document-save-translation', // Not used in core!
 	'actions-document-save-view',
 	'actions-document-select',
 	'actions-document-synchronize',
