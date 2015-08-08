@@ -11,7 +11,7 @@ matrix:
     - php: 5.6
       env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
     - php: 7
-      env: UNIT_TESTS=yes
+      env: UNIT_TESTS=yes FUNCTIONAL_TESTS=yes PHP_LINT=yes
 
 sudo: false
 
@@ -44,10 +44,19 @@ notifications:
       secure: nHWVTPyG3CQWIcYA1LASS11dD0/NBcmrAyr3xxQW0XYtH47ZUKRlEtxrVLuL7ptciNwMbfZgsiRQ1QGWDerHUlBkg0iwRxpUZgeylzWaiXsHFVAp2IBfEX54KrWeYm9gewIBDDtnp+sLgpXGgmpIs2bAGkZe5129UsUExoWh0+g=
     on_success: change
     on_failure: always
+  webhooks:
+    urls:
+      - http://www.t3bot.de/hooks/travis
+    on_success: always
+    on_failure: always
+    on_start: never
 
 before_script:
-  - if [ -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]; then echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
-  - if [ -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]; then echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
+  - >
+    if [[ "$TRAVIS_PHP_VERSION" < "7" && -e ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ]]; then
+        echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+        echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    fi
   - rm -rf typo3/sysext/compatibility6
   - if [ "$GITHUB_COMPOSER_AUTH" ]; then composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH; fi
   - composer install
