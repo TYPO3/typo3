@@ -141,7 +141,6 @@ class SelectImage extends ElementBrowser {
 		parent::initDocumentTemplate();
 
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
-		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		}');
@@ -160,8 +159,10 @@ class SelectImage extends ElementBrowser {
 	 * Provide the additional parameters to be included in the template body tag
 	 *
 	 * @return string the body tag additions
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getBodyTagAdditions() {
+		GeneralUtility::logDeprecatedFunction();
 		return 'onload="SelectImage.initEventListeners();"';
 	}
 

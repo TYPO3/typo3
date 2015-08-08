@@ -35,13 +35,12 @@ define('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', function () {
 		 * Initialize an event handler for dropping an image in WebKit browsers
 		 *
 		 * @return void
+         * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 		 */
 		initEventListeners: function() {
-			require(['TYPO3/CMS/Rtehtmlarea/HTMLArea/UserAgent/UserAgent'], function (UserAgent, Event) {
-				if (UserAgent.isWebKit) {
-					Event.one(window.document.body, 'dragend.TYPO3Image', function (event) { plugin.onDrop(event); });
-				}
-			});
+			if (typeof console !== 'undefined') {
+				console.log('SelectImage.initEventListeners() is deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8');
+			}
 		},
 
 		/**
