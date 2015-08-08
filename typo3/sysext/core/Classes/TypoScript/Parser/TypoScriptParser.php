@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 
 /**
  * The TypoScript parser
@@ -818,6 +819,24 @@ class TypoScriptParser {
 				$originalFilename = $filename;
 				$optionalProperties = $parts[$i + 2];
 				$tsContentsTillNextInclude = $parts[$i + 3];
+
+				// Check condition
+				$matches = preg_split('#(?i)condition\\s*=\\s*"((?:\\\\\\\\|\\\\"|[^\\"])*)"(\\s*|>)#', $optionalProperties, 2, PREG_SPLIT_DELIM_CAPTURE);
+				// If there was a condition
+				if (count($matches) > 1) {
+					// Unescape the condition
+					$condition = trim(stripslashes($matches[1]));
+					// If necessary put condition in square brackets
+					if ($condition[0] !== '[') {
+						$condition = '[' . $condition . ']';
+					}
+					/** @var ConditionMatcher $conditionMatcher */
+					$conditionMatcher = GeneralUtility::makeInstance(ConditionMatcher::class);
+					// If it didn't match then proceed to the next include
+					if (!$conditionMatcher->match($condition)) {
+						continue;
+					}
+				}
 
 				// Resolve a possible relative paths if a parent file is given
 				if ($parentFilenameOrPath !== '' && $filename[0] === '.') {
