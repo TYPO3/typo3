@@ -1102,7 +1102,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						. htmlspecialchars($this->clipboard->pasteUrl('tt_content', $this->id, TRUE, $pasteParams))
 						. '" onclick="' . htmlspecialchars(('return '
 						. $this->clipboard->confirmMsg('pages', $this->pageRecord, 'into', $elFromTable, $colName)))
-						. '" title="' . $this->getLanguageService()->getLL('clip_paste', TRUE) . '">'
+						. '" title="' . $this->getLanguageService()->getLL('pasteIntoColumn', TRUE) . '">'
 						. IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';
 				}
 			}
