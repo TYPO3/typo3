@@ -289,10 +289,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * The type "source" describes where the jQuery core should be included from
 	 * currently, TYPO3 supports "local" (make use of jQuery path), "google",
-	 * "jquery" and "msn".
-	 * Currently there are downsides to "local" and "jquery", as "local" only
-	 * supports the latest/shipped jQuery core out of the box, and
-	 * "jquery" does not have SSL support.
+	 * "jquery", "msn" and "cloudflare".
+	 *
+	 * Currently there are downsides to "local" which supports only the latest/shipped
+	 * jQuery core out of the box.
 	 *
 	 * @var array
 	 */
@@ -313,9 +313,10 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var array
 	 */
 	protected $jQueryCdnUrls = array(
-		'google' => '//ajax.googleapis.com/ajax/libs/jquery/%1$s/jquery%2$s.js',
-		'msn' => '//ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
-		'jquery' => 'http://code.jquery.com/jquery-%1$s%2$s.js'
+		'google' => 'https://ajax.googleapis.com/ajax/libs/jquery/%1$s/jquery%2$s.js',
+		'msn' => 'https://ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
+		'jquery' => 'https://code.jquery.com/jquery-%1$s%2$s.js',
+		'cloudflare' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/%1$s/jquery%2$s.js'
 	);
 
 	/**
