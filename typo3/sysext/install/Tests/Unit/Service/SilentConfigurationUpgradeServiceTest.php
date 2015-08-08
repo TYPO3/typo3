@@ -75,6 +75,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 			array(
 				'getLocalConfigurationValueByPath',
 				'setLocalConfigurationValueByPath',
+				'getConfigurationValueByPath'
 			)
 		);
 		$this->configurationManager->expects($this->exactly(5))
@@ -120,6 +121,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 			array(
 				'getLocalConfigurationValueByPath',
 				'setLocalConfigurationValueByPath',
+				'getConfigurationValueByPath'
 			)
 		);
 		$this->configurationManager->expects($this->exactly(5))
@@ -156,6 +158,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 		$this->createConfigurationManagerWithMockedMethods(
 			array(
 				'getLocalConfigurationValueByPath',
+				'getConfigurationValueByPath',
 				'setLocalConfigurationValueByPath',
 			)
 		);
