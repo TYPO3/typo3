@@ -278,7 +278,7 @@ class FileList extends AbstractRecordList {
 						$elToConfirm[$key] = $fileInfo['name'];
 					}
 					if ($addPasteButton) {
-						$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
+						$buttons['PASTE'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
 					}
 				}
 			}
@@ -418,7 +418,7 @@ class FileList extends AbstractRecordList {
 							$elToConfirm[$key] = $fileInfo['name'];
 						}
 						if ($addPasteButton) {
-							$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', 1) . '">' . IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
+							$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_paste', 1) . '">' . $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
 						}
 					}
 					if ($this->clipObj->current !== 'normal' && $iOut) {

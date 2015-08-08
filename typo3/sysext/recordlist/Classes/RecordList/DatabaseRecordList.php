@@ -283,7 +283,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$onClick = htmlspecialchars(('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable)));
 					$buttons['paste'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('', $this->id))
 						. '" onclick="' . $onClick . '" title="' . $lang->getLL('clip_paste', TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
+						. $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 			// Cache
@@ -916,7 +916,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$onClick = htmlspecialchars('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable));
 						$cells['pasteAfter'] = '<a class="btn btn-default" href="' . $href . '" onclick="' . $onClick
 							. '" title="' . $lang->getLL('clip_paste', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
+							. $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
 					}
 					// If the numeric clipboard pads are enabled, display the control icons for that:
 					if ($this->clipObj->current != 'normal') {
@@ -1560,7 +1560,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				: '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl($table, -$row['uid'])) . '" onclick="'
 					. htmlspecialchars(('return ' . $this->clipObj->confirmMsg($table, $row, 'after', $elFromTable)))
 					. '" title="' . $this->getLanguageService()->getLL('clip_pasteAfter', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-document-paste-after') . '</a>';
+					. $this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL) . '</a>';
 		}
 		// Now, looking for elements in general:
 		$elFromTable = $this->clipObj->elFromTable('');

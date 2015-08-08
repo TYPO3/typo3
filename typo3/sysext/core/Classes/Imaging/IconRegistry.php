@@ -93,6 +93,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'pencil',
 			)
 		),
+		'actions-document-paste-after' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'clipboard',
+			)
+		),
 		'actions-document-view' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
