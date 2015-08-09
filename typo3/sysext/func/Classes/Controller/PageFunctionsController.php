@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Func\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -47,9 +49,15 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	protected $moduleName = 'web_func';
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
 		$this->MCONF = array(
 			'name' => $this->moduleName,
@@ -147,7 +155,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$buttons['view'] = '<a href="#" '
 				. 'onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" '
 				. 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
-				. \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+				. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 			// Shortcut
 			if ($this->getBackendUser()->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);

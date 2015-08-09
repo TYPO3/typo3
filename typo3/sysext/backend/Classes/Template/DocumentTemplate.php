@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -366,6 +368,11 @@ function jumpToUrl(URL) {
 	 */
 	public $showFlashMessages = TRUE;
 
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
 	const STATUS_ICON_ERROR = 3;
 	const STATUS_ICON_WARNING = 2;
 	const STATUS_ICON_NOTIFICATION = 1;
@@ -380,6 +387,7 @@ function jumpToUrl(URL) {
 
 		// load Legacy CSS Support
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyCssClasses');
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
 		// Setting default scriptID:
 		if (($temp_M = (string)GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
@@ -532,7 +540,7 @@ function jumpToUrl(URL) {
 			'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 		), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList'));
 		// Make link to view page
-		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, '', BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+		$str .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($id, '', BackendUtility::BEgetRootLine($id))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 		return $str;
 	}
 

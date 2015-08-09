@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Info\Controller;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -55,9 +57,15 @@ class InfoModuleController extends BaseScriptClass {
 	protected $moduleName = 'web_info';
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->languageService = $GLOBALS['LANG'];
 		$this->languageService->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
 
@@ -149,7 +157,7 @@ class InfoModuleController extends BaseScriptClass {
 					BackendUtility::BEgetRootLine($this->pageinfo['uid']))
 			) . '" ' .
 			'title="' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' .
-				IconUtility::getSpriteIcon('actions-document-view') .
+			$this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) .
 			'</a>';
 		// Shortcut
 		if ($this->backendUser->mayMakeShortcut()) {

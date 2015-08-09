@@ -1,10 +1,13 @@
 {namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Permission" />
 
 <f:section name="iconButtons">
-	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}"><be:spriteManagerIcon iconName="actions-document-view" /></a>
+	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}">
+		<core:icon identifier="actions-document-view" size="small" />
+	</a>
 </f:section>
 
 <f:section name="headline">

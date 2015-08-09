@@ -257,7 +257,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$onClick = htmlspecialchars(BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)));
 				$buttons['view'] = '<a href="#" onclick="' . $onClick . '" title="'
 					. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+					. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 			}
 			// New record
 			if (!$module->modTSconfig['properties']['noCreateRecordsLink']) {
@@ -1234,7 +1234,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						($table === 'tt_content' ? '#' . $row['uid'] : '')
 					)
 				) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
-				. IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+				. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 			$this->addActionToCellGroup($cells, $viewAction, 'view');
 		}
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Impexp\Controller;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -70,6 +72,18 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @var string
 	 */
 	protected $treeHTML = '';
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * @return void
@@ -172,7 +186,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					);
 					$title = $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE);
 					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $title . '">'
-						. IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+						. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 		}

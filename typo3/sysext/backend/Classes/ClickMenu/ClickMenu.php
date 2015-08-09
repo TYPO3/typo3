@@ -765,7 +765,8 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_view($id, $anchor = '') {
-		return $this->linkItem($this->label('view'), IconUtility::getSpriteIcon('actions-document-view'), BackendUtility::viewOnClick($id, '', NULL, $anchor) . ';');
+		$icon = $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL);
+		return $this->linkItem($this->label('view'), $icon, BackendUtility::viewOnClick($id, '', NULL, $anchor) . ';');
 	}
 
 	/**

@@ -20,6 +20,8 @@ use TYPO3\CMS\Backend\RecordList\AbstractRecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -172,6 +174,18 @@ class FileList extends AbstractRecordList {
 	 */
 	public function injectResourceFactory(ResourceFactory $resourceFactory) {
 		$this->resourceFactory = $resourceFactory;
+	}
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -877,7 +891,7 @@ class FileList extends AbstractRecordList {
 			$fileUrl = $fileOrFolderObject->getPublicUrl(TRUE);
 			if ($fileUrl) {
 				$aOnClick = 'return top.openUrlInWindow(' . GeneralUtility::quoteJSvalue($fileUrl) . ', \'WebFile\');';
-				$cells['view'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.view') . '">' . IconUtility::getSpriteIcon('actions-document-view') . '</a>';
+				$cells['view'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.view') . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
 			} else {
 				$cells['view'] = $this->spaceIcon;
 			}

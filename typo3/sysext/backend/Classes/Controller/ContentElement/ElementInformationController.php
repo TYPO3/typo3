@@ -593,7 +593,7 @@ class ElementInformationController {
 			$viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
 			$pageActionIcons .= '
 				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">
-					' . IconUtility::getSpriteIcon('actions-document-view') . '
+					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '
 				</a>';
 		}
 
