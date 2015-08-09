@@ -54,6 +54,9 @@
 			<trans-unit id="recursiveDeleteWarning" xml:space="preserve">
 				<source>You can recover pages with subpages only with the recycler. Are you sure you want to delete these pages?</source>
 			</trans-unit>
+			<trans-unit id="pasteIntoColumn">
+				<source>Paste into this column</source>
+			</trans-unit>
 			<trans-unit id="editColumn" xml:space="preserve">
 				<source>Edit this column</source>
 			</trans-unit>
