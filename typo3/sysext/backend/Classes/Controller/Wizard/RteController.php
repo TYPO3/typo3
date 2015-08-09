@@ -200,8 +200,6 @@ class RteController extends AbstractWizardController {
 	 * @return void
 	 */
 	public function printContent() {
-		$this->content .= $this->doc->endPage();
-		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 
