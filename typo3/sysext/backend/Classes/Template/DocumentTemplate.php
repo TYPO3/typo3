@@ -1110,7 +1110,7 @@ function jumpToUrl(URL) {
 	 * @return string HTML body tag
 	 */
 	public function docBodyTagBegin() {
-		return '<body ' . trim(($this->bodyTagAdditions . ($this->bodyTagId ? ' id="' . $this->bodyTagId . '"' : ''))) . '>';
+		return '<body ' . trim($this->bodyTagAdditions . ($this->bodyTagId ? ' id="' . $this->bodyTagId . '"' : '')) . '>';
 	}
 
 	/**

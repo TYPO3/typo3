@@ -1266,7 +1266,7 @@ class QueryGenerator {
 		$prefix = $this->enablePrefix ? $this->table . '.' : '';
 		if (!$first) {
 			// Is it OK to insert the AND operator if none is set?
-			$qs .= trim(($conf['operator'] ?: 'AND')) . ' ';
+			$qs .= trim($conf['operator'] ?: 'AND') . ' ';
 		}
 		$qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$conf['comparison']]);
 		$inputVal = $this->cleanInputVal($conf);

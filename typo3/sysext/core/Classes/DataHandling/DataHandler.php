@@ -7269,7 +7269,7 @@ class DataHandler {
 	public function getCopyHeader($table, $pid, $field, $value, $count, $prevTitle = '') {
 		// Set title value to check for:
 		if ($count) {
-			$checkTitle = $value . rtrim((' ' . sprintf($this->prependLabel($table), $count)));
+			$checkTitle = $value . rtrim(' ' . sprintf($this->prependLabel($table), $count));
 		} else {
 			$checkTitle = $value;
 		}

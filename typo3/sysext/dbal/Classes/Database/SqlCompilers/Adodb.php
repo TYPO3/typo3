@@ -436,14 +436,14 @@ class Adodb extends AbstractCompiler {
 							switch (TRUE) {
 								case $this->databaseConnection->runningADOdbDriver('oci8'):
 									// Oracle only knows BITAND(x,y) - sigh
-									$output .= 'BITAND(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
+									$output .= 'BITAND(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
 									break;
 								default:
 									// MySQL, MS SQL Server, PostgreSQL support the &-syntax
-									$output .= trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+									$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 							}
 						} elseif ($v['calc']) {
-							$output .= trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . $v['calc'];
+							$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'];
 							if (isset($v['calc_table'])) {
 								$output .= trim(($v['calc_table'] ? $v['calc_table'] . '.' : '') . $v['calc_field']);
 							} else {

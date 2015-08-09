@@ -258,7 +258,7 @@ class CommandLineController {
 						}
 					}
 					foreach ($this->cli_options as $v) {
-						$this->cli_echo($v[0] . substr($this->cli_indent(rtrim(($v[1] . LF . $v[2])), ($maxLen + 4)), strlen($v[0])) . LF);
+						$this->cli_echo($v[0] . substr($this->cli_indent(rtrim($v[1] . LF . $v[2]), $maxLen + 4), strlen($v[0])) . LF);
 					}
 					$this->cli_echo(LF);
 					break;

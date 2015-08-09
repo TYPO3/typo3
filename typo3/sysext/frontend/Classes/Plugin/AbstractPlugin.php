@@ -550,7 +550,7 @@ class AbstractPlugin {
 		$wrapper['disabledLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
 		$wrapper['inactiveLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
 		$wrapper['activeLinkWrap'] = '<td' . $this->pi_classParam('browsebox-SCell') . ' nowrap="nowrap"><p>|</p></td>';
-		$wrapper['browseLinksWrap'] = trim(('<table ' . $tableParams)) . '><tr>|</tr></table>';
+		$wrapper['browseLinksWrap'] = rtrim('<table ' . $tableParams) . '><tr>|</tr></table>';
 		$wrapper['showResultsWrap'] = '<p>|</p>';
 		$wrapper['browseBoxWrap'] = '
 		<!--
@@ -670,7 +670,7 @@ class AbstractPlugin {
 		-->
 		<div' . $this->pi_classParam('searchbox') . '>
 			<form action="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" style="margin: 0 0 0 0;">
-			<' . trim(('table ' . $tableParams)) . '>
+			<' . rtrim('table ' . $tableParams) . '>
 				<tr>
 					<td><input type="text" name="' . $this->prefixId . '[sword]" value="' . htmlspecialchars($this->piVars['sword']) . '"' . $this->pi_classParam('searchbox-sword') . ' /></td>
 					<td><input type="submit" value="' . $this->pi_getLL('pi_list_searchBox_search', 'Search', TRUE) . '"' . $this->pi_classParam('searchbox-button') . ' />' . '<input type="hidden" name="no_cache" value="1" />' . '<input type="hidden" name="' . $this->prefixId . '[pointer]" value="" />' . '</td>
@@ -700,7 +700,7 @@ class AbstractPlugin {
 			Mode selector (menu for list):
 		-->
 		<div' . $this->pi_classParam('modeSelector') . '>
-			<' . trim(('table ' . $tableParams)) . '>
+			<' . rtrim('table ' . $tableParams) . '>
 				<tr>
 					' . implode('', $cells) . '
 				</tr>
@@ -738,7 +738,7 @@ class AbstractPlugin {
 			Record list:
 		-->
 		<div' . $this->pi_classParam('listrow') . '>
-			<' . trim(('table ' . $tableParams)) . '>
+			<' . rtrim('table ' . $tableParams) . '>
 				' . implode('', $tRows) . '
 			</table>
 		</div>';

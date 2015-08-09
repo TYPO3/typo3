@@ -1900,7 +1900,7 @@ class ContentObjectRenderer {
 			$aTagParams = ' ' . $conf['ATagParams'];
 		}
 		if ($addGlobal) {
-			$aTagParams = ' ' . trim(($GLOBALS['TSFE']->ATagParams . $aTagParams));
+			$aTagParams = ' ' . trim($GLOBALS['TSFE']->ATagParams . $aTagParams);
 		}
 		// Extend params
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getATagParamsPostProc'])) {

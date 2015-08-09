@@ -1309,7 +1309,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							if ($remapParagraphTag === 'DIV') {
 								$tagName = 'div';
 							}
-							$subLines[$sk] = '<' . trim(($tagName . ' ' . $this->compileTagAttribs($newAttribs))) . '>' . $subLines[$sk] . '</' . $tagName . '>';
+							$subLines[$sk] = '<' . trim($tagName . ' ' . $this->compileTagAttribs($newAttribs)) . '>' . $subLines[$sk] . '</' . $tagName . '>';
 						}
 					}
 				}

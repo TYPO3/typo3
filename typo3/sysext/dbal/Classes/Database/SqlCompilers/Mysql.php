@@ -261,7 +261,7 @@ class Mysql extends AbstractCompiler {
 						$output .= ')';
 					} else {
 						// Set field/table with modifying prefix if any:
-						$output .= ' ' . trim(($v['modifier'] . ' ' . ($v['table'] ? $v['table'] . '.' : '') . $v['field']));
+						$output .= ' ' . trim($v['modifier'] . ' ' . ($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 						// Set calculation, if any:
 						if ($v['calc']) {
 							$output .= $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];

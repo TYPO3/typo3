@@ -952,7 +952,7 @@ class HtmlParser {
 								}
 								if ($setTag) {
 									// Setting the tag
-									$newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . trim(($tagParts[0] . ' ' . $tagParts[1])) . ($emptyTag ? ' /' : '') . $gt, $addConfig, $endTag, $lt == '&lt;');
+									$newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . trim($tagParts[0] . ' ' . $tagParts[1]) . ($emptyTag ? ' /' : '') . $gt, $addConfig, $endTag, $lt == '&lt;');
 								}
 							}
 						} else {
@@ -1083,7 +1083,7 @@ class HtmlParser {
 				if ($somethingDone) {
 					$tagParts = preg_split('/\\s+/s', $v, 2);
 					$tagParts[1] = $this->compileTagAttribs($params[0], $params[1]);
-					$parts[$k] = '<' . trim((strtolower($firstTagName) . ' ' . $tagParts[1])) . $tagEnd;
+					$parts[$k] = '<' . trim(strtolower($firstTagName) . ' ' . $tagParts[1]) . $tagEnd;
 				}
 			}
 		}
@@ -1514,7 +1514,7 @@ class HtmlParser {
 					// Set attributes: lowercase, always in quotes, with htmlspecialchars converted.
 					$outA[] = $attrib_name . '="' . $this->bidir_htmlspecialchars($attrib_value, 2) . '"';
 				}
-				$newTag = '<' . trim(($tagName . ' ' . implode(' ', $outA)));
+				$newTag = '<' . trim($tagName . ' ' . implode(' ', $outA));
 				// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
 				if (GeneralUtility::inList('img,br,hr,meta,link,base,area,input,param,col', $tagName) || substr($value, -2) == '/>') {
 					$newTag .= ' />';

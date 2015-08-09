@@ -539,7 +539,7 @@ class BackendUtility {
 							}
 							$fieldLabel = !empty($field['TCEforms']['label']) ? $lang->sl($field['TCEforms']['label']) : $fieldName;
 							$fieldIdent = $table . ':' . $tableField . ';' . $extIdent . ';' . $sheetName . ';' . $fieldName;
-							$excludeArrayTable[] = array(trim(($labelPrefix . ' ' . $extTitle), ': ') . ': ' . $fieldLabel, $fieldIdent);
+							$excludeArrayTable[] = array(trim($labelPrefix . ' ' . $extTitle, ': ') . ': ' . $fieldLabel, $fieldIdent);
 						}
 					}
 				}

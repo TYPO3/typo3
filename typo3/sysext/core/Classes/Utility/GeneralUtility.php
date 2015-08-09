@@ -5050,7 +5050,7 @@ Connection: close
 		$valListCnt = count($valueList);
 		foreach ($arr as $key => $value) {
 			if (!$valListCnt || in_array($key, $valueList)) {
-				$str .= ((string)$key . trim((': ' . self::fixed_lgd_cs(str_replace(LF, '|', (string)$value), $valueLength)))) . '; ';
+				$str .= (string)$key . trim(': ' . self::fixed_lgd_cs(str_replace(LF, '|', (string)$value), $valueLength)) . '; ';
 			}
 		}
 		return $str;
