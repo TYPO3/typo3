@@ -20,7 +20,8 @@
  * Font Awesome icons are prefixed with #TSFE_ADMIN_PANEL_FORM to prevent issues with
  * CSS from the website that uses Font Awesome too.
  */
-#TSFE_ADMIN_PANEL_FORM .fa, .fa:before {
+#TSFE_ADMIN_PANEL_FORM .fa,
+#TSFE_ADMIN_PANEL_FORM .fa:before {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: 15px;
