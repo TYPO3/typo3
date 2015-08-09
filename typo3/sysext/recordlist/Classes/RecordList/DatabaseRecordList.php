@@ -1716,7 +1716,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// Table with the field selector::
 		$content = $formElements[0] . '
 			<input type="hidden" name="displayFields[' . $table . '][]" value="">
-			<div class="table-fit">
+			<div class="table-fit table-scrollable">
 				<table border="0" cellpadding="0" cellspacing="0" class="table table-transparent table-hover">
 					<thead>
 						<tr>

@@ -11186,6 +11186,10 @@ body#ext-backend-Modules-FileSystemNavigationFrame-index-php {
 .pagination-block {
   display: block;
 }
+.fieldSelectBox .table-scrollable {
+  overflow: auto;
+  max-height: 210px;
+}
 .fieldSelectBox table .col-title {
   padding: 0 6px;
 }
