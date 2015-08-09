@@ -112,7 +112,7 @@ class AjaxLoginHandler
         } else {
             $backendUser->fetchUserSession(true);
             $ses_tstamp = $backendUser->user['ses_tstamp'];
-            $timeout = $backendUser->auth_timeout_field;
+            $timeout = $backendUser->sessionTimeout;
             // If 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
             // 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
             $session['will_time_out'] = $GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120;

@@ -246,7 +246,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
      * if string: The string is field name from the user table where the timeout can be found.
      * @var string|int
      */
-    public $auth_timeout_field = 6000;
+    public $sessionTimeout = 6000;
 
     /**
      * @var int

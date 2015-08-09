@@ -129,19 +129,29 @@ abstract class AbstractUserAuthentication
     public $formfield_status = '';
 
     /**
-     * Server session lifetime.
-     * If > 0: session-timeout in seconds.
-     * If FALSE or < 0: no timeout.
-     * If string: The value is a field name from the user table where the timeout can be found.
-     * @var int|string|FALSE
+     * Session timeout (on the server)
+     *
+     * If >0: session-timeout in seconds.
+     * If 0: no timeout.
+     *
+     * @var int
      */
-    public $auth_timeout_field = 0;
+    public $sessionTimeout = 0;
 
     /**
-     * Client session lifetime.
-     * 0 = Session-cookie.
-     * If session-cookies, the browser will stop the session when the browser is closed.
-     * Otherwise this specifies the lifetime of a cookie that keeps the session.
+     * Name for a field to fetch the server session timeout from.
+     * If not empty this is a field name from the user table where the timeout can be found.
+     * @var string
+     */
+    public $auth_timeout_field = '';
+
+    /**
+     * Lifetime for the session-cookie (on the client)
+     *
+     * If >0: permanent cookie with given lifetime
+     * If 0: session-cookie
+     * Session-cookie means the browser will remove it when the browser is closed.
+     *
      * @var int
      */
     public $lifetime = 0;
@@ -149,7 +159,7 @@ abstract class AbstractUserAuthentication
     /**
      * GarbageCollection
      * Purge all server session data older than $gc_time seconds.
-     * 0 = default to $this->auth_timeout_field or use 86400 seconds (1 day) if $this->auth_timeout_field == 0
+     * 0 = default to $this->sessionTimeout or use 86400 seconds (1 day) if $this->sessionTimeout == 0
      * @var int
      */
     public $gc_time = 0;
@@ -439,11 +449,11 @@ abstract class AbstractUserAuthentication
             }
         }
         // Set $this->gc_time if not explicitly specified
-        if ($this->gc_time == 0) {
-            // Default to 1 day if $this->auth_timeout_field is 0
-            $this->gc_time = $this->auth_timeout_field == 0 ? 86400 : $this->auth_timeout_field;
+        if ($this->gc_time === 0) {
+            // Default to 86400 seconds (1 day) if $this->sessionTimeout is 0
+            $this->gc_time = $this->sessionTimeout === 0 ? 86400 : $this->sessionTimeout;
         }
-        // If we're lucky we'll get to clean up old sessions....
+        // If we're lucky we'll get to clean up old sessions
         if (rand() % 100 <= $this->gc_probability) {
             $this->gc();
         }
@@ -911,12 +921,13 @@ abstract class AbstractUserAuthentication
         }
         if ($user) {
             // A user was found
-            if (MathUtility::canBeInterpretedAsInteger($this->auth_timeout_field)) {
-                // Get timeout from object
-                $timeout = (int)$this->auth_timeout_field;
-            } else {
+            $user['ses_tstamp'] = (int)$user['ses_tstamp'];
+
+            if (!empty($this->auth_timeout_field)) {
                 // Get timeout-time from usertable
                 $timeout = (int)$user[$this->auth_timeout_field];
+            } else {
+                $timeout = $this->sessionTimeout;
             }
             // If timeout > 0 (TRUE) and current time has not exceeded the latest sessions-time plus the timeout in seconds then accept user
             // Use a gracetime-value to avoid updating a session-record too often

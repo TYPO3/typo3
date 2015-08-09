@@ -1071,7 +1071,7 @@ class Bootstrap
         $backendUser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
         $backendUser->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         $backendUser->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
-        $backendUser->auth_timeout_field = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
+        $backendUser->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
             $backendUser->dontSetCookie = true;
         }

@@ -38,6 +38,14 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     protected $sessionDataLifetime = 86400;
 
     /**
+     * if > 0 : session-timeout in seconds.
+     * if FALSE/<0 : no timeout.
+     * if string: The string is field name from the user table where the timeout can be found.
+     * @var string|int
+     */
+    public $sessionTimeout = 6000;
+
+    /**
      * @var string
      */
     public $usergroup_column = 'usergroup';
@@ -140,7 +148,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->formfield_uname = 'user';
         $this->formfield_uident = 'pass';
         $this->formfield_status = 'logintype';
-        $this->auth_timeout_field = 6000;
         $this->sendNoCacheHeaders = false;
         $this->getFallBack = true;
         $this->getMethodEnabled = true;
@@ -168,9 +175,9 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function start()
     {
-        if ((int)$this->auth_timeout_field > 0 && (int)$this->auth_timeout_field < $this->lifetime) {
+        if ((int)$this->sessionTimeout > 0 && $this->sessionTimeout < $this->lifetime) {
             // If server session timeout is non-zero but less than client session timeout: Copy this value instead.
-            $this->auth_timeout_field = $this->lifetime;
+            $this->sessionTimeout = $this->lifetime;
         }
         $this->sessionDataLifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'];
         if ($this->sessionDataLifetime <= 0) {
