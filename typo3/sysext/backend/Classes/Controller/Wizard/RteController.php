@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -27,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script class for rendering the full screen RTE display
  */
-class RteController extends AbstractWizardController {
+class RteController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Document template object
@@ -106,6 +109,22 @@ class RteController extends AbstractWizardController {
 		// the feature that the RTE spans the whole height of the page!!!
 		$this->doc->divClass = '';
 		$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('tce_db')) . '" method="post" enctype="multipart/form-data" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
@@ -198,8 +217,10 @@ class RteController extends AbstractWizardController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

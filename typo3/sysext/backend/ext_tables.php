@@ -69,48 +69,6 @@ if (TYPO3_MODE === 'BE') {
 		'EXT:backend/Modules/File/Administration/'
 	);
 
-	// Register edit wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_edit',
-		'EXT:backend/Modules/Wizards/EditWizard/'
-	);
-
-	// Register add wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_add',
-		'EXT:backend/Modules/Wizards/AddWizard/'
-	);
-
-	// Register list wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_list',
-		'EXT:backend/Modules/Wizards/ListWizard/'
-	);
-
-	// Register table wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_table',
-		'EXT:backend/Modules/Wizards/TableWizard/'
-	);
-
-	// Register rte wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_rte',
-		'EXT:backend/Modules/Wizards/RteWizard/'
-	);
-
-	// Register colorpicker wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_colorpicker',
-		'EXT:backend/Modules/Wizards/ColorpickerWizard/'
-	);
-
-	// Register backend_layout wizard
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'wizard_backend_layout',
-		'EXT:backend/Modules/Wizards/BackendLayoutWizard/'
-	);
-
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
 		'web',
 		'layout',

@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -29,7 +32,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Script Class for rendering the Table Wizard
  */
-class TableController extends AbstractWizardController {
+class TableController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Document template object
@@ -146,6 +149,22 @@ class TableController extends AbstractWizardController {
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
+	}
+
+	/**
 	 * Main function, rendering the table wizard
 	 *
 	 * @return void
@@ -171,8 +190,10 @@ class TableController extends AbstractWizardController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

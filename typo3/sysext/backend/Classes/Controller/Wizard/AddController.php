@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -25,7 +28,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
  */
-class AddController extends AbstractWizardController {
+class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Content accumulation for the module.
@@ -135,6 +138,21 @@ class AddController extends AbstractWizardController {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		return $response;
 	}
 
 	/**

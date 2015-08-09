@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,7 +25,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in FormEngine somewhere
  */
-class EditController extends AbstractWizardController {
+class EditController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Wizard parameters, coming from FormEngine linking to the wizard.
@@ -37,6 +40,13 @@ class EditController extends AbstractWizardController {
 	 * @var int
 	 */
 	public $doClose;
+
+	/**
+	 * A little JavaScript to close the open window.
+	 *
+	 * @var string
+	 */
+	protected $closeWindow = '<script language="javascript" type="text/javascript">close();</script>';
 
 	/**
 	 * Constructor
@@ -60,14 +70,30 @@ class EditController extends AbstractWizardController {
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$content = $this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($content);
+		return $response;
+	}
+
+	/**
 	 * Main function
 	 * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will just close.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function main() {
 		if ($this->doClose) {
-			$this->closeWindow();
+			return $this->closeWindow;
 		}
 		// Initialize:
 		$table = $this->P['table'];
@@ -105,7 +131,7 @@ class EditController extends AbstractWizardController {
 			$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 			HttpUtility::redirect($url);
 		} else {
-			$this->closeWindow();
+			return $this->closeWindow;
 		}
 	}
 
@@ -113,9 +139,11 @@ class EditController extends AbstractWizardController {
 	 * Printing a little JavaScript to close the open window.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function closeWindow() {
-		echo '<script language="javascript" type="text/javascript">close();</script>';
+		GeneralUtility::logDeprecatedFunction();
+		echo $this->closeWindow;
 		die;
 	}
 

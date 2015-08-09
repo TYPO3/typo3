@@ -31,5 +31,47 @@ return [
 	'logout' => [
 		'path' => '/logout',
 		'controller' => Controller\LogoutController::class
-	]
+	],
+
+	// Register backend_layout wizard
+	'wizard_backend_layout' => [
+		'path' => '/wizard/backendlayout',
+		'controller' => \TYPO3\CMS\Backend\Controller\BackendLayoutWizardController::class
+	],
+
+	// Register colorpicker wizard
+	'wizard_colorpicker' => [
+		'path' => '/wizard/colorpicker',
+		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\ColorpickerController::class
+	],
+
+	// Register table wizard
+	'wizard_table' => [
+		'path' => '/wizard/table',
+		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\TableController::class
+	],
+
+	// Register rte wizard
+	'wizard_rte' => [
+		'path' => '/wizard/rte',
+		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\RteController::class
+	],
+
+	// Register add wizard
+	'wizard_add' => [
+		'path' => '/wizard/add',
+		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\AddController::class
+	],
+
+	// Register list wizard
+	'wizard_list' => [
+		'path' => '/wizard/list',
+		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\ListController::class
+	],
+
+	// Register edit wizard
+	'wizard_edit' => [
+		'path' => '/wizard/edit',
+		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\EditController::class
+	],
 ];

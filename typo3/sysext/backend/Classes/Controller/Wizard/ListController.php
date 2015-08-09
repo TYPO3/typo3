@@ -14,13 +14,16 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in FormEngine
  */
-class ListController extends AbstractWizardController {
+class ListController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * @var int
@@ -57,6 +60,21 @@ class ListController extends AbstractWizardController {
 		$this->P = GeneralUtility::_GP('P');
 		$this->table = GeneralUtility::_GP('table');
 		$this->id = GeneralUtility::_GP('id');
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		return $response;
 	}
 
 	/**
