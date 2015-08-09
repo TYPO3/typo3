@@ -57,7 +57,15 @@ class Request extends Message implements RequestInterface {
 		'PATCH',
 		'POST',
 		'PUT',
-		'TRACE'
+		'TRACE',
+		// WebDAV methods
+		'COPY',
+		'LOCK',
+		'MKCOL',
+		'MOVE',
+		'PROPFIND',
+		'PROPPATCH',
+		'UNLOCK'
 	);
 
 	/**
