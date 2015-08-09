@@ -105,6 +105,30 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'desktop',
 			)
 		),
+		'actions-edit-copy' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'copy',
+			)
+		),
+		'actions-edit-copy-release' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'copy text-danger',
+			)
+		),
+		'actions-edit-cut' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'scissors',
+			)
+		),
+		'actions-edit-cut-release' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'scissors text-danger',
+			)
+		),
 
 		// OVERLAYS
 		'overlay-read-only' => array(

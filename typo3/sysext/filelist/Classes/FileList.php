@@ -182,7 +182,7 @@ class FileList extends AbstractRecordList {
 	protected $iconFactory;
 
 	/**
-	 * Constructor
+	 * Construct
 	 */
 	public function __construct() {
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -830,12 +830,23 @@ class FileList extends AbstractRecordList {
 		$fullName = $fileOrFolderObject->getName();
 		$md5 = GeneralUtility::shortmd5($fullIdentifier);
 		// For normal clipboard, add copy/cut buttons:
-		if ($this->clipObj->current == 'normal') {
+		if ($this->clipObj->current === 'normal') {
 			$isSel = $this->clipObj->isSelected('_FILE', $md5);
-			$cells[] = '<a class="btn btn-default"" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel == 'copy'))) . '">' . IconUtility::getSpriteIcon(('actions-edit-copy' . ($isSel == 'copy' ? '-release' : '')), array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', TRUE))) . '</a>';
+			$copyTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', TRUE);
+			$cutTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE);
+			$copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL);
+			$cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL);
+
+			if ($isSel === 'copy') {
+				$copyIcon = $this->iconFactory->getIcon('actions-edit-copy-release', Icon::SIZE_SMALL);
+			} elseif ($isSel === 'cut') {
+				$cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL);
+			}
+
+			$cells[] = '<a class="btn btn-default"" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel === 'copy'))) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
 			// we can only cut if file can be moved
 			if ($fileOrFolderObject->checkActionPermission('move')) {
-				$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel == 'cut'))) . '">' . IconUtility::getSpriteIcon(('actions-edit-cut' . ($isSel == 'cut' ? '-release' : '')), array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE))) . '</a>';
+				$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel === 'cut'))) . '" title="' . $cutTitle . '">' . $cutIcon . '</a>';
 			} else {
 				$cells[] = $this->spaceIcon;
 			}

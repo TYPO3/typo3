@@ -1510,22 +1510,31 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// Return blank, if disabled:
 		// Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
 		// For the "Normal" pad:
-		if ($this->clipObj->current == 'normal') {
+		if ($this->clipObj->current === 'normal') {
 			// Show copy/cut icons:
 			$isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
 			if ($isL10nOverlay || !$this->overlayEditLockPermissions($table, $row)) {
 				$cells['copy'] = $this->spaceIcon;
 				$cells['cut'] = $this->spaceIcon;
 			} else {
+				$copyIcon = $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL);
+				$cutIcon = $this->iconFactory->getIcon('actions-edit-cut', Icon::SIZE_SMALL);
+
+				if ($isSel === 'copy') {
+					$copyIcon = $this->iconFactory->getIcon('actions-edit-copy-release', Icon::SIZE_SMALL);
+				} elseif ($isSel === 'cut') {
+					$cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL);
+				}
+
 				$cells['copy'] = '<a class="btn btn-default" href="#" onclick="'
-					. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel == 'copy'), array('returnUrl' => '')) . '\');')
+					. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel === 'copy'), array('returnUrl' => '')) . '\');')
 					. '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.copy', TRUE) . '">'
-					. (!$isSel == 'copy' ? IconUtility::getSpriteIcon('actions-edit-copy') : IconUtility::getSpriteIcon('actions-edit-copy-release')) . '</a>';
+					. $copyIcon . '</a>';
 				if (TRUE) {
 					$cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-						. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel == 'cut'), array('returnUrl' => '')) . '\');')
+						. htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 0, ($isSel === 'cut'), array('returnUrl' => '')) . '\');')
 						. '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.cut', TRUE) . '">'
-						. (!$isSel == 'cut' ? IconUtility::getSpriteIcon('actions-edit-cut') : IconUtility::getSpriteIcon('actions-edit-cut-release')) . '</a>';
+						. $cutIcon . '</a>';
 				} else {
 					$cells['cut'] = $this->spaceIcon;
 				}
