@@ -140,6 +140,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'scissors text-danger',
 			)
 		),
+		'actions-edit-download' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'download',
+			)
+		),
 
 		// OVERLAYS
 		'overlay-read-only' => array(

@@ -308,7 +308,7 @@ class ElementInformationController {
 			if ($url) {
 				$downloadLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
-						' . IconUtility::getSpriteIcon('actions-edit-download') . '
+						' . $this->iconFactory->getIcon('actions-edit-download', Icon::SIZE_SMALL) . '
 						' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) . '
 					</a>';
 			}
