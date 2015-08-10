@@ -482,15 +482,15 @@ class Adodb extends AbstractCompiler {
 								}
 								if (strtoupper(substr($v['comparator'], -6)) === 'BINARY') {
 									if ($isLob) {
-										$output .= '(dbms_lob.instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ', ' . $compareValue . ',1,1) > 0)';
+										$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
 									} else {
 										$output .= '(instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ', ' . $compareValue . ',1,1) > 0)';
 									}
 								} else {
 									if ($isLob) {
-										$output .= '(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
+										$output .= '(dbms_lob.instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
 									} else {
-										$output .= '(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
+										$output .= '(instr(LOWER(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . '), ' . GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
 									}
 								}
 								break;
