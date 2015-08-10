@@ -154,7 +154,7 @@ abstract class AbstractFormElement extends AbstractNode {
 		foreach ($wizConf as $wizardIdentifier => $wizardConfiguration) {
 			if (!isset($wizardConfiguration['module']['name']) && isset($wizardConfiguration['script'])) {
 				throw new \InvalidArgumentException('The way registering a wizard in TCA has changed in 6.2 and was removed in CMS 7. '
-					. 'Please set module[name]=module_name instead of using script=path/to/sctipt.php in your TCA. ', 1437750231);
+					. 'Please set module[name]=module_name instead of using script=path/to/script.php in your TCA. ', 1437750231);
 			}
 
 			// If an identifier starts with "_", this is a configuration option like _POSITION and not a wizard
