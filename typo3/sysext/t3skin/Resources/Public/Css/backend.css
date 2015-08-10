@@ -7810,6 +7810,9 @@ button.close {
     transform: rotate(359deg);
   }
 }
+.icon-state-disabled .icon-markup {
+  opacity: 0.5;
+}
 .icon-size-small {
   height: 16px;
   width: 16px;

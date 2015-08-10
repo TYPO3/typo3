@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Icon\IconState;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\Icon
@@ -44,7 +45,7 @@ class IconTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected function setUp() {
 		$iconFactory = new IconFactory();
-		$this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier);
+		$this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier, IconState::cast(IconState::STATE_DISABLED));
 	}
 
 	/**
@@ -74,4 +75,12 @@ class IconTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getSizedentifierReturnsCorrectIdentifier() {
 		$this->assertEquals(Icon::SIZE_SMALL, $this->subject->getSize());
 	}
+
+	/**
+	 * @test
+	 */
+	public function getStateReturnsCorrectIdentifier() {
+		$this->assertTrue($this->subject->getState()->equals(IconState::STATE_DISABLED));
+	}
+
 }

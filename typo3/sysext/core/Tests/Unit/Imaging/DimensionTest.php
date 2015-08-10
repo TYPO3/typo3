@@ -15,8 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
  */
 
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Imaging\Dimension

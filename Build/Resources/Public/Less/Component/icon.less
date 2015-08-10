@@ -25,6 +25,7 @@
 @icon-size-default:      32px;
 @icon-size-large:        48px;
 @icon-unify-modifier:    0.86;
+@icon-opacity-disabled:  0.5;
 
 //
 // Component
@@ -90,6 +91,15 @@
 	100% {
 		-webkit-transform: rotate(359deg);
 		transform: rotate(359deg);
+	}
+}
+
+//
+// States
+//
+.icon-state-disabled {
+	.icon-markup {
+		opacity: @icon-opacity-disabled;
 	}
 }
 

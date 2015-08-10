@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,17 +37,19 @@ class IconFactory {
 
 	/**
 	 * @param string $identifier
-	 * @param string $size
+	 * @param string $size "large", "small" or "default", see the constants of the Icon class
 	 * @param string $overlayIdentifier
+	 * @param IconState $state
 	 *
 	 * @return Icon
 	 */
-	public function getIcon($identifier, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = NULL) {
+	public function getIcon($identifier, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = NULL, IconState $state = NULL) {
 		if (!$this->iconRegistry->isRegistered($identifier)) {
 			$identifier = $this->iconRegistry->getDefaultIconIdentifier();
 		}
 
 		$iconConfiguration = $this->iconRegistry->getIconConfigurationByIdentifier($identifier);
+		$iconConfiguration['state'] = $state;
 		$icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
 		/** @var IconProviderInterface $iconProvider */
 		$iconProvider = GeneralUtility::makeInstance($iconConfiguration['provider']);
@@ -58,7 +61,7 @@ class IconFactory {
 	 * Creates an icon object
 	 *
 	 * @param string $identifier
-	 * @param string $size "large" "small" or "default", see the constants of the Icon class
+	 * @param string $size "large", "small" or "default", see the constants of the Icon class
 	 * @param string $overlayIdentifier
 	 * @param array $iconConfiguration the icon configuration array
 	 * @return Icon
@@ -67,6 +70,7 @@ class IconFactory {
 		$icon = GeneralUtility::makeInstance(Icon::class);
 		$icon->setIdentifier($identifier);
 		$icon->setSize($size);
+		$icon->setState($iconConfiguration['state'] ?: new IconState());
 		if ($overlayIdentifier !== NULL) {
 			$icon->setOverlayIcon($this->getIcon($overlayIdentifier, Icon::SIZE_OVERLAY));
 		}

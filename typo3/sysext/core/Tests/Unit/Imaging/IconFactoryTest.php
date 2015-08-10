@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
  */
 
 use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -94,7 +93,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function getIconByIdentifierReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed() {
-		$this->assertContains('<span class="icon icon-size-default icon-actions-document-close">',
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-actions-document-close">',
 			$this->subject->getIcon($this->registeredIconIdentifier)->render());
 	}
 
@@ -103,7 +102,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider differentSizesDataProvider
 	 */
 	public function getIconByIdentifierAndSizeReturnsIconWithCorrectMarkupIfRegisteredIconIdentifierIsUsed($size) {
-		$this->assertContains('<span class="icon icon-size-' . $size['expected'] . ' icon-actions-document-close">',
+		$this->assertContains('<span class="icon icon-size-' . $size['expected'] . ' icon-state-default icon-actions-document-close">',
 			$this->subject->getIcon($this->registeredIconIdentifier, $size['input'])->render());
 	}
 
@@ -129,7 +128,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'additionalClasses' => 'fa-fw'
 			)
 		]);
-		$this->assertContains('<span class="icon icon-size-default icon-default-not-found">',
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-default-not-found">',
 			$this->subject->getIcon($this->notRegisteredIconIdentifier)->render());
 	}
 
@@ -147,7 +146,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'additionalClasses' => 'fa-fw'
 			)
 		]);
-		$this->assertContains('<span class="icon icon-size-' . $size['expected'] . ' icon-default-not-found">',
+		$this->assertContains('<span class="icon icon-size-' . $size['expected'] . ' icon-state-default icon-default-not-found">',
 			$this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render());
 	}
 
@@ -163,7 +162,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'spinning' => TRUE
 			)
 		]);
-		$this->assertContains('<span class="icon icon-size-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin">',
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin">',
 			$this->subject->getIcon($this->registeredSpinningIconIdentifier)->render());
 	}
 
