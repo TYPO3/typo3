@@ -1577,7 +1577,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			$cells['pasteInto'] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('', $row['uid']))
 				. '" onclick="' . htmlspecialchars('return ' . $this->clipObj->confirmMsg($table, $row, 'into', $elFromTable))
 				. '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', TRUE) . '">'
-				. IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';
+				. $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL) . '</a>';
 		}
 		/**
 		 * @hook makeClip: Allows to change clip-icons of records in list-module

@@ -1072,7 +1072,7 @@ class ClickMenu {
 			$conf = $loc;
 		}
 		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
-		return $this->linkItem($this->label('pasteinto'), IconUtility::getSpriteIcon('actions-document-paste-into'), $editOnClick . 'return false;');
+		return $this->linkItem($this->label('pasteinto'), $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL), $editOnClick . 'return false;');
 	}
 
 	/**

@@ -870,7 +870,7 @@ class FileList extends AbstractRecordList {
 				$elToConfirm[$key] = $clipBoardElement->getName();
 			}
 			if ($addPasteButton) {
-				$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullName, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-paste-into') . '</a>';
+				$cells[] = '<a class="btn btn-default" href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $fullIdentifier)) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $fullName, 'into', $elToConfirm)) . '" title="' . $this->getLanguageService()->getLL('clip_pasteInto', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL) . '</a>';
 			}
 		}
 		// Compile items into a DIV-element:

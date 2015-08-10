@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -96,6 +97,18 @@ abstract class AbstractFormElement extends AbstractNode {
 
 		$size = round($size * $compensationForLargeDocuments);
 		return ceil($size * $compensationForFormFields);
+	}
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Construct
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -625,7 +638,7 @@ abstract class AbstractFormElement extends AbstractNode {
 					<a href="#"
 						onclick="' . htmlspecialchars($aOnClick) . '"
 						title="' . htmlspecialchars(sprintf($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . '">
-						' . IconUtility::getSpriteIcon('actions-document-paste-into') . '
+						' . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL) . '
 					</a>';
 			}
 		}

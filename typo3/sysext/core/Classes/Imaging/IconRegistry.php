@@ -104,6 +104,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'check-square-o',
 			)
 		),
+		'actions-document-paste-into' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'clipboard',
+			)
+		),
 		'actions-document-view' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
