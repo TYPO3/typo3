@@ -11,18 +11,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 /* - - - - - - - - - - - - - - - - - - - - -
-Web > Template
+Template > Constant Editor
 - - - - - - - - - - - - - - - - - - - - - */
-#ext-tstemplate-ts-index-php dl.typo3-tstemplate-ceditor-constant dt {
+#ext-tstemplate-Modules-TsTemplate-index-php dl.typo3-tstemplate-ceditor-constant dt {
   display: inline;
   font-weight: bold;
   margin-right: 5px;
 }
-#ext-tstemplate-ts-index-php dl.typo3-tstemplate-ceditor-constant dd div.typo3-tstemplate-ceditor-row {
+#ext-tstemplate-Modules-TsTemplate-index-php dl.typo3-tstemplate-ceditor-constant dd div.typo3-tstemplate-ceditor-row {
   margin-top: 2px;
   padding: 3px;
 }
-#ext-tstemplate-ts-index-php dl.typo3-tstemplate-ceditor-constant dd div.typo3-tstemplate-ceditor-colorblock {
+#ext-tstemplate-Modules-TsTemplate-index-php dl.typo3-tstemplate-ceditor-constant dd div.typo3-tstemplate-ceditor-colorblock {
   display: -moz-inline-box;
   display: inline-block;
   margin-left: 5px;
