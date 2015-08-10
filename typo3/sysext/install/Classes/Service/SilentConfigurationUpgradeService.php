@@ -88,6 +88,8 @@ class SilentConfigurationUpgradeService
         // #72616
         'BE/XCLASS',
         'FE/XCLASS',
+        // #43085
+        'GFX/image_processing',
     );
 
     /**
@@ -118,8 +120,8 @@ class SilentConfigurationUpgradeService
         $this->configureBackendLoginSecurity();
         $this->configureSaltedPasswords();
         $this->setProxyAuthScheme();
+        $this->migrateImageProcessorSetting();
         $this->transferDeprecatedCurlSettings();
-        $this->disableImageMagickAndGdlibIfImageProcessingIsDisabled();
         $this->disableImageMagickDetailSettingsIfImageMagickIsDisabled();
         $this->setImageMagickDetailSettings();
         $this->removeObsoleteLocalConfigurationSettings();
@@ -316,48 +318,6 @@ class SilentConfigurationUpgradeService
     }
 
     /**
-     * GFX/im and GFX/gdlib must be set to 0 if image_processing is disabled.
-     *
-     * "Configuration presets" in install tool is not type safe, so value
-     * comparisons here are not type safe too, to not trigger changes to
-     * LocalConfiguration again.
-     *
-     * @return void
-     */
-    protected function disableImageMagickAndGdlibIfImageProcessingIsDisabled()
-    {
-        $changedValues = array();
-        try {
-            $currentImageProcessingValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/image_processing');
-        } catch (\RuntimeException $e) {
-            $currentImageProcessingValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/image_processing');
-        }
-        try {
-            $currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im');
-        } catch (\RuntimeException $e) {
-            $currentImValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im');
-        }
-        try {
-            $currentGdlibValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/gdlib');
-        } catch (\RuntimeException $e) {
-            $currentGdlibValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/gdlib');
-        }
-        // If image processing is fully disabled, im and gdlib sub settings must be 0
-        if (!$currentImageProcessingValue) {
-            if ($currentImValue != 0) {
-                $changedValues['GFX/im'] = 0;
-            }
-            if ($currentGdlibValue != 0) {
-                $changedValues['GFX/gdlib'] = 0;
-            }
-        }
-        if (!empty($changedValues)) {
-            $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
-            $this->throwRedirectException();
-        }
-    }
-
-    /**
      * Detail configuration of Image Magick settings must be cleared
      * if Image Magick handling is disabled.
      *
@@ -371,36 +331,41 @@ class SilentConfigurationUpgradeService
     {
         $changedValues = array();
         try {
-            $currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im');
+            $currentImValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_enabled');
         } catch (\RuntimeException $e) {
-            $currentImValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im');
+            $currentImValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_enabled');
         }
+
         try {
-            $currentImPathValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_path');
+            $currentImPathValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path');
         } catch (\RuntimeException $e) {
-            $currentImPathValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_path');
+            $currentImPathValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path');
         }
+
         try {
-            $currentImPathLzwValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_path_lzw');
+            $currentImPathLzwValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_path_lzw');
         } catch (\RuntimeException $e) {
-            $currentImPathLzwValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_path_lzw');
+            $currentImPathLzwValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_path_lzw');
         }
+
         try {
             $currentImageFileExtValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/imagefile_ext');
         } catch (\RuntimeException $e) {
             $currentImageFileExtValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/imagefile_ext');
         }
+
         try {
             $currentThumbnailsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/thumbnails');
         } catch (\RuntimeException $e) {
             $currentThumbnailsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/thumbnails');
         }
+
         if (!$currentImValue) {
             if ($currentImPathValue != '') {
-                $changedValues['GFX/im_path'] = '';
+                $changedValues['GFX/processor_path'] = '';
             }
             if ($currentImPathLzwValue != '') {
-                $changedValues['GFX/im_path_lzw'] = '';
+                $changedValues['GFX/processor_path_lzw'] = '';
             }
             if ($currentImageFileExtValue !== 'gif,jpg,jpeg,png') {
                 $changedValues['GFX/imagefile_ext'] = 'gif,jpg,jpeg,png';
@@ -429,32 +394,99 @@ class SilentConfigurationUpgradeService
     {
         $changedValues = array();
         try {
-            $currentIm5Value = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_version_5');
+            $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor');
         } catch (\RuntimeException $e) {
-            $currentIm5Value = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_version_5');
+            $currentProcessorValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor');
         }
+
         try {
-            $currentImMaskValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
+            $currentProcessorMaskValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng');
         } catch (\RuntimeException $e) {
-            $currentImMaskValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
+            $currentProcessorMaskValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng');
         }
+
         try {
-            $currentIm5EffectsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_v5effects');
+            $currentProcessorEffectsValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/processor_effects');
         } catch (\RuntimeException $e) {
-            $currentIm5EffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/im_v5effects');
+            $currentProcessorEffectsValue = $this->configurationManager->getDefaultConfigurationValueByPath('GFX/processor_effects');
         }
-        if ((string)$currentIm5Value !== '') {
-            if ($currentImMaskValue != 1) {
-                $changedValues['GFX/im_mask_temp_ext_gif'] = 1;
+
+        if ((string)$currentProcessorValue !== '') {
+            if ($currentProcessorMaskValue != 0) {
+                $changedValues['GFX/processor_allowTemporaryMasksAsPng'] = 0;
             }
-            if ($currentIm5Value === 'gm') {
-                if ($currentIm5EffectsValue != -1) {
-                    $changedValues['GFX/im_v5effects'] = -1;
+            if ($currentProcessorValue === 'GraphicsMagick') {
+                if ($currentProcessorEffectsValue != -1) {
+                    $changedValues['GFX/processor_effects'] = -1;
                 }
             }
         }
         if (!empty($changedValues)) {
             $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($changedValues);
+            $this->throwRedirectException();
+        }
+    }
+
+    /**
+     * Migrate the definition of the image processor from the configuration value
+     * im_version_5 to the setting processor.
+     *
+     * @return void
+     */
+    protected function migrateImageProcessorSetting()
+    {
+        $changedSettings = array();
+        $settingsToRename = array(
+            'GFX/im' => 'GFX/processor_enabled',
+            'GFX/im_version_5' => 'GFX/processor',
+            'GFX/im_v5effects' => 'GFX/processor_effects',
+            'GFX/im_path' => 'GFX/processor_path',
+            'GFX/im_path_lzw' => 'GFX/processor_path_lzw',
+            'GFX/im_mask_temp_ext_gif' => 'GFX/processor_allowTemporaryMasksAsPng',
+            'GFX/im_noScaleUp' => 'GFX/processor_allowUpscaling',
+            'GFX/im_noFramePrepended' => 'GFX/processor_allowFrameSelection',
+            'GFX/im_stripProfileCommand' => 'GFX/processor_stripColorProfileCommand',
+            'GFX/im_useStripProfileByDefault' => 'GFX/processor_stripColorProfileByDefault',
+            'GFX/colorspace' => 'GFX/processor_colorspace',
+        );
+
+        foreach ($settingsToRename as $oldPath => $newPath) {
+            try {
+                $value = $this->configurationManager->getLocalConfigurationValueByPath($oldPath);
+                $this->configurationManager->setLocalConfigurationValueByPath($newPath, $value);
+                $changedSettings[$oldPath] = true;
+            } catch (\RuntimeException $e) {
+                // If an exception is thrown, the value is not set in LocalConfiguration
+                $changedSettings[$oldPath] = false;
+            }
+        }
+
+        if (!empty($changedSettings['GFX/im_version_5'])) {
+            $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_version_5');
+            $newProcessorValue = $currentProcessorValue === 'gm' ? 'GraphicsMagick' : 'ImageMagick';
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor', $newProcessorValue);
+        }
+
+        if (!empty($changedSettings['GFX/im_noScaleUp'])) {
+            $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_noScaleUp');
+            $newProcessorValue = !$currentProcessorValue;
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowUpscaling', $newProcessorValue);
+        }
+
+        if (!empty($changedSettings['GFX/im_noFramePrepended'])) {
+            $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_noFramePrepended');
+            $newProcessorValue = !$currentProcessorValue;
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowFrameSelection', $newProcessorValue);
+        }
+
+        if (!empty($changedSettings['GFX/im_mask_temp_ext_gif'])) {
+            $currentProcessorValue = $this->configurationManager->getLocalConfigurationValueByPath('GFX/im_mask_temp_ext_gif');
+            $newProcessorValue = !$currentProcessorValue;
+            $this->configurationManager->setLocalConfigurationValueByPath('GFX/processor_allowTemporaryMasksAsPng', $newProcessorValue);
+        }
+
+        if (!empty(array_filter($changedSettings))) {
+            $this->configurationManager->removeLocalConfigurationKeysByPath(array_keys($changedSettings));
             $this->throwRedirectException();
         }
     }

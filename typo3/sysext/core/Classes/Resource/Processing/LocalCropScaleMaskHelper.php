@@ -111,7 +111,7 @@ class LocalCropScaleMaskHelper
         }
 
         // Normal situation (no masking)
-        if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])) {
+        if (!(is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'])) {
 
             // SVG
             if ($croppedImage === null && $sourceFile->getExtension() === 'svg') {
@@ -142,7 +142,7 @@ class LocalCropScaleMaskHelper
             $maskBackgroundImage = $configuration['maskImages']['backgroundImage'];
             if ($maskImage instanceof Resource\FileInterface && $maskBackgroundImage instanceof Resource\FileInterface) {
                 $temporaryExtension = 'png';
-                if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_gif']) {
+                if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowTemporaryMasksAsPng']) {
                     // If ImageMagick version 5+
                     $temporaryExtension = $gifBuilder->gifExtension;
                 }
@@ -301,7 +301,7 @@ class LocalCropScaleMaskHelper
         $configuration = $task->getTargetFile()->getProcessingConfiguration();
         $targetFileExtension = $task->getSourceFile()->getExtension();
         $processedFileExtension = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif';
-        if (is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && $task->getSourceFile()->getExtension() != $processedFileExtension) {
+        if (is_array($configuration['maskImages']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'] && $task->getSourceFile()->getExtension() != $processedFileExtension) {
             $targetFileExtension = 'jpg';
         } elseif ($configuration['fileExtension']) {
             $targetFileExtension = $configuration['fileExtension'];
@@ -321,8 +321,11 @@ class LocalCropScaleMaskHelper
     {
         // Strips profile information of image to save some space:
         if (isset($configuration['stripProfile'])) {
-            if ($configuration['stripProfile']) {
-                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand'] . $parameters;
+            if (
+                $configuration['stripProfile']
+                && $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand'] !== ''
+            ) {
+                $parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripProfileCommand'] . $parameters;
             } else {
                 $parameters .= '###SkipStripProfile###';
             }

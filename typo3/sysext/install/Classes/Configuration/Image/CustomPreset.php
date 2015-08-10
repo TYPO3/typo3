@@ -25,13 +25,12 @@ class CustomPreset extends Configuration\AbstractCustomPreset implements Configu
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = array(
-        'GFX/image_processing' => 0,
-        'GFX/im' => 0,
-        'GFX/im_path' => '',
-        'GFX/im_path_lzw' => '',
-        'GFX/im_version_5' => '',
-        'GFX/im_v5effects' => 0,
-        'GFX/im_mask_temp_ext_gif' => 0,
-        'GFX/colorspace' => '',
+        'GFX/processor_enabled' => false,
+        'GFX/processor_path' => '',
+        'GFX/processor_path_lzw' => '',
+        'GFX/processor' => '',
+        'GFX/processor_effects' => 0,
+        'GFX/processor_allowTemporaryMasksAsPng' => true,
+        'GFX/processor_colorspace' => '',
     );
 }

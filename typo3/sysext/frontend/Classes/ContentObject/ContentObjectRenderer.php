@@ -5192,7 +5192,7 @@ class ContentObjectRenderer
                     ? $this->stdWrap($fileArray['crop'], $fileArray['crop.'])
                     : (isset($fileArray['crop']) ? $fileArray['crop'] : null);
                 // Possibility to cancel/force profile extraction
-                // see $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand']
+                // see $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_stripColorProfileCommand']
                 if (isset($fileArray['stripProfile'])) {
                     $processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
                 }

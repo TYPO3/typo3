@@ -35,15 +35,14 @@ class GraphicsMagickPreset extends AbstractImagePreset implements Configuration\
      * @var array Configuration values handled by this preset
      */
     protected $configurationValues = array(
-        'GFX/image_processing' => 1,
-        'GFX/im' => 1,
-        // im_path and im_path_lzw are determined and set by path lookup methods
-        'GFX/im_path' => '',
-        'GFX/im_path_lzw' => '',
-        'GFX/im_version_5' => 'gm',
-        'GFX/im_v5effects' => -1,
-        'GFX/im_mask_temp_ext_gif' => 1,
-        'GFX/colorspace' => 'RGB',
+        'GFX/processor_enabled' => true,
+        // processor_path and processor_path_lzw are determined and set by path lookup methods
+        'GFX/processor_path' => '',
+        'GFX/processor_path_lzw' => '',
+        'GFX/processor' => 'GraphicsMagick',
+        'GFX/processor_effects' => -1,
+        'GFX/processor_allowTemporaryMasksAsPng' => false,
+        'GFX/processor_colorspace' => 'RGB',
     );
 
     /**

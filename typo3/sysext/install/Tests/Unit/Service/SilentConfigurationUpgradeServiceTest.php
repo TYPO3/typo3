@@ -655,189 +655,6 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
     /**
      * @test
      */
-    public function disableImageMagickIfImageProcessingIsDisabled()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('GFX/image_processing', 0),
-            array('GFX/im', 1),
-            array('GFX/gdlib', 0)
-        );
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'getDefaultConfigurationValueByPath',
-                'setLocalConfigurationValuesByPathValuePairs',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(3))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->never())
-            ->method('getDefaultConfigurationValueByPath');
-        $this->configurationManager->expects($this->once())
-            ->method('setLocalConfigurationValuesByPathValuePairs')
-            ->withConsecutive(
-                array(array('GFX/im' => 0))
-            );
-
-        $this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('disableImageMagickAndGdlibIfImageProcessingIsDisabled');
-    }
-
-    /**
-     * @test
-     */
-    public function disableGdlibIfImageProcessingIsDisabled()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('GFX/image_processing', 0),
-            array('GFX/im', 0),
-            array('GFX/gdlib', 1)
-        );
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'getDefaultConfigurationValueByPath',
-                'setLocalConfigurationValuesByPathValuePairs',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(3))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->never())
-            ->method('getDefaultConfigurationValueByPath');
-        $this->configurationManager->expects($this->once())
-            ->method('setLocalConfigurationValuesByPathValuePairs')
-            ->withConsecutive(
-                array(array('GFX/gdlib' => 0))
-            );
-
-        $this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('disableImageMagickAndGdlibIfImageProcessingIsDisabled');
-    }
-
-    /**
-     * @test
-     */
-    public function doNotDisableImageMagickAndGdlibIfImageProcessingIsEnabled()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentLocalConfiguration = array(
-            array('GFX/image_processing', 1),
-            array('GFX/im', 1),
-            array('GFX/gdlib', 1)
-        );
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'getDefaultConfigurationValueByPath',
-                'setLocalConfigurationValuesByPathValuePairs',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(3))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnValueMap($currentLocalConfiguration));
-        $this->configurationManager->expects($this->never())
-            ->method('getDefaultConfigurationValueByPath');
-        $this->configurationManager->expects($this->never())
-            ->method('setLocalConfigurationValuesByPathValuePairs');
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('disableImageMagickAndGdlibIfImageProcessingIsDisabled');
-    }
-
-    /**
-     * @test
-     */
-    public function disableImageMagickIfDefaultImageProcessingIsDisabled()
-    {
-        /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
-        $silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
-            SilentConfigurationUpgradeService::class,
-            array('dummy'),
-            array(),
-            '',
-            false
-        );
-
-        $currentDefaultConfiguration = array(
-            array('GFX/image_processing', 0),
-        );
-        $closure = function ($param) {
-            switch ($param) {
-                case 'GFX/im':
-                    return '1';
-                    break;
-                case 'GFX/gdlib':
-                    return '0';
-                    break;
-                default:
-                    throw new \RuntimeException('Path does not exist in array', 1341397869);
-            }
-        };
-
-        $this->createConfigurationManagerWithMockedMethods(
-            array(
-                'getLocalConfigurationValueByPath',
-                'getDefaultConfigurationValueByPath',
-                'setLocalConfigurationValuesByPathValuePairs',
-            )
-        );
-        $this->configurationManager->expects($this->exactly(3))
-            ->method('getLocalConfigurationValueByPath')
-            ->will($this->returnCallback($closure));
-        $this->configurationManager->expects($this->exactly(1))
-            ->method('getDefaultConfigurationValueByPath')
-            ->will($this->returnValueMap($currentDefaultConfiguration));
-        $this->configurationManager->expects($this->once())
-            ->method('setLocalConfigurationValuesByPathValuePairs')
-            ->withConsecutive(
-                array(array('GFX/im' => 0))
-            );
-
-        $this->setExpectedException(RedirectException::class);
-
-        $silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
-
-        $silentConfigurationUpgradeServiceInstance->_call('disableImageMagickAndGdlibIfImageProcessingIsDisabled');
-    }
-
-    /**
-     * @test
-     */
     public function disableImageMagickDetailSettingsIfImageMagickIsDisabled()
     {
         /** @var $silentConfigurationUpgradeServiceInstance SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
@@ -937,9 +754,9 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         );
 
         $currentLocalConfiguration = array(
-            array('GFX/im_version_5', 'gm'),
-            array('GFX/im_mask_temp_ext_gif', 0),
-            array('GFX/im_v5effects', 0)
+            array('GFX/processor', 'GraphicsMagick'),
+            array('GFX/processor_allowTemporaryMasksAsPng', 1),
+            array('GFX/processor_effects', 0)
         );
         $this->createConfigurationManagerWithMockedMethods(
             array(
@@ -956,8 +773,8 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         $this->configurationManager->expects($this->once())
             ->method('setLocalConfigurationValuesByPathValuePairs')
             ->withConsecutive(
-                array(array('GFX/im_mask_temp_ext_gif' => 1,
-                            'GFX/im_v5effects' => -1))
+                array(array('GFX/processor_allowTemporaryMasksAsPng' => 0,
+                            'GFX/processor_effects' => -1))
             );
 
         $this->setExpectedException(RedirectException::class);
@@ -982,9 +799,9 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
         );
 
         $currentLocalConfiguration = array(
-            array('GFX/im_version_5', ''),
-            array('GFX/im_mask_temp_ext_gif', 0),
-            array('GFX/im_v5effects', 0)
+            array('GFX/processor', ''),
+            array('GFX/processor_allowTemporaryMasksAsPng', 0),
+            array('GFX/processor_effects', 0)
         );
         $this->createConfigurationManagerWithMockedMethods(
             array(

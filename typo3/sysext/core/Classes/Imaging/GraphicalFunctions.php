@@ -31,11 +31,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class GraphicalFunctions
 {
     /**
-     * If set, there is no frame pointer prepended to the filenames.
+     * If set, the frame pointer is appended to the filenames.
      *
      * @var bool
      */
-    public $noFramePrepended = 0;
+    public $addFrameSelection = true;
 
     /**
      * This should be changed to 'png' if you want this class to read/make PNG-files instead!
@@ -347,15 +347,12 @@ class GraphicalFunctions
             $this->png_truecolor = true;
         }
 
-        if ($gfxConf['colorspace'] && in_array($gfxConf['colorspace'], $this->allowedColorSpaceNames, true)) {
-            $this->colorspace = $gfxConf['colorspace'];
+        if ($gfxConf['processor_colorspace'] && in_array($gfxConf['processor_colorspace'], $this->allowedColorSpaceNames, true)) {
+            $this->colorspace = $gfxConf['processor_colorspace'];
         }
 
-        if (!$gfxConf['im']) {
+        if (!$gfxConf['processor_enabled']) {
             $this->NO_IMAGE_MAGICK = 1;
-        }
-        if (!$this->NO_IMAGE_MAGICK && (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5')) {
-            throw new \RuntimeException('Your TYPO3 installation is configured to use an old version of ImageMagick, which is not supported anymore. ' . 'Please upgrade to ImageMagick version 6 or GraphicksMagick and set $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] appropriately.', 1305059666);
         }
         // When GIFBUILDER gets used in truecolor mode
         // No colors parameter if we generate truecolor images.
@@ -365,9 +362,7 @@ class GraphicalFunctions
         // Setting default JPG parameters:
         $this->jpegQuality = MathUtility::forceIntegerInRange($gfxConf['jpg_quality'], 10, 100, 75);
         $this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -sharpen 50 -quality ' . $this->jpegQuality);
-        if ($gfxConf['im_noFramePrepended']) {
-            $this->noFramePrepended = 1;
-        }
+        $this->addFrameSelection = (bool)$gfxConf['processor_allowFrameSelection'];
         if ($gfxConf['gdlib_png']) {
             $this->gifExtension = 'png';
         }
@@ -379,16 +374,16 @@ class GraphicalFunctions
         $this->NO_IM_EFFECTS = 1;
         $this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . $this->jpegQuality);
 
-        // ... but if 'im_v5effects' is set, enable effects
-        if ($gfxConf['im_v5effects']) {
+        // ... but if 'processor_effects' is set, enable effects
+        if ($gfxConf['processor_effects']) {
             $this->NO_IM_EFFECTS = 0;
             $this->V5_EFFECTS = 1;
-            if ($gfxConf['im_v5effects'] > 0) {
+            if ($gfxConf['processor_effects'] > 0) {
                 $this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace ' . $this->colorspace . ' -quality ' . (int)$gfxConf['jpg_quality'] . $this->v5_sharpen(10));
             }
         }
         // Secures that images are not scaled up.
-        if ($gfxConf['im_noScaleUp']) {
+        if (!$gfxConf['processor_allowUpscaling']) {
             $this->mayScaleUp = 0;
         }
         $this->csConvObj = GeneralUtility::makeInstance(CharsetConverter::class);
@@ -2227,7 +2222,7 @@ class GraphicalFunctions
         }
         $info[0] = $data[0];
         $info[1] = $data[1];
-        $frame = $this->noFramePrepended ? '' : (int)$frame;
+        $frame = $this->addFrameSelection ? (int)$frame : '';
         if (!$params) {
             $params = $this->cmds[$newExt];
         }
@@ -2532,7 +2527,7 @@ class GraphicalFunctions
             return null;
         }
 
-        $frame = $this->noFramePrepended ? '' : '[0]';
+        $frame = $this->addFrameSelection ? '[0]' : '';
         $cmd = GeneralUtility::imageMagickCommand('identify', CommandUtility::escapeShellArgument($imagefile) . $frame);
         $returnVal = array();
         CommandUtility::exec($cmd, $returnVal);
@@ -2574,13 +2569,9 @@ class GraphicalFunctions
         if ($this->NO_IMAGE_MAGICK) {
             return '';
         }
-        // Unless noFramePrepended is set in the Install Tool, a frame number is added to
+        // If addFrameSelection is set in the Install Tool, a frame number is added to
         // select a specific page of the image (by default this will be the first page)
-        if (!$this->noFramePrepended) {
-            $frame = '[' . (int)$frame . ']';
-        } else {
-            $frame = '';
-        }
+        $frame  = $this->addFrameSelection ? '[' . (int)$frame . ']' : '';
         $cmd = GeneralUtility::imageMagickCommand('convert', $params . ' ' . CommandUtility::escapeShellArgument($input . $frame) . ' ' . CommandUtility::escapeShellArgument($output));
         $this->IM_commands[] = array($output, $cmd);
         $ret = CommandUtility::exec($cmd);
@@ -2630,7 +2621,7 @@ class GraphicalFunctions
      *
      * The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
      * GIF:
-     * If $type is not set, the compression is done with ImageMagick (provided that $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] is pointing to the path of a lzw-enabled version of 'convert') else with GD (should be RLE-enabled!)
+     * If $type is not set, the compression is done with ImageMagick (provided that $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] is pointing to the path of a lzw-enabled version of 'convert') else with GD (should be RLE-enabled!)
      * If $type is set to either 'IM' or 'GD' the compression is done with ImageMagick and GD respectively
      * PNG:
      * No changes.
@@ -2649,12 +2640,12 @@ class GraphicalFunctions
             return '';
         }
 
-        if (($type === 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) {
+        if (($type === 'IM' || !$type) && $gfxConf['processor_enabled'] && $gfxConf['processor_path_lzw']) {
             // Use temporary file to prevent problems with read and write lock on same file on network file systems
             $temporaryName = dirname($theFile) . '/' . md5(uniqid('', true)) . '.gif';
             // Rename could fail, if a simultaneous thread is currently working on the same thing
             if (@rename($theFile, $temporaryName)) {
-                $cmd = GeneralUtility::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
+                $cmd = GeneralUtility::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['processor_path_lzw']);
                 CommandUtility::exec($cmd);
                 unlink($temporaryName);
             }
@@ -2687,7 +2678,7 @@ class GraphicalFunctions
      */
     public static function readPngGif($theFile, $output_png = false)
     {
-        if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] || !@is_file($theFile)) {
+        if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'] || !@is_file($theFile)) {
             return null;
         }
 
@@ -2701,7 +2692,7 @@ class GraphicalFunctions
         }
         $newFile = PATH_site . 'typo3temp/assets/images/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
         $cmd = GeneralUtility::imageMagickCommand(
-            'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']
+            'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']
         );
         CommandUtility::exec($cmd);
         if (@is_file($newFile)) {

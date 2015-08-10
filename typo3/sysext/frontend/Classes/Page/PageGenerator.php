@@ -102,8 +102,8 @@ class PageGenerator
         $tsfe->compensateFieldWidth = '' . $tsfe->config['config']['compensateFieldWidth'];
         $tsfe->lockFilePath = '' . $tsfe->config['config']['lockFilePath'];
         $tsfe->lockFilePath = $tsfe->lockFilePath ?: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
-        $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'] = isset($tsfe->config['config']['noScaleUp']) ? '' . $tsfe->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
-        $tsfe->TYPO3_CONF_VARS['GFX']['im_noScaleUp'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = (bool)(isset($tsfe->config['config']['processor_allowUpscaling']) ? $tsfe->config['config']['processor_allowUpscaling'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling']);
+        $tsfe->TYPO3_CONF_VARS['GFX']['processor_allowUpscaling'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'];
         $tsfe->ATagParams = trim($tsfe->config['config']['ATagParams']) ? ' ' . trim($tsfe->config['config']['ATagParams']) : '';
         if ($tsfe->config['config']['setJS_mouseOver']) {
             $tsfe->setJS('mouseOver');

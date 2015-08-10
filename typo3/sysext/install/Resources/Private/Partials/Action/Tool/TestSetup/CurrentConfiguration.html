@@ -5,10 +5,10 @@
 	<table class="table table-striped">
 		<tr>
 			<td>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} enabled:
+				{imageConfiguration.processor} enabled:
 			</td>
 			<td>
-				{f:if(condition:imageConfiguration.imageMagickEnabled, then:'Yes', else:'No')}
+				{f:if(condition:imageConfiguration.processorEnabled, then:'Yes', else:'No')}
 			</td>
 		</tr>
 		<tr>
@@ -16,31 +16,31 @@
 				ImageMagick or GraphicsMagick:
 			</td>
 			<td>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')}
+				{imageConfiguration.processor}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} path:
+				{imageConfiguration.processor} path:
 			</td>
 			<td>
-				{imageConfiguration.imageMagickPath}
-			</td>
-		</tr>
-		<tr>
-			<td>
-				{f:if(condition:'{imageConfiguration.imageMagickOrGraphicsMagick} == \'im\'', then:'ImageMagick', else:'GrapicsMagick')} version:
-			</td>
-			<td>
-				{imageConfiguration.imageMagickVersion}
+				{imageConfiguration.processorPath}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				IM5 effects enabled:
+				{imageConfiguration.processor} version:
 			</td>
 			<td>
-				{imageConfiguration.imageMagick5Effects} <span>(Blurring/Sharpening with IM 5+)</span>
+				{imageConfiguration.processorVersion}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				{imageConfiguration.processor} effects enabled:
+			</td>
+			<td>
+				{imageConfiguration.processorEffects} <span>(Blurring/Sharpening with {imageConfiguration.processor})</span>
 			</td>
 		</tr>
 		<tr>

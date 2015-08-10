@@ -127,7 +127,7 @@ class LocalPreviewHelper
             );
         } else {
             // Create the temporary file
-            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
+            if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled']) {
                 $parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' '
                     . CommandUtility::escapeShellArgument($originalFileName) . '[0] ' . CommandUtility::escapeShellArgument($targetFilePath);
 

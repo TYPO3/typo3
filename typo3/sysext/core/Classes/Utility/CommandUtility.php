@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Core\Utility;
  * checkCommand() returns TRUE if a command is available
  *
  * Search paths that are included:
- * $TYPO3_CONF_VARS['GFX']['im_path_lzw'] or $TYPO3_CONF_VARS['GFX']['im_path']
+ * $TYPO3_CONF_VARS['GFX']['processor_path_lzw'] or $TYPO3_CONF_VARS['GFX']['processor_path']
  * $TYPO3_CONF_VARS['SYS']['binPath']
  * $GLOBALS['_SERVER']['PATH']
  * '/usr/bin/,/usr/local/bin/' on Unix
@@ -89,49 +89,41 @@ class CommandUtility
      * @param string $command Command to be run: identify, convert or combine/composite
      * @param string $parameters The parameters string
      * @param string $path Override the default path (e.g. used by the install tool)
-     * @return string Compiled command that deals with IM6 & GraphicsMagick
+     * @return string Compiled command that deals with ImageMagick & GraphicsMagick
      */
     public static function imageMagickCommand($command, $parameters, $path = '')
     {
         $gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
         $isExt = TYPO3_OS == 'WIN' ? '.exe' : '';
-        $switchCompositeParameters = false;
         if (!$path) {
-            $path = $gfxConf['im_path'];
+            $path = $gfxConf['processor_path'];
         }
         $path = GeneralUtility::fixWindowsFilePath($path);
-        $im_version = strtolower($gfxConf['im_version_5']);
         // This is only used internally, has no effect outside
         if ($command === 'combine') {
             $command = 'composite';
         }
         // Compile the path & command
-        if ($im_version === 'gm') {
-            $switchCompositeParameters = true;
+        if ($gfxConf['processor'] === 'GraphicsMagick') {
             $path = self::escapeShellArgument($path . 'gm' . $isExt) . ' ' . self::escapeShellArgument($command);
         } else {
-            if ($im_version === 'im6') {
-                $switchCompositeParameters = true;
-            }
-            $path = self::escapeShellArgument($path . ($command == 'composite' ? 'composite' : $command) . $isExt);
+            $path = self::escapeShellArgument($path . ($command === 'composite' ? 'composite' : $command) . $isExt);
         }
         // strip profile information for thumbnails and reduce their size
-        if ($parameters && $command != 'identify' && $gfxConf['im_useStripProfileByDefault'] && $gfxConf['im_stripProfileCommand'] != '') {
-            if (strpos($parameters, $gfxConf['im_stripProfileCommand']) === false) {
+        if ($parameters && $command !== 'identify' && $gfxConf['processor_stripColorProfileByDefault'] && $gfxConf['processor_stripColorProfileCommand'] !== '') {
+            if (strpos($parameters, $gfxConf['processor_stripColorProfileCommand']) === false) {
                 // Determine whether the strip profile action has be disabled by TypoScript:
                 if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === false) {
-                    $parameters = $gfxConf['im_stripProfileCommand'] . ' ' . $parameters;
+                    $parameters = $gfxConf['processor_stripColorProfileCommand'] . ' ' . $parameters;
                 } else {
                     $parameters = str_replace('###SkipStripProfile###', '', $parameters);
                 }
             }
         }
         $cmdLine = $path . ' ' . $parameters;
-        // Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick),
-        // it is needed to change the parameters order under some preconditions
-        if ($command == 'composite' && $switchCompositeParameters) {
+        // It is needed to change the parameters order when a mask image has been specified
+        if ($command === 'composite') {
             $paramsArr = GeneralUtility::unQuoteFilenames($parameters);
-            // The mask image has been specified => swap the parameters
             $paramsArrCount = count($paramsArr);
             if ($paramsArrCount > 5) {
                 $tmp = $paramsArr[$paramsArrCount - 3];
@@ -382,8 +374,8 @@ class CommandUtility
         $sysPathArr = array();
 
             // Image magick paths first
-            // im_path_lzw take precedence over im_path
-        if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']))) {
+            // processor_path_lzw take precedence over processor_path
+        if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path_lzw'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path']))) {
             $imPath = self::fixPath($imPath);
             $pathsArr[$imPath] = $imPath;
         }

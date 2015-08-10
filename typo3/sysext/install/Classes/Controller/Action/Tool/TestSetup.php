@@ -570,7 +570,7 @@ class TestSetup extends Action\AbstractAction
             $message->setMessage(
                 'This test makes sense only if the above test had a correct output. But if so, you may not see'
                 . ' a soft dropshadow from the third text string as you should. In that case you are most likely'
-                . ' using ImageMagick 5 and should set the flag TYPO3_CONF_VARS[GFX][im_v5effects].'
+                . ' using ImageMagick 5 and should set the flag TYPO3_CONF_VARS[GFX][processor_effects].'
             );
             $testResults['shadow']['message'] = $message;
         } else {
@@ -623,7 +623,7 @@ class TestSetup extends Action\AbstractAction
         $message->setMessage(
             'ImageMagick / GraphicsMagick handling is enabled, but the execute'
             . ' command returned an error. Please check your settings, especially'
-            . ' [\'GFX\'][\'im_path\'] and [\'GFX\'][\'im_path_lzw\'] and ensure Ghostscript is installed on your server.'
+            . ' [\'GFX\'][\'processor_path\'] and [\'GFX\'][\'processor_path_lzw\'] and ensure Ghostscript is installed on your server.'
         );
         return $message;
     }
@@ -636,11 +636,11 @@ class TestSetup extends Action\AbstractAction
     protected function getImageConfiguration()
     {
         $result = array();
-        $result['imageMagickOrGraphicsMagick'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] === 'gm' ? 'gm' : 'im';
-        $result['imageMagickEnabled'] =  $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
-        $result['imageMagickPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
-        $result['imageMagickVersion'] = $this->determineImageMagickVersion();
-        $result['imageMagick5Effects'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'];
+        $result['processor'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] === 'GraphicsMagick' ? 'GraphicsMagick' : 'ImageMagick';
+        $result['processorEnabled'] =  $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'];
+        $result['processorPath'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'];
+        $result['processorVersion'] = $this->determineImageMagickVersion();
+        $result['processorEffects'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects'];
         $result['gdlibEnabled'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
         $result['gdlibPng'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'];
         $result['fileFormats'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
@@ -662,7 +662,7 @@ class TestSetup extends Action\AbstractAction
         $imageProcessor->filenamePrefix = 'installTool-';
         $imageProcessor->dontCompress = 1;
         $imageProcessor->alternativeOutputKey = 'typo3InstallTest';
-        $imageProcessor->noFramePrepended = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noFramePrepended'];
+        $imageProcessor->noFramePrepended = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowFrameSelection'];
         return $imageProcessor;
     }
 
@@ -673,8 +673,8 @@ class TestSetup extends Action\AbstractAction
      */
     protected function isImageMagickEnabledAndConfigured()
     {
-        $enabled = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
-        $path = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
+        $enabled = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_enabled'];
+        $path = $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_path'];
         return $enabled && $path;
     }
 

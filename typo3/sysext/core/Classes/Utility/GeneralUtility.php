@@ -4729,7 +4729,7 @@ class GeneralUtility
      * @param string $command Command to be run: identify, convert or combine/composite
      * @param string $parameters The parameters string
      * @param string $path Override the default path (e.g. used by the install tool)
-     * @return string Compiled command that deals with IM6 & GraphicsMagick
+     * @return string Compiled command that deals with ImageMagick & GraphicsMagick
      */
     public static function imageMagickCommand($command, $parameters, $path = '')
     {

@@ -635,7 +635,7 @@ This is especially useful if you want to add RDFa or microformats to your html.
 Please take note that this tag is required for XHTML compliant output, so you should only disable this tag if you generate it manually already.]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
-		<property name="noScaleUp" type="boolean">
+		<property name="processor_allowUpscaling" type="boolean">
 			<description><![CDATA[Normally images are scaled to the size specified via TypoScript. This also forces small images to be scaled to a larger size. This is not always a good thing.
 If this property is set, images are not allowed to be scaled up in size. This parameter clears the $this->mayScaleUp var of the class \TYPO3\CMS\Core\Imaging\GraphicalFunctions (often "gifbuilder").]]></description>
 			<default><![CDATA[
@@ -6433,7 +6433,7 @@ fx. "-rotate 90" or "-negate"]]></description>
 		<property name="stripProfile" type="boolean">
 			<description><![CDATA[If set, IM-command will use a stripProfile-command which shrinks the generated thumbnails. See Install Tool for options and details.
 
-If im_useStripProfileByDefault is set in the install tool, you can deactivate it by setting stripProfile=0.
+If processor_stripColorProfileByDefault is set in the install tool, you can deactivate it by setting stripProfile=0.
 
 Example:
 
