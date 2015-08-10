@@ -341,7 +341,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						rtrim(trim($this->getLanguageService()->sL(BackendUtility::getItemLabel('pages', $field))), ':')
 					);
 					$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
-						. '" title="' . htmlspecialchars($iTitle) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						. '" title="' . htmlspecialchars($iTitle) . '">'
+						. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 				} else {
 					$eI = '';
 				}
@@ -710,7 +711,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
 							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 								. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
-								. IconUtility::getSpriteIcon('actions-document-open') . '</a>'
+								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>'
 							: ''
 						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
 				} else {
@@ -844,7 +845,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					if ($this->doEdit) {
 						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 					} else {
 						$Nrow['__editIconLink__'] = $this->noEditIcon();
 					}
@@ -1049,7 +1050,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$eI = '<a href="#" onclick="'
 							. htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $this->getLanguageService()->getLL('editThisPage', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 					} else {
 						$eI = '';
 					}
@@ -1112,7 +1113,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$iconsArr['edit'] = '<a href="#" onclick="'
 					. htmlspecialchars(BackendUtility::editOnClick($editParams)) . '" title="'
 					. $this->getLanguageService()->getLL('editColumn', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 			}
 			if ($pasteParams) {
 				$elFromTable = $this->clipboard->elFromTable('tt_content');
@@ -1206,7 +1207,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					)) . '" title="' . htmlspecialchars($this->nextThree > 1
 						? sprintf($this->getLanguageService()->getLL('nextThree'), $this->nextThree)
 						: $this->getLanguageService()->getLL('edit'))
-					. '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					. '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 				// Hide element:
 				$hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
 				if (

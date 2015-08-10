@@ -152,7 +152,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 				. '" title="' . $lang->sL(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
-				) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 			$info .= str_replace('###LANG_UID###', '0', $viewPageLink);
 			$info .= '&nbsp;';
 			$info .= $data['row']['l18n_cfg'] & 1 ? '<span title="' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.l18n_cfg.I.1', TRUE) . '">D</span>' : '&nbsp;';
@@ -197,7 +197,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 						$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $lang->sL(
 								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
-							) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+							) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
 						$tCells[] = '<td class="' . $status . '">' . $info . '</td>';
 						$tCells[] = '<td class="' . $status . '" title="' . $lang->sL(
@@ -239,7 +239,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$editIco = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 				. '" title="' . $lang->sL(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageProperties'
-				) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+				) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 		} else {
 			$editIco = '';
 		}
@@ -258,7 +258,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 						. '" title="' . $lang->sL(
 							'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLangOverlays'
-						) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
+						) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a></td>';
 				} else {
 					$tCells[] = '<td>&nbsp;</td>';
 				}

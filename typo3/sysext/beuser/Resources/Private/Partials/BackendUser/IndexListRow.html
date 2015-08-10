@@ -32,7 +32,7 @@
 		<f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default"><be:spriteManagerIcon iconName="actions-edit-add"/> <f:translate key="compare" /></f:link.action>
 		<div class="btn-group" role="group">
 			<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" size="small"/></a>
-			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><be:spriteManagerIcon iconName="actions-document-open" /></a>
+			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_users][{backendUser.uid}]=edit&returnUrl={returnUrl}')}"><core:icon identifier="actions-document-open" size="small"/></a>
 			<f:if condition="{backendUser.currentlyLoggedIn} == 1">
 				<f:then>
 					<span class="btn btn-default disabled"><be:spriteManagerIcon iconName="empty-empty" /></span>

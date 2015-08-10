@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -524,6 +526,8 @@ class QueryView {
 	 * @return string
 	 */
 	public function resultRowDisplay($row, $conf, $table) {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out = '<tr>';
 		foreach ($row as $fieldName => $fieldValue) {
@@ -540,7 +544,7 @@ class QueryView {
 		$out .= '<td><div class="btn-group">';
 		if (!$row['deleted']) {
 			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
-			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 		} else {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',

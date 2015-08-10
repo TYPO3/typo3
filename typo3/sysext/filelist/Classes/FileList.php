@@ -694,15 +694,16 @@ class FileList extends AbstractRecordList {
 								$languageId = $language['uid'];
 								$flagIcon = $language['flagIcon'];
 								if (array_key_exists($languageId, $translations)) {
-									$flagButtonIcon = IconUtility::getSpriteIcon(
-										'actions-document-open',
-										array('title' => sprintf($GLOBALS['LANG']->getLL('editMetadataForLanguage'), $language['title'])),
-										array($flagIcon . '-overlay' => array()));
+									$title = htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('editMetadataForLanguage'), $language['title']));
+									// @todo the overlay for the flag needs to be added ($flagIcon . '-overlay')
+									$flagButtonIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 									$data = array(
 										'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
 									);
 									$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), '', $this->listUrl());
-									$languageCode .= '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '">' . $flagButtonIcon . '</a>';
+									$languageCode .= '<a href="#" class="btn btn-default" onclick="'
+										. htmlspecialchars($editOnClick) . '" title="' . $title . '">'
+										. $flagButtonIcon . '</a>';
 								} else {
 									$parameters = [
 										'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,

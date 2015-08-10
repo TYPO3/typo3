@@ -550,7 +550,7 @@ class InlineRecordContainer extends AbstractContainer {
 					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
 					$cells['editmetadata'] = '
 						<a class="btn btn-default" href="#" class="btn" onclick="' . htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">
-							' . IconUtility::getSpriteIcon('actions-document-open') . '
+							' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '
 						</a>';
 				}
 			}

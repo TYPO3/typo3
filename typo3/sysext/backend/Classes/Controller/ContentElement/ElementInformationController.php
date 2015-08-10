@@ -587,7 +587,7 @@ class ElementInformationController implements \TYPO3\CMS\Core\Http\ControllerInt
 		$editOnClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit');
 		$pageActionIcons = '
 			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($editOnClick) . '">
-				' . IconUtility::getSpriteIcon('actions-document-open') . '
+				' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '
 			</a>';
 
 		// History button

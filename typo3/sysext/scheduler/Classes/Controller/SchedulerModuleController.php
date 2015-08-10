@@ -955,7 +955,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
 					$link = htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']);
 					$editAction = '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', TRUE) . '" class="icon">' .
-						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+						$this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 					if ((int)$schedulerRecord['disable'] === 1) {
 						$translationKey = 'enable';
 						$icon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL);

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  */
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,6 +45,18 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	public $pObj;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
+
+	/**
 	 * Creates a row for a HTML table
 	 *
 	 * @param string $label The label to be shown (e.g. 'Title:', 'Sitetitle:')
@@ -54,21 +68,19 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	public function tableRow($label, $data, $field, $id) {
 		$lang = $this->getLanguageService();
 		$ret = '<tr><td>';
+		$title = $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE);
 		if ($field === 'config' || $field === 'constants') {
 			$urlParameters = array(
 				'id' => $this->pObj->id
 			);
 			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			$startAnchor = '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">';
+			$startAnchor = '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '" title="' . $title . '">';
 		} else {
 			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
 			$editOnClick = BackendUtility::editOnClick($params);
-			$startAnchor = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '">';
+			$startAnchor = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $title . '>';
 		}
-		$icon = IconUtility::getSpriteIcon(
-			'actions-document-open',
-			array('title' => $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE))
-		);
+		$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 		$ret .= $startAnchor . '<strong>' . $label . '</strong></a>';
 		$ret .= '</td><td width="80%">' . $data . '</td><td>' . $startAnchor . '<span class="btn btn-default">' . $icon . '</span></a></td></tr>';
 		return $ret;
@@ -272,8 +284,10 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 
 			// Edit all icon:
 			$editOnClick = BackendUtility::editOnClick('&createExtension=0&edit[sys_template][' . $tplRow['uid'] . ']=edit');
-			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $lang->getLL('editTemplateRecord'))) . '&nbsp;' . $lang->getLL('editTemplateRecord');
-			$outCode .= '<br /><a class="btn btn-default" href="#" onclick="' . htmlspecialchars($editOnClick) . '"><strong>' . $icon . '</strong></a>';
+			$title = $lang->getLL('editTemplateRecord', TRUE);
+			$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+			$outCode .= '<br /><a class="btn btn-default" href="#" onclick="' . htmlspecialchars($editOnClick)
+				. '"><strong>' . $icon . '&nbsp;' . $title . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);
 
 				// hook	after compiling the output

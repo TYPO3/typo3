@@ -643,7 +643,7 @@ class AdminPanelView {
 			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
-			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->extGetLL('edit_editPageProperties', FALSE)));
+			$icon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 			$url = BackendUtility::getModuleUrl('record_edit', array(
 				'edit[pages][' . $id . ']' => 'edit',
 				'noView' => 1,

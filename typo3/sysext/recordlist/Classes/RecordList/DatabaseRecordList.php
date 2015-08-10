@@ -936,7 +936,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$onClick = implode('?', $onClickArray);
 						$cells['edit'] = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 							. $lang->getLL('clip_editMarked', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 						// The "Delete marked" link:
 						$cells['delete'] = $this->linkClipboardHeaderIcon(
 							IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $lang->getLL('clip_deleteMarked', TRUE))),
@@ -1013,7 +1013,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray);
 							$icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 								. '" title="' . $lang->getLL('editShownColumns', TRUE) . '">'
-								. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 							$icon = '<div class="btn-group" role="group">' . $icon . '</div>';
 						}
 						// Add an empty entry, so column count fits again after moving this into $icon
@@ -1054,7 +1054,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							$iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
 							$theData[$fCol] .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 								. '" title="' . htmlspecialchars($iTitle) . '">'
-								. IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 						}
 						if(strlen($theData[$fCol]) > 0){
 							$theData[$fCol] = '<div class="btn-group" role="group">' . $theData[$fCol] . '</div> ';
@@ -1242,9 +1242,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		if ($permsEdit) {
 			$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-			$spriteIcon = (!$this->isEditable($table) ? 'actions-document-open-read-only' : 'actions-document-open');
+			$icon = (!$this->isEditable($table) ? IconUtility::getSpriteIcon('actions-document-open-read-only') : $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL));
 			$editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
-				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . IconUtility::getSpriteIcon($spriteIcon) . '</a>';
+				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $icon . '</a>';
 		} else {
 			$editAction = $this->spaceIcon;
 		}

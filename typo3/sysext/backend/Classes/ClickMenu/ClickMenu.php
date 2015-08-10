@@ -696,7 +696,7 @@ class ClickMenu {
 		$newPageModule = trim($this->backendUser->getTSConfigVal('options.overridePageModule'));
 		$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 		$loc = 'top.content.list_frame';
-		$theIcon = 'actions-document-open';
+		$theIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 
 		$link = BackendUtility::getModuleUrl('record_edit', array(
 			'edit[' . $table . '][' . $uid . ']' => 'edit'
@@ -706,7 +706,7 @@ class ClickMenu {
 			$this->editPageIconSet = TRUE;
 		}
 		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($link . '&returnUrl=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
-		return $this->linkItem($this->label('edit'), IconUtility::getSpriteIcon($theIcon), $editOnClick . ';');
+		return $this->linkItem($this->label('edit'), $theIcon, $editOnClick . ';');
 	}
 
 	/**

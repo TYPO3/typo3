@@ -16,6 +16,8 @@ namespace TYPO3\CMS\InfoPagetsconfig\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -23,11 +25,16 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Page TSconfig viewer
  */
 class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->getLanguageService()->includeLLFile('EXT:info_pagetsconfig/Resources/Private/Language/locallang.xlf');
 	}
 
@@ -70,7 +77,6 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	 * @return string HTML output
 	 */
 	public function main() {
-
 		if ((int)(GeneralUtility::_GP('id')) === 0) {
 			$lang = $this->getLanguageService();
 			return $this->pObj->doc->section(
@@ -111,7 +117,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 							$editIdList = substr($k, 4);
 							$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=TSconfig';
 							$onclickUrl = BackendUtility::editOnClick($params);
-							$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+							$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 						}
 						$TScontent = nl2br(htmlspecialchars(trim($v) . LF));
 						$tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
@@ -127,7 +133,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 				if (!empty($pUids)) {
 					$params = '&edit[pages][' . implode(',', $pUids) . ']=edit&columnsOnly=TSconfig';
 					$onclickUrl = BackendUtility::editOnClick($params);
-					$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
+					$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
 				} else {
 					$editIcon = '';
 				}

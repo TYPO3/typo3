@@ -1201,7 +1201,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 				}
 				// If only SOME fields are shown in the form, this will link the user to the FULL form:
 				if ($this->columnsOnly) {
-					$buttons['columns_only'] = '<a href="' . htmlspecialchars(($this->R_URI . '&columnsOnly=')) . '" title="' . $lang->getLL('editWholeRecord', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+					$buttons['columns_only'] = '<a href="' . htmlspecialchars(($this->R_URI . '&columnsOnly=')) . '" title="' . $lang->getLL('editWholeRecord', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 		}

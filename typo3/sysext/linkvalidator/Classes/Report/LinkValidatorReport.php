@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Linkvalidator\Report;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -460,6 +462,9 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 * @return string HTML of the rendered row
 	 */
 	protected function renderTableRow($table, array $row, $brokenLinksItemTemplate) {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		$markerArray = array();
 		$fieldName = '';
 		// Restore the linktype object
@@ -476,7 +481,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			$requestUri
 		));
 		$actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
-		$actionLink .= IconUtility::getSpriteIcon('actions-document-open');
+		$actionLink .= $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 		$actionLink .= '</a>';
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {
