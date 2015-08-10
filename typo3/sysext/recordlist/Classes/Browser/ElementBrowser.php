@@ -2557,10 +2557,9 @@ class ElementBrowser {
 			$addParams = '&act=' . $this->act . '&mode=' . $this->mode
 				. '&expandFolder=' . rawurlencode($this->selectedFolder->getCombinedIdentifier())
 				. '&bparams=' . rawurlencode($this->bparams);
-			$thumbNailCheck = BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'],
+			$thumbNailCheck = '<div class="checkbox"><label for="checkDisplayThumbs">' . BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'],
 					GeneralUtility::_GP('M') ? '' : $this->thisScript, $addParams, 'id="checkDisplayThumbs"')
-				. ' <label for="checkDisplayThumbs">'
-				. $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', TRUE) . '</label>';
+				. $lang->sL('LLL:EXT:lang/locallang_mod_file_list.xlf:displayThumbs', TRUE) . '</label></div>';
 			$out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);
 		} else {
 			$out .= $this->doc->spacer(15);
