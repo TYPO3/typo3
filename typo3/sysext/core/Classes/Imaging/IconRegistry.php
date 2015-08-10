@@ -146,6 +146,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'download',
 			)
 		),
+		'actions-edit-delete' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'trash',
+			)
+		),
 		'actions-edit-replace' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

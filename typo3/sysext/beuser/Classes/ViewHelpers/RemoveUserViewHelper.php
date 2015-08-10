@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -60,6 +62,8 @@ class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInter
 		$backendUser = $arguments['backendUser'];
 		/** @var BackendUserAuthentication $beUser */
 		$beUser = $GLOBALS['BE_USER'];
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($backendUser->getUid() === (int)$beUser->user['uid']) {
 			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
@@ -78,7 +82,7 @@ class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInter
 			. ' data-title="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
 			. ' data-content="' . htmlspecialchars(LocalizationUtility::translate('confirm', 'beuser', array($backendUser->getUserName()))) . '" '
 			. ' data-button-close-text="' . htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
-			. '>' . IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+			. '>' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</a>';
 	}
 
 }

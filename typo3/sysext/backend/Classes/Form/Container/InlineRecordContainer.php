@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -64,6 +66,18 @@ class InlineRecordContainer extends AbstractContainer {
 	 * @var array
 	 */
 	protected $hookObjects = array();
+
+	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
+	 * Construct
+	 */
+	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+	}
 
 	/**
 	 * Entry method
@@ -540,11 +554,14 @@ class InlineRecordContainer extends AbstractContainer {
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & Permission::PAGE_DELETE
 					|| !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT
 					|| $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)) {
-				$onClick = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');';
-				$cells['delete'] = '
-					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('if (confirm(' . GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	' . $onClick . ' } return false;')) . '">
-						' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE))) . '
-					</a>';
+				$onClick = htmlspecialchars(('if (confirm('
+					. GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	'
+					. 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');'
+					. ' } return false;'));
+				$title = $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE);
+				$icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
+				$cells['delete'] = '<a class="btn btn-default" href="#" onclick="' . $onClick . '" title="' . $title
+					. '">' . $icon . '</a>';
 			}
 
 			// "Hide/Unhide" links:

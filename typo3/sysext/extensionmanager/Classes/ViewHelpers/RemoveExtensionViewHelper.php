@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * view helper for displaying a remove extension link
@@ -43,6 +46,8 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 		) {
 			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
 		}
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$action = 'removeExtension';
 		$uriBuilder->reset();
@@ -54,7 +59,7 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 		$cssClass = 'removeExtension btn btn-default';
 		$this->tag->addAttribute('class', $cssClass);
 		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.remove', 'extensionmanager'));
-		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete'));
+		$this->tag->setContent($iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL));
 		return $this->tag->render();
 	}
 

@@ -753,7 +753,7 @@ class ClickMenu {
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
 		}
-		return $this->linkItem($this->label('delete'), IconUtility::getSpriteIcon('actions-edit-delete'), $editOnClick . 'return false;');
+		return $this->linkItem($this->label('delete'), $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL), $editOnClick . 'return false;');
 	}
 
 	/**
@@ -1052,7 +1052,7 @@ class ClickMenu {
 			GeneralUtility::quoteJSvalue(
 				'&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction')
 			) . ';};';
-		return $this->linkItem($this->label('delete'), IconUtility::getSpriteIcon('actions-edit-delete'), $editOnClick . 'return false;');
+		return $this->linkItem($this->label('delete'), $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL), $editOnClick . 'return false;');
 	}
 
 	/**

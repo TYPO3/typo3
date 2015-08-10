@@ -1220,7 +1220,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					. ' data-content="' . htmlspecialchars($confirm) . '" '
 					. ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
 					. ' title="' . $this->getLanguageService()->getLL('deleteItem', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
+					. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</a>';
 				if ($out) {
 					$out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
 				}

@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -162,9 +164,15 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 	public $special;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_wizards.xlf');
 		$GLOBALS['SOBE'] = $this;
 
@@ -485,7 +493,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 						$ctrl .= '<button name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-to-top', array('title' => $this->getLanguageService()->getLL('table_top', TRUE))) . '</button>' . $brTag;
 						$ctrl .= '<button name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-up', array('title' => $this->getLanguageService()->getLL('table_up', TRUE))) . '</button>' . $brTag;
 					}
-					$ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . '>' . IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $this->getLanguageService()->getLL('table_removeRow', TRUE))) . '</button>' . $brTag;
+					$ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . ' title = "' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_LARGE) . '</button>' . $brTag;
 
 					if ($k != (count($formCfgArray)/2)) {
 						$ctrl .= '<button name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $this->getLanguageService()->getLL('table_down', TRUE))) . '</button>' . $brTag;
