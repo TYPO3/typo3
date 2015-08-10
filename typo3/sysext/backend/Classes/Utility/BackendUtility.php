@@ -3107,7 +3107,14 @@ class BackendUtility {
 		if (!$script) {
 			$script = basename(PATH_thisScript);
 		}
-		if ($script === 'index.php' && GeneralUtility::_GET('M')) {
+
+		if (GeneralUtility::_GP('route')) {
+			$router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
+			$route = $router->match(GeneralUtility::_GP('route'));
+			$uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+			$scriptUrl = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
+			$scriptUrl .= $addParams;
+		} elseif ($script === 'index.php' && GeneralUtility::_GET('M')) {
 			$scriptUrl = self::getModuleUrl(GeneralUtility::_GET('M'), $mainParams) . $addParams;
 		} else {
 			$scriptUrl = $script . '?' . GeneralUtility::implodeArrayForUrl('', $mainParams) . $addParams;
