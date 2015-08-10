@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0f463179dd109b3ff4000ea49c17cec9",
+    "hash": "6baf4c6d3b67a0f30e2f1d9f6c84f446",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -62,16 +62,16 @@
         },
         {
             "name": "helhum/class-alias-loader",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helhum/class-alias-loader.git",
-                "reference": "28e9155b8ab3f2871f32899d4fa355fd14daba95"
+                "reference": "91ef94c5a0ab6883018c8125ed66c00e5704ff6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helhum/class-alias-loader/zipball/28e9155b8ab3f2871f32899d4fa355fd14daba95",
-                "reference": "28e9155b8ab3f2871f32899d4fa355fd14daba95",
+                "url": "https://api.github.com/repos/helhum/class-alias-loader/zipball/91ef94c5a0ab6883018c8125ed66c00e5704ff6a",
+                "reference": "91ef94c5a0ab6883018c8125ed66c00e5704ff6a",
                 "shasum": ""
             },
             "require": {
@@ -113,7 +113,7 @@
                 "classloader",
                 "composer"
             ],
-            "time": "2015-08-06 22:03:20"
+            "time": "2015-08-10 20:58:34"
         },
         {
             "name": "pear/http_request2",

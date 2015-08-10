@@ -44,7 +44,7 @@ class Application implements ApplicationInterface {
 	/**
 	 * Constructor setting up legacy constants and register available Request Handlers
 	 *
-	 * @param \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\ClassAliasLoader $classLoader an instance of the class loader
+	 * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
 	 */
 	public function __construct($classLoader) {
 		$this->checkEnvironmentOrDie();

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use Composer\Autoload\ClassLoader as ComposerClassLoader;
-use Helhum\ClassAliasLoader\ClassAliasLoader;
+use Helhum\ClassAliasLoader\ClassAliasMap;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -90,7 +90,7 @@ class ClassLoadingInformation {
 		if (file_exists($dynamicClassAliasMapFile)) {
 			$classAliasMap = require $dynamicClassAliasMapFile;
 			if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
-				self::getClassAliasLoader($composerClassLoader)->addAliasMap($classAliasMap);
+				ClassAliasMap::addAliasMap($classAliasMap);
 			}
 		}
 
@@ -132,7 +132,7 @@ class ClassLoadingInformation {
 		}
 		$classAliasMap = $generator->buildClassAliasMapForPackage($package);
 		if (is_array($classAliasMap) && !empty($classAliasMap['aliasToClassNameMapping']) && !empty($classAliasMap['classNameToAliasMapping'])) {
-			self::getClassAliasLoader($composerClassLoader)->addAliasMap($classAliasMap);
+			ClassAliasMap::addAliasMap($classAliasMap);
 		}
 	}
 
@@ -154,11 +154,7 @@ class ClassLoadingInformation {
 	 * @return mixed
 	 */
 	static public function getClassNameForAlias($alias) {
-		$composerClassLoader = static::getClassLoader();
-		if (!is_callable(array($composerClassLoader, 'getClassNameForAlias'))) {
-			return $alias;
-		}
-		return $composerClassLoader->getClassNameForAlias($alias);
+		return ClassAliasMap::getClassNameForAlias($alias);
 	}
 
 	/**
@@ -177,29 +173,11 @@ class ClassLoadingInformation {
 	/**
 	 * Internal method calling the bootstrap to fetch the composer class loader
 	 *
-	 * @return ClassAliasLoader|ComposerClassLoader
+	 * @return ComposerClassLoader
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	static protected function getClassLoader() {
 		return Bootstrap::getInstance()->getEarlyInstance(ComposerClassLoader::class);
-	}
-
-	/**
-	 * Internal method calling the bootstrap to fetch the composer class loader
-	 *
-	 * @param ClassAliasLoader|ComposerClassLoader $composerClassLoader
-	 * @return ClassAliasLoader
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	static protected function getClassAliasLoader($composerClassLoader) {
-		if ($composerClassLoader instanceof ClassAliasLoader) {
-			return $composerClassLoader;
-		}
-		$aliasLoader = new ClassAliasLoader($composerClassLoader);
-		$aliasLoader->register(TRUE);
-		Bootstrap::getInstance()->setEarlyInstance(ComposerClassLoader::class, $aliasLoader);
-
-		return $aliasLoader;
 	}
 
 }

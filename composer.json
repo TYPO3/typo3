@@ -57,6 +57,9 @@
 		"ext-zip": ""
 	},
 	"extra": {
+		"helhum/class-alias-loader": {
+			"always-add-alias-loader": true
+		},
 		"branch-alias": {
 			"dev-master": "7.x-dev"
 		}

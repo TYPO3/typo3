@@ -192,7 +192,7 @@ class Bootstrap {
 	/**
 	 * Sets the class loader to the bootstrap
 	 *
-	 * @param \Composer\Autoload\ClassLoader|\Helhum\ClassAliasLoader\ClassAliasLoader $classLoader an instance of the class loader
+	 * @param \Composer\Autoload\ClassLoader $classLoader an instance of the class loader
 	 * @return Bootstrap
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
