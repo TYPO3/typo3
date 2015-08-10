@@ -27,7 +27,7 @@
     "bootstrap": "3.3.5"
   },
   "dependencies": {
-    "requirejs": "2.1.15",
+    "requirejs": "2.1.20",
     "jquery": "1.11.3",
     "jquery-ui": "1.11.4",
     "eonasdan-bootstrap-datetimepicker": "4.7.14",
