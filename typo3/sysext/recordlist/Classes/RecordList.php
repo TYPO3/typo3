@@ -190,7 +190,7 @@ class RecordList {
 	 */
 	public function __construct() {
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
-		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$this->pageRenderer->loadJquery();
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
 	}
