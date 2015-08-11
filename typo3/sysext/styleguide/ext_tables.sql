@@ -144,6 +144,7 @@ CREATE TABLE tx_styleguide_forms (
 	select_30 text NOT NULL,
 	select_31 text NOT NULL,
 	select_32 text NOT NULL,
+	select_33 text NOT NULL,
 
 	group_1 text NOT NULL,
 	group_2 text NOT NULL,
