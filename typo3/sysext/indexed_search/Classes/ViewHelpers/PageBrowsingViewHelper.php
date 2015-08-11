@@ -133,12 +133,11 @@ class PageBrowsingViewHelper extends AbstractViewHelper implements CompilableInt
 	 * @return string Input string wrapped in <a> tag with onclick event attribute set.
 	 */
 	static protected function makecurrentPageSelector_link($str, $p, $freeIndexUid) {
-		$quotedPrefixId = GeneralUtility::quoteJSvalue(self::$prefixId);
-		$onclick = 'document.getElementById(' . $quotedPrefixId . '_pointer).value=' . GeneralUtility::quoteJSvalue($p) . ';';
+		$onclick = 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_pointer') . ').value=' . GeneralUtility::quoteJSvalue($p) . ';';
 		if ($freeIndexUid !== NULL) {
-			$onclick .= 'document.getElementById(' . $quotedPrefixId . '_freeIndexUid).value=' . GeneralUtility::quoteJSvalue(rawurlencode($freeIndexUid)) . ';';
+			$onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId . '_freeIndexUid') . ').value=' . GeneralUtility::quoteJSvalue($freeIndexUid) . ';';
 		}
-		$onclick .= 'document.getElementById(' . $quotedPrefixId . ').submit();return false;';
+		$onclick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue(self::$prefixId) . ').submit();return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
 	}
 
