@@ -14,26 +14,33 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Default Avatar class
+ * Avatar renderer class
  */
 class Avatar {
 
 	/**
-	 * @var array
+	 * Array of sorted and initiated avatar providers
+	 *
+	 * @var AvatarProviderInterface[]
 	 */
-	protected $defaultConfiguration = array();
+	protected $avatarProviders = [];
+
+	/**
+	 * Construct
+	 */
+	public function __construct() {
+		$this->validateSortAndInitiateAvatarProviders();
+	}
 
 	/**
 	 * Render avatar tag
 	 *
-	 * @param array $backendUser
+	 * @param array $backendUser be_user record
 	 * @param int $size width and height of the image
 	 * @param bool $showIcon show the record icon
 	 * @return string
@@ -43,50 +50,87 @@ class Avatar {
 			$backendUser = $this->getBackendUser()->user;
 		}
 
-		$fileUid = $this->getAvatarFileUid($backendUser['uid']);
-
-		// Get file object
-		try {
-			$file = ResourceFactory::getInstance()->getFileObject($fileUid);
-			$processedImage = $file->process(
-				ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
-				array('width' => $size . 'c', 'height' => $size . 'c')
-			);
-			$imageUri = $processedImage->getPublicUrl(TRUE);
-
-			// Image
-			$image = '<img src="' . htmlspecialchars($imageUri) . '"' .
-				'width="' . $processedImage->getProperty('width') . '" ' .
-				'height="' . $processedImage->getProperty('height') . '">';
-		} catch (FileDoesNotExistException $e) {
-			// don't show an image
-			$image = '';
-		}
-
 		// Icon
 		$icon = '';
 		if ($showIcon) {
 			$icon = '<span class="avatar-icon">' . IconUtility::getSpriteIconForRecord('be_users', $backendUser) . '</span>';
 		}
 
+		$image = $this->getImgTag($backendUser, $size);
+
 		return '<span class="avatar"><span class="avatar-image">' . $image . '</span>' . $icon . '</span>';
 	}
 
 	/**
-	 * Get Avatar fileUid
+	 * Get avatar img tag
 	 *
-	 * @param int $beUserId
-	 * @return int
+	 * @param array $backendUser be_user record
+	 * @param int $size
+	 * @return string
 	 */
-	protected function getAvatarFileUid($beUserId) {
-		$file = $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
-			'uid_local',
-			'sys_file_reference',
-			'tablenames = \'be_users\' AND fieldname = \'avatar\' AND ' .
-			'table_local = \'sys_file\' AND uid_foreign = ' . (int)$beUserId .
-			BackendUtility::BEenableFields('sys_file_reference') . BackendUtility::deleteClause('sys_file_reference')
-		);
-		return $file ? $file['uid_local'] : 0;
+	public function getImgTag(array $backendUser = NULL, $size = 32) {
+		if (!is_array($backendUser)) {
+			$backendUser = $this->getBackendUser()->user;
+		}
+
+		$imageTag = '';
+		$avatarImage = $this->getImage($backendUser, $size);
+
+		if ($avatarImage) {
+			$imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
+				'width="' . (int)$avatarImage->getWidth() . '" ' .
+				'height="' . (int)$avatarImage->getHeight() . '" />';
+		}
+
+		return $imageTag;
+	}
+
+	/**
+	 * Get Image from first provider that returns one
+	 *
+	 * @param array $backendUser be_user record
+	 * @param int $size
+	 * @return Image|NULL
+	 */
+	public function getImage(array $backendUser, $size) {
+		foreach ($this->avatarProviders as $provider) {
+			$avatarImage = $provider->getImage($backendUser, $size);
+			if (!empty($avatarImage)) {
+				return $avatarImage;
+			}
+		}
+		return NULL;
+	}
+
+	/**
+	 * Validates the registered avatar providers
+	 *
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	protected function validateSortAndInitiateAvatarProviders() {
+		if (
+			empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'])
+		) {
+			return;
+		}
+		$providers = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders'];
+		foreach ($providers as $identifier => $configuration) {
+			if (empty($configuration) || !is_array($configuration)) {
+				throw new \RuntimeException('Missing configuration for avatar provider "' . $identifier . '".', 1439317801);
+			}
+			if (!is_string($configuration['provider']) || empty($configuration['provider']) || !class_exists($configuration['provider']) || !is_subclass_of($configuration['provider'], AvatarProviderInterface::class)) {
+				throw new \RuntimeException('The avatar provider "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . AvatarProviderInterface::class . '".', 1439317802);
+			}
+		}
+
+		$orderedProviders = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($providers);
+
+		// Initiate providers
+		foreach ($orderedProviders as $configuration) {
+			$this->avatarProviders[] = GeneralUtility::makeInstance($configuration['provider']);
+		}
 	}
 
 	/**
@@ -98,10 +142,4 @@ class Avatar {
 		return $GLOBALS['BE_USER'];
 	}
 
-	/**
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
 }

@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Setup\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
+use TYPO3\CMS\Backend\Backend\Avatar\ImageProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -605,19 +605,26 @@ class SetupModuleController {
 					$avatarFileUid = $this->getAvatarFileUid($this->getBackendUser()->user['uid']);
 
 					if ($avatarFileUid) {
-						$avatar = GeneralUtility::makeInstance(Avatar::class);
-						$icon = $avatar->render();
-						$html .= '<span class="pull-left" style="padding-right: 10px" id="image_' . $fieldName . '">' . $icon . ' </span>';
+						$imageProvider = GeneralUtility::makeInstance(ImageProvider::class);
+						$avatarImage = $imageProvider->getImage($this->getBackendUser()->user, 32);
+						if ($avatarImage) {
+							$icon = '<span class="avatar"><span class="avatar-image">' .
+								'<img src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
+								'width="' . (int)$avatarImage->getWidth() . '" ' .
+								'height="' . (int)$avatarImage->getHeight() . '" />' .
+								'</span></span>';
+							$html .= '<span class="pull-left" style="padding-right: 10px" id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
+						}
 					}
-					$html .= '<input id="field_' . $fieldName . '" type="hidden" ' .
-							'name="data' . $dataAdd . '[' . $fieldName . ']"' . $more .
+					$html .= '<input id="field_' . htmlspecialchars($fieldName) . '" type="hidden" ' .
+							'name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' . $more .
 							' value="' . $avatarFileUid . '" />';
 
 					$html .= '<div class="btn-group">';
 					if ($avatarFileUid) {
-						$html .= '<a id="clear_button_' . $fieldName . '" onclick="clearExistingImage(); return false;" class="btn btn-default"><span class="t3-icon fa t3-icon fa fa-remove"> </span></a>';
+						$html .= '<a id="clear_button_' . htmlspecialchars($fieldName) . '" onclick="clearExistingImage(); return false;" class="btn btn-default"><span class="t3-icon fa t3-icon fa fa-remove"> </span></a>';
 					}
-					$html .= '<a id="add_button_' . $fieldName . '" class="btn btn-default btn-add-avatar" onclick="openFileBrowser();return false;"><span class="t3-icon t3-icon-actions t3-icon-actions-insert t3-icon-insert-record"> </span></a>' .
+					$html .= '<a id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar" onclick="openFileBrowser();return false;"><span class="t3-icon t3-icon-actions t3-icon-actions-insert t3-icon-insert-record"> </span></a>' .
 							'</div>';
 
 					$this->addAvatarButtonJs($fieldName);
@@ -942,15 +949,15 @@ class SetupModuleController {
 			}
 
 			function clearExistingImage() {
-				TYPO3.jQuery(\'#image_' . $fieldName . '\').hide();
-				TYPO3.jQuery(\'#clear_button_' . $fieldName . '\').hide();
-				TYPO3.jQuery(\'#field_' . $fieldName . '\').val(\'\');
+				TYPO3.jQuery(\'#image_' . htmlspecialchars($fieldName) . '\').hide();
+				TYPO3.jQuery(\'#clear_button_' . htmlspecialchars($fieldName) . '\').hide();
+				TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(\'\');
 			}
 
 			function setFileUid(field, value, fileUid) {
 				clearExistingImage();
-				TYPO3.jQuery(\'#field_' . $fieldName . '\').val(fileUid);
-				TYPO3.jQuery(\'#add_button_' . $fieldName . '\').removeClass(\'btn-default\').addClass(\'btn-info\');
+				TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(fileUid);
+				TYPO3.jQuery(\'#add_button_' . htmlspecialchars($fieldName) . '\').removeClass(\'btn-default\').addClass(\'btn-info\');
 
 				browserWin.close();
 			}
