@@ -3056,7 +3056,7 @@ TBE_EDITOR.customEvalFunctions[\'' . $evalData . '\'] = function(value) {
 						$fakeRow = array();
 						switch ($splitCondition[0]) {
 							case 'FIELD':
-								list($sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splitCondition[1]);
+								list($sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splitCondition[1], FALSE, 2);
 								$fieldValue = $editData['data'][$sheetName][$lang][$fieldName];
 								$splitCondition[1] = $fieldName;
 								$dataStruct['ROOT']['TCEforms']['displayCond'] = join(':', $splitCondition);
