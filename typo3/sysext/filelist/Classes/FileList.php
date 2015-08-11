@@ -918,7 +918,7 @@ class FileList extends AbstractRecordList {
 		if ($fileOrFolderObject->checkActionPermission('rename')) {
 			$url = BackendUtility::getModuleUrl('file_rename', array('target' => $fullIdentifier));
 			$renameOnClick = 'top.content.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
-			$cells['rename'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($renameOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.rename') . '">' . IconUtility::getSpriteIcon('actions-edit-rename') . '</a>';
+			$cells['rename'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($renameOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.rename') . '">' . $this->iconFactory->getIcon('actions-edit-rename', Icon::SIZE_SMALL) . '</a>';
 		} else {
 			$cells['rename'] = $this->spaceIcon;
 		}

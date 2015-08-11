@@ -158,6 +158,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'calendar',
 			)
 		),
+		'actions-edit-rename' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'quote-right',
+			)
+		),
 		'actions-edit-replace' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
