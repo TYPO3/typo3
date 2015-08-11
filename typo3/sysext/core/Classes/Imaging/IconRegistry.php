@@ -164,6 +164,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'retweet',
 			)
 		),
+		'actions-edit-undo' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'undo',
+			)
+		),
 
 		// OVERLAYS
 		'overlay-read-only' => array(

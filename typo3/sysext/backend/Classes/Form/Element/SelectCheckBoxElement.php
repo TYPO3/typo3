@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -239,9 +240,11 @@ class SelectCheckBoxElement extends AbstractFormElement {
 				// Build reset group button
 				$resetGroupBtn = '';
 				if (!empty($resetGroup)) {
+					$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', TRUE);
 					$resetGroupBtn = '
-						<a href="#" class="btn btn-default" onclick="' . implode('', $resetGroup) . ' return false;' . '">
-							' . IconUtility::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')))) . '
+						<a href="#" class="btn btn-default" onclick="' . implode('', $resetGroup) . ' return false;'
+						. '" title="' . $title . '">
+							' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . '
 							' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '
 						</a>
 						';

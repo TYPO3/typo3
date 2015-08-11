@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -157,8 +158,8 @@ class SelectSingleBoxElement extends AbstractFormElement {
 						' . $selectBox . '
 					</div>
 					<div class="form-wizards-items">
-						<a href="#" class="btn btn-default" onclick="' . $onClick . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')) . '">'
-							. IconUtility::getSpriteIcon('actions-edit-undo') . '</a>
+						<a href="#" class="btn btn-default" onclick="' . $onClick . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', TRUE) . '">'
+							. $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . '</a>
 					</div>
 				</div>
 			</div>
