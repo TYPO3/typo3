@@ -85,6 +85,7 @@ class Check {
 		$statusArray[] = $this->checkMaxExecutionTime();
 		$statusArray[] = $this->checkDisableFunctions();
 		$statusArray[] = $this->checkDownloadsPossible();
+		$statusArray[] = $this->checkAlwaysPopulateRawPostDataSetting();
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkOpenBaseDir();
 		$statusArray[] = $this->checkXdebugMaxNestingLevel();
@@ -467,6 +468,32 @@ class Check {
 			$status->setMessage(
 				'Either enable PHP runtime setting "allow_url_fopen"' . LF . 'or enable curl by setting [SYS][curlUse] accordingly.'
 			);
+		}
+		return $status;
+	}
+
+	/**
+	 * Check that always_populate_raw_post_data has been set to -1 on PHP 5.6 or newer
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkAlwaysPopulateRawPostDataSetting() {
+		$minimumPhpVersion = '5.6.0';
+		$currentPhpVersion = phpversion();
+		$currentAlwaysPopulaterRawPostDataSetting = ini_get('always_populate_raw_post_data');
+		if (version_compare($currentPhpVersion, $minimumPhpVersion) >= 0 && $currentAlwaysPopulaterRawPostDataSetting !== '-1') {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP always_populate_raw_post_data is deprecated');
+			$status->setMessage(
+				'always_populate_raw_post_data=' . $currentAlwaysPopulaterRawPostDataSetting . LF .
+				'PHP is configured to automatically populate $HTTP_RAW_POST_DATA.' . LF .
+				' Warning: Expect fatal errors in central parts of the CMS' .
+				' if the value is not changed to:' . LF .
+				'always_populate_raw_post_data=-1'
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP always_populate_raw_post_data is fine');
 		}
 		return $status;
 	}
