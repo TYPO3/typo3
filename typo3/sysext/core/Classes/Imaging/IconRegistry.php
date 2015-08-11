@@ -152,6 +152,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'trash',
 			)
 		),
+		'actions-edit-pick-date' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'calendar',
+			)
+		),
 		'actions-edit-replace' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

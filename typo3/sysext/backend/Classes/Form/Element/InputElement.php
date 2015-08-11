@@ -15,7 +15,8 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Form\NodeFactory;
@@ -31,6 +32,8 @@ class InputElement extends AbstractFormElement {
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$languageService = $this->getLanguageService();
 
 		$table = $this->globalOptions['table'];
@@ -221,7 +224,7 @@ class InputElement extends AbstractFormElement {
 					' . $html . '
 					<span class="input-group-btn">
 						<label class="btn btn-default" for="' . $attributes['id'] . '">
-							' . IconUtility::getSpriteIcon('actions-edit-pick-date') . '
+							' . $iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL) . '
 						</label>
 					</span>
 				</div>';
