@@ -65,13 +65,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $queryFactory;
 
 	/**
-	 * The TYPO3 reference index object
-	 *
-	 * @var \TYPO3\CMS\Core\Database\ReferenceIndex
-	 */
-	protected $referenceIndex;
-
-	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
