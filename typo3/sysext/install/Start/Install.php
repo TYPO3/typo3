@@ -104,6 +104,6 @@ if (version_compare(PHP_VERSION, '5.5.0', '<')) {
 
 // set up bare minimum application: class loader, LocalConfiguration, but no extensions and such
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/../../../vendor/autoload.php';
+	$classLoader = require __DIR__ . '/../../../../vendor/autoload.php';
 	(new \TYPO3\CMS\Install\Http\Application($classLoader))->run();
 });

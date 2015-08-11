@@ -18,7 +18,7 @@
  * which allows the user to edit the content of one or more database records.
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/../vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Backend\Utility\BackendUtility::lockRecords();
 

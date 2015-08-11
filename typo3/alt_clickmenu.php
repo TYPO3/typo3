@@ -24,7 +24,7 @@
  * If you want to integrate a context menu in your scripts, please see template::getContextMenuCode()
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/../vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('alt_clickmenu.php is deprecated as of TYPO3 CMS 7, and will not work anymore, please use the ajax.php functionality.');
 		$clickMenuController = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\ClickMenuController::class);

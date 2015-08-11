@@ -39,7 +39,7 @@
  * scripts as well.
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/../vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Usage of typo3/init.php is deprecated since TYPO3 CMS 7, and will be removed in TYPO3 CMS 8. Initialize the bootstrap call directly in your entry script.');
 	});

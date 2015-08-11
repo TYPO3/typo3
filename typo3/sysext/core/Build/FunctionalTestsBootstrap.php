@@ -57,7 +57,7 @@ class FunctionalTestsBootstrap {
 		}
 		if (!class_exists(BaseTestCase::class)) {
 			// PHPUnit is invoked globally, so we need to include the project autoload file
-			require_once __DIR__ . '/../../../vendor/autoload.php';
+			require_once __DIR__ . '/../../../../vendor/autoload.php';
 		}
 
 		return $this;

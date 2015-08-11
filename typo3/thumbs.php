@@ -17,7 +17,7 @@
  * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use the corresponding Resource objects and Processing functionality
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/../vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 			'thumbs.php is no longer in use, please use the corresponding Resource objects to generate a preview functionality for thumbnails.'

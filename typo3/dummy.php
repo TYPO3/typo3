@@ -16,7 +16,7 @@
  * Dummy document - displays nothing but background color.
  */
 call_user_func(function() {
-	$classLoader = require __DIR__ . '/vendor/autoload.php';
+	$classLoader = require __DIR__ . '/../vendor/autoload.php';
 	(new \TYPO3\CMS\Backend\Http\Application($classLoader))->run(function() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
 			'The entry point to the dummy window was moved to an own module. Please use BackendUtility::getModuleUrl(\'dummy\') to link to dummy.php. This script will be removed in TYPO3 CMS 8.'

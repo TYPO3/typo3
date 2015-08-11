@@ -37,11 +37,11 @@ use TYPO3\CMS\Core\Tests\Functional\Framework\Frontend\Response;
  *
  * Call whole functional test suite, example:
  * - cd /var/www/t3master/foo  # Document root of CMS instance, here is index.php of frontend
- * - ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
+ * - typo3/../bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
  *
  * Call single test case, example:
  * - cd /var/www/t3master/foo  # Document root of CMS instance, here is index.php of frontend
- * - ./typo3conf/ext/phpunit/Composer/vendor/bin/phpunit \
+ * - typo3/../bin/phpunit \
  *     --process-isolation \
  *     --bootstrap typo3/sysext/core/Build/FunctionalTestsBootstrap.php \
  *     typo3/sysext/core/Tests/Functional/DataHandling/DataHandlerTest.php

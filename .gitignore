@@ -37,8 +37,7 @@ typo3/sysext/core/Build/Configuration/Acceptance/Support/AcceptanceTester.php
 #
 # Ignore composer stuff
 bin/*
-Packages/*
-typo3/vendor/*
+vendor/*
 #
 # Ignore common TYPO3 CMS directories
 typo3temp/*
