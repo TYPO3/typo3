@@ -1,5 +1,6 @@
 {namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Default" />
 
@@ -66,13 +67,13 @@
 						<td>
 							<f:if condition="{compareUser.isDisabled} == 1">
 								<f:then>
-									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}">
-										<be:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" />
+									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}" title="{f:translate(key: 'visibility.unhide')}">
+										<core:icon identifier="actions-edit-unhide" size="small"/>
 									</a>
 								</f:then>
 								<f:else>
-									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}">
-										<be:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" />
+									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}" title="{f:translate(key: 'visibility.hide')}">
+										<core:icon identifier="actions-edit-hide" size="small"/>
 									</a>
 								</f:else>
 							</f:if>

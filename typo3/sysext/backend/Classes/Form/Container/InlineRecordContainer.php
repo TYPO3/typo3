@@ -568,15 +568,20 @@ class InlineRecordContainer extends AbstractContainer {
 			$hiddenField = $tcaTableCtrl['enablecolumns']['disabled'];
 			if ($enabledControls['hide'] && $permsEdit && $hiddenField && $tcaTableCols[$hiddenField] && (!$tcaTableCols[$hiddenField]['exclude'] || $backendUser->check('non_exclude_fields', $foreign_table . ':' . $hiddenField))) {
 				$onClick = 'return inline.enableDisableRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ')';
+				$className = 't3js-' . $nameObjectFtId . '_disabled';
 				if ($rec[$hiddenField]) {
+					$title = $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE);
 					$cells['hide.unhide'] = '
-						<a class="btn btn-default hiddenHandle" href="#" onclick="' . htmlspecialchars($onClick) . '">
-							' . IconUtility::getSpriteIcon('actions-edit-unhide', array('title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE), 'id' => ($nameObjectFtId . '_disabled'))) . '
+						<a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="'
+							. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
+							$this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL) . '
 						</a>';
 				} else {
+					$title = $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE);
 					$cells['hide.hide'] = '
-						<a class="btn btn-default hiddenHandle" href="#" onclick="' . htmlspecialchars($onClick) . '">
-							' . IconUtility::getSpriteIcon('actions-edit-hide', array('title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE), 'id' => ($nameObjectFtId . '_disabled'))) . '
+						<a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="'
+							. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
+							$this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL) . '
 						</a>';
 				}
 			}

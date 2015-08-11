@@ -1349,13 +1349,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
 									  . ' data-params="' . htmlspecialchars($params) . '"'
 									  . ' title="' . $this->getLanguageService()->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
-									  . IconUtility::getSpriteIcon('actions-edit-unhide') . '</a>';
+									  . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL) . '</a>';
 					} else {
 						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
 						$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
 									  . ' data-params="' . htmlspecialchars($params) . '"'
 									  . ' title="' . $this->getLanguageService()->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
-									  . IconUtility::getSpriteIcon('actions-edit-hide') . '</a>';
+									  . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL) . '</a>';
 					}
 				}
 				$this->addActionToCellGroup($cells, $hideAction, 'hide');

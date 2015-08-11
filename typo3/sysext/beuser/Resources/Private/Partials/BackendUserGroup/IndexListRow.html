@@ -29,10 +29,10 @@
 			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_groups][{backendUserGroup.uid}]=edit&returnUrl={returnUrl}')}"><be:spriteManagerIcon iconName="actions-document-open" /></a>
 			<f:if condition="{backendUserGroup.hidden}">
 				<f:then>
-					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}"><be:spriteManagerIcon iconName="actions-edit-unhide" options="{title: 'unhide'}" /></a>
+					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" size="small"/></a>
 				</f:then>
 				<f:else>
-					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}"><be:spriteManagerIcon iconName="actions-edit-hide" options="{title: 'hide'}" /></a>
+					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" size="small"/></a>
 				</f:else>
 			</f:if>
 		</div>

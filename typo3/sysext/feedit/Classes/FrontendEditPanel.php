@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -56,6 +57,11 @@ class FrontendEditPanel {
 	protected $backendUser;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Imaging\IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor for the edit panel
 	 *
 	 * @param DatabaseConnection $databaseConnection
@@ -68,6 +74,7 @@ class FrontendEditPanel {
 		$this->backendUser = $backendUser ?: $GLOBALS['BE_USER'];
 		$this->cObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->cObj->start(array());
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -116,10 +123,10 @@ class FrontendEditPanel {
 		// Hiding for localizations because it is unknown what should be the function in that case
 		if (isset($allow['hide']) && $hideField && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
 			if ($dataArr[$hideField]) {
-				$icon = IconUtility::getSpriteIcon('actions-edit-unhide', array('title' => $this->backendUser->extGetLL('p_unhide')));
+				$icon = $this->iconFactory->getIcon('actions-edit-unhide');
 				$panel .= $this->editPanelLinkWrap($icon, $formName, 'unhide');
 			} else {
-				$icon = IconUtility::getSpriteIcon('actions-edit-hide', array('title' => $this->backendUser->extGetLL('p_hide')));
+				$icon = $this->iconFactory->getIcon('actions-edit-hide');
 				$panel .= $this->editPanelLinkWrap($icon, $formName, 'hide', '', $this->backendUser->extGetLL('p_hideConfirm'));
 			}
 		}

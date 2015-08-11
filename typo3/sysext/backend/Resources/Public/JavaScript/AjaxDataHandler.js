@@ -38,10 +38,9 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 		$(document).on('click', '.t3js-record-hide', function(evt) {
 			evt.preventDefault();
 			var $anchorElement   = $(this);
-			var $iconElement     = $anchorElement.find('span');
+			var $iconElement     = $anchorElement.find('i');
 			var $rowElement      = $anchorElement.closest('tr[data-uid]');
 			var params           = $anchorElement.data('params');
-
 			var removeClass      = $anchorElement.data('state') === 'visible' ? 'fa-toggle-on' : 'fa-toggle-off';
 
 			// add a spinner
@@ -112,7 +111,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 		}
 		$anchorElement.data('state', nextState).data('params', nextParams);
 
-		var $iconElement = $anchorElement.find('span');
+		var $iconElement = $anchorElement.find('i');
 		$iconElement.addClass(className);
 
 		var $icon = $rowElement.find('td.col-icon span.t3-icon');

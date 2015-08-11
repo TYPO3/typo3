@@ -909,14 +909,13 @@ var inline = {
 		}
 	},
 
-	enableDisableRecord: function (objectId) {
-		var elName = this.parseObjectId('full', objectId, 2, 0, true) + '[hidden]';
+	enableDisableRecord: function (objectIdentifier) {
+		var elName = this.parseObjectId('full', objectIdentifier, 2, 0, true) + '[hidden]';
 		var formObj = document.getElementsByName(elName + '_0');
 		var valueObj = document.getElementsByName(elName);
-		var escapedObjectId = this.escapeObjectId(objectId);
-		var $icon = TYPO3.jQuery('#' + escapedObjectId + '_disabled');
-
-		var $container = TYPO3.jQuery('#' + escapedObjectId + '_div');
+		var escapedObjectIdentifier = this.escapeObjectId(objectIdentifier);
+		var $container = TYPO3.jQuery('#' + escapedObjectIdentifier + '_div');
+		var $icon = $container.find('.t3js-' + escapedObjectIdentifier + '_disabled i');
 
 		// It might be the case that there's no hidden field
 		if (formObj.length && valueObj.length) {

@@ -958,13 +958,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					if ((int)$schedulerRecord['disable'] === 1) {
 						$translationKey = 'enable';
-						$spriteIcon = 'actions-edit-unhide';
+						$icon = $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL);
 					} else {
 						$translationKey = 'disable';
-						$spriteIcon = 'actions-edit-hide';
+						$icon = $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL);
 					}
-					$toggleHiddenAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey, TRUE) . '" class="icon">' .
-						IconUtility::getSpriteIcon($spriteIcon) . '</a>';
+					$toggleHiddenAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri
+						. '&CMD=toggleHidden&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="'
+						. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:' . $translationKey, TRUE)
+						. '" class="icon">' . $icon . '</a>';
 					$deleteAction = '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($this->moduleUri . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" '
 						. ' data-severity="warning"'
 						. ' data-title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '"'

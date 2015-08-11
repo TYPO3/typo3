@@ -196,6 +196,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'quote-right',
 			)
 		),
+		'actions-edit-hide' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'toggle-on',
+			)
+		),
 		'actions-edit-replace' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -206,6 +212,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'undo',
+			)
+		),
+		'actions-edit-unhide' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'toggle-off',
 			)
 		),
 		'actions-edit-upload' => array(

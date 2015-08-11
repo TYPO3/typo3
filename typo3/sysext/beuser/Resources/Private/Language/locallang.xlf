@@ -153,6 +153,12 @@
 			<trans-unit id="online">
 				<source>online</source>
 			</trans-unit>
+			<trans-unit id="visibility.hide">
+				<source>hide</source>
+			</trans-unit>
+			<trans-unit id="visibility.unhide">
+				<source>unhide</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

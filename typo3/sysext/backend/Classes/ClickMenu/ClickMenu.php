@@ -830,7 +830,7 @@ class ClickMenu {
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
 		}
-		return $this->linkItem($title, IconUtility::getSpriteIcon('actions-edit-' . ($rec[$flagField] ? 'un' : '') . 'hide'), $editOnClick . 'return false;', 1);
+		return $this->linkItem($title, $this->iconFactory->getIcon('actions-edit-' . ($rec[$flagField] ? 'un' : '') . 'hide', Icon::SIZE_SMALL), $editOnClick . 'return false;', 1);
 	}
 
 	/***************************************
