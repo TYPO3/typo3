@@ -140,6 +140,24 @@ module.exports = function(grunt) {
 					{ src: 'Resources/Private/Icons/module-workspaces.svg', dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg' }
 				]
 			}
+		},
+		uglify: {
+			my_target: {
+				files: {
+					"<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/moment.js": ["<%= paths.core %>Public/JavaScript/Contrib/moment.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/draggable.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/droppable.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/mouse.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/position.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/resizable.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/selectable.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/sortable.js"],
+					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"]
+				}
+			}
 		}
 	});
 
@@ -150,6 +168,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-npm-install');
 	grunt.loadNpmTasks('grunt-bower-just-install');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	/**
 	 * grunt default task
@@ -169,8 +188,9 @@ module.exports = function(grunt) {
 	 * - npn install
 	 * - bower install
 	 * - copy some bower components to a specific destinations because they need to be included via PHP
+	 * - uglify 3rd party JavaScript libraries
 	 */
-	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy']);
+	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy', 'uglify']);
 
 	/**
 	 * grunt task to copy icons into correct location

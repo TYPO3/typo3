@@ -13,6 +13,7 @@
     "grunt-bowercopy": "^1.2.0",
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-less": "~1.0.0",
+    "grunt-contrib-uglify": "0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-npm-install": "^0.2.0"
   }
