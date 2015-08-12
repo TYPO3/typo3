@@ -169,6 +169,111 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 	}
 
 	/**
+	 * @test
+	 */
+	public function noProxyAuthSchemeSetInLocalConfiguration() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$closure = function ($param) {
+			throw new \RuntimeException('Path does not exist in array', 1341397869);
+		};
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getLocalConfigurationValueByPath',
+				'removeLocalConfigurationKeysByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnCallback($closure));
+		$this->configurationManager->expects($this->never())
+			->method('removeLocalConfigurationKeysByPath');
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('setProxyAuthScheme');
+	}
+
+	/**
+	 * @test
+	 */
+	public function proxyAuthSchemeIsDigest() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$currentLocalConfiguration = array(
+			array('HTTP/proxy_auth_scheme', 'digest')
+		);
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getLocalConfigurationValueByPath',
+				'removeLocalConfigurationKeysByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+		$this->configurationManager->expects($this->never())
+			->method('removeLocalConfigurationKeysByPath');
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('setProxyAuthScheme');
+	}
+
+	/**
+	 * @test
+	 */
+	public function proxyAuthSchemeIsBasic() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$currentLocalConfiguration = array(
+			array('HTTP/proxy_auth_scheme', 'basic')
+		);
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getLocalConfigurationValueByPath',
+				'removeLocalConfigurationKeysByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+		$this->configurationManager->expects($this->once())
+			->method('removeLocalConfigurationKeysByPath')
+			->with($this->equalTo(array('HTTP/proxy_auth_scheme')));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('setProxyAuthScheme');
+	}
+
+	/**
 	 * Dataprovider for transferDeprecatedCurlSettings
 	 *
 	 * @return array
@@ -220,7 +325,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 				array('HTTP/proxy_port', $proxyPort)
 			);
 
-		$this->setExpectedException('\TYPO3\CMS\Install\Controller\Exception\RedirectException');
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
 
 		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
@@ -303,7 +408,7 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 				array('HTTP/adapter', 'curl')
 			);
 
-		$this->setExpectedException('\TYPO3\CMS\Install\Controller\Exception\RedirectException');
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
 
 		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
 
