@@ -346,6 +346,77 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 	}
 
 	/**
+	 * @test
+	 */
+	public function doNotGenerateEncryptionKeyIfExists() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$currentLocalConfiguration = array(
+			array('SYS/encryptionKey', 'EnCrYpTiOnKeY')
+		);
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getLocalConfigurationValueByPath',
+				'setLocalConfigurationValueByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+		$this->configurationManager->expects($this->never())
+			->method('setLocalConfigurationValueByPath');
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('generateEncryptionKeyIfNeeded');
+	}
+
+	/**
+	 * @test
+	 */
+	public function generateEncryptionKeyIfNotExists() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$closure = function () {
+			throw new \RuntimeException('Path does not exist in array', 1341397869);
+		};
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getLocalConfigurationValueByPath',
+				'setLocalConfigurationValueByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnCallback($closure));
+		$this->configurationManager->expects($this->once())
+			->method('setLocalConfigurationValueByPath')
+			->with($this->equalTo('SYS/encryptionKey'), $this->isType('string'));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('generateEncryptionKeyIfNeeded');
+	}
+
+	/**
 	 * Dataprovider for transferDeprecatedCurlSettings
 	 *
 	 * @return array
