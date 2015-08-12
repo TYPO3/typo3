@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\History;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 
@@ -92,9 +94,15 @@ class RecordHistory {
 	protected $pageAccessCache = array();
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor for the class
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		// GPvars:
 		$this->element = $this->getArgument('element');
 		$this->returnUrl = $this->getArgument('returnUrl');
@@ -434,11 +442,13 @@ class RecordHistory {
 			// Show link to mark/unmark state
 			if (!$entry['action']) {
 				if ($entry['snapshot']) {
-                    $image =  IconUtility::getSpriteIcon('actions-unmarkstate', array('title' => $GLOBALS['LANG']->getLL('unmarkState', TRUE)), array());
+					$title = $GLOBALS['LANG']->getLL('unmarkState', TRUE);
+					$image = $this->iconFactory->getIcon('actions-unmarkstate', Icon::SIZE_SMALL);
 				} else {
-                    $image =  IconUtility::getSpriteIcon('actions-markstate', array('title' => $GLOBALS['LANG']->getLL('markState', TRUE)), array());
+					$title = $GLOBALS['LANG']->getLL('markState', TRUE);
+					$image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL);
 				}
-				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']));
+				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
 			} else {
 				$singleLine[] = '';
 			}

@@ -182,6 +182,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'upload',
 			)
 		),
+		'actions-markstate' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'square-o',
+			)
+		),
+		'actions-unmarkstate' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check-square-o',
+			)
+		),
 
 		// OVERLAYS
 		'overlay-read-only' => array(
