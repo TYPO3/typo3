@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Recordlist\Browser;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * class for the Element Browser window.
@@ -2331,16 +2331,26 @@ class ElementBrowser {
 			} elseif (!GeneralUtility::isFirstPartOfStr($href, 'file://') && strpos($href, 'file:') !== FALSE) {
 				$rel = substr($href, strpos($href, 'file:') + 5);
 				$rel = rawurldecode($rel);
-				// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
-				$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($rel);
-				if ($fileOrFolderObject instanceof Folder) {
-					$info['act'] = 'folder';
-					$info['value'] = $fileOrFolderObject->getCombinedIdentifier();
-				} elseif ($fileOrFolderObject instanceof File) {
-					$info['act'] = 'file';
-					$info['value'] = $fileOrFolderObject->getUid();
-				} else {
-					$info['value'] = $rel;
+				try {
+					// resolve FAL-api "file:UID-of-sys_file-record" and "file:combined-identifier"
+					$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($rel);
+					if ($fileOrFolderObject instanceof Folder) {
+						$info['act'] = 'folder';
+						$info['value'] = $fileOrFolderObject->getCombinedIdentifier();
+					} elseif ($fileOrFolderObject instanceof File) {
+						$info['act'] = 'file';
+						$info['value'] = $fileOrFolderObject->getUid();
+					} else {
+						$info['value'] = $rel;
+					}
+				} catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $e) {
+					// file was deleted or any other reason, don't select any item
+					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($rel)) {
+						$info['act'] = 'file';
+					} else {
+						$info['act'] = 'folder';
+					}
+					$info['value'] = '';
 				}
 			} elseif (GeneralUtility::isFirstPartOfStr($href, $siteUrl)) {
 				// If URL is on the current frontend website:
