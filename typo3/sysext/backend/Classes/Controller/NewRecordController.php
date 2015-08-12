@@ -357,6 +357,7 @@ class NewRecordController {
 	 * @return void
 	 */
 	public function regularNew() {
+
 		/** @var IconFactory $iconFactory */
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$lang = $this->getLanguageService();
@@ -390,7 +391,7 @@ class NewRecordController {
 			$newPageLinks[] = $this->linkWrap($pageIcon . $lang->sL($v['ctrl']['title'], TRUE) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.after', TRUE) . ')', 'pages', -$this->id);
 		}
 		// New pages at selection position
-		if ($this->newPagesSelectPosition) {
+		if ($this->newPagesSelectPosition && $this->showNewRecLink('pages')) {
 			// Link to page-wizard:
 			$newPageLinks[] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => 1))) . '">' . $pageIcon . htmlspecialchars($lang->getLL('pageSelectPosition')) . '</a>';
 		}
@@ -399,16 +400,14 @@ class NewRecordController {
 		for ($i = 0; $i < $numPageLinks; $i++) {
 			$rowContent .= '<li>' . $newPageLinks[$i] . '</li>';
 		}
-		// Add row header and half-line if not empty
-		if (!empty($rowContent)) {
+		if ($this->showNewRecLink('pages')) {
 			$rowContent = '<ul class="list-tree"><li>' .$newPageIcon . '<strong>' .
 				$lang->getLL('createNewPage') . '</strong><ul>' . $rowContent . '</ul></li>';
+		} else {
+			$rowContent = '<ul class="list-tree"><li><ul>' . $rowContent . '</li></ul>';
 		}
-		// Compile table row to show the icon for "new page (select position)"
-		$startRows = array();
-		if ($this->showNewRecLink('pages') && !empty($rowContent)) {
-			$startRows[] = $rowContent;
-		}
+		// Compile table row
+		$startRows = array($rowContent);
 		$iconFile = array();
 		// New tables (but not pages) INSIDE this pages
 		$isAdmin = $this->getBackendUserAuthentication()->isAdmin();
