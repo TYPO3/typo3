@@ -170,6 +170,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'undo',
 			)
 		),
+		'actions-edit-upload' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'upload',
+			)
+		),
 
 		// OVERLAYS
 		'overlay-read-only' => array(

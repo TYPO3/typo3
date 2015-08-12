@@ -523,7 +523,7 @@ class FileListController {
 						'target' => $this->folderObject->getCombinedIdentifier(),
 						'returnUrl' => $this->filelist->listURL(),
 					)
-				)) . '" id="button-upload" title="' . $this->getLanguageService()->makeEntities($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload', TRUE)) . '">' . IconUtility::getSpriteIcon('actions-edit-upload') . '</a>';
+				)) . '" id="button-upload" title="' . $this->getLanguageService()->makeEntities($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.upload', TRUE)) . '">' . $iconFactory->getIcon('actions-edit-upload', Icon::SIZE_SMALL) . '</a>';
 		}
 		// New folder button
 		if ($this->folderObject && $this->folderObject->checkActionPermission('write')
