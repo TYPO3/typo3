@@ -775,4 +775,50 @@ class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['LANG'] = $previousLanguageService;
 	}
 
+	/**
+	 * @param mixed $value
+	 * @param array $configuration
+	 * @param int|string $expected
+	 * @test
+	 * @dataProvider referenceValuesAreCastedDataProvider
+	 */
+	public function referenceValuesAreCasted($value, array $configuration, $expected) {
+		$this->assertEquals(
+			$expected,
+			$this->subject->_call('castReferenceValue', $value, $configuration)
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function referenceValuesAreCastedDataProvider() {
+		return array(
+			'all empty' => array(
+				'', array(), ''
+			),
+			'cast zero with MM table' => array(
+				'', array('MM' => 'table'), 0
+			),
+			'cast zero with MM table with default value' => array(
+				'', array('MM' => 'table', 'default' => 13), 0
+			),
+			'cast zero with foreign field' => array(
+				'', array('foreign_field' => 'table', 'default' => 13), 0
+			),
+			'cast zero with foreign field with default value' => array(
+				'', array('foreign_field' => 'table'), 0
+			),
+			'pass zero' => array(
+				'0', array(), '0'
+			),
+			'pass value' => array(
+				'1', array('default' => 13), '1'
+			),
+			'use default value' => array(
+				'', array('default' => 13), 13
+			),
+		);
+	}
+
 }

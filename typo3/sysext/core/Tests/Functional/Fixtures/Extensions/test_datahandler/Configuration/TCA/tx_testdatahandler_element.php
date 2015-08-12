@@ -32,7 +32,8 @@ return array(
 				'items' => array(
 					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-				)
+				),
+				'default' => 0
 			)
 		),
 		'l10n_parent' => array(

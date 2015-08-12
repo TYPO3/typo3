@@ -17,7 +17,8 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
 				'items' => Array(
 					Array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages',-1),
 					Array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
-				)
+				),
+				'default' => 0
 			)
 		),
 		'l18n_parent' => Array (

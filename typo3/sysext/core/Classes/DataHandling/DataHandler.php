@@ -2079,7 +2079,7 @@ class DataHandler {
 		}
 		if (!$unsetResult) {
 			$newVal = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
-			$res['value'] = implode(',', $newVal);
+			$res['value'] = $this->castReferenceValue(implode(',', $newVal), $tcaFieldConf);
 		} else {
 			unset($res['value']);
 		}
@@ -3151,11 +3151,12 @@ class DataHandler {
 				$valueArray = $dbAnalysis->getValueArray();
 				// Checking that the number of items is correct:
 				$valueArray = $this->checkValue_checkMax($tcaFieldConf, $valueArray);
+				$valueData = $this->castReferenceValue(implode(',', $valueArray), $tcaFieldConf);
 				// If a valid translation of the 'keep' mode is active, update relations in the original(!) record:
 				if ($keepTranslation) {
-					$this->updateDB($table, $transOrigPointer, array($field => implode(',', $valueArray)));
+					$this->updateDB($table, $transOrigPointer, array($field => $valueData));
 				} else {
-					$newValue = implode(',', $valueArray);
+					$newValue = $valueData;
 				}
 			}
 		}
@@ -5708,6 +5709,9 @@ class DataHandler {
 				// If array is returned, check for maxitems condition, if string is returned this was already done:
 				if (is_array($newValue)) {
 					$newValue = implode(',', $this->checkValue_checkMax($tcaFieldConf, $newValue));
+					// The reference casting is only required if
+					// checkValue_group_select_processDBdata() returns an array
+					$newValue = $this->castReferenceValue($newValue, $tcaFieldConf);
 				}
 				// Update in database (list of children (csv) or number of relations (foreign_field)):
 				if (!empty($field)) {
@@ -7213,6 +7217,34 @@ class DataHandler {
 			}
 		}
 		return $listArr;
+	}
+
+	/**
+	 * Casts a reference value. In case MM relations or foreign_field
+	 * references are used. All other configurations, as well as
+	 * foreign_table(!) could be stored as comma-separated-values
+	 * as well. Since the system is not able to determine the default
+	 * value automatically then, the TCA default value is used if
+	 * it has been defined.
+	 *
+	 * @param int|string $value The value to be casted (e.g. '', '0', '1,2,3')
+	 * @param array $configuration The TCA configuration of the accordant field
+	 * @return int|string
+	 */
+	protected function castReferenceValue($value, array $configuration) {
+		if ((string)$value !== '') {
+			return $value;
+		}
+
+		if (!empty($configuration['MM']) || !empty($configuration['foreign_field'])) {
+			return 0;
+		}
+
+		if (array_key_exists('default', $configuration)) {
+			return $configuration['default'];
+		}
+
+		return $value;
 	}
 
 	/**
