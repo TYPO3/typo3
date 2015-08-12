@@ -1571,6 +1571,9 @@ class DatabaseConnection {
 		if ($this->isConnected) {
 			// Check if this is really the case or if the database server has gone away for some reason
 			$this->isConnected = $this->link->ping();
+			if (!$this->isConnected) {
+				$this->connectDB();
+			}
 		}
 		return $this->isConnected;
 	}

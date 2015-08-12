@@ -159,6 +159,9 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				// Store exception, so that it can be saved to database
 				$failure = $e;
 			}
+			// make sure database-connection is fine
+			// for long-running tasks the database might meanwhile have disconnected
+			$this->getDatabaseConnection()->isConnected();
 			// Un-register execution
 			$task->unmarkExecution($executionID, $failure);
 			// Log completion of execution
