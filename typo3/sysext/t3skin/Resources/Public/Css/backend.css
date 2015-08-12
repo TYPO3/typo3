@@ -7532,13 +7532,17 @@ button.close {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  vertical-align: middle;
   white-space: nowrap;
+  vertical-align: -22%;
 }
 .icon img {
   display: block;
   height: 100%;
   width: 100%;
+}
+.icon * {
+  display: block;
+  line-height: inherit;
 }
 .icon-markup {
   position: absolute;
@@ -7556,9 +7560,6 @@ button.close {
   height: 60%;
   width: 60%;
   text-align: center;
-}
-.icon-unify {
-  display: block;
 }
 .icon-size-small {
   height: 16px;
@@ -12908,23 +12909,15 @@ iframe {
 .typo3-topbar-navigation-items .dropdown-list-link-edit,
 .typo3-topbar-navigation-items .dropdown-list-link-delete,
 .typo3-topbar-navigation-items .dropdown-list-link-close {
-  display: table;
   position: absolute;
   top: 0;
   bottom: 0;
   right: -8px;
   padding: 0;
   text-align: center;
+  line-height: 26px;
   width: 26px;
   height: 26px;
-}
-.typo3-topbar-navigation-items .dropdown-list-link-edit .t3-icon,
-.typo3-topbar-navigation-items .dropdown-list-link-delete .t3-icon,
-.typo3-topbar-navigation-items .dropdown-list-link-close .t3-icon {
-  display: table-cell;
-  margin: 0;
-  height: auto;
-  width: auto;
 }
 .typo3-topbar-navigation-items .dropdown-list-link-edit:hover,
 .typo3-topbar-navigation-items .dropdown-list-link-delete:hover,
