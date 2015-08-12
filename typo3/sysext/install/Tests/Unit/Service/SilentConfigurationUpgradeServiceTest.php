@@ -37,6 +37,138 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 	}
 
 	/**
+	 * @test
+	 */
+	public function configureSaltedPasswordsWithDefaultConfiguration() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$config = 'a:2:{s:3:"BE.";a:3:{s:11:"forceSalted";i:0;s:15:"onlyAuthService";i:0;s:12:"updatePasswd";i:1;}s:3:"FE.";a:4:{s:7:"enabled";i:0;s:11:"forceSalted";i:0;s:15:"onlyAuthService";i:0;s:12:"updatePasswd";i:1;}}';
+		$defaultConfiguration = array();
+		$defaultConfiguration['EXT']['extConf']['saltedpasswords'] = $config;
+
+		$closure = function () {
+			throw new \RuntimeException('Path does not exist in array', 1341397869);
+		};
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getDefaultConfiguration',
+				'getLocalConfigurationValueByPath',
+				'setLocalConfigurationValueByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getDefaultConfiguration')
+			->will($this->returnValue($defaultConfiguration));
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnCallback($closure));
+		$this->configurationManager->expects($this->once())
+			->method('setLocalConfigurationValueByPath')
+			->with($this->equalTo('EXT/extConf/saltedpasswords'), $this->equalTo($config));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('configureSaltedPasswords');
+	}
+
+	/**
+	 * @test
+	 */
+	public function configureSaltedPasswordsWithExtensionConfigurationBeEnabled() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$config = 'a:2:{s:3:"BE.";a:1:{s:21:"saltedPWHashingMethod";}s:3:"FE.";a:2:{s:7:"enabled";i:0;s:11:"forceSalted";i:0;}}';
+		$defaultConfiguration = array();
+		$defaultConfiguration['EXT']['extConf']['saltedpasswords'] = $config;
+
+		$currentLocalConfiguration = array(
+			array('EXT/extConf/saltedpasswords', 'a:2:{s:3:"BE.";a:1:{s:7:"enabled";i:1;}s:3:"FE.";a:1:{s:7:"enabled";i:0;}}')
+		);
+		$newConfig = 'a:2:{s:3:"BE.";a:0:{}s:3:"FE.";a:1:{s:7:"enabled";i:0;}}';
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getDefaultConfiguration',
+				'getLocalConfigurationValueByPath',
+				'setLocalConfigurationValueByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getDefaultConfiguration')
+			->will($this->returnValue($defaultConfiguration));
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+		$this->configurationManager->expects($this->once())
+			->method('setLocalConfigurationValueByPath')
+			->with($this->equalTo('EXT/extConf/saltedpasswords'), $this->equalTo($newConfig));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('configureSaltedPasswords');
+	}
+
+	/**
+	 * @test
+	 */
+	public function configureSaltedPasswordsWithExtensionConfigurationBeNotEnabled() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+		$config = 'a:2:{s:3:"BE.";a:1:{s:15:"onlyAuthService";i:0;}s:3:"FE.";a:2:{s:7:"enabled";i:0;s:11:"forceSalted";i:0;}}';
+		$defaultConfiguration = array();
+		$defaultConfiguration['EXT']['extConf']['saltedpasswords'] = $config;
+
+		$currentLocalConfiguration = array(
+			array('EXT/extConf/saltedpasswords', 'a:2:{s:3:"BE.";a:2:{s:7:"enabled";i:0;s:12:"updatePasswd";i:1;}s:3:"FE.";a:1:{s:7:"enabled";i:0;}}')
+		);
+		$newConfig = 'a:2:{s:3:"BE.";a:1:{s:15:"onlyAuthService";i:0;}s:3:"FE.";a:1:{s:7:"enabled";i:0;}}';
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getDefaultConfiguration',
+				'getLocalConfigurationValueByPath',
+				'setLocalConfigurationValueByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getDefaultConfiguration')
+			->will($this->returnValue($defaultConfiguration));
+		$this->configurationManager->expects($this->exactly(1))
+			->method('getLocalConfigurationValueByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+		$this->configurationManager->expects($this->once())
+			->method('setLocalConfigurationValueByPath')
+			->with($this->equalTo('EXT/extConf/saltedpasswords'), $this->equalTo($newConfig));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('configureSaltedPasswords');
+	}
+
+	/**
 	 * Dataprovider for transferDeprecatedCurlSettings
 	 *
 	 * @return array
