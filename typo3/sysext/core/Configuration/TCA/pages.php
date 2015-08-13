@@ -527,7 +527,8 @@ return array(
 							'additionalSearchFields' => 'nav_title, alias, url'
 						)
 					)
-				)
+				),
+				'default' => 0
 			)
 		),
 		'shortcut_mode' => array(
@@ -571,7 +572,8 @@ return array(
 					'suggest' => array(
 						'type' => 'suggest'
 					)
-				)
+				),
+				'default' => 0
 			)
 		),
 		'mount_pid' => array(
@@ -588,7 +590,8 @@ return array(
 					'suggest' => array(
 						'type' => 'suggest'
 					)
-				)
+				),
+				'default' => 0
 			)
 		),
 		'keywords' => array(

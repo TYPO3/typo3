@@ -74,12 +74,14 @@ return array(
 					array('', 0)
 				),
 				'foreign_table' => 'sys_category',
-				'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_category.sys_language_uid IN (-1,0)'
+				'foreign_table_where' => 'AND sys_category.uid=###REC_FIELD_l10n_parent### AND sys_category.sys_language_uid IN (-1,0)',
+				'default' => 0
 			)
 		),
 		'l10n_diffsource' => array(
 			'config' => array(
-				'type' => 'passthrough'
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		'hidden' => array(
@@ -129,7 +131,8 @@ return array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.description',
 			'config' => array(
-				'type' => 'text'
+				'type' => 'text',
+				'default' => '',
 			)
 		),
 		'parent' => array(
@@ -149,7 +152,8 @@ return array(
 						'showHeader' => TRUE,
 						'maxLevels' => 99,
 					),
-				)
+				),
+				'default' => 0
 			)
 		),
 		'items' => array(

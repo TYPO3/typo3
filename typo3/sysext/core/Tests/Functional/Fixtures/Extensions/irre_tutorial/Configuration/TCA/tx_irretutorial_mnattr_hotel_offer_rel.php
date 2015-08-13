@@ -47,11 +47,13 @@ return array(
 				),
 				'foreign_table' => 'tx_irretutorial_mnattr_hotel_offer_rel',
 				'foreign_table_where' => 'AND tx_irretutorial_mnattr_hotel_offer_rel.pid=###CURRENT_PID### AND tx_irretutorial_mnattr_hotel_offer_rel.sys_language_uid IN (-1,0)',
+				'default' => 0,
 			)
 		),
 		'l18n_diffsource' => array(
 			'config' => array(
-				'type' => 'passthrough'
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		'hidden' => array(
@@ -69,6 +71,7 @@ return array(
 				'foreign_table' => 'tx_irretutorial_mnattr_hotel',
 				'maxitems' => 1,
 				'localizeReferences' => 1,
+				'default' => 0,
 			)
 		),
 		'offerid' => array(
@@ -78,6 +81,7 @@ return array(
 				'foreign_table' => 'tx_irretutorial_mnattr_offer',
 				'maxitems' => 1,
 				'localizeReferences' => 1,
+				'default' => 0,
 			)
 		),
 		'hotelsort' => array(

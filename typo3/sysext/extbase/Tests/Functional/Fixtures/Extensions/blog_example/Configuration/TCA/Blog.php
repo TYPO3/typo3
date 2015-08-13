@@ -35,7 +35,8 @@ $TCA['tx_blogexample_domain_model_blog'] = array(
 		),
 		'l18n_diffsource' => Array(
 			'config'=>array(
-				'type'=>'passthrough'
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		't3ver_label' => Array (

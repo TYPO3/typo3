@@ -205,11 +205,17 @@ return array(
 				'type' => 'select',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
-				'items' => array() // no default language here, as the pages table is always the default language
+				'items' => array(), // no default language here, as the pages table is always the default language
+				'default' => 0
 			)
 		),
 		'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
-		'l18n_diffsource' => array('config' => array('type' => 'passthrough')),
+		'l18n_diffsource' => array(
+			'config' => array(
+				'type' => 'passthrough',
+				'default' => ''
+			)
+		),
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.versionLabel',
 			'config' => array(

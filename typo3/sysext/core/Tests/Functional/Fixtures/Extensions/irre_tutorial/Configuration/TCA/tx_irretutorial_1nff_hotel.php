@@ -19,7 +19,7 @@ return array(
 		'origUid' => 't3_origuid',
 		// @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
 		// 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
-		'shadowColumnsForMovePlaceholders' => 'parentid,parenttable',
+		'shadowColumnsForMovePlaceholders' => 'parentid,parenttable,parentidentifier',
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,offers'
@@ -49,11 +49,13 @@ return array(
 				),
 				'foreign_table' => 'tx_irretutorial_1nff_hotel',
 				'foreign_table_where' => 'AND tx_irretutorial_1nff_hotel.pid=###CURRENT_PID### AND tx_irretutorial_1nff_hotel.sys_language_uid IN (-1,0)',
+				'default' => 0,
 			)
 		),
 		'l18n_diffsource' => array(
 			'config' => array(
-				'type' => 'passthrough'
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		'hidden' => array(
@@ -67,11 +69,19 @@ return array(
 		'parentid' => array(
 			'config' => array(
 				'type' => 'passthrough',
+				'default' => 0
 			)
 		),
 		'parenttable' => array(
 			'config' => array(
 				'type' => 'passthrough',
+				'default' => ''
+			)
+		),
+		'parentidentifier' => array(
+			'config' => array(
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		'title' => array(

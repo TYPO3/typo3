@@ -48,11 +48,13 @@ return array(
 				),
 				'foreign_table' => 'tx_irretutorial_1ncsv_offer',
 				'foreign_table_where' => 'AND tx_irretutorial_1ncsv_offer.pid=###CURRENT_PID### AND tx_irretutorial_1ncsv_offer.sys_language_uid IN (-1,0)',
+				'default' => 0,
 			)
 		),
 		'l18n_diffsource' => array(
 			'config' => array(
-				'type' => 'passthrough'
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		'hidden' => array(
@@ -90,6 +92,7 @@ return array(
 					'localizationMode' => 'select',
 					'localizeChildrenAtParentLocalization' => TRUE,
 				),
+				'default' => ''
 			)
 		),
 	),

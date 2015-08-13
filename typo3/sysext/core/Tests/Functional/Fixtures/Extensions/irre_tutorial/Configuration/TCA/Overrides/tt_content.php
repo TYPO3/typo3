@@ -47,6 +47,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
 					'localizationMode' => 'select',
 					'localizeChildrenAtParentLocalization' => TRUE,
 				),
+				'default' => '',
 			)
 		),
 		'tx_irretutorial_flexform' => array(
@@ -57,6 +58,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['shadowColumnsForMovePlaceholders'] = 'tx_
 				'ds' => array(
 					'default' => 'FILE:EXT:irre_tutorial/Configuration/FlexForms/tt_content_flexform.xml',
 				),
+				'default' => '',
 			)
 		),
 	)

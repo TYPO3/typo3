@@ -40,7 +40,8 @@ $TCA['tx_blogexample_domain_model_post'] = array(
 		),
 		'l18n_diffsource' => Array(
 			'config'=>array(
-				'type'=>'passthrough'
+				'type' => 'passthrough',
+				'default' => ''
 			)
 		),
 		'hidden' => array(

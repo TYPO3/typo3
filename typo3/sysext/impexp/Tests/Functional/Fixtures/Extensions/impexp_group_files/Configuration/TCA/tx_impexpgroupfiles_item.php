@@ -81,6 +81,12 @@ return array(
 				),
 			),
 		),
+		'l18n_diffsource' => array(
+			'config' => array(
+				'type' => 'passthrough',
+				'default' => ''
+			)
+		),
 		'title' => array(
 			'label' => 'LLL:EXT:impexp_group_files/Resources/Private/Language/locallang_db.xml:tx_impexpgroupfiles_item_title',
 			'config' => array(
@@ -199,7 +205,8 @@ return array(
 								</sDEF>
 							</sheets>
 						</T3DataStructure>'
-				)
+				),
+				'default' => ''
 			)
 		),
 	),

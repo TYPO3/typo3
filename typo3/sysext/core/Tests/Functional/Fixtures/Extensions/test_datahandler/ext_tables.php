@@ -15,6 +15,7 @@ defined('TYPO3_MODE') or die();
 				'minitems' => 1,
 				'maxitems' => 10,
 				'autoSizeMax' => '10',
+				'default' => '',
 			),
 		),
 		 'tx_testdatahandler_group' => array(
@@ -27,6 +28,7 @@ defined('TYPO3_MODE') or die();
 				'minitems' => 1,
 				'maxitems' => 10,
 				'autoSizeMax' => '10',
+				'default' => '',
 			),
 		),
 		 'tx_testdatahandler_radio' => array(
@@ -37,7 +39,8 @@ defined('TYPO3_MODE') or die();
 				'items' => array(
 					array('predefined label', 'predefined value')
 				),
-				'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\RadioElementItems->getItems'
+				'itemsProcFunc' => 'TYPO3\TestDatahandler\Classes\Tca\RadioElementItems->getItems',
+				'default' => '',
 			),
 		),
 	)
