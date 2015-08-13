@@ -279,7 +279,7 @@ TYPO3.BackendLiveSearch = Ext.extend(Ext.form.ComboBox, {
 	},
 
 	getSearchResultsUrl : function(searchTerm) {
-		return 'id=' + this.searchResultsPid + '&search_levels=4&search_field=' + searchTerm;
+		return 'id=' + this.searchResultsPid + '&search_levels=4&search_field=' + encodeURIComponent(searchTerm);
 	},
 
 	handleBlur : function(e) {
