@@ -542,22 +542,24 @@ class PageRepository {
 	 * @see \TYPO3\CMS\WizardCrpages\Controller\CreatePagesWizardModuleFunctionController, \TYPO3\CMS\WizardSortpages\View\SortPagesWizardModuleFunction
 	 */
 	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
+		$databaseConnection = $this->getDatabaseConnection();
 		$output = array();
-		$query = 'pid IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray((array)$uid)) .
+		$query = 'pid IN (' . implode(',', $databaseConnection->cleanIntArray((array)$uid)) .
 			')' . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere;
-		if ($this->versioningWorkspaceId != 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		if ((int)$this->versioningWorkspaceId !== 0) {
+			$res = $databaseConnection->exec_SELECTquery(
 				'uid',
 				'pages',
-				'pid IN (' . implode(',', $this->getDatabaseConnection()->cleanIntArray((array)$uid)) .
+				'pid IN (' . implode(',', $databaseConnection->cleanIntArray((array)$uid)) .
 				')' . $this->where_hid_del . ' ' . $addWhere,
 				'',
 				$sortField
 			);
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$workspaceRow = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $row['uid']);
-			$realUid = is_array($workspaceRow) ? $workspaceRow['uid'] : $row['uid'];
-				$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			$recordArray = array();
+			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+				$workspaceRow = $this->getWorkspaceVersionOfRecord($this->versioningWorkspaceId, 'pages', $row['uid']);
+				$realUid = is_array($workspaceRow) ? $workspaceRow['uid'] : $row['uid'];
+				$result = $databaseConnection->exec_SELECTgetSingleRow(
 					'uid',
 					'pages',
 					'uid=' . intval($realUid) . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere,
@@ -568,12 +570,13 @@ class PageRepository {
 					$recordArray[] = $row['uid'];
 				}
 			}
-			if (is_array($recordArray)) {
+			$databaseConnection->sql_free_result($res);
+			if (!empty($recordArray)) {
 				$query = 'uid IN (' . implode(',', $recordArray) . ')';
 			}
 		};
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', $query, '', $sortField);
-		while (($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
+		$res = $databaseConnection->exec_SELECTquery($fields, 'pages', $query, '', $sortField);
+		while ($row = $databaseConnection->sql_fetch_assoc($res)) {
 			$this->versionOL('pages', $row, TRUE);
 			if (is_array($row)) {
 				// Keep mount point:
@@ -612,7 +615,7 @@ class PageRepository {
 						$searchField = 'uid';
 						$searchUid = $row['pid'];
 					}
-					$count = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'pages', $searchField . '=' . $searchUid . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere);
+					$count = $databaseConnection->exec_SELECTcountRows('uid', 'pages', $searchField . '=' . $searchUid . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere);
 					if (!$count) {
 						unset($row);
 					}
@@ -625,7 +628,7 @@ class PageRepository {
 				}
 			}
 		}
-		$this->getDatabaseConnection()->sql_free_result($res);
+		$databaseConnection->sql_free_result($res);
         // Finally load language overlays
 		return $this->getPagesOverlay($output);
 	}
