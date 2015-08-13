@@ -35,7 +35,7 @@ return [
 
 	// Register backend_layout wizard
 	'wizard_backend_layout' => [
-		'path' => '/wizard/backendlayout',
+		'path' => '/wizard/backend_layout',
 		'controller' => \TYPO3\CMS\Backend\Controller\BackendLayoutWizardController::class
 	],
 
@@ -73,5 +73,36 @@ return [
 	'wizard_edit' => [
 		'path' => '/wizard/edit',
 		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\EditController::class
+	],
+
+	/** File- and folder-related routes */
+	// Editing the contents of a file
+	'file_edit' => [
+		'path' => '/file/editcontent',
+		'controller' => \TYPO3\CMS\Backend\Controller\File\EditFileController::class
+	],
+
+	// Create a new folder
+	'file_newfolder' => [
+		'path' => '/file/new',
+		'controller' => \TYPO3\CMS\Backend\Controller\File\CreateFolderController::class
+	],
+
+	// Rename a file
+	'file_rename' => [
+		'path' => '/file/rename',
+		'controller' => \TYPO3\CMS\Backend\Controller\File\RenameFileController::class
+	],
+
+	// Replace a file with a different one
+	'file_replace' => [
+		'path' => '/file/replace',
+		'controller' => \TYPO3\CMS\Backend\Controller\File\ReplaceFileController::class
+	],
+
+	// Upload new files
+	'file_upload' => [
+		'path' => '/file/upload',
+		'controller' => \TYPO3\CMS\Backend\Controller\File\FileUploadController::class
 	],
 ];

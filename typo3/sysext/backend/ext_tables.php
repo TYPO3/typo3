@@ -28,35 +28,6 @@ if (TYPO3_MODE === 'BE') {
 		'EXT:backend/Modules/FileSystemNavigationFrame/'
 	);
 
-	// Register file_edit
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'file_edit',
-		'EXT:backend/Modules/File/Edit/'
-	);
-
-	// Register file_newfolder
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'file_newfolder',
-		'EXT:backend/Modules/File/Newfolder/'
-	);
-
-	// Register file_rename
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'file_rename',
-		'EXT:backend/Modules/File/Rename/'
-	);
-
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'file_replace',
-		'EXT:backend/Modules/File/Replace/'
-	);
-
-	// Register file_rename
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'file_upload',
-		'EXT:backend/Modules/File/Upload/'
-	);
-
 	// Register tce_db
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'tce_db',
