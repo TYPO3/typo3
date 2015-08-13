@@ -66,7 +66,9 @@ class FileEditHook {
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
 	 */
 	public function preStartPageHook($parameters, $documentTemplate) {
-		if (GeneralUtility::_GET('M') === 'file_edit') {
+		// @todo: this is a workaround. Ideally the document template holds the current request so we can match the route
+		// against the name of the route and not the GET parameter
+		if (GeneralUtility::_GET('route') === '/file/editcontent') {
 			$t3editor = $this->getT3editor();
 			$t3editor->getJavascriptCode($documentTemplate);
 			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
