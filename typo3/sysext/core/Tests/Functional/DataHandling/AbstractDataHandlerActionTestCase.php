@@ -105,7 +105,7 @@ abstract class AbstractDataHandlerActionTestCase extends \TYPO3\CMS\Core\Tests\F
 		$fileName = rtrim($this->scenarioDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
 		$fileName = GeneralUtility::getFileAbsFileName($fileName);
 
-		$dataSet = DataSet::read($fileName);
+		$dataSet = DataSet::read($fileName, TRUE);
 
 		foreach ($dataSet->getTableNames() as $tableName) {
 			foreach ($dataSet->getElements($tableName) as $element) {

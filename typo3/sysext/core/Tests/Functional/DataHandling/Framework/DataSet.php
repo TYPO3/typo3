@@ -28,10 +28,15 @@ class DataSet {
 
 	/**
 	 * @param string $fileName
+	 * @param bool $applyDefaultValues
 	 * @return DataSet
 	 */
-	static public function read($fileName) {
+	static public function read($fileName, $applyDefaultValues = FALSE) {
 		$data = self::parseData(self::readData($fileName));
+
+		if ($applyDefaultValues) {
+			$data = self::applyDefaultValues($data);
+		}
 
 		return GeneralUtility::makeInstance(
 			\TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework\DataSet::class,
@@ -121,6 +126,44 @@ class DataSet {
 					} else {
 						$data[$tableName]['elements'][] = $element;
 					}
+				}
+			}
+		}
+		return $data;
+	}
+
+	/**
+	 * Applies TCA default values to missing fields on the imported scenario data-set.
+	 * This is basically required for running the functional tests in a SQL strict mode environment.
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	static protected function applyDefaultValues(array $data) {
+		foreach ($data as $tableName => $sections) {
+			if (empty($GLOBALS['TCA'][$tableName]['columns'])) {
+				continue;
+			}
+
+			$fields = $sections['fields'];
+
+			foreach ($GLOBALS['TCA'][$tableName]['columns'] as $tcaFieldName => $tcaFieldConfiguration) {
+				// Skip if field was already imported
+				if (in_array($tcaFieldName, $fields)) {
+					continue;
+				}
+				// Skip if field is an enable-column (it's expected that those fields have proper DBMS defaults)
+				if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']) && in_array($tcaFieldName, $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'])) {
+					continue;
+				}
+				// Skip if no default value is defined in the accordant TCA definition (NULL values might occur as well)
+				if (empty($tcaFieldConfiguration['config']) || !array_key_exists('default', $tcaFieldConfiguration['config'])) {
+					continue;
+				}
+
+				$data[$tableName]['fields'][] = $tcaFieldName;
+				foreach ($data[$tableName]['elements'] as &$element) {
+					$element[$tcaFieldName] = $tcaFieldConfiguration['config']['default'];
 				}
 			}
 		}
