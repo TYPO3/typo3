@@ -1050,6 +1050,10 @@ class ReferenceIndex {
 	 * @return string Fields which could contain a relation
 	 */
 	protected function fetchTableRelationFields($tableName) {
+		if (!isset($GLOBALS['TCA'][$tableName])) {
+			return '';
+		}
+
 		$fields = array();
 
 		foreach ($GLOBALS['TCA'][$tableName]['columns'] as $field => $fieldDefinition) {
