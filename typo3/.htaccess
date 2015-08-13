@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
 
 	RewriteEngine On
+	# Use options from the htaccess in the main directory of the frontend in order
+	# to have versioned static files working
+	RewriteOptions inherit
 
 	# Store the current location in an environment variable CWD to use
 	# mod_rewrite in .htaccess files without knowing the RewriteBase
@@ -11,5 +14,5 @@
 	RewriteRule ^install(\/?.*)$ %{ENV:CWD}sysext/install/Start/Install.php [R=307,L]
 
 	# Redirect old entry points
-	RewriteRule ^(ajax|alt_clickmenu|alt_db_navframe|alt_doc|alt_file_navframe|browser|db_new|dummy|init|login_frameset|logout|mod|move_el|show_item|tce_db|tce_file|thumbs)\.php$ %{ENV:CWD}deprecated.php [L]
+	RewriteRule ^(ajax|alt_clickmenu|alt_db_navframe|alt_doc|alt_file_navframe|browser|db_new|dummy|init|login_frameset|logout|mod|move_el|show_item|tce_db|tce_file|thumbs)\.php$ %{ENV:CWD}deprecated.php
 </IfModule>
