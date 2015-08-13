@@ -2891,8 +2891,8 @@ class DataHandler {
 	 * @return array Modified value array
 	 */
 	public function checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, $type, $currentTable, $currentField) {
-		$tables = $type == 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'] . ',' . $tcaFieldConf['neg_foreign_table'];
-		$prep = $type == 'group' ? $tcaFieldConf['prepend_tname'] : $tcaFieldConf['neg_foreign_table'];
+		$tables = $type == 'group' ? $tcaFieldConf['allowed'] : $tcaFieldConf['foreign_table'];
+		$prep = $type == 'group' ? $tcaFieldConf['prepend_tname'] : '';
 		$newRelations = implode(',', $valueArray);
 		/** @var $dbAnalysis RelationHandler */
 		$dbAnalysis = $this->createRelationHandlerInstance();
@@ -2920,9 +2920,6 @@ class DataHandler {
 			$valueArray = $dbAnalysis->countItems();
 		} else {
 			$valueArray = $dbAnalysis->getValueArray($prep);
-			if ($type == 'select' && $prep) {
-				$valueArray = $dbAnalysis->convertPosNeg($valueArray, $tcaFieldConf['foreign_table'], $tcaFieldConf['neg_foreign_table']);
-			}
 		}
 		// Here we should see if 1) the records exist anymore, 2) which are new and check if the BE_USER has read-access to the new ones.
 		return $valueArray;
@@ -3722,8 +3719,8 @@ class DataHandler {
 	 * @return mixed
 	 */
 	protected function copyRecord_processManyToMany($table, $uid, $field, $value, $conf, $language, $localizationMode, $inlineSubType) {
-		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
-		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
+		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
+		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
 		$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
 		$localizeForeignTable = isset($conf['foreign_table']) && BackendUtility::isTableLocalizable($conf['foreign_table']);
 		$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
@@ -5166,7 +5163,7 @@ class DataHandler {
 				}
 			}
 		} elseif ($this->isReferenceField($conf)) {
-			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
+			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
 			$dbAnalysis = $this->createRelationHandlerInstance();
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			foreach ($dbAnalysis->itemArray as $v) {
@@ -5339,8 +5336,8 @@ class DataHandler {
 		foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $fConf) {
 			$conf = $fConf['config'];
 			if ($this->isReferenceField($conf)) {
-				$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
-				$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
+				$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
+				$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
 				if ($conf['MM']) {
 					/** @var $dbAnalysis RelationHandler */
 					$dbAnalysis = $this->createRelationHandlerInstance();
@@ -5390,8 +5387,8 @@ class DataHandler {
 		// Extract parameters:
 		list($table, $uid, $field) = $pParams;
 		if ($this->isReferenceField($dsConf)) {
-			$allowedTables = $dsConf['type'] == 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'] . ',' . $dsConf['neg_foreign_table'];
-			$prependName = $dsConf['type'] == 'group' ? $dsConf['prepend_tname'] : $dsConf['neg_foreign_table'];
+			$allowedTables = $dsConf['type'] == 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'];
+			$prependName = $dsConf['type'] == 'group' ? $dsConf['prepend_tname'] : '';
 			if ($dsConf['MM']) {
 				/** @var $dbAnalysis RelationHandler */
 				$dbAnalysis = $this->createRelationHandlerInstance();
@@ -5550,7 +5547,7 @@ class DataHandler {
 		// Will be set TRUE if an upgrade should be done...
 		$set = FALSE;
 		// Allowed tables for references.
-		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
+		$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'];
 		// Table name to prepend the UID
 		$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : '';
 		// Which tables that should possibly not be remapped
@@ -5595,11 +5592,7 @@ class DataHandler {
 			if ($conf['MM']) {
 				$dbAnalysis->writeMM($conf['MM'], $MM_localUid, $prependName);
 			} else {
-				$vArray = $dbAnalysis->getValueArray($prependName);
-				if ($conf['type'] == 'select') {
-					$vArray = $dbAnalysis->convertPosNeg($vArray, $conf['foreign_table'], $conf['neg_foreign_table']);
-				}
-				return $vArray;
+				return $dbAnalysis->getValueArray($prependName);
 			}
 		}
 		return NULL;

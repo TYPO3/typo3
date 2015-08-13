@@ -735,16 +735,6 @@ class DataPreprocessor {
 			$recordList[$subrow['uid']] = BackendUtility::getRecordTitle($fieldConfig['config']['foreign_table'], $subrow);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($subres);
-		// neg_foreign_table
-		if (is_array($GLOBALS['TCA'][$fieldConfig['config']['neg_foreign_table']])) {
-			$subres = BackendUtility::exec_foreign_table_where_query($fieldConfig, $field, $TSconfig, 'neg_');
-			while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($subres)) {
-				// Resolve move-placeholder, to check the right uid against $dataIds
-				BackendUtility::workspaceOL($fieldConfig['config']['neg_foreign_table'], $subrow);
-				$recordList[-$subrow['uid']] = BackendUtility::getRecordTitle($fieldConfig['config']['neg_foreign_table'], $subrow);
-			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($subres);
-		}
 		// At this point all records that CAN be selected is found in $recordList
 		// Now, get the data from loadDBgroup based on the input list of values.
 		$dataIds = $this->getDataIdList($elements, $fieldConfig, $row, $table);
@@ -755,7 +745,7 @@ class DataPreprocessor {
 		// After this we can traverse the loadDBgroup values and match values with the list of possible values in $recordList:
 		foreach ($dataIds as $theId) {
 			if (isset($recordList[$theId])) {
-				$lPrefix = $languageService->sL($fieldConfig['config'][($theId > 0 ? '' : 'neg_') . 'foreign_table_prefix']);
+				$lPrefix = $languageService->sL($fieldConfig['config']['foreign_table_prefix']);
 				if ($fieldConfig['config']['MM'] || $fieldConfig['config']['foreign_field']) {
 					$dataAcc[] = rawurlencode($theId) . '|' . rawurlencode(GeneralUtility::fixed_lgd_cs(($lPrefix . strip_tags($recordList[$theId])), $GLOBALS['BE_USER']->uc['titleLen']));
 				} else {
@@ -789,8 +779,8 @@ class DataPreprocessor {
 		}
 		$loadDB = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\RelationHandler::class);
 		$loadDB->registerNonTableValues = $fieldConfig['config']['allowNonIdValues'] ? 1 : 0;
-		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'] . ',' . $fieldConfig['config']['neg_foreign_table'], $fieldConfig['config']['MM'], $recordId, $table, $fieldConfig['config']);
-		$idList = $loadDB->convertPosNeg($loadDB->getValueArray(), $fieldConfig['config']['foreign_table'], $fieldConfig['config']['neg_foreign_table']);
+		$loadDB->start(implode(',', $elements), $fieldConfig['config']['foreign_table'], $fieldConfig['config']['MM'], $recordId, $table, $fieldConfig['config']);
+		$idList = $loadDB->getValueArray();
 		return $idList;
 	}
 

@@ -416,9 +416,6 @@ class FormEngineUtility {
 		// Values from foreign tables:
 		if ($fieldValue['config']['foreign_table']) {
 			$items = static::foreignTable($items, $fieldValue, $TSconfig, $field);
-			if ($fieldValue['config']['neg_foreign_table']) {
-				$items = static::foreignTable($items, $fieldValue, $TSconfig, $field, 1);
-			}
 		}
 
 		// Values from a file folder:
@@ -838,20 +835,17 @@ class FormEngineUtility {
 	 * @param array $fieldValue The 'columns' array for the field (from TCA)
 	 * @param array $TSconfig TSconfig for the table/row
 	 * @param string $field The fieldname
-	 * @param bool $pFFlag If set, then we are fetching the 'neg_' foreign tables.
 	 * @return array The $items array modified.
 	 * @internal
 	 */
-	static protected function foreignTable($items, $fieldValue, $TSconfig, $field, $pFFlag = FALSE) {
+	static protected function foreignTable($items, $fieldValue, $TSconfig, $field) {
 		$languageService = static::getLanguageService();
 		$db = static::getDatabaseConnection();
 
 		// Init:
-		$pF = $pFFlag ? 'neg_' : '';
-		$f_table = $fieldValue['config'][$pF . 'foreign_table'];
-		$uidPre = $pFFlag ? '-' : '';
+		$f_table = $fieldValue['config']['foreign_table'];
 		// Exec query:
-		$res = BackendUtility::exec_foreign_table_where_query($fieldValue, $field, $TSconfig, $pF);
+		$res = BackendUtility::exec_foreign_table_where_query($fieldValue, $field, $TSconfig);
 		// Perform error test
 		if ($db->sql_error()) {
 			$msg = htmlspecialchars($db->sql_error());
@@ -868,7 +862,7 @@ class FormEngineUtility {
 			return array();
 		}
 		// Get label prefix.
-		$lPrefix = $languageService->sL($fieldValue['config'][$pF . 'foreign_table_prefix']);
+		$lPrefix = $languageService->sL($fieldValue['config']['foreign_table_prefix']);
 		// Get icon field + path if any:
 		$iField = $GLOBALS['TCA'][$f_table]['ctrl']['selicon_field'];
 		$iPath = trim($GLOBALS['TCA'][$f_table]['ctrl']['selicon_field_path']);
@@ -888,7 +882,7 @@ class FormEngineUtility {
 				// Add the item:
 				$items[] = array(
 					$lPrefix . htmlspecialchars(BackendUtility::getRecordTitle($f_table, $row)),
-					$uidPre . $row['uid'],
+					$row['uid'],
 					$icon
 				);
 			}

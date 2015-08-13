@@ -959,8 +959,10 @@ class RelationHandler {
 	 * @param string $fTable Foreign table (the one used for positive numbers)
 	 * @param string $nfTable Negative foreign table
 	 * @return array The array with ID integer values, converted to positive for those where the table name was set but did NOT match the positive foreign table.
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function convertPosNeg($valueArray, $fTable, $nfTable) {
+		GeneralUtility::logDeprecatedFunction();
 		if (is_array($valueArray) && $fTable) {
 			foreach ($valueArray as $key => $val) {
 				$val = strrev($val);

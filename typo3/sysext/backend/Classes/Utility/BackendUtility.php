@@ -2294,13 +2294,9 @@ class BackendUtility {
 							$lA = array();
 							foreach ($rParts as $rVal) {
 								$rVal = (int)$rVal;
-								if ($rVal > 0) {
-									$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
-								} else {
-									$r = self::getRecordWSOL($theColConf['neg_foreign_table'], -$rVal);
-								}
+								$r = self::getRecordWSOL($theColConf['foreign_table'], $rVal);
 								if (is_array($r)) {
-									$lA[] = $lang->sL(($rVal > 0 ? $theColConf['foreign_table_prefix'] : $theColConf['neg_foreign_table_prefix'])) . self::getRecordTitle(($rVal > 0 ? $theColConf['foreign_table'] : $theColConf['neg_foreign_table']), $r, FALSE, $forceResult);
+									$lA[] = $lang->sL($theColConf['foreign_table_prefix']) . self::getRecordTitle($theColConf['foreign_table'], $r, FALSE, $forceResult);
 								} else {
 									$lA[] = $rVal ? '[' . $rVal . '!]' : '';
 								}
@@ -3444,14 +3440,13 @@ class BackendUtility {
 	 * @param array $fieldValue Configuration array for the field, taken from $GLOBALS['TCA']
 	 * @param string $field Field name
 	 * @param array $TSconfig TSconfig array from which to get further configuration settings for the field name
-	 * @param string $prefix Prefix string for the key "*foreign_table_where" from $fieldValue array
 	 * @return string Part of query
 	 * @internal
 	 */
-	static public function exec_foreign_table_where_query($fieldValue, $field = '', $TSconfig = array(), $prefix = '') {
-		$foreign_table = $fieldValue['config'][$prefix . 'foreign_table'];
+	static public function exec_foreign_table_where_query($fieldValue, $field = '', $TSconfig = array()) {
+		$foreign_table = $fieldValue['config']['foreign_table'];
 		$rootLevel = $GLOBALS['TCA'][$foreign_table]['ctrl']['rootLevel'];
-		$fTWHERE = $fieldValue['config'][$prefix . 'foreign_table_where'];
+		$fTWHERE = $fieldValue['config']['foreign_table_where'];
 		$fTWHERE = static::replaceMarkersInWhereClause($fTWHERE, $foreign_table, $field, $TSconfig);
 		$db = static::getDatabaseConnection();
 		$wgolParts = $db->splitGroupOrderLimit($fTWHERE);

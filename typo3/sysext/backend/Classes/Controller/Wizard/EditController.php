@@ -99,7 +99,7 @@ class EditController extends AbstractWizardController implements \TYPO3\CMS\Core
 		$table = $this->P['table'];
 		$field = $this->P['field'];
 		$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-		$fTable = $this->P['currentValue'] < 0 ? $config['neg_foreign_table'] : $config['foreign_table'];
+		$fTable = $config['foreign_table'];
 
 		$urlParameters = array(
 			'returnUrl' => BackendUtility::getModuleUrl('wizard_edit', array('doClose' => 1))
@@ -115,7 +115,7 @@ class EditController extends AbstractWizardController implements \TYPO3\CMS\Core
 		} elseif (is_array($config) && $this->P['currentSelectedValues'] && ($config['type'] === 'select' && $config['foreign_table'] || $config['type'] === 'group' && $config['internal_type'] === 'db')) {
 			// MULTIPLE VALUES:
 			// Init settings:
-			$allowedTables = $config['type'] === 'group' ? $config['allowed'] : $config['foreign_table'] . ',' . $config['neg_foreign_table'];
+			$allowedTables = $config['type'] === 'group' ? $config['allowed'] : $config['foreign_table'];
 			$prependName = 1;
 			// Selecting selected values into an array:
 			/** @var RelationHandler $relationHandler */
