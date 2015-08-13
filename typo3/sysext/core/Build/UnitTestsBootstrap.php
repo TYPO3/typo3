@@ -171,7 +171,7 @@ class UnitTestsBootstrap {
 	 * @return UnitTestsBootstrap fluent interface
 	 */
 	protected function includeAndStartCoreBootstrap() {
-		$classLoaderFilepath = PATH_site . '/typo3/../vendor/autoload.php';
+		$classLoaderFilepath = __DIR__ . '/../../../../vendor/autoload.php';
 		if (!file_exists($classLoaderFilepath)) {
 			die('ClassLoader can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
 		}
