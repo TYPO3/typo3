@@ -290,6 +290,8 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		}
 		$values = array(
 			'title' => $this->getUniqueId('title'),
+			'l10n_diffsource' => '',
+			'description' => '',
 			'is_dummy_record' => 1
 		);
 		$this->database->exec_INSERTquery('sys_category', $values);
