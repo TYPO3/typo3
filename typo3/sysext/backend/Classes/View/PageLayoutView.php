@@ -705,7 +705,17 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							: ''
 						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
 				} else {
-					$lPLabel = $viewLink;
+					$params = '&edit[pages][' . $this->id . ']=edit';
+					$lPLabel = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon(
+							IconUtility::getSpriteIconForRecord('pages', $this->pageRecord),
+							'pages',
+							$this->id
+						) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
+							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
+							. IconUtility::getSpriteIcon('actions-document-open') . '</a>'
+							: ''
+						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->pageRecord['title'], 20));
 				}
 				$sCont[$lP] = '
 					<td nowrap="nowrap" class="t3-page-column t3-page-lang-label">' . $lPLabel . '</td>';
