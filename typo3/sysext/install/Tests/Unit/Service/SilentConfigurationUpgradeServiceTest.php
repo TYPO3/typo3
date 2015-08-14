@@ -39,6 +39,78 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 	/**
 	 * @test
 	 */
+	public function removeObsoleteLocalConfigurationSettingsIfThereAreOldSettings() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$obsoleteLocalConfigurationSettings = array(
+			'SYS/form_enctype',
+		);
+
+		$currentLocalConfiguration = array(
+			array($obsoleteLocalConfigurationSettings, TRUE)
+		);
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'removeLocalConfigurationKeysByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('removeLocalConfigurationKeysByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('obsoleteLocalConfigurationSettings', $obsoleteLocalConfigurationSettings);
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('removeObsoleteLocalConfigurationSettings');
+	}
+
+	/**
+	 * @test
+	 */
+	public function doNotRemoveObsoleteLocalConfigurationSettingsIfThereAreNoOldSettings() {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		$obsoleteLocalConfigurationSettings = array(
+			'SYS/form_enctype',
+		);
+
+		$currentLocalConfiguration = array(
+			array($obsoleteLocalConfigurationSettings, FALSE)
+		);
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'removeLocalConfigurationKeysByPath',
+			)
+		);
+		$this->configurationManager->expects($this->exactly(1))
+			->method('removeLocalConfigurationKeysByPath')
+			->will($this->returnValueMap($currentLocalConfiguration));
+
+		$silentConfigurationUpgradeServiceInstance->_set('obsoleteLocalConfigurationSettings', $obsoleteLocalConfigurationSettings);
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('removeObsoleteLocalConfigurationSettings');
+	}
+
+	/**
+	 * @test
+	 */
 	public function configureSaltedPasswordsWithDefaultConfiguration() {
 		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
 		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
