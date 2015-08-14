@@ -1293,10 +1293,13 @@ class DataHandlerHook {
 			$newVersion_placeholderFieldArray['t3ver_wsid'] = $tcemainObj->BE_USER->workspace;
 			$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['label']] = '[MOVE-TO PLACEHOLDER for #' . $uid . ', WS#' . $tcemainObj->BE_USER->workspace . ']';
 			// moving localized records requires to keep localization-settings for the placeholder too
-			if (array_key_exists('languageField', $GLOBALS['TCA'][$table]['ctrl']) && array_key_exists('transOrigPointerField', $GLOBALS['TCA'][$table]['ctrl'])) {
+			if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField']) && isset($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])) {
 				$l10nParentRec = BackendUtility::getRecord($table, $uid);
 				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
 				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+				if (isset($GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField'])) {
+					$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']];
+				}
 				unset($l10nParentRec);
 			}
 			// Initially, create at root level.
