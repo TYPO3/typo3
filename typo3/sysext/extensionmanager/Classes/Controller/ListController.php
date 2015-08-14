@@ -164,6 +164,7 @@ class ListController extends AbstractController {
 	 */
 	public function terAction($search = '') {
 		$this->addComposerModeNotification();
+		$search = trim($search);
 		if (!empty($search)) {
 			$extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
 		} else {
