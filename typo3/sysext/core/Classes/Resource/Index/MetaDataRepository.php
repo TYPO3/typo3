@@ -127,7 +127,8 @@ class MetaDataRepository implements SingletonInterface {
 			'pid' => 0,
 			'crdate' => $GLOBALS['EXEC_TIME'],
 			'tstamp' => $GLOBALS['EXEC_TIME'],
-			'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0
+			'cruser_id' => isset($GLOBALS['BE_USER']->user['uid']) ? (int)$GLOBALS['BE_USER']->user['uid'] : 0,
+			'l10n_diffsource' => ''
 		);
 		$emptyRecord = array_merge($emptyRecord, $additionalFields);
 		$this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $emptyRecord);
