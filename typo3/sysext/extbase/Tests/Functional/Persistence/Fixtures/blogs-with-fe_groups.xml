@@ -4,6 +4,9 @@
 		<uid>1</uid>
 		<pid>1</pid>
 		<title>Blog1</title>
+		<description>Blog1 Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<posts>0</posts>
 	</tx_blogexample_domain_model_blog>
@@ -11,6 +14,9 @@
 		<uid>2</uid>
 		<pid>1</pid>
 		<title>Blog2</title>
+		<description>Blog2 Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
 		<fe_group>1</fe_group>
 		<deleted>0</deleted>
 		<posts>0</posts>
@@ -19,6 +25,9 @@
 		<uid>3</uid>
 		<pid>1</pid>
 		<title>Blog3</title>
+		<description>Blog3 Description</description>
+		<logo></logo>
+		<l18n_diffsource></l18n_diffsource>
 		<fe_group>2</fe_group>
 		<deleted>0</deleted>
 		<posts>0</posts>

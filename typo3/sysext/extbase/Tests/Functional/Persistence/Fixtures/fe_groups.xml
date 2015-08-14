@@ -4,12 +4,18 @@
 		<uid>1</uid>
 		<pid>1</pid>
 		<title>Group A</title>
+		<subgroup></subgroup>
+		<TSconfig></TSconfig>
+		<description></description>
 		<deleted>0</deleted>
 	</fe_groups>
 	<fe_groups>
 		<uid>2</uid>
 		<pid>1</pid>
 		<title>Group B</title>
+		<subgroup></subgroup>
+		<TSconfig></TSconfig>
+		<description></description>
 		<deleted>0</deleted>
 	</fe_groups>
 </dataset>
