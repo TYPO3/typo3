@@ -2446,7 +2446,7 @@ class DataHandler {
 			if (!is_array($currentValueArray)) {
 				$currentValueArray = array();
 			}
-			if (is_array($currentValueArray['meta']['currentLangId'])) {
+			if (isset($currentValueArray['meta']['currentLangId'])) {
 				unset($currentValueArray['meta']['currentLangId']);
 			}
 			// Remove all old meta for languages...
