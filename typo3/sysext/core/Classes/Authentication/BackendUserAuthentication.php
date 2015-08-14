@@ -1256,13 +1256,10 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			}
 			// BE_GROUPS:
 			// Get the groups...
-			// 240203: Since the group-field never contains any references to groups with a prepended table name
-			// we think it's safe to just intExplode and re-implode - which should be much faster than the other function call.
-			$grList = $this->db->cleanIntList($this->user[$this->usergroup_column]);
-			if ($grList) {
+			if (!empty($this->user[$this->usergroup_column])) {
 				// Fetch groups will add a lot of information to the internal arrays: modules, accesslists, TSconfig etc.
 				// Refer to fetchGroups() function.
-				$this->fetchGroups($grList);
+				$this->fetchGroups($this->user[$this->usergroup_column]);
 			}
 
 			// Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
@@ -1352,7 +1349,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function fetchGroups($grList, $idList = '') {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . GeneralUtility::getIndpEnv('HTTP_HOST') . '\')';
+		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=' . $this->db->fullQuoteStr(GeneralUtility::getIndpEnv('HTTP_HOST'), $this->usergroup_table) . ')';
+		$grList = $this->db->cleanIntList($grList);
 		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $grList . ')' . $lockToDomain_SQL;
 		// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
@@ -1370,9 +1368,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		}
 		$this->db->sql_free_result($res);
 		// Traversing records in the correct order
-		$include_staticArr = GeneralUtility::intExplode(',', $grList);
-		// Traversing list
-		foreach ($include_staticArr as $uid) {
+		foreach (explode(',', $grList) as $uid) {
 			// Get row:
 			$row = $this->userGroups[$uid];
 			// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
