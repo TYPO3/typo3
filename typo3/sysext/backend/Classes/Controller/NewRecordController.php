@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -31,7 +34,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 /**
  * Script class for 'db_new'
  */
-class NewRecordController {
+class NewRecordController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * @var array
@@ -224,6 +227,22 @@ class NewRecordController {
 			$this->newContentInto = 0;
 			$this->newPagesAfter = 0;
 		}
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
@@ -552,8 +571,10 @@ class NewRecordController {
 	 * Ending page output and echo'ing content to browser.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

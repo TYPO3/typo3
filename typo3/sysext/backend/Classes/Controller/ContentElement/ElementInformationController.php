@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -27,7 +30,7 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 /**
  * Script Class for showing information about an item.
  */
-class ElementInformationController {
+class ElementInformationController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Record table name
@@ -188,6 +191,26 @@ class ElementInformationController {
 				$this->row = array();
 			}
 		}
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		$content = $this->doc->startPage($this->titleTag);
+		$content .= $this->doc->insertStylesAndJS($this->content);
+		$content .= $this->doc->endPage();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($content);
+		return $response;
 	}
 
 	/**
@@ -520,8 +543,10 @@ class ElementInformationController {
 	 * End page and print content
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->doc->startPage($this->titleTag) .
 			$this->doc->insertStylesAndJS($this->content) .
 			$this->doc->endPage();

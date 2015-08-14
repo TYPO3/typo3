@@ -9,18 +9,6 @@ if (TYPO3_MODE === 'BE') {
 		'EXT:backend/Modules/FormEngine/'
 	);
 
-	// Register record history module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'record_history',
-		'EXT:backend/Modules/RecordHistory/'
-	);
-
-	// Register login frameset
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'login_frameset',
-		'EXT:backend/Modules/LoginFrameset/'
-	);
-
 	// Register file_navframe
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('file', 'file_navframe');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
@@ -56,42 +44,6 @@ if (TYPO3_MODE === 'BE') {
 				'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
 			),
 		)
-	);
-
-	// Register new record
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'db_new',
-		'EXT:backend/Modules/NewRecord/'
-	);
-
-	// Register new content element module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'new_content_element',
-		'EXT:backend/Modules/NewContentElement/'
-	);
-
-	// Register move element module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'move_element',
-		'EXT:backend/Modules/MoveElement/'
-	);
-
-	// Register show item module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'show_item',
-		'EXT:backend/Modules/ShowItem/'
-	);
-
-	// Register browser
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'browser',
-		'EXT:backend/Modules/Browser/'
-	);
-
-	// Register dummy window
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'dummy',
-		'EXT:backend/Modules/Dummy/'
 	);
 
 	// Register BackendLayoutDataProvider for PageTs

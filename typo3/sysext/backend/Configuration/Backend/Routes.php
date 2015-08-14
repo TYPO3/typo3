@@ -105,4 +105,53 @@ return [
 		'path' => '/file/upload',
 		'controller' => \TYPO3\CMS\Backend\Controller\File\FileUploadController::class
 	],
+
+	// Register login frameset
+	'login_frameset' => [
+		'path' => '/login/frame',
+		'controller' => \TYPO3\CMS\Backend\Controller\LoginFramesetController::class
+	],
+
+	// Register record history module
+	'record_history' => [
+		'path' => '/record/history',
+		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController::class
+	],
+
+	// Register new record
+	'db_new' => [
+		'path' => '/record/new',
+		'controller' => \TYPO3\CMS\Backend\Controller\NewRecordController::class
+	],
+
+	// Register new content element module
+	'new_content_element' => [
+		'path' => '/record/content/new',
+		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class
+	],
+
+	// Register move element module
+	'move_element' => [
+		'path' => '/record/move',
+		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController::class
+	],
+
+	// Register show item module
+	'show_item' => [
+		'path' => '/record/info',
+		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController::class
+	],
+
+	// Register browser
+	'browser' => [
+		'path' => '/record/browse',
+		'controller' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController::class
+	],
+
+	// Register dummy window
+	'dummy' => [
+		'path' => '/empty',
+		'controller' => \TYPO3\CMS\Backend\Controller\DummyController::class
+	],
+
 ];

@@ -14,15 +14,43 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Script Class, creating the content for the dummy script - which is just blank output.
  */
-class DummyController {
+class DummyController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * @var string
 	 */
 	public $content;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
+	}
 
 	/**
 	 * Create content for the dummy script - outputting a blank page.
@@ -40,8 +68,10 @@ class DummyController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

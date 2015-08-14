@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,7 +25,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Script Class for the New Content element wizard
  */
-class NewContentElementController {
+class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Page id
@@ -118,6 +121,14 @@ class NewContentElementController {
 	protected $MCONF;
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+	}
+
+	/**
 	 * Constructor, initializing internal variables.
 	 *
 	 * @return void
@@ -151,6 +162,22 @@ class NewContentElementController {
 		$perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		$this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($this->pageInfo) ? 1 : 0;
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
@@ -312,8 +339,10 @@ class NewContentElementController {
 	 * Print out the accumulated content:
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 
