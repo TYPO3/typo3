@@ -361,11 +361,11 @@ class IconUtility {
 	 * @access private
 	 */
 	static public function makeIcon($iconfile, $mode, $user, $protectSection, $absFile, $iconFileName_stateTagged) {
-		$iconFileName = 'icon_' . GeneralUtility::shortMD5(($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection)) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
-		$mainpath = '../typo3temp/' . $iconFileName;
-		$path = PATH_site . 'typo3temp/' . $iconFileName;
+		$iconFileName = GeneralUtility::shortMD5(($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection)) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
+		$mainpath = '../typo3temp/Icons/' . $iconFileName;
+		$path = PATH_site . 'typo3temp/Icons/' . $iconFileName;
 		if (file_exists($path)) {
-			// Returns if found in ../typo3temp/icons/
+			// Returns if found in ../typo3temp/Icons/
 			return $mainpath;
 		} else {
 			// Makes icon:
@@ -446,6 +446,10 @@ class IconUtility {
 						self::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
 					}
 					// Create the image as file, destroy GD image and return:
+					$targetDirectory = dirname($path);
+					if (!@is_dir($targetDirectory)) {
+						GeneralUtility::mkdir($targetDirectory);
+					}
 					@self::imagemake($im, $path);
 					GraphicalFunctions::gifCompress($path, 'IM');
 					ImageDestroy($im);

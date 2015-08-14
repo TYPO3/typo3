@@ -133,7 +133,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * writes them into a file in the local file system.
 	 *
 	 * @param string $remoteResource remote resource to read contents from
-	 * @param string $localResource local resource (absolute file path) to store retrieved contents to
+	 * @param string $localResource local resource (absolute file path) to store retrieved contents to (must be within typo3temp/)
 	 * @return void
 	 * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(), \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
 	 * @throws ExtensionManagerException
@@ -145,7 +145,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 		if (is_string($remoteResource) && is_string($localResource) && !empty($remoteResource) && !empty($localResource)) {
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource, 0, array(TYPO3_user_agent));
 			if ($fileContent !== FALSE) {
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($localResource, $fileContent) === FALSE) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($localResource, $fileContent) !== NULL) {
 					throw new ExtensionManagerException(sprintf('Could not write to file %s.', $localResource), 1342635378);
 				}
 			} else {
@@ -162,7 +162,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getRemoteExtListFile()
 	 */
 	public function getLocalExtListFile() {
-		$absFilePath = PATH_site . 'typo3temp/' . (int)$this->repository->getUid() . '.extensions.xml.gz';
+		$absFilePath = PATH_site . 'typo3temp/ExtensionManager/' . (int)$this->repository->getUid() . '.extensions.xml.gz';
 		return $absFilePath;
 	}
 
@@ -200,7 +200,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getRemoteMirrorListFile()
 	 */
 	public function getLocalMirrorListFile() {
-		$absFilePath = PATH_site . 'typo3temp/' . (int)$this->repository->getUid() . '.mirrors.xml.gz';
+		$absFilePath = PATH_site . 'typo3temp/ExtensionManager/' . (int)$this->repository->getUid() . '.mirrors.xml.gz';
 		return $absFilePath;
 	}
 

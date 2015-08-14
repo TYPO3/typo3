@@ -1010,16 +1010,16 @@ class PageGenerator {
 		$script = '';
 		switch ($ext) {
 			case 'js':
-				$script = 'typo3temp/javascript_' . substr(md5($str), 0, 10) . '.js';
+				$script = 'typo3temp/Assets/' . substr(md5($str), 0, 10) . '.js';
 				break;
 			case 'css':
-				$script = 'typo3temp/stylesheet_' . substr(md5($str), 0, 10) . '.css';
+				$script = 'typo3temp/Assets/' . substr(md5($str), 0, 10) . '.css';
 				break;
 		}
 		// Write file:
 		if ($script) {
-			if (!@is_file((PATH_site . $script))) {
-				GeneralUtility::writeFile(PATH_site . $script, $str);
+			if (!@is_file(PATH_site . $script)) {
+				GeneralUtility::writeFileToTypo3tempDir(PATH_site . $script, $str);
 			}
 		}
 		return $script;

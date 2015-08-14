@@ -553,7 +553,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// Create zip-file from extension
 		$filename = $fileHandlerMock->_call('createZipFileFromExtension', $extKey);
 
-		$expectedFilename = PATH_site . 'typo3temp/' . $extKey . '_0.0.0_' . date('YmdHi', 42) . '.zip';
+		$expectedFilename = PATH_site . 'typo3temp/ExtensionManager/' . $extKey . '_0.0.0_' . date('YmdHi', 42) . '.zip';
 		$this->testFilesToDelete[] = $filename;
 		$this->assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
 

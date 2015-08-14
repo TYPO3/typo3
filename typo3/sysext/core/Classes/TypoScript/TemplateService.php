@@ -102,6 +102,7 @@ class TemplateService {
 	public $ext_regComments = FALSE;
 
 	/**
+	 * @deprecated since TYPO3 CMS 7, will be removed with CMS 8.
 	 * @var string
 	 */
 	public $tempPath = 'typo3temp/';

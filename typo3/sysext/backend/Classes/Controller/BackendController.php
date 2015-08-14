@@ -445,7 +445,7 @@ class BackendController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	}
 
 	/**
-	 * Returns the file name  to the LLL JavaScript, containing the localized labels,
+	 * Returns the file name to the LLL JavaScript, containing the localized labels,
 	 * which can be used in JavaScript code.
 	 *
 	 * @return string File name of the JS file, relative to TYPO3_mainDir
@@ -453,11 +453,12 @@ class BackendController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	 */
 	protected function getLocalLangFileName() {
 		$code = $this->generateLocalLang();
-		$filePath = 'typo3temp/locallang-BE-' . sha1($code) . '.js';
-		if (!file_exists((PATH_site . $filePath))) {
+		$filePath = 'typo3temp/Language/Backend-' . sha1($code) . '.js';
+		if (!file_exists(PATH_site . $filePath)) {
 			// writeFileToTypo3tempDir() returns NULL on success (please double-read!)
-			if (GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code) !== NULL) {
-				throw new \RuntimeException('LocalLangFile could not be written to ' . $filePath, 1295193026);
+			$error = GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code);
+			if ($error !== NULL) {
+				throw new \RuntimeException('Locallang JS file could not be written to ' . $filePath . '. Reason: ' . $error, 1295193026);
 			}
 		}
 		return '../' . $filePath;

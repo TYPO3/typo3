@@ -124,7 +124,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
 		try {
 			$l10n = $this->fetchTranslation($extensionKey, $language, $mirrorUrl);
 			if (is_array($l10n)) {
-				$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/' . $extensionKey . '-l10n-' . $language . '.zip');
+				$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/Language/' . $extensionKey . '-l10n-' . $language . '.zip');
 				$relativeLanguagePath = 'l10n' . '/' . $language . '/';
 				$absoluteLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath);
 				$absoluteExtensionLanguagePath = GeneralUtility::getFileAbsFileName(PATH_typo3conf . $relativeLanguagePath . $extensionKey . '/');
@@ -134,7 +134,7 @@ class TerService extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtili
 				if (!is_dir($absoluteLanguagePath)) {
 					GeneralUtility::mkdir_deep(PATH_typo3conf, $relativeLanguagePath);
 				}
-				GeneralUtility::writeFile($absolutePathToZipFile, $l10n[0]);
+				GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $l10n[0]);
 				if (is_dir($absoluteExtensionLanguagePath)) {
 					GeneralUtility::rmdir($absoluteExtensionLanguagePath, TRUE);
 				}

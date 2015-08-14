@@ -37,8 +37,8 @@ class DocumentationService {
 			}
 
 			// Cache file locally to be able to create a composer.json file when fetching a document
-			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/documents.json');
-			GeneralUtility::writeFile($absoluteCacheFilename, $json);
+			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/Documentation/documents.json');
+			GeneralUtility::writeFileToTypo3tempDir($absoluteCacheFilename, $json);
 		}
 		return $documents;
 	}
@@ -161,7 +161,7 @@ class DocumentationService {
 		$languageSegment = str_replace('_', '-', strtolower($language));
 		$packageName = sprintf('%s-%s-%s.zip', $packagePrefix, $version, $languageSegment);
 		$packageUrl = $url . 'packages/' . $packageName;
-		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/' . $packageName);
+		$absolutePathToZipFile = GeneralUtility::getFileAbsFileName('typo3temp/Documentation/' . $packageName);
 
 		$packages = $this->getAvailablePackages($url);
 		if (empty($packages) || !isset($packages[$version][$language])) {
@@ -181,7 +181,7 @@ class DocumentationService {
 			$http = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\HttpRequest::class, $packageUrl);
 			$response = $http->send();
 			if ($response->getStatus() == 200) {
-				GeneralUtility::writeFile($absolutePathToZipFile, $response->getBody());
+				GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $response->getBody());
 			}
 		}
 
@@ -191,7 +191,7 @@ class DocumentationService {
 			$result = $this->unzipDocumentPackage($absolutePathToZipFile, $absoluteDocumentPath);
 
 			// Create a composer.json file
-			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/documents.json');
+			$absoluteCacheFilename = GeneralUtility::getFileAbsFileName('typo3temp/Documentation/documents.json');
 			$documents = json_decode(file_get_contents($absoluteCacheFilename), TRUE);
 			foreach ($documents as $document) {
 				if ($document['key'] === $key) {

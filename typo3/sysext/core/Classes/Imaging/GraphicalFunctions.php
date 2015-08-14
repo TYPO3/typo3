@@ -2659,7 +2659,10 @@ class GraphicalFunctions {
 			return $theFile;
 		}
 
-		$newFile = PATH_site . 'typo3temp/readPG_' . md5(($theFile . '|' . filemtime($theFile))) . ($output_png ? '.png' : '.gif');
+		if (!@is_dir(PATH_site . 'typo3temp/GraphicalResources/')) {
+			GeneralUtility::mkdir(PATH_site . 'typo3temp/GraphicalResources/');
+		}
+		$newFile = PATH_site . 'typo3temp/GraphicalResources/' . md5($theFile . '|' . filemtime($theFile)) . ($output_png ? '.png' : '.gif');
 		$cmd = GeneralUtility::imageMagickCommand(
 			'convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']
 		);
@@ -2668,6 +2671,7 @@ class GraphicalFunctions {
 			GeneralUtility::fixPermissions($newFile);
 			return $newFile;
 		}
+		return NULL;
 	}
 
 	/***********************************

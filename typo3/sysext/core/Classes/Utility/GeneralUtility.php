@@ -2637,58 +2637,56 @@ Connection: close
 	 * Writes $content to a filename in the typo3temp/ folder (and possibly one or two subfolders...)
 	 * Accepts an additional subdirectory in the file path!
 	 *
-	 * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/
+	 * @param string $filepath Absolute file path to write to inside "typo3temp/". First part of this string must match PATH_site."typo3temp/"
 	 * @param string $content Content string to write
 	 * @return string Returns NULL on success, otherwise an error string telling about the problem.
 	 */
 	static public function writeFileToTypo3tempDir($filepath, $content) {
+		if (!defined('PATH_site')) {
+			return 'PATH_site constant was NOT defined!';
+		}
+
 		// Parse filepath into directory and basename:
 		$fI = pathinfo($filepath);
 		$fI['dirname'] .= '/';
 		// Check parts:
-		if (self::validPathStr($filepath) && $fI['basename'] && strlen($fI['basename']) < 60) {
-			if (defined('PATH_site')) {
-				// Setting main temporary directory name (standard)
-				$dirName = PATH_site . 'typo3temp/';
-				if (@is_dir($dirName)) {
-					if (self::isFirstPartOfStr($fI['dirname'], $dirName)) {
-						// Checking if the "subdir" is found:
-						$subdir = substr($fI['dirname'], strlen($dirName));
-						if ($subdir) {
-							if (preg_match('/^[[:alnum:]_]+\\/$/', $subdir) || preg_match('/^[[:alnum:]_]+\\/[[:alnum:]_]+\\/$/', $subdir)) {
-								$dirName .= $subdir;
-								if (!@is_dir($dirName)) {
-									self::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
-								}
-							} else {
-								return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
-							}
-						}
-						// Checking dir-name again (sub-dir might have been created):
-						if (@is_dir($dirName)) {
-							if ($filepath == $dirName . $fI['basename']) {
-								self::writeFile($filepath, $content);
-								if (!@is_file($filepath)) {
-									return 'The file was not written to the disk. Please, check that you have write permissions to the typo3temp/ directory.';
-								}
-							} else {
-								return 'Calculated filelocation didn\'t match input $filepath!';
-							}
-						} else {
-							return '"' . $dirName . '" is not a directory!';
-						}
-					} else {
-						return '"' . $fI['dirname'] . '" was not within directory PATH_site + "typo3temp/"';
-					}
-				} else {
-					return 'PATH_site + "typo3temp/" was not a directory!';
-				}
-			} else {
-				return 'PATH_site constant was NOT defined!';
-			}
-		} else {
+		if (!self::validPathStr($filepath) || !$fI['basename'] || strlen($fI['basename']) >= 60) {
 			return 'Input filepath "' . $filepath . '" was generally invalid!';
 		}
+		// Setting main temporary directory name (standard)
+		$dirName = PATH_site . 'typo3temp/';
+		if (!@is_dir($dirName)) {
+			return 'PATH_site + "typo3temp/" was not a directory!';
+		}
+		if (!self::isFirstPartOfStr($fI['dirname'], $dirName)) {
+			return '"' . $fI['dirname'] . '" was not within directory PATH_site + "typo3temp/"';
+		}
+		// Checking if the "subdir" is found:
+		$subdir = substr($fI['dirname'], strlen($dirName));
+		if ($subdir) {
+			if (preg_match('/^[[:alnum:]_]+\\/$/', $subdir) || preg_match('/^[[:alnum:]_]+\\/[[:alnum:]_]+\\/$/', $subdir)) {
+				$dirName .= $subdir;
+				if (!@is_dir($dirName)) {
+					self::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
+				}
+			} else {
+				return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
+			}
+		}
+		// Checking dir-name again (sub-dir might have been created):
+		if (@is_dir($dirName)) {
+			if ($filepath == $dirName . $fI['basename']) {
+				self::writeFile($filepath, $content);
+				if (!@is_file($filepath)) {
+					return 'The file was not written to the disk. Please, check that you have write permissions to the typo3temp/ directory.';
+				}
+			} else {
+				return 'Calculated filelocation didn\'t match input "' . $filepath . '".';
+			}
+		} else {
+			return '"' . $dirName . '" is not a directory!';
+		}
+		return NULL;
 	}
 
 	/**
