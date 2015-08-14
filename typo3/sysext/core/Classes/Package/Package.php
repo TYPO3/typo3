@@ -105,14 +105,7 @@ class Package implements PackageInterface {
 		$this->packageManager = $packageManager;
 		$this->packageKey = $packageKey;
 		$this->packagePath = $packagePath;
-		try {
-			$this->composerManifest = $packageManager->getComposerManifest($this->packagePath);
-		} catch (Exception\MissingPackageManifestException $exception) {
-			if (!$this->loadExtensionEmconf()) {
-				throw new Exception\InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
-			}
-			$this->mapExtensionManagerConfigurationToComposerManifest();
-		}
+		$this->composerManifest = $packageManager->getComposerManifest($this->packagePath);
 		$this->loadFlagsFromComposerManifest();
 	}
 
@@ -189,72 +182,6 @@ class Package implements PackageInterface {
 	}
 
 	/**
-	 * Fetches MetaData information from ext_emconf.php, used for
-	 * resolving dependencies as well.
-	 *
-	 * @return bool
-	 */
-	protected function loadExtensionEmconf() {
-		$_EXTKEY = $this->packageKey;
-		$path = $this->packagePath . 'ext_emconf.php';
-		$EM_CONF = NULL;
-		if (@file_exists($path)) {
-			include $path;
-			if (is_array($EM_CONF[$_EXTKEY])) {
-				$this->extensionManagerConfiguration = $EM_CONF[$_EXTKEY];
-				return TRUE;
-			}
-		}
-		return FALSE;
-	}
-
-	/**
-	 * Fetches information from ext_emconf.php and maps it so it is treated as it would come from composer.json
-	 *
-	 * @return void
-	 */
-	protected function mapExtensionManagerConfigurationToComposerManifest() {
-		if (is_array($this->extensionManagerConfiguration)) {
-			$extensionManagerConfiguration = $this->extensionManagerConfiguration;
-			$composerManifest = $this->composerManifest = new \stdClass();
-			$composerManifest->name = $this->getPackageKey();
-			$composerManifest->type = 'typo3-cms-extension';
-			$composerManifest->description = $extensionManagerConfiguration['title'];
-			$composerManifest->version = $extensionManagerConfiguration['version'];
-			if (isset($extensionManagerConfiguration['constraints']['depends']) && is_array($extensionManagerConfiguration['constraints']['depends'])) {
-				$composerManifest->require = new \stdClass();
-				foreach ($extensionManagerConfiguration['constraints']['depends'] as $requiredPackageKey => $requiredPackageVersion) {
-					if (!empty($requiredPackageKey)) {
-						$composerManifest->require->$requiredPackageKey = $requiredPackageVersion;
-					} else {
-						// @todo throw meaningful exception or fail silently?
-					}
-				}
-			}
-			if (isset($extensionManagerConfiguration['constraints']['conflicts']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
-				$composerManifest->conflict = new \stdClass();
-				foreach ($extensionManagerConfiguration['constraints']['conflicts'] as $conflictingPackageKey => $conflictingPackageVersion) {
-					if (!empty($conflictingPackageKey)) {
-						$composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
-					} else {
-						// @todo throw meaningful exception or fail silently?
-					}
-				}
-			}
-			if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['suggests'])) {
-				$composerManifest->suggest = new \stdClass();
-				foreach ($extensionManagerConfiguration['constraints']['suggests'] as $suggestedPackageKey => $suggestedPackageVersion) {
-					if (!empty($suggestedPackageKey)) {
-						$composerManifest->suggest->$suggestedPackageKey = $suggestedPackageVersion;
-					} else {
-						// @todo throw meaningful exception or fail silently?
-					}
-				}
-			}
-		}
-	}
-
-	/**
 	 * Returns the package meta data object of this package.
 	 *
 	 * @return MetaData
@@ -263,23 +190,10 @@ class Package implements PackageInterface {
 		if ($this->packageMetaData === NULL) {
 			$this->packageMetaData = new MetaData($this->getPackageKey());
 			$this->packageMetaData->setDescription($this->getValueFromComposerManifest('description'));
-			$version = $this->getValueFromComposerManifest('version');
-			if ($version !== NULL) {
-				$this->packageMetaData->setVersion($version);
-			} else {
-				// As version is important within the core we need to make sure it is available
-				// Fetch it from ext_emconf.php
-				if ($this->loadExtensionEmconf()) {
-					$this->packageMetaData->setVersion($this->extensionManagerConfiguration['version']);
-				}
-			}
+			$this->packageMetaData->setVersion($this->getValueFromComposerManifest('version'));
 			$requirements = $this->getValueFromComposerManifest('require');
 			if ($requirements !== NULL) {
 				foreach ($requirements as $requirement => $version) {
-					if ($this->packageRequirementIsComposerPackage($requirement) === FALSE) {
-						// Skip non-package requirements
-						continue;
-					}
 					$packageKey = $this->packageManager->getPackageKeyFromComposerName($requirement);
 					// dynamically migrate 'cms' dependency to 'core' dependency
 					// see also \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::convertDependenciesToObjects
@@ -294,10 +208,6 @@ class Package implements PackageInterface {
 			$suggestions = $this->getValueFromComposerManifest('suggest');
 			if ($suggestions !== NULL) {
 				foreach ($suggestions as $suggestion => $version) {
-					if ($this->packageRequirementIsComposerPackage($suggestion) === FALSE) {
-						// Skip non-package requirements
-						continue;
-					}
 					$packageKey = $this->packageManager->getPackageKeyFromComposerName($suggestion);
 					$constraint = new MetaData\PackageConstraint(MetaData::CONSTRAINT_TYPE_SUGGESTS, $packageKey);
 					$this->packageMetaData->addConstraint($constraint);
@@ -315,21 +225,6 @@ class Package implements PackageInterface {
 	public function getPackageReplacementKeys() {
 		// The cast to array is required since the manifest returns data with type mixed
 		return (array)$this->getValueFromComposerManifest('replace') ?: array();
-	}
-
-	/**
-	 * Check whether the given package requirement (like "typo3/flow" or "php") is a composer package or not
-	 *
-	 * @param string $requirement the composer requirement string
-	 * @return bool TRUE if $requirement is a composer package (contains a slash), FALSE otherwise
-	 */
-	protected function packageRequirementIsComposerPackage($requirement) {
-		// According to http://getcomposer.org/doc/02-libraries.md#platform-packages
-		// the following regex should capture all non composer requirements.
-		// typo3 is included in the list because it's a meta package and not supported for now.
-		// typo3/cms is included since it's basically a container and cannot be detected at runtime.
-		// composer/installers is included until extensionmanager can handle composer packages natively
-		return preg_match('/^(php(-64bit)?|ext-[^\/]+|lib-(curl|iconv|libxml|openssl|pcre|uuid|xsl)|typo3|typo3\/cms|composer\/installers)$/', $requirement) !== 1;
 	}
 
 	/**

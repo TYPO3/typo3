@@ -359,7 +359,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Fetches all directories from sysext/global/local locations and checks if the extension contains a ext_emconf.php
+	 * Fetches all directories from sysext/global/local locations and checks if the extension contains an ext_emconf.php
 	 *
 	 * @param array $collectedExtensionPaths
 	 * @return array
@@ -393,7 +393,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Looks for composer.json in the given path and returns TRUE or FALSE if a ext_emconf.php exists
+	 * Looks for composer.json in the given path and returns TRUE or FALSE if an ext_emconf.php exists
 	 * or no composer.json is found.
 	 *
 	 * @param string $packagePath
@@ -873,16 +873,122 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns contents of Composer manifest as a stdObject
 	 *
 	 * @param string $manifestPath
-	 * @return mixed
+	 * @return \stdClass
 	 * @throws Exception\MissingPackageManifestException
-	 * @see json_decode for return values
+	 * @throws Exception\InvalidPackageManifestException
 	 */
 	public function getComposerManifest($manifestPath) {
-		if (!file_exists($manifestPath . 'composer.json')) {
-			throw new Exception\MissingPackageManifestException('No composer manifest file found at "' . $manifestPath . '/composer.json".', 1349868540);
+		$composerManifest = NULL;
+		if (file_exists($manifestPath . 'composer.json')) {
+			$json = file_get_contents($manifestPath . 'composer.json');
+			$composerManifest = json_decode($json);
+			if (!$composerManifest instanceof \stdClass) {
+				throw new Exception\InvalidPackageManifestException('The composer.json found for extension "' . basename($manifestPath) . '" is invalid!', 1439555561);
+			}
 		}
-		$json = file_get_contents($manifestPath . 'composer.json');
-		return json_decode($json);
+		try {
+			$extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath);
+			$composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(basename($manifestPath), $extensionManagerConfiguration, $composerManifest ?: new \stdClass());
+		} catch (Exception\InvalidPackageManifestException $e) {
+			if ($composerManifest === NULL) {
+				throw new Exception\MissingPackageManifestException('Neither a composer.json nor an ext_emconf.php file was found for extension "' . basename($manifestPath) . '"', 1439555560);
+			}
+		}
+
+		return $composerManifest;
+	}
+
+	/**
+	 * Fetches MetaData information from ext_emconf.php, used for
+	 * resolving dependencies as well.
+	 *
+	 * @param string $packagePath
+	 * @return array
+	 * @throws Exception\InvalidPackageManifestException
+	 */
+	protected function getExtensionEmConf($packagePath) {
+		$packageKey = basename($packagePath);
+		$_EXTKEY = $packageKey;
+		$path = $packagePath . 'ext_emconf.php';
+		$EM_CONF = NULL;
+		if (@file_exists($path)) {
+			include $path;
+			if (is_array($EM_CONF[$_EXTKEY])) {
+				return $EM_CONF[$_EXTKEY];
+			}
+		}
+		throw new Exception\InvalidPackageManifestException('No valid ext_emconf.php file found for package "' . $packageKey . '".', 1360403545);
+	}
+
+	/**
+	 * Fetches information from ext_emconf.php and maps it so it is treated as it would come from composer.json
+	 *
+	 * @param string $packageKey
+	 * @param array $extensionManagerConfiguration
+	 * @param \stdClass $composerManifest
+	 * @return \stdClass
+	 * @throws Exception\InvalidPackageManifestException
+	 */
+	protected function mapExtensionManagerConfigurationToComposerManifest($packageKey, array $extensionManagerConfiguration, \stdClass $composerManifest) {
+		$this->setComposerManifestValueIfEmpty($composerManifest, 'name', $packageKey);
+		$this->setComposerManifestValueIfEmpty($composerManifest, 'type', 'typo3-cms-extension');
+		$this->setComposerManifestValueIfEmpty($composerManifest, 'description', $extensionManagerConfiguration['title']);
+		$composerManifest->version = $extensionManagerConfiguration['version'];
+		if (isset($extensionManagerConfiguration['constraints']['depends']) && is_array($extensionManagerConfiguration['constraints']['depends'])) {
+			$composerManifest->require = new \stdClass();
+			foreach ($extensionManagerConfiguration['constraints']['depends'] as $requiredPackageKey => $requiredPackageVersion) {
+				if (!empty($requiredPackageKey)) {
+					if ($requiredPackageKey === 'typo3') {
+						// Add implicit dependency to 'core'
+						$composerManifest->require->core = $requiredPackageVersion;
+					} elseif ($requiredPackageKey !== 'php') {
+						// Skip php dependency
+						$composerManifest->require->{$requiredPackageKey} = $requiredPackageVersion;
+					}
+				} else {
+					throw new Exception\InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in depends section. Extension key is missing!', $packageKey), 1439552058);
+				}
+			}
+		}
+		if (isset($extensionManagerConfiguration['constraints']['conflicts']) && is_array($extensionManagerConfiguration['constraints']['conflicts'])) {
+			$composerManifest->conflict = new \stdClass();
+			foreach ($extensionManagerConfiguration['constraints']['conflicts'] as $conflictingPackageKey => $conflictingPackageVersion) {
+				if (!empty($conflictingPackageKey)) {
+					$composerManifest->conflict->$conflictingPackageKey = $conflictingPackageVersion;
+				} else {
+					throw new Exception\InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in conflicts section. Extension key is missing!', $packageKey), 1439552059);
+				}
+			}
+		}
+		if (isset($extensionManagerConfiguration['constraints']['suggests']) && is_array($extensionManagerConfiguration['constraints']['suggests'])) {
+			$composerManifest->suggest = new \stdClass();
+			foreach ($extensionManagerConfiguration['constraints']['suggests'] as $suggestedPackageKey => $suggestedPackageVersion) {
+				if (!empty($suggestedPackageKey)) {
+					$composerManifest->suggest->$suggestedPackageKey = $suggestedPackageVersion;
+				} else {
+					throw new Exception\InvalidPackageManifestException(sprintf('The extension "%s" has invalid version constraints in suggests section. Extension key is missing!', $packageKey), 1439552060);
+				}
+			}
+		}
+		if (isset($extensionManagerConfiguration['autoload'])) {
+			$composerManifest->autoload = json_decode(json_encode($extensionManagerConfiguration['autoload']));
+		}
+
+		return $composerManifest;
+	}
+
+	/**
+	 * @param \stdClass $manifest
+	 * @param string $property
+	 * @param mixed $value
+	 * @return \stdClass
+	 */
+	protected function setComposerManifestValueIfEmpty(\stdClass $manifest, $property, $value) {
+		if (empty($manifest->{$property})) {
+			$manifest->{$property} = $value;
+		}
+
+		return $manifest;
 	}
 
 	/**

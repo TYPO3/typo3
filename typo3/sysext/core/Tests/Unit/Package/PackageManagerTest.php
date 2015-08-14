@@ -67,7 +67,7 @@ class PackageManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
 		mkdir($packagePath, 0770, TRUE);
 		file_put_contents($packagePath . 'ext_emconf.php', '');
-		file_put_contents($packagePath . 'composer.json', '');
+		file_put_contents($packagePath . 'composer.json', '{}');
 		$package = new Package($this->packageManager, $packageKey, $packagePath);
 		$this->packageManager->registerPackage($package);
 		$this->packageManager->activatePackage($packageKey);
