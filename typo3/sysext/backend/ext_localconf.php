@@ -23,8 +23,8 @@ if (TYPO3_MODE === 'BE') {
 		'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:login.link'
 	);
 
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['imageProvider'] = array(
-		'provider' => \TYPO3\CMS\Backend\Backend\Avatar\ImageProvider::class
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['defaultAvatarProvider'] = array(
+		'provider' => \TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider::class
 	);
 }
 

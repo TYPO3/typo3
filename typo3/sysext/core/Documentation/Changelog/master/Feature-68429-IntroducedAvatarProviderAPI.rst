@@ -5,29 +5,29 @@ Feature: #68429 - Introduced AvatarProvider API
 Description
 ===========
 
-To make providing a avatar image for BE users more flexible a API it introduced so you can register AvatarProviders.
-The core provides the ``ImageProvider`` by default.
+To make providing an avatar image for BE users more flexible an API is introduced so you can register AvatarProviders.
+The core provides the ``DefaultAvatarProvider`` by default to handle the image defined in the user settings.
 
 When an avatar is rendered in the BE the available AvatarProviders are asked if they can provide an
-``TYPO3\CMS\Backend\Backend\Image`` for given ``be_user`` and requested size. The first ``TYPO3\CMS\Backend\Backend\Image``
+``TYPO3\CMS\Backend\Backend\Avatar\Image`` for given ``be_users`` record and requested size. The first ``TYPO3\CMS\Backend\Backend\Avatar\Image``
 that gets returned is used.
 
-Registering a avatar provider
------------------------------
+Registering an avatar provider
+------------------------------
 
-A avatar provider can be registered within your ``ext_localconf.php`` file like this:
+An avatar provider can be registered within your ``ext_localconf.php`` file like this:
 
 .. code-block:: php
 
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['myCustomProvider'] = [
 		'provider' => \MyVendor\MyExtension\AvatarProvider\CompanyAvatarProvider::class,
-		'before' => ['imageProvider']
+		'before' => ['defaultAvatarProvider']
 	];
 
 The settings are defined as:
 
-* ``provider``: The avatar provider class name, which must implement ``TYPO3\CMS\Backend\Backend\AvatarProviderInterface``.
-* ``before``/``after``: You can define the ordering how providers are executed. This is order is used as fallback of the avatar providers. Each property must be an array of provider names.
+* ``provider``: The avatar provider class name, which must implement ``TYPO3\CMS\Backend\Backend\Avatar\AvatarProviderInterface``.
+* ``before``/``after``: You can define the ordering how providers are executed. This is used to get the order in which the providers are executed.
 
 
 For a new avatar provider you have to register a **new key** in ``$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']``.
@@ -36,7 +36,7 @@ extend an existing provider and replace its registered 'provider' class with you
 
 .. code-block:: php
 
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['imageProvider']['provider'] = \MyVendor\MyExtension\AvatarProvider\CustomImageProvider::class
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['avatarProviders']['defaultAvatarProvider']['provider'] = \MyVendor\MyExtension\AvatarProvider\CustomAvatarProvider::class;
 
 
 AvatarProviderInterface
@@ -48,14 +48,14 @@ The AvatarProviderInterface contains only one method:
 
 The parameters are defined as:
 
-* ``$backendUser``: The record of from ``be_user`` database table.
+* ``$backendUser``: The record from ``be_users`` database table.
 * ``$size``: The requested size of the avatar image.
 
-The return value of the method is expected to be and ``TYPO3\CMS\Backend\Backend\Image`` instance or NULL when the
-provider can not provide an image.
+The return value of the method is expected to be an instance of ``TYPO3\CMS\Backend\Backend\Avatar\Image`` or NULL
+when the provider can not provide an image.
 
-An ``TYPO3\CMS\Backend\Backend\Image`` object holds 3 properties:
+An ``TYPO3\CMS\Backend\Backend\Image`` object has 3 properties:
 
-* ``$url``: Url of avatar image. Needs to be relative to the /typo3/ folder or an absolute URL.
+* ``$url``: Url of avatar image. Needs to be relative to the website root or an absolute URL.
 * ``$width``: The width of the image.
 * ``$height``: The height of the image.

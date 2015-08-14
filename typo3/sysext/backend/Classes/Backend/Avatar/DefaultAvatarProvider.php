@@ -20,14 +20,14 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class ImageProvider
+ * Class DefaultAvatarProvider
  */
-class ImageProvider implements AvatarProviderInterface {
+class DefaultAvatarProvider implements AvatarProviderInterface {
 
 	/**
 	 * Get Image
 	 *
-	 * @param array $backendUser be_user record
+	 * @param array $backendUser be_users record
 	 * @param int $size
 	 * @return Image|NULL
 	 */
@@ -44,7 +44,7 @@ class ImageProvider implements AvatarProviderInterface {
 
 			$image = GeneralUtility::makeInstance(
 				Image::class,
-				$processedImage->getPublicUrl(TRUE),
+				$processedImage->getPublicUrl(),
 				$processedImage->getProperty('width'),
 				$processedImage->getProperty('height')
 			);

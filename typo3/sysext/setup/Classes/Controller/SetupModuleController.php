@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Setup\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\Avatar\ImageProvider;
+use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -605,11 +605,11 @@ class SetupModuleController {
 					$avatarFileUid = $this->getAvatarFileUid($this->getBackendUser()->user['uid']);
 
 					if ($avatarFileUid) {
-						$imageProvider = GeneralUtility::makeInstance(ImageProvider::class);
-						$avatarImage = $imageProvider->getImage($this->getBackendUser()->user, 32);
+						$defaultAvatarProvider = GeneralUtility::makeInstance(DefaultAvatarProvider::class);
+						$avatarImage = $defaultAvatarProvider->getImage($this->getBackendUser()->user, 32);
 						if ($avatarImage) {
 							$icon = '<span class="avatar"><span class="avatar-image">' .
-								'<img src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
+								'<img src="' . htmlspecialchars($avatarImage->getUrl(TRUE)) . '"' .
 								'width="' . (int)$avatarImage->getWidth() . '" ' .
 								'height="' . (int)$avatarImage->getHeight() . '" />' .
 								'</span></span>';

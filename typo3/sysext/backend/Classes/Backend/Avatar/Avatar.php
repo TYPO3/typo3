@@ -40,7 +40,7 @@ class Avatar {
 	/**
 	 * Render avatar tag
 	 *
-	 * @param array $backendUser be_user record
+	 * @param array $backendUser be_users record
 	 * @param int $size width and height of the image
 	 * @param bool $showIcon show the record icon
 	 * @return string
@@ -64,7 +64,7 @@ class Avatar {
 	/**
 	 * Get avatar img tag
 	 *
-	 * @param array $backendUser be_user record
+	 * @param array $backendUser be_users record
 	 * @param int $size
 	 * @return string
 	 */
@@ -77,7 +77,7 @@ class Avatar {
 		$avatarImage = $this->getImage($backendUser, $size);
 
 		if ($avatarImage) {
-			$imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl()) . '"' .
+			$imageTag = '<img src="' . htmlspecialchars($avatarImage->getUrl(TRUE)) . '"' .
 				'width="' . (int)$avatarImage->getWidth() . '" ' .
 				'height="' . (int)$avatarImage->getHeight() . '" />';
 		}
@@ -88,7 +88,7 @@ class Avatar {
 	/**
 	 * Get Image from first provider that returns one
 	 *
-	 * @param array $backendUser be_user record
+	 * @param array $backendUser be_users record
 	 * @param int $size
 	 * @return Image|NULL
 	 */

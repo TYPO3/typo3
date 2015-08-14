@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class Image
@@ -22,7 +24,7 @@ namespace TYPO3\CMS\Backend\Backend\Avatar;
 class Image {
 
 	/**
-	 * Url of avatar image. Needs to be relative to the /typo3/ folder or an absolute URL.
+	 * Url of avatar image. Needs to be relative to the website root or an absolute URL.
 	 *
 	 * @var string
 	 */
@@ -41,7 +43,7 @@ class Image {
 	/**
 	 * Constructor
 	 *
-	 * @param string $url url of image. Needs to be relative to the /typo3/ folder or an absolute URL.
+	 * @param string $url url of image. Needs to be relative to the website root or an absolute URL.
 	 * @param int $width width of image
 	 * @param int $height height of image
 	 */
@@ -54,10 +56,19 @@ class Image {
 	/**
 	 * Get url
 	 *
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all.
 	 * @return string
 	 */
-	public function getUrl() {
-		return $this->url;
+	public function getUrl($relativeToCurrentScript = FALSE) {
+		$url = $this->url;
+
+		if ($relativeToCurrentScript && !GeneralUtility::isValidUrl($url)) {
+			$absolutePathToContainingFolder = PathUtility::dirname(PATH_site . $url);
+			$pathPart = PathUtility::getRelativePathTo($absolutePathToContainingFolder);
+			$filePart = substr(PATH_site . $url, strlen($absolutePathToContainingFolder) + 1);
+			$url = $pathPart . $filePart;
+		}
+		return $url;
 	}
 
 	/**

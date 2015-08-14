@@ -22,7 +22,7 @@ interface AvatarProviderInterface {
 	/**
 	 * Get Image
 	 *
-	 * @param array $backendUser be_user record
+	 * @param array $backendUser be_users record
 	 * @param int $size
 	 * @return Image|NULL
 	 */
