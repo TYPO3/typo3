@@ -7,8 +7,10 @@
 		<images>typo3_image4.jpg</images>
 		<image_references>fileadmin/user_upload/typo3_image5.jpg</image_references>
 		<deleted>0</deleted>
+		<flexform></flexform>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
+		<l18n_diffsource></l18n_diffsource>
 	</tx_impexpgroupfiles_item>
 	<tx_impexpgroupfiles_item>
 		<uid>2</uid>
@@ -37,5 +39,6 @@
 		<deleted>0</deleted>
 		<t3ver_oid>0</t3ver_oid>
 		<t3ver_wsid>0</t3ver_wsid>
+		<l18n_diffsource></l18n_diffsource>
 	</tx_impexpgroupfiles_item>
 </dataset>

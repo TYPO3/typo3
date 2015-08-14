@@ -37,6 +37,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -49,6 +50,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -61,6 +63,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -73,6 +76,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -85,6 +89,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>64</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -97,6 +102,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -109,6 +115,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -121,6 +128,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>64</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -133,6 +141,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -148,6 +157,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>2</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -163,6 +173,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -178,6 +189,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>2</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -193,6 +205,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -208,6 +221,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -223,6 +237,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>2</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -238,6 +253,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -253,6 +269,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -268,6 +285,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -280,6 +298,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<hotelid>1</hotelid>
@@ -294,6 +313,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<hotelid>1</hotelid>
@@ -308,6 +328,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -320,6 +341,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -332,6 +354,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -345,6 +368,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>1</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -358,6 +382,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -370,6 +395,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>512</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -382,6 +408,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<hotelid>1</hotelid>
@@ -397,6 +424,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<hotelid>2</hotelid>
@@ -412,6 +440,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -424,6 +453,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>512</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -436,6 +466,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -448,6 +479,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>512</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -487,6 +519,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -500,6 +533,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -513,6 +547,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>64</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -553,6 +588,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -566,6 +602,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -579,6 +616,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>64</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -592,6 +630,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>256</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -604,6 +643,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>128</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -616,6 +656,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<sorting>192</sorting>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
@@ -628,6 +669,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<hotelid>1</hotelid>
@@ -641,6 +683,7 @@
 		<cruser_id>1</cruser_id>
 		<sys_language_uid>0</sys_language_uid>
 		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource></l18n_diffsource>
 		<deleted>0</deleted>
 		<hidden>0</hidden>
 		<hotelid>1</hotelid>

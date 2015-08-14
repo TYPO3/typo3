@@ -8,5 +8,6 @@
 		<tablenames>tt_content</tablenames>
 		<fieldname>image</fieldname>
 		<table_local>sys_file</table_local>
+		<l10n_diffsource></l10n_diffsource>
 	</sys_file_reference>
 </dataset>

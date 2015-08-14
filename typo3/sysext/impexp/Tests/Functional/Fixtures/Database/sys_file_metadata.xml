@@ -11,6 +11,7 @@
 		<alternative>Photo of program code</alternative>
 		<sys_language_uid>0</sys_language_uid>
 		<l10n_parent>0</l10n_parent>
+		<l10n_diffsource></l10n_diffsource>
 	</sys_file_metadata>
 	<sys_file_metadata>
 		<uid>2</uid>
@@ -23,5 +24,6 @@
 		<alternative>Foto von Programmcode</alternative>
 		<sys_language_uid>1</sys_language_uid>
 		<l10n_parent>1</l10n_parent>
+		<l10n_diffsource></l10n_diffsource>
 	</sys_file_metadata>
 </dataset>
