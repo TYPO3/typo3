@@ -2,9 +2,9 @@
 # Table structure for table 'tt_content'
 #
 CREATE TABLE tt_content (
-    tx_testdatahandler_select text NOT NULL,
-    tx_testdatahandler_group text NOT NULL,
-    tx_testdatahandler_radio text NOT NULL
+    tx_testdatahandler_select text,
+    tx_testdatahandler_group text,
+    tx_testdatahandler_radio text
 );
 
 #
