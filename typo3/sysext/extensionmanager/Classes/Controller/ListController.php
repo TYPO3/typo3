@@ -102,6 +102,7 @@ class ListController extends AbstractController {
 	 * @return void
 	 */
 	public function terAction($search = '') {
+		$search = trim($search);
 		if (!empty($search)) {
 			$extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
 		} else {
