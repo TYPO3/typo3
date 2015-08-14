@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Exception\DependencyConfigurationNotFoundException;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 
 /**
@@ -25,6 +26,11 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * @author Susanne Moog <typo3@susannemoog.de>
  */
 class UploadExtensionFileController extends AbstractController {
+
+	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+	 */
+	protected $extensionRepository;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
@@ -53,6 +59,13 @@ class UploadExtensionFileController extends AbstractController {
 	 * @var bool
 	 */
 	protected $removeFromOriginalPath = FALSE;
+
+	/**
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+	 */
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
+		$this->extensionRepository = $extensionRepository;
+	}
 
 	/**
 	 * Remove backup folder before destruction
@@ -107,6 +120,8 @@ class UploadExtensionFileController extends AbstractController {
 			}
 		} catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $exception) {
 			throw $exception;
+		} catch (DependencyConfigurationNotFoundException $exception) {
+			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);
 		} catch (\Exception $exception) {
 			$this->removeExtensionAndRestoreFromBackup($fileName);
 			$this->addFlashMessage(htmlspecialchars($exception->getMessage()), '', FlashMessage::ERROR);
@@ -138,7 +153,8 @@ class UploadExtensionFileController extends AbstractController {
 	 * @param string $fileName Filename of the uploaded file
 	 * @param bool $overwrite If true, extension will be replaced
 	 * @return array Extension data
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @throws ExtensionManagerException
+	 * @throws DependencyConfigurationNotFoundException
 	 */
 	public function extractExtensionFromFile($uploadPath, $fileName, $overwrite) {
 		$fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -166,6 +182,7 @@ class UploadExtensionFileController extends AbstractController {
 	 * @param string $file Path to uploaded file
 	 * @param boolean $overwrite Overwrite existing extension if TRUE
 	 * @throws ExtensionManagerException
+	 * @throws DependencyConfigurationNotFoundException
 	 * @return array
 	 */
 	protected function getExtensionFromT3xFile($file, $overwrite = FALSE) {
@@ -185,7 +202,16 @@ class UploadExtensionFileController extends AbstractController {
 			$this->copyExtensionFolderToTempFolder($extensionData['extKey']);
 		}
 		$this->removeFromOriginalPath = TRUE;
-		$this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($extensionData);
+		$extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionData['extKey'], $extensionData['EM_CONF']['version']);
+		$this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($extensionData, $extension);
+
+		if (empty($extension)
+			&& empty($extensionData['EM_CONF']['constraints'])
+			&& !isset($extensionData['FILES']['ext_emconf.php'])
+			&& !isset($extensionData['FILES']['/ext_emconf.php'])
+		) {
+			throw new DependencyConfigurationNotFoundException('Extension cannot be installed automatically because no dependencies could be found! Please check dependencies manually (on typo3.org) before installing the extension.', 1439587168);
+		}
 
 		return $extensionData;
 	}

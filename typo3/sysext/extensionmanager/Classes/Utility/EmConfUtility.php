@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Utility for dealing with ext_emconf
  *
@@ -49,7 +50,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function constructEmConf(array $extensionData, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = NULL) {
-		if (is_object($extension)) {
+		if (is_object($extension) && empty($extensionData['EM_CONF']['constraints'])) {
 			$extensionData['EM_CONF']['constraints'] = unserialize($extension->getSerializedDependencies());
 		}
 		$emConf = $this->fixEmConf($extensionData['EM_CONF']);

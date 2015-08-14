@@ -13,6 +13,7 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
@@ -45,12 +46,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @inject
 	 */
 	protected $extensionModelUtility;
-
-	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 * @inject
-	 */
-	protected $listUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
