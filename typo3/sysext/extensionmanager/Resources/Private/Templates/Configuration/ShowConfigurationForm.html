@@ -81,6 +81,11 @@
 					</f:if>
 				</f:for>
 			</div>
+			<f:comment>
+				In order to allow form submit on pressing enter, a submit button is needed. See #66846
+				The submit button is hidden as long as the save buttons are not part of the form yet.
+			</f:comment>
+			<f:form.submit name="mySubmit" value="Go" class="hidden" />
 		</f:form>
 	</div>
 </f:section>
