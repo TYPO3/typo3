@@ -138,7 +138,9 @@ class RecordHistory {
 		if ($this->getArgument('highlight') && !$this->getArgument('settings')) {
 			$this->toggleHighlight($this->getArgument('highlight'));
 		}
+
 		$content .= $this->displaySettings();
+
 		if ($this->createChangeLog()) {
 			if ($this->rollbackFields) {
 				$completeDiff = $this->createMultipleDiff();
@@ -326,14 +328,33 @@ class RecordHistory {
 		);
 		// render selectors
 		$displayCode = '';
+		$scriptUrl = GeneralUtility::linkThisScript();
 		foreach ($selector as $key => $values) {
 			$displayCode .= '<tr><td>' . $GLOBALS['LANG']->getLL($key, 1) . '</td>';
-			$displayCode .= '<td><select name="settings[' . $key . ']" onChange="document.settings.submit()" style="width:100px">';
+
+			$label = ($currentSelection[$key] !== ''
+				? ($GLOBALS['LANG']->getLL($selector[$key][$currentSelection[$key]], 1) ?: $selector[$key][$currentSelection[$key]])
+				: ($GLOBALS['LANG']->getLL($selector[$key][$currentSelection[0]], 1) ?: $selector[$key][$currentSelection[0]])
+			);
+
+			$displayCode .= '<td>
+			<div class="btn-group">
+				<button class="btn btn-default dropdown-toggle" type="button" id="copymodeSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					' . $label . '
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="copymodeSelector">';
+
 			foreach ($values as $singleKey => $singleVal) {
-				$caption = $GLOBALS['LANG']->getLL($singleVal, 1) ?: $singleVal;
-				$displayCode .= '<option value="' . $singleKey . '"' . ($singleKey == $currentSelection[$key] ? ' selected="selected"' : '') . '> ' . $caption . '</option>';
+				$caption = $GLOBALS['LANG']->getLL($singleVal, 1) ?: htmlspecialchars($singleVal);
+				$displayCode .= '<li><a href="#" onclick="document.settings.method=\'POST\'; document.settings.action=' . htmlspecialchars(GeneralUtility::quoteJSvalue($scriptUrl . '&settings[' . $key . ']=' . $singleKey)) . '; document.settings.submit()">' . $caption . '</a></li>';
 			}
-			$displayCode .= '</select></td></tr>';
+
+			$displayCode .= '
+				</ul>
+			</div>
+			</td></tr>
+			';
 		}
 		// set values correctly
 		if ($currentSelection['maxSteps'] != 'marked') {
@@ -356,8 +377,27 @@ class RecordHistory {
 				$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
 			}
 		}
-		$content .= '<form name="settings" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>' . $displayCode . '</table></form>';
-		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('settings', 1), $content, FALSE, TRUE, FALSE, FALSE);
+
+
+		$content .= '<a name="settings_head"></a>
+			<form name="settings" action="' . htmlspecialchars(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post">
+				<div class="row">
+					<div class="col-sm-12 col-md-6 col-lg-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">' . $GLOBALS['LANG']->getLL('settings', 1) . '</div>
+								<table class="table">
+			' . $displayCode . '
+								</table>
+						</div>
+					</div>
+			</div>
+			</form>
+		';
+
+
+
+
+		return $GLOBALS['SOBE']->doc->section('', $content, FALSE, TRUE, FALSE, FALSE);
 	}
 
 	/**
@@ -369,7 +409,7 @@ class RecordHistory {
 		$lines = array();
 		// Initialize:
 		$lines[] = '<thead><tr>
-				<th> </th>
+				<th>' . $GLOBALS['LANG']->getLL('rollback', 1) . '</th>
 				<th>' . $GLOBALS['LANG']->getLL('time', 1) . '</th>
 				<th>' . $GLOBALS['LANG']->getLL('age', 1) . '</th>
 				<th>' . $GLOBALS['LANG']->getLL('user', 1) . '</th>
@@ -402,7 +442,7 @@ class RecordHistory {
 			// Build up single line
 			$singleLine = array();
 			// Diff link
-			$image = IconUtility::getSpriteIcon('actions-view-go-forward', array('title' => $GLOBALS['LANG']->getLL('sumUpChanges', TRUE)));
+			$image = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $GLOBALS['LANG']->getLL('sumUpChanges', TRUE)));
 			$singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
 			// remove first link
 			$singleLine[] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
@@ -458,20 +498,31 @@ class RecordHistory {
 					<td>' . implode('</td><td>', $singleLine) . '</td>
 				</tr>';
 		}
+
+		// @TODO: introduce Fluid Standalone view and use callout viewHelper
+		$theCode = '<div class="callout callout-info">'
+			. '<div class="media"><div class="media-left"><span class="fa-stack fa-lg callout-icon"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-info fa-stack-1x"></i></span></div>'
+			. '<div class="media-body">'
+			. '<p>' . $GLOBALS['LANG']->getLL('differenceMsg') . '</p>'
+			. '	<div class="callout-body">'
+			. '	</div></div></div></div>';
+
 		// Finally, put it all together:
-		$theCode = '
+		$theCode .= '
 			<!--
 				History (list):
 			-->
+
+
 			<table class="table table-striped table-hover" id="typo3-history">
 				' . implode('', $lines) . '
 			</table>';
 		if ($this->lastSyslogId) {
-			$theCode .= '<br />' . $this->linkPage(IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $GLOBALS['LANG']->getLL('fullView', TRUE))), array('diff' => ''));
+			$theCode .= '<br />' . $this->linkPage('<span class="btn btn-default">' . $GLOBALS['LANG']->getLL('fullView', TRUE) . '</span>', array('diff' => ''));
 		}
-		// Add message about the difference view.
-		$flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-		$theCode .= '<br /><br />' . $flashMessage->render() . '<br />';
+
+		$theCode .= '<br /><br />';
+
 		// Add the whole content as a module section:
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('changes'), $theCode, FALSE, TRUE);
 	}
@@ -509,10 +560,10 @@ class RecordHistory {
 				}
 				$elParts = explode(':', $key);
 				$titleLine = $this->createRollbackLink($key, $GLOBALS['LANG']->getLL('revertRecord', 1), 1) . $this->generateTitle($elParts[0], $elParts[1]);
-				$record = '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">' . $record . '</div>';
+				$record = '<div style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">' . $record . '</div>';
 				$content .= $GLOBALS['SOBE']->doc->section($titleLine, $record, FALSE, FALSE, FALSE, TRUE);
 			}
-			$content = $this->createRollbackLink('ALL', $GLOBALS['LANG']->getLL('revertAll', 1), 0) . '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">' . $content . '</div>';
+			$content = $this->createRollbackLink('ALL', $GLOBALS['LANG']->getLL('revertAll', 1), 0) . '<div style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">' . $content . '</div>';
 		} else {
 			$content = $GLOBALS['LANG']->getLL('noDifferences', 1);
 		}
@@ -762,7 +813,7 @@ class RecordHistory {
 	 * @return string HTML output
 	 */
 	public function createRollbackLink($key, $alt = '', $type = 0) {
-		return $this->linkPage('<span class="btn btn-default">' . $alt . '</span>', array('rollbackFields' => $key));
+		return $this->linkPage('<span class="btn btn-default" style="margin-right: 5px;">' . $alt . '</span>', array('rollbackFields' => $key));
 	}
 
 	/**

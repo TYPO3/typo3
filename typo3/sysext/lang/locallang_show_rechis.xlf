@@ -16,10 +16,13 @@
 				<source>User</source>
 			</trans-unit>
 			<trans-unit id="tableUid">
-				<source>Table:uid</source>
+				<source>Table:uid (Title)</source>
 			</trans-unit>
 			<trans-unit id="differences">
 				<source>Differences</source>
+			</trans-unit>
+			<trans-unit id="rollback">
+				<source>Rollback</source>
 			</trans-unit>
 			<trans-unit id="changes">
 				<source>Changelog</source>
