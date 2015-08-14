@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Install\Controller\Exception\RedirectException;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 
 /**
  * Test case
@@ -34,6 +36,73 @@ class SilentConfigurationUpgradeServiceTest extends \TYPO3\CMS\Core\Tests\UnitTe
 			\TYPO3\CMS\Core\Configuration\ConfigurationManager::class,
 			$methods
 		);
+	}
+
+	/**
+	 * Dataprovider for configureBackendLoginSecurity
+	 *
+	 * @return array
+	 */
+	public function configureBackendLoginSecurityLocalconfiguration() {
+		return array(
+			array('', 'rsa', TRUE, FALSE),
+			array('normal', 'rsa', TRUE, TRUE),
+			array('rsa', 'normal', FALSE, TRUE),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider configureBackendLoginSecurityLocalconfiguration
+	 */
+	public function configureBackendLoginSecurity($current, $setting, $isPackageActive, $hasLocalConfig) {
+		/** @var $silentConfigurationUpgradeServiceInstance \TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$silentConfigurationUpgradeServiceInstance = $this->getAccessibleMock(
+			\TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService::class,
+			array('dummy'),
+			array(),
+			'',
+			FALSE
+		);
+
+		/** @var $packageManager \TYPO3\CMS\Core\Package\PackageManager|\PHPUnit_Framework_MockObject_MockObject */
+		$packageManager = $this->getMock(\TYPO3\CMS\Core\Package\PackageManager::class, array(), array(), '', FALSE);
+		$packageManager->expects($this->any())
+			->method('isPackageActive')
+			->will($this->returnValue($isPackageActive));
+		ExtensionManagementUtility::setPackageManager($packageManager);
+
+		$currentLocalConfiguration = array(
+			array('BE/loginSecurityLevel', $current)
+		);
+		$closure = function () {
+			throw new \RuntimeException('Path does not exist in array', 1341397869);
+		};
+
+		$this->createConfigurationManagerWithMockedMethods(
+			array(
+				'getLocalConfigurationValueByPath',
+				'setLocalConfigurationValueByPath',
+			)
+		);
+		if ($hasLocalConfig) {
+			$this->configurationManager->expects($this->once())
+				->method('getLocalConfigurationValueByPath')
+				->will($this->returnValueMap($currentLocalConfiguration));
+		} else {
+			$this->configurationManager->expects($this->once())
+				->method('getLocalConfigurationValueByPath')
+				->will($this->returnCallback($closure));
+		}
+		$this->configurationManager->expects($this->once())
+			->method('setLocalConfigurationValueByPath')
+			->with($this->equalTo('BE/loginSecurityLevel'), $this->equalTo($setting));
+
+		$this->setExpectedException(\TYPO3\CMS\Install\Controller\Exception\RedirectException::class);
+
+		$silentConfigurationUpgradeServiceInstance->_set('configurationManager', $this->configurationManager);
+
+		$silentConfigurationUpgradeServiceInstance->_call('configureBackendLoginSecurity');
 	}
 
 	/**
