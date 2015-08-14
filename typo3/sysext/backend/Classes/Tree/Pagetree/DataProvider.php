@@ -234,10 +234,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 
 			$rootline = BackendUtility::BEgetRootLine($record['uid'], '', $GLOBALS['BE_USER']->workspace != 0);
 			$rootline = array_reverse($rootline);
-			if ($nodeId === 0) {
-				array_shift($rootline);
-			}
-			if ($mountPoints != array(0)) {
+			if (!in_array(0, $mountPoints, TRUE)) {
 				$isInsideMountPoints = FALSE;
 				foreach ($rootline as $rootlineElement) {
 					if (in_array((int)$rootlineElement['uid'], $mountPoints, TRUE)) {
