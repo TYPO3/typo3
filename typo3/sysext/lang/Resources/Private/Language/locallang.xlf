@@ -60,7 +60,7 @@
 				<source>Language was successfully deactivated.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.errorOccurred">
-				<source>The request has been failed.</source>
+				<source>The request has failed.</source>
 			</trans-unit>
 
 			<trans-unit id="table.ad">
