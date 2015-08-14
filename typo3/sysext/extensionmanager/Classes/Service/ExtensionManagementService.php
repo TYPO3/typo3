@@ -45,11 +45,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $extensionModelUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
-	 */
-	protected $listUtility;
-
-	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
 	 */
 	protected $downloadUtility;
@@ -90,13 +85,6 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function injectExtensionModelUtility(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility) {
 		$this->extensionModelUtility = $extensionModelUtility;
-	}
-
-	/**
-	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
-	 */
-	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
-		$this->listUtility = $listUtility;
 	}
 
 	/**

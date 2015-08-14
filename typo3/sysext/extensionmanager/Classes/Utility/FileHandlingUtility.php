@@ -296,6 +296,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Constructs emConf and writes it to corresponding file
+	 * In case the file has been extracted already, the properties of the meta data take precedence but are merged with the present ext_emconf.php
 	 *
 	 * @param array $extensionData
 	 * @param string $rootPath
@@ -303,6 +304,16 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function writeEmConfToFile(array $extensionData, $rootPath, Extension $extension = NULL) {
+		$emConfFileData = array();
+		if (file_exists($rootPath . 'ext_emconf.php')) {
+			$emConfFileData = $this->emConfUtility->includeEmConf(
+				array(
+					'key' => $extensionData['extKey'],
+					'siteRelPath' => PathUtility::stripPathSitePrefix($rootPath)
+				)
+			);
+		}
+		$extensionData['EM_CONF'] = array_replace_recursive($emConfFileData, $extensionData['EM_CONF']);
 		$emConfContent = $this->emConfUtility->constructEmConf($extensionData, $extension);
 		GeneralUtility::writeFile($rootPath . 'ext_emconf.php', $emConfContent);
 	}
