@@ -198,7 +198,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $defaultIconIdentifier = 'default-not-found';
 
 	/**
-	 * @param $identifier
+	 * @param string $identifier
 	 *
 	 * @return bool
 	 */
@@ -244,5 +244,13 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
 		}
 		return $this->icons[$identifier];
+	}
+
+	/**
+	 * @return array
+	 * @internal
+	 */
+	public function getAllRegisteredIconIdentifiers() {
+		return array_keys($this->icons);
 	}
 }
