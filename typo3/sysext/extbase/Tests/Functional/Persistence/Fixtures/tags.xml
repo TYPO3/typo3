@@ -4,7 +4,6 @@
 		<uid>1</uid>
 		<pid>0</pid>
 		<posts>10</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag1</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -12,7 +11,6 @@
 		<uid>2</uid>
 		<pid>0</pid>
 		<posts>2</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag2</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -20,7 +18,6 @@
 		<uid>3</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag3</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -28,7 +25,6 @@
 		<uid>4</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag4</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -36,7 +32,6 @@
 		<uid>5</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag5</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -44,7 +39,6 @@
 		<uid>6</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag6</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -52,7 +46,6 @@
 		<uid>7</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag7</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -60,7 +53,6 @@
 		<uid>8</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag8</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -68,7 +60,6 @@
 		<uid>9</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag9</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
@@ -76,7 +67,6 @@
 		<uid>10</uid>
 		<pid>0</pid>
 		<posts>1</posts>
-		<l18n_diffsource></l18n_diffsource>
 		<name>Tag10</name>
 		<deleted>0</deleted>
 	</tx_blogexample_domain_model_tag>
