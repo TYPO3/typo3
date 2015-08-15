@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  */
 
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 
 /**
@@ -640,9 +641,35 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		}
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$row = array();
+		$properties = $object->_getProperties();
+		foreach ($properties as $propertyName => $propertyValue) {
+			if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) {
+				continue;
+			}
+			$columnMap = $dataMap->getColumnMap($propertyName);
+			if ($columnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_ONE) {
+				$row[$columnMap->getColumnName()] = 0;
+			} elseif ($columnMap->getTypeOfRelation() !== ColumnMap::RELATION_NONE) {
+				if ($columnMap->getParentKeyFieldName() === NULL) {
+					// CSV type relation
+					$row[$columnMap->getColumnName()] = '';
+				} else {
+					// MM type relation
+					$row[$columnMap->getColumnName()] = 0;
+				}
+			} else {
+				// Check explicitly for NULL, as getPlainValue would convert this to 'NULL'
+				$row[$columnMap->getColumnName()] = $propertyValue !== NULL
+					? $this->dataMapper->getPlainValue($propertyValue)
+					: NULL;
+			}
+		}
 		$this->addCommonFieldsToRow($object, $row);
 		if ($dataMap->getLanguageIdColumnName() !== NULL) {
 			$row[$dataMap->getLanguageIdColumnName()] = -1;
+		}
+		if ($dataMap->getTranslationOriginColumnName() !== NULL) {
+			$row[$dataMap->getTranslationOriginColumnName()] = 0;
 		}
 		if ($parentObject !== NULL && $parentPropertyName) {
 			$parentColumnDataMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
