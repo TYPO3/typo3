@@ -600,7 +600,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 			$row = array();
 			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
 			if ($parentKeyFieldName !== NULL) {
-				$row[$parentKeyFieldName] = '';
+				$row[$parentKeyFieldName] = 0;
 				$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
 				if ($parentTableFieldName !== NULL) {
 					$row[$parentTableFieldName] = '';
