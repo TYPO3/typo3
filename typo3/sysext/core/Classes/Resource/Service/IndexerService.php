@@ -140,7 +140,13 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($fileInfo['type'] == $fileObject::FILETYPE_IMAGE) {
 			$rawFileLocation = $fileObject->getForLocalProcessing(FALSE);
 			$metaData = array();
-			list($metaData['width'], $metaData['height']) = getimagesize($rawFileLocation);
+			$imageSize = getimagesize($rawFileLocation);
+			if ($imageSize === FALSE) {
+				$metaData['width'] = 0;
+				$metaData['height'] = 0;
+			} else {
+				list($metaData['width'], $metaData['height']) = $imageSize;
+			}
 			$this->getMetaDataRepository()->update($fileObject->getUid(), $metaData);
 		}
 		// Signal slot AFTER the file was indexed
