@@ -1,0 +1,35 @@
+{namespace fl = TYPO3\CMS\Filelist\ViewHelpers}
+
+<fl:be.container pageTitle="{pageTitle}" includeRequireJsModules="{requireJsModules}" addJsInlineLabelFiles="{addJsInlineLabelFiles}" addJsInline="{addJsInline}">
+	<div class="typo3-fullDoc t3js-drag-uploader" data-target-folder="{folderIdentifier}" data-progress-container="#typo3-filelist"
+		 data-dropzone-trigger="#button-upload" data-dropzone-target="#typo3-inner-docbody h1:first"
+		 data-file-deny-pattern="{fileDenyPattern}" data-max-file-size="{maxFileSize}">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="left">
+					<f:be.buttons.csh table="xMOD_csh_corebe" field="filelist_module" />
+				</div>
+				<div class="right">
+					{otherMarkers.TITLE} {otherMarkers.FOLDER_INFO} {otherMarkers.PAGE_ICON -> f:format.raw()}
+				</div>
+			</div>
+			<div class="typo3-docheader-buttons">
+				<div class="left">
+					{docHeaderButtons.level_up -> f:format.raw()}{docHeaderButtons.upload -> f:format.raw()}{docHeaderButtons.new -> f:format.raw()}{docHeaderButtons.PASTE -> f:format.raw()}
+				</div>
+				<div class="right">
+					{docHeaderButtons.refresh -> f:format.raw()}{f:be.buttons.shortcut()}
+				</div>
+			</div>
+		</div>
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<f:flashMessages queueIdentifier="core.template.flashMessages" />
+
+				<f:render section="headline" />
+
+				<f:render section="content" />
+			</div>
+		</div>
+	</div>
+</fl:be.container>

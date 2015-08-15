@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Filelist\Controller\FileListController;
 
 /**
  * Class for rendering of File>Filelist
@@ -65,11 +66,6 @@ class FileList extends AbstractRecordList {
 	 * @var int
 	 */
 	public $fixedL = 30;
-
-	/**
-	 * @var string
-	 */
-	public $script = '';
 
 	/**
 	 * If TRUE click menus are generated on files and folders
@@ -182,9 +178,15 @@ class FileList extends AbstractRecordList {
 	protected $iconFactory;
 
 	/**
+	 * @var FileListController
+	 */
+	protected $fileListController;
+
+	/**
 	 * Construct
 	 */
-	public function __construct() {
+	public function __construct(FileListController $fileListController) {
+		$this->fileListController = $fileListController;
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
@@ -200,7 +202,6 @@ class FileList extends AbstractRecordList {
 	 * @return void
 	 */
 	public function start(Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = FALSE, $bigControlPanel = FALSE) {
-		$this->script = BackendUtility::getModuleUrl('file_list');
 		$this->folderObject = $folderObject;
 		$this->counter = 0;
 		$this->totalbytes = 0;
@@ -261,7 +262,7 @@ class FileList extends AbstractRecordList {
 				$otherMarkers['TITLE'] .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
 			}
 			if ($this->clickMenus) {
-				$otherMarkers['PAGE_ICON'] = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
+				$otherMarkers['PAGE_ICON'] = $this->fileListController->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
 			}
 			// Add paste button if clipboard is initialized
 			if ($this->clipObj instanceof Clipboard && $folderObject->checkActionPermission('write')) {
@@ -523,7 +524,7 @@ class FileList extends AbstractRecordList {
 			// The icon with link
 			$theIcon = IconUtility::getSpriteIconForResource($folderObject, array('title' => $folderName));
 			if (!$isLocked && $this->clickMenus) {
-				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
+				$theIcon = $this->fileListController->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 			}
 
 			// Preparing and getting the data-array
@@ -584,7 +585,7 @@ class FileList extends AbstractRecordList {
 	 * @return string HTML
 	 */
 	public function linkWrapDir($title, Folder $folderObject) {
-		$href = $this->script . '&id=' . rawurlencode($folderObject->getCombinedIdentifier());
+		$href = BackendUtility::getModuleUrl('file_FilelistList', ['id' => $folderObject->getCombinedIdentifier()]);
 		$onclick = ' onclick="' . htmlspecialchars(('top.document.getElementsByName("navigation")[0].contentWindow.Tree.highlightActiveItem("file","folder' . GeneralUtility::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)')) . '"';
 		// Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
 		if ((string)$title === strip_tags($title)) {
@@ -659,7 +660,7 @@ class FileList extends AbstractRecordList {
 			// The icon with link
 			$theIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileName . ' [' . (int)$fileObject->getUid() . ']'));
 			if ($this->clickMenus) {
-				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
+				$theIcon = $this->fileListController->doc->wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
 			}
 			// Preparing and getting the data-array
 			$theData = array();
@@ -708,7 +709,7 @@ class FileList extends AbstractRecordList {
 										'returnUrl' => $this->listURL()
 									];
 									$returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters) . BackendUtility::getUrlToken('editRecord');
-									$href = $GLOBALS['SOBE']->doc->issueCommand(
+									$href = $this->fileListController->doc->issueCommand(
 										'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
 										$returnUrl
 									);
@@ -803,15 +804,17 @@ class FileList extends AbstractRecordList {
 	 * @return string HTML
 	 */
 	public function linkWrapSort($code, $folderIdentifier, $col) {
+		$params = ['id' => $folderIdentifier, 'SET' => [ 'sort' => $col ]];
+
 		if ($this->sort === $col) {
 			// Check reverse sorting
-			$params = '&SET[sort]=' . $col . '&SET[reverse]=' . ($this->sortRev ? '0' : '1');
+			$params['SET']['reverse'] = ($this->sortRev ? '0' : '1');
 			$sortArrow = IconUtility::getSpriteIcon('status-status-sorting-light-' . ($this->sortRev ? 'desc' : 'asc'));
 		} else {
-			$params = '&SET[sort]=' . $col . '&SET[reverse]=0';
+			$params['SET']['reverse'] = 0;
 			$sortArrow = '';
 		}
-		$href = GeneralUtility::resolveBackPath($this->script) . '&id=' . rawurlencode($folderIdentifier) . $params;
+		$href = BackendUtility::getModuleUrl('file_FilelistList', $params);
 		return '<a href="' . htmlspecialchars($href) . '">' . $code . ' ' . $sortArrow . '</a>';
 	}
 
@@ -1002,6 +1005,7 @@ class FileList extends AbstractRecordList {
 
 	/**
 	 * Returns the database connection
+	 *
 	 * @return DatabaseConnection
 	 */
 	protected function getDatabaseConnection() {

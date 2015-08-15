@@ -118,14 +118,14 @@ class CreateFolderController implements \TYPO3\CMS\Core\Http\ControllerInterface
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			var path = "' . $this->target . '";
 
-			function reload(a) {	//
+			function reload(a) {
 				if (!changed || (changed && confirm(' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:mess.redraw')) . '))) {
 					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
 					window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('file_newfolder')) . '+params;
 				}
 			}
-			function backToList() {	//
-				top.goToModule("file_list");
+			function backToList() {
+				top.goToModule("file_FilelistList");
 			}
 
 			var changed = 0;

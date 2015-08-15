@@ -25,24 +25,26 @@ use TYPO3\CMS\Core\Http\Response;
  */
 class RenameFileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
-	// Internal, static:
 	/**
 	 * Document template object
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 * @internal
 	 */
 	public $doc;
 
-	// Name of the filemount
 	/**
+	 * Name of the filemount
+	 *
 	 * @var string
 	 */
 	public $title;
 
-	// Internal, static (GPVar):
-	// Set with the target path inputted in &target
 	/**
+	 * Target path
+	 *
 	 * @var string
+	 * @internal
 	 */
 	public $target;
 
@@ -53,16 +55,18 @@ class RenameFileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	 */
 	protected $fileOrFolderObject;
 
-	// Return URL of list module.
 	/**
+	 * Return URL of list module.
+	 *
 	 * @var string
 	 */
 	public $returnUrl;
 
-	// Internal, dynamic:
-	// Accumulating content
 	/**
+	 * Accumulating content
+	 *
 	 * @var string
+	 * @internal
 	 */
 	public $content;
 
@@ -114,8 +118,8 @@ class RenameFileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_rename.html');
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function backToList() {	//
-				top.goToModule("file_list");
+			function backToList() {
+				top.goToModule("file_FilelistList");
 			}
 		');
 	}

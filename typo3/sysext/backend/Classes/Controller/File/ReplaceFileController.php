@@ -124,8 +124,8 @@ class ReplaceFileController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/file_replace.html');
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function backToList() {	//
-				top.goToModule("file_list");
+			function backToList() {
+				top.goToModule("file_FilelistList");
 			}
 		');
 	}

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -33,14 +34,14 @@ use TYPO3\CMS\Filelist\FileList;
 /**
  * Script Class for creating the list of files in the File > Filelist module
  */
-class FileListController {
+class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	* Module configuration
-	*
-	* @var array
-	* @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. The Module gets configured by ExtensionManagementUtility::addModule() in ext_tables.php
-	*/
+	 * Module configuration
+	 *
+	 * @var array
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. The Module gets configured by ExtensionManagementUtility::addModule() in ext_tables.php
+	 */
 	public $MCONF = array();
 
 	/**
@@ -52,13 +53,6 @@ class FileListController {
 	 * @var array
 	 */
 	public $MOD_SETTINGS = array();
-
-	/**
-	 * Accumulated HTML output
-	 *
-	 * @var string
-	 */
-	public $content;
 
 	/**
 	 * Document template object
@@ -75,7 +69,7 @@ class FileListController {
 	public $id;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Resource\Folder
+	 * @var Folder
 	 */
 	protected $folderObject;
 
@@ -132,14 +126,6 @@ class FileListController {
 	protected $moduleName = 'file_list';
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
-		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
-	}
-
-	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
@@ -147,7 +133,11 @@ class FileListController {
 	 * @throws \RuntimeException
 	 * @throws Exception\InsufficientFolderAccessPermissionsException
 	 */
-	public function init() {
+	public function initializeObject() {
+		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_file_list.xlf');
+		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_misc.xlf');
+
 		// Setting GPvars:
 		$this->id = ($combinedIdentifier = GeneralUtility::_GP('id'));
 		$this->pointer = GeneralUtility::_GP('pointer');
@@ -267,48 +257,53 @@ class FileListController {
 	}
 
 	/**
-	 * Main function, creating the listing
-	 *
 	 * @return void
 	 */
-	public function main() {
-		// Initialize the template object
-		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->setModuleTemplate('EXT:filelist/Resources/Private/Templates/file_list.html');
+	public function initializeIndexAction() {
+		// Apply predefined values for hidden checkboxes
+		// Set predefined value for DisplayBigControlPanel:
+		$backendUser = $this->getBackendUser();
+		if ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'activated') {
+			$this->MOD_SETTINGS['bigControlPanel'] = TRUE;
+		} elseif ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'deactivated') {
+			$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
+		}
+		// Set predefined value for DisplayThumbnails:
+		if ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'activated') {
+			$this->MOD_SETTINGS['displayThumbs'] = TRUE;
+		} elseif ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'deactivated') {
+			$this->MOD_SETTINGS['displayThumbs'] = FALSE;
+		}
+		// Set predefined value for Clipboard:
+		if ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'activated') {
+			$this->MOD_SETTINGS['clipBoard'] = TRUE;
+		} elseif ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'deactivated') {
+			$this->MOD_SETTINGS['clipBoard'] = FALSE;
+		}
+		// If user never opened the list module, set the value for displayThumbs
+		if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
+			$this->MOD_SETTINGS['displayThumbs'] = $backendUser->uc['thumbnailsByDefault'];
+		}
+		if (!isset($this->MOD_SETTINGS['sort'])) {
+			// Set default sorting
+			$this->MOD_SETTINGS['sort'] = 'file';
+			$this->MOD_SETTINGS['reverse'] = 0;
+		}
+	}
 
-		$pageRenderer = $this->getPageRenderer();
-		$pageRenderer->loadJQuery();
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileListLocalisation');
+	/**
+	 * @return void
+	 */
+	public function indexAction() {
 
 		// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {
 
+			$requireJsModules = ['TYPO3/CMS/Filelist/FileListLocalisation'];
+			$addJsInlineLabels = [];
+
 			// Create filelisting object
-			$this->filelist = GeneralUtility::makeInstance(FileList::class);
-			// Apply predefined values for hidden checkboxes
-			// Set predefined value for DisplayBigControlPanel:
-			$backendUser = $this->getBackendUser();
-			if ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'activated') {
-				$this->MOD_SETTINGS['bigControlPanel'] = TRUE;
-			} elseif ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'deactivated') {
-				$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
-			}
-			// Set predefined value for DisplayThumbnails:
-			if ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'activated') {
-				$this->MOD_SETTINGS['displayThumbs'] = TRUE;
-			} elseif ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'deactivated') {
-				$this->MOD_SETTINGS['displayThumbs'] = FALSE;
-			}
-			// Set predefined value for Clipboard:
-			if ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'activated') {
-				$this->MOD_SETTINGS['clipBoard'] = TRUE;
-			} elseif ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'deactivated') {
-				$this->MOD_SETTINGS['clipBoard'] = FALSE;
-			}
-			// If user never opened the list module, set the value for displayThumbs
-			if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
-				$this->MOD_SETTINGS['displayThumbs'] = $backendUser->uc['thumbnailsByDefault'];
-			}
+			$this->filelist = GeneralUtility::makeInstance(FileList::class, $this);
 			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
 			// Create clipboard object and initialize that
 			$this->filelist->clipObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
@@ -355,20 +350,13 @@ class FileListController {
 					$fileProcessor->pushErrorMessagesToFlashMessageQueue();
 				}
 			}
-			if (!isset($this->MOD_SETTINGS['sort'])) {
-				// Set default sorting
-				$this->MOD_SETTINGS['sort'] = 'file';
-				$this->MOD_SETTINGS['reverse'] = 0;
-			}
 			// Start up filelisting object, include settings.
 			$this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
 			$this->filelist->start($this->folderObject, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 			// Generate the list
 			$this->filelist->generateList();
 			// Set top JavaScript:
-			$this->doc->JScode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";' . $this->filelist->CBfunctions());
-			// This will return content necessary for the context sensitive clickmenus to work: bodytag events, JavaScript functions and DIV-layers.
-			$this->doc->getContextMenuCode();
+			$addJsInline = 'if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";' . $this->filelist->CBfunctions();
 			// Setting up the buttons and markers for docheader
 			list($buttons, $otherMarkers) = $this->filelist->getButtonsAndOtherMarkers($this->folderObject);
 			// add the folder info to the marker array
@@ -379,86 +367,55 @@ class FileListController {
 			if ($this->folderObject->getStorage()->checkUserActionPermission('add', 'File')
 				&& $this->folderObject->checkActionPermission('write')
 			) {
-				$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DragUploader');
-				$pageRenderer->addInlineLanguagelabelFile(
-					ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
-					'file_upload'
-				);
+				$requireJsModules[] = 'TYPO3/CMS/Backend/DragUploader';
+				$addJsInlineLabelFiles[] = [
+					'file' => ExtensionManagementUtility::extPath('lang') . 'locallang_core.xlf',
+					'prefix' => 'file_upload'
+				];
 			}
 
-			// Build the <body> for the module
-			$moduleHeadline = $this->getModuleHeadline();
-			// Create output
-			$pageContent = $moduleHeadline !== '' ? '<h1>' . $moduleHeadline . '</h1>' : '';
-
-			$pageContent .= '<form action="' . htmlspecialchars($this->filelist->listURL()) . '" method="post" name="dblistForm">';
-			$pageContent .= $this->filelist->HTMLcode;
-			$pageContent .= '<input type="hidden" name="cmd" /></form>';
-
-			// Making listing options:
-			if ($this->filelist->HTMLcode) {
-				$pageContent .= '
-
-					<!--
-						Listing options for extended view, clipboard and thumbnails
-					-->
-					<div class="typo3-listOptions">
-				';
-				// Add "display bigControlPanel" checkbox:
-				if ($backendUser->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
-					$pageContent .= '<div class="checkbox">' .
-						'<label for="bigControlPanel">' .
-							BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') .
-							$this->getLanguageService()->getLL('bigControlPanel', TRUE) .
-						'</label>' .
-					'</div>';
-				}
-				// Add "display thumbnails" checkbox:
-				if ($backendUser->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
-					$pageContent .= '<div class="checkbox">' .
-						'<label for="checkDisplayThumbs">' .
-							BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') .
-							$this->getLanguageService()->getLL('displayThumbs', TRUE) .
-						'</label>' .
-					'</div>';
-				}
-				// Add "clipboard" checkbox:
-				if ($backendUser->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
-					$pageContent .= '<div class="checkbox">' .
-						'<label for="checkClipBoard">' .
-							BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') .
-							$this->getLanguageService()->getLL('clipBoard', TRUE) .
-						'</label>' .
-					'</div>';
-				}
-				$pageContent .= '
-					</div>
-				';
-				// Set clipboard:
-				if ($this->MOD_SETTINGS['clipBoard']) {
-					$pageContent .= $this->filelist->clipObj->printClipboard();
-					$pageContent .= BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_clipboard');
-				}
-			}
-			$markerArray = array(
-				'CSH' => $docHeaderButtons['csh'],
-				'FUNC_MENU' => BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']),
-				'CONTENT' => ($this->errorMessage ? $this->errorMessage->render() : '') . $pageContent,
-				'FOLDER_IDENTIFIER' => $this->folderObject->getCombinedIdentifier(),
-				'FILEDENYPATERN' => $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'],
-				'MAXFILESIZE' => GeneralUtility::getMaxUploadFileSize() * 1024,
-			);
-			$this->content = $this->doc->moduleBody(array(), $docHeaderButtons, array_merge($markerArray, $otherMarkers));
-			// Renders the module page
-			$this->content = $this->doc->render($this->getLanguageService()->getLL('files'), $this->content);
+			$this->view->assign('otherMarkers', $otherMarkers);
+			$this->view->assign('docHeaderButtons', $docHeaderButtons);
+			$this->view->assign('pageTitle', $this->getLanguageService()->getLL('files'));
+			$this->view->assign('requireJsModules', $requireJsModules);
+			$this->view->assign('addJsInlineLabelFiles', $addJsInlineLabelFiles);
+			$this->view->assign('addJsInline', $addJsInline);
+			$this->view->assign('headline', $this->getModuleHeadline());
+			$this->view->assign('listHtml', $this->filelist->HTMLcode);
+			$this->view->assign('checkboxes', [
+				'bigControlPanel' => [
+					'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable',
+					'label' => $this->getLanguageService()->getLL('bigControlPanel', TRUE),
+					'html' => BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"'),
+				],
+				'displayThumbs' => [
+					'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable',
+					'label' => $this->getLanguageService()->getLL('displayThumbs', TRUE),
+					'html' => BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"'),
+				],
+				'enableClipBoard' => [
+					'enabled' => $this->getBackendUser()->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable',
+					'label' => $this->getLanguageService()->getLL('clipBoard', TRUE),
+					'html' => BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"'),
+				]
+			]);
+			$this->view->assign('showClipBoard', (bool)$this->MOD_SETTINGS['clipBoard']);
+			$this->view->assign('clipBoardHtml', $this->filelist->clipObj->printClipboard());
+			$this->view->assign('folderIdentifier', $this->folderObject->getCombinedIdentifier());
+			$this->view->assign('fileDenyPattern', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']);
+			$this->view->assign('maxFileSize', GeneralUtility::getMaxUploadFileSize() * 1024);
 		} else {
-			$content = '';
-			if ($this->errorMessage) {
-				$this->errorMessage->setSeverity(FlashMessage::ERROR);
-				$content = $this->doc->moduleBody(array(), array_merge(array('REFRESH' => '', 'PASTE' => '', 'LEVEL_UP' => ''), $this->getButtons()), array('CSH' => '', 'TITLE' => '', 'FOLDER_INFO' => '', 'PAGE_ICON' => '', 'FUNC_MENU' => '', 'CONTENT' => $this->errorMessage->render()));
-			}
-			// Create output - no access (no warning though)
-			$this->content = $this->doc->render($this->getLanguageService()->getLL('files'), $content);
+			$this->forward('missingFolder');
+		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function missingFolderAction() {
+		if ($this->errorMessage) {
+			$this->errorMessage->setSeverity(FlashMessage::ERROR);
+			$this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage($this->errorMessage);
 		}
 	}
 
@@ -482,15 +439,6 @@ class FileListController {
 			));
 		}
 		return $name;
-	}
-
-	/**
-	 * Outputting the accumulated content to screen
-	 *
-	 * @return void
-	 */
-	public function printContent() {
-		echo $this->content;
 	}
 
 	/**
@@ -558,12 +506,4 @@ class FileListController {
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
 	}
-
-	/**
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
-	}
-
 }
