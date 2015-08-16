@@ -52,7 +52,7 @@ Info > Linkvalidator
 #linkvalidator-statistics-table td:first-child {
   border-left: none;
 }
-#linkvalidator-statistics-table td.number {
+#linkvalidator-statistics-table .number {
   padding-right: 6px;
   text-align: center;
 }

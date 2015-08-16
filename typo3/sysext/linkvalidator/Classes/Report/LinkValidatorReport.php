@@ -337,7 +337,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		foreach ($availableOptions as $optionValue => $optionLabel) {
 			$options[] = '<option value="' . $optionValue . '"' . ($optionValue === (int)$this->searchLevel ? ' selected="selected"' : '') . '>' . htmlspecialchars($optionLabel) . '</option>';
 		}
-		return '<select name="search_levels">' . implode('', $options) . '</select>';
+		return '<select name="search_levels" class="form-control">' . implode('', $options) . '</select>';
 	}
 
 	/**
@@ -550,7 +550,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 						$translation = $this->getLanguageService()->getLL('hooks.' . $type) ?: $type;
 						$hookSectionMarker['option'] = '<input type="checkbox"' . $additionalAttr . ' id="' . $prefix . 'SET_' . $type . '" name="' . $prefix
 							. 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="'
-							. $prefix . 'SET_' . $type . '">' . htmlspecialchars($translation) . '</label>';
+							. $prefix . 'SET_' . $type . '">&nbsp;' . htmlspecialchars($translation) . '</label>';
 
 						$hookSectionContent .= HtmlParser::substituteMarkerArray(
 							$hookSectionTemplate,
@@ -609,7 +609,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			'CONTENT' => $this->content,
 			'CHECKOPTIONS' => $this->checkOptionsHtml,
 			'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
-			'REFRESH' => '<input type="submit" name="refreshLinkList" id="refreshLinkList" value="' . $this->getLanguageService()->getLL('label_refresh') . '" />',
+			'REFRESH' => '<input type="submit" class="btn btn-default" name="refreshLinkList" id="refreshLinkList" value="' . $this->getLanguageService()->getLL('label_refresh') . '" />',
 			'UPDATE' => '',
 		);
 	}
@@ -628,7 +628,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			'CHECKOPTIONS' => $this->checkOptionsHtmlCheck,
 			'ID' => '<input type="hidden" name="id" value="' . $this->pObj->id . '" />',
 			'REFRESH' => '',
-			'UPDATE' => '<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>',
+			'UPDATE' => '<input type="submit" class="btn btn-default" name="updateLinkList" id="updateLinkList" value="' . $this->getLanguageService()->getLL('label_update') . '"/>',
 		);
 	}
 
