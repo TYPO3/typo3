@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Html\HtmlParser;
+
 /**
  * Testcase for \TYPO3\CMS\Core\Html\HtmlParser
  */
@@ -25,7 +27,82 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $subject = NULL;
 
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Core\Html\HtmlParser();
+		$this->subject = new HtmlParser();
+	}
+
+	/**
+	 * Data provider for getSubpart
+	 *
+	 * @return array
+	 */
+	public function getSubpartDataProvider() {
+		return array(
+			'No start marker' => array(
+				'<body>text</body>',
+				'###SUBPART###',
+				''
+			),
+			'No stop marker' => array(
+				'<body>
+<!-- ###SUBPART### Start -->
+text
+</body>',
+				'###SUBPART###',
+				''
+			),
+			'Start and stop marker in HTML comment' => array(
+				'<body>
+<!-- ###SUBPART### Start -->
+text
+<!-- ###SUBPART### End -->
+</body>',
+				'###SUBPART###',
+				'
+text
+'
+			),
+			'Stop marker in HTML comment' => array(
+				'<body>
+###SUBPART###
+text
+<!-- ###SUBPART### End -->
+</body>',
+				'###SUBPART###',
+				'
+text
+'
+			),
+			'Start marker in HTML comment' => array(
+				'<body>
+<!-- ###SUBPART### Start -->
+text
+###SUBPART###
+</body>',
+				'###SUBPART###',
+				'
+text
+'
+			),
+			'Start and stop marker direct' => array(
+				'<body>
+###SUBPART###
+text
+###SUBPART###
+</body>',
+				'###SUBPART###',
+				'
+text
+'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getSubpartDataProvider
+	 */
+	public function getSubpart($content, $marker, $expected) {
+		$this->assertSame($expected, HtmlParser::getSubpart($content, $marker));
 	}
 
 	/**
@@ -227,7 +304,7 @@ Value 2.2
 	 * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected) {
-		$this->assertSame($expected, $this->subject->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
+		$this->assertSame($expected, HtmlParser::substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
 	}
 
 	/**
