@@ -313,7 +313,7 @@ class TceformsUpdateWizard extends AbstractUpdate {
 			$fileUid = NULL;
 			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
 			$targetDirectory = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'];
-			$targetPath = $targetDirectory . $item;
+			$targetPath = $targetDirectory . basename($item);
 
 			// maybe the file was already moved, so check if the original file still exists
 			if (file_exists($sourcePath)) {
