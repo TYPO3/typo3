@@ -79,10 +79,10 @@
 				<source>Mount from groups:</source>
 			</trans-unit>
 			<trans-unit id="be_users.options_db_mounts">
-				<source>DB Mounts:</source>
+				<source>DB Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_users.options_file_mounts">
-				<source>File Mounts:</source>
+				<source>File Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_users.fileoper_perms">
 				<source>Fileoperation permissions:</source>
