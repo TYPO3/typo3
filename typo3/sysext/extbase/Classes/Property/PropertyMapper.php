@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Extbase\Property;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -105,6 +106,8 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 
 			return $result;
+		} catch (TargetNotFoundException $e) {
+			throw $e;
 		} catch (\Exception $e) {
 			throw new \TYPO3\CMS\Extbase\Property\Exception('Exception while property mapping at property path "' . implode('.', $currentPropertyPath) . '":' . $e->getMessage(), 1297759968, $e);
 		}

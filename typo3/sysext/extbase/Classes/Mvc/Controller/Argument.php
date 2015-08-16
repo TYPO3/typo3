@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
+
 /**
  * A controller argument
  *
@@ -359,7 +362,7 @@ class Argument {
 	 *
 	 * @param mixed $rawValue The value of this argument
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument
-	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException if the argument is not a valid object of type $dataType
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception
 	 */
 	public function setValue($rawValue) {
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
@@ -371,7 +374,14 @@ class Argument {
 				$this->value = $rawValue;
 				return $this;
 			}
-			$this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
+			try {
+				$this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
+			} catch (TargetNotFoundException $e) {
+				// for optional arguments no exeption is thrown.
+				if ($this->isRequired()) {
+					throw $e;
+				}
+			}
 			$this->validationResults = $this->propertyMapper->getMessages();
 			if ($this->validator !== NULL) {
 				// TODO: Validation API has also changed!!!
