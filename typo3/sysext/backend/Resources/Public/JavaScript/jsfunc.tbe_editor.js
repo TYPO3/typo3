@@ -166,7 +166,11 @@ var TBE_EDITOR = {
 				TBE_EDITOR.setImage(imgReqObjName,TBE_EDITOR.images.req);
 			}
 		}
-		if (TBE_EDITOR.isPalettedoc) { TBE_EDITOR.setOriginalFormFieldValue(theField) };
+		if (TBE_EDITOR.isPalettedoc) { TBE_EDITOR.setOriginalFormFieldValue(theField) }
+		if (TYPO3.FormEngine && TYPO3.FormEngine.Validation) {
+			TYPO3.FormEngine.Validation.updateInputField(theField);
+			TYPO3.FormEngine.Validation.validate();
+		}
 	},
 	setOriginalFormFieldValue: function(theField) {
 		if (TBE_EDITOR.isPalettedoc && (TBE_EDITOR.isPalettedoc).document[TBE_EDITOR.formname] && (TBE_EDITOR.isPalettedoc).document[TBE_EDITOR.formname][theField]) {
