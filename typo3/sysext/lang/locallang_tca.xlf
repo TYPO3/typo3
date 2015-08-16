@@ -76,10 +76,10 @@
 				<source>Mount from groups:</source>
 			</trans-unit>
 			<trans-unit id="be_users.options_db_mounts" xml:space="preserve">
-				<source>DB Mounts:</source>
+				<source>DB Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_users.options_file_mounts" xml:space="preserve">
-				<source>File Mounts:</source>
+				<source>File Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_users.fileoper_perms" xml:space="preserve">
 				<source>Fileoperation permissions:</source>
