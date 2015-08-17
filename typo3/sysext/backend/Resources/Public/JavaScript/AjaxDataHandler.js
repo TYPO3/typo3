@@ -99,19 +99,21 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 		var $anchorElement = $rowElement.find('.t3js-record-hide');
 		var table = $anchorElement.closest('table[data-table]').data('table');
 		var params = $anchorElement.data('params');
-		var nextParams, nextState;
+		var nextParams, nextState, className;
 
 		if ($anchorElement.data('state') === 'hidden') {
 			nextState = 'visible';
 			nextParams = params.replace('=0', '=1');
+			className = 'fa-toggle-on';
 		} else {
 			nextState = 'hidden';
 			nextParams = params.replace('=1', '=0');
+			className = 'fa-toggle-off';
 		}
 		$anchorElement.data('state', nextState).data('params', nextParams);
 
 		var $iconElement = $anchorElement.find('span');
-		$iconElement.toggleClass('fa-toggle-on').toggleClass('fa-toggle-off');
+		$iconElement.addClass(className);
 
 		var $icon = $rowElement.find('td.col-icon span.t3-icon');
 		var $overlayIcon = $icon.find('span.t3-icon');
