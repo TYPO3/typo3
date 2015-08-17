@@ -105,12 +105,11 @@ class UnitTestsBootstrap {
 	 */
 	protected function getWebRoot() {
 		if (getenv('TYPO3_PATH_WEB')) {
-			$webRoot = getenv('TYPO3_PATH_WEB') . '/';
+			$webRoot = getenv('TYPO3_PATH_WEB');
 		} else {
-			$webRoot = getcwd() . '/';
+			$webRoot = getcwd();
 		}
-
-		return strtr($webRoot, '\\', '/');
+		return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
 	}
 
 	/**
