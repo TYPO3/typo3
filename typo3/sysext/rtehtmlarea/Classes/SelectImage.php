@@ -97,11 +97,6 @@ class SelectImage extends ElementBrowser {
 	/**
 	 * @var array
 	 */
-	public $thisConfig;
-
-	/**
-	 * @var array
-	 */
 	public $buttonConfig;
 
 	/**
@@ -110,14 +105,19 @@ class SelectImage extends ElementBrowser {
 	public $addModifyTab;
 
 	/**
+	 * @var string
+	 */
+	protected $hookName = 'ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php';
+
+	/**
 	 * Initialisation
 	 *
 	 * @return void
 	 */
 	public function init() {
 		$this->initVariables();
-		$this->initConfiguration();
-		$this->initHookObjects('ext/rtehtmlarea/mod4/class.tx_rtehtmlarea_select_image.php');
+
+		$this->initHookObjects();
 		$this->allowedItems = $this->getAllowedItems('magic,plain,image');
 		// Insert the image and exit
 		$this->insertImage();
@@ -132,6 +132,7 @@ class SelectImage extends ElementBrowser {
 	 */
 	public function initVariables() {
 		parent::initVariables();
+
 		// Get "act"
 		$this->act = GeneralUtility::_GP('act');
 		if (!$this->act) {
@@ -151,11 +152,16 @@ class SelectImage extends ElementBrowser {
 		}
 		$pArr[1] = implode(':', array($this->editorNo, $this->sys_language_content));
 		$pArr[2] = $this->RTEtsConfigParams;
-		if ($this->act == 'dragdrop' || $this->act == 'plain') {
+		if ($this->act === 'dragdrop' || $this->act === 'plain') {
 			$this->allowedFileTypes = explode(',', self::PLAIN_MODE_IMAGE_FILE_EXTENSIONS);
 		}
 		$pArr[3] = implode(',', $this->allowedFileTypes);
 		$this->bparams = implode('|', $pArr);
+
+		$this->buttonConfig = $this->getButtonConfig();
+		$this->imgPath = $this->getImgPath();
+		$this->defaultClass = $this->getDefaultClass();
+		$this->setMaximumPlainImageDimensions();
 	}
 
 	/**
@@ -167,18 +173,19 @@ class SelectImage extends ElementBrowser {
 		parent::initDocumentTemplate();
 
 		$this->doc->bodyTagAdditions = 'onload="SelectImage.initEventListeners();"';
-		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
+
+		$pageRenderer = $this->getPageRenderer();
+		$pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		}');
-		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
 			SelectImage.editorNo = ' . GeneralUtility::quoteJSvalue($this->editorNo) . ';
 			SelectImage.act = ' . GeneralUtility::quoteJSvalue($this->act ?: reset($this->allowedItems)) . ';
 			SelectImage.sys_language_content = ' . GeneralUtility::quoteJSvalue($this->sys_language_content) . ';
 			SelectImage.RTEtsConfigParams = ' . GeneralUtility::quoteJSvalue(rawurlencode($this->RTEtsConfigParams)) . ';
 			SelectImage.bparams = ' . GeneralUtility::quoteJSvalue($this->bparams) . ';
 		}');
-		$this->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
-		$this->doc->getContextMenuCode();
 	}
 
 	/**
@@ -232,7 +239,7 @@ class SelectImage extends ElementBrowser {
 		// Create the magic image service
 		/** @var $magicImageService MagicImageService */
 		$magicImageService = GeneralUtility::makeInstance(MagicImageService::class);
-		$magicImageService->setMagicImageMaximumDimensions($this->thisConfig);
+		$magicImageService->setMagicImageMaximumDimensions($this->RTEProperties['default.']);
 		// Create the magic image
 		$imageConfiguration = array(
 			'width' => GeneralUtility::_GP('cWidth'),
@@ -330,7 +337,7 @@ plugin.insertImage(imageTags.join(\' \'));
 	 * @return string the generated JS code
 	 */
 	public function getJSCode($act, $editorNo, $sys_language_content) {
-		$JScode = '
+		return '
 			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
 				return SelectImage.jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + "insertImage=1&uidList=" + uid);
 			}
@@ -341,7 +348,6 @@ plugin.insertImage(imageTags.join(\' \'));
 			function jumpToUrl(URL,anchor) {
 				SelectImage.jumpToUrl(URL, anchor);
 			};';
-		return $JScode;
 	}
 
 	/**
@@ -353,8 +359,8 @@ plugin.insertImage(imageTags.join(\' \'));
 	 */
 	public function processSessionData($data) {
 		$store = FALSE;
-		if ($this->act != 'image') {
-			if (isset($this->act)) {
+		if ($this->act !== 'image') {
+			if ($this->act) {
 				$data['act'] = $this->act;
 				$store = TRUE;
 			} else {
@@ -385,7 +391,7 @@ plugin.insertImage(imageTags.join(\' \'));
 		$this->content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $this->allowedItems));
 		switch ($this->act) {
 			case 'image':
-				$classesImage = $this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false';
+				$classesImage = $this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->RTEProperties['default.']['classesImage'] ? 'true' : 'false';
 				$removedProperties = array();
 				if (is_array($this->buttonConfig['properties.'])) {
 					if ($this->buttonConfig['properties.']['removeItems']) {
@@ -402,8 +408,8 @@ plugin.insertImage(imageTags.join(\' \'));
 				}
 				$lockPlainWidth = 'false';
 				$lockPlainHeight = 'false';
-				if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
-					$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
+				if (is_array($this->RTEProperties['default.']['proc.']) && $this->RTEProperties['default.']['proc.']['plainImageMode']) {
+					$plainImageMode = $this->RTEProperties['default.']['proc.']['plainImageMode'];
 					$lockPlainWidth = $plainImageMode == 'lockDimensions' ? 'true' : 'false';
 					$lockPlainHeight = $lockPlainWidth || $plainImageMode == 'lockRatio' || $plainImageMode == 'lockRatioWhenSmaller' ? 'true' : 'false';
 				}
@@ -615,19 +621,6 @@ plugin.insertImage(imageTags.join(\' \'));
 	}
 
 	/**
-	 * Initializes the configuration variables
-	 *
-	 * @return void
-	 */
-	public function initConfiguration() {
-		$this->thisConfig = $this->getRTEConfig();
-		$this->buttonConfig = $this->getButtonConfig();
-		$this->imgPath = $this->getImgPath();
-		$this->defaultClass = $this->getDefaultClass();
-		$this->setMaximumPlainImageDimensions();
-	}
-
-	/**
 	 * Get the path of the image to be inserted or modified
 	 *
 	 * @return string path to the image
@@ -643,7 +636,9 @@ plugin.insertImage(imageTags.join(\' \'));
 	 * @return array the configuration array of the image button
 	 */
 	protected function getButtonConfig() {
-		return is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['image.']) ? $this->thisConfig['buttons.']['image.'] : array();
+		return isset($this->RTEProperties['default.']['buttons.']['image.'])
+			? $this->RTEProperties['default.']['buttons.']['image.']
+			: array();
 	}
 
 	/**
@@ -669,6 +664,11 @@ plugin.insertImage(imageTags.join(\' \'));
 		// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], TRUE));
+		}
+
+		reset($allowedItems);
+		if (!in_array($this->act, $allowedItems)) {
+			$this->act = current($allowedItems);
 		}
 		return $allowedItems;
 	}

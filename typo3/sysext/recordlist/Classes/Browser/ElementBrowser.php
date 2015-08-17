@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Recordlist\Browser;
 
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
@@ -72,11 +74,11 @@ class ElementBrowser {
 	public $thisScript;
 
 	/**
-	 * RTE specific TSconfig
+	 * RTE configuration
 	 *
-	 * @var array[]
+	 * @var array
 	 */
-	public $thisConfig;
+	protected $RTEProperties = array();
 
 	/**
 	 * Target (RTE specific)
@@ -262,6 +264,11 @@ class ElementBrowser {
 	protected $iconFactory;
 
 	/**
+	 * @var string
+	 */
+	protected $hookName = 'typo3/class.browse_links.php';
+
+	/**
 	* Construct
 	*/
 	public function __construct() {
@@ -276,9 +283,9 @@ class ElementBrowser {
 	 */
 	protected function determineScriptUrl() {
 		if ($routePath = GeneralUtility::_GP('route')) {
-			$router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
+			$router = GeneralUtility::makeInstance(Router::class);
 			$route = $router->match($routePath);
-			$uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+			$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 			$this->thisScript = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
 		} elseif ($moduleName = GeneralUtility::_GP('M')) {
 			$this->thisScript = BackendUtility::getModuleUrl($moduleName);
@@ -306,12 +313,10 @@ class ElementBrowser {
 	 */
 	public function init() {
 		$this->initVariables();
-
-		$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
-		$this->initConfiguration();
 		$this->initDocumentTemplate();
-		// init hook objects:
-		$this->initHookObjects('typo3/class.browse_links.php');
+
+		// Initializing hooking browsers
+		$this->initHookObjects();
 
 		$this->initCurrentUrl();
 
@@ -321,17 +326,7 @@ class ElementBrowser {
 			$this->act = $this->curUrlInfo['act'];
 		}
 
-		// Initializing the target value (RTE)
-		$this->setTarget = $this->curUrlArray['target'] != '-' ? $this->curUrlArray['target'] : '';
-		if ($this->thisConfig['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
-			$this->setTarget = $this->thisConfig['defaultLinkTarget'];
-		}
-		// Initializing the class value (RTE)
-		$this->setClass = $this->curUrlArray['class'] != '-' ? $this->curUrlArray['class'] : '';
-		// Initializing the title value (RTE)
-		$this->setTitle = $this->curUrlArray['title'] != '-' ? $this->curUrlArray['title'] : '';
-		// Initializing the params value
-		$this->setParams = $this->curUrlArray['params'] != '-' ? $this->curUrlArray['params'] : '';
+		$this->initLinkAttributes();
 
 		// Finally, add the accumulated JavaScript to the template object:
 		// also unset the default jumpToUrl() function before
@@ -352,13 +347,14 @@ class ElementBrowser {
 		$this->expandPage = GeneralUtility::_GP('expandPage');
 		$this->expandFolder = GeneralUtility::_GP('expandFolder');
 		$this->PM = GeneralUtility::_GP('PM');
+		$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
 
 		// Site URL
 		// Current site url
 		$this->siteURL = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$this->determineScriptUrl();
 
-		// Find "mode"
+		// Default mode is RTE
 		$this->mode = GeneralUtility::_GP('mode');
 		if (!$this->mode) {
 			$this->mode = 'rte';
@@ -367,17 +363,10 @@ class ElementBrowser {
 		// Init fileProcessor
 		$this->fileProcessor = GeneralUtility::makeInstance(BasicFileUtility::class);
 		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-	}
 
-	/**
-	 * Initializes the configuration variables
-	 *
-	 * @return void
-	 */
-	public function initConfiguration() {
 		// Rich Text Editor specific configuration:
-		if ((string)$this->mode === 'rte') {
-			$this->thisConfig = $this->getRTEConfig();
+		if ($this->mode === 'rte') {
+			$this->RTEProperties = $this->getRTEConfig();
 		}
 	}
 
@@ -390,6 +379,8 @@ class ElementBrowser {
 		// Creating backend template object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
 		$this->doc->bodyTagId = 'typo3-browse-links-php';
+		$this->doc->getContextMenuCode();
+
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadJquery();
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
@@ -399,13 +390,12 @@ class ElementBrowser {
 	/**
 	 * Initialize hook objects implementing the interface
 	 *
-	 * @param string $hookKey the hook key
 	 * @throws \UnexpectedValueException
 	 * @return void
 	 */
-	protected function initHookObjects($hookKey) {
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookKey]['browseLinksHook'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$hookKey]['browseLinksHook'] as $classData) {
+	protected function initHookObjects() {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['browseLinksHook'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['browseLinksHook'] as $classData) {
 				$processObject = GeneralUtility::getUserObj($classData);
 				if (!$processObject instanceof ElementBrowserHookInterface) {
 					throw new \UnexpectedValueException('$processObject must implement interface ' . ElementBrowserHookInterface::class, 1195039394);
@@ -444,8 +434,8 @@ class ElementBrowser {
 				? array_merge($initialCurUrlArray, GeneralUtility::_GP('curUrl'))
 				: $initialCurUrlArray;
 			// Additional fields for page links
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'])
-				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'])
+			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendUrlArray'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendUrlArray'])
 			) {
 				$conf = array();
 				$_params = array(
@@ -459,7 +449,7 @@ class ElementBrowser {
 						$currentLinkParts['additionalParams']
 					]
 				);
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendUrlArray'] as $objRef) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendUrlArray'] as $objRef) {
 					$processor =& GeneralUtility::getUserObj($objRef);
 					$processor->extendUrlArray($_params, $this);
 				}
@@ -491,9 +481,30 @@ class ElementBrowser {
 			$this->curUrlArray = GeneralUtility::_GP('curUrl');
 			if ($this->curUrlArray['all']) {
 				$this->curUrlArray = GeneralUtility::get_tag_attributes($this->curUrlArray['all']);
+				$this->curUrlArray['href'] = htmlspecialchars_decode($this->curUrlArray['href']);
 			}
+			// Note: parseCurUrl will invoke the hooks
 			$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'], $this->siteURL);
+			if (isset($this->curUrlArray['data-htmlarea-external']) && $this->curUrlArray['data-htmlarea-external'] === '1' && $this->curUrlInfo['act'] !== 'mail') {
+				$this->curUrlInfo['act'] = 'url';
+				$this->curUrlInfo['info'] = $this->curUrlArray['href'];
+			}
 		}
+	}
+
+	/**
+	 * Initialize the current or default values of the link attributes (RTE)
+	 *
+	 * @return void
+	 */
+	protected function initLinkAttributes() {
+		$this->setTarget = $this->curUrlArray['target'] != '-' ? $this->curUrlArray['target'] : '';
+		if ($this->RTEProperties['default.']['defaultLinkTarget'] && !isset($this->curUrlArray['target'])) {
+			$this->setTarget = $this->RTEProperties['default.']['defaultLinkTarget'];
+		}
+		$this->setClass = $this->curUrlArray['class'] != '-' ? $this->curUrlArray['class'] : '';
+		$this->setTitle = $this->curUrlArray['title'] != '-' ? $this->curUrlArray['title'] : '';
+		$this->setParams = $this->curUrlArray['params'] != '-' ? $this->curUrlArray['params'] : '';
 	}
 
 	/**
@@ -504,7 +515,8 @@ class ElementBrowser {
 	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $this->getBackendUser()->getTSConfig('RTE', BackendUtility::getPagesTSconfig($RTEtsConfigParts[5]));
-		return BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+		$RTEsetup['properties']['default.'] = BackendUtility::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
+		return $RTEsetup['properties'];
 	}
 
 	/**
@@ -513,11 +525,6 @@ class ElementBrowser {
 	 * @return string the generated JS code
 	 */
 	public function getJsCode() {
-		// Rich Text Editor specific configuration:
-		$addPassOnParams = '';
-		if ((string)$this->mode == 'rte') {
-			$addPassOnParams .= '&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams);
-		}
 		// BEGIN accumulation of header JavaScript:
 		$JScode = '
 			// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
@@ -533,34 +540,40 @@ class ElementBrowser {
 			var cur_title=' . GeneralUtility::quoteJSvalue($this->setTitle ?: '') . ';
 			var cur_params=' . GeneralUtility::quoteJSvalue($this->setParams ?: '') . ';
 
-			function browse_links_setTarget(target) {	//
+			function browse_links_setTarget(target) {
 				cur_target=target;
-				add_target="&curUrl[target]="+escape(target);
+				add_target="&curUrl[target]="+encodeURIComponent(target);
 			}
-			function browse_links_setClass(cssClass) {   //
+			function browse_links_setClass(cssClass) {
 				cur_class = cssClass;
-				add_class = "&curUrl[class]=" + escape(cssClass);
+				add_class = "&curUrl[class]="+encodeURIComponent(cssClass);
 			}
-			function browse_links_setTitle(title) {	//
+			function browse_links_setTitle(title) {
 				cur_title=title;
-				add_title="&curUrl[title]="+escape(title);
+				add_title="&curUrl[title]="+encodeURIComponent(title);
 			}
-			function browse_links_setValue(value) {	//
+			function browse_links_setValue(value) {
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
-			function browse_links_setParams(params) {	//
+			function browse_links_setParams(params) {
 				cur_params=params;
-				add_params="&curUrl[params]="+escape(params);
+				add_params="&curUrl[params]="+encodeURIComponent(params);
 			}
 		' . $this->doc->redirectUrls();
+
 		// Functions used, if the link selector is in wizard mode (= TCEforms fields)
+		$addPassOnParams = '';
+		if ($this->mode === 'rte') {
+			// Rich Text Editor specific configuration
+			$addPassOnParams .= '&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams);
+		}
+		$update = '';
 		if ($this->mode === 'wizard') {
 			if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(TRUE)) {
 				$this->P['fieldChangeFunc'] = array();
 			}
 			unset($this->P['fieldChangeFunc']['alert']);
-			$update = '';
 			foreach ($this->P['fieldChangeFunc'] as $v) {
 				$update .= '
 				window.opener.' . $v;
@@ -654,26 +667,6 @@ class ElementBrowser {
 					}
 				}
 			';
-		} else {
-			// Functions used, if the link selector is in RTE mode:
-			$JScode .= '
-				function link_typo3Page(id,anchor) {	//
-					var theLink = \'' . $this->siteURL . '?id=\'+id+(anchor?anchor:"");
-					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
-					return false;
-				}
-				function link_folder(folder) {	//
-					var theLink = \'' . $this->siteURL . '\'+folder;
-					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
-					return false;
-				}
-				function link_current() {	//
-					if (cur_href!="http://" && cur_href!="mailto:") {
-						self.parent.parent.renderPopup_addLink(cur_href, cur_target, cur_class, cur_title);
-					}
-					return false;
-				}
-			';
 		}
 		// General "jumpToUrl" function:
 		$JScode .= '
@@ -683,18 +676,38 @@ class ElementBrowser {
 				}
 				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $this->act . '" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode=' . $this->mode . '" : "";
-				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params'
+				window.location.href = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params'
 					. ($addPassOnParams ? '+' . GeneralUtility::quoteJSvalue($addPassOnParams) : '')
-					. '+(typeof(anchor)=="string"?anchor:"");
-				window.location.href = theLocation;
+					. '+(typeof(anchor) === "string" ? anchor : "");
 				return false;
 			}
 		';
-		/**
-		 * Splits parts of $this->bparams
-		 *
-		 * @see $bparams
-		 */
+
+		$JScode .= $this->getBParamJSCode();
+
+		// extends JavaScript code
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendJScode'])
+			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendJScode'])
+		) {
+			$_params = array(
+				'conf' => [],
+				'wizardUpdate' => $update,
+				'addPassOnParams' => $addPassOnParams
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendJScode'] as $objRef) {
+				$processor =& GeneralUtility::getUserObj($objRef);
+				$JScode .= $processor->extendJScode($_params, $this);
+			}
+		}
+		return $JScode;
+	}
+
+	/**
+	 * Splits parts of $this->bparams and returns needed JS
+	 *
+	 * @return string JavaScript code
+	 */
+	protected function getBParamJSCode() {
 		$pArr = explode('|', $this->bparams);
 		// This is JavaScript especially for the TBE Element Browser!
 		$formFieldName = 'data[' . $pArr[0] . '][' . $pArr[1] . '][' . $pArr[2] . ']';
@@ -745,7 +758,7 @@ class ElementBrowser {
 						// Call helper function to manage data in the opener window:
 					if (parent.window.opener) {
 						parent.window.opener.' . $pArr[7] . 'Multiple("' . addslashes($pArr[4]) . '",table,uid,type,"'
-						. addslashes($pArr[0]) . '");
+				. addslashes($pArr[0]) . '");
 					} else {
 						alert("Error - reference to main window is not set properly!");
 						parent.close();
@@ -759,28 +772,20 @@ class ElementBrowser {
 			$JScodeAction = '
 					if (setReferences()) {
 						parent.window.opener.group_change("add","' . $pArr[0] . '","' . $pArr[1] . '","' . $pArr[2]
-							. '",elRef,targetDoc);
+				. '",elRef,targetDoc);
 					} else {
 						alert("Error - reference to main window is not set properly!");
 					}
 					focusOpenerAndClose(close);
 			';
 		}
-		$JScode .= '
+		return '
 			var elRef="";
 			var targetDoc="";
 
-			function launchView(url) {	//
-				var thePreviewWindow="";
-				thePreviewWindow = window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('show_item') . '&table=') . '+url,"ShowItem",'
-				. '"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
-				if (thePreviewWindow && thePreviewWindow.focus) {
-					thePreviewWindow.focus();
-				}
-			}
 			function setReferences() {	//
 				if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform'
-					. '&& parent.window.opener.content.document.editform["' . $formFieldName . '"]) {
+			. '&& parent.window.opener.content.document.editform["' . $formFieldName . '"]) {
 					targetDoc = parent.window.opener.content.document;
 					elRef = targetDoc.editform["' . $formFieldName . '"];
 					return true;
@@ -816,23 +821,6 @@ class ElementBrowser {
 				BrowseLinks.focusOpenerAndClose(close);
 			}
 		';
-		// extends JavaScript code
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode'])
-			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode'])
-		) {
-			$conf = array();
-			$update = '';
-			$_params = array(
-				'conf' => &$conf,
-				'wizardUpdate' => $update,
-				'addPassOnParams' => $addPassOnParams
-			);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['extendJScode'] as $objRef) {
-				$processor =& GeneralUtility::getUserObj($objRef);
-				$JScode .= $processor->extendJScode($_params, $this);
-			}
-		}
-		return $JScode;
 	}
 
 	/**
@@ -863,6 +851,8 @@ class ElementBrowser {
 					$this->expandFolder = $data['expandFolder'];
 				}
 				break;
+			default:
+				// intentionally empty
 		}
 		return array($data, $store);
 	}
@@ -892,18 +882,7 @@ class ElementBrowser {
 		// Add the FlashMessages if any
 		$content .= $this->doc->getFlashMessages();
 
-		$allowedItems = $this->getAllowedItems('page,file,folder,url,mail');
-
-		// Removing link fields if configured
-		$blindLinkFields = isset($this->thisConfig['blindLinkFields'])
-			? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkFields'], TRUE)
-			: array();
-		$pBlindLinkFields = isset($this->P['params']['blindLinkFields'])
-			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE)
-			: array();
-		$allowedFields = array_diff(array('target', 'title', 'class', 'params'), $blindLinkFields, $pBlindLinkFields);
-
-		$content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $allowedItems));
+		$content .= $this->doc->getTabMenuRaw($this->buildMenuArray($wiz, $this->getAllowedItems('page,file,folder,url,mail')));
 		// Adding the menu and header to the top of page:
 		$content .= $this->printCurrentUrl($this->curUrlInfo['info']) . '<br />';
 		// Depending on the current action we will create the actual module content for selecting a link:
@@ -928,6 +907,16 @@ class ElementBrowser {
 				}
 		}
 		$lang = $this->getLanguageService();
+
+		// Removing link fields if configured
+		$blindLinkFields = isset($this->RTEProperties['default.']['blindLinkFields'])
+			? GeneralUtility::trimExplode(',', $this->RTEProperties['default.']['blindLinkFields'], TRUE)
+			: array();
+		$pBlindLinkFields = isset($this->P['params']['blindLinkFields'])
+			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkFields'], TRUE)
+			: array();
+		$allowedFields = array_diff(array('target', 'title', 'class', 'params'), $blindLinkFields, $pBlindLinkFields);
+
 		if (in_array('params', $allowedFields, TRUE) && $this->act !== 'url') {
 			$content .= '
 				<!--
@@ -980,20 +969,20 @@ class ElementBrowser {
 			';
 		}
 		// additional fields for page links
-		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink'])
-			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink'])
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['addFields_PageLink'])
+			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['addFields_PageLink'])
 		) {
 			$conf = array();
 			$_params = array(
 				'conf' => &$conf
 			);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/class.browse_links.php']['addFields_PageLink'] as $objRef) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['addFields_PageLink'] as $objRef) {
 				$processor =& GeneralUtility::getUserObj($objRef);
 				$content .= $processor->addFields($_params, $this);
 			}
 		}
 		// Target:
-		if ($this->act != 'mail' && in_array('target', $allowedFields, TRUE)) {
+		if ($this->act !== 'mail' && in_array('target', $allowedFields, TRUE)) {
 			$ltarget = '
 
 			<!--
@@ -1016,7 +1005,7 @@ class ElementBrowser {
 							</td>
 							<td>';
 			if (($this->curUrlInfo['act'] == 'page' || $this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder')
-				&& $this->curUrlArray['href'] && $this->curUrlInfo['act'] == $this->act
+				&& $this->curUrlArray['href'] && $this->curUrlInfo['act'] === $this->act
 			) {
 				$ltarget .= '
 							<input class="btn btn-default" type="submit" value="' . $lang->getLL('update', TRUE)
@@ -1082,18 +1071,24 @@ class ElementBrowser {
 	 * @return array the allowed items
 	 */
 	public function getAllowedItems($items) {
+		$allowedItems = explode(',', $items);
+		// Call hook for extra options
+		foreach ($this->hookObjects as $hookObject) {
+			$allowedItems = $hookObject->addAllowedItems($allowedItems);
+		}
+
 		// Initializing the action value, possibly removing blinded values etc:
-		$blindLinkOptions = isset($this->thisConfig['blindLinkOptions'])
-			? GeneralUtility::trimExplode(',', $this->thisConfig['blindLinkOptions'], TRUE)
+		$blindLinkOptions = isset($this->RTEProperties['default.']['blindLinkOptions'])
+			? GeneralUtility::trimExplode(',', $this->RTEProperties['default.']['blindLinkOptions'], TRUE)
 			: array();
 		$pBlindLinkOptions = isset($this->P['params']['blindLinkOptions'])
 			? GeneralUtility::trimExplode(',', $this->P['params']['blindLinkOptions'])
 			: array();
-		$allowedItems = array_diff(explode(',', $items), $blindLinkOptions, $pBlindLinkOptions);
+		$allowedItems = array_diff($allowedItems, $blindLinkOptions, $pBlindLinkOptions);
 
-		// Call hook for extra options
-		foreach ($this->hookObjects as $hookObject) {
-			$allowedItems = $hookObject->addAllowedItems($allowedItems);
+		reset($allowedItems);
+		if (!in_array($this->act, $allowedItems)) {
+			$this->act = current($allowedItems);
 		}
 		return $allowedItems;
 	}
@@ -1108,43 +1103,42 @@ class ElementBrowser {
 	protected function buildMenuArray($wiz, $allowedItems) {
 		$lang = $this->getLanguageService();
 
-		// Making menu in top:
 		$menuDef = array();
-		if (!$wiz) {
+		if (!$wiz && $this->curUrlArray['href']) {
 			$menuDef['removeLink']['isActive'] = $this->act === 'removeLink';
 			$menuDef['removeLink']['label'] = $lang->getLL('removeLink', TRUE);
 			$menuDef['removeLink']['url'] = '#';
-			$menuDef['removeLink']['addParams'] = 'onclick="self.parent.parent.renderPopup_unLink();return false;"';
+			$menuDef['removeLink']['addParams'] = 'onclick="plugin.unLink();return false;"';
 		}
 		if (in_array('page', $allowedItems, TRUE)) {
 			$menuDef['page']['isActive'] = $this->act === 'page';
 			$menuDef['page']['label'] = $lang->getLL('page', TRUE);
 			$menuDef['page']['url'] = '#';
-			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=page') . ');return false;"';
+			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=page&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('file', $allowedItems, TRUE)) {
 			$menuDef['file']['isActive'] = $this->act === 'file';
 			$menuDef['file']['label'] = $lang->getLL('file', TRUE);
 			$menuDef['file']['url'] = '#';
-			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=file') . ');return false;"';
+			$menuDef['file']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=file&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('folder', $allowedItems, TRUE)) {
 			$menuDef['folder']['isActive'] = $this->act === 'folder';
 			$menuDef['folder']['label'] = $lang->getLL('folder', TRUE);
 			$menuDef['folder']['url'] = '#';
-			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=folder') . ');return false;"';
+			$menuDef['folder']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=folder&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('url', $allowedItems, TRUE)) {
 			$menuDef['url']['isActive'] = $this->act === 'url';
 			$menuDef['url']['label'] = $lang->getLL('extUrl', TRUE);
 			$menuDef['url']['url'] = '#';
-			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=url') . ');return false;"';
+			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=url&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		if (in_array('mail', $allowedItems, TRUE)) {
 			$menuDef['mail']['isActive'] = $this->act === 'mail';
 			$menuDef['mail']['label'] = $lang->getLL('email', TRUE);
 			$menuDef['mail']['url'] = '#';
-			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=mail') . ');return false;"';
+			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(' . GeneralUtility::quoteJSvalue('?act=mail&mode=' . $this->mode . '&bparams=' . $this->bparams) . ');return false;"';
 		}
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
@@ -1490,10 +1484,10 @@ class ElementBrowser {
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
 		$folderTree->thisScript = $this->thisScript;
-		$folderTree->ext_noTempRecyclerDirs = $this->mode == 'filedrag';
+		$folderTree->ext_noTempRecyclerDirs = $this->mode === 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
 		if ($this->selectedFolder) {
-			if ($this->mode == 'filedrag') {
+			if ($this->mode === 'filedrag') {
 				$files = $this->TBE_dragNDrop($this->selectedFolder, $pArr[3]);
 			} else {
 				$files = $this->TBE_expandFolder($this->selectedFolder, $pArr[3], $noThumbs);
@@ -1565,7 +1559,7 @@ class ElementBrowser {
 		$tree = $folderTree->getBrowsableTree();
 		$folders = '';
 		if ($this->selectedFolder) {
-			if ($this->mode == 'filedrag') {
+			if ($this->mode === 'filedrag') {
 				$folders = $this->TBE_dragNDrop($this->selectedFolder, $parameters[3]);
 			} else {
 				$folders = $this->TBE_expandSubFolders($this->selectedFolder);
@@ -1985,7 +1979,6 @@ class ElementBrowser {
 				'uid' => $fileObject->getCombinedIdentifier(),
 				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 			));
-			$ATag2 = '<a href="' . htmlspecialchars($Ahref) . '">';
 			$ATag2_e = '</a>';
 			// Combine the stuff:
 			$filenameAndIcon = $bulkCheckBox . $ATag_alt . $icon
@@ -2288,8 +2281,8 @@ class ElementBrowser {
 	 * @return array[] Array with URL information stored in assoc. keys: value, act (page, file, mail), pageid, cElement, info
 	 */
 	public function parseCurUrl($href, $siteUrl) {
-		$href = trim($href);
 		$lang = $this->getLanguageService();
+		$href = trim($href);
 		if ($href) {
 			$info = array();
 			// Default is "url":
