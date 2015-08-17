@@ -23,7 +23,7 @@
   "homepage": "https://typo3.org/",
   "private": true,
   "devDependencies": {
-    "fontawesome": "4.3.0",
+    "fontawesome": "4.4.0",
     "bootstrap": "3.3.5"
   },
   "dependencies": {
