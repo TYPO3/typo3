@@ -87,7 +87,6 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 	public function moduleDispatcherIsCalled() {
 		$GLOBALS['TBE_MODULES'] = array(
 			'_PATHS' => array(
-				'_dispatcher' => array(),
 				'module_fixture' => __DIR__ . '/../Fixtures/ModuleFixture/'
 			)
 		);

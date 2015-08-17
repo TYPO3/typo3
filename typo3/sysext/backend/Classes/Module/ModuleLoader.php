@@ -112,6 +112,7 @@ class ModuleLoader {
 		$this->absPathArray = $modulesArray['_PATHS'];
 		unset($modulesArray['_PATHS']);
 		// Unset the array for calling external backend module dispatchers in typo3/index.php
+		// (unused in Core, but in case some extension still sets this, we unset that)
 		unset($modulesArray['_dispatcher']);
 		// Unset the array for calling backend modules based on external backend module dispatchers in typo3/index.php
 		unset($modulesArray['_configuration']);

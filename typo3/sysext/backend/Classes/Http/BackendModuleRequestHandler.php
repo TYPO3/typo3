@@ -14,18 +14,21 @@ namespace TYPO3\CMS\Backend\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Handles the request for backend modules and wizards
+ * Juggles with $GLOBALS['TBE_MODULES']
  */
 class BackendModuleRequestHandler implements RequestHandlerInterface {
 
@@ -83,17 +86,20 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 
 		$moduleName = (string)$this->request->getQueryParams()['M'];
 		if ($this->isDispatchedModule($moduleName)) {
-			$isDispatched = $this->dispatchModule($moduleName);
+			return $this->dispatchModule($moduleName);
 		} else {
 			$isDispatched = $this->callTraditionalModule($moduleName);
+			if (!$isDispatched) {
+				throw new Exception('No module "' . $moduleName . '" could be found.', 1294585070);
+			}
 		}
-		if ($isDispatched === FALSE) {
-			throw new Exception('No module "' . $moduleName . '" could be found.', 1294585070);
-		}
+		return NULL;
 	}
 
 	/**
 	 * Execute TYPO3 bootstrap
+	 *
+	 * @return void
 	 */
 	protected function boot() {
 		// Evaluate the constant for skipping the BE user check for the bootstrap, will be done without the constant at a later point
@@ -134,14 +140,13 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	 * @return bool
 	 */
 	protected function isValidModuleRequest() {
-		return
-			$this->getFormProtection() instanceof BackendFormProtection
-		&& $this->getFormProtection()->validateToken((string)$this->request->getQueryParams()['moduleToken'], 'moduleCall', (string)$this->request->getQueryParams()['M']);
+		return $this->getFormProtection() instanceof BackendFormProtection
+			&& $this->getFormProtection()->validateToken((string)$this->request->getQueryParams()['moduleToken'], 'moduleCall', (string)$this->request->getQueryParams()['M']);
 	}
 
 	/**
-	 * A dispatched module, currently only Extbase modules are dispatched,
-	 * traditional modules have a module path set.
+	 * A dispatched module is used, when no PATH is given.
+	 * Traditional modules have a module path set.
 	 *
 	 * @param string $moduleName
 	 * @return bool
@@ -151,23 +156,43 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * Executes the module dispatcher which calls the module appropriately.
-	 * Currently only used by Extbase
+	 * Executes the modules configured via Extbase
 	 *
 	 * @param string $moduleName
-	 * @return bool
+	 * @return Response A PSR-7 response object
+	 * @throws \RuntimeException
 	 */
 	protected function dispatchModule($moduleName) {
-		if (is_array($this->moduleRegistry['_dispatcher'])) {
-			foreach ($this->moduleRegistry['_dispatcher'] as $dispatcherClassName) {
-				$dispatcher = GeneralUtility::makeInstance(ObjectManager::class)->get($dispatcherClassName);
-				if ($dispatcher->callModule($moduleName) === TRUE) {
-					return TRUE;
-					break;
-				}
+		$moduleConfiguration = $this->getModuleConfiguration($moduleName);
+
+		// Check permissions and exit if the user has no permission for entry
+		$this->backendUserAuthentication->modAccess($moduleConfiguration, TRUE);
+		$id = isset($this->request->getQueryParams()['id']) ? $this->request->getQueryParams()['id'] : $this->request->getParsedBody()['id'];
+		if ($id && MathUtility::canBeInterpretedAsInteger($id)) {
+			// Check page access
+			$permClause = $this->backendUserAuthentication->getPagePermsClause(TRUE);
+			$access = is_array(BackendUtility::readPageAccess((int)$id, $permClause));
+			if (!$access) {
+				throw new \RuntimeException('You don\'t have access to this page', 1289917924);
 			}
 		}
-		return FALSE;
+
+		$configuration = array(
+			'extensionName' => $moduleConfiguration['extensionName'],
+			'pluginName' => $moduleName
+		);
+		if (isset($moduleConfiguration['vendorName'])) {
+			$configuration['vendorName'] = $moduleConfiguration['vendorName'];
+		}
+
+		// Run Extbase
+		$bootstrap = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+		$content = $bootstrap->run('', $configuration);
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($content);
+		return $response;
 	}
 
 	/**
@@ -175,11 +200,19 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	 * and were previously located within the global scope.
 	 *
 	 * @param string $moduleName
-	 * @return bool
+	 * @return bool Returns TRUE if the module was executed
 	 */
 	protected function callTraditionalModule($moduleName) {
 		$moduleBasePath = $this->moduleRegistry['_PATHS'][$moduleName];
-		$GLOBALS['MCONF'] = $moduleConfiguration = $this->getModuleConfiguration($moduleName);
+		// Some modules still rely on this global configuration array in a conf.php file
+		// load configuration from an existing conf.php file inside the same directory
+		if (file_exists($moduleBasePath . 'conf.php')) {
+			require $moduleBasePath . 'conf.php';
+			$moduleConfiguration = $MCONF;
+		} else {
+			$moduleConfiguration = $this->getModuleConfiguration($moduleName);
+		}
+		$GLOBALS['MCONF'] = $moduleConfiguration;
 		if (!empty($moduleConfiguration['access'])) {
 			$this->backendUserAuthentication->modAccess($moduleConfiguration, TRUE);
 		}
@@ -192,22 +225,17 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * Returns the module configuration which is either provided in a conf.php file
-	 * or during module registration
+	 * Returns the module configuration which is provided during module registration
 	 *
 	 * @param string $moduleName
 	 * @return array
+	 * @throws \RuntimeException
 	 */
 	protected function getModuleConfiguration($moduleName) {
-		$moduleBasePath = $this->moduleRegistry['_PATHS'][$moduleName];
-		if (file_exists($moduleBasePath . 'conf.php')) {
-			// Some modules still rely on this global configuration array in a conf.php file
-			require $moduleBasePath . 'conf.php';
-			$moduleConfiguration = $MCONF;
-		} else {
-			$moduleConfiguration = $this->moduleRegistry['_configuration'][$moduleName];
+		if (!isset($this->moduleRegistry['_configuration'][$moduleName])) {
+			throw new \RuntimeException('Module ' . $moduleName . ' is not configured.', 1289918325);
 		}
-		return $moduleConfiguration;
+		return $this->moduleRegistry['_configuration'][$moduleName];
 	}
 
 
