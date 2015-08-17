@@ -29,22 +29,25 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
-	 * The mode determines the main kind of output from the element browser.
-	 * There are these options for values: rte, db, file, filedrag, wizard.
-	 * "rte" will show the link selector for the Rich Text Editor (see main_rte())
-	 * "db" will allow you to browse for pages or records in the page tree (for TCEforms, see main_db())
-	 * "file"/"filedrag" will allow you to browse for files or folders in the folder mounts (for TCEforms, main_file())
-	 * "wizard" will allow you to browse for links (like "rte") which are passed back to TCEforms (see main_rte(1))
+	 * The mode determines the main kind of output of the element browser.
+	 * There are these options for values:
+	 *  - "rte" will show the link selector for the Rich Text Editor (see main_rte())
+	 *  - "wizard" will allow you to browse for links (like "rte") which are passed back to FormEngine (see main_rte(TRUE))
+	 *  - "db" will allow you to browse for pages or records in the page tree for FormEngine select fields (see main_db())
+	 *  - "file"/"filedrag" will allow you to browse for files in the folder mounts for FormEngine file selections (main_file())
+	 *  - "folder" will allow you to browse for folders in the folder mounts for FormEngine folder selecitons (see main_folder())
 	 *
-	 * @see main()
 	 * @var string
 	 */
 	public $mode;
 
 	/**
-	 * Holds Instance of main browse_links class
-	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE']
-	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
+	 * Holds an instance of ElementBrowser class or a subclass
+	 *
+	 * This is needed fo intercommunication between tree classes that
+	 * need access to variables via $GLOBALS['SOBE'].
+	 * Not the most nice solution but introduced since we don't have
+	 * another general way to return class-instances or registry for now
 	 *
 	 * @var ElementBrowser
 	 */

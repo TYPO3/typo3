@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\RecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Displays the page/file tree for browsing database records or files.
@@ -67,7 +68,9 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @return string
 	 */
 	public function ext_addP() {
-		$str = '&act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $GLOBALS['SOBE']->browser->expandPage . '&bparams=' . rawurlencode($GLOBALS['SOBE']->browser->bparams);
+		/** @var ElementBrowser $elementBrowser */
+		$elementBrowser = $GLOBALS['SOBE']->browser;
+		$str = '&act=' . $elementBrowser->act . '&mode=' . $elementBrowser->mode . '&expandPage=' . $elementBrowser->expandPage . '&bparams=' . rawurlencode($elementBrowser->bparams);
 		return $str;
 	}
 

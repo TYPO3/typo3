@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Generate a folder tree,
@@ -117,13 +118,15 @@ class FolderTreeView extends AbstractTreeView {
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 
 		if (empty($this->scope)) {
+			/** @var ElementBrowser $elementBrowser */
+			$elementBrowser = $GLOBALS['SOBE']->browser;
 			$this->scope = array(
 				'class' => get_class($this),
 				'script' => $this->thisScript,
 				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
 				'browser' => array(
-					'mode' => $GLOBALS['SOBE']->browser->mode,
-					'act' => $GLOBALS['SOBE']->browser->act,
+					'mode' => $elementBrowser->mode,
+					'act' => $elementBrowser->act,
 				),
 			);
 		}

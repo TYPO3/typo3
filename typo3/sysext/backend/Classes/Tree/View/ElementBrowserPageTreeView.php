@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Class which generates the page tree
@@ -94,12 +95,14 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 				$classAttr .= ' list-tree-control-open';
 			}
 
+			/** @var ElementBrowser $elementBrowser */
+			$elementBrowser = $GLOBALS['SOBE']->browser;
 			$selected = '';
-			if ($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
+			if ($elementBrowser->curUrlInfo['act'] == 'page' && $elementBrowser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $elementBrowser->curUrlInfo['pageid']) {
 				$selected = ' bg-success';
 				$classAttr .= ' active';
 			}
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $elementBrowser->act . '&mode=' . $elementBrowser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
 			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="list-tree-show" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
 			$out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
