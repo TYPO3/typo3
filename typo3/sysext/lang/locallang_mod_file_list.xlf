@@ -33,6 +33,9 @@
 			<trans-unit id="c_file">
 				<source>File Name</source>
 			</trans-unit>
+			<trans-unit id="c_filepath">
+				<source>File Path</source>
+			</trans-unit>
 			<trans-unit id="c_size">
 				<source>Size</source>
 			</trans-unit>

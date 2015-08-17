@@ -1,0 +1,87 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/**
+ * JavaScript RequireJS module called "TYPO3/CMS/Filelist/FileList"
+ *
+ */
+define('TYPO3/CMS/Filelist/FileList', ['jquery'], function($) {
+
+	$('a.filelist-file-title').click(function(event) {
+		event.preventDefault();
+
+		var url = $(this).attr('data-url');
+		window.location.href=url;
+	});
+
+	$('a.btn.filelist-file-edit').click(function(event) {
+		event.preventDefault();
+
+		var url = $(this).attr('data-url');
+		top.content.list_frame.location.href=url;
+	});
+
+	$('a.btn.filelist-file-view').click(function(event) {
+		event.preventDefault();
+
+		var url = $(this).attr('data-url');
+		top.openUrlInWindow(url, 'WebFile')
+	});
+
+	$('a.btn.filelist-file-replace').click(function(event) {
+		event.preventDefault();
+
+		var url = $(this).attr('data-url');
+		top.content.list_frame.location.href=url;
+	});
+
+	$('a.btn.filelist-file-rename').click(function(event) {
+		event.preventDefault();
+
+		var url = $(this).attr('data-url');
+		top.content.list_frame.location.href=url;
+	});
+
+	$('a.btn.filelist-file-info').click(function(event) {
+		event.preventDefault();
+
+		var identifier = $(this).attr('data-identifier');
+		openFileInfoPopup(identifier);
+	});
+
+	$('a.btn.filelist-file-delete').click(function(event) {
+		event.preventDefault();
+
+		var url = $(this).attr('data-url');
+		var confirmationDialogue = $(this).attr('data-confirmation-dialogue');
+
+		if (confirmationDialogue) {
+			top.content.list_frame.location.href=url;
+		}
+	});
+
+	$('a.filelist-file-references').click(function(event) {
+		event.preventDefault();
+
+		var identifier = $(this).attr('data-identifier');
+		openFileInfoPopup(identifier);
+	});
+
+	/**
+	 * @param identifier
+	 */
+	function openFileInfoPopup(identifier) {
+		top.launchView('_FILE', identifier);
+	}
+
+});

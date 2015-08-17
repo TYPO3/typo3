@@ -1,5 +1,4 @@
 <?php
-
 namespace TYPO3\CMS\Core\Resource\Index;
 
 /*
@@ -183,6 +182,44 @@ class FileIndexRepository implements SingletonInterface {
 		);
 		return $resultRows;
 	}
+
+	/**
+	 * Find all records for files in an array of Folders
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\Folder[] $folders
+	 * @param bool $includeMissing
+	 * @return array|NULL
+	 */
+	public function findByFolders(array $folders, $includeMissing = TRUE) {
+		$storageUids = [];
+		$folderIdentifiers = [];
+
+		foreach ($folders as $folder) {
+			if (!$folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+				continue;
+			}
+
+			$storageUids[] = (int)$folder->getStorage()->getUid();
+			$folderIdentifiers[] = $folder->getHashedIdentifier();
+		}
+		$storageUids = array_unique($storageUids);
+		$folderIdentifiers = array_unique($folderIdentifiers);
+
+		$fileRecords = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			implode(',', $this->fields),
+			$this->table,
+			'folder_hash IN ( ' . implode(',', $this->getDatabaseConnection()->fullQuoteArray($folderIdentifiers, $this->table)) . ')' .
+			' AND storage IN (' . implode(',', $storageUids) . ')' .
+			($includeMissing ? '' : ' AND missing = 0'),
+			'',
+			'',
+			'',
+			'identifier'
+		);
+
+		return $fileRecords;
+	}
+
 	/**
 	 * Adds a file to the index
 	 *

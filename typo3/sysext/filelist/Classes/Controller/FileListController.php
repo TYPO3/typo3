@@ -26,10 +26,12 @@ use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Filelist\FileList;
 
 /**
@@ -126,6 +128,18 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @var string
 	 */
 	protected $moduleName = 'file_list';
+
+	/**
+	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 */
+	protected $fileRepository;
+
+	/**
+	 * @param \TYPO3\CMS\Core\Resource\FileRepository $fileRepository
+	 */
+	public function injectFileRepository(\TYPO3\CMS\Core\Resource\FileRepository $fileRepository) {
+		$this->fileRepository = $fileRepository;
+	}
 
 	/**
 	 * Initialize variables, file object
@@ -404,6 +418,37 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$this->errorMessage->setSeverity(FlashMessage::ERROR);
 			$this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage($this->errorMessage);
 		}
+	}
+
+	/**
+	 * Search for files by name and pass them with a facade to fluid
+	 *
+	 * @param string $searchWord
+	 */
+	public function searchAction($searchWord = '') {
+		if (empty($searchWord)) {
+			$this->forward('index');
+		}
+
+		$fileFacades = [];
+		$files = $this->fileRepository->searchByName($this->folderObject, $searchWord);
+
+		if (empty($files)) {
+			$this->controllerContext->getFlashMessageQueue('core.template.flashMessages')->addMessage(
+				new FlashMessage(LocalizationUtility::translate('flashmessage.no_results', 'filelist'), '', FlashMessage::INFO)
+			);
+		} else {
+			foreach ($files as $file) {
+				$fileFacades[] = new \TYPO3\CMS\Filelist\FileFacade($file);
+			}
+		}
+
+		$this->view->assign('requireJsModules', ['TYPO3/CMS/Filelist/FileList']);
+		$this->view->assign('searchWord', $searchWord);
+		$this->view->assign('files', $fileFacades);
+		$this->view->assign('settings', [
+			'jsConfirmationDelete' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)
+		]);
 	}
 
 	/**

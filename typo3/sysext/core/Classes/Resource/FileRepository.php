@@ -131,6 +131,39 @@ class FileRepository extends AbstractRepository {
 	}
 
 	/**
+	 * Search for files by name in a given folder
+	 *
+	 * @param Folder $folder
+	 * @param string $fileName
+	 *
+	 * @return File[]
+	 */
+	public function searchByName(Folder $folder, $fileName) {
+		/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
+		$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
+
+		$folders = $folder->getStorage()->getFoldersInFolder($folder, 0, 0, TRUE, TRUE);
+		$folders[$folder->getIdentifier()] = $folder;
+
+		$fileRecords = $this->getFileIndexRepository()->findByFolders($folders, FALSE);
+
+		$files = array();
+		foreach ($fileRecords as $fileRecord) {
+			if (stristr($fileRecord['name'], $fileName) === FALSE) {
+				continue;
+			}
+
+			try {
+				$files[] = $fileFactory->getFileObject($fileRecord['uid'], $fileRecord);
+			} catch (\TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException $ignoredException) {
+				continue;
+			}
+		}
+
+		return $files;
+	}
+
+	/**
 	 * Return a file index repository
 	 *
 	 * @return FileIndexRepository

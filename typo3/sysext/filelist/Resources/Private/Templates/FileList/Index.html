@@ -6,6 +6,8 @@
 
 <f:section name="content">
 
+	<f:render partial="SearchForm" arguments="{searchWord:''}" />
+
 	<f:form method="post" name="dblistForm">
 		{listHtml -> f:format.raw()}
 		<input type="hidden" name="cmd"/>

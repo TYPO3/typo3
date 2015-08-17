@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE') {
 		'list',
 		'',
 		array(
-			'FileList' => 'index',
+			'FileList' => 'index, search',
 		),
 		array(
 			'access' => 'user,group',
