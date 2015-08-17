@@ -452,6 +452,9 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 				if (reloadPageTree) {
 					Recycler.refreshPageTree();
 				}
+
+				// Reset toggle state
+				Recycler.allToggled = false;
 			},
 			complete: function() {
 				top.TYPO3.Modal.dismiss();
