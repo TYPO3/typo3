@@ -200,17 +200,10 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				'loadedExtArray' => $GLOBALS['TYPO3_LOADED_EXT'],
 				'packageObjectsCacheEntryIdentifier' => $packageObjectsCacheEntryIdentifier
 			);
-			// Add the reflection of the package class
-			$packageClassName = strtolower(Package::class);
-			$reflectionPackageClass = new \ReflectionClass($packageClassName);
-			$packageClassSource = file_get_contents($reflectionPackageClass->getFileName());
-			$packageClassSource = preg_replace('/<\?php|\?>/i', '', $packageClassSource);
-
 			$this->coreCache->set($packageObjectsCacheEntryIdentifier, serialize($this->packages));
 			$this->coreCache->set(
 				$cacheEntryIdentifier,
-				$packageClassSource . PHP_EOL .
-					'return ' . PHP_EOL . var_export($packageCache, TRUE) . ';'
+				'return ' . PHP_EOL . var_export($packageCache, TRUE) . ';'
 			);
 		}
 	}
