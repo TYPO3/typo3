@@ -54,15 +54,6 @@
 			<trans-unit id="params">
 				<source>Additional link parameters</source>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow">
-				<source>Open in window</source>
-			</trans-unit>
-			<trans-unit id="target_popUpWindow_width">
-				<source>Width</source>
-			</trans-unit>
-			<trans-unit id="target_popUpWindow_height">
-				<source>Height</source>
-			</trans-unit>
 			<trans-unit id="newWindow">
 				<source>New window</source>
 			</trans-unit>

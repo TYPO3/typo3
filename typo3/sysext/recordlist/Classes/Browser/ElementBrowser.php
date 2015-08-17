@@ -1004,52 +1004,14 @@ class ElementBrowser {
 								</select>
 							</td>
 							<td>';
-			if (($this->curUrlInfo['act'] == 'page' || $this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder')
+			if (($this->curUrlInfo['act'] === 'page' || $this->curUrlInfo['act'] === 'file' || $this->curUrlInfo['act'] === 'folder')
 				&& $this->curUrlArray['href'] && $this->curUrlInfo['act'] === $this->act
 			) {
 				$ltarget .= '
 							<input class="btn btn-default" type="submit" value="' . $lang->getLL('update', TRUE)
 								. '" onclick="return link_current();" />';
 			}
-			$selectJS = '
-				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0'
-					. ' && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0) {
-					document.ltargetform.ltarget.value = document.ltargetform.popup_width.options['
-						. 'document.ltargetform.popup_width.selectedIndex].value+"x"'
-						. '+document.ltargetformbrowse_links_setTarget.popup_height.options['
-						. 'document.ltargetform.popup_height.selectedIndex].value;
-					browse_links_setTarget(document.ltargetform.ltarget.value);
-					browse_links_setClass(document.lclassform.lclass.value);
-					browse_links_setTitle(document.ltitleform.ltitle.value);
-					browse_links_setParams(document.lparamsform.lparams.value);
-					document.ltargetform.popup_width.selectedIndex=0;
-					document.ltargetform.popup_height.selectedIndex=0;
-				}
-			';
 			$ltarget .= '		</td>
-						</tr>
-						<tr>
-							<td>' . $lang->getLL('target_popUpWindow', TRUE) . ':</td>
-							<td colspan="3">
-								<select name="popup_width" onchange="' . htmlspecialchars($selectJS) . '">
-									<option value="0">' . $lang->getLL('target_popUpWindow_width', TRUE) . '</option>
-									<option value="300">300</option>
-									<option value="400">400</option>
-									<option value="500">500</option>
-									<option value="600">600</option>
-									<option value="700">700</option>
-									<option value="800">800</option>
-								</select>
-								x
-								<select name="popup_height" onchange="' . htmlspecialchars($selectJS) . '">
-									<option value="0">' . $lang->getLL('target_popUpWindow_height', TRUE) . '</option>
-									<option value="200">200</option>
-									<option value="300">300</option>
-									<option value="400">400</option>
-									<option value="500">500</option>
-									<option value="600">600</option>
-								</select>
-							</td>
 						</tr>
 					</table>
 				</form>';

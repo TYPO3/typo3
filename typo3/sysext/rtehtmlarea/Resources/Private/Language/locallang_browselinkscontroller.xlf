@@ -45,15 +45,6 @@
 			<trans-unit id="linkRelationship">
 				<source>Relationship</source>
 			</trans-unit>
-			<trans-unit id="target_popUpWindow">
-				<source>Open in window</source>
-			</trans-unit>
-			<trans-unit id="target_popUpWindow_width">
-				<source>Width</source>
-			</trans-unit>
-			<trans-unit id="target_popUpWindow_height">
-				<source>Height</source>
-			</trans-unit>
 			<trans-unit id="anchor_class">
 				<source>Style</source>
 			</trans-unit>

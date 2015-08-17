@@ -1651,27 +1651,6 @@ buttons.link.targetSelector.disabled
 
 
 
-.. _buttons-link-popupselector-disabled:
-
-buttons.link.popupSelector.disabled
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         buttons.link.popupSelector.disabled
-
-   Data type
-         boolean
-
-   Description
-         If set, the selection of a popup window as link target is removed from
-         the link insertion/update dialog.
-
-         Default: 0
-
-
-
 .. _buttons-link-pageidselector-enabled:
 
 buttons.link.pageIdSelector.enabled

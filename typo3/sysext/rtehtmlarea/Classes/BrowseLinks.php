@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -668,19 +667,15 @@ class BrowseLinks extends ElementBrowser {
 			return '';
 		}
 		$targetSelectorConfig = array();
-		$popupSelectorConfig = array();
 		if (is_array($this->buttonConfig['targetSelector.'])) {
 			$targetSelectorConfig = $this->buttonConfig['targetSelector.'];
-		}
-		if (is_array($this->buttonConfig['popupSelector.'])) {
-			$popupSelectorConfig = $this->buttonConfig['popupSelector.'];
 		}
 		// Reset the target to default if we changed tab
 		$currentTarget = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['target']) ? $this->curUrlArray['target'] : '';
 		$target = $currentTarget ?: $this->defaultLinkTarget;
 		$lang = $this->getLanguageService();
 		$ltarget = '
-				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] && $popupSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
+				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
 					<td><label>' . $lang->getLL('target', TRUE) . ':</label></td>
 					<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="'
 					. htmlspecialchars($target) . '"' . $this->doc->formWidth(10) . ' /></td>';
@@ -697,38 +692,6 @@ class BrowseLinks extends ElementBrowser {
 		$ltarget .= '
 					</td>
 				</tr>';
-		if (!$popupSelectorConfig['disabled']) {
-			$selectJS = 'if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0) {
-				document.ltargetform.ltarget.value = document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value+\'x\'+document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value;
-				browse_links_setTarget(document.ltargetform.ltarget.value);
-				document.ltargetform.popup_width.selectedIndex=0;
-				document.ltargetform.popup_height.selectedIndex=0;
-			}';
-			$ltarget .= '
-					<tr>
-						<td><label>' . $lang->getLL('target_popUpWindow', TRUE) . ':</label></td>
-						<td colspan="3">
-							<select name="popup_width" onchange="' . $selectJS . '">
-								<option value="0">' . $lang->getLL('target_popUpWindow_width', TRUE) . '</option>
-								<option value="300">300</option>
-								<option value="400">400</option>
-								<option value="500">500</option>
-								<option value="600">600</option>
-								<option value="700">700</option>
-								<option value="800">800</option>
-							</select>
-							x
-							<select name="popup_height" onchange="' . $selectJS . '">
-								<option value="0">' . $lang->getLL('target_popUpWindow_height', TRUE) . '</option>
-								<option value="200">200</option>
-								<option value="300">300</option>
-								<option value="400">400</option>
-								<option value="500">500</option>
-								<option value="600">600</option>
-							</select>
-						</td>
-					</tr>';
-		}
 		return $ltarget;
 	}
 
