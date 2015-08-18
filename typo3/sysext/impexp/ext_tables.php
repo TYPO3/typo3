@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 	$GLOBALS['TBE_MODULES_EXT']['xMOD_alt_clickmenu']['extendCMclasses'][] = array(
-		'name' => \TYPO3\CMS\Impexp\Clickmenu::class,
+		'name' => \TYPO3\CMS\Impexp\Clickmenu::class
 	);
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['impexp']['TYPO3\\CMS\\Impexp\\Task\\ImportExportTask'] = array(
 		'title' => 'LLL:EXT:impexp/Resources/Private/Language/locallang_csh.xlf:.alttitle',
@@ -34,7 +34,7 @@ if (TYPO3_MODE === 'BE') {
 		}
 	';
 	// Context menu user default configuration
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
 		options.contextMenu.table {
 			virtual_root.items {
 				' . $importExportActions . '
@@ -48,6 +48,5 @@ if (TYPO3_MODE === 'BE') {
 				' . $importExportActions . '
 			}
 		}
-	';
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('xMOD_tximpexp', 'EXT:impexp/Modules/ImportExport/');
+	');
 }

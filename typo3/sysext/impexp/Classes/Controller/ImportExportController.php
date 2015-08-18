@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Impexp\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -29,7 +31,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Main script class for the Import / Export facility
  */
-class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * @var array|\TYPO3\CMS\Core\Resource\File[]
@@ -79,6 +81,13 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected $iconFactory;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'xMOD_tximpexp';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -89,6 +98,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function init() {
+		$this->MCONF['name'] = $this->moduleName;
 		parent::init();
 		$this->vC = GeneralUtility::_GP('vC');
 		$this->lang = $this->getLanguageService();
@@ -155,9 +165,56 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Print the content
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
+	}
+
+	/**
+	 * Injects the request object for the current request and gathers all data
+	 *
+	 * IMPORTING DATA:
+	 *
+	 * Incoming array has syntax:
+	 * GETvar 'id' = import page id (must be readable)
+	 *
+	 * file = 	(pointing to filename relative to PATH_site)
+	 *
+	 * [all relation fields are clear, but not files]
+	 * - page-tree is written first
+	 * - then remaining pages (to the root of import)
+	 * - then all other records are written either to related included pages or if not found to import-root (should be a sysFolder in most cases)
+	 * - then all internal relations are set and non-existing relations removed, relations to static tables preserved.
+	 *
+	 * EXPORTING DATA:
+	 *
+	 * Incoming array has syntax:
+	 *
+	 * file[] = file
+	 * dir[] = dir
+	 * list[] = table:pid
+	 * record[] = table:uid
+	 *
+	 * pagetree[id] = (single id)
+	 * pagetree[levels]=1,2,3, -1 = currently unpacked tree, -2 = only tables on page
+	 * pagetree[tables][]=table/_ALL
+	 *
+	 * external_ref[tables][]=table/_ALL
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
@@ -171,7 +228,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			'shortcut' => ''
 		);
 		if ($this->getBackendUser()->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('tx_impexp', '', $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('tx_impexp', '', $this->moduleName);
 		}
 		// Input data grabbed:
 		$inData = GeneralUtility::_GP('tx_impexp');
