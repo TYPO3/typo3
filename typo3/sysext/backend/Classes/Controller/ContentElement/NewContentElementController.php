@@ -106,11 +106,6 @@ class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInte
 	protected $elementWrapper;
 
 	/**
-	 * @var array
-	 */
-	protected $elementWrapperForTabs;
-
-	/**
 	 * @var string
 	 */
 	protected $onClickEvent;
@@ -208,11 +203,9 @@ class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInte
 			// ***************************
 			$this->content .= $this->doc->header($lang->getLL('newContentElement'));
 			// Wizard
-			$wizardItems = $this->getWizardItems();
+			$wizardItems = $this->wizardArray();
 			// Wrapper for wizards
 			$this->elementWrapper['section'] = array('', '');
-			// Copy wrapper for tabs
-			$this->elementWrapperForTabs = $this->elementWrapper;
 			// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
@@ -222,10 +215,6 @@ class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInte
 					}
 					$hookObject->manipulateWizardItems($wizardItems, $this);
 				}
-			}
-			if ($this->config['renderMode'] == 'tabs' && $this->elementWrapperForTabs != $this->elementWrapper) {
-				// Restore wrapper for tabs if they are overwritten in hook
-				$this->elementWrapper = $this->elementWrapperForTabs;
 			}
 			// Add document inline javascript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
@@ -291,15 +280,9 @@ class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInte
 			foreach ($menuItems as $key => $val) {
 				$menuItems[$key]['content'] .= $this->elementWrapper['section'][1];
 			}
-			// Add the wizard table to the content, wrapped in tabs:
-			if ($this->config['renderMode'] == 'tabs') {
-				$code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->doc->getDynamicTabMenu($menuItems, 'new-content-element-wizard');
-			} else {
-				$code = '<p>' . $lang->getLL('sel1', 1) . '</p>';
-				foreach ($menuItems as $section) {
-					$code .= '<h3 class="divider">' . $section['label'] . '</h3>' . $section['content'];
-				}
-			}
+			// Add the wizard table to the content, wrapped in tabs
+			$code = '<p>' . $lang->getLL('sel1', 1) . '</p>' . $this->doc->getDynamicTabMenu($menuItems, 'new-content-element-wizard');
+
 			$this->content .= $this->doc->section(!$this->onClickEvent ? $lang->getLL('1_selectType') : '', $code, 0, 1);
 			// If the user must also select a column:
 			if (!$this->onClickEvent) {
@@ -374,8 +357,10 @@ class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInte
 	 * Returns the content of wizardArray() function...
 	 *
 	 * @return array Returns the content of wizardArray() function...
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use "wizardArray()" directly
 	 */
 	public function getWizardItems() {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->wizardArray();
 	}
 

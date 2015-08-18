@@ -1,5 +1,4 @@
 mod.wizards.newContentElement {
-	renderMode = tabs
 	wizardItems {
 		common.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common
 		common.elements {
