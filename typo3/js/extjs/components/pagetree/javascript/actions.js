@@ -733,8 +733,12 @@ TYPO3.Components.PageTree.Actions = {
 		}
 
 		node.select();
+		var nodeId = node.attributes.nodeData.id,
+			idPattern = '###ID###';
 		TYPO3.Backend.ContentContainer.setUrl(
-			contextItem.customAttributes.contentUrl.replace('###ID###', node.attributes.nodeData.id)
+			contextItem.customAttributes.contentUrl
+				.replace(idPattern, nodeId)
+				.replace(encodeURIComponent(idPattern), nodeId)
 		);
 	},
 
