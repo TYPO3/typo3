@@ -467,7 +467,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 						}
 						// Add any versions of those records:
 						if ($this->genTree_traverseVersions) {
-							$versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), 0, TRUE);
+							$versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid,t3ver_count' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), NULL, TRUE);
 							if (is_array($versions)) {
 								foreach ($versions as $verRec) {
 									if (!$verRec['_CURRENT_VERSION']) {
@@ -536,7 +536,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			}
 			// Add any versions of pages
 			if ($rootID > 0 && $this->genTree_traverseVersions) {
-				$versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', 0, TRUE);
+				$versions = BackendUtility::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', NULL, TRUE);
 				if (is_array($versions)) {
 					foreach ($versions as $verRec) {
 						if (!$verRec['_CURRENT_VERSION']) {

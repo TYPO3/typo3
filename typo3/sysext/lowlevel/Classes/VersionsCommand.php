@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Lowlevel;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -92,8 +93,8 @@ Automatic Repair:
 					't3ver_state=' . new VersionState(VersionState::NEW_PLACEHOLDER) . ' AND pid>=0' . BackendUtility::deleteClause($table)
 				);
 				foreach ($placeHolders as $phrec) {
-					if (count(BackendUtility::selectVersionsOfRecord($table, $phrec['uid'], 'uid')) <= 1) {
-						$resultArray['versions_unused_placeholders'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($table . ':' . $phrec['uid'])] = $table . ':' . $phrec['uid'];
+					if (count(BackendUtility::selectVersionsOfRecord($table, $phrec['uid'], 'uid', '*', NULL)) <= 1) {
+						$resultArray['versions_unused_placeholders'][GeneralUtility::shortmd5($table . ':' . $phrec['uid'])] = $table . ':' . $phrec['uid'];
 					}
 				}
 			}
@@ -110,7 +111,7 @@ Automatic Repair:
 					't3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND pid>=0' . BackendUtility::deleteClause($table)
 				);
 				foreach ($placeHolders as $phrec) {
-					$shortID = \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($table . ':' . $phrec['uid']);
+					$shortID = GeneralUtility::shortmd5($table . ':' . $phrec['uid']);
 					if ((int)$phrec['t3ver_wsid'] != 0) {
 						$phrecCopy = $phrec;
 						if (BackendUtility::movePlhOL($table, $phrec)) {
@@ -185,7 +186,7 @@ Automatic Repair:
 					echo $bypass;
 				} else {
 					// Execute CMD array:
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+					$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = FALSE;
 					$tce->start(array(), array());
 					$tce->deleteEl($table, $uid, TRUE, TRUE);
@@ -224,7 +225,7 @@ Automatic Repair:
 				echo $bypass;
 			} else {
 				// Execute CMD array:
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+				$tce = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = FALSE;
 				$tce->start(array(), array());
 				$tce->deleteAction($table, $uid);

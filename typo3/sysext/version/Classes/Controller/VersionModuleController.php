@@ -479,7 +479,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @todo Define visibility
 	 */
 	public function lookForOwnVersions($table, $uid) {
-		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid');
+		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid', NULL);
 		if (is_array($versions)) {
 			return count($versions);
 		}

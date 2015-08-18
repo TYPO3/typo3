@@ -39,7 +39,7 @@ class VersionView {
 			// If the selected page is not online, find the right ID
 			$onlineId = $curPage['pid'] == -1 ? $curPage['t3ver_oid'] : $id;
 			// Select all versions of online version:
-			$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
+			$versions = \TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id', NULL);
 			// If more than one was found...:
 			if (count($versions) > 1) {
 				$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xlf:versionSelect.label', TRUE) . '</strong>';
