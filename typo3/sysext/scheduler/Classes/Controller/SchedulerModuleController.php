@@ -1126,13 +1126,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$failureOutput = '';
 						if (!empty($schedulerRecord['lastexecution_failure'])) {
 							// Try to get the stored exception object
-							/** @var $exception \Exception */
-							$exception = @unserialize($schedulerRecord['lastexecution_failure']);
-							// If the exception could not be unserialized, issue a default error message
-							if ($exception === FALSE || $exception instanceof \__PHP_Incomplete_Class) {
+							/** @var $exceptionArray array */
+							$exceptionArray = @unserialize($schedulerRecord['lastexecution_failure']);
+							if (!is_array($exceptionArray) || empty($exceptionArray)) {
 								$failureDetail = $GLOBALS['LANG']->getLL('msg.executionFailureDefault');
 							} else {
-								$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
+								$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exceptionArray['code'], $exceptionArray['message']);
 							}
 							$failureOutput = ' <img ' . IconUtility::skinImg(ExtensionManagementUtility::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($failureDetail) . '" />';
 						}

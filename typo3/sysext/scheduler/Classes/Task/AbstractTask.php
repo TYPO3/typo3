@@ -426,14 +426,21 @@ abstract class AbstractTask {
 					// Log failed execution
 					$logMessage = 'Task failed to execute successfully. Class: ' . get_class($this) . ', UID: ' . $this->taskUid . '. ' . $failure->getMessage();
 					$this->scheduler->log($logMessage, 1, $failure->getCode());
-					$failure = serialize($failure);
+					// Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
+					$failureString = serialize(array(
+						'code' => $failure->getCode(),
+						'message' => $failure->getMessage(),
+						'file' => $failure->getFile(),
+						'line' => $failure->getLine(),
+						'traceString' => $failure->getTraceAsString(),
+					));
 				} else {
-					$failure = '';
+					$failureString = '';
 				}
 				// Save the updated executions list
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $this->taskUid, array(
 					'serialized_executions' => $runningExecutionsSerialized,
-					'lastexecution_failure' => $failure
+					'lastexecution_failure' => $failureString
 				));
 			}
 		}
