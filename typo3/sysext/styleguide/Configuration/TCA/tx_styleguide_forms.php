@@ -1342,7 +1342,7 @@ return array(
 		),
 		'select_30' => array(
 			'exclude' => 1,
-			'label' => 'INPUT: 37 Slider wizard, step=1, width=200, items',
+			'label' => 'SELECT: 30 Slider wizard, step=1, width=200, items',
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
