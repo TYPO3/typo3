@@ -99,6 +99,9 @@ text
 
 	/**
 	 * @test
+	 * @param string $content
+	 * @param string $marker
+	 * @param string $expected
 	 * @dataProvider getSubpartDataProvider
 	 */
 	public function getSubpart($content, $marker, $expected) {
@@ -227,6 +230,12 @@ hello
 
 	/**
 	 * @test
+	 * @param string $content
+	 * @param string $marker
+	 * @param array $subpartContent
+	 * @param bool $recursive
+	 * @param bool $keepMarker
+	 * @param string $expected
 	 * @dataProvider substituteSubpartDataProvider
 	 */
 	public function substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker, $expected) {
@@ -340,7 +349,42 @@ hello
 	}
 
 	/**
+	 * Data provider for substituteSubpartArray
+	 *
+	 * @return array
+	 */
+	public function substituteSubpartArrayDataProvider() {
+		return array(
+			'Substitute multiple subparts at once with plain marker' => array(
+				'<body>
+###SUBPART1###text1###SUBPART1###
+###SUBPART2###text2###SUBPART2###
+</body>',
+				array ('###SUBPART1###' => 'hello',
+					'###SUBPART2###' => 'world'),
+				'<body>
+hello
+world
+</body>'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $content
+	 * @param array $subpartsContent
+	 * @param string $expected
+	 * @dataProvider substituteSubpartArrayDataProvider
+	 */
+	public function substituteSubpartArray($content, array $subpartsContent, $expected) {
+		$this->assertSame($expected, HtmlParser::substituteSubpartArray($content, $subpartsContent));
+	}
+
+	/**
 	 * Data provider for substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray
+	 *
+	 * @return array
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider() {
 		$template = '###SINGLEMARKER1###
@@ -535,6 +579,12 @@ Value 2.2
 
 	/**
 	 * @test
+	 * @param string $template
+	 * @param array $markersAndSubparts
+	 * @param string $wrap
+	 * @param bool $uppercase
+	 * @param bool $deleteUnused
+	 * @param string $expected
 	 * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected) {
@@ -598,6 +648,8 @@ Value 2.2
 
 	/**
 	 * @test
+	 * @param string $content
+	 * @param string $expectedResult
 	 * @dataProvider spanTagCorrectlyRemovedWhenRmTagIfNoAttribIsConfiguredDataProvider
 	 */
 	public function tagCorrectlyRemovedWhenRmTagIfNoAttribIsConfigured($content, $expectedResult) {
@@ -629,6 +681,8 @@ Value 2.2
 
 	/**
 	 * Data provider for localNestingCorrectlyRemovesInvalidTags
+	 *
+	 * @return array
 	 */
 	public static function localNestingCorrectlyRemovesInvalidTagsDataProvider() {
 		return array(
@@ -671,6 +725,8 @@ Value 2.2
 
 	/**
 	 * Data provider for globalNestingCorrectlyRemovesInvalidTags
+	 *
+	 * @return array
 	 */
 	public static function globalNestingCorrectlyRemovesInvalidTagsDataProvider() {
 		return array(
