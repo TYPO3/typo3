@@ -106,6 +106,134 @@ text
 	}
 
 	/**
+	 * Data provider for substituteSubpart
+	 *
+	 * @return array
+	 */
+	public function substituteSubpartDataProvider() {
+		return array(
+			'No start marker' => array(
+				'<body>text</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				FALSE,
+				'<body>text</body>'
+			),
+			'No stop marker' => array(
+				'<body>
+<!-- ###SUBPART### Start -->
+text
+</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				FALSE,
+				'<body>
+<!-- ###SUBPART### Start -->
+text
+</body>',
+			),
+			'Start and stop marker in HTML comment' => array(
+				'<body>
+<!-- ###SUBPART### Start -->
+text
+<!-- ###SUBPART### End -->
+</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				FALSE,
+				'<body>
+hello
+</body>'
+			),
+			'Recursive subpart' => array(
+				'<body>
+<!-- ###SUBPART### Start -->text1<!-- ###SUBPART### End -->
+<!-- ###SUBPART### Start -->text2<!-- ###SUBPART### End -->
+</body>',
+				'###SUBPART###',
+				'hello',
+				TRUE,
+				FALSE,
+				'<body>
+hello
+hello
+</body>'
+			),
+			'Keep HTML marker' => array(
+				'<body>
+<!-- ###SUBPART### Start -->text<!-- ###SUBPART### End -->
+</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				TRUE,
+				'<body>
+<!-- ###SUBPART### Start -->hello<!-- ###SUBPART### End -->
+</body>'
+			),
+			'Keep HTML begin marker' => array(
+				'<body>
+<!-- ###SUBPART### Start -->text###SUBPART###
+</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				TRUE,
+				'<body>
+<!-- ###SUBPART### Start -->hello###SUBPART###
+</body>'
+			),
+			'Keep HTML end marker' => array(
+				'<body>
+###SUBPART###text<!-- ###SUBPART### End -->
+</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				TRUE,
+				'<body>
+###SUBPART###hello<!-- ###SUBPART### End -->
+</body>'
+			),
+			'Keep plain marker' => array(
+				'<body>
+###SUBPART###text###SUBPART###
+</body>',
+				'###SUBPART###',
+				'hello',
+				FALSE,
+				TRUE,
+				'<body>
+###SUBPART###hello###SUBPART###
+</body>'
+			),
+			'Wrap around' => array(
+				'<body>
+###SUBPART###text###SUBPART###
+</body>',
+				'###SUBPART###',
+				array('before-', '-after'),
+				FALSE,
+				TRUE,
+				'<body>
+###SUBPART###before-text-after###SUBPART###
+</body>'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider substituteSubpartDataProvider
+	 */
+	public function substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker, $expected) {
+		$this->assertSame($expected, HtmlParser::substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker));
+	}
+
+	/**
 	 * Data provider for substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider() {
