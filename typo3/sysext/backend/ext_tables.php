@@ -3,29 +3,11 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 
-	// Register record edit module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'record_edit',
-		'EXT:backend/Modules/FormEngine/'
-	);
-
 	// Register file_navframe
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('file', 'file_navframe');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
 		'file_navframe',
 		'EXT:backend/Modules/FileSystemNavigationFrame/'
-	);
-
-	// Register tce_db
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'tce_db',
-		'EXT:backend/Modules/File/Database/'
-	);
-
-	// Register tce_file
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'tce_file',
-		'EXT:backend/Modules/File/Administration/'
 	);
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(

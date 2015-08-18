@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -32,7 +34,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
  * Is not used by FormEngine though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
  * For all other cases than FormEngine it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to FormEngine, that will give you easy form-rendering as well.
  */
-class SimpleDataHandlerController {
+class SimpleDataHandlerController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
@@ -225,14 +227,46 @@ class SimpleDataHandlerController {
 	 * Might also display error messages directly, if any.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function finish() {
+		GeneralUtility::logDeprecatedFunction();
 		// Prints errors, if...
 		if ($this->prErr) {
 			$this->tce->printLogErrorMessages($this->redirect);
 		}
 		if ($this->redirect) {
 			HttpUtility::redirect($this->redirect);
+		}
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+		$formToken = isset($request->getQueryParams()['formToken']) ? $request->getQueryParams()['formToken'] : $request->getParsedBody()['formToken'];
+		if ($formProtection->validateToken($formToken, 'tceAction')) {
+			$this->initClipboard();
+			$this->main();
+		}
+
+		// Write errors to flash message queue
+		if ($this->prErr) {
+			$this->tce->printLogErrorMessages($this->redirect);
+		}
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		if ($this->redirect) {
+			$response = $response->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect));
+			return $response->withStatus(303);
+		} else {
+			// empty response
+			return $response;
 		}
 	}
 

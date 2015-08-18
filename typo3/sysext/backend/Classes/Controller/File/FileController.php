@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -27,7 +29,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
  */
-class FileController {
+class FileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Array of file-operations.
@@ -177,6 +179,35 @@ class FileController {
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+		$formToken = isset($request->getQueryParams()['formToken']) ? $request->getQueryParams()['formToken'] : $request->getParsedBody()['formToken'];
+		if ($formProtection->validateToken($formToken, 'tceAction')) {
+			$this->main();
+		}
+
+		// Push errors to flash message queue, if there are any
+		$this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
+		BackendUtility::setUpdateSignal('updateFolderTree');
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		if ($this->redirect) {
+			$response = $response->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect));
+			return $response->withStatus(303);
+		} else {
+			// empty response
+			return $response;
+		}
+	}
+
+	/**
 	 * Handles the actual process from within the ajaxExec function
 	 * therefore, it does exactly the same as the real typo3/tce_file.php
 	 * but without calling the "finish" method, thus makes it simpler to deal with the
@@ -187,7 +218,6 @@ class FileController {
 	 * @return void
 	 */
 	public function processAjaxRequest(array $params, AjaxRequestHandler $ajaxObj) {
-		$this->init();
 		$this->main();
 		$errors = $this->fileProcessor->getErrorMessages();
 		if (!empty($errors)) {

@@ -1,5 +1,5 @@
 <?php
-use TYPO3\CMS\Backend\Controller as Controller;
+use TYPO3\CMS\Backend\Controller;
 
 /**
  * Definitions for routes provided by EXT:backend
@@ -33,113 +33,116 @@ return [
 		'controller' => Controller\LogoutController::class
 	],
 
+	// Register login frameset
+	'login_frameset' => [
+		'path' => '/login/frame',
+		'controller' => Controller\LoginFramesetController::class
+	],
+
+	/** Wizards */
 	// Register backend_layout wizard
 	'wizard_backend_layout' => [
 		'path' => '/wizard/backend_layout',
-		'controller' => \TYPO3\CMS\Backend\Controller\BackendLayoutWizardController::class
+		'controller' => Controller\BackendLayoutWizardController::class
 	],
 
 	// Register colorpicker wizard
 	'wizard_colorpicker' => [
 		'path' => '/wizard/colorpicker',
-		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\ColorpickerController::class
+		'controller' => Controller\Wizard\ColorpickerController::class
 	],
 
 	// Register table wizard
 	'wizard_table' => [
 		'path' => '/wizard/table',
-		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\TableController::class
+		'controller' => Controller\Wizard\TableController::class
 	],
 
 	// Register rte wizard
 	'wizard_rte' => [
 		'path' => '/wizard/rte',
-		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\RteController::class
+		'controller' => Controller\Wizard\RteController::class
 	],
 
 	// Register add wizard
 	'wizard_add' => [
 		'path' => '/wizard/add',
-		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\AddController::class
+		'controller' => Controller\Wizard\AddController::class
 	],
 
 	// Register list wizard
 	'wizard_list' => [
 		'path' => '/wizard/list',
-		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\ListController::class
+		'controller' => Controller\Wizard\ListController::class
 	],
 
 	// Register edit wizard
 	'wizard_edit' => [
 		'path' => '/wizard/edit',
-		'controller' => \TYPO3\CMS\Backend\Controller\Wizard\EditController::class
+		'controller' => Controller\Wizard\EditController::class
 	],
+
 
 	/** File- and folder-related routes */
 	// Editing the contents of a file
 	'file_edit' => [
 		'path' => '/file/editcontent',
-		'controller' => \TYPO3\CMS\Backend\Controller\File\EditFileController::class
+		'controller' => Controller\File\EditFileController::class
 	],
 
 	// Create a new folder
 	'file_newfolder' => [
 		'path' => '/file/new',
-		'controller' => \TYPO3\CMS\Backend\Controller\File\CreateFolderController::class
+		'controller' => Controller\File\CreateFolderController::class
 	],
 
 	// Rename a file
 	'file_rename' => [
 		'path' => '/file/rename',
-		'controller' => \TYPO3\CMS\Backend\Controller\File\RenameFileController::class
+		'controller' => Controller\File\RenameFileController::class
 	],
 
 	// Replace a file with a different one
 	'file_replace' => [
 		'path' => '/file/replace',
-		'controller' => \TYPO3\CMS\Backend\Controller\File\ReplaceFileController::class
+		'controller' => Controller\File\ReplaceFileController::class
 	],
 
 	// Upload new files
 	'file_upload' => [
 		'path' => '/file/upload',
-		'controller' => \TYPO3\CMS\Backend\Controller\File\FileUploadController::class
+		'controller' => Controller\File\FileUploadController::class
 	],
 
-	// Register login frameset
-	'login_frameset' => [
-		'path' => '/login/frame',
-		'controller' => \TYPO3\CMS\Backend\Controller\LoginFramesetController::class
-	],
-
+	/** DB Records-related routes */
 	// Register record history module
 	'record_history' => [
 		'path' => '/record/history',
-		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\ElementHistoryController::class
+		'controller' => Controller\ContentElement\ElementHistoryController::class
 	],
 
 	// Register new record
 	'db_new' => [
 		'path' => '/record/new',
-		'controller' => \TYPO3\CMS\Backend\Controller\NewRecordController::class
+		'controller' => Controller\NewRecordController::class
 	],
 
 	// Register new content element module
 	'new_content_element' => [
 		'path' => '/record/content/new',
-		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController::class
+		'controller' => Controller\ContentElement\NewContentElementController::class
 	],
 
 	// Register move element module
 	'move_element' => [
 		'path' => '/record/move',
-		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController::class
+		'controller' => Controller\ContentElement\MoveElementController::class
 	],
 
 	// Register show item module
 	'show_item' => [
 		'path' => '/record/info',
-		'controller' => \TYPO3\CMS\Backend\Controller\ContentElement\ElementInformationController::class
+		'controller' => Controller\ContentElement\ElementInformationController::class
 	],
 
 	// Register browser
@@ -148,10 +151,43 @@ return [
 		'controller' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController::class
 	],
 
-	// Register dummy window
+	// Dummy document - displays nothing but background color.
 	'dummy' => [
 		'path' => '/empty',
-		'controller' => \TYPO3\CMS\Backend\Controller\DummyController::class
+		'controller' => Controller\DummyController::class
 	],
 
+	/** TYPO3 Core Engine-related routes */
+	/**
+	 * TCE gateway (TYPO3 Core Engine) for database handling
+	 * This script is a gateway for POST forms to \TYPO3\CMS\Core\DataHandling\DataHandler
+	 * that manipulates all information in the database!!
+	 * For syntax and API information, see the document 'TYPO3 Core APIs'
+	 */
+	'tce_db' => [
+		'path' => '/record/commit',
+		'controller' => Controller\SimpleDataHandlerController::class
+	],
+
+	/**
+	 * Gateway for TCE (TYPO3 Core Engine) file-handling through POST forms.
+	 * This script serves as the fileadministration part of the TYPO3 Core Engine.
+	 * Basically it includes two libraries which are used to manipulate files on the server.
+	 *
+	 * For syntax and API information, see the document 'TYPO3 Core APIs'
+	 */
+	'tce_file' => [
+		'path' => '/file/commit',
+		'controller' => Controller\File\FileController::class
+	],
+
+	/**
+	 * Main form rendering script
+	 * By sending certain parameters to this script you can bring up a form
+	 * which allows the user to edit the content of one or more database records.
+	 */
+	'record_edit' => [
+		'path' => '/record/edit',
+		'controller' => Controller\EditDocumentController::class
+	],
 ];

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\DataPreprocessor;
 use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -21,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -38,7 +40,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * Script Class: Drawing the editing form for editing records in TYPO3.
  * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
  */
-class EditDocumentController {
+class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
@@ -908,8 +910,10 @@ class EditDocumentController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 
@@ -1634,6 +1638,36 @@ class EditDocumentController {
 			}
 		}
 		HttpUtility::redirect($retUrl);
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+
+		BackendUtility::lockRecords();
+
+		// Preprocessing, storing data if submitted to
+		$this->preInit();
+
+		// Checks, if a save button has been clicked (or the doSave variable is sent)
+		if ($this->doProcessData()) {
+			$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
+			if ($formProtection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'editRecord')) {
+				$this->processData();
+			}
+		}
+
+		$this->init();
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
