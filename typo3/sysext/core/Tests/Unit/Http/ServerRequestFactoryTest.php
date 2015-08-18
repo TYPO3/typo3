@@ -16,11 +16,19 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\UploadedFile;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Testcase for \TYPO3\CMS\Core\Http\ServerRequestFactory
  */
 class ServerRequestFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * Set up
+	 */
+	protected function setUp() {
+		GeneralUtility::flushInternalRuntimeCaches();
+	}
 
 	/**
 	 * @test

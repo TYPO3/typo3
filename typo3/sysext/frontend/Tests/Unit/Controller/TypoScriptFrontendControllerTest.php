@@ -14,22 +14,29 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * Testcase for TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
  */
 class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|TypoScriptFrontendController
 	 */
 	protected $subject;
 
 	protected function setUp() {
-		$this->subject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
+		GeneralUtility::flushInternalRuntimeCaches();
+		$this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, array('dummy'), array(), '', FALSE);
 		$this->subject->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
 		$this->subject->TYPO3_CONF_VARS['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
 
-		$pageRepository = $this->getMock(\TYPO3\CMS\Frontend\Page\PageRepository::class);
+		$pageRepository = $this->getMock(PageRepository::class);
 		$this->subject->sys_page = $pageRepository;
 	}
 
@@ -59,11 +66,11 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 	 * Setup a \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object only for testing the header and footer
 	 * replacement during USER_INT rendering
 	 *
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController
 	 */
 	protected function setupTsfeMockForHeaderFooterReplacementCheck() {
-		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $tsfe */
-		$tsfe = $this->getMock(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class, array(
+		/** @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController $tsfe */
+		$tsfe = $this->getMock(TypoScriptFrontendController::class, array(
 			'INTincScript_process',
 			'INTincScript_includeLibs',
 			'INTincScript_loadJSCode',
@@ -138,9 +145,9 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 				'forced' => 0,
 			),
 		);
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetRows'));
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_runtime')->flush();
+		GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
 		$expectedResult = array(
 			$domainRecords[$currentDomain]['pid'] => $domainRecords[$currentDomain],
 		);
@@ -174,9 +181,9 @@ class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCas
 				'forced' => 0,
 			),
 		);
-		$GLOBALS['TYPO3_DB'] = $this->getMock(\TYPO3\CMS\Core\Database\DatabaseConnection::class, array('exec_SELECTgetRows'));
+		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array('exec_SELECTgetRows'));
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->willReturn($domainRecords);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('cache_runtime')->flush();
+		GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime')->flush();
 		$expectedResult = array(
 			$domainRecords[$currentDomain]['pid'] => $domainRecords['foo.bar'],
 		);

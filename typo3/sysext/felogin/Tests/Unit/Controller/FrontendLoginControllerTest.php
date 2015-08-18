@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -58,6 +59,7 @@ class FrontendLoginControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up a fake site path and host
 	 */
 	protected function setUpFakeSitePathAndHost() {
+		GeneralUtility::flushInternalRuntimeCaches();
 		$_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
 		$_SERVER['HTTP_HOST'] = $this->testHostName;
 	}

@@ -395,6 +395,7 @@ class UriBuilderTest extends UnitTestCase {
 	 * @test
 	 */
 	public function buildBackendUriCreatesAbsoluteUrisIfSpecified() {
+		GeneralUtility::flushInternalRuntimeCaches();
 		GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$_SERVER['HTTP_HOST'] = 'baseuri';
 		$_SERVER['SCRIPT_NAME'] = '/typo3/index.php';

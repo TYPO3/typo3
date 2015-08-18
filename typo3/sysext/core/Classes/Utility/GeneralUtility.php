@@ -109,6 +109,11 @@ class GeneralUtility {
 		'srv', // HHVM with fastcgi
 	);
 
+	/**
+	 * @var array
+	 */
+	static protected $indpEnvCache = [];
+
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -3211,6 +3216,10 @@ Connection: close
 	 * @throws \UnexpectedValueException
 	 */
 	static public function getIndpEnv($getEnvName) {
+		if (isset(self::$indpEnvCache[$getEnvName])) {
+			return self::$indpEnvCache[$getEnvName];
+		}
+
 		/*
 		Conventions:
 		output from parse_url():
@@ -3490,6 +3499,7 @@ Connection: close
 				$retVal = $out;
 				break;
 		}
+		self::$indpEnvCache[$getEnvName] = $retVal;
 		return $retVal;
 	}
 
@@ -4551,6 +4561,19 @@ Connection: close
 	static public function purgeInstances() {
 		self::$singletonInstances = array();
 		self::$nonSingletonInstances = array();
+	}
+
+	/**
+	 * Flush internal runtime caches
+	 *
+	 * Used in unit tests only.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	static public function flushInternalRuntimeCaches() {
+		self::$indpEnvCache = [];
+		self::$idnaStringCache = [];
 	}
 
 	/**

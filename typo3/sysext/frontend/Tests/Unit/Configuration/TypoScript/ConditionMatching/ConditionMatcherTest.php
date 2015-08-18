@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Configuration\TypoScript\ConditionMatchi
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Test case
  */
@@ -31,6 +33,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected function setUp() {
 		$this->testGlobalNamespace = $this->getUniqueId('TEST');
+		GeneralUtility::flushInternalRuntimeCaches();
 		$GLOBALS[$this->testGlobalNamespace] = array();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->tmpl = new \stdClass();

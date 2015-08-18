@@ -50,6 +50,7 @@ class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->testGlobalNamespace = $this->getUniqueId('TEST');
 		$GLOBALS['TCA'][$this->testTableName] = array('ctrl' => array());
 		$GLOBALS[$this->testGlobalNamespace] = array();
+		GeneralUtility::flushInternalRuntimeCaches();
 		$this->setUpBackend();
 		$this->matchCondition = $this->getMock(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class, array('determineRootline'), array(), '', FALSE);
 	}

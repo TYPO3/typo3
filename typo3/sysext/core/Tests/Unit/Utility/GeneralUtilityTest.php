@@ -37,6 +37,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $singletonInstances = array();
 
 	protected function setUp() {
+		GeneralUtilityFixture::flushInternalRuntimeCaches();
 		GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
 		GeneralUtilityFixture::setAllowHostHeaderValue(FALSE);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
@@ -1550,6 +1551,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider hostnameAndPortDataProvider
 	 */
 	public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAdresses($httpHost, $expectedIp) {
+		GeneralUtility::flushInternalRuntimeCaches();
 		$_SERVER['HTTP_HOST'] = $httpHost;
 		$this->assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
 	}
@@ -1714,8 +1716,11 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function allGetIndpEnvCallsRelatedToHostNamesCallIsAllowedHostHeaderValue() {
 		GeneralUtilityFixture::getIndpEnv('HTTP_HOST');
+		GeneralUtility::flushInternalRuntimeCaches();
 		GeneralUtilityFixture::getIndpEnv('TYPO3_HOST_ONLY');
+		GeneralUtility::flushInternalRuntimeCaches();
 		GeneralUtilityFixture::getIndpEnv('TYPO3_REQUEST_HOST');
+		GeneralUtility::flushInternalRuntimeCaches();
 		GeneralUtilityFixture::getIndpEnv('TYPO3_REQUEST_URL');
 		$this->assertSame(4, GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount);
 	}

@@ -45,6 +45,8 @@ class AbstractConditionMatcherTest extends UnitTestCase {
 	protected function setUp() {
 		require_once('Fixtures/ConditionMatcherUserFuncs.php');
 
+		GeneralUtility::flushInternalRuntimeCaches();
+
 		$this->backupApplicationContext = GeneralUtility::getApplicationContext();
 		$this->conditionMatcher = $this->getMockForAbstractClass(AbstractConditionMatcher::class);
 		$this->evaluateConditionCommonMethod = new \ReflectionMethod(AbstractConditionMatcher::class, 'evaluateConditionCommon');
