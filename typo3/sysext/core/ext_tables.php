@@ -530,9 +530,6 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
 	'protectedSection' => 'status-overlay-includes-subpages'
 );
 
-// add stylesheets from the core
-$GLOBALS['TBE_STYLES']['skins']['core']['stylesheetDirectories']['Base'] = 'EXT:core/Resources/Public/StyleSheets/';
-
 // Adding flags to the sprite manager
 if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
 	$flagNames = array(
