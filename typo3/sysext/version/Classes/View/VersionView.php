@@ -44,7 +44,7 @@ class VersionView {
 			// If the selected page is not online, find the right ID
 			$onlineId = $curPage['pid'] == -1 ? $curPage['t3ver_oid'] : $id;
 			// Select all versions of online version:
-			$versions = BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id');
+			$versions = BackendUtility::selectVersionsOfRecord('pages', $onlineId, 'uid,pid,t3ver_label,t3ver_oid,t3ver_wsid,t3ver_id', NULL);
 			// If more than one was found...:
 			if (count($versions) > 1) {
 				// Create selector box entries:

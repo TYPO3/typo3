@@ -487,7 +487,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @return int Number of versions for record, FALSE if none.
 	 */
 	public function lookForOwnVersions($table, $uid) {
-		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid');
+		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid', NULL);
 		if (is_array($versions)) {
 			return count($versions);
 		}

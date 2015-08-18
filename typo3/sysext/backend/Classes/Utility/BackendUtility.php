@@ -4012,7 +4012,7 @@ class BackendUtility {
 	 * @param string $table Table name to select from
 	 * @param int $uid Record uid for which to find versions.
 	 * @param string $fields Field list to select
-	 * @param int $workspace Workspace ID, if zero all versions regardless of workspace is found.
+	 * @param int|NULL $workspace Search in workspace ID and Live WS, if 0 search only in LiveWS, if NULL search in all WS.
 	 * @param bool $includeDeletedRecords If set, deleted-flagged versions are included! (Only for clean-up script!)
 	 * @param array $row The current record
 	 * @return array|NULL Array of versions of table/uid
@@ -4020,7 +4020,6 @@ class BackendUtility {
 	static public function selectVersionsOfRecord($table, $uid, $fields = '*', $workspace = 0, $includeDeletedRecords = FALSE, $row = NULL) {
 		$realPid = 0;
 		$outputRows = array();
-		$workspace = (int)$workspace;
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			if (is_array($row) && !$includeDeletedRecords) {
 				$row['_CURRENT_VERSION'] = TRUE;
@@ -4036,12 +4035,20 @@ class BackendUtility {
 					$outputRows[] = $row;
 				}
 			}
+			$workspaceSqlPart = '';
+			if ($workspace === 0) {
+				// Only in Live WS
+				$workspaceSqlPart = ' AND t3ver_wsid=0';
+			} elseif ($workspace !== NULL) {
+				// In Live WS and Workspace with given ID
+				$workspaceSqlPart = ' AND t3ver_wsid IN (0,' . (int)$workspace . ')';
+			}
 			// Select all offline versions of record:
 			$rows = static::getDatabaseConnection()->exec_SELECTgetRows(
 				$fields,
 				$table,
 				'pid=-1 AND uid<>' . (int)$uid . ' AND t3ver_oid=' . (int)$uid
-					. ' AND t3ver_wsid' . ($workspace !== 0 ? ' IN (0,' . (int)$workspace . ')' : '=0')
+					. $workspaceSqlPart
 					. ($includeDeletedRecords ? '' : self::deleteClause($table)),
 				'',
 				't3ver_id DESC'
