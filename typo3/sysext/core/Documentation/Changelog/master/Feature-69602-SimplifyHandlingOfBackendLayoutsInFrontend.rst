@@ -1,0 +1,37 @@
+==================================================================
+Feature: #69602 - Simplify handling of backend layouts in frontend
+==================================================================
+
+Description
+===========
+
+To avoid complex TypoScript for integrators, the handling of backend layouts is simplified for the frontend.
+
+ To get the correct backend layout, the following TypoScript code can be used:
+
+.. code-block:: typoscript
+
+	page.10 = FLUIDTEMPLATE
+	page.10 {
+	  file.stdWrap.cObject = CASE
+	  file.stdWrap.cObject {
+		key.data = pagelayout
+
+		default = TEXT
+		default.value = fileadmin/template/home.html
+
+		3 = TEXT
+		3.value = fileadmin/template/1-col.html
+
+		4 = TEXT
+		4.value = fileadmin/template/2-col.html
+	  }
+	}
+
+Using  ``data = pagelayout`` is the same as using as
+
+.. code-block:: typoscript
+
+	field = backend_layout
+	ifEmpty.data = levelfield:-2,backend_layout_next_level,slide
+	ifEmpty.ifEmpty = default

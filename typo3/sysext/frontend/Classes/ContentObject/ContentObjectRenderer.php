@@ -5686,7 +5686,7 @@ class ContentObjectRenderer {
 			}
 			$parts = explode(':', $secVal, 2);
 			$type = strtolower(trim($parts[0]));
-			$typesWithOutParameters = array('level', 'date', 'current');
+			$typesWithOutParameters = array('level', 'date', 'current', 'pagelayout');
 			$key = trim($parts[1]);
 			if (($key != '') || in_array($type, $typesWithOutParameters)) {
 				switch ($type) {
@@ -5757,6 +5757,36 @@ class ContentObjectRenderer {
 						break;
 					case 'page':
 						$retVal = $tsfe->page[$key];
+						break;
+					case 'pagelayout':
+						// Check if the current page has a value in the DB field "backend_layout"
+						// if empty, check the root line for "backend_layout_next_level"
+						// same as
+						//   field = backend_layout
+						//   ifEmpty.data = levelfield:-2, backend_layout_next_level, slide
+						//   ifEmpty.ifEmpty = default
+						$retVal = $GLOBALS['TSFE']->page['backend_layout'];
+
+						// If it is set to "none" - don't use any
+						if ($retVal === '-1') {
+							$retVal = 'none';
+						} elseif ($retVal === '' || $retVal === '0') {
+							// If it not set check the root-line for a layout on next level and use this
+							foreach ($tsfe->rootLine as $rootLinePage) {
+								$retVal = (string) $rootLinePage['backend_layout_next_level'];
+								// If layout for "next level" is set to "none" - don't use any and stop searching
+								if ($retVal === '-1') {
+									$retVal = 'none';
+									break;
+								} elseif ($retVal !== '' && $retVal !== '0') {
+									// Stop searching if a layout for "next level" is set
+									break;
+								}
+							}
+						}
+						if ($retVal === '0' || $retVal === '') {
+							$retVal = 'default';
+						}
 						break;
 					case 'current':
 						$retVal = $this->data[$this->currentValKey];
