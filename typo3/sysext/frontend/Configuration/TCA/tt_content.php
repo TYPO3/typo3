@@ -1140,7 +1140,8 @@ return array(
 			'showitem' => '
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
 					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
-					bodytext;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:field.table.bodytext;tableconfiguration;nowrap:wizards[table],
+					bodytext;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:field.table.bodytext,
+					--palette--;;tableconfiguration,
 					table_caption,
 				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
 					layout;LLL:EXT:cms/locallang_ttc.xlf:layout_formlabel,
