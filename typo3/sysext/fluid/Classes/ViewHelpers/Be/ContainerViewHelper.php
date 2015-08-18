@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * </output>
  *
  * <code title="All options">
- * <f:be.container pageTitle="foo" enableClickMenu="false" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}" includeCsh="true">your module content</f:be.container>
+ * <f:be.container pageTitle="foo" enableClickMenu="false" loadExtJs="true" loadExtJsTheme="false" extJsAdapter="jQuery" enableExtJsDebug="true" loadJQuery="true" includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'" includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'" addJsInlineLabels="{0: 'label1', 1: 'label2'}">your module content</f:be.container>
  * </code>
  * <output>
  * "your module content" wrapped with proper head & body tags.
@@ -61,13 +61,12 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 	 * @param array $includeCssFiles List of custom CSS file to be loaded
 	 * @param array $includeJsFiles List of custom JavaScript file to be loaded
 	 * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
-	 * @param bool $includeCsh flag for including CSH
 	 * @param array $includeRequireJsModules List of RequireJS modules to be loaded
 	 * @return string
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @see \TYPO3\CMS\Core\Page\PageRenderer
 	 */
-	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeCsh = TRUE, $includeRequireJsModules = NULL) {
+	public function render($pageTitle = '', $enableClickMenu = TRUE, $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $includeCssFiles = NULL, $includeJsFiles = NULL, $addJsInlineLabels = NULL, $includeRequireJsModules = NULL) {
 		$pageRenderer = $this->getPageRenderer();
 		$doc = $this->getDocInstance();
 		$doc->JScode .= $doc->wrapScriptTags($doc->redirectUrls());
@@ -111,7 +110,7 @@ class ContainerViewHelper extends AbstractBackendViewHelper {
 		}
 		// Render the content and return it
 		$output = $this->renderChildren();
-		$output = $doc->startPage($pageTitle, $includeCsh) . $output;
+		$output = $doc->startPage($pageTitle) . $output;
 		$output .= $doc->endPage();
 		return $output;
 	}

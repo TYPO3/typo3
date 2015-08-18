@@ -784,11 +784,10 @@ function jumpToUrl(URL) {
 	 * This includes the proper header with charset, title, meta tag and beginning body-tag.
 	 *
 	 * @param string $title HTML Page title for the header
-	 * @param bool $includeCsh flag for including CSH
 	 * @return string Returns the whole header section of a HTML-document based on settings in internal variables (like styles, javascript code, charset, generator and docType)
 	 * @see endPage()
 	 */
-	public function startPage($title, $includeCsh = TRUE) {
+	public function startPage($title) {
 		// hook pre start page
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'])) {
 			$preStartPageHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
@@ -809,21 +808,11 @@ function jumpToUrl(URL) {
 			}
 		}
 
-
-
 		// Disable rendering of XHTML tags
 		$this->pageRenderer->setRenderXhtml(FALSE);
 
 		$languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
 		$this->pageRenderer->setHtmlTag('<html lang="' . $languageCode . '">');
-
-		// Include the JS for the Context Sensitive Help
-		// @todo: right now this is a hard dependency on csh manual, as the whole help system should be moved to
-		// the extension. The core provides an API for adding help, and rendering help, but the rendering
-		// should be up to the extension itself
-		if ($includeCsh && ExtensionManagementUtility::isLoaded('cshmanual')) {
-			$this->loadCshJavascript();
-		}
 
 		$headerStart = '<!DOCTYPE html>';
 		$this->pageRenderer->setXmlPrologAndDocType($headerStart);
@@ -941,11 +930,10 @@ function jumpToUrl(URL) {
 	 *
 	 * @param string $title page title
 	 * @param string $content page content
-	 * @param bool $includeCsh flag for including csh code
 	 * @return string complete page
 	 */
-	public function render($title, $content, $includeCsh = TRUE) {
-		$pageContent = $this->startPage($title, $includeCsh);
+	public function render($title, $content) {
+		$pageContent = $this->startPage($title);
 		$pageContent .= $content;
 		$pageContent .= $this->endPage();
 		return $this->insertStylesAndJS($pageContent);
@@ -1512,21 +1500,6 @@ function jumpToUrl(URL) {
 			DragDrop.table = "' . $table . '";
 			' . $additionalJavaScriptCode . '
 		}');
-	}
-
-	/**
-	 * This loads everything needed for the Context Sensitive Help (CSH)
-	 *
-	 * @return void
-	 */
-	protected function loadCshJavascript() {
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextHelp');
-		$this->pageRenderer->addInlineSetting('ContextHelp', 'moduleUrl', BackendUtility::getModuleUrl('help_CshmanualCshmanual', array(
-			'tx_cshmanual_help_cshmanualcshmanual' => array(
-				'controller' => 'Help',
-				'action' => 'detail'
-			)
-		)));
 	}
 
 	/**

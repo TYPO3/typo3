@@ -233,7 +233,7 @@ class LoginController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		$loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
 		$loginProvider->render($this->view, $pageRenderer, $this);
 
-		$content = $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
+		$content = $this->getDocumentTemplate()->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 		$content .= $this->view->render();
 		$content .= $this->getDocumentTemplate()->endPage();
 
