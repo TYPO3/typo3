@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Version\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -25,7 +27,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 /**
  * Versioning module, including workspace management
  */
-class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass implements \TYPO3\CMS\Core\Http\ControllerInterface {
 
 	/**
 	 * Module configuration
@@ -112,10 +114,18 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	protected $iconFactory;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'web_txversionM1';
+
+	/**
 	 * Initialize language files
 	 */
 	public function __construct() {
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$GLOBALS['SOBE'] = $this;
 		$GLOBALS['LANG']->includeLLFile('EXT:version/Resources/Private/Language/locallang.xlf');
 	}
 
@@ -126,7 +136,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 */
 	public function menuConfig() {
 		// CLEANSE SETTINGS
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name'], 'ses');
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName, 'ses');
 	}
 
 	/**
@@ -143,7 +153,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			'CONTENT' => ''
 		);
 		// Setting module configuration:
-		$this->MCONF = $GLOBALS['MCONF'];
+		$this->MCONF['name'] = $this->moduleName;
 		$this->REQUEST_URI = str_replace('&sendToReview=1', '', GeneralUtility::getIndpEnv('REQUEST_URI'));
 		// Draw the header.
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
@@ -212,8 +222,10 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * Outputs accumulated module content to browser.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 
@@ -238,7 +250,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				</a>';
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 			}
 			// If access to Web>List for user, then link to that module.
 			$buttons['record_list'] = BackendUtility::getListViewLink(array(
@@ -499,7 +511,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			// If another page module was specified, replace the default Page module with the new one
 			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 			$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
-			// Perform some acccess checks:
+			// Perform some access checks:
 			$a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
 			$a_wp = $GLOBALS['BE_USER']->check('modules', $pageModule);
 			$adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'' . $pageModule . '\'); return false;">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL) . '</a>';
@@ -516,4 +528,20 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		return '<div class="btn-group btn-group-sm" role="group">' . $adminLink . '</div>';
 	}
 
+
+	/**
+	 * Injects the request object for the current request and gathers all data
+	 *
+	 * @param ServerRequestInterface $request
+	 * @return \Psr\Http\Message\ResponseInterface $response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->init();
+		$this->main();
+
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
+	}
 }
