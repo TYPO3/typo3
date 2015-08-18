@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Core\Page;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -386,6 +388,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @var array
      */
     protected $inlineJavascriptWrap = array();
+
+    /**
+     * @var array
+     */
+    protected $inlineCssWrap = [];
 
     /**
      * Saves error messages generated during compression
@@ -1535,52 +1542,82 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function loadRequireJs()
     {
+        if (!empty($this->requireJsConfig)) {
+            return;
+        }
+        $this->addRequireJs = true;
 
-        // load all paths to map to package names / namespaces
+        $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
+        $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
+        $cacheIdentifier = 'requireJS_' . md5(implode(',', $loadedExtensions) . ($isDevelopment ? ':dev' : ''));
+        /** @var VariableFrontend $cache */
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
+        $this->requireJsConfig = $cache->get($cacheIdentifier);
+
+        // if we did not get a configuration from the cache, compute and store it in the cache
         if (empty($this->requireJsConfig)) {
-            // In order to avoid browser caching of JS files, adding a GET parameter to the files loaded via requireJS
-            if (GeneralUtility::getApplicationContext()->isDevelopment()) {
-                $this->requireJsConfig['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
-            } else {
-                $this->requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
-            }
-            $corePath = ExtensionManagementUtility::extPath('core', 'Resources/Public/JavaScript/Contrib/');
-            $corePath = PathUtility::getAbsoluteWebPath($corePath);
-            // first, load all paths for the namespaces, and configure contrib libs.
-            $this->requireJsConfig['paths'] = array(
-                'jquery-ui' => $corePath . 'jquery-ui',
-                'datatables' => $corePath . 'jquery.dataTables',
-                'matchheight' => $corePath . 'jquery.matchHeight-min',
-                'nprogress' => $corePath . 'nprogress',
-                'moment' => $corePath . 'moment',
-                'cropper' => $corePath . 'cropper.min',
-                'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
-                'bootstrap' => $corePath . 'bootstrap/bootstrap',
-                'twbs/bootstrap-datetimepicker' => $corePath . 'bootstrap-datetimepicker',
-                'autosize' => $corePath . 'autosize',
-                'taboverride' => $corePath . 'taboverride.min',
-                'twbs/bootstrap-slider' => $corePath . 'bootstrap-slider.min',
-                'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
-            );
-            // get all extensions that are loaded
-            $loadedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
-            foreach ($loadedExtensions as $packageName) {
-                $fullJsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
-                $fullJsPath = GeneralUtility::getFileAbsFileName($fullJsPath);
-                $fullJsPath = PathUtility::getAbsoluteWebPath($fullJsPath);
-                $fullJsPath = rtrim($fullJsPath, '/');
-                if ($fullJsPath) {
-                    $this->requireJsConfig['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $fullJsPath;
-                }
-            }
+            $this->requireJsConfig = $this->computeRequireJsConfig($isDevelopment, $loadedExtensions);
+            $cache->set($cacheIdentifier, $this->requireJsConfig);
+        }
+    }
 
-            // check if additional AMD modules need to be loaded if a single AMD module is initialized
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'])) {
-                $this->addInlineSettingArray('RequireJS.PostInitializationModules', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']);
+    /**
+     * Computes the RequireJS configuration, mainly consisting of the paths to the core and all extension JavaScript
+     * resource folders plus some additional generic configuration.
+     *
+     * @param bool $isDevelopment
+     * @param array $loadedExtensions
+     * @return array The RequireJS configuration
+     */
+    protected function computeRequireJsConfig($isDevelopment, array $loadedExtensions)
+    {
+        // load all paths to map to package names / namespaces
+        $requireJsConfig = [];
+
+        // In order to avoid browser caching of JS files, adding a GET parameter to the files loaded via requireJS
+        if ($isDevelopment) {
+            $requireJsConfig['urlArgs'] = 'bust=' . $GLOBALS['EXEC_TIME'];
+        } else {
+            $requireJsConfig['urlArgs'] = 'bust=' . GeneralUtility::hmac(TYPO3_version . PATH_site);
+        }
+        $corePath = ExtensionManagementUtility::extPath('core', 'Resources/Public/JavaScript/Contrib/');
+        $corePath = PathUtility::getAbsoluteWebPath($corePath);
+        // first, load all paths for the namespaces, and configure contrib libs.
+        $requireJsConfig['paths'] = array(
+            'jquery-ui' => $corePath . 'jquery-ui',
+            'datatables' => $corePath . 'jquery.dataTables',
+            'matchheight' => $corePath . 'jquery.matchHeight-min',
+            'nprogress' => $corePath . 'nprogress',
+            'moment' => $corePath . 'moment',
+            'cropper' => $corePath . 'cropper.min',
+            'imagesloaded' => $corePath . 'imagesloaded.pkgd.min',
+            'bootstrap' => $corePath . 'bootstrap/bootstrap',
+            'twbs/bootstrap-datetimepicker' => $corePath . 'bootstrap-datetimepicker',
+            'autosize' => $corePath . 'autosize',
+            'taboverride' => $corePath . 'taboverride.min',
+            'twbs/bootstrap-slider' => $corePath . 'bootstrap-slider.min',
+            'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
+        );
+
+        foreach ($loadedExtensions as $packageName) {
+            $fullJsPath = 'EXT:' . $packageName . '/Resources/Public/JavaScript/';
+            $fullJsPath = GeneralUtility::getFileAbsFileName($fullJsPath);
+            $fullJsPath = PathUtility::getAbsoluteWebPath($fullJsPath);
+            $fullJsPath = rtrim($fullJsPath, '/');
+            if ($fullJsPath) {
+                $requireJsConfig['paths']['TYPO3/CMS/' . GeneralUtility::underscoredToUpperCamelCase($packageName)] = $fullJsPath;
             }
         }
 
-        $this->addRequireJs = true;
+        // check if additional AMD modules need to be loaded if a single AMD module is initialized
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules'])) {
+            $this->addInlineSettingArray(
+                'RequireJS.PostInitializationModules',
+                $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['postInitializationModules']
+            );
+        }
+
+        return $requireJsConfig;
     }
 
     /**

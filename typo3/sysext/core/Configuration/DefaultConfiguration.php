@@ -153,6 +153,14 @@ return array(
                     ),
                     'groups' => array('lowlevel'),
                 ),
+                'assets' => array(
+                    'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
+                    'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
+                    'options' => array(
+                        'defaultLifetime' => 0,
+                    ),
+                    'groups' => array('system')
+                ),
                 'l10n' => array(
                     'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
                     'backend' => \TYPO3\CMS\Core\Cache\Backend\SimpleFileBackend::class,
