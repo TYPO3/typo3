@@ -234,6 +234,82 @@ hello
 	}
 
 	/**
+	 * Data provider for substituteMarkerArray
+	 */
+	public function substituteMarkerArrayDataProvider() {
+		return array(
+			'Upper case marker' => array(
+				'This is ###MARKER1### and this is ###MARKER2###',
+				array('###MARKER1###' => 'marker 1',
+					'###MARKER2###' => 'marker 2'),
+				'',
+				FALSE,
+				FALSE,
+				'This is marker 1 and this is marker 2'
+			),
+			'Lower case marker' => array(
+				'This is ###MARKER1### and this is ###MARKER2###',
+				array('###marker1###' => 'marker 1',
+					'###marker2###' => 'marker 2'),
+				'',
+				TRUE,
+				FALSE,
+				'This is marker 1 and this is marker 2'
+			),
+			'Upper case marker without hash mark' => array(
+				'This is ###MARKER1### and this is ###MARKER2###',
+				array('MARKER1' => 'marker 1',
+					'MARKER2' => 'marker 2'),
+				'###|###',
+				FALSE,
+				FALSE,
+				'This is marker 1 and this is marker 2'
+			),
+			'Upper case marker with another hash mark' => array(
+				'This is *MARKER1* and this is *MARKER2*',
+				array('MARKER1' => 'marker 1',
+					'MARKER2' => 'marker 2'),
+				'*|*',
+				FALSE,
+				FALSE,
+				'This is marker 1 and this is marker 2'
+			),
+			'Upper case marker with unused marker' => array(
+				'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
+				array('###MARKER1###' => 'marker 1',
+					'###MARKER2###' => 'marker 2'),
+				'',
+				FALSE,
+				FALSE,
+				'This is marker 1 and this is marker 2 ###UNUSED###'
+			),
+			'Upper case marker with unused marker deleted' => array(
+				'This is ###MARKER1### and this is ###MARKER2### ###UNUSED###',
+				array('###MARKER1###' => 'marker 1',
+					'###MARKER2###' => 'marker 2'),
+				'',
+				FALSE,
+				TRUE,
+				'This is marker 1 and this is marker 2 '
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider substituteMarkerArrayDataProvider
+	 * @param string $content The content stream, typically HTML template content.
+	 * @param array $markContentArray The array of key/value pairs being marker/content values used in the substitution. For each element in this array the function will substitute a marker in the content stream with the content.
+	 * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
+	 * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
+	 * @param bool $deleteUnused If set, all unused marker are deleted.
+	 */
+	public function substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused, $expected) {
+		$this->assertSame($expected, HtmlParser::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused));
+	}
+
+
+		/**
 	 * Data provider for substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider() {
