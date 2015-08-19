@@ -308,8 +308,38 @@ hello
 		$this->assertSame($expected, HtmlParser::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused));
 	}
 
+	/**
+	 * Data provider for substituteMarker
+	 */
+	public function substituteMarkerDataProvider() {
+		return array(
+			'Single marker' => array(
+				'This is a ###SAMPLE### text',
+				'###SAMPLE###',
+				'simple',
+				'This is a simple text'
+			),
+			'Double marker' => array(
+				'This is a ###SAMPLE### text with a ###SAMPLE### content',
+				'###SAMPLE###',
+				'simple',
+				'This is a simple text with a simple content'
+			),
+		);
+	}
 
-		/**
+	/**
+	 * @dataProvider substituteMarkerDataProvider
+	 * @param string $content The content stream, typically HTML template content.
+	 * @param string $marker The marker string, typically on the form "###[the marker string]###
+	 * @param mixed $markContent The content to insert instead of the marker string found.
+	 * @param string $expected The expected result of the substitution
+	 */
+	public function substituteMarker($content, $marker, $markContent, $expected) {
+		$this->assertSame($expected, HtmlParser::substituteMarker($content, $marker, $markContent));
+	}
+
+	/**
 	 * Data provider for substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider() {
