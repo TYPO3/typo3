@@ -293,11 +293,11 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 					// no NEW-button while edit
 					$buttons['new'] = '';
 					// SAVE button
-					$buttons['save'] = '<button type="submit" class="c-inputButton" name="submit">'
+					$buttons['save'] = '<button type="submit" class="c-inputButton" name="submit" value="1">'
 						. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
 						. '</button>';
 					// SAVE AND CLOSE button
-					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="saveclose">'
+					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="saveclose" value="1">'
 						. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
 						. '</button>';
 					// CLOSE button
@@ -306,7 +306,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 				}
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
-				$buttons['save'] = '<button class="c-inputButton" name="submit">'
+				$buttons['save'] = '<button class="c-inputButton" name="submit" value="1">'
 					. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
 					. '</button>';
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
@@ -470,7 +470,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 		$tce = GeneralUtility::makeInstance(DataHandler::class);
 		$tce->stripslashes_values = FALSE;
 
-		if (GeneralUtility::_GP('createExtension') || GeneralUtility::_GP('createExtension_x')) {
+		if (GeneralUtility::_GP('createExtension')) {
 			$recData['sys_template']['NEW'] = array(
 				'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
 				'title' => '+ext'

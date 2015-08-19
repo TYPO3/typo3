@@ -1205,11 +1205,11 @@ class PageLayoutController {
 			}
 			if ($function == 'quickEdit') {
 				// Save record
-				$buttons['savedok'] = '<button class="c-inputButton" name="_savedok_x">'
+				$buttons['savedok'] = '<button class="c-inputButton" name="_savedok_x" value="1">'
 					. IconUtility::getSpriteIcon('actions-document-save', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)))
 					. '</button>';
 				// Save and close
-				$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x">'
+				$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x" value="1">'
 					. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
 					. '</button>';
 				// Save record and show page
