@@ -138,12 +138,6 @@ $GLOBALS['TBE_MODULES'] = array(
  * documentation found in "Inside TYPO3"
  */
 $GLOBALS['TBE_STYLES'] = array(
-	'colorschemes' => array(
-		'0' => '#E4E0DB,#CBC7C3,#EDE9E5'
-	),
-	'borderschemes' => array(
-		'0' => array('border:solid 1px black;', 5)
-	),
 	'skinImg' => array()
 );
 
