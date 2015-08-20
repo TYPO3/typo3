@@ -11,7 +11,9 @@ defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin($_EXTKEY, 'Blogs', 'Blog listing');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_blogexample_domain_model_blog');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages(
+	'tx_blogexample_domain_model_blog,tx_blogexample_domain_model_post,tx_blogexample_domain_model_comment,tx_blogexample_domain_model_person,tx_blogexample_domain_model_tag'
+);
 $TCA['tx_blogexample_domain_model_blog'] = array (
 	'ctrl' => array (
 		'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_blog',
@@ -34,7 +36,6 @@ $TCA['tx_blogexample_domain_model_blog'] = array (
 	)
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_blogexample_domain_model_post');
 $TCA['tx_blogexample_domain_model_post'] = array (
 	'ctrl' => array (
 		'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_post',
@@ -58,7 +59,6 @@ $TCA['tx_blogexample_domain_model_post'] = array (
 	)
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_blogexample_domain_model_comment');
 $TCA['tx_blogexample_domain_model_comment'] = array (
 	'ctrl' => array (
 		'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_comment',
@@ -76,7 +76,6 @@ $TCA['tx_blogexample_domain_model_comment'] = array (
 	)
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_blogexample_domain_model_person');
 $TCA['tx_blogexample_domain_model_person'] = array (
 	'ctrl' => array (
 		'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_person',
@@ -98,7 +97,6 @@ $TCA['tx_blogexample_domain_model_person'] = array (
 	)
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_blogexample_domain_model_tag');
 $TCA['tx_blogexample_domain_model_tag'] = array (
 	'ctrl' => array (
 		'title'    => 'LLL:EXT:blog_example/Resources/Private/Language/locallang_db.xml:tx_blogexample_domain_model_tag',
