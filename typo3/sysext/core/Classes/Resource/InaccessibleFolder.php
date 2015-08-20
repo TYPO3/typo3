@@ -123,10 +123,10 @@ class InaccessibleFolder extends Folder {
 	 *
 	 * @param string $localFilePath
 	 * @param string $fileName
-	 * @param string $conflictMode possible value are 'cancel', 'replace'
+	 * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 * @return File The file object
 	 */
-	public function addFile($localFilePath, $fileName = NULL, $conflictMode = 'cancel') {
+	public function addFile($localFilePath, $fileName = NULL, $conflictMode = DuplicationBehavior::CANCEL) {
 		$this->throwInaccessibleException();
 	}
 
@@ -134,10 +134,10 @@ class InaccessibleFolder extends Folder {
 	 * Adds an uploaded file into the Storage.
 	 *
 	 * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-	 * @param string $conflictMode possible value are 'cancel', 'replace'
+	 * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 * @return File The file object
 	 */
-	public function addUploadedFile(array $uploadedFileData, $conflictMode = 'cancel') {
+	public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL) {
 		$this->throwInaccessibleException();
 	}
 
@@ -186,10 +186,10 @@ class InaccessibleFolder extends Folder {
 	 *
 	 * @param Folder $targetFolder Target folder to copy to.
 	 * @param string $targetFolderName an optional destination fileName
-	 * @param string $conflictMode "overrideExistingFile", "renameNewFile" or "cancel
+	 * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 * @return Folder New (copied) folder object.
 	 */
-	public function copyTo(Folder $targetFolder, $targetFolderName = NULL, $conflictMode = 'renameNewFile') {
+	public function copyTo(Folder $targetFolder, $targetFolderName = NULL, $conflictMode = DuplicationBehavior::RENAME) {
 		$this->throwInaccessibleException();
 	}
 
@@ -198,10 +198,10 @@ class InaccessibleFolder extends Folder {
 	 *
 	 * @param Folder $targetFolder Target folder to move to.
 	 * @param string $targetFolderName an optional destination fileName
-	 * @param string $conflictMode "overrideExistingFile", "renameNewFile" or "cancel
+	 * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 * @return Folder New (copied) folder object.
 	 */
-	public function moveTo(Folder $targetFolder, $targetFolderName = NULL, $conflictMode = 'renameNewFile') {
+	public function moveTo(Folder $targetFolder, $targetFolderName = NULL, $conflictMode = DuplicationBehavior::RENAME) {
 		$this->throwInaccessibleException();
 	}
 

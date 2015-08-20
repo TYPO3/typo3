@@ -30,7 +30,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 	 */
 	var actions = {
 		OVERRIDE: 'replace',
-		RENAME: 'changeName',
+		RENAME: 'rename',
 		SKIP: 'cancel',
 		USE_EXISTING: 'useExisting'
 	};

@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 
 /**
  * Contains functions for performing file operations like copying, pasting, uploading, moving,
@@ -73,9 +75,10 @@ class ExtendedFileUtility extends BasicFileUtility {
 	public $dontCheckForUnique = 0;
 
 	/**
-	 * Defines behaviour when uploading files with names that already exist; possible value are 'cancel', 'replace', 'changeName'
+	 * Defines behaviour when uploading files with names that already exist; possible values are
+	 * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 *
-	 * @var string
+	 * @var \TYPO3\CMS\Core\Resource\DuplicationBehavior
 	 */
 	protected $existingFilesConflictMode;
 
@@ -151,20 +154,28 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * @return string
 	 */
 	public function getExistingFilesConflictMode() {
-		return $this->existingFilesConflictMode;
+		return (string)$this->existingFilesConflictMode;
 	}
 
 	/**
 	 * Set existingFilesConflictMode
 	 *
-	 * @param string $existingFilesConflictMode
+	 * @param \TYPO3\CMS\Core\Resource\DuplicationBehavior|string $existingFilesConflictMode Instance or constant of \TYPO3\CMS\Core\Resource\DuplicationBehavior
+	 * @return void
 	 * @throws Exception
 	 */
 	public function setExistingFilesConflictMode($existingFilesConflictMode) {
-		if (!in_array($existingFilesConflictMode, array('cancel', 'replace', 'changeName'))) {
-			throw new Exception(sprintf('Invalid argument, received: "%s", expected: "cancel", "replace" or "changeName"', $existingFilesConflictMode));
+		try {
+			$this->existingFilesConflictMode = DuplicationBehavior::cast($existingFilesConflictMode);
+		} catch (InvalidEnumerationValueException $e) {
+			throw new Exception(
+				sprintf(
+					'Invalid argument, received: "%s", expected a value from enumeration \TYPO3\CMS\Core\Resource\DuplicationBehavior (%s)',
+					$existingFilesConflictMode,
+					implode(', ', DuplicationBehavior::getConstants())
+				)
+			);
 		}
-		$this->existingFilesConflictMode = $existingFilesConflictMode;
 	}
 
 	/**
@@ -191,6 +202,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 	 * If no argument is given, permissions of the currently logged in backend user are taken into account.
 	 *
 	 * @param array $permissions File Permissions.
+	 * @return void
 	 */
 	public function setActionPermissions(array $permissions = array()) {
 		if (empty($permissions)) {
@@ -609,10 +621,10 @@ class ExtendedFileUtility extends BasicFileUtility {
 		// If this is TRUE, we append _XX to the file name if
 		$appendSuffixOnConflict = (string)$cmds['altName'];
 		$resultObject = NULL;
+		$conflictMode = $appendSuffixOnConflict !== '' ? DuplicationBehavior::RENAME : DuplicationBehavior::CANCEL;
 		// Copying the file
 		if ($sourceFileObject instanceof File) {
 			try {
-				$conflictMode = $appendSuffixOnConflict !== '' ? 'renameNewFile' : 'cancel';
 				$resultObject = $sourceFileObject->copyTo($targetFolderObject, NULL, $conflictMode);
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
 				$this->writelog(2, 1, 114, 'You are not allowed to copy files', '');
@@ -634,7 +646,6 @@ class ExtendedFileUtility extends BasicFileUtility {
 			// Else means this is a Folder
 			$sourceFolderObject = $sourceFileObject;
 			try {
-				$conflictMode = $appendSuffixOnConflict !== '' ? 'renameNewFile' : 'cancel';
 				$resultObject = $sourceFolderObject->copyTo($targetFolderObject, NULL, $conflictMode);
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
 				$this->writelog(2, 1, 125, 'You are not allowed to copy directories', '');
@@ -689,10 +700,10 @@ class ExtendedFileUtility extends BasicFileUtility {
 			try {
 				if ($alternativeName !== '') {
 					// Don't allow overwriting existing files, but find a new name
-					$resultObject = $sourceFileObject->moveTo($targetFolderObject, $alternativeName, 'renameNewFile');
+					$resultObject = $sourceFileObject->moveTo($targetFolderObject, $alternativeName, DuplicationBehavior::RENAME);
 				} else {
 					// Don't allow overwriting existing files
-					$resultObject = $sourceFileObject->moveTo($targetFolderObject, NULL, 'cancel');
+					$resultObject = $sourceFileObject->moveTo($targetFolderObject, NULL, DuplicationBehavior::CANCEL);
 				}
 				$this->writelog(3, 0, 1, 'File "%s" moved to "%s"', array($sourceFileObject->getIdentifier(), $resultObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
@@ -714,10 +725,10 @@ class ExtendedFileUtility extends BasicFileUtility {
 			try {
 				if ($alternativeName !== '') {
 					// Don't allow overwriting existing files, but find a new name
-					$resultObject = $sourceFolderObject->moveTo($targetFolderObject, $alternativeName, 'renameNewFile');
+					$resultObject = $sourceFolderObject->moveTo($targetFolderObject, $alternativeName, DuplicationBehavior::RENAME);
 				} else {
 					// Don't allow overwriting existing files
-					$resultObject = $sourceFolderObject->moveTo($targetFolderObject, NULL, 'renameNewFile');
+					$resultObject = $sourceFolderObject->moveTo($targetFolderObject, NULL, DuplicationBehavior::RENAME);
 				}
 				$this->writelog(3, 0, 2, 'Directory "%s" moved to "%s"', array($sourceFolderObject->getIdentifier(), $targetFolderObject->getIdentifier()));
 			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException $e) {
@@ -972,14 +983,14 @@ class ExtendedFileUtility extends BasicFileUtility {
 			try {
 
 				if ((int)$this->dontCheckForUnique === 1) {
-					GeneralUtility::deprecationLog('dontCheckForUnique = 1 is deprecated. Use setExistingFilesConflictMode(\'replace\');. Support for dontCheckForUnique will be removed in TYPO3 CMS 8.');
-					$this->existingFilesConflictMode = 'replace';
+					GeneralUtility::deprecationLog('dontCheckForUnique = 1 is deprecated. Use setExistingFilesConflictMode(DuplicationBehavior::REPLACE);. Support for dontCheckForUnique will be removed in TYPO3 CMS 8.');
+					$this->existingFilesConflictMode = DuplicationBehavior::cast(DuplicationBehavior::REPLACE);
 				}
 
 				/** @var $fileObject File */
-				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, $this->existingFilesConflictMode);
+				$fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);
 				$fileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
-				if ($this->existingFilesConflictMode === 'replace') {
+				if ($this->existingFilesConflictMode->equals(DuplicationBehavior::REPLACE)) {
 					$this->getIndexer($fileObject->getStorage())->updateIndexEntry($fileObject);
 				}
 				$resultObjects[] = $fileObject;
@@ -1088,7 +1099,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 			$folder = $fileObjectToReplace->getParentFolder();
 			$resourceStorage = $fileObjectToReplace->getStorage();
 
-			$fileObject = $resourceStorage->addUploadedFile($fileInfo, $folder, $fileObjectToReplace->getName(), 'replace');
+			$fileObject = $resourceStorage->addUploadedFile($fileInfo, $folder, $fileObjectToReplace->getName(), DuplicationBehavior::REPLACE);
 
 			// Check if there is a file that is going to be uploaded that has a different name as the replacing one
 			// but exists in that folder as well.
@@ -1096,7 +1107,7 @@ class ExtendedFileUtility extends BasicFileUtility {
 			if ($keepFileName === FALSE) {
 				// if a file with the same name already exists, we need to change it to _01 etc.
 				// if the file does not exist, we can do a simple rename
-				$resourceStorage->moveFile($fileObject, $folder, $fileInfo['name'], 'renameNewFile');
+				$resourceStorage->moveFile($fileObject, $folder, $fileInfo['name'], DuplicationBehavior::RENAME);
 			}
 
 			$resultObjects[] = $fileObject;

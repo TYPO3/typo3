@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -2308,7 +2309,7 @@ class ImportExport {
 
 											if ($fileObject === NULL) {
 												try {
-													$fileObject = $this->legacyImportFolder->addFile($tempFile, $fileName, 'changeName');
+													$fileObject = $this->legacyImportFolder->addFile($tempFile, $fileName, DuplicationBehavior::RENAME);
 												} catch (\TYPO3\CMS\Core\Exception $e) {
 													$this->error('Error: no file could be added to the storage for file name' . $this->alternativeFileName[$tempFile]);
 												}
@@ -2996,7 +2997,7 @@ class ImportExport {
 
 		if ($fileObject === NULL) {
 			try {
-				$fileObject = $importFolder->addFile($temporaryFile, $fileName, 'changeName');
+				$fileObject = $importFolder->addFile($temporaryFile, $fileName, DuplicationBehavior::RENAME);
 			} catch (\TYPO3\CMS\Core\Exception $e) {
 				$this->error('Error: no file could be added to the storage for file name ' . $this->alternativeFileName[$temporaryFile]);
 			}

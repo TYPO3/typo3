@@ -6,7 +6,7 @@ Description
 ===========
 
 The GET/POST param to tell the FileController and FileListController whether to override a file or not switched from a bool
-value to a string with the possibilities ``cancel``, ``replace`` and ``changeName``.
+value to a string with the possibilities of the ``\TYPO3\CMS\Core\Resource\DuplicationBehavior`` enumeration.
 
 
 Impact

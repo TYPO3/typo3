@@ -6,7 +6,7 @@ Description
 ===========
 
 The ExtendedFileUtility ``$dontCheckForUnique`` flag has been marked as deprecated and replaced by
-``$fileUtility->setExistingFileConflictMode()`` with the possible options ``cancel``, ``replace`` and ``changeName``.
+``$fileUtility->setExistingFileConflictMode()`` with the possible options of the ``\TYPO3\CMS\Core\Resource\DuplicationBehavior`` enumeration.
 
 
 Impact
@@ -24,4 +24,4 @@ All installations with extensions that use ``ExtendedFileUtility::$dontCheckForU
 Migration
 =========
 
-Change the ``$fileUtility->dontCheckForUnique = TRUE`` to ``$fileUtility->setExistingFileConflictMode('replace')``.
+Change the ``$fileUtility->dontCheckForUnique = TRUE`` to ``$fileUtility->setExistingFileConflictMode(DuplicationBehavior::REPLACE)``.

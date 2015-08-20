@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -105,9 +106,10 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	public $cmd;
 
 	/**
-	 * Defines behaviour when uploading files with names that already exist; possible value are 'cancel', 'replace', 'changeName'
+	 * Defines behaviour when uploading files with names that already exist; possible values are
+	 * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 *
-	 * @var string
+	 * @var \TYPO3\CMS\Core\Resource\DuplicationBehavior
 	 */
 	protected $overwriteExistingFiles;
 
@@ -144,12 +146,7 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$this->table = GeneralUtility::_GP('table');
 		$this->imagemode = GeneralUtility::_GP('imagemode');
 		$this->cmd = GeneralUtility::_GP('cmd');
-		$this->overwriteExistingFiles = GeneralUtility::_GP('overwriteExistingFiles');
-
-		if ($this->overwriteExistingFiles === '1') {
-			GeneralUtility::deprecationLog('overwriteExitingFiles = 1 is deprecated. Use overwriteExitingFiles = "replace". Support for old behavior will be removed in TYPO3 CMS 8.');
-			$this->overwriteExistingFiles = 'replace';
-		}
+		$this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
 
 		try {
 			if ($combinedIdentifier) {
@@ -329,22 +326,12 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 					foreach ($items as $v) {
 						$FILE['delete'][] = array('data' => $v);
 					}
-					switch ($this->overwriteExistingFiles) {
-						case 'replace':
-						case 'changeName':
-							$conflictMode = $this->overwriteExistingFiles;
-							break;
-						default:
-							$conflictMode = 'cancel';
-							break;
-					}
-
 					// Init file processing object for deleting and pass the cmd array.
 					/** @var ExtendedFileUtility $fileProcessor */
 					$fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
 					$fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 					$fileProcessor->setActionPermissions();
-					$fileProcessor->setExistingFilesConflictMode($conflictMode);
+					$fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
 					$fileProcessor->start($FILE);
 					$fileProcessor->processData();
 					$fileProcessor->pushErrorMessagesToFlashMessageQueue();

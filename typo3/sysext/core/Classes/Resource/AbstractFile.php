@@ -452,12 +452,12 @@ abstract class AbstractFile implements FileInterface {
 	 *
 	 * @param Folder $targetFolder Folder to copy file into.
 	 * @param string $targetFileName an optional destination fileName
-	 * @param string $conflictMode overrideExistingFile", "renameNewFile", "cancel
+	 * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 *
 	 * @throws \RuntimeException
 	 * @return File The new (copied) file.
 	 */
-	public function copyTo(Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
+	public function copyTo(Folder $targetFolder, $targetFileName = NULL, $conflictMode = DuplicationBehavior::RENAME) {
 		if ($this->deleted) {
 			throw new \RuntimeException('File has been deleted.', 1329821483);
 		}
@@ -469,12 +469,12 @@ abstract class AbstractFile implements FileInterface {
 	 *
 	 * @param Folder $targetFolder Folder to move file into.
 	 * @param string $targetFileName an optional destination fileName
-	 * @param string $conflictMode overrideExistingFile", "renameNewFile", "cancel
+	 * @param string $conflictMode a value of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 *
 	 * @throws \RuntimeException
 	 * @return File This file object, with updated properties.
 	 */
-	public function moveTo(Folder $targetFolder, $targetFileName = NULL, $conflictMode = 'renameNewFile') {
+	public function moveTo(Folder $targetFolder, $targetFileName = NULL, $conflictMode = DuplicationBehavior::RENAME) {
 		if ($this->deleted) {
 			throw new \RuntimeException('File has been deleted.', 1329821484);
 		}

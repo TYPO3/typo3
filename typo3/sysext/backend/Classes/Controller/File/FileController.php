@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -46,9 +47,10 @@ class FileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	protected $CB;
 
 	/**
-	 * Defines behaviour when uploading files with names that already exist; possible value are 'cancel', 'replace', 'changeName'
+	 * Defines behaviour when uploading files with names that already exist; possible values are
+	 * the values of the \TYPO3\CMS\Core\Resource\DuplicationBehavior enumeration
 	 *
-	 * @var string
+	 * @var \TYPO3\CMS\Core\Resource\DuplicationBehavior
 	 */
 	protected $overwriteExistingFiles;
 
@@ -99,13 +101,7 @@ class FileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		// Set the GPvars from outside
 		$this->file = GeneralUtility::_GP('file');
 		$this->CB = GeneralUtility::_GP('CB');
-		$this->overwriteExistingFiles = GeneralUtility::_GP('overwriteExistingFiles');
-
-		if ((string)$this->overwriteExistingFiles === '1') {
-			GeneralUtility::deprecationLog('overwriteExitingFiles = 1 is deprecated. Use overwriteExitingFiles = "replace". Support for old behavior will be removed in TYPO3 CMS 8.');
-			$this->overwriteExistingFiles = 'replace';
-		}
-
+		$this->overwriteExistingFiles = DuplicationBehavior::cast(GeneralUtility::_GP('overwriteExistingFiles'));
 		$this->vC = GeneralUtility::_GP('vC');
 		$this->redirect = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect'));
 		$this->initClipboard();
@@ -142,16 +138,7 @@ class FileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		// Initializing:
 		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->setActionPermissions();
-		switch ($this->overwriteExistingFiles) {
-			case 'replace':
-			case 'changeName':
-				$conflictMode = $this->overwriteExistingFiles;
-				break;
-			default:
-				$conflictMode = 'cancel';
-				break;
-		}
-		$this->fileProcessor->setExistingFilesConflictMode($conflictMode);
+		$this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
 		// Checking referrer / executing:
 		$refInfo = parse_url(GeneralUtility::getIndpEnv('HTTP_REFERER'));
 		$httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
