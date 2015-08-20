@@ -139,7 +139,11 @@ class AttributesAttribute {
 	 * @return string The content of the attribute
 	 */
 	public function getValue($key) {
-		return $this->getAttributeObjectByKey($key)->getValue();
+		if ($this->hasAttribute($key)) {
+			return $this->getAttributeObjectByKey($key)->getValue();
+		} else {
+			return '';
+		}
 	}
 
 }
