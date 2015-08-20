@@ -35,7 +35,7 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '40',
-				'max' => '256'
+				'max' => '255'
 			)
 		),
 		'message' => array(

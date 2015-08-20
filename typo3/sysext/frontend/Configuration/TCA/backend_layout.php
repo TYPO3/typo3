@@ -28,7 +28,7 @@ return array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
-				'max' => '256',
+				'max' => '255',
 				'eval' => 'required'
 			)
 		),
