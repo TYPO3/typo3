@@ -23,6 +23,12 @@ if (!top.DTM_currentTabs) {
 }
 
 function DTM_activate(idBase,index,doToogle) {
+		// Check, whether the given index really exists
+	if (!document.getElementById(idBase+'-'+index+'-MENU')) {
+		// force the index to be the first one in case of saved settings are not valid anymore
+		index = 1;
+	}
+
 		// Hiding all:
 	if (DTM_array[idBase]) {
 		for(var cnt = 0; cnt < DTM_array[idBase].length; cnt++) {

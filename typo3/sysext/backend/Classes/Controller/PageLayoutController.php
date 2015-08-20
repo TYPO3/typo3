@@ -455,12 +455,12 @@ class PageLayoutController {
 				}
 			');
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
-				var DTM_array = new Array();
-				var DTM_origClass = new String();
+				var DTM_array = [];
+				var DTM_origClass = [];
 
 					// if tabs are used in a popup window the array might not exists
 				if(!top.DTM_currentTabs) {
-					top.DTM_currentTabs = new Array();
+					top.DTM_currentTabs = [];
 				}
 
 				function DTM_activate(idBase,index,doToogle) {	//
