@@ -33,6 +33,7 @@ class SimpleSpriteHandler extends AbstractSpriteHandler {
 .t3-icon-###NAME### {
 	background-position: 0px 0px !important;
 	background-image: url(\'###IMAGE###\') !important;
+	background-size: contain;
 }
 	';
 
