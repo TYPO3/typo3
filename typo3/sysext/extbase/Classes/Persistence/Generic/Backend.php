@@ -657,11 +657,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 					// MM type relation
 					$row[$columnMap->getColumnName()] = 0;
 				}
-			} else {
-				// Check explicitly for NULL, as getPlainValue would convert this to 'NULL'
-				$row[$columnMap->getColumnName()] = $propertyValue !== NULL
-					? $this->dataMapper->getPlainValue($propertyValue)
-					: NULL;
+			} elseif ($propertyValue !== NULL) {
+				$row[$columnMap->getColumnName()] = $this->dataMapper->getPlainValue($propertyValue);
 			}
 		}
 		$this->addCommonFieldsToRow($object, $row);
