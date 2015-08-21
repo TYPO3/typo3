@@ -15,10 +15,7 @@
 namespace TYPO3\CMS\Install\Updates;
 
 /**
- * Class FileListIsStartModuleUpdate
  * Update backend user setting startModule if set to "file_list"
- *
- * @package TYPO3\CMS\Install\Updates
  */
 class FileListIsStartModuleUpdate extends AbstractUpdate {
 
@@ -34,8 +31,11 @@ class FileListIsStartModuleUpdate extends AbstractUpdate {
 	 * @return bool Whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
-		$backendUsersCount = $this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'be_users');
-		if ($this->isWizardDone() || $backendUsersCount === 0) {
+		if ($this->isWizardDone()) {
+			return FALSE;
+		}
+
+		if ($this->getDatabaseConnection()->exec_SELECTcountRows('uid', 'be_users') === 0) {
 			return FALSE;
 		}
 
