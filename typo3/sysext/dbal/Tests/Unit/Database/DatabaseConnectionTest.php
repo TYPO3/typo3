@@ -206,6 +206,15 @@ class DatabaseConnectionTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 */
+	public function sqlForSelectMmQuery() {
+		$result = $this->subject->SELECT_mm_query('*', 'sys_category', 'sys_category_record_mm', 'tt_content', 'AND sys_category.uid = 1', '', 'sys_category.title DESC');
+		$expected = 'SELECT * FROM sys_category,sys_category_record_mm,tt_content WHERE sys_category.uid=sys_category_record_mm.uid_local AND tt_content.uid=sys_category_record_mm.uid_foreign AND sys_category.uid = 1 ORDER BY sys_category.title DESC';
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/16708
 	 */
 	public function minFunctionAndInOperatorCanBeParsed() {

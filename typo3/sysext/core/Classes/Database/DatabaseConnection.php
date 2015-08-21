@@ -335,15 +335,8 @@ class DatabaseConnection {
 	 * @see exec_SELECTquery()
 	 */
 	public function exec_SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		$foreign_table_as = $foreign_table == $local_table ? $foreign_table . StringUtility::getUniqueId('_join') : '';
-		$mmWhere = $local_table ? $local_table . '.uid=' . $mm_table . '.uid_local' : '';
-		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
-		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;
-		if ($foreign_table) {
-			$mmWhere .= ($foreign_table_as ?: $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
-			$tables .= ',' . $foreign_table . ($foreign_table_as ? ' AS ' . $foreign_table_as : '');
-		}
-		return $this->exec_SELECTquery($select, $tables, $mmWhere . ' ' . $whereClause, $groupBy, $orderBy, $limit);
+		$queryParts = $this->getSelectMmQueryParts($select, $local_table, $mm_table, $foreign_table, $whereClause, $groupBy, $orderBy, $limit);
+		return $this->exec_SELECT_queryArray($queryParts);
 	}
 
 	/**
@@ -655,6 +648,28 @@ class DatabaseConnection {
 			$this->debug_lastBuiltQuery = $query;
 		}
 		return $query;
+	}
+
+	/**
+	 * Creates a SELECT query, selecting fields ($select) from two/three tables joined
+	 * Use $mm_table together with $local_table or $foreign_table to select over two tables. Or use all three tables to select the full MM-relation.
+	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
+	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $GLOBALS['TCA'] in Inside TYPO3 for more details.
+	 *
+	 * @param string $select See exec_SELECT_mm_query()
+	 * @param string $local_table See exec_SELECT_mm_query()
+	 * @param string $mm_table See exec_SELECT_mm_query()
+	 * @param string $foreign_table See exec_SELECT_mm_query()
+	 * @param string $whereClause See exec_SELECT_mm_query()
+	 * @param string $groupBy See exec_SELECT_mm_query()
+	 * @param string $orderBy See exec_SELECT_mm_query()
+	 * @param string $limit See exec_SELECT_mm_query()
+	 * @return string Full SQL query for SELECT
+	 * @see SELECTquery()
+	 */
+	public function SELECT_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
+		$queryParts = $this->getSelectMmQueryParts($select, $local_table, $mm_table, $foreign_table, $whereClause, $groupBy, $orderBy, $limit);
+		return $this->SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
 	}
 
 	/**
@@ -978,6 +993,41 @@ class DatabaseConnection {
 	 */
 	public function getDateTimeFormats($table) {
 		return self::$dateTimeFormats;
+	}
+
+	/**
+	 * Creates SELECT query components for selecting fields ($select) from two/three tables joined
+	 * Use $mm_table together with $local_table or $foreign_table to select over two tables. Or use all three tables to select the full MM-relation.
+	 * The JOIN is done with [$local_table].uid <--> [$mm_table].uid_local  / [$mm_table].uid_foreign <--> [$foreign_table].uid
+	 * The function is very useful for selecting MM-relations between tables adhering to the MM-format used by TCE (TYPO3 Core Engine). See the section on $GLOBALS['TCA'] in Inside TYPO3 for more details.
+	 *
+	 * @param string $select See exec_SELECT_mm_query()
+	 * @param string $local_table See exec_SELECT_mm_query()
+	 * @param string $mm_table See exec_SELECT_mm_query()
+	 * @param string $foreign_table See exec_SELECT_mm_query()
+	 * @param string $whereClause See exec_SELECT_mm_query()
+	 * @param string $groupBy See exec_SELECT_mm_query()
+	 * @param string $orderBy See exec_SELECT_mm_query()
+	 * @param string $limit See exec_SELECT_mm_query()
+	 * @return array SQL query components
+	 */
+	protected function getSelectMmQueryParts($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
+		$foreign_table_as = $foreign_table == $local_table ? $foreign_table . StringUtility::getUniqueId('_join') : '';
+		$mmWhere = $local_table ? $local_table . '.uid=' . $mm_table . '.uid_local' : '';
+		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
+		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;
+		if ($foreign_table) {
+			$mmWhere .= ($foreign_table_as ?: $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
+			$tables .= ',' . $foreign_table . ($foreign_table_as ? ' AS ' . $foreign_table_as : '');
+		}
+		return array(
+			'SELECT' => $select,
+			'FROM' => $tables,
+			'WHERE' => $mmWhere . ' ' . $whereClause,
+			'GROUPBY' => $groupBy,
+			'ORDERBY' => $orderBy,
+			'LIMIT' => $limit
+		);
 	}
 
 	/**************************************
