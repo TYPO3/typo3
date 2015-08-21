@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 
@@ -85,6 +86,24 @@ class OperatorTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 		);
 
 		$this->assertSame(2, $query->count());
+	}
+
+	/**
+	 * @test
+	 */
+	public function betweenSetsBoundariesCorrectly() {
+		$query = $this->postRepository->createQuery();
+		$query->setOrderings(array('uid' => QueryInterface::ORDER_ASCENDING));
+
+		$query->matching(
+			$query->between('uid', 3, 5)
+		);
+
+		$result = array_map(
+			function($row) { return $row['uid']; },
+			$query->execute(TRUE)
+		);
+		$this->assertEquals(array(3,4,5), $result);
 	}
 
 }

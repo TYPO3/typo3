@@ -553,6 +553,23 @@ class Query implements QueryInterface {
 	}
 
 	/**
+	 * Returns a greater than or equal criterion used for matching objects against a query
+	 *
+	 * @param string $propertyName The name of the property to compare against
+	 * @param $operandLower The value of the lower boundary to compare against
+	 * @param $operandUpper The value of the upper boundary to compare against
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException
+	 * @api
+	 */
+	public function between($propertyName, $operandLower, $operandUpper) {
+		return $this->logicalAnd(
+			$this->greaterThanOrEqual($propertyName, $operandLower),
+			$this->lessThanOrEqual($propertyName, $operandUpper)
+		);
+	}
+
+	/**
 	 * @return void
 	 */
 	public function __wakeup() {
