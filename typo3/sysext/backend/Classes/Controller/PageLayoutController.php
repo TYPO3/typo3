@@ -456,7 +456,7 @@ class PageLayoutController {
 			');
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
 				var DTM_array = [];
-				var DTM_origClass = [];
+				var DTM_origClass = "";
 
 					// if tabs are used in a popup window the array might not exists
 				if(!top.DTM_currentTabs) {
