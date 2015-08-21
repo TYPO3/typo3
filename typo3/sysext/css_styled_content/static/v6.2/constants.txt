@@ -76,8 +76,6 @@ styles.content.imgtext {
   borderClass = csc-textpic-border
     # cat=content/cImage/i5; type=boolean; label= Image row separation: Whether images should be rendered/wrapped in separated rows, e.g. inside a div.csc-textpic-imagerow element
   separateRows = 1
-    # cat=content/cImage/i6; type=boolean; label= Add clearer after intext images: Whether a clearer should be added after textpic elements of type intext-left or intext-right
-  addIntextClearer = 1
 }
 
 styles.content.uploads {

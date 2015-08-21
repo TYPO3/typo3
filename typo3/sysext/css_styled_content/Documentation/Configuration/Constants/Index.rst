@@ -609,28 +609,6 @@ separateRows
 
 
 
-.. _constants-styles-content-imgtext-addintextclearer:
-
-addIntextClearer
-~~~~~~~~~~~~~~~~
-
-.. container:: table-row
-
-   Property
-         addIntextClearer
-
-   Data type
-         bool
-
-   Description
-         Whether a clearer should be added after textpic elements of type
-         intext-left or intext-right
-
-   Default
-         1
-
-
-
 .. _constants-styles-content-imgtext-linkwrap:
 
 styles.content.imgtext.linkWrap
