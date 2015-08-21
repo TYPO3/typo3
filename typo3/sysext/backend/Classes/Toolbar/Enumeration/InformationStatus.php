@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Backend\Toolbar\Enumeration;
  */
 class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration {
 
+	const __default = self::STATUS_INFO;
+
 	/**
 	 * @var string
 	 */
@@ -56,15 +58,12 @@ class InformationStatus extends \TYPO3\CMS\Core\Type\Enumeration {
 	);
 
 	/**
-	 * Map the status string to an integer
+	 * Check if the given status is greater than this status instance
 	 *
-	 * @param string $status
-	 * @return int
+	 * @param InformationStatus $status
+	 * @return boolean
 	 */
-	static public function mapStatusToInt($status) {
-		if (isset(static::$statusIntegerMap[$status])) {
-			return static::$statusIntegerMap[$status];
-		}
-		return -1;
+	public function isGreaterThan(InformationStatus $status) {
+		return static::$statusIntegerMap[(string)$this] > static::$statusIntegerMap[(string)$status];
 	}
 }

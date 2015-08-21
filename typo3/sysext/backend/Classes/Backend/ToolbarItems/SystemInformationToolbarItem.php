@@ -52,9 +52,9 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	/**
 	 * Holds the highest severity
 	 *
-	 * @var string
+	 * @var InformationStatus
 	 */
-	protected $highestSeverity = '';
+	protected $highestSeverity;
 
 	/**
 	 * The CSS class for the badge
@@ -98,6 +98,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 		$this->standaloneView->setTemplatePathAndFilename($extPath . 'Resources/Private/Templates/ToolbarMenu/' . static::TOOLBAR_MENU_TEMPLATE);
 
 		$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
+
+		$this->highestSeverity = InformationStatus::cast(InformationStatus::STATUS_INFO);
 	}
 
 	/**
@@ -114,7 +116,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 		$this->emitGetSystemInformation();
 		$this->emitLoadMessages();
 
-		$this->severityBadgeClass = $this->highestSeverity !== InformationStatus::STATUS_NOTICE ? 'badge-' . $this->highestSeverity : '';
+		$this->severityBadgeClass = !$this->highestSeverity->equals(InformationStatus::STATUS_NOTICE) ? 'badge-' . (string)$this->highestSeverity : '';
 	}
 
 	/**
@@ -259,9 +261,11 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 			$this->totalCount += (int)$message['count'];
 		}
 
+		/** @var InformationStatus $messageSeverity */
+		$messageSeverity = InformationStatus::cast($message['status']);
 		// define the severity for the badge
-		if (InformationStatus::mapStatusToInt($message['status']) > InformationStatus::mapStatusToInt($this->highestSeverity)) {
-			$this->highestSeverity = $message['status'];
+		if ($messageSeverity->isGreaterThan($this->highestSeverity)) {
+			$this->highestSeverity = $messageSeverity;
 		}
 
 		$this->systemMessages[] = $message;
