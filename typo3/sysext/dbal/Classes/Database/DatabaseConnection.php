@@ -1799,9 +1799,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					}
 				} else {
 					// Detecting value type; list or plain:
-					if (GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', '
-', '
-', '	'), '', $where_clause[$k]['comparator'])))) {
+					if (GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', LF, CR, TAB), '', $where_clause[$k]['comparator'])))) {
 						if (isset($v['subquery'])) {
 							$where_clause[$k]['subquery'] = $this->quoteSELECTsubquery($v['subquery']);
 						}
@@ -1811,6 +1809,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							&& is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.')
 						) {
 							$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
+						} elseif ($this->runningADOdbDriver('mssql')) {
+							$where_clause[$k]['value'][0] = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($where_clause[$k]['value'][0]), 1, -1);
 						}
 					}
 				}
