@@ -167,7 +167,7 @@ class PlainDataResolver
     protected function processVersionMovePlaceholders(array $ids)
     {
         // Early return on insufficient data-set
-        if (empty($this->workspaceId) || !$this->isVersionMovePlaceholderAware() || empty($ids)) {
+        if (empty($this->workspaceId) || !$this->isWorkspaceEnabled() || empty($ids)) {
             return $ids;
         }
 
@@ -287,14 +287,6 @@ class PlainDataResolver
     protected function isWorkspaceEnabled()
     {
         return BackendUtility::isTableWorkspaceEnabled($this->tableName);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isVersionMovePlaceholderAware()
-    {
-        return BackendUtility::isTableMovePlaceholderAware($this->tableName);
     }
 
     /**

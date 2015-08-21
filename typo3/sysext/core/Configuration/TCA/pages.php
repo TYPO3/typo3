@@ -6,7 +6,7 @@ return array(
         'sortby' => 'sorting',
         'title' => 'LLL:EXT:lang/locallang_tca.xlf:pages',
         'type' => 'doktype',
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'origUid' => 't3_origuid',
         'delete' => 'deleted',
         'crdate' => 'crdate',

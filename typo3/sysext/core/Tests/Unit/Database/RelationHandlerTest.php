@@ -59,7 +59,7 @@ class RelationHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function purgeItemArrayReturnsTrueIfItemsHaveBeenPurged()
     {
-        $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = 2;
+        $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = true;
 
         $this->subject->tableArray = array(
             'sys_category' => array(1, 2, 3),

@@ -10,7 +10,7 @@ return array(
         'cruser_id' => 'cruser_id',
         'sortby' => 'sorting',
 
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'versioning_followPages' => true,
 
         'origUid' => 't3_origuid',

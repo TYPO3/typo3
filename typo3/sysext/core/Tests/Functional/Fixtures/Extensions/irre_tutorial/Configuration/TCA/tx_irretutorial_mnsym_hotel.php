@@ -15,7 +15,7 @@ return array(
             'disabled' => 'hidden',
         ),
         'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_hotel.gif',
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'origUid' => 't3_origuid',
     ),
     'interface' => array(

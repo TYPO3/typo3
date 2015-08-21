@@ -1629,7 +1629,7 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     'enablecolumns' => array(
                         'disabled' => 'hidden'
                     ),
-                    'versioningWS' => 2
+                    'versioningWS' => true
                 )
             ),
         );

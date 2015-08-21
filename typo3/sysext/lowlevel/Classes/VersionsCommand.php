@@ -100,7 +100,7 @@ Automatic Repair:
         $resultArray['versions_move_placeholders_ok'] = array();
         $resultArray['versions_move_placeholders_bad'] = array();
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
-            if ((int)$cfg['ctrl']['versioningWS'] >= 2) {
+            if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                     'uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state',
                     $table,
@@ -139,7 +139,7 @@ Automatic Repair:
         // Finding move_id_check inconsistencies:
         $resultArray['versions_move_id_check'] = array();
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
-            if ((int)$cfg['ctrl']['versioningWS'] >= 2) {
+            if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state', $table, 't3ver_move_id<>0' . BackendUtility::deleteClause($table));
                 foreach ($placeHolders as $phrec) {
                     if (VersionState::cast($phrec['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {

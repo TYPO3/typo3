@@ -224,10 +224,8 @@ class WorkspaceService implements SingletonInterface
             }
             if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                 $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language);
-                if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] === 2) {
-                    $moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage);
-                    $recs = array_merge($recs, $moveRecs);
-                }
+                $moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage);
+                $recs = array_merge($recs, $moveRecs);
                 $recs = $this->filterPermittedElements($recs, $table);
                 if (!empty($recs)) {
                     $output[$table] = $recs;
@@ -386,7 +384,7 @@ class WorkspaceService implements SingletonInterface
             $pageList = implode(',', $newList);
         }
         unset($searchObj);
-        if ((int)$GLOBALS['TCA']['pages']['ctrl']['versioningWS'] === 2 && $pageList) {
+        if (BackendUtility::isTableWorkspaceEnabled('pages') && $pageList) {
             // Remove the "subbranch" if a page was moved away
             $movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . (int)$wsid . BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
             $pageIds = GeneralUtility::intExplode(',', $pageList, true);
@@ -747,13 +745,11 @@ class WorkspaceService implements SingletonInterface
             if ($tableName === 'pages' || empty($tableConfiguration['ctrl']['versioningWS'])) {
                 continue;
             }
-            $joinStatement = 'A.t3ver_oid=B.uid';
             // Consider records that are moved to a different page
-            if (BackendUtility::isTableMovePlaceholderAware($tableName)) {
-                $movePointer = new VersionState(VersionState::MOVE_POINTER);
-                $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
-                    . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
-            }
+            $movePointer = new VersionState(VersionState::MOVE_POINTER);
+            $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
+                . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
+
             // Select all records from this table in the database from the workspace
             // This joins the online version with the offline version as tables A and B
             $records = $this->getDatabaseConnection()->exec_SELECTgetRows(

@@ -286,7 +286,7 @@ class DataHandlerHook
         $WSversion = BackendUtility::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
         // Handle move-placeholders if the current record is not one already
         if (
-            BackendUtility::isTableMovePlaceholderAware($table)
+            BackendUtility::isTableWorkspaceEnabled($table)
             && !$moveRecVersionState->equals(VersionState::MOVE_PLACEHOLDER)
         ) {
             // Create version of record first, if it does not exist
@@ -304,7 +304,7 @@ class DataHandlerHook
         // Element was in "New/Deleted/Moved" so it can be moved...
         $recIsNewVersion = $moveRecVersionState->indicatesPlaceholder();
         $destRes = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid, $table);
-        $canMoveRecord = ($recIsNewVersion || BackendUtility::isTableMovePlaceholderAware($table));
+        $canMoveRecord = ($recIsNewVersion || BackendUtility::isTableWorkspaceEnabled($table));
         // Workspace source check:
         if (!$recIsNewVersion) {
             $errorCode = $tcemainObj->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid);
@@ -319,6 +319,7 @@ class DataHandlerHook
         // Only new versions can be inserted if $destRes is FALSE.
         // NO RECORDS can be inserted if $destRes is negative which indicates a stage
         //  not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
+        // since TYPO3 CMS 7, version2 is the default and the only option
         if (!($destRes > 0 || $canMoveRecord && !$destRes)) {
             $workspaceAccessBlocked['dest1'] = 'Could not insert record from table "' . $table . '" in destination PID "' . $resolvedPid . '" ';
         } elseif ($destRes == 1 && $WSversion['uid']) {
@@ -327,7 +328,8 @@ class DataHandlerHook
         if (empty($workspaceAccessBlocked)) {
             // If the move operation is done on a versioned record, which is
             // NOT new/deleted placeholder and versioningWS is in version 2, then...
-            if ($WSversion['uid'] && !$recIsNewVersion && BackendUtility::isTableMovePlaceholderAware($table)) {
+            // since TYPO3 CMS 7, version2 is the default and the only option
+            if ($WSversion['uid'] && !$recIsNewVersion && BackendUtility::isTableWorkspaceEnabled($table)) {
                 $this->moveRecord_wsPlaceholders($table, $uid, $destPid, $WSversion['uid'], $tcemainObj);
             } else {
                 // moving not needed, just behave like in live workspace
@@ -382,7 +384,7 @@ class DataHandlerHook
         $inlineFieldType = $dataHandler->getInlineFieldType($configuration);
         $inlineProcessing = (
             ($inlineFieldType === 'list' || $inlineFieldType === 'field')
-            && BackendUtility::isTableMovePlaceholderAware($configuration['foreign_table'])
+            && BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])
             && (!isset($configuration['behaviour']['disableMovingChildrenWithParent']) || !$configuration['behaviour']['disableMovingChildrenWithParent'])
         );
 
@@ -882,7 +884,7 @@ class DataHandlerHook
             $swapVersion['t3ver_state'] = (string)new VersionState(VersionState::DEFAULT_STATE);
         }
         // Moving element.
-        if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             //  && $t3ver_state['swapVersion']==4   // Maybe we don't need this?
             if ($plhRec = BackendUtility::getMovePlaceholder($table, $id, 't3ver_state,pid,uid' . ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ? ',' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : ''))) {
                 $movePlhID = $plhRec['uid'];
@@ -1164,7 +1166,7 @@ class DataHandlerHook
             $tcemainObj->deleteEl($table, $id, true, true);
         }
         // Remove the move-placeholder if found for live record.
-        if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             if ($plhRec = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid')) {
                 $tcemainObj->deleteEl($table, $plhRec['uid'], true, true);
             }

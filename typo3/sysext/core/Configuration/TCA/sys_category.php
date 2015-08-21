@@ -9,7 +9,7 @@ return array(
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'rootLevel' => -1,
         'versioning_followPages' => true,
         'origUid' => 't3_origuid',

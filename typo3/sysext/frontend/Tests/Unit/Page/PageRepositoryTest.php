@@ -30,7 +30,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'tstamp' => 'tstamp',
             'sortby' => 'sorting',
             'type' => 'doktype',
-            'versioningWS' => 2,
+            'versioningWS' => true,
             'origUid' => 't3_origuid',
             'delete' => 'deleted',
             'enablecolumns' => array(
@@ -271,7 +271,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'pages' => $this->defaultTcaForPages,
             $table => array(
                 'ctrl' => array(
-                    'versioningWS' => 2
+                    'versioningWS' => true
                 )
             )
         );
@@ -295,7 +295,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'pages' => $this->defaultTcaForPages,
             $table => array(
                 'ctrl' => array(
-                    'versioningWS' => 2
+                    'versioningWS' => true
                 )
             )
         );
@@ -319,7 +319,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'pages' => $this->defaultTcaForPages,
             $table => array(
                 'ctrl' => array(
-                    'versioningWS' => 2
+                    'versioningWS' => true
                 )
             )
         );
@@ -343,7 +343,7 @@ class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             'pages' => $this->defaultTcaForPages,
             $table => array(
                 'ctrl' => array(
-                    'versioningWS' => 2
+                    'versioningWS' => true
                 )
             )
         );

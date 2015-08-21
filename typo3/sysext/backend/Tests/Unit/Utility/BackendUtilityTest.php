@@ -439,7 +439,7 @@ class BackendUtilityTest extends UnitTestCase
                 'presetFields' => array(),
                 'tca' => array(
                     'ctrl' => array(
-                        'versioningWS' => '2'
+                        'versioningWS' => true
                     )
                 ),
                 'expectedFields' => 'uid,t3ver_id,t3ver_state,t3ver_wsid,t3ver_count'

@@ -11,7 +11,7 @@ return array(
         'editlock' => 'editlock',
         'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content',
         'delete' => 'deleted',
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'versioning_followPages' => true,
         'origUid' => 't3_origuid',
         'type' => 'CType',

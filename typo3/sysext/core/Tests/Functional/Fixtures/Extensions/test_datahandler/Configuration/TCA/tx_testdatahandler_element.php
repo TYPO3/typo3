@@ -15,7 +15,7 @@ return array(
         'enablecolumns' => array(
             'disabled' => 'hidden',
         ),
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'origUid' => 't3_origuid',
     ),
     'interface' => array(

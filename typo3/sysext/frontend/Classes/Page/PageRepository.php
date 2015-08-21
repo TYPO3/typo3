@@ -1463,10 +1463,10 @@ class PageRepository
      */
     public function movePlhOL($table, &$row)
     {
-        if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
+        if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
             && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
         ) {
-            // Only for WS ver 2... (moving)
+            // Only for WS ver 2... (moving) - enabled by default with CMS7
             // If t3ver_move_id is not found, then find it (but we like best if it is here)
             if (!isset($row['t3ver_move_id'])) {
                 $moveIDRec = $this->getRawRecord($table, $row['uid'], 't3ver_move_id', true);
@@ -1501,7 +1501,7 @@ class PageRepository
     {
         if ($this->versioningPreview) {
             $workspace = (int)$this->versioningWorkspaceId;
-            if ((int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2 && $workspace !== 0) {
+            if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace !== 0) {
                 // Select workspace version of record:
                 $row = $this->getDatabaseConnection()->exec_SELECTgetSingleRow($fields, $table, 'pid<>-1 AND
 						t3ver_state=' . new VersionState(VersionState::MOVE_PLACEHOLDER) . ' AND

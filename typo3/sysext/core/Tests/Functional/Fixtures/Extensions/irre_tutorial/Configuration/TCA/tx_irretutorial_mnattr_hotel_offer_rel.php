@@ -14,7 +14,7 @@ return array(
             'disabled' => 'hidden',
         ),
         'iconfile' => 'EXT:irre_tutorial/Resources/Public/Icons/icon_tx_irretutorial_hotel_offer_rel.gif',
-        'versioningWS' => 2,
+        'versioningWS' => true,
         'origUid' => 't3_origuid',
         // @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
         // 'shadowColumnsForNewPlaceholders' => 'hotelid,offerid',

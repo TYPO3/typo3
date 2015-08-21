@@ -8399,7 +8399,6 @@ class ContentObjectRenderer
         $considerMovePlaceholders = (
             $tsfe->sys_page->versioningPreview && $table !== 'pages'
             && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
-            && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2
         );
         if (trim($conf['uidInList'])) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', $tsfe->contentPid, $conf['uidInList']));

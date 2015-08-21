@@ -4376,7 +4376,7 @@ class BackendUtility
             // If version was found, swap the default record with that one.
             if (is_array($wsAlt)) {
                 // Check if this is in move-state:
-                if ($previewMovePlaceholders && !$movePldSwap && ($table == 'pages' || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $unsetMovePointers) {
+                if ($previewMovePlaceholders && !$movePldSwap && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $unsetMovePointers) {
                     // Only for WS ver 2... (moving)
                     // If t3ver_state is not found, then find it... (but we like best if it is here...)
                     if (!isset($wsAlt['t3ver_state'])) {
@@ -4428,8 +4428,7 @@ class BackendUtility
      */
     public static function movePlhOL($table, &$row)
     {
-        // Only for WS ver 2... (moving)
-        if ($table == 'pages' || (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
             // If t3ver_move_id or t3ver_state is not found, then find it... (but we like best if it is here...)
             if (!isset($row['t3ver_move_id']) || !isset($row['t3ver_state'])) {
                 $moveIDRec = self::getRecord($table, $row['uid'], 't3ver_move_id, t3ver_state');
@@ -4563,13 +4562,10 @@ class BackendUtility
         $output = array();
         foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
             if ($tableName != 'pages' && $cfg['ctrl']['versioningWS']) {
-                $joinStatement = 'A.t3ver_oid=B.uid';
-                // Consider records that are moved to a different page
-                if (self::isTableMovePlaceholderAware($tableName)) {
-                    $movePointer = new VersionState(VersionState::MOVE_POINTER);
-                    $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
-                        . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
-                }
+                $movePointer = new VersionState(VersionState::MOVE_POINTER);
+                $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
+                    . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
+
                 // Select all records from this table in the database from the workspace
                 // This joins the online version with the offline version as tables A and B
                 $output[$tableName] = static::getDatabaseConnection()->exec_SELECTgetRows(
@@ -4625,7 +4621,7 @@ class BackendUtility
         if ($workspace === null) {
             $workspace = static::getBackendUserAuthentication()->workspace;
         }
-        if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+        if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
             // Select workspace version of record:
             $row = static::getDatabaseConnection()->exec_SELECTgetSingleRow(
                 $fields,
@@ -4781,13 +4777,15 @@ class BackendUtility
     /**
      * Determines whether a table is aware of using move placeholders,
      * which means 'versioningWS' is set to 2.
+     * As of TYPO3 CMS 7, move placeholders is used as default so the method is obsolete.
      *
      * @param string $table
      * @return bool
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use isTableWorkspaceEnabled() directly
      */
     public static function isTableMovePlaceholderAware($table)
     {
-        return (self::isTableWorkspaceEnabled($table) && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] === 2);
+        return self::isTableWorkspaceEnabled($table);
     }
 
     /**
