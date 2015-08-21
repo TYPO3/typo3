@@ -465,10 +465,14 @@ class IndexSearchRepository {
 	 */
 	protected function searchSentence($sWord) {
 		$this->wSelClauses[] = '1=1';
+		$sWord = $this->getDatabaseConnection()->quoteStr(
+			$this->getDatabaseConnection()->escapeStrForLike($sWord, 'index_fulltext'),
+			'index_fulltext'
+		);
 		return $this->getDatabaseConnection()->exec_SELECTquery(
 			'ISEC.phash',
 			'index_section ISEC, index_fulltext IFT',
-			'IFT.fulltextdata LIKE \'%' . $this->getDatabaseConnection()->quoteStr($sWord, 'index_fulltext')
+			'IFT.fulltextdata LIKE \'%' . $sWord
 				. '%\' AND ISEC.phash = IFT.phash'
 				. $this->sectionTableWhere(),
 			'ISEC.phash'
