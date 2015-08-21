@@ -173,4 +173,21 @@ class DatabaseConnectionMssqlTest extends AbstractTestCase {
 		$expected = 'SELECT * FROM "tt_news_cat_mm" WHERE ISNULL("tt_news_cat_mm"."uid_foreign", 0) IN (21,22)';
 		$this->assertEquals($expected, $this->cleanSql($result));
 	}
+
+	/**
+	 * @test
+	 * @see http://forge.typo3.org/issues/27760
+	 */
+	public function singleQuotesAreProperlyEscaped() {
+		$result = $this->subject->SELECTquery(
+			'ISEC.phash',
+			'index_section ISEC, index_fulltext IFT',
+			'IFT.fulltextdata LIKE \'%' . $this->subject->quoteStr("Don't worry", 'index_fulltext')
+			. '%\' AND ISEC.phash = IFT.phash',
+			'ISEC.phash'
+		);
+		$expected = 'SELECT "ISEC"."phash" FROM "index_section" "ISEC", "index_fulltext" "IFT" WHERE "IFT"."fulltextdata" LIKE \'%Don\'\'t worry%\' AND "ISEC"."phash" = "IFT"."phash" GROUP BY "ISEC"."phash"';
+		$this->assertEquals($expected, $this->cleanSql($result));
+	}
+
 }
