@@ -733,6 +733,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
                     '<em data-foo="x">foobar</em>foo',
                     $charset
                 ),
+                $charset . ' html elements with iframe embedded 24|...|1' => array(
+                    '24|...|1',
+                    'Text with iframe <iframe src="//what.ever/"></iframe> and text after it',
+                    'Text with iframe <iframe src="//what.ever/"></iframe> and...',
+                    $charset
+                ),
+                $charset . ' html elements with script tag embedded 24|...|1' => array(
+                    '24|...|1',
+                    'Text with script <script>alert(\'foo\');</script> and text after it',
+                    'Text with script <script>alert(\'foo\');</script> and...',
+                    $charset
+                ),
             ));
         }
         return $data;
