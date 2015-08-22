@@ -312,6 +312,7 @@ hello
 	 * @param string $wrap A wrap value - [part 1] | [part 2] - for the markers before substitution
 	 * @param bool $uppercase If set, all marker string substitution is done with upper-case markers.
 	 * @param bool $deleteUnused If set, all unused marker are deleted.
+	 * @param string $expected
 	 */
 	public function substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused, $expected) {
 		$this->assertSame($expected, HtmlParser::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused));
@@ -613,6 +614,76 @@ Value 2.2
 				'/*<![CDATA[*/' . LF . '<hello world>' . LF . '/*]]>*/',
 			),
 		);
+	}
+
+	/**
+	 * Data provider for splitIntoBlock
+	 *
+	 * @return array
+	 */
+	public function splitIntoBlockDataProvider() {
+		return array(
+			'splitBlock' => array(
+				'h1,span',
+				'<body><h1>Title</h1><span>Note</span></body>',
+				FALSE,
+				array('<body>',
+					'<h1>Title</h1>',
+					'',
+					'<span>Note</span>',
+					'</body>')
+			),
+			'splitBlock br' => array(
+				'h1,span',
+				'<body><h1>Title</h1><br /><span>Note</span><br /></body>',
+				FALSE,
+				array('<body>',
+					'<h1>Title</h1>',
+					'<br />',
+					'<span>Note</span>',
+					'<br /></body>')
+			),
+			'splitBlock with attribute' => array(
+				'h1,span',
+				'<body><h1 class="title">Title</h1><span>Note</span></body>',
+				FALSE,
+				array('<body>',
+					'<h1 class="title">Title</h1>',
+					'',
+					'<span>Note</span>',
+					'</body>')
+			),
+			'splitBlock span with attribute' => array(
+				'span',
+				'<body><h1>Title</h1><span class="title">Note</span></body>',
+				FALSE,
+				array('<body><h1>Title</h1>',
+					'<span class="title">Note</span>',
+					'</body>')
+			),
+			'splitBlock without extra end tags' => array(
+				'h1,span,div',
+				'<body><h1>Title</h1><span>Note</span></body></div>',
+				TRUE,
+				array('<body>',
+					'<h1>Title</h1>',
+					'',
+					'<span>Note</span>',
+					'</body>')
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $tag List of tags, comma separated.
+	 * @param string $content HTML-content
+	 * @param bool $eliminateExtraEndTags If set, excessive end tags are ignored - you should probably set this in most cases.
+	 * @param array $expected The expected result
+	 * @dataProvider splitIntoBlockDataProvider
+	 */
+	public function splitIntoBlock($tag, $content, $eliminateExtraEndTags, $expected) {
+		$this->assertSame($expected, $this->subject->splitIntoBlock($tag, $content, $eliminateExtraEndTags));
 	}
 
 	/**
