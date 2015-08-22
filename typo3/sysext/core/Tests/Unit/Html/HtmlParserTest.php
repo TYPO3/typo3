@@ -337,6 +337,74 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for getFirstTag
+	 *
+	 * @return array
+	 */
+	public function getFirstTagDataProvider() {
+		return array(
+			array('<body><span></span></body>',
+			'<body>'),
+		);
+	}
+
+	/**
+	 * Returns the first tag in $str
+	 * Actually everything from the beginning of the $str is returned, so you better make sure the tag is the first thing...
+	 *
+	 * @test
+	 * @dataProvider getFirstTagDataProvider
+	 *
+	 * @param string $str HTML string with tags
+	 * @param string $expected The expected result.
+	 */
+	public function getFirstTag($str, $expected) {
+		$this->assertEquals($expected, $this->subject->getFirstTag($str));
+	}
+
+	/**
+	 * Data provider for getFirstTagName
+	 *
+	 * @return array
+	 */
+	public function getFirstTagNameDataProvider() {
+		return array(
+			array('<body><span></span></body>',
+				FALSE,
+				'BODY'),
+			array('<body><span></span></body>',
+				TRUE,
+				'body'),
+			array('<div class="test"><span></span></div>',
+				FALSE,
+				'DIV'),
+			array('<div><span class="test"></span></div>',
+				FALSE,
+				'DIV'),
+			array('<br /><span class="test"></span>',
+				FALSE,
+				'BR'),
+			array('<img src="test.jpg" />',
+				FALSE,
+				'IMG'),
+		);
+	}
+
+	/**
+	 * Returns the NAME of the first tag in $str
+	 *
+	 * @test
+	 * @dataProvider getFirstTagNameDataProvider
+	 *
+	 * @param string $str HTML tag (The element name MUST be separated from the attributes by a space character! Just *whitespace* will not do)
+	 * @param bool $preserveCase If set, then the tag is NOT converted to uppercase by case is preserved.
+	 * @param string $expected The expected result.
+	 */
+	public function getFirstTagName($str, $preserveCase, $expected) {
+		$this->assertEquals($expected, $this->subject->getFirstTagName($str, $preserveCase));
+	}
+
+	/**
 	 * @return array
 	 */
 	public function removeFirstAndLastTagDataProvider() {
