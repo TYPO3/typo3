@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 
 /**
  * Load database groups (relations)
@@ -440,15 +441,12 @@ class RelationHandler
                 }
             // Directly overlay workspace data
             } else {
-                $rows = array();
-                $foreignTable = $configuration['foreign_table'];
-                foreach ($this->tableArray[$foreignTable] as $itemId) {
-                    $rows[$itemId] = array('uid' => $itemId);
-                }
                 $this->itemArray = array();
-                foreach ($this->getRecordVersionsIds($foreignTable, $rows) as $row) {
+                $foreignTable = $configuration['foreign_table'];
+                $ids = $this->getResolver($foreignTable, $this->tableArray[$foreignTable])->get();
+                foreach ($ids as $id) {
                     $this->itemArray[] = array(
-                        'id' => $row['uid'],
+                        'id' => $id,
                         'table' => $foreignTable,
                     );
                 }
@@ -822,13 +820,11 @@ class RelationHandler
         // Get the rows from storage
         $rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $foreign_table, $whereClause, '', $sortby, '', 'uid');
         if (!empty($rows)) {
-            if (BackendUtility::isTableWorkspaceEnabled($foreign_table) && !$this->useLiveReferenceIds) {
-                $rows = $this->getRecordVersionsIds($foreign_table, $rows);
-            }
-            foreach ($rows as $row) {
-                $this->itemArray[$key]['id'] = $row['uid'];
+            $ids = $this->getResolver($foreign_table, array_keys($rows), $sortby)->get();
+            foreach ($ids as $id) {
+                $this->itemArray[$key]['id'] = $id;
                 $this->itemArray[$key]['table'] = $foreign_table;
-                $this->tableArray[$foreign_table][] = $row['uid'];
+                $this->tableArray[$foreign_table][] = $id;
                 $key++;
             }
         }
@@ -1323,73 +1319,6 @@ class RelationHandler
     }
 
     /**
-     * @param string $tableName
-     * @param array $records
-     * @return array
-     */
-    protected function getRecordVersionsIds($tableName, array $records)
-    {
-        $workspaceId = (int)$GLOBALS['BE_USER']->workspace;
-        $liveIds = array_map('intval', $this->extractValues($records, 'uid'));
-        $liveIdList = implode(',', $liveIds);
-
-        if (BackendUtility::isTableMovePlaceholderAware($tableName)) {
-            $versions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-                'uid,t3ver_move_id',
-                $tableName,
-                't3ver_state=3 AND t3ver_wsid=' . $workspaceId . ' AND t3ver_move_id IN (' . $liveIdList . ')'
-            );
-
-            if (!empty($versions)) {
-                foreach ($versions as $version) {
-                    $liveReferenceId = $version['t3ver_move_id'];
-                    $movePlaceholderId = $version['uid'];
-                    if (isset($records[$liveReferenceId]) && $records[$movePlaceholderId]) {
-                        $records[$movePlaceholderId] = $records[$liveReferenceId];
-                        unset($records[$liveReferenceId]);
-                    }
-                }
-                $liveIds = array_map('intval', $this->extractValues($records, 'uid'));
-                $records = array_combine($liveIds, array_values($records));
-                $liveIdList = implode(',', $liveIds);
-            }
-        }
-
-        $versions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-            'uid,t3ver_oid,t3ver_state',
-            $tableName,
-            'pid=-1 AND t3ver_oid IN (' . $liveIdList . ') AND t3ver_wsid=' . $workspaceId,
-            '',
-            't3ver_state DESC'
-        );
-
-        if (!empty($versions)) {
-            foreach ($versions as $version) {
-                $liveId = $version['t3ver_oid'];
-                if (isset($records[$liveId])) {
-                    $records[$liveId] = $version;
-                }
-            }
-        }
-
-        return $records;
-    }
-
-    /**
-     * @param array $array
-     * @param string $fieldName
-     * @return array
-     */
-    protected function extractValues(array $array, $fieldName)
-    {
-        $values = array();
-        foreach ($array as $item) {
-            $values[] = $item[$fieldName];
-        }
-        return $values;
-    }
-
-    /**
      * Gets the record uid of the live default record. If already
      * pointing to the live record, the submitted record uid is returned.
      *
@@ -1404,6 +1333,27 @@ class RelationHandler
             $liveDefaultId = $id;
         }
         return (int)$liveDefaultId;
+    }
+
+    /**
+     * @param string $tableName
+     * @param int[] $ids
+     * @param string $sortingStatement
+     * @return PlainDataResolver
+     */
+    protected function getResolver($tableName, array $ids, $sortingStatement = null)
+    {
+        /** @var PlainDataResolver $resolver */
+        $resolver = GeneralUtility::makeInstance(
+            PlainDataResolver::class,
+            $tableName,
+            $ids,
+            $sortingStatement
+        );
+        $resolver->setWorkspaceId($this->getWorkspaceId());
+        $resolver->setKeepDeletePlaceholder(true);
+        $resolver->setKeepLiveIds($this->useLiveReferenceIds);
+        return $resolver;
     }
 
     /**
