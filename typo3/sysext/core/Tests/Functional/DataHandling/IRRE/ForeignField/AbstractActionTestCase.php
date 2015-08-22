@@ -260,6 +260,25 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
+	 * @see DataSet/Assertion/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecords.csv
+	 */
+	public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration() {
+		unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['sortby']);
+		$newTableIds = $this->actionService->createNewRecords(
+			self::VALUE_PageId,
+			array(
+				self::TABLE_Content => array('header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid'),
+				self::TABLE_Hotel => array('title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid'),
+				self::TABLE_Offer => array('title' => 'Offer #1'),
+			)
+		);
+		$this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+		$this->recordIds['newHotelId'] = $newTableIds[self::TABLE_Hotel][0];
+		$localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
+		$this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+	}
+
+	/**
 	 * @see DataSet/Assertion/modifyOnlyHotelChildRecord.csv
 	 */
 	public function modifyOnlyHotelChild() {

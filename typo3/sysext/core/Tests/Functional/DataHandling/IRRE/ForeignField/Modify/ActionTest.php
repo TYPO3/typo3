@@ -322,6 +322,25 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
 
 	/**
 	 * @test
+	 * @see DataSet/createNLocalizeParentContentNHotelNOfferChildrenWOSortBy.csv
+	 */
+	public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration() {
+		parent::createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration();
+		$this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenWOSortBy');
+
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Testing #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentHotel)
+			->setTable(self::TABLE_Hotel)->setField('title')->setValues('[Translate to Dansk:] Hotel #1'));
+		$this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+			->setRecordIdentifier(self::TABLE_Hotel . ':' . $this->recordIds['newHotelId'])->setRecordField(self::FIELD_HotelOffer)
+			->setTable(self::TABLE_Offer)->setField('title')->setValues('[Translate to Dansk:] Offer #1'));
+	}
+
+	/**
+	 * @test
 	 * @see DataSet/Assertion/modifyOnlyHotelChildRecord.csv
 	 */
 	public function modifyOnlyHotelChild() {
