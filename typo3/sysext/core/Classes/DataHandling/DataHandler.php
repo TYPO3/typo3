@@ -4657,7 +4657,7 @@ class DataHandler {
 	 * @param string $value Comma separated list of the destination and the target language
 	 * @return void
 	 */
-	public function copyRecordFromLanguage($table, $id, $value) {
+	protected function copyRecordFromLanguage($table, $id, $value) {
 		list($destination, $language) = GeneralUtility::intExplode(',', $value);
 
 		// array_reverse is required to keep the order of elements

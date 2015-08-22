@@ -183,6 +183,21 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	protected $pageinfo;
 
 	/**
+	 * Caches the available languages in a colPos
+	 *
+	 * @var array
+	 */
+	protected $languagesInColumnCache = array();
+
+	/**
+	 * Caches the amount of content elements as a matrix
+	 *
+	 * @var array
+	 * @internal
+	 */
+	protected $contentElementCache = array();
+
+	/**
 	 * @var IconFactory
 	 */
 	protected $iconFactory;
@@ -445,8 +460,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		foreach ($langListArr as $lP) {
 			$lP = (int)$lP;
 
-			if (!isset($this->getPageLayoutController()->contentElementCache[$lP])) {
-				$this->getPageLayoutController()->contentElementCache[$lP] = array();
+			if (!isset($this->contentElementCache[$lP])) {
+				$this->contentElementCache[$lP] = array();
 			}
 
 			if (count($langListArr) === 1 || $lP === 0) {
@@ -462,8 +477,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, array_values($cList), $showLanguage);
 			// For each column, render the content into a variable:
 			foreach ($cList as $key) {
-				if (!isset($this->getPageLayoutController()->contentElementCache[$lP][$key])) {
-					$this->getPageLayoutController()->contentElementCache[$lP][$key] = array();
+				if (!isset($this->contentElementCache[$lP][$key])) {
+					$this->contentElementCache[$lP][$key] = array();
 				}
 
 				if (!$lP) {
@@ -497,7 +512,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$this->generateTtContentDataArray($rowArr);
 
 				foreach ((array)$rowArr as $rKey => $row) {
-					$this->getPageLayoutController()->contentElementCache[$lP][$key][$row['uid']] = $row;
+					$this->contentElementCache[$lP][$key][$row['uid']] = $row;
 					if ($this->tt_contentConfig['languageMode']) {
 						$languageColumn[$key][$lP] = $head[$key] . $content[$key];
 						if (!$this->defLangBinding) {
@@ -1580,7 +1595,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 
 		$copyFromLanguageMenu = '';
 		foreach ($this->getLanguagesToCopyFrom(GeneralUtility::_GP('id'), $lP, $colPos) as $languageId => $label) {
-			$elementsInColumn = $languageId === 0 ? $defLanguageCount : $this->getPageLayoutController()->getElementsFromColumnAndLanguage(GeneralUtility::_GP('id'), $colPos, $languageId);
+			$elementsInColumn = $languageId === 0 ? $defLanguageCount : $this->getElementsFromColumnAndLanguage(GeneralUtility::_GP('id'), $colPos, $languageId);
 			if (!empty($elementsInColumn)) {
 				$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue($this->getPageLayoutController()->doc->issueCommand('&cmd[tt_content][' . implode(',', $elementsInColumn) . '][copyFromLanguage]=' . GeneralUtility::_GP('id') . ',' . $lP)) . '; return false;';
 				$copyFromLanguageMenu .= '<li><a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $this->languageFlag($languageId, FALSE) . ' ' . htmlspecialchars($label) . '</a></li>' . LF;
@@ -1607,7 +1622,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$onClick,
 						$this->getLanguageService()->getLL('newPageContent_copyForLang', TRUE) . ' [' . count($defLanguageCount) . ']'
 					);
-			if ($copyFromLanguageMenu !== '' && $this->getPageLayoutController()->isColumnEmpty($colPos, $lP)) {
+			if ($copyFromLanguageMenu !== '' && $this->isColumnEmpty($colPos, $lP)) {
 				$theNewButton .= '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
 					. '<span class="caret"></span>'
 					. '<span class="sr-only">Toggle Dropdown</span>'
@@ -1616,7 +1631,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			}
 			$theNewButton .= '</div>';
 		} else {
-			if ($copyFromLanguageMenu !== '' && $this->getPageLayoutController()->isColumnEmpty($colPos, $lP)) {
+			if ($copyFromLanguageMenu !== '' && $this->isColumnEmpty($colPos, $lP)) {
 				$theNewButton =
 					'<div class="btn-group">'
 					. '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
@@ -1731,11 +1746,11 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 */
 	protected function getLanguagesToCopyFrom($pageId, $excludeLanguage = NULL, $colPos = 0) {
 		$langSelItems = array();
-		if (!$this->getPageLayoutController()->isColumnEmpty($colPos, 0)) {
+		if (!$this->isColumnEmpty($colPos, 0)) {
 			$langSelItems[0] = $this->getLanguageService()->getLL('newPageContent_translateFromDefault', TRUE);
 		}
 
-		$languages = $this->getPageLayoutController()->getUsedLanguagesInPageAndColumn($pageId, $colPos);
+		$languages = $this->getUsedLanguagesInPageAndColumn($pageId, $colPos);
 		foreach ($languages as $uid => $language) {
 			$langSelItems[$uid] = sprintf($this->getLanguageService()->getLL('newPageContent_copyFromAnotherLang'), htmlspecialchars($language['title']));
 		}
@@ -1745,6 +1760,92 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		}
 
 		return $langSelItems;
+	}
+
+	/**
+	 * Get used languages in a colPos of a page
+	 *
+	 * @param int $pageId
+	 * @param int $colPos
+	 * @return bool|\mysqli_result|object
+	 */
+	protected function getUsedLanguagesInPageAndColumn($pageId, $colPos) {
+		if (!isset($this->languagesInColumnCache[$pageId])) {
+			$this->languagesInColumnCache[$pageId] = array();
+		}
+		if (!isset($this->languagesInColumnCache[$pageId][$colPos])) {
+			$this->languagesInColumnCache[$pageId][$colPos] = array();
+		}
+
+		if (empty($this->languagesInColumnCache[$pageId][$colPos])) {
+			$exQ = BackendUtility::deleteClause('tt_content') .
+				($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
+
+			$databaseConnection = $this->getDatabaseConnection();
+			$res = $databaseConnection->exec_SELECTquery(
+				'sys_language.*',
+				'tt_content,sys_language',
+				'tt_content.sys_language_uid=sys_language.uid AND tt_content.colPos = ' . (int)$colPos . ' AND tt_content.pid=' . (int)$pageId . $exQ .
+				BackendUtility::versioningPlaceholderClause('tt_content'),
+				'tt_content.sys_language_uid,sys_language.uid,sys_language.pid,sys_language.tstamp,sys_language.hidden,sys_language.title,sys_language.language_isocode,sys_language.static_lang_isocode,sys_language.flag',
+				'sys_language.title'
+			);
+			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+				$this->languagesInColumnCache[$pageId][$colPos][$row['uid']] = $row;
+			}
+			$databaseConnection->sql_free_result($res);
+		}
+
+		return $this->languagesInColumnCache[$pageId][$colPos];
+	}
+
+	/**
+	 * Check if a column of a page for a language is empty. Translation records are ignored here!
+	 *
+	 * @param int $colPos
+	 * @param int $languageId
+	 * @return bool
+	 */
+	protected function isColumnEmpty($colPos, $languageId) {
+		foreach ($this->contentElementCache[$languageId][$colPos] as $uid => $row) {
+			if ((int)$row['l18n_parent'] === 0) {
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Get elements for a column and a language
+	 *
+	 * @param int $pageId
+	 * @param int $colPos
+	 * @param int $languageId
+	 * @return array
+	 */
+	protected function getElementsFromColumnAndLanguage($pageId, $colPos, $languageId) {
+		if (!isset($this->contentElementCache[$languageId][$colPos])) {
+			$languageId = (int)$languageId;
+			$whereClause = 'tt_content.pid=' . (int)$pageId . ' AND tt_content.colPos=' . (int)$colPos . ' AND tt_content.sys_language_uid=' . $languageId . BackendUtility::deleteClause('tt_content');
+			if ($languageId > 0) {
+				$whereClause .= ' AND tt_content.l18n_parent=0 AND sys_language.uid=' . $languageId . ($this->getBackendUser()->isAdmin() ? '' : ' AND sys_language.hidden=0');
+			}
+
+			$databaseConnection = $this->getDatabaseConnection();
+			$res = $databaseConnection->exec_SELECTquery(
+				'tt_content.uid',
+				'tt_content,sys_language',
+				$whereClause
+			);
+			while ($row = $databaseConnection->sql_fetch_assoc($res)) {
+				$this->contentElementCache[$languageId][$colPos][$row['uid']] = $row;
+			}
+			$databaseConnection->sql_free_result($res);
+		}
+		if (is_array($this->contentElementCache[$languageId][$colPos])) {
+			return array_keys($this->contentElementCache[$languageId][$colPos]);
+		}
+		return array();
 	}
 
 	/**
