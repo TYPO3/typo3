@@ -2404,7 +2404,18 @@ class BackendUtility {
 							$value = $value !== $emptyValue ? strtotime($value) : 0;
 						}
 						if (!empty($value)) {
-							$l = self::date($value) . ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+							$ageSuffix = '';
+							$dateColumnConfiguration = $GLOBALS['TCA'][$table]['columns'][$col]['config'];
+							$ageDisplayKey = 'disableAgeDisplay';
+
+							// generate age suffix as long as not explicitly suppressed
+							if (!isset($dateColumnConfiguration[$ageDisplayKey])
+									// non typesafe comparison on intention
+								|| $dateColumnConfiguration[$ageDisplayKey] == FALSE) {
+								$ageSuffix = ' (' . ($GLOBALS['EXEC_TIME'] - $value > 0 ? '-' : '') . self::calcAge(abs(($GLOBALS['EXEC_TIME'] - $value)), $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')) . ')';
+							}
+
+							$l = self::date($value) . $ageSuffix;
 						}
 					} elseif (GeneralUtility::inList($theColConf['eval'], 'time')) {
 						if (!empty($value)) {

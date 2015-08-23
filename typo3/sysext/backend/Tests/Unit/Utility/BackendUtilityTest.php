@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneAllowedTableFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
@@ -117,6 +119,7 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider calcAgeDataProvider
+	 *
 	 * @param int $seconds
 	 * @param string $expectedLabel
 	 */
@@ -218,28 +221,29 @@ class BackendUtilityTest extends UnitTestCase {
 		$GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
 			->will($this->returnCallback(
-				function($quoteStr) {
+				function ($quoteStr) {
 					return "'" . $quoteStr . "'";
 				}
-			));
+			)
+			);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnValue(0));
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_free_result');
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')
 			->will($this->returnCallback(
-				function() {
+				function () {
 					static $called = 0;
 					++$called;
 					switch ($called) {
 						// SELECT * FROM sys_category_record_mm
 						case 1:
 							return array(
-								'uid_local' => 1,	// uid of a sys_category record
-								'uid_foreign' => 1,	// uid of a pages record
+								'uid_local' => 1,    // uid of a sys_category record
+								'uid_foreign' => 1,    // uid of a pages record
 							);
 						case 2:
 							return array(
-								'uid_local' => 2,	// uid of a sys_category record
-								'uid_foreign' => 1,	// uid of a pages record
+								'uid_local' => 2,    // uid of a sys_category record
+								'uid_foreign' => 1,    // uid of a pages record
 							);
 						case 3:
 							return NULL;
@@ -259,7 +263,8 @@ class BackendUtilityTest extends UnitTestCase {
 					}
 					return NULL;
 				}
-			));
+			)
+			);
 
 		$GLOBALS['TCA'] = array(
 			'pages' => array(
@@ -294,6 +299,88 @@ class BackendUtilityTest extends UnitTestCase {
 		);
 
 		$this->assertSame('Category 1; Category 2', ProcessedValueForSelectWithMMRelationFixture::getProcessedValue('pages', 'categories', '2', 0, FALSE, FALSE, 1));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent() {
+		/** @var ObjectProphecy $languageServiceProphecy */
+		$languageServiceProphecy = $this->prophesize(LanguageService::class);
+		$languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+		$GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+
+		$GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
+
+		$GLOBALS['TCA'] = [
+			'tt_content' => [
+				'columns' => [
+					'date' => [
+						'config' => [
+							'type' => 'input',
+							'eval' => 'date',
+						],
+					],
+				],
+			],
+		];
+		$this->assertSame('28-08-15 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
+	}
+
+	/**
+	 * @return array
+	 */
+	public function inputTypeDateDisplayOptions() {
+		return [
+			'typeSafe Setting' => [
+				TRUE,
+				'28-08-15',
+			],
+			'non typesafe setting' => [
+				1,
+				'28-08-15',
+			],
+			'setting disabled typesafe' => [
+				FALSE,
+				'28-08-15 (-2 days)',
+			],
+			'setting disabled not typesafe' => [
+				0,
+				'28-08-15 (-2 days)',
+			],
+		];
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider inputTypeDateDisplayOptions
+	 *
+	 * @param string $input
+	 * @param string $expected
+	 */
+	public function getProcessedValueHandlesAgeDisplayCorrectly($input, $expected) {
+		/** @var ObjectProphecy $languageServiceProphecy */
+		$languageServiceProphecy = $this->prophesize(LanguageService::class);
+		$languageServiceProphecy->sL(Argument::cetera())->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+		$GLOBALS['LANG'] = $languageServiceProphecy->reveal();
+
+		$GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
+
+		$GLOBALS['TCA'] = [
+			'tt_content' => [
+				'columns' => [
+					'date' => [
+						'config' => [
+							'type' => 'input',
+							'eval' => 'date',
+							'disableAgeDisplay' => $input,
+						],
+					],
+				],
+			],
+		];
+		$this->assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
 	}
 
 	/**
@@ -402,6 +489,7 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getCommonSelectFieldsReturnsCorrectFieldsDataProvider
+	 *
 	 * @param string $table
 	 * @param string $prefix
 	 * @param array $presetFields
@@ -489,6 +577,7 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
+	 *
 	 * @param string $table
 	 * @param string $col
 	 * @param string $key
@@ -558,6 +647,7 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
+	 *
 	 * @param int $pageId
 	 * @param string $table
 	 * @param string $column
@@ -638,6 +728,7 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getLabelsFromItemsListDataProvider
+	 *
 	 * @param string $table
 	 * @param string $col
 	 * @param string $keyList
@@ -651,7 +742,7 @@ class BackendUtilityTest extends UnitTestCase {
 		$GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
 
 		$GLOBALS['TCA'][$table] = $tca;
-		$label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList,$pageTsConfig);
+		$label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);
 		$this->assertEquals($expectedLabel, $label);
 	}
 
@@ -1105,9 +1196,11 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider replaceMarkersInWhereClauseDataProvider
+	 *
 	 * @param string $whereClause
 	 * @param array $tsConfig
 	 * @param string $expected
+	 *
 	 * @throws \PHPUnit_Framework_Exception
 	 */
 	public function replaceMarkersInWhereClauseReturnsValidWhereClause($whereClause, array $tsConfig, $expected) {
@@ -1116,10 +1209,11 @@ class BackendUtilityTest extends UnitTestCase {
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('quoteStr')->will($this->returnArgument(0));
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('fullQuoteStr')
 			->will($this->returnCallback(
-				function($quoteStr) {
+				function ($quoteStr) {
 					return "'" . $quoteStr . "'";
 				}
-			));
+			)
+			);
 		$GLOBALS['TYPO3_DB']->expects($this->any())->method('cleanIntList')->will($this->returnArgument(0));
 		$this->assertSame($expected, BackendUtility::replaceMarkersInWhereClause($whereClause, 'dummytable', 'dummyfield', $tsConfig));
 	}
@@ -1177,6 +1271,7 @@ class BackendUtilityTest extends UnitTestCase {
 
 	/**
 	 * Data provider for replaceL10nModeFieldsReplacesFields
+	 *
 	 * @return array
 	 */
 	public function replaceL10nModeFieldsReplacesFieldsDataProvider() {
@@ -1311,11 +1406,13 @@ class BackendUtilityTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider replaceL10nModeFieldsReplacesFieldsDataProvider
+	 *
 	 * @param string $table
 	 * @param array $row
 	 * @param array $tca
 	 * @param array $originalRow
 	 * @param array $expected
+	 *
 	 * @throws \InvalidArgumentException
 	 * @throws \PHPUnit_Framework_Exception
 	 */
@@ -1354,5 +1451,4 @@ class BackendUtilityTest extends UnitTestCase {
 		);
 		$this->assertEquals($expected, BackendUtility::getSpecConfParts($defaultExtras));
 	}
-
 }
