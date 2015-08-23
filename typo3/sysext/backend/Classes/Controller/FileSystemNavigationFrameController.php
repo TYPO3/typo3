@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\Response;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Http\ControllerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\FileListFolderTree;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -24,7 +27,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Main script class for rendering of the folder tree
  */
-class FileSystemNavigationFrameController {
+class FileSystemNavigationFrameController implements ControllerInterface {
 
 	// Internal, dynamic:
 	// Content accumulates in this variable.
@@ -72,6 +75,19 @@ class FileSystemNavigationFrameController {
 	public function __construct() {
 		$GLOBALS['SOBE'] = $this;
 		$this->init();
+	}
+
+	/**
+	 * @param ServerRequestInterface $request
+	 * @return Response
+	 */
+	public function processRequest(ServerRequestInterface $request) {
+		$this->initPage();
+		$this->main();
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
@@ -123,6 +139,7 @@ class FileSystemNavigationFrameController {
 		$this->doHighlight = !$this->getBackendUser()->getTSConfigVal('options.pageTree.disableTitleHighlight');
 		// Create template object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+		$this->doc->bodyTagId = 'ext-backend-Modules-FileSystemNavigationFrame-index-php';
 		$this->doc->setModuleTemplate('EXT:backend/Resources/Private/Templates/alt_file_navframe.html');
 		$this->doc->showFlashMessages = FALSE;
 		// Adding javascript code for drag&drop and the filetree as well as the click menu code
@@ -187,8 +204,10 @@ class FileSystemNavigationFrameController {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

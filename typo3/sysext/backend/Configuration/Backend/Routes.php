@@ -84,6 +84,13 @@ return [
 
 
 	/** File- and folder-related routes */
+
+	// File navigation tree
+	'file_navframe' => [
+		'path' => '/folder/tree',
+		'controller' => Controller\FileSystemNavigationFrameController::class
+	],
+
 	// Editing the contents of a file
 	'file_edit' => [
 		'path' => '/file/editcontent',

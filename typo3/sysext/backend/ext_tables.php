@@ -3,12 +3,6 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 
-	// Register file_navframe
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath(
-		'file_navframe',
-		'EXT:backend/Modules/FileSystemNavigationFrame/'
-	);
-
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
 		'web',
 		'layout',
