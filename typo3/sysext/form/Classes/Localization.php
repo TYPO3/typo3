@@ -20,33 +20,14 @@ namespace TYPO3\CMS\Form;
 class Localization {
 
 	/**
-	 * File reference to the local language file
-	 *
-	 * @var string
-	 */
-	protected $localLanguageFile;
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $localLanguageFile File reference to the local language file
-	 */
-	public function __construct($localLanguageFile = 'LLL:EXT:form/Resources/Private/Language/locallang_controller.xlf') {
-		$this->localLanguageFile = (string)$localLanguageFile;
-	}
-
-	/**
 	 * Get a label from local language
 	 *
 	 * @param string $labelKey Key to look for
 	 * @return string
 	 */
 	public function getLocalLanguageLabel($labelKey) {
-		if (TYPO3_MODE === 'FE') {
-			$output = $GLOBALS['TSFE']->sL($this->localLanguageFile . ':' . $labelKey);
-		} else {
-			$output = $GLOBALS['LANG']->sL($this->localLanguageFile . ':' . $labelKey);
-		}
+		$output = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($labelKey, 'form');
+
 		return $output;
 	}
 
