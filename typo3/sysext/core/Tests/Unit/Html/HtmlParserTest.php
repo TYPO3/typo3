@@ -826,4 +826,30 @@ Value 2.2
 		$config = $this->subject->HTMLparserConfig($tsConfig);
 		return $this->subject->HTMLcleaner($content, $config[0], $config[1], $config[2], $config[3]);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function removeFirstAndLastTagDataProvider() {
+		return array(
+			array('<span>Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'),
+			array('<td><tr>Some content</tr></td>', '<tr>Some content</tr>'),
+			array('Something before<span>Wrapper<div>Some content</div></span>Something after', 'Wrapper<div>Some content</div>'),
+			array('<span class="hidden">Wrapper<div>Some content</div></span>', 'Wrapper<div>Some content</div>'),
+			array('<span>Wrapper<div class="hidden">Some content</div></span>', 'Wrapper<div class="hidden">Some content</div>'),
+		);
+	}
+
+	/**
+	 * Removes the first and last tag in the string
+	 * Anything before the first and after the last tags respectively is also removed
+	 *
+	 * @test
+	 * @dataProvider removeFirstAndLastTagDataProvider
+	 * @param string $str String to process
+	 * @param string $expectedResult
+	 */
+	public function removeFirstAndLastTag($str, $expectedResult) {
+		$this->assertEquals($expectedResult, $this->subject->removeFirstAndLastTag($str));
+	}
 }
