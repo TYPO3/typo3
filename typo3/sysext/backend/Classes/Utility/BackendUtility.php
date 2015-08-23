@@ -4404,8 +4404,10 @@ class BackendUtility {
 	 *
 	 * @param string $path Path to evaluate
 	 * @return bool
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function getPathType_web_nonweb($path) {
+		GeneralUtility::logDeprecatedFunction();
 		return GeneralUtility::isFirstPartOfStr($path, GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT')) ? 'web' : '';
 	}
 
