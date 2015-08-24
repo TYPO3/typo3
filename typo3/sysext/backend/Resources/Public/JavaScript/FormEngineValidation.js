@@ -232,7 +232,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 			if (typeof typeConfig !== 'undefined' && typeConfig.length) {
 				type = typeConfig[0].type;
 			}
-			if ($.inArray('password', evalList)) {
+			if ($.inArray('password', evalList) !== -1) {
 				$mainField.val(origValue);
 				$humanReadableField.val(newValue);
 			} else {
