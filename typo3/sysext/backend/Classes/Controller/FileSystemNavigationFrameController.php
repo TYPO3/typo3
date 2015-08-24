@@ -23,21 +23,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\FileListFolderTree;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Main script class for rendering of the folder tree
  */
 class FileSystemNavigationFrameController implements ControllerInterface {
 
-	// Internal, dynamic:
-	// Content accumulates in this variable.
 	/**
+	 * Content accumulates in this variable.
+	 *
 	 * @var string
 	 */
 	public $content;
 
 	/**
-	 * @var \TYPO3\CMS\Filelist\FileListFolderTree
+	 * @var \TYPO3\CMS\Backend\Tree\View\FolderTreeView
 	 */
 	public $foldertree;
 
@@ -48,7 +49,6 @@ class FileSystemNavigationFrameController implements ControllerInterface {
 	 */
 	public $doc;
 
-	// Internal, static: GPvar:
 	/**
 	 * @var string
 	 */
@@ -109,21 +109,22 @@ class FileSystemNavigationFrameController implements ControllerInterface {
 
 		// Create folder tree object:
 		if (!empty($this->scopeData)) {
-			$className = $this->scopeData['class'];
-			$this->foldertree = GeneralUtility::makeInstance($className);
+			$this->foldertree = GeneralUtility::makeInstance($this->scopeData['class']);
 			$this->foldertree->thisScript = $this->scopeData['script'];
 			$this->foldertree->ext_noTempRecyclerDirs = $this->scopeData['ext_noTempRecyclerDirs'];
-			$GLOBALS['SOBE']->browser = new \stdClass();
-			$GLOBALS['SOBE']->browser->mode = $this->scopeData['browser']['mode'];
-			$GLOBALS['SOBE']->browser->act = $this->scopeData['browser']['act'];
+			if ($this->foldertree instanceof ElementBrowserFolderTreeView) {
+				$browser = GeneralUtility::makeInstance(ElementBrowser::class);
+				$browser->mode = $this->scopeData['browser']['mode'];
+				$browser->act = $this->scopeData['browser']['act'];
+				$this->foldertree->setElementBrowser($browser);
+			}
 		} else {
-			$className = FileListFolderTree::class;
-			$this->foldertree = GeneralUtility::makeInstance($className);
+			$this->foldertree = GeneralUtility::makeInstance(FileListFolderTree::class);
 			$this->foldertree->thisScript = BackendUtility::getModuleUrl('file_navframe');
 		}
 		// Only set ext_IconMode if we are not running an ajax request from the ElementBrowser,
 		// which has this property hardcoded to 1.
-		if ($className !== ElementBrowserFolderTreeView::class) {
+		if (!$this->foldertree instanceof ElementBrowserFolderTreeView::class) {
 			$this->foldertree->ext_IconMode = $this->getBackendUser()->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
 		}
 	}
@@ -242,7 +243,6 @@ class FileSystemNavigationFrameController implements ControllerInterface {
 	 * @return void
 	 */
 	public function ajaxExpandCollapse($params, $ajaxObj) {
-		$this->init();
 		$tree = $this->foldertree->getBrowsableTree();
 		if ($this->foldertree->getAjaxStatus() === FALSE) {
 			$ajaxObj->setError($tree);

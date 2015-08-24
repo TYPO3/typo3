@@ -44,12 +44,27 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	public $ext_pArrPages = TRUE;
 
 	/**
+	 * Back-reference to ElementBrowser class
+	 *
+	 * @var ElementBrowser
+	 */
+	protected $elementBrowser;
+
+	/**
 	 * Constructor. Just calling init()
 	 */
 	public function __construct() {
 		$this->determineScriptUrl();
 		$this->init();
 		$this->clause = ' AND doktype != ' . PageRepository::DOKTYPE_RECYCLER . $this->clause;
+	}
+
+	/**
+	 * @param ElementBrowser $elementBrowser
+	 * @return void
+	 */
+	public function setElementBrowser(ElementBrowser $elementBrowser) {
+		$this->elementBrowser = $elementBrowser;
 	}
 
 	/**
@@ -95,14 +110,12 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 				$classAttr .= ' list-tree-control-open';
 			}
 
-			/** @var ElementBrowser $elementBrowser */
-			$elementBrowser = $GLOBALS['SOBE']->browser;
 			$selected = '';
-			if ($elementBrowser->curUrlInfo['act'] == 'page' && $elementBrowser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $elementBrowser->curUrlInfo['pageid']) {
+			if ($this->elementBrowser->curUrlInfo['act'] == 'page' && $this->elementBrowser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $this->elementBrowser->curUrlInfo['pageid']) {
 				$selected = ' bg-success';
 				$classAttr .= ' active';
 			}
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $elementBrowser->act . '&mode=' . $elementBrowser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
 			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="list-tree-show" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
 			$out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>

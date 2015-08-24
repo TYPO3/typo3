@@ -16,10 +16,11 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 
 /**
  * Generate a folder tree,
@@ -118,16 +119,10 @@ class FolderTreeView extends AbstractTreeView {
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 
 		if (empty($this->scope)) {
-			/** @var ElementBrowser $elementBrowser */
-			$elementBrowser = $GLOBALS['SOBE']->browser;
 			$this->scope = array(
 				'class' => get_class($this),
 				'script' => $this->thisScript,
-				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
-				'browser' => array(
-					'mode' => $elementBrowser->mode,
-					'act' => $elementBrowser->act,
-				),
+				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs
 			);
 		}
 
@@ -156,7 +151,7 @@ class FolderTreeView extends AbstractTreeView {
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
 			// Check storage access to wrap with click menu
-			if (!$folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+			if (!$folderObject instanceof InaccessibleFolder) {
 				$theFolderIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($icon, $folderObject->getCombinedIdentifier(), '', 0);
 			}
 		} elseif ($this->ext_IconMode === 'titlelink') {
@@ -177,7 +172,7 @@ class FolderTreeView extends AbstractTreeView {
 	 */
 	public function wrapTitle($title, $folderObject, $bank = 0) {
 		// Check storage access to wrap with click menu
-		if ($folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+		if ($folderObject instanceof InaccessibleFolder) {
 			return $title;
 		}
 		$aOnClick = 'return jumpTo(' . GeneralUtility::quoteJSvalue($this->getJumpToParam($folderObject)) . ', this, ' . GeneralUtility::quoteJSvalue($this->domIdPrefix . $this->getId($folderObject)) . ', ' . $bank . ');';
@@ -345,7 +340,7 @@ class FolderTreeView extends AbstractTreeView {
 
 		// This generates the directory tree
 		/* array of \TYPO3\CMS\Core\Resource\Folder */
-		if ($folderObject instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder) {
+		if ($folderObject instanceof InaccessibleFolder) {
 			$subFolders = array();
 		} else {
 			$subFolders = $folderObject->getSubfolders();
@@ -356,13 +351,15 @@ class FolderTreeView extends AbstractTreeView {
 		$totalSubFolders = count($subFolders);
 		$HTML = '';
 		$subFolderCounter = 0;
+		$treeKey = '';
+		/** @var Folder $subFolder */
 		foreach ($subFolders as $subFolderName => $subFolder) {
 			$subFolderCounter++;
 			// Reserve space.
 			$this->tree[] = array();
 			// Get the key for this space
 			end($this->tree);
-			$isLocked = $subFolder instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder;
+			$isLocked = $subFolder instanceof InaccessibleFolder;
 			$treeKey = key($this->tree);
 			$specUID = GeneralUtility::md5int($subFolder->getCombinedIdentifier());
 			$this->specUIDmap[$specUID] = $subFolder->getCombinedIdentifier();
@@ -436,13 +433,13 @@ class FolderTreeView extends AbstractTreeView {
 			return $message->render();
 		}
 
+		$expandedFolderHash = '';
+		$invertedDepthOfAjaxRequestedItem = 0;
 		$out = '<ul class="list-tree list-tree-root">';
 		// Evaluate AJAX request
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 			list(, $expandCollapseCommand, $expandedFolderHash, ) = $this->evaluateExpandCollapseParameter();
 			if ($expandCollapseCommand == 1) {
-				// We don't know yet. Will be set later.
-				$invertedDepthOfAjaxRequestedItem = 0;
 				$doExpand = TRUE;
 			} else {
 				$doCollapse = TRUE;

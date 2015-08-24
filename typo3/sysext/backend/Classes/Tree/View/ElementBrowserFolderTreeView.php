@@ -33,11 +33,26 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	public $ext_IconMode = 1;
 
 	/**
+	 * Back-reference to ElementBrowser class
+	 *
+	 * @var ElementBrowser
+	 */
+	protected $elementBrowser;
+
+	/**
 	 * Initializes the script path
 	 */
 	public function __construct() {
 		$this->determineScriptUrl();
 		parent::__construct();
+	}
+
+	/**
+	 * @param ElementBrowser $elementBrowser
+	 * @return void
+	 */
+	public function setElementBrowser(ElementBrowser $elementBrowser) {
+		$this->elementBrowser = $elementBrowser;
 	}
 
 	/**
@@ -49,9 +64,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 */
 	public function wrapTitle($title, Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			/** @var ElementBrowser $elementBrowser */
-			$elementBrowser = $GLOBALS['SOBE']->browser;
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $elementBrowser->act . '&mode=' . $elementBrowser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())) . ');';
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
 			return '<span class="text-muted">' . $title . '</span>';
@@ -90,6 +103,31 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 		}
 		$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'PM=' . $cmd) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
 		return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+	}
+
+	/**
+	 * Wrap the plus/minus icon in a link
+	 *
+	 * @param string $icon HTML string to wrap, probably an image tag.
+	 * @param string $cmd Command for 'PM' get var
+	 * @param bool $isExpand Whether to be expanded
+	 * @return string Link-wrapped input string
+	 * @internal
+	 */
+	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
+		if (empty($this->scope)) {
+			$this->scope = array(
+				'class' => get_class($this),
+				'script' => $this->thisScript,
+				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
+				'browser' => array(
+					'mode' => $this->elementBrowser->mode,
+					'act' => $this->elementBrowser->act,
+				),
+			);
+		}
+
+		return parent::PMiconATagWrap($icon, $cmd, $isExpand);
 	}
 
 }

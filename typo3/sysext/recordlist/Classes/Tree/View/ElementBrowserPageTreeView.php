@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Controller\ElementBrowserController;
 
 /**
  * Extension class for the TBE record browser
@@ -47,9 +46,7 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
 			$ficon = IconUtility::getSpriteIconForRecord('pages', $v);
 			$onClick = 'return insertElement(\'pages\', \'' . $v['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($v['title']) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ',\'\',1);';
 		} else {
-			/** @var ElementBrowserController $controller */
-			$controller = $GLOBALS['SOBE'];
-			$onClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $controller->browser->act . '&mode=' . $controller->browser->mode . '&expandPage=' . $v['uid']) . ');';
+			$onClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $v['uid']) . ');';
 		}
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $title . '</a>';
 	}

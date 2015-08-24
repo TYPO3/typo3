@@ -42,18 +42,6 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	public $mode;
 
 	/**
-	 * Holds an instance of ElementBrowser class or a subclass
-	 *
-	 * This is needed fo intercommunication between tree classes that
-	 * need access to variables via $GLOBALS['SOBE'].
-	 * Not the most nice solution but introduced since we don't have
-	 * another general way to return class-instances or registry for now
-	 *
-	 * @var ElementBrowser
-	 */
-	public $browser;
-
-	/**
 	 * Document template object
 	 *
 	 * @var DocumentTemplate
@@ -131,30 +119,30 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 		}
 		// if type was not rendered use default rendering functions
 		if (!$browserRendered) {
-			$this->browser = $this->getElementBrowserInstance();
-			$this->browser->init();
+			$browser = $this->getElementBrowserInstance();
+			$browser->init();
 			$backendUser = $this->getBackendUser();
 			$modData = $backendUser->getModuleData('browse_links.php', 'ses');
-			list($modData) = $this->browser->processSessionData($modData);
+			list($modData) = $browser->processSessionData($modData);
 			$backendUser->pushModuleData('browse_links.php', $modData);
 
 			// Output the correct content according to $this->mode
 			switch ((string)$this->mode) {
 				case 'rte':
-					$this->content = $this->browser->main_rte();
+					$this->content = $browser->main_rte();
 					break;
 				case 'db':
-					$this->content = $this->browser->main_db();
+					$this->content = $browser->main_db();
 					break;
 				case 'file':
 				case 'filedrag':
-					$this->content = $this->browser->main_file();
+					$this->content = $browser->main_file();
 					break;
 				case 'folder':
-					$this->content = $this->browser->main_folder();
+					$this->content = $browser->main_folder();
 					break;
 				case 'wizard':
-					$this->content = $this->browser->main_rte(TRUE);
+					$this->content = $browser->main_rte(TRUE);
 					break;
 			}
 		}

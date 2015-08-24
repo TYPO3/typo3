@@ -24,6 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FolderTree extends ElementBrowserFolderTreeView {
 
 	/**
+	 * @var BrowseLinks|SelectImage
+	 */
+	protected $elementBrowser;
+
+	/**
 	 * Will create and return the HTML code for a browsable tree of folders.
 	 * Is based on the mounts found in the internal array ->MOUNTS (set in the constructor)
 	 *
@@ -31,21 +36,19 @@ class FolderTree extends ElementBrowserFolderTreeView {
 	 */
 	public function getBrowsableTree() {
 		// TYPO3\CMS\Backend\Controller\FileSystemNavigationFrameController does not set custom parameters on an Ajax expand/collapse request
-		/** @var BrowseLinks|SelectImage $elementBrowser */
-		$elementBrowser = $GLOBALS['SOBE']->browser;
-		if (!$elementBrowser->editorNo) {
+		if (!$this->elementBrowser->editorNo) {
 			$scopeData = (string)GeneralUtility::_GP('scopeData');
 			$scopeHash = (string)GeneralUtility::_GP('scopeHash');
 			if (!empty($scopeData) && GeneralUtility::hmac($scopeData) === $scopeHash) {
 				$scopeData = unserialize($scopeData);
 				if ($scopeData['browser']['editorNo']) {
-					$elementBrowser->editorNo = $scopeData['browser']['editorNo'];
+					$this->elementBrowser->editorNo = $scopeData['browser']['editorNo'];
 				}
-				if ($scopeData['browser']['sys_language_content']) {
-					$elementBrowser->sys_language_content = $scopeData['browser']['sys_language_content'];
+				if ($this->elementBrowser instanceof SelectImage && $scopeData['browser']['sys_language_content']) {
+					$this->elementBrowser->sys_language_content = $scopeData['browser']['sys_language_content'];
 				}
-				if ($scopeData['browser']['contentTypo3Language']) {
-					$elementBrowser->contentTypo3Language = $scopeData['browser']['contentTypo3Language'];
+				if ($this->elementBrowser instanceof BrowseLinks && $scopeData['browser']['contentTypo3Language']) {
+					$this->elementBrowser->contentTypo3Language = $scopeData['browser']['contentTypo3Language'];
 				}
 			}
 		}
@@ -61,21 +64,20 @@ class FolderTree extends ElementBrowserFolderTreeView {
 	 */
 	public function wrapTitle($title, Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			/** @var BrowseLinks|SelectImage $elementBrowser */
-			$elementBrowser = $GLOBALS['SOBE']->browser;
-			$aOnClick = 'return jumpToUrl(\''
-				. $this->getThisScript()
-				. 'act=' . $elementBrowser->act
-				. '&mode=' . $elementBrowser->mode
-				. '&editorNo=' . $elementBrowser->editorNo
-				. ($elementBrowser->sys_language_content ? '&sys_language_content=' . $elementBrowser->sys_language_content : '')
-				. ($elementBrowser->contentTypo3Language ? '&contentTypo3Language=' . $elementBrowser->contentTypo3Language : '')
-				. '&expandFolder=' . $this->getJumpToParam($folderObject)
-				. '\');';
+			$parameters = 'act=' . $this->elementBrowser->act
+				. '&mode=' . $this->elementBrowser->mode
+				. '&editorNo=' . $this->elementBrowser->editorNo
+				. '&expandFolder=' . $this->getJumpToParam($folderObject);
+			if ($this->elementBrowser instanceof SelectImage && $this->elementBrowser->sys_language_content) {
+				$parameters .= '&sys_language_content=' . $this->elementBrowser->sys_language_content;
+			}
+			if ($this->elementBrowser instanceof BrowseLinks && $this->elementBrowser->contentTypo3Language) {
+				$parameters .= '&contentTypo3Language=' . $this->elementBrowser->contentTypo3Language;
+			}
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters) . ');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
-		} else {
-			return '<span class="text-muted">' . $title . '</span>';
 		}
+		return '<span class="text-muted">' . $title . '</span>';
 	}
 
 	/**
@@ -89,25 +91,27 @@ class FolderTree extends ElementBrowserFolderTreeView {
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if (empty($this->scope)) {
-			/** @var BrowseLinks|SelectImage $elementBrowser */
-			$elementBrowser = $GLOBALS['SOBE']->browser;
 			$this->scope = array(
 				'class' => get_class($this),
 				'script' => $this->thisScript,
 				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
 				'browser' => array(
-					'mode' => $elementBrowser->mode,
-					'act' => $elementBrowser->act
+					'mode' => $this->elementBrowser->mode,
+					'act' => $this->elementBrowser->act
 				)
 			);
-			if ($elementBrowser->editorNo) {
-				$this->scope['browser']['editorNo'] = $elementBrowser->editorNo;
+			if ($this->elementBrowser instanceof BrowseLinks) {
+				if ($this->elementBrowser->editorNo) {
+					$this->scope['browser']['editorNo'] = $this->elementBrowser->editorNo;
+				}
+				if ($this->elementBrowser->contentTypo3Language) {
+					$this->scope['browser']['contentTypo3Language'] = $this->elementBrowser->contentTypo3Language;
+				}
 			}
-			if ($elementBrowser->sys_language_content) {
-				$this->scope['browser']['sys_language_content'] = $elementBrowser->sys_language_content;
-			}
-			if ($elementBrowser->contentTypo3Language) {
-				$this->scope['browser']['contentTypo3Language'] = $elementBrowser->contentTypo3Language;
+			if ($this->elementBrowser instanceof SelectImage) {
+				if ($this->elementBrowser->sys_language_content) {
+					$this->scope['browser']['sys_language_content'] = $this->elementBrowser->sys_language_content;
+				}
 			}
 		}
 		return parent::PMiconATagWrap($icon, $cmd, $isExpand);

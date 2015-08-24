@@ -1264,6 +1264,7 @@ class ElementBrowser {
 
 		/** @var ElementBrowserPageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance($treeClassName);
+		$pageTree->setElementBrowser($this);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
@@ -1305,6 +1306,7 @@ class ElementBrowser {
 		// Making the browsable pagetree:
 		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView::class);
+		$pageTree->setElementBrowser($this);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_pArrPages = $tables === 'pages';
 		$pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
@@ -1690,6 +1692,7 @@ class ElementBrowser {
 		} else {
 			$dbList = GeneralUtility::makeInstance(ElementBrowserRecordList::class);
 		}
+		$dbList->setElementBrowser($this);
 		$dbList->thisScript = $this->thisScript;
 		$dbList->thumbs = 0;
 		$dbList->localizationView = 1;
@@ -2336,14 +2339,10 @@ class ElementBrowser {
 	 * This method is intended to be used by Extensions that implement their own browsing functionality.
 	 *
 	 * @param ElementBrowserRecordList $recordList
-	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @api
 	 */
-	public function setRecordList($recordList) {
-		if (!$recordList instanceof ElementBrowserRecordList) {
-			throw new \InvalidArgumentException('$recordList needs to be an instance of ' . ElementBrowserRecordList::class, 1370878522);
-		}
+	public function setRecordList(ElementBrowserRecordList $recordList) {
 		$this->recordList = $recordList;
 	}
 

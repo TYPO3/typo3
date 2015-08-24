@@ -25,12 +25,6 @@ use TYPO3\CMS\Rtehtmlarea\SelectImage;
 class SelectImageController extends ElementBrowserController {
 
 	/**
-	 * Typehint needed for code completion
-	 * @var SelectImage
-	 */
-	public $browser;
-
-	/**
 	 * Initialize controller
 	 */
 	protected function init() {
