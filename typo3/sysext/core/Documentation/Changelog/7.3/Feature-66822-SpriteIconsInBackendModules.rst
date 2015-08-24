@@ -21,9 +21,7 @@ Registering a module can now look like this (as an example the "Page" module):
 			'script' => '_DISPATCH',
 			'access' => 'user,group',
 			'name' => 'web_layout',
-			'configuration' => array(
-				'icon' => 'module-web',
-			),
+			'iconIdentifier' => 'module-web',
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:backend/Resources/Private/Language/locallang_mod.xlf',
 			),

@@ -336,8 +336,8 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$icon = '';
 
 		// add as a sprite icon
-		if ($moduleData['configuration']['icon']) {
-			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($moduleData['configuration']['icon'], array('tagName' => 'i'));
+		if (!empty($moduleData['iconIdentifier'])) {
+			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($moduleData['iconIdentifier'], array('tagName' => 'i'));
 		} elseif (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
 			$imageReference = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey];
 			$iconFileRelative = $this->getModuleIconRelative($imageReference);

@@ -64,62 +64,50 @@ $GLOBALS['TBE_MODULES'] = array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_web.xlf'
 			),
-			'configuration' => array(
-				'name' => 'web',
-				'access' => 'user,group',
-				'icon' => 'module-web'
-			)
+			'name' => 'web',
+			'access' => 'user,group',
+			'iconIdentifier' => 'module-web'
 		),
 		'file' => array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_file.xlf'
 			),
 			'navigationFrameModule' => 'file_navframe',
-			'configuration' => array(
-				'name' => 'file',
-				'access' => 'user,group',
-				'workspaces' => 'online,custom',
-				'icon' => 'module-file'
-			)
+			'name' => 'file',
+			'access' => 'user,group',
+			'workspaces' => 'online,custom',
+			'iconIdentifier' => 'module-file'
 		),
 		'user' => array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_usertools.xlf'
 			),
-			'configuration' => array(
-				'name' => 'user',
-				'access' => 'user,group',
-				'icon' => 'status-user-backend'
-			)
+			'name' => 'user',
+			'access' => 'user,group',
+			'iconIdentifier' => 'status-user-backend'
 		),
 		'tools' => array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_admintools.xlf'
 			),
-			'configuration' => array(
-				'name' => 'tools',
-				'access' => 'admin',
-				'icon' => 'module-tools'
-			)
+			'name' => 'tools',
+			'access' => 'admin',
+			'iconIdentifier' => 'module-tools'
 		),
 		'system' => array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_system.xlf'
 			),
-			'configuration' => array(
-				'name' => 'system',
-				'access' => 'admin',
-				'icon' => 'module-system'
-			)
+			'name' => 'system',
+			'access' => 'admin',
+			'iconIdentifier' => 'module-system'
 		),
 		'help' => array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_help.xlf'
 			),
-			'configuration' => array(
-				'name' => 'help',
-				'icon' => 'module-help'
-			)
+			'name' => 'help',
+			'iconIdentifier' => 'module-help'
 		)
 	)
 );
