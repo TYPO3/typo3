@@ -74,6 +74,7 @@ $GLOBALS['TBE_MODULES'] = array(
 			'labels' => array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_file.xlf'
 			),
+			'navigationFrameModule' => 'file_navframe',
 			'configuration' => array(
 				'name' => 'file',
 				'access' => 'user,group',

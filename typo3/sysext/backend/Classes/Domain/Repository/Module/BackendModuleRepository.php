@@ -270,16 +270,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 					$submoduleKey = $moduleName . '_' . $submoduleName . '_tab';
 					$submoduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$submoduleKey . 'label'];
 					$originalLink = $submoduleLink;
-					if (isset($submoduleData['navigationFrameModule'])) {
-						$navigationFrameScript = BackendUtility::getModuleUrl(
-							$submoduleData['navigationFrameModule'],
-							isset($submoduleData['navigationFrameModuleParameters'])
-								? $submoduleData['navigationFrameModuleParameters']
-								: array()
-						);
-					} else {
-						$navigationFrameScript = $submoduleData['navFrameScript'];
-					}
+					$navigationFrameScript = $submoduleData['navFrameScript'];
 					$modules[$moduleKey]['subitems'][$submoduleKey] = array(
 						'name' => $moduleName . '_' . $submoduleName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],

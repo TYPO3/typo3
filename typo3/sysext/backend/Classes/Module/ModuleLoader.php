@@ -318,18 +318,24 @@ class ModuleLoader {
 			$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('dummy');
 		}
 
-		// Navigation Frame Script (GET params could be added)
-		if ($setupInformation['configuration']['navFrameScript']) {
+		if (!empty($setupInformation['configuration']['navigationFrameModule'])) {
+			$finalModuleConfiguration['navFrameScript'] = BackendUtility::getModuleUrl(
+				$setupInformation['configuration']['navigationFrameModule'],
+				!empty($setupInformation['configuration']['navigationFrameModuleParameters'])
+					? $setupInformation['configuration']['navigationFrameModuleParameters']
+					: array()
+			);
+		} elseif (!empty($setupInformation['configuration']['navFrameScript'])) {
+			// Navigation Frame Script (GET params could be added)
 			$navFrameScript = explode('?', $setupInformation['configuration']['navFrameScript']);
 			$navFrameScript = $navFrameScript[0];
 			if (file_exists($setupInformation['path'] . '/' . $navFrameScript)) {
 				$finalModuleConfiguration['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullPath . '/' . $setupInformation['configuration']['navFrameScript']);
 			}
-		}
-
-		// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
-		if ($setupInformation['configuration']['navFrameScriptParam']) {
-			$finalModuleConfiguration['navFrameScriptParam'] = $setupInformation['configuration']['navFrameScriptParam'];
+			// Additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
+			if ($setupInformation['configuration']['navFrameScriptParam']) {
+				$finalModuleConfiguration['navFrameScriptParam'] = $setupInformation['configuration']['navFrameScriptParam'];
+			}
 		}
 
 		// Check if this is a submodule
@@ -340,20 +346,10 @@ class ModuleLoader {
 
 		// check if there is a navigation component (like the pagetree)
 		if (is_array($this->navigationComponents[$name])) {
-			// the navigation component is a module, so the module URL is taken
-			if (isset($GLOBALS['TBE_MODULES']['_PATHS'][$this->navigationComponents[$name]['componentId']])) {
-				$finalModuleConfiguration['navFrameScript'] = BackendUtility::getModuleUrl($this->navigationComponents[$name]['componentId']);
-			} else {
-				$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
-			}
+			$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$name]['componentId'];
 		// navigation component can be overriden by the main module component
 		} elseif ($mainModule && is_array($this->navigationComponents[$mainModule]) && $setupInformation['configuration']['inheritNavigationComponentFromMainModule'] !== FALSE) {
-			// the navigation component is a module, so the module URL is taken
-			if (isset($GLOBALS['TBE_MODULES']['_PATHS'][$this->navigationComponents[$mainModule]['componentId']])) {
-				$finalModuleConfiguration['navFrameScript'] = BackendUtility::getModuleUrl($this->navigationComponents[$mainModule]['componentId']);
-			} else {
-				$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
-			}
+			$finalModuleConfiguration['navigationComponentId'] = $this->navigationComponents[$mainModule]['componentId'];
 		}
 		return $finalModuleConfiguration;
 	}
