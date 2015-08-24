@@ -65,7 +65,7 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.0',
 						'header',
-						'i/tt_content_header.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_header.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.lists',
@@ -74,17 +74,17 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.4',
 						'bullets',
-						'i/tt_content_bullets.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_bullets.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.5',
 						'table',
-						'i/tt_content_table.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_table.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.6',
 						'uploads',
-						'i/tt_content_uploads.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_uploads.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.special',
@@ -93,27 +93,27 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.12',
 						'menu',
-						'i/tt_content_menu.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_menu.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.13',
 						'shortcut',
-						'i/tt_content_shortcut.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_shortcut.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.14',
 						'list',
-						'i/tt_content_list.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_list.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.16',
 						'div',
-						'i/tt_content_div.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_div.gif'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.17',
 						'html',
-						'i/tt_content_html.gif'
+						'EXT:t3skin/icons/gfx/i/tt_content_html.gif'
 					)
 				),
 				'default' => 'text',

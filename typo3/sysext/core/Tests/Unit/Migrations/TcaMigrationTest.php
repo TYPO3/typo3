@@ -447,4 +447,82 @@ class TcaMigrationTest extends UnitTestCase {
 		$subject = new TcaMigration();
 		$this->assertEquals($expected, $subject->migrate($input));
 	}
+
+	/**
+	 * @test
+	 */
+	public function migrateExtAndSysextPathToEXTPath() {
+		$input = array(
+			'aTable' => array(
+				'columns' => array(
+					'foo' => array(
+						'config' => array(
+							'type' => 'select',
+							'items' => array(
+								array('foo', 0, 'ext/myext/foo/bar.gif'),
+								array('bar', 1, 'sysext/myext/foo/bar.gif'),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'foo' => array(
+						'config' => array(
+							'type' => 'select',
+							'items' => array(
+								array('foo', 0, 'EXT:myext/foo/bar.gif'),
+								array('bar', 1, 'EXT:myext/foo/bar.gif'),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function migratePathWhichStartsWithIToEXTPath() {
+		$input = array(
+			'aTable' => array(
+				'columns' => array(
+					'foo' => array(
+						'config' => array(
+							'type' => 'select',
+							'items' => array(
+								array('foo', 0, 'i/tt_content.gif'),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'foo' => array(
+						'config' => array(
+							'type' => 'select',
+							'items' => array(
+								array('foo', 0, 'EXT:t3skin/icons/gfx/i/tt_content.gif'),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
 }

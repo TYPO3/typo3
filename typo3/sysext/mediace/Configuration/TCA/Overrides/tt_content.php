@@ -13,7 +13,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['media'] = 'mimetypes-
 	array(
 		'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.7',
 		'multimedia',
-		'i/tt_content_mm.gif'
+		'EXT:t3skin/icons/gfx/i/tt_content_mm.gif'
 	),
 	'menu', 'before'
 );
@@ -21,7 +21,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['media'] = 'mimetypes-
 	array(
 		'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.18',
 		'media',
-		'i/tt_content_mm.gif'
+		'EXT:t3skin/icons/gfx/i/tt_content_mm.gif'
 	),
 	'menu', 'before'
 );

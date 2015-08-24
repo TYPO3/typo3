@@ -1288,7 +1288,7 @@ class ExtensionManagementUtility {
 			);
 		}
 		if ($extensionKey && !$itemArray[2] && isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'])) {
-			$itemArray[2] = self::extRelPath($extensionKey) . $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'];
+			$itemArray[2] = 'EXT:' . $extensionKey . '/' . $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['ext_icon'];
 		}
 		if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'])) {
 			foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] as $k => $v) {

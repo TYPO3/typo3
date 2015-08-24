@@ -1803,7 +1803,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 			array(
 				'label',
 				$extKey,
-				'sysext/' . $extKey . '/foo.gif'
+				'EXT:' . $extKey . '/foo.gif'
 			)
 		);
 		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();
@@ -1823,7 +1823,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 			array(
 				'label',
 				$extKey,
-				'sysext/' . $extKey . '/foo.gif'
+				'EXT:' . $extKey . '/foo.gif'
 			)
 		);
 		$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = array();

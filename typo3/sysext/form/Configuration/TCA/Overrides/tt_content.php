@@ -9,7 +9,7 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['mailform'] = 'mimetyp
 $additionalCTypeItem = array(
 	'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.8',
 	'mailform',
-	'i/tt_content_form.gif'
+	'EXT:t3skin/icons/gfx/i/tt_content_form.gif'
 );
 
 $existingCTypeItems = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];

@@ -269,7 +269,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Testing'
 		);
 		$this->assertEquals(
-			'sysext/indexed_search/foo.gif',
+			'EXT:indexed_search/foo.gif',
 			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
 		);
 	}
@@ -290,7 +290,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'Testing'
 		);
 		$this->assertEquals(
-			'sysext/indexed_search/foo.gif',
+			'EXT:indexed_search/foo.gif',
 			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
 		);
 	}
@@ -307,10 +307,10 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'IndexedSearch',
 			'Pi2',
 			'Testing',
-			'sysext/indexed_search/foo.gif'
+			'EXT:indexed_search/foo.gif'
 		);
 		$this->assertEquals(
-			'sysext/indexed_search/foo.gif',
+			'EXT:indexed_search/foo.gif',
 			$GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
 		);
 	}

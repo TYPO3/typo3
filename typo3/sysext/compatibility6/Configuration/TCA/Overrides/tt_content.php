@@ -312,7 +312,7 @@ $GLOBALS['TCA']['tt_content']['palettes']['searchform'] = array(
 $additionalCTypeItem = array(
 	'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.9',
 	'search',
-	'i/tt_content_search.gif'
+	'EXT:t3skin/icons/gfx/i/tt_content_search.gif'
 );
 
 $existingCTypeItems = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
@@ -363,7 +363,7 @@ if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', array(
 			'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.8',
 			'mailform',
-			'i/tt_content_form.gif'
+			'EXT:t3skin/icons/gfx/i/tt_content_form.gif'
 		),
 		'search',
 		'before'

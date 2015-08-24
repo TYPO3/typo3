@@ -115,17 +115,17 @@ $tca = array(
 					array(
 						'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.1',
 						1,
-						\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('filemetadata') . 'Resources/Public/Icons/status_1.png'
+						'EXT:filemetadata/Resources/Public/Icons/status_1.png'
 					),
 					array(
 						'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.2',
 						2,
-						\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('filemetadata') . 'Resources/Public/Icons/status_2.png'
+						'EXT:filemetadata/Resources/Public/Icons/status_2.png'
 					),
 					array(
 						'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.3',
 						3,
-						\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('filemetadata') . 'Resources/Public/Icons/status_3.png'
+						'EXT:filemetadata/Resources/Public/Icons/status_3.png'
 					),
 				),
 			),

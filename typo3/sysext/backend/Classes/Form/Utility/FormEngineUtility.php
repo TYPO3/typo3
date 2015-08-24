@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -159,35 +160,24 @@ class FormEngineUtility {
 	 * @internal
 	 */
 	static public function getIcon($icon) {
+		$selIconFile = '';
 		$selIconInfo = FALSE;
-		if (substr($icon, 0, 4) == 'EXT:') {
-			$file = GeneralUtility::getFileAbsFileName($icon);
-			if ($file) {
-				$file = PathUtility::stripPathSitePrefix($file);
-				$selIconFile = '../' . $file;
-				$selIconInfo = @getimagesize((PATH_site . $file));
-			} else {
-				$selIconFile = '';
+		$icon = (string)$icon;
+		if (StringUtility::beginsWith($icon, 'EXT:')) {
+			$absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
+			if (!empty($absoluteFilePath)) {
+				$selIconFile = '../' . PathUtility::stripPathSitePrefix($absoluteFilePath);
+				$selIconInfo = (StringUtility::endsWith($absoluteFilePath, '.svg'))
+					? TRUE
+					: getimagesize($absoluteFilePath);
 			}
-		} elseif (substr($icon, 0, 3) == '../') {
+		} elseif (StringUtility::beginsWith($icon, '../')) {
+			// @TODO: this is special modList, files from folders and selicon
 			$selIconFile = GeneralUtility::resolveBackPath($icon);
 			if (is_file(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
-				if (\TYPO3\CMS\Core\Utility\StringUtility::endsWith($icon, '.svg')) {
-					$selIconInfo = TRUE;
-				} else {
-					$selIconInfo = getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
-				}
-			}
-		} elseif (substr($icon, 0, 4) == 'ext/' || substr($icon, 0, 7) == 'sysext/') {
-			$selIconFile = $icon;
-			if (is_file(PATH_typo3 . $icon)) {
-				$selIconInfo = getimagesize(PATH_typo3 . $icon);
-			}
-		} else {
-			$selIconFile = IconUtility::skinImg('', 'gfx/' . $icon, '', 1);
-			$iconPath = $selIconFile;
-			if (is_file(PATH_typo3 . $iconPath)) {
-				$selIconInfo = getimagesize(PATH_typo3 . $iconPath);
+				$selIconInfo = (StringUtility::endsWith($icon, '.svg'))
+					? TRUE
+					: getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
 			}
 		}
 		if ($selIconInfo === FALSE) {

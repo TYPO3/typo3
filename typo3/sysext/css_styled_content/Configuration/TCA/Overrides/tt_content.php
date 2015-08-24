@@ -373,17 +373,17 @@ array_splice(
 		array(
 			'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.1',
 			'text',
-			'i/tt_content.gif'
+			'EXT:t3skin/icons/gfx/i/tt_content.gif'
 		),
 		array(
 			'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.2',
 			'textpic',
-			'i/tt_content_textpic.gif'
+			'EXT:t3skin/icons/gfx/i/tt_content_textpic.gif'
 		),
 		array(
 			'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.3',
 			'image',
-			'i/tt_content_image.gif'
+			'EXT:t3skin/icons/gfx/i/tt_content_image.gif'
 		)
 	)
 );

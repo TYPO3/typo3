@@ -13,7 +13,7 @@ defined('TYPO3_MODE') or die();
 $additionalCTypeItem = array(
 	'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.10',
 	'login',
-	'i/tt_content_login.gif'
+	'EXT:t3skin/icons/gfx/i/tt_content_login.gif'
 );
 
 $existingCTypeItems = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];
