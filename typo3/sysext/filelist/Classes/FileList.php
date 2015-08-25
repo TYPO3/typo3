@@ -966,7 +966,7 @@ class FileList
     public function linkWrapFile($code, File $fileObject)
     {
         try {
-            if ($fileObject instanceof File && $fileObject->isIndexed() && $fileObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
+            if ($fileObject instanceof File && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
                 $metaData = $fileObject->_getMetaData();
                 $urlParameters = [
                     'edit' => [
@@ -1060,7 +1060,7 @@ class FileList
                         $theData[$field] = $this->makeClip($fileObject);
                         break;
                     case '_LOCALIZATION_':
-                        if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
+                        if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
                             $metaDataRecord = $fileObject->_getMetaData();
                             $translations = $this->getTranslationsForMetaData($metaDataRecord);
                             $languageCode = '';
@@ -1333,7 +1333,7 @@ class FileList
         }
 
         // Edit metadata of file
-        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
+        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
             $metaData = $fileOrFolderObject->_getMetaData();
             $urlParameters = [
                 'edit' => [
