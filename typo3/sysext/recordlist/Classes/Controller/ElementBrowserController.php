@@ -30,16 +30,17 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 
 	/**
 	 * The mode determines the main kind of output of the element browser.
+	 *
 	 * There are these options for values:
 	 *  - "rte" will show the link selector for the Rich Text Editor (see main_rte())
 	 *  - "wizard" will allow you to browse for links (like "rte") which are passed back to FormEngine (see main_rte(TRUE))
 	 *  - "db" will allow you to browse for pages or records in the page tree for FormEngine select fields (see main_db())
 	 *  - "file"/"filedrag" will allow you to browse for files in the folder mounts for FormEngine file selections (main_file())
-	 *  - "folder" will allow you to browse for folders in the folder mounts for FormEngine folder selecitons (see main_folder())
+	 *  - "folder" will allow you to browse for folders in the folder mounts for FormEngine folder selections (see main_folder())
 	 *
 	 * @var string
 	 */
-	public $mode;
+	protected $mode;
 
 	/**
 	 * Document template object
@@ -47,11 +48,6 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	 * @var DocumentTemplate
 	 */
 	public $doc;
-
-	/**
-	 * @var string
-	 */
-	public $content = '';
 
 	/**
 	 * Constructor
@@ -85,23 +81,21 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	 * @return ResponseInterface $response
 	 */
 	public function processRequest(ServerRequestInterface $request) {
-		$this->main();
-
 		/** @var Response $response */
 		$response = GeneralUtility::makeInstance(Response::class);
-		$response->getBody()->write($this->content);
+		$response->getBody()->write($this->main());
 		return $response;
 	}
 
 	/**
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
 	 *
-	 * @return void
+	 * @return string HTML content
 	 */
 	public function main() {
 		$this->setTemporaryDbMounts();
 
-		$this->content = '';
+		$content = '';
 
 		// Render type by user func
 		$browserRendered = FALSE;
@@ -110,7 +104,7 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 				$browserRenderObj = GeneralUtility::getUserObj($classRef);
 				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
-						$this->content .= $browserRenderObj->render($this->mode, $this);
+						$content .= $browserRenderObj->render($this->mode, $this);
 						$browserRendered = TRUE;
 						break;
 					}
@@ -125,27 +119,10 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 			$modData = $backendUser->getModuleData('browse_links.php', 'ses');
 			list($modData) = $browser->processSessionData($modData);
 			$backendUser->pushModuleData('browse_links.php', $modData);
-
-			// Output the correct content according to $this->mode
-			switch ((string)$this->mode) {
-				case 'rte':
-					$this->content = $browser->main_rte();
-					break;
-				case 'db':
-					$this->content = $browser->main_db();
-					break;
-				case 'file':
-				case 'filedrag':
-					$this->content = $browser->main_file();
-					break;
-				case 'folder':
-					$this->content = $browser->main_folder();
-					break;
-				case 'wizard':
-					$this->content = $browser->main_rte(TRUE);
-					break;
-			}
+			$content .= $browser->render();
 		}
+
+		return $content;
 	}
 
 	/**
@@ -189,17 +166,6 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	 */
 	protected function getElementBrowserInstance() {
 		return GeneralUtility::makeInstance(ElementBrowser::class);
-	}
-
-	/**
-	 * Print module content
-	 *
-	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
-	 */
-	public function printContent() {
-		GeneralUtility::logDeprecatedFunction();
-		echo $this->content;
 	}
 
 	/**

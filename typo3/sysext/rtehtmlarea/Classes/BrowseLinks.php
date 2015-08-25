@@ -399,7 +399,7 @@ class BrowseLinks extends ElementBrowser {
 	 * @param bool $wiz If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
 	 * @return string Modified content variable.
 	 */
-	public function main_rte($wiz = FALSE) {
+	protected function main_rte($wiz = FALSE) {
 		// Starting content:
 		$content = $this->doc->startPage($this->getLanguageService()->getLL('Insert/Modify Link', TRUE));
 		// Making menu in top:

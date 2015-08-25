@@ -832,7 +832,7 @@ class ElementBrowser {
 	 */
 	public function processSessionData($data) {
 		$store = FALSE;
-		switch ((string)$this->mode) {
+		switch ($this->mode) {
 			case 'db':
 				if (isset($this->expandPage)) {
 					$data['expandPage'] = $this->expandPage;
@@ -862,6 +862,30 @@ class ElementBrowser {
 	 * Main functions
 	 *
 	 ******************************************************************/
+
+	/**
+	 * Main entry point
+	 *
+	 * @return string HTML output
+	 */
+	public function render() {
+		// Output the correct content according to $this->mode
+		switch ($this->mode) {
+			case 'rte':
+				return $this->main_rte();
+			case 'db':
+				return $this->main_db();
+			case 'file':
+			case 'filedrag':
+				return $this->main_file();
+			case 'folder':
+				return $this->main_folder();
+			case 'wizard':
+				return $this->main_rte(TRUE);
+		}
+		return '';
+	}
+
 	/**
 	 * Rich Text Editor (RTE) link selector (MAIN function)
 	 * Generates the link selector for the Rich Text Editor.
@@ -870,7 +894,7 @@ class ElementBrowser {
 	 * @param bool $wiz If set, the "remove link" is not shown in the menu: Used for the "Select link" wizard which is used by the TCEforms
 	 * @return string Modified content variable.
 	 */
-	public function main_rte($wiz = FALSE) {
+	protected function main_rte($wiz = FALSE) {
 		// needs to be executed before doc->startPage()
 		if (in_array($this->act, array('file', 'folder'))) {
 			$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
@@ -1295,7 +1319,7 @@ class ElementBrowser {
 	 *
 	 * @return string HTML content for the module
 	 */
-	public function main_db() {
+	protected function main_db() {
 		// Starting content:
 		$content = $this->doc->startPage('TBE record selector');
 		// Init variable:
@@ -1366,7 +1390,7 @@ class ElementBrowser {
 	 *
 	 * @return string HTML content for the module
 	 */
-	public function main_file() {
+	protected function main_file() {
 		// include JS files and set prefs for foldertree
 		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
 		// Starting content:
@@ -1497,7 +1521,7 @@ class ElementBrowser {
 	 *
 	 * @return string HTML content for the module
 	 */
-	public function main_folder() {
+	protected function main_folder() {
 		// include JS files
 		// Setting prefs for foldertree
 		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";');

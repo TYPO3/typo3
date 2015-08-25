@@ -383,7 +383,7 @@ plugin.insertImage(imageTags.join(\' \'));
 	 * @return string Modified content variable.
 	 * @return string
 	 */
-	public function main_rte($wiz = FALSE) {
+	protected function main_rte($wiz = FALSE) {
 		// Starting content:
 		$lang = $this->getLanguageService();
 		$this->content = $this->doc->startPage($lang->getLL('Insert Image', TRUE));
