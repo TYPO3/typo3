@@ -155,7 +155,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 			// make sure database-connection is fine
 			// for long-running tasks the database might meanwhile have disconnected
-			$this->getDatabaseConnection()->isConnected();
+			$GLOBALS['TYPO3_DB']->isConnected();
 			// Un-register execution
 			$task->unmarkExecution($executionID, $failure);
 			// Log completion of execution
