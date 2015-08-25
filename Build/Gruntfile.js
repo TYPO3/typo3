@@ -201,7 +201,9 @@ module.exports = function(grunt) {
 					'<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg': '<%= paths.icons %>Module/module-tstemplate.svg',
 					'<%= paths.sysext %>version/Resources/Public/Icons/module-version.svg': '<%= paths.icons %>Module/module-version.svg',
 					'<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg': '<%= paths.icons %>Module/module-viewpage.svg',
-					'<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg': '<%= paths.icons %>Module/module-workspaces.svg'
+					'<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg': '<%= paths.icons %>Module/module-workspaces.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/Spinner/spinner-circle-dark.svg': '<%= paths.icons %>Spinner/spinner-circle-dark.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/Spinner/spinner-circle-light.svg': '<%= paths.icons %>Spinner/spinner-circle-light.svg'
 				}
 			}
 		}

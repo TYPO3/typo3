@@ -709,6 +709,22 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
+		// Spinner
+		'spinner-circle-dark' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Spinner/spinner-circle-dark.svg',
+				'spinning' => TRUE
+			)
+		),
+		'spinner-circle-light' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Spinner/spinner-circle-light.svg',
+				'spinning' => TRUE
+			)
+		),
+
 		// Overlays
 		'overlay-read-only' => array(
 			'provider' => FontawesomeIconProvider::class,
