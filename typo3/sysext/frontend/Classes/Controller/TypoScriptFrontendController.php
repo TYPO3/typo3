@@ -1575,7 +1575,7 @@ class TypoScriptFrontendController {
 			$ws = $this->whichWorkspace();
 			if ($this->sys_page->error_getRootLine_failPid == -1 && $ws) {
 				$this->sys_page->versioningPreview = TRUE;
-				$this->versioningWorkspaceId = $ws;
+				$this->sys_page->versioningWorkspaceId = $ws;
 				$this->rootLine = $this->sys_page->getRootLine($this->id, $this->MP);
 			}
 			if (empty($this->rootLine)) {
