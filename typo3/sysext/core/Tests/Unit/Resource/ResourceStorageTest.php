@@ -453,6 +453,71 @@ class ResourceStorageTest extends BaseTestCase
     /**
      * @test
      */
+    public function metaDataEditIsNotAllowedWhenWhenNoFileMountsAreSet()
+    {
+        $this->prepareSubject([], false, null, [], ['isWithinProcessingFolder']);
+        $this->subject->setEvaluatePermissions(true);
+        $this->assertFalse($this->subject->checkFileActionPermission('editMeta', new File(['identifier' => '/foo/bar.jpg'], $this->subject)));
+    }
+
+    /**
+     * @test
+     */
+    public function metaDataEditIsAllowedWhenWhenInFileMount()
+    {
+        $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
+        $this->prepareSubject([], false, $driverMock, [], ['isWithinProcessingFolder']);
+
+        $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
+        $folderStub = new Folder($this->subject, '/foo/', 'foo');
+        $driverMock->expects($this->once())
+            ->method('isWithin')
+            ->with($folderStub->getIdentifier(), $fileStub->getIdentifier())
+            ->willReturn(true);
+
+        $this->subject->setEvaluatePermissions(true);
+        $fileMounts = [
+            '/foo/' => [
+                'path' => '/foo/',
+                'title' => 'Foo',
+                'folder' => $folderStub,
+            ]
+        ];
+        $this->inject($this->subject, 'fileMounts', $fileMounts);
+        $this->assertTrue($this->subject->checkFileActionPermission('editMeta', $fileStub));
+    }
+
+    /**
+     * @test
+     */
+    public function metaDataEditIsNotAllowedWhenWhenInReadOnlyFileMount()
+    {
+        $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
+        $this->prepareSubject([], false, $driverMock, [], ['isWithinProcessingFolder']);
+
+        $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
+        $folderStub = new Folder($this->subject, '/foo/', 'foo');
+        $driverMock->expects($this->once())
+            ->method('isWithin')
+            ->with($folderStub->getIdentifier(), $fileStub->getIdentifier())
+            ->willReturn(true);
+
+        $this->subject->setEvaluatePermissions(true);
+        $fileMounts = [
+            '/foo/' => [
+                'path' => '/foo/',
+                'title' => 'Foo',
+                'folder' => $folderStub,
+                'read_only' => true,
+            ]
+        ];
+        $this->inject($this->subject, 'fileMounts', $fileMounts);
+        $this->assertFalse($this->subject->checkFileActionPermission('editMeta', $fileStub));
+    }
+
+    /**
+     * @test
+     */
     public function getEvaluatePermissionsWhenSetFalse()
     {
         $this->prepareSubject([]);

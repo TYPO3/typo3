@@ -597,18 +597,22 @@ class ResourceStorage implements ResourceStorageInterface
      * the Filelist UI to check whether an action is allowed and whether action
      * related UI elements should thus be shown (move icon, edit icon, etc.)
      *
-     * @param string $action action, can be read, write, delete
+     * @param string $action action, can be read, write, delete, editMeta
      * @param FileInterface $file
      * @return bool
      */
     public function checkFileActionPermission($action, FileInterface $file)
     {
         $isProcessedFile = $file instanceof ProcessedFile;
-        // Check 1: Does the user have permission to perform the action? e.g. "readFile"
+        // Check 1: Allow editing meta data of a file if it is in mount boundaries of a writable file mount
+        if ($action === 'editMeta') {
+            return !$isProcessedFile && $this->isWithinFileMountBoundaries($file, true);
+        }
+        // Check 2: Does the user have permission to perform the action? e.g. "readFile"
         if (!$isProcessedFile && $this->checkUserActionPermission($action, 'File') === false) {
             return false;
         }
-        // Check 2: No action allowed on files for denied file extensions
+        // Check 3: No action allowed on files for denied file extensions
         if (!$this->checkFileExtensionPermission($file->getName())) {
             return false;
         }
@@ -620,7 +624,7 @@ class ResourceStorage implements ResourceStorageInterface
         if (in_array($action, ['add', 'write', 'move', 'rename', 'replace', 'delete'], true)) {
             $isWriteCheck = true;
         }
-        // Check 3: Does the user have the right to perform the action?
+        // Check 4: Does the user have the right to perform the action?
         // (= is he within the file mount borders)
         if (!$isProcessedFile && !$this->isWithinFileMountBoundaries($file, $isWriteCheck)) {
             return false;
@@ -636,12 +640,12 @@ class ResourceStorage implements ResourceStorageInterface
             $isMissing = true;
         }
 
-        // Check 4: Check the capabilities of the storage (and the driver)
+        // Check 5: Check the capabilities of the storage (and the driver)
         if ($isWriteCheck && ($isMissing || !$this->isWritable())) {
             return false;
         }
 
-        // Check 5: "File permissions" of the driver (only when file isn't marked as missing)
+        // Check 6: "File permissions" of the driver (only when file isn't marked as missing)
         if (!$isMissing) {
             $filePermissions = $this->driver->getPermissions($file->getIdentifier());
             if ($isReadCheck && !$filePermissions['r']) {
