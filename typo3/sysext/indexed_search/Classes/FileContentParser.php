@@ -150,6 +150,25 @@ class FileContentParser {
 					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:xlhtmlDisabled'), 1);
 				}
 				break;
+			case 'docx':	// Microsoft Word >= 2007
+			case 'dotx':
+			case 'pptx':	// Microsoft PowerPoint >= 2007
+			case 'ppsx':
+			case 'potx':
+			case 'xlsx':	// Microsoft Excel >= 2007
+			case 'xltx':
+				if ($indexerConfig['unzip']) {
+					$unzipPath = rtrim($indexerConfig['unzip'], '/') . '/';
+					if (@is_file($unzipPath . 'unzip' . $exe)) {
+						$this->app['unzip'] = $unzipPath . 'unzip' . $exe;
+						$extOK = TRUE;
+					} else {
+						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipNotFound'), $unzipPath), 3);
+					}
+				} else {
+					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:unzipDisabled'), 1);
+				}
+				break;
 			case 'sxc':
 			case 'sxi':
 			case 'sxw':
@@ -225,9 +244,16 @@ class FileContentParser {
 		switch ($extension) {
 			case 'pdf':
 			case 'doc':
+			case 'docx':
+			case 'dotx':
 			case 'pps':
+			case 'ppsx':
 			case 'ppt':
+			case 'pptx':
+			case 'potx':
 			case 'xls':
+			case 'xlsx':
+			case 'xltx':
 			case 'sxc':
 			case 'sxi':
 			case 'sxw':
@@ -290,6 +316,26 @@ class FileContentParser {
 				// MS Excel
 				// Xlhtml
 				if ($indexerConfig['xlhtml']) {
+					return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.XLS'), $extension);
+				}
+				break;
+			case 'docx':
+			case 'dotx':
+				// Microsoft Word >= 2007
+				if ($indexerConfig['unzip']) {
+					return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.DOC'), $extension);
+				}
+				break;
+			case 'pptx':	// Microsoft PowerPoint >= 2007
+			case 'ppsx':
+			case 'potx':
+				if ($indexerConfig['unzip']) {
+					return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.PP'), $extension);
+				}
+				break;
+			case 'xlsx':	// Microsoft Excel >= 2007
+			case 'xltx':
+				if ($indexerConfig['unzip']) {
 					return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.XLS'), $extension);
 				}
 				break;
@@ -478,6 +524,55 @@ class FileContentParser {
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
 					$contentArr['title'] = basename($absFile);
+					$this->setLocaleForServerFileSystem(TRUE);
+				}
+				break;
+			case 'docx':
+			case 'dotx':
+			case 'pptx':
+			case 'ppsx':
+			case 'potx':
+			case 'xlsx':
+			case 'xltx':
+				if ($this->app['unzip']) {
+					$this->setLocaleForServerFileSystem();
+					switch ($ext) {
+						case 'docx':
+						case 'dotx':
+							// Read document.xml:
+							$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' word/document.xml';
+							break;
+						case 'ppsx':
+						case 'pptx':
+						case 'potx':
+							// Read slide1.xml:
+							$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' ppt/slides/slide1.xml';
+							break;
+						case 'xlsx':
+						case 'xltx':
+							// Read sheet1.xml:
+							$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' xl/worksheets/sheet1.xml';
+							break;
+					}
+					CommandUtility::exec($cmd, $res);
+					$content_xml = implode(LF, $res);
+					unset($res);
+					$utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
+					$contentArr = $this->pObj->splitRegularContent($utf8_content);
+					// Make sure the title doesn't expose the absolute path!
+					$contentArr['title'] = basename($absFile);
+					// Meta information
+					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' docProps/core.xml';
+					CommandUtility::exec($cmd, $res);
+					$meta_xml = implode(LF, $res);
+					unset($res);
+					$metaContent = GeneralUtility::xml2tree($meta_xml);
+					if (is_array($metaContent)) {
+						$contentArr['title'] .= ' ' . $metaContent['cp:coreProperties'][0]['ch']['dc:title'][0]['values'][0];
+						$contentArr['description'] = $metaContent['cp:coreProperties'][0]['ch']['dc:subject'][0]['values'][0];
+						$contentArr['description'] .= ' ' . $metaContent['cp:coreProperties'][0]['ch']['dc:description'][0]['values'][0];
+						$contentArr['keywords'] = $metaContent['cp:coreProperties'][0]['ch']['cp:keywords'][0]['values'][0];
+					}
 					$this->setLocaleForServerFileSystem(TRUE);
 				}
 				break;
