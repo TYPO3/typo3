@@ -1787,7 +1787,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			$uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
 		} else {
 			foreach($this->getFileStorages() as $storage) {
-				if ($storage->isDefault()) {
+				if ($storage->isDefault() && $storage->isWritable()) {
 					try {
 						$uploadFolder = $storage->getDefaultFolder();
 						if ($uploadFolder->checkActionPermission('add')) {
@@ -1803,14 +1803,16 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 			if (!$uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				/** @var ResourceStorage $storage */
 				foreach ($this->getFileStorages() as $storage) {
-					try {
-						$uploadFolder = $storage->getDefaultFolder();
-						if ($uploadFolder->checkActionPermission('add')) {
-							break;
+					if ($storage->isWritable()) {
+						try {
+							$uploadFolder = $storage->getDefaultFolder();
+							if ($uploadFolder->checkActionPermission('add')) {
+								break;
+							}
+							$uploadFolder = NULL;
+						} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
+							// If the folder is not accessible (no permissions / does not exist) try the next one.
 						}
-						$uploadFolder = NULL;
-					} catch (\TYPO3\CMS\Core\Resource\Exception $folderAccessException) {
-						// If the folder is not accessible (no permissions / does not exist) try the next one.
 					}
 				}
 			}
