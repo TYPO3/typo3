@@ -19,6 +19,7 @@ use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Install\Status\StatusUtility;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
+use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 
 /**
  * Show system environment check results
@@ -32,13 +33,11 @@ class SystemEnvironment extends Action\AbstractAction
      */
     protected function executeAction()
     {
-        /** @var $statusCheck Check */
-        $statusCheck = GeneralUtility::makeInstance(Check::class);
-        $statusObjects = $statusCheck->getStatus();
-
-        /** @var $statusCheck DatabaseCheck */
-        $databaseStatusCheck = GeneralUtility::makeInstance(DatabaseCheck::class);
-        $statusObjects = array_merge($statusObjects, $databaseStatusCheck->getStatus());
+        $statusObjects = array_merge(
+            GeneralUtility::makeInstance(Check::class)->getStatus(),
+            GeneralUtility::makeInstance(SetupCheck::class)->getStatus(),
+            GeneralUtility::makeInstance(DatabaseCheck::class)->getStatus()
+        );
 
         /** @var $statusUtility StatusUtility */
         $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);

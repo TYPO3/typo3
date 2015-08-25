@@ -15,6 +15,10 @@ namespace TYPO3\CMS\Install\Controller\Action\Ajax;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Status\StatusUtility;
+use TYPO3\CMS\Install\SystemEnvironment\Check;
+use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck;
+use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
 
 /**
  * Environment status check for errors
@@ -28,17 +32,16 @@ class EnvironmentStatus extends AbstractAjaxAction
      */
     protected function executeAction()
     {
+        // Count of failed checks to be displayed in the left navigation menu
+        $statusObjects = array_merge(
+            GeneralUtility::makeInstance(Check::class)->getStatus(),
+            GeneralUtility::makeInstance(SetupCheck::class)->getStatus(),
+            GeneralUtility::makeInstance(DatabaseCheck::class)->getStatus()
+        );
         /** @var \TYPO3\CMS\Install\Status\StatusUtility $statusUtility */
-        $statusUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Status\StatusUtility::class);
+        $statusUtility = GeneralUtility::makeInstance(StatusUtility::class);
+        $errors = $statusUtility->filterBySeverity($statusObjects, 'error');
 
-        // Count of failed environment checks to be displayed in the left navigation menu
-        $environmentStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\Check::class)->getStatus();
-        $environmentErrors = $statusUtility->filterBySeverity($environmentStatus, 'error');
-
-        // Count of failed database checks to be displayed in the left navigation menu
-        $databaseStatus = GeneralUtility::makeInstance(\TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck::class)->getStatus();
-        $databaseErrors = $statusUtility->filterBySeverity($databaseStatus, 'error');
-
-        return count($environmentErrors) + count($databaseErrors);
+        return count($errors);
     }
 }
