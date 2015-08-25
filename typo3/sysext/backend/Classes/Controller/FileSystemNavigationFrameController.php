@@ -124,7 +124,7 @@ class FileSystemNavigationFrameController implements ControllerInterface {
 		}
 		// Only set ext_IconMode if we are not running an ajax request from the ElementBrowser,
 		// which has this property hardcoded to 1.
-		if (!$this->foldertree instanceof ElementBrowserFolderTreeView::class) {
+		if (!$this->foldertree instanceof ElementBrowserFolderTreeView) {
 			$this->foldertree->ext_IconMode = $this->getBackendUser()->getTSConfigVal('options.folderTree.disableIconLinkToContextmenu');
 		}
 	}
