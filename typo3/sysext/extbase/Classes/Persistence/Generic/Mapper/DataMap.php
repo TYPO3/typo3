@@ -72,6 +72,11 @@ class DataMap {
 	/**
 	 * @var string
 	 */
+	protected $translationOriginDiffSourceName;
+
+	/**
+	 * @var string
+	 */
 	protected $modificationDateColumnName;
 
 	/**
@@ -300,6 +305,25 @@ class DataMap {
 	 */
 	public function getTranslationOriginColumnName() {
 		return $this->translationOriginColumnName;
+	}
+
+	/**
+	 * Sets the name of a column holding the the diff data for the record which this record is a translation of.
+	 *
+	 * @param string $translationOriginDiffSourceName The field name
+	 * @return void
+	 */
+	public function setTranslationOriginDiffSourceName($translationOriginDiffSourceName) {
+		$this->translationOriginDiffSourceName = $translationOriginDiffSourceName;
+	}
+
+	/**
+	 * Returns the name of a column holding the diff data for the record which this record is a translation of.
+	 *
+	 * @return string The field name
+	 */
+	public function getTranslationOriginDiffSourceName() {
+		return $this->translationOriginDiffSourceName;
 	}
 
 	/**

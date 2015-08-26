@@ -671,6 +671,9 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		if ($dataMap->getTranslationOriginColumnName() !== NULL) {
 			$row[$dataMap->getTranslationOriginColumnName()] = 0;
 		}
+		if ($dataMap->getTranslationOriginDiffSourceName() !== NULL) {
+			$row[$dataMap->getTranslationOriginDiffSourceName()] = '';
+		}
 		if ($parentObject !== NULL && $parentPropertyName) {
 			$parentColumnDataMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
 			$relationTableMatchFields = $parentColumnDataMap->getRelationTableMatchFields();

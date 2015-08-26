@@ -255,6 +255,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($controlSection['transOrigPointerField'])) {
 			$dataMap->setTranslationOriginColumnName($controlSection['transOrigPointerField']);
 		}
+		if (isset($controlSection['transOrigDiffSourceField'])) {
+			$dataMap->setTranslationOriginDiffSourceName($controlSection['transOrigDiffSourceField']);
+		}
 		if (isset($controlSection['type'])) {
 			$dataMap->setRecordTypeColumnName($controlSection['type']);
 		}
