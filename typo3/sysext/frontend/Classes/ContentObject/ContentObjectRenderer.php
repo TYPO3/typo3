@@ -18,7 +18,6 @@ use TYPO3\CMS\Compatibility6\ContentObject\OffsetTableContentObject;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\FrontendEditing\FrontendEditingController;
 use TYPO3\CMS\Core\Html\HtmlParser;
-use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -30,6 +29,7 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -560,6 +560,11 @@ class ContentObjectRenderer {
 	protected $typoScriptFrontendController;
 
 	/**
+	 * @var MarkerBasedTemplateService
+	 */
+	protected $templateService;
+
+	/**
 	 * Indicates that object type is USER.
 	 *
 	 * @see ContentObjectRender::$userObjectType
@@ -578,6 +583,7 @@ class ContentObjectRenderer {
 	public function __construct(TypoScriptFrontendController $typoScriptFrontendController = NULL) {
 		$this->typoScriptFrontendController = $typoScriptFrontendController;
 		$this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'];
+		$this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 	}
 
 	/**
@@ -1974,21 +1980,21 @@ class ContentObjectRenderer {
 	 * " World. How are ". The input content string could just as well have
 	 * been "Hello ###sub1### World. How are ###sub1### you?" and the result
 	 * would be the same
-	 * Wrapper for \TYPO3\CMS\Core\Utility\MarkerUtility::getSubpart which behaves identical
+	 * Wrapper for \TYPO3\CMS\Core\Utility\MarkerBasedTemplateService::getSubpart which behaves identical
 	 *
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param string $marker The marker string, typically on the form "###[the marker string]###
 	 * @return string The subpart found, if found.
 	 */
 	public function getSubpart($content, $marker) {
-		return MarkerUtility::getSubpart($content, $marker);
+		return $this->templateService->getSubpart($content, $marker);
 	}
 
 	/**
 	 * Substitute subpart in input template stream.
 	 * This function substitutes a subpart in $content with the content of
 	 * $subpartContent.
-	 * Wrapper for \TYPO3\CMS\Core\Utility\MarkerUtility::substituteSubpart which behaves identical
+	 * Wrapper for \TYPO3\CMS\Core\Utility\MarkerBasedTemplateService::substituteSubpart which behaves identical
 	 *
 	 * @param string $content The content stream, typically HTML template content.
 	 * @param string $marker The marker string, typically on the form "###[the marker string]###
@@ -1997,7 +2003,7 @@ class ContentObjectRenderer {
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpart($content, $marker, $subpartContent, $recursive = 1) {
-		return MarkerUtility::substituteSubpart($content, $marker, $subpartContent, $recursive);
+		return $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive);
 	}
 
 	/**
@@ -2008,7 +2014,7 @@ class ContentObjectRenderer {
 	 * @return string The processed HTML content string.
 	 */
 	public function substituteSubpartArray($content, array $subpartsContent) {
-		return MarkerUtility::substituteSubpartArray($content, $subpartsContent);
+		return $this->templateService->substituteSubpartArray($content, $subpartsContent);
 	}
 
 	/**
@@ -2022,7 +2028,7 @@ class ContentObjectRenderer {
 	 * @see substituteSubpart()
 	 */
 	public function substituteMarker($content, $marker, $markContent) {
-		return MarkerUtility::substituteMarker($content, $marker, $markContent);
+		return $this->templateService->substituteMarker($content, $marker, $markContent);
 	}
 
 	/**
@@ -2166,7 +2172,7 @@ class ContentObjectRenderer {
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
 	public function substituteMarkerArray($content, array $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		return MarkerUtility::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
+		return $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**
@@ -2199,7 +2205,7 @@ class ContentObjectRenderer {
 	 * @return string
 	 */
 	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
-		return MarkerUtility::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
+		return $this->templateService->substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**

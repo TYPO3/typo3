@@ -24,10 +24,10 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -233,8 +233,10 @@ class FormEngine {
 		}
 		$this->templateFile = 'sysext/backend/Resources/Private/Templates/FormEngine.html';
 		$template = GeneralUtility::getUrl(PATH_typo3 . $this->templateFile);
+		/** @var MarkerBasedTemplateService $templateService */
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 		// Wrapping all table rows for a particular record being edited:
-		$this->totalWrap = MarkerUtility::getSubpart($template, '###TOTALWRAP###');
+		$this->totalWrap = $templateService->getSubpart($template, '###TOTALWRAP###');
 		$this->nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
 	}
 

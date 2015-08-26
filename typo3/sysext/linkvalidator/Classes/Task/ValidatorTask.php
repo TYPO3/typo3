@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Linkvalidator\Task;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
@@ -113,6 +113,11 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @var bool
 	 */
 	protected $emailOnBrokenLinkOnly;
+
+	/**
+	 * @var MarkerBasedTemplateService
+	 */
+	protected $templateService;
 
 	/**
 	 * Get the value of the protected property email
@@ -236,6 +241,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function execute() {
 		$this->setCliArguments();
+		$this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 		$successfullyExecuted = TRUE;
 		if (
 			!file_exists(($file = GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
@@ -253,7 +259,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 			}
 		}
 		$htmlFile = GeneralUtility::getURL($file);
-		$this->templateMail = MarkerUtility::getSubpart($htmlFile, '###REPORT_TEMPLATE###');
+		$this->templateMail = $this->templateService->getSubpart($htmlFile, '###REPORT_TEMPLATE###');
 		// The array to put the content into
 		$pageSections = '';
 		$this->isDifferentToLastRun = FALSE;
@@ -398,7 +404,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @throws \Exception if required modTsConfig settings are missing
 	 */
 	protected function reportEmail($pageSections, array $modTsConfig) {
-		$content = MarkerUtility::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
+		$content = $this->templateService->substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
 		/** @var array $markerArray */
 		$markerArray = array();
 		/** @var array $validEmailList */
@@ -421,7 +427,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				unset($params);
 			}
 		}
-		$content = MarkerUtility::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
+		$content = $this->templateService->substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 		/** @var $mail MailMessage */
 		$mail = GeneralUtility::makeInstance(MailMessage::class);
 		if (empty($modTsConfig['mail.']['fromemail'])) {
@@ -483,7 +489,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @return string Content of the mail
 	 */
 	protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink) {
-		$pageSectionHtml = MarkerUtility::getSubpart($this->templateMail, '###PAGE_SECTION###');
+		$pageSectionHtml = $this->templateService->getSubpart($this->templateMail, '###PAGE_SECTION###');
 		// Hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] as $userFunc) {
@@ -518,7 +524,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 		);
 		$content = '';
 		if ($markerArray['brokenlinkCount'] > 0) {
-			$content = MarkerUtility::substituteMarkerArray($pageSectionHtml, $markerArray, '###|###', TRUE, TRUE);
+			$content = $this->templateService->substituteMarkerArray($pageSectionHtml, $markerArray, '###|###', TRUE, TRUE);
 		}
 		return $content;
 	}

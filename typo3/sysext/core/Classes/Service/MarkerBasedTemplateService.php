@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Utility;
+namespace TYPO3\CMS\Core\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,14 +13,13 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Helper functionality for subparts and marker substitution
  * ###MYMARKER###
  */
-class MarkerUtility {
+class MarkerBasedTemplateService {
 
 	/**
 	 * Returns the first subpart encapsulated in the marker, $marker
@@ -31,7 +30,7 @@ class MarkerUtility {
 	 *
 	 * @return string
 	 */
-	static public function getSubpart($content, $marker) {
+	public function getSubpart($content, $marker) {
 		$start = strpos($content, $marker);
 		if ($start === FALSE) {
 			return '';
@@ -73,7 +72,7 @@ class MarkerUtility {
 	 *
 	 * @return string Processed input content
 	 */
-	static public function substituteSubpart($content, $marker, $subpartContent, $recursive = TRUE, $keepMarker = FALSE) {
+	public function substituteSubpart($content, $marker, $subpartContent, $recursive = TRUE, $keepMarker = FALSE) {
 		$start = strpos($content, $marker);
 		if ($start === FALSE) {
 			return $content;
@@ -88,7 +87,7 @@ class MarkerUtility {
 		$after = substr($content, $stopAM);
 		$between = substr($content, $startAM, $stop - $startAM);
 		if ($recursive) {
-			$after = self::substituteSubpart($after, $marker, $subpartContent, $recursive, $keepMarker);
+			$after = $this->substituteSubpart($after, $marker, $subpartContent, $recursive, $keepMarker);
 		}
 		if ($keepMarker) {
 			$matches = array();
@@ -146,9 +145,9 @@ class MarkerUtility {
 	 *
 	 * @return string The processed HTML content string.
 	 */
-	static public function substituteSubpartArray($content, array $subpartsContent) {
+	public function substituteSubpartArray($content, array $subpartsContent) {
 		foreach ($subpartsContent as $subpartMarker => $subpartContent) {
-			$content = self::substituteSubpart($content, $subpartMarker, $subpartContent);
+			$content = $this->substituteSubpart($content, $subpartMarker, $subpartContent);
 		}
 
 		return $content;
@@ -165,7 +164,7 @@ class MarkerUtility {
 	 * @return string The processed HTML content string.
 	 * @see substituteSubpart()
 	 */
-	static public function substituteMarker($content, $marker, $markContent) {
+	public function substituteMarker($content, $marker, $markContent) {
 		return str_replace($marker, $markContent, $content);
 	}
 
@@ -188,7 +187,7 @@ class MarkerUtility {
 	 * @return string The processed output stream
 	 * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
 	 */
-	static public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
+	public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
 		if (is_array($markContentArray)) {
 			$wrapArr = GeneralUtility::trimExplode('|', $wrap);
 			$search = array();
@@ -254,7 +253,7 @@ class MarkerUtility {
 	 *
 	 * @return string The processed output stream
 	 */
-	static public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
+	public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
 		$wraps = GeneralUtility::trimExplode('|', $wrap);
 		$singleItems = array();
 		$compoundItems = array();
@@ -277,7 +276,7 @@ class MarkerUtility {
 			if (!empty($wraps)) {
 				$subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
 			}
-			$subTemplates[$subpartMarker] = self::getSubpart($content, $subpartMarker);
+			$subTemplates[$subpartMarker] = $this->getSubpart($content, $subpartMarker);
 		}
 		// Replace the subpart contents recursively
 		foreach ($compoundItems as $subpartMarker) {
@@ -291,7 +290,7 @@ class MarkerUtility {
 			}
 			if (!empty($markersAndSubparts[$subpartMarker])) {
 				foreach ($markersAndSubparts[$subpartMarker] as $partialMarkersAndSubparts) {
-					$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker],
+					$subpartSubstitutes[$completeMarker] .= $this->substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker],
 						$partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
 				}
 			} else {
@@ -299,8 +298,8 @@ class MarkerUtility {
 			}
 		}
 		// Substitute the single markers and subparts
-		$result = self::substituteSubpartArray($content, $subpartSubstitutes);
-		$result = self::substituteMarkerArray($result, $singleItems, $wrap, $uppercase, $deleteUnused);
+		$result = $this->substituteSubpartArray($content, $subpartSubstitutes);
+		$result = $this->substituteMarkerArray($result, $singleItems, $wrap, $uppercase, $deleteUnused);
 
 		return $result;
 	}

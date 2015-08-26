@@ -1,6 +1,9 @@
 <?php
 namespace TYPO3\CMS\Core\Messaging;
 
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -86,7 +89,7 @@ abstract class AbstractStandaloneMessage extends AbstractMessage {
 			// Avoid calling TYPO3_SITE_URL here to get the base URL as it might be that we output an exception message with
 			// invalid trusted host, which would lead to a nested exception! See: #30377
 			// Instead we calculate the relative path to the document root without involving HTTP request parameters.
-			'###BASEURL###' => substr(PATH_site, strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT'))),
+			'###BASEURL###' => substr(PATH_site, strlen(GeneralUtility::getIndpEnv('TYPO3_DOCUMENT_ROOT'))),
 			'###TYPO3_mainDir###' => TYPO3_mainDir,
 			'###TYPO3_copyright_year###' => TYPO3_copyright_year
 		);
@@ -125,8 +128,9 @@ abstract class AbstractStandaloneMessage extends AbstractMessage {
 	 */
 	public function render() {
 		$markers = array_merge($this->getDefaultMarkers(), $this->markers);
-		$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->htmlTemplate);
-		$content = \TYPO3\CMS\Core\Utility\MarkerUtility::substituteMarkerArray($content, $markers, '', FALSE, TRUE);
+		$content = GeneralUtility::getUrl($this->htmlTemplate);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		$content = $templateService->substituteMarkerArray($content, $markers, '', FALSE, TRUE);
 		return $content;
 	}
 

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+namespace TYPO3\CMS\Core\Tests\Unit\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,12 +14,22 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\MarkerUtility;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Unit test for marker utility
  */
-class MarkerUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MarkerBasedTemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+
+	/**
+	 * @var MarkerBasedTemplateService
+	 */
+	protected $templateService;
+
+	public function setUp() {
+		$this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+	}
 
 	/**
 	 * Data provider for getSubpart
@@ -96,7 +106,7 @@ text
 	 * @dataProvider getSubpartDataProvider
 	 */
 	public function getSubpart($content, $marker, $expected) {
-		$this->assertSame($expected, MarkerUtility::getSubpart($content, $marker));
+		$this->assertSame($expected, $this->templateService->getSubpart($content, $marker));
 	}
 
 	/**
@@ -230,7 +240,7 @@ hello
 	 * @dataProvider substituteSubpartDataProvider
 	 */
 	public function substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker, $expected) {
-		$this->assertSame($expected, MarkerUtility::substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker));
+		$this->assertSame($expected, $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker));
 	}
 
 	/**
@@ -306,7 +316,7 @@ hello
 	 * @param string $expected
 	 */
 	public function substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused, $expected) {
-		$this->assertSame($expected, MarkerUtility::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused));
+		$this->assertSame($expected, $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused));
 	}
 
 	/**
@@ -337,7 +347,7 @@ hello
 	 * @param string $expected The expected result of the substitution
 	 */
 	public function substituteMarker($content, $marker, $markContent, $expected) {
-		$this->assertSame($expected, MarkerUtility::substituteMarker($content, $marker, $markContent));
+		$this->assertSame($expected, $this->templateService->substituteMarker($content, $marker, $markContent));
 	}
 
 	/**
@@ -370,7 +380,7 @@ world
 	 * @dataProvider substituteSubpartArrayDataProvider
 	 */
 	public function substituteSubpartArray($content, array $subpartsContent, $expected) {
-		$this->assertSame($expected, MarkerUtility::substituteSubpartArray($content, $subpartsContent));
+		$this->assertSame($expected, $this->templateService->substituteSubpartArray($content, $subpartsContent));
 	}
 
 	/**
@@ -580,7 +590,7 @@ Value 2.2
 	 * @dataProvider substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArrayDataProvider
 	 */
 	public function substituteMarkerAndSubpartArrayRecursiveResolvesMarkersAndSubpartsArray($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused, $expected) {
-		$this->assertSame($expected, MarkerUtility::substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
+		$this->assertSame($expected, $this->templateService->substituteMarkerAndSubpartArrayRecursive($template, $markersAndSubparts, $wrap, $uppercase, $deleteUnused));
 	}
 
 }

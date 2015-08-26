@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\MarkerUtility;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -1230,10 +1230,12 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 	 * @return string The HTML
 	 */
 	public function extraFormHeaders() {
+		/** @var MarkerBasedTemplateService $templateService */
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 		$extraTemplate = '';
 		if (is_array($this->tceforms->extraFormHeaders)) {
-			$extraTemplate = MarkerUtility::getSubpart($this->doc->moduleTemplate, '###DOCHEADER_EXTRAHEADER###');
-			$extraTemplate = MarkerUtility::substituteMarker($extraTemplate, '###EXTRAHEADER###', implode(LF, $this->tceforms->extraFormHeaders));
+			$extraTemplate = $templateService->getSubpart($this->doc->moduleTemplate, '###DOCHEADER_EXTRAHEADER###');
+			$extraTemplate = $templateService->substituteMarker($extraTemplate, '###EXTRAHEADER###', implode(LF, $this->tceforms->extraFormHeaders));
 		}
 		return $extraTemplate;
 	}

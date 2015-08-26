@@ -17,10 +17,10 @@ namespace TYPO3\CMS\Backend\Template;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\MarkerUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -373,6 +373,11 @@ function jumpToUrl(URL) {
 	 */
 	protected $iconFactory;
 
+	/**
+	 * @var MarkerBasedTemplateService
+	 */
+	protected $templateService;
+
 	const STATUS_ICON_ERROR = 3;
 	const STATUS_ICON_WARNING = 2;
 	const STATUS_ICON_NOTIFICATION = 1;
@@ -388,6 +393,9 @@ function jumpToUrl(URL) {
 		// load Legacy CSS Support
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyCssClasses');
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+		// initialize Marker Support
+		$this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 
 		// Setting default scriptID:
 		if (($temp_M = (string)GeneralUtility::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
@@ -1692,7 +1700,7 @@ function jumpToUrl(URL) {
 	 */
 	public function moduleBody($pageRecord = array(), $buttons = array(), $markerArray = array(), $subpartArray = array()) {
 		// Get the HTML template for the module
-		$moduleBody = MarkerUtility::getSubpart($this->moduleTemplate, '###FULLDOC###');
+		$moduleBody = $this->templateService->getSubpart($this->moduleTemplate, '###FULLDOC###');
 		// Add CSS
 		$this->inDocStylesArray[] = 'html { overflow: hidden; }';
 		// Get the page path for the docheader
@@ -1705,7 +1713,7 @@ function jumpToUrl(URL) {
 		$markerArray = array_merge($markerArray, $docHeaderButtons);
 		// replacing subparts
 		foreach ($subpartArray as $marker => $content) {
-			$moduleBody = MarkerUtility::substituteSubpart($moduleBody, $marker, $content);
+			$moduleBody = $this->templateService->substituteSubpart($moduleBody, $marker, $content);
 		}
 		// adding flash messages
 		if ($this->showFlashMessages) {
@@ -1733,7 +1741,7 @@ function jumpToUrl(URL) {
 			}
 		}
 		// Replacing all markers with the finished markers and return the HTML content
-		return MarkerUtility::substituteMarkerArray($moduleBody, $markerArray, '###|###');
+		return $this->templateService->substituteMarkerArray($moduleBody, $markerArray, '###|###');
 	}
 
 	/**
@@ -1773,20 +1781,20 @@ function jumpToUrl(URL) {
 		$floats = array('left', 'right');
 		foreach ($floats as $key) {
 			// Get the template for each float
-			$buttonTemplate = MarkerUtility::getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
+			$buttonTemplate = $this->templateService->getSubpart($this->moduleTemplate, '###BUTTON_GROUPS_' . strtoupper($key) . '###');
 			// Fill the button markers in this float
-			$buttonTemplate = MarkerUtility::substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
+			$buttonTemplate = $this->templateService->substituteMarkerArray($buttonTemplate, $buttons, '###|###', TRUE);
 			// getting the wrap for each group
-			$buttonWrap = MarkerUtility::getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
+			$buttonWrap = $this->templateService->getSubpart($this->moduleTemplate, '###BUTTON_GROUP_WRAP###');
 			// looping through the groups (max 6) and remove the empty groups
 			for ($groupNumber = 1; $groupNumber < 6; $groupNumber++) {
 				$buttonMarker = '###BUTTON_GROUP' . $groupNumber . '###';
-				$buttonGroup = MarkerUtility::getSubpart($buttonTemplate, $buttonMarker);
+				$buttonGroup = $this->templateService->getSubpart($buttonTemplate, $buttonMarker);
 				if (trim($buttonGroup)) {
 					if ($buttonWrap) {
-						$buttonGroup = MarkerUtility::substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
+						$buttonGroup = $this->templateService->substituteMarker($buttonWrap, '###BUTTONS###', $buttonGroup);
 					}
-					$buttonTemplate = MarkerUtility::substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
+					$buttonTemplate = $this->templateService->substituteSubpart($buttonTemplate, $buttonMarker, trim($buttonGroup));
 				}
 			}
 			// Replace the marker with the template and remove all line breaks (for IE compat)

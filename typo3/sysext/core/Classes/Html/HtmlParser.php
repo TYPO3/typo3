@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Core\Html;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MarkerUtility;
 
 
 /**
@@ -40,11 +40,12 @@ class HtmlParser {
 	 * @param string $marker Marker string, eg. "###CONTENT_PART###
 	 *
 	 * @return string
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
 	 */
 	static public function getSubpart($content, $marker) {
 		GeneralUtility::logDeprecatedFunction();
-		return MarkerUtility::getSubpart($content, $marker);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return $templateService->getSubpart($content, $marker);
 	}
 
 	/**
@@ -57,11 +58,12 @@ class HtmlParser {
 	 * @param bool $keepMarker If set, the marker around the subpart is not removed, but kept in the output
 	 *
 	 * @return string Processed input content
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
 	 */
 	static public function substituteSubpart($content, $marker, $subpartContent, $recursive = TRUE, $keepMarker = FALSE) {
 		GeneralUtility::logDeprecatedFunction();
-		return MarkerUtility::substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return $templateService->substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker);
 	}
 
 	/**
@@ -71,11 +73,12 @@ class HtmlParser {
 	 * @param array $subpartsContent The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
 	 *
 	 * @return string The processed HTML content string.
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
 	 */
 	static public function substituteSubpartArray($content, array $subpartsContent) {
 		GeneralUtility::logDeprecatedFunction();
-		return MarkerUtility::substituteSubpartArray($content, $subpartsContent);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return $templateService->substituteSubpartArray($content, $subpartsContent);
 	}
 
 	/**
@@ -87,11 +90,12 @@ class HtmlParser {
 	 * @param mixed $markContent The content to insert instead of the marker string found.
 	 *
 	 * @return string The processed HTML content string.
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
 	 */
 	static public function substituteMarker($content, $marker, $markContent) {
 		GeneralUtility::logDeprecatedFunction();
-		return MarkerUtility::substituteMarker($content, $marker, $markContent);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return $templateService->substituteMarker($content, $marker, $markContent);
 	}
 
 	/**
@@ -111,11 +115,12 @@ class HtmlParser {
 	 * @param bool $deleteUnused If set, all unused marker are deleted.
 	 *
 	 * @return string The processed output stream
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
 	 */
 	static public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
 		GeneralUtility::logDeprecatedFunction();
-		return MarkerUtility::substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return $templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/**
@@ -154,11 +159,12 @@ class HtmlParser {
 	 * @param bool $deleteUnused If set, all unused single markers are deleted.
 	 *
 	 * @return string The processed output stream
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerUtility accordingly
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the corresponding method in MarkerBasedTemplateService accordingly
 	 */
 	static public function substituteMarkerAndSubpartArrayRecursive($content, array $markersAndSubparts, $wrap = '', $uppercase = FALSE, $deleteUnused = FALSE) {
 		GeneralUtility::logDeprecatedFunction();
-		return MarkerUtility::substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return $templateService->substituteMarkerAndSubpartArrayRecursive($content, $markersAndSubparts, $wrap, $uppercase, $deleteUnused);
 	}
 
 	/************************************

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Page;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -1726,7 +1727,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		// This means that you can only register footer files *after* the header has been already rendered.
 		// In case you render the footer part first, header files can only be added *after* the footer has been rendered
 		$this->reset();
-		return trim(\TYPO3\CMS\Core\Utility\MarkerUtility::substituteMarkerArray($template, $markerArray, '###|###'));
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
 	}
 
 	/**
@@ -1740,7 +1742,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->prepareRendering();
 		$markerArray = $this->getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash);
 		$template = $this->getTemplateForPart(self::PART_COMPLETE);
-		return trim(\TYPO3\CMS\Core\Utility\MarkerUtility::substituteMarkerArray($template, $markerArray, '###|###'));
+		$templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+		return trim($templateService->substituteMarkerArray($template, $markerArray, '###|###'));
 	}
 
 	/**
