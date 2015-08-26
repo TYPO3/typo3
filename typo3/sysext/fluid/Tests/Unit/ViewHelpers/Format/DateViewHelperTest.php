@@ -148,6 +148,15 @@ class DateViewHelperTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function relativeDateCalculationWorksWithoutBase() {
+		$this->subject->expects($this->never())->method('renderChildren');
+		$actualResult = $this->subject->render('now', 'Y');
+		$this->assertEquals(date('Y'), $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
 	public function baseArgumentIsConsideredForRelativeDate() {
 		$this->subject->expects($this->never())->method('renderChildren');
 		$actualResult = $this->subject->render('-1 year', 'Y', '2017-01-01');

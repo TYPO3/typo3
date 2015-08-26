@@ -134,7 +134,7 @@ class DateViewHelper extends AbstractViewHelper implements CompilableInterface {
 		}
 		if (!$date instanceof \DateTime) {
 			try {
-				$base = $base instanceof \DateTime ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $base);
+				$base = $base instanceof \DateTime ? $base->format('U') : strtotime((MathUtility::canBeInterpretedAsInteger($base) ? '@' : '') . $base);
 				$dateTimestamp = strtotime((MathUtility::canBeInterpretedAsInteger($date) ? '@' : '') . $date, $base);
 				$date = new \DateTime('@' . $dateTimestamp);
 				$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
