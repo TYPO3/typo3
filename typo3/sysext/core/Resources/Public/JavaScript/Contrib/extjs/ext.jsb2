@@ -693,24 +693,6 @@
             "path": "src/widgets/tree/"
         }]
     },{
-        "name": "Charts",
-        "file": "pkgs/pkg-charts.js",
-        "isDebug": true,
-        "pkgs": ["pkgs/cmp-foundation.js"],
-        "fileIncludes": [{
-            "text": "swfobject.js",
-            "path": "src/widgets/chart/"
-        },{
-            "text": "FlashComponent.js",
-            "path": "src/widgets/chart/"
-        },{
-            "text": "EventProxy.js",
-            "path": "src/widgets/chart/"
-        },{
-            "text": "Chart.js",
-            "path": "src/widgets/chart/"
-        }]
-    },{
         "name": "Menu",
         "file": "pkgs/pkg-menu.js",
         "isDebug": true,
