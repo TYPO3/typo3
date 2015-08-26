@@ -528,6 +528,7 @@ plugin.insertImage(imageTags.join(\' \'));
 				break;
 			case 'dragdrop':
 				$foldertree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
+				$foldertree->setElementBrowser($this);
 				$foldertree->thisScript = $this->thisScript;
 				$foldertree->ext_noTempRecyclerDirs = TRUE;
 				$tree = $foldertree->getBrowsableTree();

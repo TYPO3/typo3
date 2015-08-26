@@ -1198,6 +1198,7 @@ class ElementBrowser {
 	protected function getFileSelectorHtml($treeClassName = ElementBrowserFolderTreeView::class) {
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance($treeClassName);
+		$folderTree->setElementBrowser($this);
 		$folderTree->thisScript = $this->thisScript;
 		$tree = $folderTree->getBrowsableTree();
 		$backendUser = $this->getBackendUser();
@@ -1471,6 +1472,7 @@ class ElementBrowser {
 		// Create folder tree:
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
+		$folderTree->setElementBrowser($this);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode === 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1542,6 +1544,7 @@ class ElementBrowser {
 		// Create folder tree:
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
+		$folderTree->setElementBrowser($this);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode === 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
