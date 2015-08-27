@@ -14,10 +14,24 @@ namespace TYPO3\CMS\Form\Domain\Model\Attribute;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Attribute 'src'
+ * @deprecated The src attribute (used by element IMAGEBUTTON) is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.
  */
 class SrcAttribute extends \TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute {
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $value Attribute value
+	 * @param int $elementId
+	 */
+	public function __construct($value, $elementId) {
+		GeneralUtility::deprecationLog('The src attribute (used by element IMAGEBUTTON) is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+		parent::__construct($value, $elementId);
+	}
 
 	/**
 	 * Gets the attribute 'src'.

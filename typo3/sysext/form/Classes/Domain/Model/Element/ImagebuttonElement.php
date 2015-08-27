@@ -14,8 +14,11 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Image button model object
+ * @deprecated The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.
  */
 class ImagebuttonElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement {
 
@@ -50,5 +53,13 @@ class ImagebuttonElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEl
 		'name',
 		'id'
 	);
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		GeneralUtility::deprecationLog('The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+		parent::__construct();
+	}
 
 }

@@ -14,8 +14,12 @@ namespace TYPO3\CMS\Form\View\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Model\Element\AbstractElement;
+
 /**
  * View object for the image button element
+ * @deprecated The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.
  */
 class ImagebuttonElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractElementView {
 
@@ -28,5 +32,15 @@ class ImagebuttonElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractE
 		<label />
 		<input />
 	';
+
+	/**
+	 * Constructor
+	 *
+	 * @param AbstractElement $model Current elements model
+	 */
+	public function __construct(AbstractElement $model) {
+		GeneralUtility::deprecationLog('The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+		parent::__construct($model);
+	}
 
 }
