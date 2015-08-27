@@ -21,7 +21,11 @@
  * CSS from the website that uses Font Awesome too.
  */
 #TSFE_ADMIN_PANEL_FORM .fa,
-#TSFE_ADMIN_PANEL_FORM .fa:before {
+#TSFE_ADMIN_PANEL_FORM .fa:before,
+.frontEndEditIconLinks .fa,
+.frontEndEditIconLinks .fa:before,
+.typo3-editPanel .fa,
+.typo3-editPanel .fa:before{
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: 15px;
@@ -30,37 +34,48 @@
   -moz-osx-font-smoothing: grayscale;
   transform: translate(0, 0);
 }
-#TSFE_ADMIN_PANEL_FORM .fa-pencil:before {
+#TSFE_ADMIN_PANEL_FORM .fa-pencil:before,
+.typo3-feedit-element .fa-pencil:before {
   content: "\f040";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-angle-up:before {
+#TSFE_ADMIN_PANEL_FORM .fa-angle-up:before,
+.typo3-editPanel .fa-angle-up:before {
   content: "\f106";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-angle-down:before {
+#TSFE_ADMIN_PANEL_FORM .fa-angle-down:before,
+.typo3-editPanel .fa-angle-down:before {
   content: "\f107";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-toggle-off:before {
+#TSFE_ADMIN_PANEL_FORM .fa-toggle-off:before,
+.typo3-editPanel .fa-toggle-off:before {
   content: "\f204";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-toggle-on:before {
+#TSFE_ADMIN_PANEL_FORM .fa-toggle-on:before,
+.typo3-editPanel .fa-toggle-on:before {
   content: "\f205";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-google-plus-square:before {
+#TSFE_ADMIN_PANEL_FORM .fa-google-plus-square:before,
+.typo3-editPanel .fa-google-plus-square:before {
   content: "\f0d4";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-trash:before {
+#TSFE_ADMIN_PANEL_FORM .fa-trash:before,
+.typo3-editPanel .fa-trash:before {
   content: "\f1f8";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-history:before {
+#TSFE_ADMIN_PANEL_FORM .fa-history:before,
+.typo3-editPanel .fa-history:before {
   content: "\f1da";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-list-alt:before {
+#TSFE_ADMIN_PANEL_FORM .fa-list-alt:before,
+.typo3-editPanel .fa-list-alt:before {
   content: "\f022";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-plus-square:before {
+#TSFE_ADMIN_PANEL_FORM .fa-plus-square:before,
+.typo3-feedit-element .fa-plus-square:before {
   content: "\f0fe";
 }
-#TSFE_ADMIN_PANEL_FORM .fa-arrows:before {
+#TSFE_ADMIN_PANEL_FORM .fa-arrows:before,
+.typo3-editPanel .fa-arrows:before{
   content: "\f047";
 }
 #TSFE_ADMIN_PANEL_FORM .fa-exclamation-circle:before {
@@ -100,13 +115,25 @@
 	background: #ccc;
 }
 
+.typo3-editPanel a {
+	text-decoration: none;
+}
+
 .typo3-editPanel-label {
 	display: inline;
 	margin: 0 10px;
 }
 
 .typo3-editPanel .t3-icon {
-	margin: 2px 1px;
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+}
+
+.typo3-feedit-element .t3-icon,
+.typo3-feedit-element .fa {
+	color: #000000;
+	margin: 2px 3px;
 }
 
 .typo3-feedit-element {
