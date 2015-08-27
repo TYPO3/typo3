@@ -96,7 +96,7 @@ class FileDumpController implements ControllerInterface {
 	protected function getGetOrPost(ServerRequestInterface $request, $parameter) {
 		return isset($request->getParsedBody()[$parameter])
 			? $request->getParsedBody()[$parameter]
-			: isset($request->getQueryParams()[$parameter]) ? $request->getQueryParams()[$parameter] : NULL;
+			: (isset($request->getQueryParams()[$parameter]) ? $request->getQueryParams()[$parameter] : NULL);
 	}
 
 }

@@ -5571,7 +5571,7 @@ class ContentObjectRenderer {
 				$processingConfiguration['noScale'] = isset($fileArray['noScale.']) ? $this->stdWrap($fileArray['noScale'], $fileArray['noScale.']) : $fileArray['noScale'];
 				$processingConfiguration['additionalParameters'] = isset($fileArray['params.']) ? $this->stdWrap($fileArray['params'], $fileArray['params.']) : $fileArray['params'];
 				$processingConfiguration['frame'] = isset($fileArray['frame.']) ? (int)$this->stdWrap($fileArray['frame'], $fileArray['frame.']) : (int)$fileArray['frame'];
-				$processingConfiguration['crop'] = isset($fileArray['crop.']) ? $this->stdWrap($fileArray['crop'], $fileArray['crop.']) : isset($fileArray['crop']) ? $fileArray['crop'] : NULL;
+				$processingConfiguration['crop'] = isset($fileArray['crop.']) ? $this->stdWrap($fileArray['crop'], $fileArray['crop.']) : (isset($fileArray['crop']) ? $fileArray['crop'] : NULL);
 				// Possibility to cancel/force profile extraction
 				// see $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand']
 				if (isset($fileArray['stripProfile'])) {

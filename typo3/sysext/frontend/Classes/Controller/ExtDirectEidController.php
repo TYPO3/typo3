@@ -58,7 +58,7 @@ class ExtDirectEidController implements ControllerInterface {
 	public function processRequest(ServerRequestInterface $request) {
 		$action = isset($request->getParsedBody()['action'])
 			? $request->getParsedBody()['action']
-			: isset($request->getQueryParams()['action']) ? $request->getQueryParams()['action'] : '';
+			: (isset($request->getQueryParams()['action']) ? $request->getQueryParams()['action'] : '');
 		if (!in_array($action, array('route', 'getAPI'), TRUE)) {
 			return NULL;
 		}

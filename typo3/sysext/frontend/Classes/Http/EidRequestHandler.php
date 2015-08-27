@@ -110,7 +110,7 @@ class EidRequestHandler implements RequestHandlerInterface {
 	protected function dispatch($request) {
 		$eID = isset($request->getParsedBody()['eID'])
 			? $request->getParsedBody()['eID']
-			: isset($request->getQueryParams()['eID']) ? $request->getQueryParams()['eID'] : '';
+			: (isset($request->getQueryParams()['eID']) ? $request->getQueryParams()['eID'] : '');
 
 		if (empty($eID) || !isset($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID])) {
 			return GeneralUtility::makeInstance(Response::class)->withStatus(404, 'eID not registered');
