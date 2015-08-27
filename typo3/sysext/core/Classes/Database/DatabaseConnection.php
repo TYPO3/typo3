@@ -1570,10 +1570,8 @@ class DatabaseConnection {
 		// We think we're still connected
 		if ($this->isConnected) {
 			// Check if this is really the case or if the database server has gone away for some reason
+			// Using mysqlnd ping() does not reconnect (which we would not want anyway since charset etc would not be reinitialized that way)
 			$this->isConnected = $this->link->ping();
-			if (!$this->isConnected) {
-				$this->connectDB();
-			}
 		}
 		return $this->isConnected;
 	}

@@ -85,6 +85,7 @@ class Check {
 		$statusArray[] = $this->checkMaxExecutionTime();
 		$statusArray[] = $this->checkDisableFunctions();
 		$statusArray[] = $this->checkDownloadsPossible();
+		$statusArray[] = $this->checkMysqliReconnectSetting();
 		$statusArray[] = $this->checkAlwaysPopulateRawPostDataSetting();
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkOpenBaseDir();
@@ -473,7 +474,31 @@ class Check {
 	}
 
 	/**
-	 * Check that always_populate_raw_post_data has been set to -1 on PHP between 5.6 and 7.0
+	 * Verify that mysqli.reconnect is set to 0 in order to avoid improper reconnects
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkMysqliReconnectSetting() {
+
+		$currentMysqliReconnectSetting = ini_get('mysqli.reconnect');
+		if ($currentMysqliReconnectSetting === '1') {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP mysqli.reconnect is enabled');
+			$status->setMessage(
+				'mysqli.reconnect=1' . LF .
+				'PHP is configured to automatically reconnect the database connection on disconnection.' . LF .
+				' Warning: If (e.g. during a long-running task) the connection is dropped and automatically reconnected, ' .
+				' it may not be reinitialized properly (e.g. charset) and write mangled data to the database!'
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP mysqli.reconnect is fine');
+		}
+		return $status;
+	}
+
+	/**
+	 * Check that always_populate_raw_post_data has been set to -1 on PHP 5.6 or newer
 	 *
 	 * @return Status\StatusInterface
 	 */
