@@ -5841,7 +5841,7 @@ class ContentObjectRenderer {
 				case 'name':
 					return $fileObject->getName();
 				case 'uid':
-					if ($fileObject instanceof AbstractFile) {
+					if (method_exists($fileObject, 'getUid')) {
 						return $fileObject->getUid();
 					}
 					return 0;
