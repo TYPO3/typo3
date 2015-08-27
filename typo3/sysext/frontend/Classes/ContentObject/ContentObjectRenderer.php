@@ -1627,6 +1627,16 @@ class ContentObjectRenderer {
 					'file.' => $conf['file.']
 				);
 
+				if (isset($sourceConfiguration['quality']) || isset($sourceConfiguration['quality.'])) {
+					$imageQuality = isset($sourceConfiguration['quality']) ? $sourceConfiguration['quality'] : '';
+					if (isset($sourceConfiguration['quality.'])) {
+						$imageQuality = $this->stdWrap($sourceConfiguration['quality'], $sourceConfiguration['quality.']);
+					}
+					if ($imageQuality) {
+						$sourceRenderConfiguration['file.']['params'] = '-quality ' . (int)$imageQuality;
+					}
+				}
+
 				if (isset($sourceConfiguration['pixelDensity'])) {
 					$pixelDensity = (int)$this->stdWrap($sourceConfiguration['pixelDensity'], $sourceConfiguration['pixelDensity.']);
 				} else {
