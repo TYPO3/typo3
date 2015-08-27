@@ -85,7 +85,7 @@ class FlexFormContainerContainer extends AbstractContainer {
 				'actions-edit-delete',
 				array(
 					'title' => 'Delete', // @todo: hardcoded title ...
-					'class' => 't3-delete'
+					'class' => 't3-js-delete'
 				)
 			);
 			$moveAndDeleteContent[] = '</div>';

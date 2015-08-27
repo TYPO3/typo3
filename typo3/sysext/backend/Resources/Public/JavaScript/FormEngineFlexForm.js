@@ -35,7 +35,7 @@ define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/For
 
 			// remove any existing backups
 			var old_me = me.$el.data('TYPO3.FormEngine.FlexFormElement');
-			if (old_me !== undefined) {
+			if (typeof old_me !== 'undefined') {
 				me.$el.removeData('TYPO3.FormEngine.FlexFormElement');
 			}
 
@@ -64,11 +64,13 @@ define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/For
 			return me;
 		};
 
-		// init all events related to the flexform
+		/**
+		 * init all events related to the flexform. As this method is called multiple times,
+		 * some handlers need to be off'ed first to prevent event stacking.
+		 */
 		me.initializeEvents = function() {
-
 			// Toggling all sections on/off by clicking all toggle buttons of each section
-			me.$el.prev(opts.flexFormToggleAllSectionsSelector).on('click', function() {
+			me.$el.prev(opts.flexFormToggleAllSectionsSelector).off('click').on('click', function() {
 				me.$el.find(opts.sectionToggleButtonSelector).trigger('click');
 			});
 
@@ -78,7 +80,7 @@ define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/For
 				me.createSortable();
 
 				// allow delete of a single section
-				me.$el.on('click', opts.deleteIconSelector, function(evt) {
+				me.$el.off('click').on('click', opts.deleteIconSelector, function(evt) {
 					evt.preventDefault();
 
 					// @todo: make this text localizable
@@ -105,7 +107,7 @@ define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/For
 
 	// setting some default values
 	TYPO3.FormEngine.FlexFormElement.defaults = {
-		'deleteIconSelector': '.t3-delete',
+		'deleteIconSelector': '.t3-js-delete',
 		'sectionSelector': '.t3-flex-section',
 		'sectionContentSelector': '.t3-flex-section-content',
 		'sectionHeaderSelector': '.t3-flex-section-header',
@@ -114,7 +116,7 @@ define('TYPO3/CMS/Backend/FormEngineFlexForm', ['jquery', 'TYPO3/CMS/Backend/For
 		'sectionToggleInputFieldSelector': '.t3-flex-control-toggle',
 		'sectionToggleIconOpenSelector': '.t3-flex-control-toggle-icon-open',
 		'sectionToggleIconCloseSelector': '.t3-flex-control-toggle-icon-close',
-		'sectionToggleButtonSelector': '.t3-flex-control-toggle-button',
+		'sectionToggleButtonSelector': 'a.t3-flex-control-toggle-button',
 		'flexFormToggleAllSectionsSelector': '.t3-form-field-toggle-flexsection',
 		'sectionDeletedClass': 't3-flex-section-deleted',
 		'allowRestructure': 0,	// whether the form can be modified

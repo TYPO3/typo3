@@ -120,7 +120,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 
 			$onClickInsert = array();
 			$onClickInsert[] = 'var ' . $uniqueId . ' = "' . 'idx"+(new Date()).getTime();';
-			$onClickInsert[] = 'TYPO3.jQuery(' . json_encode($flexFormContainerContainerTemplateResult['html']) . '.' . $identifierPrefixJs . ').insertAfter(TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '"));';
+			$onClickInsert[] = 'TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '").append(TYPO3.jQuery(' . json_encode($flexFormContainerContainerTemplateResult['html']) . '.' . $identifierPrefixJs . '));';
 			$onClickInsert[] = 'TYPO3.jQuery("#' . $flexFormFieldIdentifierPrefix . '").t3FormEngineFlexFormElement();';
 			$onClickInsert[] = 'eval(unescape("' . rawurlencode(implode(';', $flexFormContainerContainerTemplateResult['additionalJavaScriptPost'])) . '").' . $identifierPrefixJs . ');';
 			$onClickInsert[] = 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $flexFormContainerContainerTemplateResult['additionalJavaScriptSubmit'])) . '").' . $identifierPrefixJs . ');';
