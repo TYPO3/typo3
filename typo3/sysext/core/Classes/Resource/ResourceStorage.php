@@ -1152,7 +1152,8 @@ class ResourceStorage implements ResourceStorageInterface
     public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', $conflictMode = DuplicationBehavior::RENAME)
     {
         $localFilePath = PathUtility::getCanonicalPath($localFilePath);
-        if (!file_exists($localFilePath)) {
+        // File is not available locally NOR is it an uploaded file
+        if (!is_uploaded_file($localFilePath) && !file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
         }
         $conflictMode = DuplicationBehavior::cast($conflictMode);
