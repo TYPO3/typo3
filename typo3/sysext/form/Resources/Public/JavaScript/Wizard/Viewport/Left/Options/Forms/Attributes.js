@@ -157,6 +157,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 							'spin': {
 								scope: this,
 								fn: this.storeValue
+							},
+							'blur': {
+								scope: this,
+								fn: this.storeValue
 							}
 						}
 					});
@@ -275,6 +279,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 							'spin': {
 								scope: this,
 								fn: this.storeValue
+							},
+							'blur': {
+								scope: this,
+								fn: this.storeValue
 							}
 						}
 					});
@@ -357,6 +365,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 							'spin': {
 								scope: this,
 								fn: this.storeValue
+							},
+							'blur': {
+								scope: this,
+								fn: this.storeValue
 							}
 						}
 					});
@@ -382,6 +394,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						xtype: 'spinnerfield',
 						listeners: {
 							'spin': {
+								scope: this,
+								fn: this.storeValue
+							},
+							'blur': {
 								scope: this,
 								fn: this.storeValue
 							}
@@ -419,6 +435,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						xtype: 'spinnerfield',
 						listeners: {
 							'spin': {
+								scope: this,
+								fn: this.storeValue
+							},
+							'blur': {
 								scope: this,
 								fn: this.storeValue
 							}

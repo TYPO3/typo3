@@ -144,6 +144,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 							'spin': {
 								scope: this,
 								fn: this.storeValue
+							},
+							'blur': {
+								scope: this,
+								fn: this.storeValue
 							}
 						}
 					});
@@ -157,6 +161,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Validation.Rule = Ext.extend(Ext.F
 						accelerate: true,
 						listeners: {
 							'spin': {
+								scope: this,
+								fn: this.storeValue
+							},
+							'blur': {
 								scope: this,
 								fn: this.storeValue
 							}
