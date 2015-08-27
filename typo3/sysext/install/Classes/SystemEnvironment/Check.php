@@ -86,6 +86,7 @@ class Check {
 		$statusArray[] = $this->checkDisableFunctions();
 		$statusArray[] = $this->checkDownloadsPossible();
 		$statusArray[] = $this->checkSafeMode();
+		$statusArray[] = $this->checkMysqliReconnectSetting();
 		$statusArray[] = $this->checkDocRoot();
 		$statusArray[] = $this->checkOpenBaseDir();
 		$statusArray[] = $this->checkXdebugMaxNestingLevel();
@@ -418,6 +419,30 @@ class Check {
 			$status->setMessage(
 				'Either enable PHP runtime setting "allow_url_fopen"' . LF .  'or enable curl by setting [SYS][curlUse] accordingly.'
 			);
+		}
+		return $status;
+	}
+
+	/**
+	 * Verify that mysqli.reconnect is set to 0 in order to avoid improper reconnects
+	 *
+	 * @return Status\StatusInterface
+	 */
+	protected function checkMysqliReconnectSetting() {
+
+		$currentMysqliReconnectSetting = ini_get('mysqli.reconnect');
+		if ($currentMysqliReconnectSetting === '1') {
+			$status = new Status\ErrorStatus();
+			$status->setTitle('PHP mysqli.reconnect is enabled');
+			$status->setMessage(
+				'mysqli.reconnect=1' . LF .
+				'PHP is configured to automatically reconnect the database connection on disconnection.' . LF .
+				' Warning: If (e.g. during a long-running task) the connection is dropped and automatically reconnected, ' .
+				' it may not be reinitialized properly (e.g. charset) and write mangled data to the database!'
+			);
+		} else {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP mysqli.reconnect is fine');
 		}
 		return $status;
 	}

@@ -1125,7 +1125,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						// Check if the last run failed
 						$failureOutput = '';
 						if (!empty($schedulerRecord['lastexecution_failure'])) {
-							// Try to get the stored exception object
+							// Try to get the stored exception array
 							/** @var $exceptionArray array */
 							$exceptionArray = @unserialize($schedulerRecord['lastexecution_failure']);
 							if (!is_array($exceptionArray) || empty($exceptionArray)) {
