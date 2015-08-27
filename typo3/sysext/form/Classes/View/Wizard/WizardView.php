@@ -59,9 +59,6 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		// Define the document template object
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate('EXT:form/Resources/Private/Templates/Wizard.html');
-		$this->getPageRenderer()->enableConcatenateFiles();
-		$this->getPageRenderer()->enableCompressCss();
-		$this->getPageRenderer()->enableCompressJavascript();
 	}
 
 	/**
@@ -211,11 +208,11 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			'Viewport/Left/Form/PostProcessors/Redirect.js'
 		);
 		// Load ExtJS
-		$this->pageRenderer->loadExtJS();
+		$this->getPageRenderer()->loadExtJS();
 		// Load the wizards javascript
 		$baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/JavaScript/Wizard/';
 		foreach ($javascriptFiles as $javascriptFile) {
-			$this->pageRenderer->addJsFile($baseUrl . $javascriptFile, 'text/javascript', $compress, FALSE);
+			$this->getPageRenderer()->addJsFile($baseUrl . $javascriptFile, 'text/javascript', $compress, FALSE);
 		}
 	}
 
@@ -236,7 +233,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$baseUrl = ExtensionManagementUtility::extRelPath('form') . 'Resources/Public/CSS/';
 		// Load the wizards css
 		foreach ($cssFiles as $cssFile) {
-			$this->pageRenderer->addCssFile($baseUrl . $cssFile, 'stylesheet', 'all', '', $compress, FALSE);
+			$this->getPageRenderer()->addCssFile($baseUrl . $cssFile, 'stylesheet', 'all', '', $compress, FALSE);
 		}
 	}
 
@@ -265,7 +262,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$wizardLabels = $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf', FALSE, TRUE);
 		$controllerLabels = $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_controller.xlf', FALSE, TRUE);
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($controllerLabels, $wizardLabels);
-		$this->pageRenderer->addInlineLanguageLabelArray($controllerLabels['default']);
+		$this->getPageRenderer()->addInlineLanguageLabelArray($controllerLabels['default']);
 	}
 
 	/**
