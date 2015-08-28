@@ -31,7 +31,7 @@ class DocumentationService {
 	public function getOfficialDocuments() {
 		$documents = array();
 
-		$json = GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
+		$json = GeneralUtility::getUrl('https://docs.typo3.org/typo3cms/documents.json');
 		if ($json) {
 			$documents = json_decode($json, TRUE);
 			foreach ($documents as &$document) {
@@ -70,7 +70,7 @@ class DocumentationService {
 					'type'    => 'Extension',
 					'key'     => $documentKey,
 					'shortcut' => $extensionKey,
-					'url'     => 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/',
+					'url'     => 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/',
 					'version' => $version,
 				);
 			}
