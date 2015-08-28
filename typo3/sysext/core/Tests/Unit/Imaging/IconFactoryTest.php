@@ -149,6 +149,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider differentSizesDataProvider
+	 * @param string $size
 	 */
 	public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed($size) {
 		$this->assertContains('<span class="icon-overlay icon-overlay-read-only">',

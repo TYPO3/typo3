@@ -125,7 +125,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'actions-edit-copy-release' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'copy text-danger',
+				'name' => 'copy',
+				'additionalClasses' => 'text-danger',
 			)
 		),
 		'actions-edit-cut' => array(
@@ -137,7 +138,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'actions-edit-cut-release' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'scissors text-danger',
+				'name' => 'scissors',
+				'additionalClasses' => 'text-danger',
 			)
 		),
 		'actions-edit-download' => array(
@@ -223,7 +225,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'status-status-current' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'caret-right text-danger',
+				'name' => 'caret-right',
+				'additionalClasses' => 'text-danger',
 			)
 		),
 

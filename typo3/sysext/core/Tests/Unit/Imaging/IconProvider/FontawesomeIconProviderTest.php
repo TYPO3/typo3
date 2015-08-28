@@ -59,4 +59,29 @@ class FontawesomeIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->subject->prepareIconMarkup($this->icon, array('name' => 'times', 'additionalClasses' => 'foo'));
 		$this->assertEquals('<span class="icon-unify"><i class="fa fa-times foo"></i></span>', $this->icon->getMarkup());
 	}
+
+	/**
+	 * DataProvider for icon names
+	 *
+	 * @return array
+	 */
+	public function wrongNamesDataProvider() {
+		return [
+			'name with spaces' => ['name with spaces'],
+			'name with spaces and umlauts' => ['name with spaces äöü'],
+			'name umlauts' => ['häuser'],
+			'name with underscore' => ['name_with_underscore'],
+			'name is empty' => [''],
+		];
+	}
+
+	/**
+	 * @expectedException \InvalidArgumentException
+	 * @dataProvider wrongNamesDataProvider
+	 * @param string $name
+	 * @test
+	 */
+	public function prepareIconMarkupWithInvalidNameThrowsException($name) {
+		$this->subject->prepareIconMarkup($this->icon, array('name' => $name));
+	}
 }

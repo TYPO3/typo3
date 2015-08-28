@@ -34,9 +34,16 @@ class FontawesomeIconProvider implements IconProviderInterface {
 	 * @param Icon $icon
 	 * @param array $options
 	 *
+	 * @throws \InvalidArgumentException
 	 * @return string
 	 */
 	protected function generateMarkup(Icon $icon, array $options) {
+		if (empty($options['name'])) {
+			throw new \InvalidArgumentException('The option "name" is required and must not be empty', 1440754978);
+		}
+		if (preg_match('/^[a-zA-Z0-9\\-]+$/', $options['name']) !== 1) {
+			throw new \InvalidArgumentException('The option "name" must only contain characters a-z, A-Z, 0-9 or -', 1440754979);
+		}
 		$additionalClasses = (!empty($options['additionalClasses'])) ? ' ' . $options['additionalClasses'] : '';
 		return '<span class="icon-unify"><i class="fa fa-' . htmlspecialchars($options['name']) . htmlspecialchars($additionalClasses) . '"></i></span>';
 	}
