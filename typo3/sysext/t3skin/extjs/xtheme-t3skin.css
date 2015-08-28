@@ -700,6 +700,10 @@ ul.x-tab-strip-bottom{
 	border-bottom-color:#b5b8c8;
 }
 
+.x-form-field-wrap .x-form-spinner-trigger{
+	background-image: url(images/form/spinner.gif);
+}
+
 .x-form-field-wrap .x-form-date-trigger{
 	background-image: url(images/form/date-trigger.gif);
 }
