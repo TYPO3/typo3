@@ -362,8 +362,8 @@ class HtmlParser {
 	 */
 	public function getFirstTag($str) {
 		// First:
-		$endLen = strpos($str, '>') + 1;
-		return substr($str, 0, $endLen);
+		$endLen = strpos($str, '>');
+		return $endLen !== FALSE ? substr($str, 0, $endLen + 1) : '';
 	}
 
 	/**

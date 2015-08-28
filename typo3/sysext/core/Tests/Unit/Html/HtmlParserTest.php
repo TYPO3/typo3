@@ -343,8 +343,10 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function getFirstTagDataProvider() {
 		return array(
-			array('<body><span></span></body>',
-			'<body>'),
+			array('<body><span></span></body>', '<body>'),
+			array('<span>Wrapper<div>Some content</div></span>', '<span>'),
+			array('Something before<span>Wrapper<div>Some content</div></span>Something after', 'Something before<span>'),
+			array('Something without tag', '')
 		);
 	}
 
@@ -429,4 +431,5 @@ class HtmlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function removeFirstAndLastTag($str, $expectedResult) {
 		$this->assertEquals($expectedResult, $this->subject->removeFirstAndLastTag($str));
 	}
+
 }
