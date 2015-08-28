@@ -116,8 +116,15 @@ class TypoScriptToJsonConverter {
 	 * @return void
 	 */
 	public function addElement(AbstractJsonElement $parentElement, $class, array $arguments) {
-		$element = $this->createElement($class, $arguments);
-		$parentElement->addElement($element);
+		try {
+			$element = $this->createElement($class, $arguments);
+			$parentElement->addElement($element);
+		} catch (\RuntimeException $exception) {
+			// Catch missing classes or element types
+			// There are elements that can be used the
+			// TypoScript-like declaration, which don't
+			// have a counterpart in the ExtJS wizard.
+		}
 	}
 
 	/**

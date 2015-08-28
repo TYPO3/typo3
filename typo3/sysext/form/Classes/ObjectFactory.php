@@ -62,6 +62,7 @@ class ObjectFactory {
 	/**
 	 * @param string $classNameOrAlias
 	 * @return object
+	 * @throws \RuntimeException
 	 */
 	static public function createFormObject($classNameOrAlias) {
 		$lowerCasedClassNameOrAlias = strtolower($classNameOrAlias);
@@ -70,6 +71,11 @@ class ObjectFactory {
 		} else {
 			$className = $classNameOrAlias;
 		}
+
+		if (!class_exists($className)) {
+			throw new \RuntimeException('Class "' . $className . '" does not exist', 1440779351);
+		}
+
 		$arguments = func_get_args();
 		$arguments[0] = $className;
 		return call_user_func_array(array(GeneralUtility::class, 'makeInstance'), $arguments);
