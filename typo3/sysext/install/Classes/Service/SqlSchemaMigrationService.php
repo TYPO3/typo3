@@ -367,9 +367,12 @@ class SqlSchemaMigrationService {
 								if (stristr($fV, 'auto_increment')) {
 									// The field can only be set "auto_increment" if there exists a PRIMARY key of that field already.
 									// The check does not look up which field is primary but just assumes it must be the field with the auto_increment value...
-									if (isset($diffArr['extra'][$table]['keys']['PRIMARY'])) {
-										// Remove "auto_increment" from the statement - it will be suggested in a 2nd step after the primary key was created
-										$fV = str_replace(' auto_increment', '', $fV);
+									if (isset($info['keys']['PRIMARY'])) {
+										if (!$this->isDbalEnabled()) {
+											// Combine adding the field and the primary key into a single statement
+											$fV .= ', ADD PRIMARY KEY (' . $fN . ')';
+											unset($info['keys']['PRIMARY']);
+										}
 									} else {
 										// In the next step, attempt to clear the table once again (2 = force)
 										$info['extra']['CLEAR'] = 2;

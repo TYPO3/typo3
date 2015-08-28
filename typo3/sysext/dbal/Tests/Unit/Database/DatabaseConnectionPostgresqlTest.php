@@ -160,6 +160,20 @@ class DatabaseConnectionPostgresqlTest extends AbstractTestCase {
 
 	/**
 	 * @test
+	 * @see http://forge.typo3.org/issues/69304
+	 */
+	public function alterTableAddFieldWithAutoIncrementIsRemappedToSerialType() {
+		$parseString = 'ALTER TABLE sys_file ADD uid INT(11) NOT NULL AUTO_INCREMENT';
+		$components = $this->subject->SQLparser->_callRef('parseALTERTABLE', $parseString);
+		$this->assertInternalType('array', $components);
+
+		$result = $this->subject->SQLparser->compileSQL($components);
+		$expected = array('ALTER TABLE "sys_file" ADD COLUMN "uid" SERIAL');
+		$this->assertSame($expected, $this->cleanSql($result));
+	}
+
+	/**
+	 * @test
 	 * @see http://forge.typo3.org/issues/67445
 	 */
 	public function canParseAlterTableDropKeyStatement() {
