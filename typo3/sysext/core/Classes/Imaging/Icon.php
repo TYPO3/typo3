@@ -61,6 +61,12 @@ class Icon {
 	protected $size = '';
 
 	/**
+	 * Flag to indicate if the icon has a spinning animation
+	 * @var bool
+	 */
+	protected $spinning = FALSE;
+
+	/**
 	 * @var Dimension
 	 */
 	protected $dimension;
@@ -130,6 +136,20 @@ class Icon {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function isSpinning() {
+		return $this->spinning;
+	}
+
+	/**
+	 * @param boolean $spinning
+	 */
+	public function setSpinning($spinning) {
+		$this->spinning = $spinning;
+	}
+
+	/**
 	 * @return Dimension
 	 */
 	public function getDimension() {
@@ -164,8 +184,16 @@ class Icon {
 	 * @return string
 	 */
 	protected function wrappedIcon() {
+		$classes = array();
+		$classes[] = 'icon';
+		$classes[] = 'icon-size-' . $this->size;
+		$classes[] = 'icon-' . $this->getIdentifier();
+		if ($this->isSpinning()) {
+			$classes[] = 'icon-spin';
+		}
+
 		$markup = array();
-		$markup[] = '<span class="icon icon-size-' . $this->size . ' icon-' . htmlspecialchars($this->getIdentifier()) . '">';
+		$markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '">';
 		$markup[] = '	<span class="icon-markup">';
 		$markup[] = $this->getMarkup();
 		$markup[] = '	</span>';

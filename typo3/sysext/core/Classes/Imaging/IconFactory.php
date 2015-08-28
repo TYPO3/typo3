@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -47,8 +46,8 @@ class IconFactory {
 			$identifier = $this->iconRegistry->getDefaultIconIdentifier();
 		}
 
-		$icon = $this->createIcon($identifier, $size, $overlayIdentifier);
 		$iconConfiguration = $this->iconRegistry->getIconConfigurationByIdentifier($identifier);
+		$icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
 		/** @var IconProviderInterface $iconProvider */
 		$iconProvider = GeneralUtility::makeInstance($iconConfiguration['provider']);
 		$iconProvider->prepareIconMarkup($icon, $iconConfiguration['options']);
@@ -61,14 +60,18 @@ class IconFactory {
 	 * @param string $identifier
 	 * @param string $size "large" "small" or "default", see the constants of the Icon class
 	 * @param string $overlayIdentifier
+	 * @param array $iconConfiguration the icon configuration array
 	 * @return Icon
 	 */
-	protected function createIcon($identifier, $size, $overlayIdentifier = NULL) {
+	protected function createIcon($identifier, $size, $overlayIdentifier = NULL, array $iconConfiguration) {
 		$icon = GeneralUtility::makeInstance(Icon::class);
 		$icon->setIdentifier($identifier);
 		$icon->setSize($size);
 		if ($overlayIdentifier !== NULL) {
 			$icon->setOverlayIcon($this->getIcon($overlayIdentifier, Icon::SIZE_OVERLAY));
+		}
+		if (!empty($iconConfiguration['options']['spinning'])) {
+			$icon->setSpinning(TRUE);
 		}
 		return $icon;
 	}

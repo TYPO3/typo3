@@ -41,6 +41,11 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $registeredIconIdentifier = 'actions-document-close';
 
 	/**
+	 * @var string
+	 */
+	protected $registeredSpinningIconIdentifier = 'spinning-icon';
+
+	/**
 	 * @var \TYPO3\CMS\Core\Imaging\IconRegistry
 	 */
 	protected $iconRegistryMock;
@@ -144,6 +149,22 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		]);
 		$this->assertContains('<span class="icon icon-size-' . $size['expected'] . ' icon-default-not-found">',
 			$this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'])->render());
+	}
+
+	/**
+	 * @test
+	 */
+	public function getIconReturnsCorrectMarkupIfIconIsRegisteredAsSpinningIcon() {
+		$this->iconRegistryMock->getIconConfigurationByIdentifier($this->registeredSpinningIconIdentifier)->willReturn([
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'times-circle',
+				'additionalClasses' => 'fa-fw',
+				'spinning' => TRUE
+			)
+		]);
+		$this->assertContains('<span class="icon icon-size-default icon-' . $this->registeredSpinningIconIdentifier . ' icon-spin">',
+			$this->subject->getIcon($this->registeredSpinningIconIdentifier)->render());
 	}
 
 	/**

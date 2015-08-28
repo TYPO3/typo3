@@ -106,4 +106,11 @@ class IconRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		// the provider must implement the IconProviderInterface
 		$this->assertTrue(in_array(IconProviderInterface::class, class_implements($result['provider'])));
 	}
+
+	/**
+	 * @test
+	 */
+	public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentiefiers() {
+		$this->assertInternalType('array', $this->subject->getAllRegisteredIconIdentifiers());
+	}
 }
