@@ -19,4 +19,12 @@ namespace TYPO3\CMS\Form\Domain\Model\Element;
  */
 class TextblockElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainElement {
 
+	/**
+	 * Gets the data.
+	 *
+	 * @return string
+	 */
+	public function getData() {
+		return nl2br($this->getContent());
+	}
 }
