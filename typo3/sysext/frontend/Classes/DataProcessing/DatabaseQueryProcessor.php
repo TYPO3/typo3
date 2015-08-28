@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
-use TYPO3\CMS\Frontend\ContentObject\DataProcessingTrait;
 
 /**
  * Fetch records from the database, using the default .select syntax from TypoScript.
@@ -44,7 +44,25 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessingTrait;
  * where "as" means the variable to be containing the result-set from the DB query.
  */
 class DatabaseQueryProcessor implements DataProcessorInterface {
-	use DataProcessingTrait;
+
+	/**
+	 * @var ContentDataProcessor
+	 */
+	protected $contentDataProcessor;
+
+	/**
+	 * @param ContentObjectRenderer $cObj
+	 */
+	public function __construct(ContentObjectRenderer $cObj) {
+		$this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
+	}
+
+	/**
+	 * @param ContentDataProcessor $contentDataProcessor
+	 */
+	public function setContentDataProcessor($contentDataProcessor) {
+		$this->contentDataProcessor = $contentDataProcessor;
+	}
 
 	/**
 	 * Fetches records from the database as an array
@@ -84,7 +102,7 @@ class DatabaseQueryProcessor implements DataProcessorInterface {
 			$recordContentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 			$recordContentObjectRenderer->start($record, $tableName);
 			$processedRecordVariables[$key] = array('data' => $record);
-			$processedRecordVariables[$key] = $this->processData($recordContentObjectRenderer, $processorConfiguration, $processedRecordVariables[$key]);
+			$processedRecordVariables[$key] = $this->contentDataProcessor->process($recordContentObjectRenderer, $processorConfiguration, $processedRecordVariables[$key]);
 		}
 
 		$processedData[$targetVariableName] = $processedRecordVariables;

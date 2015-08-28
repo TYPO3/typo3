@@ -22,12 +22,31 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  * Contains FLUIDTEMPLATE class object
  */
 class FluidTemplateContentObject extends AbstractContentObject {
-	use DataProcessingTrait;
 
 	/**
 	 * @var StandaloneView
 	 */
 	protected $view = NULL;
+
+	/**
+	 * @var ContentDataProcessor
+	 */
+	protected $contentDataProcessor;
+
+	/**
+	 * @param ContentObjectRenderer $cObj
+	 */
+	public function __construct(ContentObjectRenderer $cObj) {
+		parent::__construct($cObj);
+		$this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
+	}
+
+	/**
+	 * @param ContentDataProcessor $contentDataProcessor
+	 */
+	public function setContentDataProcessor($contentDataProcessor) {
+		$this->contentDataProcessor = $contentDataProcessor;
+	}
 
 	/**
 	 * Rendering the cObject, FLUIDTEMPLATE
@@ -72,7 +91,7 @@ class FluidTemplateContentObject extends AbstractContentObject {
 		$this->setExtbaseVariables($conf);
 		$this->assignSettings($conf);
 		$variables = $this->getContentObjectVariables($conf);
-		$variables = $this->processData($this->cObj, $conf, $variables);
+		$variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
 
 		$this->view->assignMultiple($variables);
 

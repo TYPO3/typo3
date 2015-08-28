@@ -18,9 +18,9 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A trait that contains methods that can be used to use the dataProcessing functionality
+ * A class that contains methods that can be used to use the dataProcessing functionality
  */
-trait DataProcessingTrait {
+class ContentDataProcessor {
 
 	/**
 	 * Check for the availability of processors, defined in TypoScript, and use them for data processing
@@ -29,8 +29,9 @@ trait DataProcessingTrait {
 	 * @param array $configuration Configuration array
 	 * @param array $variables the variables to be processed
 	 * @return array the processed data and variables as key/value store
+	 * @throws \UnexpectedValueException If a processor class does not exist
 	 */
-	protected function processData(ContentObjectRenderer $cObject, array $configuration, array $variables) {
+	public function process(ContentObjectRenderer $cObject, array $configuration, array $variables) {
 		if (
 			!empty($configuration['dataProcessing.'])
 			&& is_array($configuration['dataProcessing.'])
@@ -40,11 +41,13 @@ trait DataProcessingTrait {
 
 			foreach ($processorKeys as $key) {
 				$className = $processors[$key];
-				$processor = GeneralUtility::makeInstance($className);
+				if (!class_exists($className)) {
+					throw new \UnexpectedValueException('Processor class name "' . $className . '" does not exist!',  1427455378);
+				}
 
-				if (!$processor instanceof DataProcessorInterface) {
+				if (!in_array(DataProcessorInterface::class, class_implements($className), TRUE)) {
 					throw new \UnexpectedValueException(
-						'$processor with class name "' . $className . '" ' .
+						'Processor with class name "' . $className . '" ' .
 						'must implement interface "' . DataProcessorInterface::class . '"',
 						1427455377
 					);
@@ -52,7 +55,7 @@ trait DataProcessingTrait {
 
 				$processorConfiguration = isset($processors[$key . '.']) ? $processors[$key . '.'] : array();
 
-				$variables = $processor->process(
+				$variables = GeneralUtility::makeInstance($className)->process(
 					$cObject,
 					$configuration,
 					$processorConfiguration,
