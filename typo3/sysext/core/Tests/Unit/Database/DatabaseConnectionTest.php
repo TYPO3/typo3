@@ -131,6 +131,14 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'AND'
 			),
 
+			'One search word with special chars (for like)' => array(
+				'(pages.title LIKE \'%TYPO3\\_100\\%%\')',
+				array('TYPO3_100%'),
+				array('title'),
+				'pages',
+				'AND'
+			),
+
 			'One search word in multiple fields' => array(
 				'(pages.title LIKE \'%TYPO3%\' OR pages.keyword LIKE \'%TYPO3%\' OR pages.description LIKE \'%TYPO3%\')',
 				array('TYPO3'),

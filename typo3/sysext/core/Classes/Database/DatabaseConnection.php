@@ -722,7 +722,7 @@ class DatabaseConnection {
 
 		$queryParts = array();
 		foreach ($searchWords as $sw) {
-			$like = ' LIKE \'%' . $this->quoteStr($sw, $table) . '%\'';
+			$like = ' LIKE \'%' . $this->quoteStr($this->escapeStrForLike($sw, $table), $table) . '%\'';
 			$queryParts[] = $table . '.' . implode(($like . ' OR ' . $table . '.'), $fields) . $like;
 		}
 		$query = '(' . implode(') ' . $constraint . ' (', $queryParts) . ')';
