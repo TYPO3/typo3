@@ -118,4 +118,51 @@ class PostProcessorTest extends UnitTestCase {
 
 		$this->assertEquals('', $subject->process());
 	}
+
+	/**
+	 * @test
+	 */
+	public function processUsesGlobalLayoutIfNoneIsSet() {
+		$processorConfig = array(
+			'recipientEmail' => 'your@email.com',
+			'senderEmail' => 'your@email.com',
+		);
+		$typoScript = array(
+			'layout.' => array(
+					'label' => '<div class="global"><labelvalue /></div>',
+			),
+			'1' => 'foo', // something senseless on purpose, otherwise dependencies need to be resolved, that come in by static call -> ugly
+			'1.' => $processorConfig
+		);
+
+		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
+		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+
+		$this->assertEquals('', $subject->process());
+	}
+
+	/**
+	 * @test
+	 */
+	public function processUsesLocalLayoutIfSet() {
+		$processorConfig = array(
+			'layout.' => array(
+					'label' => '<div class="local"><labelvalue /></div>',
+			),
+			'recipientEmail' => 'your@email.com',
+			'senderEmail' => 'your@email.com',
+		);
+		$typoScript = array(
+			'layout.' => array(
+					'label' => '<div class="global"><labelvalue /></div>',
+			),
+			'1' => 'foo',
+			'1.' => $processorConfig
+		);
+
+		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
+		$this->typoScriptFactoryProphecy->setLayoutHandler($processorConfig)->willReturn($this->typoScriptLayoutProphecy->reveal());
+
+		$this->assertEquals('', $subject->process());
+	}
 }

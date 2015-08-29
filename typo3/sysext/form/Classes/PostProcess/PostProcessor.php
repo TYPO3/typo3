@@ -54,8 +54,7 @@ class PostProcessor {
 	public function process() {
 		$html = '';
 		if (is_array($this->typoScript)) {
-			$keys = $this->sortTypoScriptKeyList();
-			$layoutHandler = $this->typoscriptFactory->setLayoutHandler($this->typoScript);
+			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->typoScript);
 
 			foreach ($keys as $key) {
 				if (!(int)$key || strpos($key, '.') !== FALSE) {
@@ -67,6 +66,13 @@ class PostProcessor {
 				if (isset($this->typoScript[$key . '.'])) {
 					$processorArguments = $this->typoScript[$key . '.'];
 				}
+
+				if (isset($processorArguments['layout.'])) {
+					$layoutHandler = $this->typoscriptFactory->setLayoutHandler($processorArguments);
+				} else {
+					$layoutHandler = $this->typoscriptFactory->setLayoutHandler($this->typoScript);
+				}
+
 				if (class_exists($processorName, TRUE)) {
 					$className = $processorName;
 				} else {
@@ -94,6 +100,7 @@ class PostProcessor {
 	 * (makes unit testing possible)
 	 *
 	 * @return array
+	 * @deprecated in TYPO3 CMS 7, does not trigger deprecation log in 6.2
 	 */
 	public function sortTypoScriptKeyList() {
 		return \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->typoScript);
