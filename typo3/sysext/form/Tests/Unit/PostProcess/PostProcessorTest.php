@@ -13,41 +13,84 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Prophecy\Argument;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory;
+use TYPO3\CMS\Form\Domain\Model\Form;
+use TYPO3\CMS\Form\Layout;
+use TYPO3\CMS\Form\PostProcess\PostProcessor;
+use TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithFormPrefixFixture;
+use TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutFormPrefixFixture;
+use TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutInterfaceFixture;
 
 /**
  * Testcase for PostProcessor
  */
-class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class PostProcessorTest extends UnitTestCase {
 
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Form\PostProcess\PostProcessor
+	 * @var array A backup of registered singleton instances
 	 */
-	public $subject;
+	protected $singletonInstances = array();
+
+	/**
+	 * @var Form
+	 */
+	protected $formProphecy;
+
+	/**
+	 * @var Layout
+	 */
+	protected $typoScriptLayoutProphecy;
+
+	/**
+	 * @var TypoScriptFactory
+	 */
+	protected $typoScriptFactoryProphecy;
 
 	/**
 	 * Set up
 	 */
 	protected function setUp() {
-		$form = $this->getMock(\TYPO3\CMS\Form\Domain\Model\Form::class, array(), array(), '', FALSE);
-		$this->subject = $this->getMock(
-			\TYPO3\CMS\Form\PostProcess\PostProcessor::class,
-			array('sortTypoScriptKeyList'),
-			array($form, array())
-		);
+		$this->singletonInstances = GeneralUtility::getSingletonInstances();
+
+		$this->formProphecy = $this->prophesize(Form::class);
+
+		$this->typoScriptFactoryProphecy = $this->prophesize(TypoScriptFactory::class);
+		$this->typoScriptFactoryProphecy->getLayoutFromTypoScript(Argument::any())->willReturn(array());
+		GeneralUtility::setSingletonInstance(TypoScriptFactory::class, $this->typoScriptFactoryProphecy->reveal());
+
+		$this->typoScriptLayoutProphecy = $this->prophesize(Layout::class);
+
+		$templateServiceProphecy = $this->prophesize(TemplateService::class);
+		$templateServiceProphecy->sortedKeyList(Argument::any())->willReturn(array(10, 20));
+		GeneralUtility::addInstance(TemplateService::class, $templateServiceProphecy->reveal());
+	}
+
+	/**
+	 * Tear down the tests
+	 */
+	protected function tearDown() {
+		GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	/**
 	 * @test
 	 */
 	public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix() {
+
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
-			20 => \TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutFormPrefixFixture::class
+			20 => PostProcessorWithoutFormPrefixFixture::class
 		);
-		$this->subject->typoScript = $typoScript;
-		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->subject->process();
-		$this->assertEquals('processedWithoutPrefix', $returnValue);
+
+		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
+		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+
+		$this->assertEquals('processedWithoutPrefix', $subject->process());
 	}
 
 	/**
@@ -56,12 +99,13 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function processFindsClassSpecifiedByTypoScriptWithFormPrefix() {
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
-			20 => \TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithFormPrefixFixture::class
+			20 => PostProcessorWithFormPrefixFixture::class
 		);
-		$this->subject->typoScript = $typoScript;
-		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->subject->process();
-		$this->assertEquals('processedWithPrefix', $returnValue);
+
+		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
+		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+
+		$this->assertEquals('processedWithPrefix', $subject->process());
 	}
 
 	/**
@@ -70,12 +114,12 @@ class PostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function processReturnsEmptyStringIfSpecifiedPostProcessorDoesNotImplementTheInterface() {
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
-			20 => \TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutInterfaceFixture::class
+			20 => PostProcessorWithoutInterfaceFixture::class
 		);
-		$this->subject->typoScript = $typoScript;
-		$this->subject->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->subject->process();
-		$this->assertEquals('', $returnValue);
-	}
 
+		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
+		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+
+		$this->assertEquals('', $subject->process());
+	}
 }

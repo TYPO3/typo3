@@ -55,7 +55,7 @@ class PostProcessor {
 	public function process() {
 		$html = '';
 		if (is_array($this->typoScript)) {
-			$keys = $this->sortTypoScriptKeyList();
+			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->typoScript);
 			$layoutHandler = $this->typoscriptFactory->setLayoutHandler($this->typoScript);
 
 			foreach ($keys as $key) {
@@ -88,16 +88,6 @@ class PostProcessor {
 			}
 		}
 		return $html;
-	}
-
-	/**
-	 * Wrapper method for \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList
-	 * (makes unit testing possible)
-	 *
-	 * @return array
-	 */
-	public function sortTypoScriptKeyList() {
-		return \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->typoScript);
 	}
 
 }
