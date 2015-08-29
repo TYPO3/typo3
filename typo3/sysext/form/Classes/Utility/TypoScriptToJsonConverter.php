@@ -51,6 +51,11 @@ class TypoScriptToJsonConverter {
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\Json\\' . ucfirst($class) . 'JsonElement';
+
+		if (!class_exists($className)) {
+			throw new \RuntimeException('Class "' . $className . '" does not exist', 1440779351);
+		}
+
 		$this->addValidationRules($arguments);
 		/** @var $object \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement */
 		$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
@@ -115,8 +120,15 @@ class TypoScriptToJsonConverter {
 	 * @return void
 	 */
 	public function addElement(\TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement $parentElement, $class, array $arguments) {
-		$element = $this->createElement($class, $arguments);
-		$parentElement->addElement($element);
+		try {
+			$element = $this->createElement($class, $arguments);
+			$parentElement->addElement($element);
+		} catch (\RuntimeException $exception) {
+			// Catch missing classes or element types
+			// There are elements that can be used the
+			// TypoScript-like declaration, which don't
+			// have a counterpart in the ExtJS wizard.
+		}
 	}
 
 	/**
