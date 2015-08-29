@@ -3,11 +3,7 @@ namespace typo3\sysext\form\Tests\Unit\Domain;
 
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute;
 use TYPO3\CMS\Form\Domain\Model\Attribute\AttributesAttribute;
-use TYPO3\CMS\Form\Localization;
-use TYPO3\CMS\Form\Request;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -46,13 +42,13 @@ class AttributesAttributeTest extends UnitTestCase {
 	 *
 	 */
 	public function setUp(){
-		$contentObjectRendererProphecy = $this->prophesize(ContentObjectRenderer::class);
-		GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererProphecy->reveal());
-		$localisationProphecy = $this->prophesize(Localization::class);
-		GeneralUtility::addInstance(Localization::class, $localisationProphecy->reveal());
-		$requestProphecy = $this->prophesize(Request::class);
+		$contentObjectRendererProphecy = $this->prophesize('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $contentObjectRendererProphecy->reveal());
+		$localisationProphecy = $this->prophesize('TYPO3\\CMS\\Form\\Localization');
+		GeneralUtility::addInstance('TYPO3\\CMS\\Form\\Localization', $localisationProphecy->reveal());
+		$requestProphecy = $this->prophesize('TYPO3\\CMS\\Form\\Request');
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
-		GeneralUtility::setSingletonInstance(Request::class, $requestProphecy->reveal());
+		GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Form\\Request', $requestProphecy->reveal());
 		$this->elementId = uniqid('elementId_', TRUE);
 		$this->subject = new AttributesAttribute($this->elementId);
 	}
@@ -83,7 +79,7 @@ class AttributesAttributeTest extends UnitTestCase {
 	 * @test
 	 */
 	public function getValueReturnsValueIfAttributeIsSet() {
-		$attributeProphecy = $this->prophesize(AbstractAttribute::class);
+		$attributeProphecy = $this->prophesize('TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\AbstractAttribute');
 		$attributeProphecy->getValue()->shouldBeCalled()->willReturn('aValue');
 
 		$this->subject->setAttribute('anAttribute', $attributeProphecy->reveal());
