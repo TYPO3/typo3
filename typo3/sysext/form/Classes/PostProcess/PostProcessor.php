@@ -56,7 +56,6 @@ class PostProcessor {
 		$html = '';
 		if (is_array($this->typoScript)) {
 			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->typoScript);
-			$layoutHandler = $this->typoscriptFactory->setLayoutHandler($this->typoScript);
 
 			foreach ($keys as $key) {
 				if (!(int)$key || strpos($key, '.') !== FALSE) {
@@ -68,6 +67,13 @@ class PostProcessor {
 				if (isset($this->typoScript[$key . '.'])) {
 					$processorArguments = $this->typoScript[$key . '.'];
 				}
+
+				if (isset($processorArguments['layout.'])) {
+					$layoutHandler = $this->typoscriptFactory->setLayoutHandler($processorArguments);
+				} else {
+					$layoutHandler = $this->typoscriptFactory->setLayoutHandler($this->typoScript);
+				}
+
 				if (class_exists($processorName, TRUE)) {
 					$className = $processorName;
 				} else {
