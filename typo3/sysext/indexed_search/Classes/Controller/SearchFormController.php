@@ -16,7 +16,6 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Index search frontend
@@ -182,7 +181,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function main($content, $conf) {
 		// Initialize:
 		$this->conf = $conf;
-		$this->LOCAL_LANG = $this->getLanguageService()->includeLLFile('EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf' , FALSE, TRUE);
+		$this->pi_loadLL('EXT:indexed_search/Resources/Private/Language/locallang_pi.xlf');
 		$this->pi_setPiVarDefaults();
 		// Initialize:
 		$this->initialize();
@@ -2363,13 +2362,5 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function getJoinPagesForQuery() {
 		return (bool)$this->join_pages;
-	}
-
-	/**
-	 * Returns the Language Service
-	 * @return LanguageService
-	 */
-	protected function getLanguageService() {
-		return $GLOBALS['LANG'];
 	}
 }
