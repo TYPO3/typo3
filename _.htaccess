@@ -265,7 +265,7 @@ AddDefaultCharset utf-8
 	#RewriteCond %{HTTP_HOST} ^staging\.example\.com$
 	#RewriteRule .? - [E=TYPO3_CONTEXT:Production/Staging]
 	#RewriteCond %{HTTP_HOST} ^www\.example\.com$
-	RewriteRule .? - [E=TYPO3_CONTEXT:Production]
+	#RewriteRule .? - [E=TYPO3_CONTEXT:Production]
 
 	# Rule for versioned static files, configured through:
 	# - $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename']
