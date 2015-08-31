@@ -1,4 +1,5 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
@@ -30,7 +31,7 @@
 					<f:else>
 						<li>
 							<f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="btn btn-default t3-button-action-installdistribution">
-								<f:be.buttons.icon icon="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
+								<core:icon identifier="actions-system-extension-import" /><f:translate key="extensionList.installDistribution">Install</f:translate>
 							</f:link.action>
 						</li>
 					</f:else>
@@ -38,7 +39,7 @@
 						<f:if condition="{configurationLink}">
 							<li>
 								<a href="{configurationLink}" class="btn btn-default distribution-openViewModule " onclick="top.goToModule('web_ViewpageView');">
-									<f:be.buttons.icon icon="actions-system-extension-configure" /><f:translate key="extensionList.configure" />
+									<core:icon identifier="actions-system-extension-configure" /><f:translate key="extensionList.configure" />
 								</a>
 							</li>
 						</f:if>

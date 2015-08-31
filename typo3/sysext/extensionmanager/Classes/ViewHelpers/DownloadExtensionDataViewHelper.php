@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * view helper for displaying a download extension data link
@@ -34,6 +37,9 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		$filePrefix = PATH_site . $extension['siteRelPath'];
 		if (!file_exists(($filePrefix . 'ext_tables.sql')) && !file_exists(($filePrefix . 'ext_tables_static+adt.sql'))) {
 			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
@@ -47,7 +53,7 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 		$cssClass = 'downloadExtensionData btn btn-default';
 		$this->tag->addAttribute('class', $cssClass);
 		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadsql', 'extensionmanager'));
-		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-sqldump'));
+		$this->tag->setContent($iconFactory->getIcon('actions-system-extension-sqldump', Icon::SIZE_SMALL)->render());
 		return $this->tag->render();
 	}
 

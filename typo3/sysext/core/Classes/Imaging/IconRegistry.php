@@ -215,6 +215,48 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-cache-clear-impact-high.svg',
 			)
 		),
+		'actions-system-extension-configure' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'gear',
+			)
+		),
+		'actions-system-extension-download' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'download',
+			)
+		),
+		'actions-system-extension-install' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'plus-circle',
+			)
+		),
+		'actions-system-extension-import' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'cloud-download',
+			)
+		),
+		'actions-system-extension-uninstall' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'minus-square',
+			)
+		),
+		'actions-system-extension-sqldump' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'database',
+			)
+		),
+		'actions-system-extension-update' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'refresh',
+			)
+		),
 		'actions-system-list-open' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

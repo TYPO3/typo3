@@ -1,3 +1,4 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
@@ -6,9 +7,8 @@
 
 <f:section name="iconButtons">
 	<div class="menuItems">
-		<span class="menuItem updateItem" data-action="updateActiveLanguages">
-			<f:be.buttons.icon icon="actions-system-extension-download"
-							   title="{f:translate(key:'button.downloadAll')}"/>
+		<span class="menuItem updateItem" data-action="updateActiveLanguages" title="{f:translate(key:'button.downloadAll')}">
+			<core:icon identifier="actions-system-extension-download" />
 		</span>
 		<span class="menuItem loadingItem">
 			<span title="" class="t3-icon fa fa-spin fa-circle-o-notch">&nbsp;</span>

@@ -1,7 +1,9 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
 <div style="display:none">
-	<span class="activateIcon"><span class="btn btn-default"><f:be.buttons.icon icon="actions-system-extension-install" title="{f:translate(key:'button.activate')}" /></span></span>
-	<span class="deactivateIcon"><span class="btn btn-default"><f:be.buttons.icon icon="actions-system-extension-uninstall" title="{f:translate(key:'button.deactivate')}" /></span></span>
-	<span class="downloadIcon"><span class="btn btn-default"><f:be.buttons.icon icon="actions-system-extension-download" title="{f:translate(key:'button.download')}" /></span></span>
+	<span class="activateIcon"><span class="btn btn-default" title="{f:translate(key:'button.activate')}"><core:icon identifier="actions-system-extension-install" /></span></span>
+	<span class="deactivateIcon"><span class="btn btn-default" title="{f:translate(key:'button.deactivate')}"><core:icon identifier="actions-system-extension-uninstall" /></span></span>
+	<span class="downloadIcon"><span class="btn btn-default" title="{f:translate(key:'button.download')}"><core:icon identifier="actions-system-extension-download" /></span></span>
 	<span class="completeIcon"><span class="t3-icon fa fa-check" title="{f:translate(key:'button.complete')}">&nbsp;</span></span>
 	<span class="loadingIcon"><span class="t3-icon fa fa-spin fa-circle-o-notch" title="{f:translate(key:'button.loading')}">&nbsp;</span></span>
 	<div class="progressBar">
@@ -10,4 +12,3 @@
 		</div>
 	</div>
 </div>
-

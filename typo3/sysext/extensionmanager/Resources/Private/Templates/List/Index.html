@@ -1,4 +1,5 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="main" />
 
@@ -50,21 +51,20 @@
 						<div class="btn-group">
 							<f:if condition="{extension.state} == 'excludeFromUpdates'">
 								<f:then>
-									<span class="btn btn-default disabled">
-										<f:be.buttons.icon
-											icon="actions-system-extension-update"
-											title="{f:translate(key:'extensionList.updateDisabled')}"
-										/>
+									<span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
+										<core:icon identifier="actions-system-extension-update" />
 									</span>
 								</f:then>
 								<f:else>
 									<span class="btn btn-default">
-										<f:be.buttons.icon
-											uri="{f:uri.action(action:'updateCommentForUpdatableVersions',controller:'Download',arguments:{extension:extension.key, integerVersionStart: extension.terObject.integerVersion, integerVersionStop: extension.updateToVersion.integerVersion},format:'json')}"
-											icon="actions-system-extension-update"
-											title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+										<f:link.action action="updateCommentForUpdatableVersions"
 											additionalAttributes="{data-action:'update-extension'}"
-										/>
+											format="json" controller="Download"
+											arguments="{extension:extension.key, integerVersionStart: extension.terObject.integerVersion, integerVersionStop: extension.updateToVersion.integerVersion}"
+											title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+										>
+											<core:icon identifier="actions-system-extension-update" />
+										</f:link.action>
 									</span>
 								</f:else>
 							</f:if>
@@ -99,10 +99,16 @@
 				<td>
 					<div class="btn-group">
 						<em:processAvailableActions extension="{extension}">
-							<em:configureExtension class="btn btn-default" extension="{extension}"><f:be.buttons.icon icon="actions-system-extension-configure" title="{f:translate(key:'extensionList.configure')}" /></em:configureExtension>
+							<em:configureExtension class="btn btn-default" extension="{extension}" title="{f:translate(key:'extensionList.configure')}">
+								<core:icon identifier="actions-system-extension-configure" />
+							</em:configureExtension>
 							<em:updateScript class="btn btn-default" extensionKey="{extension.key}" />
 							<em:removeExtension class="btn btn-default" extension="{extension}" />
-							<span class="btn btn-default"><f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/></span>
+							<span class="btn btn-default">
+								<f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" title="{f:translate(key:'extensionList.downloadzip')}">
+									<core:icon identifier="actions-system-extension-download" />
+								</f:link.action>
+							</span>
 							<em:downloadExtensionData class="btn btn-default" extension="{extension}" />
 						</em:processAvailableActions>
 					</div>
@@ -113,5 +119,3 @@
 	</table>
 	</div>
 </f:section>
-
-

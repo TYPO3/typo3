@@ -1,3 +1,5 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
 <f:layout name="Default"/>
 
 <f:section name="module-headline">
@@ -35,7 +37,11 @@
 				<td class="hidden-xs">{document.shortcut}</td>
 				<td class="hidden-xs">{document.type}</td>
 				<td class="col-nowrap">
-					<f:be.buttons.icon uri="{f:uri.action(action:'fetch',arguments:'{url:document.url, key:document.key, version:document.version}')}" icon="actions-system-extension-download" title="{f:translate(key:'documentation.actions.download')}" additionalAttributes="{class: 'btn btn-default'}" />
+					<f:link.action action="fetch" arguments="{url:document.url, key:document.key, version:document.version}" class="btn btn-default">
+						<span title="{f:translate(key:'documentation.actions.download')}">
+							<core:icon identifier="actions-system-extension-download" />
+						</span>
+					</f:link.action>
 				</td>
 			</tr>
 		</f:for>
