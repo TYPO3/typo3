@@ -35,6 +35,11 @@ class WorkspaceService implements SingletonInterface
      */
     protected $versionsOnPageCache = array();
 
+    /**
+     * @var array
+     */
+    protected $pagesWithVersionsInTable = array();
+
     const TABLE_WORKSPACE = 'sys_workspace';
     const SELECT_ALL_WORKSPACES = -98;
     const LIVE_WORKSPACE_ID = 0;
@@ -719,56 +724,145 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Checks if a page has record versions according to a given workspace
+     * Determines whether a page has workspace versions.
      *
-     * @param int $workspace
+     * @param int $workspaceId
      * @param int $pageId
      * @return bool
      */
-    public function hasPageRecordVersions($workspace, $pageId)
+    public function hasPageRecordVersions($workspaceId, $pageId)
     {
-        $workspace = (int)$workspace;
-        $pageId = (int)$pageId;
-        if ($workspace === 0) {
+        if ((int)$workspaceId === 0 || (int)$pageId === 0) {
             return false;
         }
 
-        if (isset($this->versionsOnPageCache[$pageId][$workspace])) {
-            return $this->versionsOnPageCache[$pageId][$workspace];
+        if (isset($this->versionsOnPageCache[$workspaceId][$pageId])) {
+            return $this->versionsOnPageCache[$workspaceId][$pageId];
         }
 
-        if (!empty($this->versionsOnPageCache)) {
-            return false;
-        }
+        $this->versionsOnPageCache[$workspaceId][$pageId] = false;
 
-        $this->versionsOnPageCache[$pageId][$workspace] = false;
         foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
             if ($tableName === 'pages' || empty($tableConfiguration['ctrl']['versioningWS'])) {
                 continue;
             }
+
+            $pages = $this->fetchPagesWithVersionsInTable($workspaceId, $tableName);
+            // Early break on first match
+            if (!empty($pages[(string)$pageId])) {
+                $this->versionsOnPageCache[$workspaceId][$pageId] = true;
+                break;
+            }
+        }
+
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'])
+            && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'])) {
+            $parameters = array(
+                'workspaceId' => $workspaceId,
+                'pageId' => $pageId,
+                'versionsOnPageCache' => &$this->versionsOnPageCache,
+            );
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['hasPageRecordVersions'] as $hookFunction) {
+                GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
+            }
+        }
+
+        return $this->versionsOnPageCache[$workspaceId][$pageId];
+    }
+
+    /**
+     * Gets all pages that have workspace versions per table.
+     *
+     * Result:
+     * [
+     *   'tt_content' => [
+     *     1 => 1,
+     *     11 => 11,
+     *     13 => 13,
+     *     15 => 15
+     *   ],
+     *   'tx_something => [
+     *     15 => 15,
+     *     11 => 11,
+     *     21 => 21
+     *   ],
+     * ]
+     *
+     * @param int $workspaceId
+     * @return array
+     */
+    public function getPagesWithVersionsInTable($workspaceId)
+    {
+        foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
+            if ($tableName === 'pages' || empty($tableConfiguration['ctrl']['versioningWS'])) {
+                continue;
+            }
+
+            $this->fetchPagesWithVersionsInTable($workspaceId, $tableName);
+        }
+
+        return $this->pagesWithVersionsInTable[$workspaceId];
+    }
+
+    /**
+     * Gets all pages that have workspace versions in a particular table.
+     *
+     * Result:
+     * [
+     *   1 => 1,
+     *   11 => 11,
+     *   13 => 13,
+     *   15 => 15
+     * ],
+     *
+     * @param int $workspaceId
+     * @param string $tableName
+     * @return array
+     */
+    protected function fetchPagesWithVersionsInTable($workspaceId, $tableName)
+    {
+        if ((int)$workspaceId === 0) {
+            return array();
+        }
+
+        if (!isset($this->pagesWithVersionsInTable[$workspaceId])) {
+            $this->pagesWithVersionsInTable[$workspaceId] = array();
+        }
+
+        if (!isset($this->pagesWithVersionsInTable[$workspaceId][$tableName])) {
+            $this->pagesWithVersionsInTable[$workspaceId][$tableName] = array();
+
             // Consider records that are moved to a different page
             $movePointer = new VersionState(VersionState::MOVE_POINTER);
             $joinStatement = '(A.t3ver_oid=B.uid AND A.t3ver_state<>' . $movePointer
                 . ' OR A.t3ver_oid=B.t3ver_move_id AND A.t3ver_state=' . $movePointer . ')';
 
-            // Select all records from this table in the database from the workspace
-            // This joins the online version with the offline version as tables A and B
-            $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
-                'B.uid as live_uid, B.pid as live_pid, A.uid as offline_uid',
+
+            $pageIds = $this->getDatabaseConnection()->exec_SELECTgetRows(
+                'B.pid AS pageId',
                 $tableName . ' A,' . $tableName . ' B',
-                'A.pid=-1 AND A.t3ver_wsid=' . $workspace . ' AND ' . $joinStatement .
-                BackendUtility::deleteClause($tableName, 'A') . BackendUtility::deleteClause($tableName, 'B'),
-                'live_pid'
+                'A.pid=-1 AND A.t3ver_wsid=' . (int)$workspaceId . ' AND ' . $joinStatement
+                    . BackendUtility::deleteClause($tableName, 'A') . BackendUtility::deleteClause($tableName, 'B'),
+                'pageId', '', '',
+                'pageId'
             );
 
-            if (!empty($records)) {
-                foreach ($records as $record) {
-                    $this->versionsOnPageCache[$record['live_pid']][$workspace] = true;
+            $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;
+
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'])) {
+                $parameters = array(
+                    'workspaceId' => $workspaceId,
+                    'tableName' => $tableName,
+                    'pagesWithVersionsInTable' => &$this->pagesWithVersionsInTable,
+                );
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService']['fetchPagesWithVersionsInTable'] as $hookFunction) {
+                    GeneralUtility::callUserFunction($hookFunction, $parameters, $this);
                 }
             }
         }
 
-        return $this->versionsOnPageCache[$pageId][$workspace];
+        return $this->pagesWithVersionsInTable[$workspaceId][$tableName];
     }
 
     /**
