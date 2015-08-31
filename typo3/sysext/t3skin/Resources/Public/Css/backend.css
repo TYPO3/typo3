@@ -10755,11 +10755,6 @@ fieldset[disabled] .table .btn-default.active {
 .panel .panel-heading {
   font-weight: bold;
 }
-.panel > .table,
-.panel > .table-fit {
-  border: 0;
-  margin: 0;
-}
 .panel-carousel {
   padding: 15px;
 }
@@ -10816,6 +10811,13 @@ fieldset[disabled] .table .btn-default.active {
 .panel > .nav-tabs > li,
 .panel-collapse > .nav-tabs > li {
   margin-left: -1px;
+}
+.panel > .table,
+.panel-collapse > .table,
+.panel > .table-fit,
+.panel-collapse > .table-fit {
+  border: 0;
+  margin: 0;
 }
 .panel-hover .panel-default:hover > .panel-heading {
   background-color: #e5e5e5;
