@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-<g id="Background">
-	<rect fill="#D04139" width="64" height="64"/>
-</g>
-<g id="Icon">
-	<path fill="#FFFFFF" d="M30,46V26h7v6.3c0,1,0.8,1.7,1.7,1.7H46v12H30z M35,19.4c0,0.3-0.3,0.6-0.6,0.6H20.6
-		c-0.3,0-0.6-0.3-0.6-0.6v-0.8c0-0.3,0.3-0.6,0.6-0.6h13.9c0.3,0,0.6,0.3,0.6,0.6V19.4z M39,32v-4.9l5.1,4.9H39z M48,33.8
-		c0-1-0.5-1.3-1.2-2l-7.1-7.3c-0.2-0.2-0.4-0.5-0.6-0.6v-6.2c0-1-0.8-1.7-1.7-1.7H17.7c-1,0-1.7,0.8-1.7,1.7v24.5
-		c0,1,0.8,1.7,1.7,1.7H28v2.3c0,1,0.8,1.7,1.7,1.7h16.6c1,0,1.7-0.8,1.7-1.7V33.8z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#D04139" d="M0 0h64v64H0z"/><path fill="#FFF" d="M30 46V26h7v6.3c0 1 .8 1.7 1.7 1.7H46v12H30zm5-26.6c0 .3-.3.6-.6.6H20.6c-.3 0-.6-.3-.6-.6v-.8c0-.3.3-.6.6-.6h13.9c.3 0 .6.3.6.6v.8zM39 32v-4.9l5.1 4.9H39zm9 1.8c0-1-.5-1.3-1.2-2l-7.1-7.3c-.2-.2-.4-.5-.6-.6v-6.2c0-1-.8-1.7-1.7-1.7H17.7c-1 0-1.7.8-1.7 1.7v24.5c0 1 .8 1.7 1.7 1.7H28v2.3c0 1 .8 1.7 1.7 1.7h16.6c1 0 1.7-.8 1.7-1.7V33.8z"/></svg>

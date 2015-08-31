@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-<g id="Background">
-	<rect fill="#1A568F" width="64" height="64"/>
-</g>
-<g id="Icon">
-	<path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M16,48V16h32v32H16z M46,18H18v28h28V18z M44,26H20v-6h24V26z
-		 M28,44h-8V28h8V44z M44,44H30V28h14V44z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#1A568F" d="M0 0h64v64H0z"/><path fill-rule="evenodd" clip-rule="evenodd" fill="#FFF" d="M16 48V16h32v32H16zm30-30H18v28h28V18zm-2 8H20v-6h24v6zM28 44h-8V28h8v16zm16 0H30V28h14v16z"/></svg>

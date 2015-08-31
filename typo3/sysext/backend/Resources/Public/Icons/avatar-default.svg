@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-<g id="Background">
-	<rect fill="#666666" width="64" height="64"/>
-</g>
-<g id="Icon">
-	<path fill="#FFFFFF" d="M46.5,42.7c0-4.6-1.1-11.8-7.1-11.8c-0.6,0-3.3,2.9-7.4,2.9c-4,0-6.7-2.9-7.4-2.9c-6,0-7.1,7.1-7.1,11.8
-		c0,3.3,2.2,5.3,5.5,5.3h18C44.3,48,46.5,46,46.5,42.7z M39.9,24.3c0-4.4-3.5-7.9-7.9-7.9s-7.9,3.5-7.9,7.9s3.5,7.9,7.9,7.9
-		S39.9,28.7,39.9,24.3z"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="#666" d="M0 0h64v64H0z"/><path fill="#FFF" d="M46.5 42.7c0-4.6-1.1-11.8-7.1-11.8-.6 0-3.3 2.9-7.4 2.9-4 0-6.7-2.9-7.4-2.9-6 0-7.1 7.1-7.1 11.8 0 3.3 2.2 5.3 5.5 5.3h18c3.3 0 5.5-2 5.5-5.3zm-6.6-18.4c0-4.4-3.5-7.9-7.9-7.9s-7.9 3.5-7.9 7.9 3.5 7.9 7.9 7.9 7.9-3.5 7.9-7.9z"/></svg>

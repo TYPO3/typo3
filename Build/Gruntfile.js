@@ -103,46 +103,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		copy: {
-			/**
-			 * Copy icons into correct location
-			 */
-			icons: {
-				files: [
-					// Avatar
-					{ src: 'Resources/Private/Icons/avatar-default.svg', dest: '<%= paths.sysext %>backend/Resources/Public/Icons/avatar-default.svg' },
-					// Module Icons
-					{ src: 'Resources/Private/Icons/module-about.svg', dest: '<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg' },
-					{ src: 'Resources/Private/Icons/module-aboutmodules.svg', dest: '<%= paths.sysext %>aboutmodules/Resources/Public/Icons/module-aboutmodules.svg' },
-					{ src: 'Resources/Private/Icons/module-belog.svg', dest: '<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg' },
-					{ src: 'Resources/Private/Icons/module-beuser.svg', dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-beuser.svg' },
-					{ src: 'Resources/Private/Icons/module-config.svg', dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg' },
-					{ src: 'Resources/Private/Icons/module-cshmanual.svg', dest: '<%= paths.sysext %>cshmanual/Resources/Public/Icons/module-cshmanual.svg' },
-					{ src: 'Resources/Private/Icons/module-dbal.svg', dest: '<%= paths.sysext %>dbal/Resources/Public/Icons/module-dbal.svg' },
-					{ src: 'Resources/Private/Icons/module-dbint.svg', dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg' },
-					{ src: 'Resources/Private/Icons/module-documentation.svg', dest: '<%= paths.sysext %>documentation/Resources/Public/Icons/module-documentation.svg' },
-					{ src: 'Resources/Private/Icons/module-extensionmanager.svg', dest: '<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg' },
-					{ src: 'Resources/Private/Icons/module-filelist.svg', dest: '<%= paths.sysext %>filelist/Resources/Public/Icons/module-filelist.svg' },
-					{ src: 'Resources/Private/Icons/module-func.svg', dest: '<%= paths.sysext %>func/Resources/Public/Icons/module-func.svg' },
-					{ src: 'Resources/Private/Icons/module-indexed_search.svg', dest: '<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg' },
-					{ src: 'Resources/Private/Icons/module-info.svg', dest: '<%= paths.sysext %>info/Resources/Public/Icons/module-info.svg' },
-					{ src: 'Resources/Private/Icons/module-install.svg', dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install.svg' },
-					{ src: 'Resources/Private/Icons/module-lang.svg', dest: '<%= paths.sysext %>lang/Resources/Public/Icons/module-lang.svg' },
-					{ src: 'Resources/Private/Icons/module-list.svg', dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg' },
-					{ src: 'Resources/Private/Icons/module-page.svg', dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg' },
-					{ src: 'Resources/Private/Icons/module-permission.svg', dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-permission.svg' },
-					{ src: 'Resources/Private/Icons/module-recycler.svg', dest: '<%= paths.sysext %>recycler/Resources/Public/Icons/module-recycler.svg' },
-					{ src: 'Resources/Private/Icons/module-reports.svg', dest: '<%= paths.sysext %>reports/Resources/Public/Icons/module-reports.svg' },
-					{ src: 'Resources/Private/Icons/module-scheduler.svg', dest: '<%= paths.sysext %>scheduler/Resources/Public/Icons/module-scheduler.svg' },
-					{ src: 'Resources/Private/Icons/module-setup.svg', dest: '<%= paths.sysext %>setup/Resources/Public/Icons/module-setup.svg' },
-					{ src: 'Resources/Private/Icons/module-taskcenter.svg', dest: '<%= paths.sysext %>taskcenter/Resources/Public/Icons/module-taskcenter.svg' },
-					{ src: 'Resources/Private/Icons/module-tstemplate.svg', dest: '<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg' },
-					{ src: 'Resources/Private/Icons/module-version.svg', dest: '<%= paths.sysext %>version/Resources/Public/Icons/module-version.svg' },
-					{ src: 'Resources/Private/Icons/module-viewpage.svg', dest: '<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg' },
-					{ src: 'Resources/Private/Icons/module-workspaces.svg', dest: '<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg' }
-				]
-			}
-		},
 		uglify: {
 			thirdparty: {
 				files: {
@@ -167,11 +127,51 @@ module.exports = function(grunt) {
 					{ removeViewBox: false }
 				]
 			},
+			// Action Icons
 			icons_action: {
 				files: {
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-low.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-low.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-medium.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-medium.svg'
+				}
+			},
+			// Avatar Icons
+			icons_avatar: {
+				files: {
+					'<%= paths.sysext %>backend/Resources/Public/Icons/avatar-default.svg': '<%= paths.icons %>Avatar/avatar-default.svg'
+				}
+			},
+			// Module Icons
+			icons_module: {
+				files: {
+					'<%= paths.sysext %>about/Resources/Public/Icons/module-about.svg': '<%= paths.icons %>Module/module-about.svg',
+					'<%= paths.sysext %>aboutmodules/Resources/Public/Icons/module-aboutmodules.svg': '<%= paths.icons %>Module/module-aboutmodules.svg',
+					'<%= paths.sysext %>belog/Resources/Public/Icons/module-belog.svg': '<%= paths.icons %>Module/module-belog.svg',
+					'<%= paths.sysext %>beuser/Resources/Public/Icons/module-beuser.svg': '<%= paths.icons %>Module/module-beuser.svg',
+					'<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg': '<%= paths.icons %>Module/module-config.svg',
+					'<%= paths.sysext %>cshmanual/Resources/Public/Icons/module-cshmanual.svg': '<%= paths.icons %>Module/module-cshmanual.svg',
+					'<%= paths.sysext %>dbal/Resources/Public/Icons/module-dbal.svg': '<%= paths.icons %>Module/module-dbal.svg',
+					'<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg': '<%= paths.icons %>Module/module-dbint.svg',
+					'<%= paths.sysext %>documentation/Resources/Public/Icons/module-documentation.svg': '<%= paths.icons %>Module/module-documentation.svg',
+					'<%= paths.sysext %>extensionmanager/Resources/Public/Icons/module-extensionmanager.svg': '<%= paths.icons %>Module/module-extensionmanager.svg',
+					'<%= paths.sysext %>filelist/Resources/Public/Icons/module-filelist.svg': '<%= paths.icons %>Module/module-filelist.svg',
+					'<%= paths.sysext %>func/Resources/Public/Icons/module-func.svg': '<%= paths.icons %>Module/module-func.svg',
+					'<%= paths.sysext %>indexed_search/Resources/Public/Icons/module-indexed_search.svg': '<%= paths.icons %>Module/module-indexed_search.svg',
+					'<%= paths.sysext %>info/Resources/Public/Icons/module-info.svg': '<%= paths.icons %>Module/module-info.svg',
+					'<%= paths.sysext %>install/Resources/Public/Icons/module-install.svg': '<%= paths.icons %>Module/module-install.svg',
+					'<%= paths.sysext %>lang/Resources/Public/Icons/module-lang.svg': '<%= paths.icons %>Module/module-lang.svg',
+					'<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg': '<%= paths.icons %>Module/module-list.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg': '<%= paths.icons %>Module/module-page.svg',
+					'<%= paths.sysext %>beuser/Resources/Public/Icons/module-permission.svg': '<%= paths.icons %>Module/module-permission.svg',
+					'<%= paths.sysext %>recycler/Resources/Public/Icons/module-recycler.svg': '<%= paths.icons %>Module/module-recycler.svg',
+					'<%= paths.sysext %>reports/Resources/Public/Icons/module-reports.svg': '<%= paths.icons %>Module/module-reports.svg',
+					'<%= paths.sysext %>scheduler/Resources/Public/Icons/module-scheduler.svg': '<%= paths.icons %>Module/module-scheduler.svg',
+					'<%= paths.sysext %>setup/Resources/Public/Icons/module-setup.svg': '<%= paths.icons %>Module/module-setup.svg',
+					'<%= paths.sysext %>taskcenter/Resources/Public/Icons/module-taskcenter.svg': '<%= paths.icons %>Module/module-taskcenter.svg',
+					'<%= paths.sysext %>tstemplate/Resources/Public/Icons/module-tstemplate.svg': '<%= paths.icons %>Module/module-tstemplate.svg',
+					'<%= paths.sysext %>version/Resources/Public/Icons/module-version.svg': '<%= paths.icons %>Module/module-version.svg',
+					'<%= paths.sysext %>viewpage/Resources/Public/Icons/module-viewpage.svg': '<%= paths.icons %>Module/module-viewpage.svg',
+					'<%= paths.sysext %>workspaces/Resources/Public/Icons/module-workspaces.svg': '<%= paths.icons %>Module/module-workspaces.svg'
 				}
 			}
 		}
@@ -205,9 +205,8 @@ module.exports = function(grunt) {
 	 * - npn install
 	 * - bower install
 	 * - copy some bower components to a specific destinations because they need to be included via PHP
-	 * - copy development resources to final locations (example: module icons)
 	 */
-	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy', 'copy']);
+	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy']);
 
 	/**
 	 * grunt build task
