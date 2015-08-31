@@ -7849,10 +7849,11 @@ button.close {
   line-height: 30px;
   font-size: 26px;
 }
-.icon-default-not-found {
-  color: #c83c3c;
-}
-.icon-overlay-read-only {
+.icon-default-not-found,
+.icon-actions-edit-copy-release,
+.icon-actions-edit-cut-release,
+.icon-overlay-read-only,
+.icon-status-status-current {
   color: #c83c3c;
 }
 .clearfix:before,

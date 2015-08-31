@@ -44,7 +44,6 @@ class FontawesomeIconProvider implements IconProviderInterface {
 		if (preg_match('/^[a-zA-Z0-9\\-]+$/', $options['name']) !== 1) {
 			throw new \InvalidArgumentException('The option "name" must only contain characters a-z, A-Z, 0-9 or -', 1440754979);
 		}
-		$additionalClasses = (!empty($options['additionalClasses'])) ? ' ' . $options['additionalClasses'] : '';
-		return '<span class="icon-unify"><i class="fa fa-' . htmlspecialchars($options['name']) . htmlspecialchars($additionalClasses) . '"></i></span>';
+		return '<span class="icon-unify"><i class="fa fa-' . htmlspecialchars($options['name']) . '"></i></span>';
 	}
 }
