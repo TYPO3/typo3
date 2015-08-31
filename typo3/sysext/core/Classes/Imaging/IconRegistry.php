@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Imaging;
 
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 
 /**
  * Class IconRegistry, which makes it possible to register custom icons
@@ -194,6 +195,24 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'pencil-square-o',
+			)
+		),
+		'actions-system-cache-clear-impact-low' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-cache-clear-impact-low.svg',
+			)
+		),
+		'actions-system-cache-clear-impact-medium' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-cache-clear-impact-medium.svg',
+			)
+		),
+		'actions-system-cache-clear-impact-high' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-cache-clear-impact-high.svg',
 			)
 		),
 		'actions-system-list-open' => array(

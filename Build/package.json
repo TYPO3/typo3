@@ -15,6 +15,7 @@
     "grunt-contrib-less": "~1.0.0",
     "grunt-contrib-uglify": "0.9.1",
     "grunt-contrib-watch": "~0.6.1",
+    "grunt-svgmin": "2.0.1",
     "grunt-npm-install": "^0.2.0"
   }
 }

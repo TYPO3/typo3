@@ -31,9 +31,11 @@ module.exports = function(grunt) {
 		paths: {
 			resources : 'Resources/',
 			less      : '<%= paths.resources %>Public/Less/',
+			icons     : '<%= paths.resources %>Private/Icons/',
 			root      : '../',
 			sysext    : '<%= paths.root %>typo3/sysext/',
 			t3skin    : '<%= paths.sysext %>t3skin/Resources/',
+			backend   : '<%= paths.sysext %>backend/Resources/',
 			core      : '<%= paths.sysext %>core/Resources/'
 		},
 		less: {
@@ -142,7 +144,7 @@ module.exports = function(grunt) {
 			}
 		},
 		uglify: {
-			my_target: {
+			thirdparty: {
 				files: {
 					"<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
 					"<%= paths.core %>Public/JavaScript/Contrib/moment.js": ["<%= paths.core %>Public/JavaScript/Contrib/moment.js"],
@@ -158,6 +160,20 @@ module.exports = function(grunt) {
 					"<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/widget.js"]
 				}
 			}
+		},
+		svgmin: {
+			options: {
+				plugins: [
+					{ removeViewBox: false }
+				]
+			},
+			icons_action: {
+				files: {
+					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-low.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-low.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-medium.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-medium.svg'
+				}
+			}
 		}
 	});
 
@@ -169,6 +185,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-npm-install');
 	grunt.loadNpmTasks('grunt-bower-just-install');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-svgmin');
 
 	/**
 	 * grunt default task
@@ -188,12 +205,20 @@ module.exports = function(grunt) {
 	 * - npn install
 	 * - bower install
 	 * - copy some bower components to a specific destinations because they need to be included via PHP
-	 * - uglify 3rd party JavaScript libraries
+	 * - copy development resources to final locations (example: module icons)
 	 */
-	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy', 'uglify']);
+	grunt.registerTask('update', ['npm-install', 'bower_install', 'bowercopy', 'copy']);
 
 	/**
-	 * grunt task to copy icons into correct location
+	 * grunt build task
+	 *
+	 * call "$ grunt build"
+	 *
+	 * this task does the following things:
+	 * - execute update task
+	 * - compile less files
+	 * - uglify js files
+	 * - minifies svg files
 	 */
-	grunt.registerTask('build', ['copy:icons']);
+	grunt.registerTask('build', ['update', 'less', 'uglify', 'svgmin']);
 };
