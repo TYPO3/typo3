@@ -777,10 +777,14 @@ var inline = {
 	memorizeRemoveRecord: function (objectName, removeUid) {
 		var formObj = document.getElementsByName(objectName);
 		if (formObj.length) {
-			var parts = [];
+			var parts = [],
+				indexOfRemoveUid = -1;
 			if (formObj[0].value.length) {
 				parts = formObj[0].value.split(',');
-				parts = parts.without(removeUid);
+				indexOfRemoveUid = parts.indexOf(removeUid);
+				if (indexOfRemoveUid !== -1) {
+					delete parts[indexOfRemoveUid];
+				}
 				formObj[0].value = parts.join(',');
 				if (TBE_EDITOR) {
 					TBE_EDITOR.fieldChanged_fName(objectName, formObj);
