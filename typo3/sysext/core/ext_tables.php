@@ -65,7 +65,6 @@ $GLOBALS['TBE_MODULES'] = array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_web.xlf'
 			),
 			'name' => 'web',
-			'access' => 'user,group',
 			'iconIdentifier' => 'module-web'
 		),
 		'file' => array(
@@ -74,7 +73,6 @@ $GLOBALS['TBE_MODULES'] = array(
 			),
 			'navigationFrameModule' => 'file_navframe',
 			'name' => 'file',
-			'access' => 'user,group',
 			'workspaces' => 'online,custom',
 			'iconIdentifier' => 'module-file'
 		),
@@ -83,7 +81,6 @@ $GLOBALS['TBE_MODULES'] = array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_usertools.xlf'
 			),
 			'name' => 'user',
-			'access' => 'user,group',
 			'iconIdentifier' => 'status-user-backend'
 		),
 		'tools' => array(
@@ -91,7 +88,6 @@ $GLOBALS['TBE_MODULES'] = array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_admintools.xlf'
 			),
 			'name' => 'tools',
-			'access' => 'admin',
 			'iconIdentifier' => 'module-tools'
 		),
 		'system' => array(
@@ -99,7 +95,6 @@ $GLOBALS['TBE_MODULES'] = array(
 				'll_ref' => 'LLL:EXT:lang/locallang_mod_system.xlf'
 			),
 			'name' => 'system',
-			'access' => 'admin',
 			'iconIdentifier' => 'module-system'
 		),
 		'help' => array(
