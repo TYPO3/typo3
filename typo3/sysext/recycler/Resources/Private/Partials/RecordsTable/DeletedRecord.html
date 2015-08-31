@@ -1,3 +1,4 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}">
 	<td nowrap="nowrap">{record.tableTitle}</td>
 	<td nowrap="nowrap"><f:format.html>{record.icon}</f:format.html> {record.title}</td>
@@ -9,12 +10,12 @@
 			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}">
 				<f:be.buttons.icon icon="apps-pagetree-collapse" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}" />
 			</a>
-			<a class="btn btn-default" data-action="undo">
-				<f:be.buttons.icon icon="actions-edit-undo" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}" />
+			<a class="btn btn-default" data-action="undo" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}">
+				<core:icon identifier="actions-edit-undo" />
 			</a>
 			<f:if condition="{allowDelete}">
-				<a class="btn btn-default" data-action="delete">
-					<f:be.buttons.icon icon="actions-edit-delete" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.delete')}" />
+				<a class="btn btn-default" data-action="delete" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.delete')}">
+					<core:icon identifier="actions-edit-delete" />
 				</a>
 			</f:if>
 			<label class="btn btn-default btn-checkbox">

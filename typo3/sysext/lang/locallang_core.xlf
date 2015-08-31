@@ -1227,6 +1227,9 @@ Check also the following points:\n
 			<trans-unit id="error.backendUserGroupListTypeError.message">
 				<source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
 			</trans-unit>
+			<trans-unit id="labels.deleteTitle">
+				<source>Revert to default Constant</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

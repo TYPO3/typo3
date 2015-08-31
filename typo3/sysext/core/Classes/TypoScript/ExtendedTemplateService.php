@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Dbal\Database\DatabaseConnection;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Lang\LanguageService;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 
 /**
  * TSParser extension class to TemplateService
@@ -1134,6 +1136,8 @@ class ExtendedTemplateService extends TemplateService {
 			if (!$this->doNotSortCategoriesBeforeMakingForm) {
 				asort($this->categories[$category]);
 			}
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			foreach ($this->categories[$category] as $name => $type) {
 				$params = $theConstants[$name];
 				if (is_array($params)) {
@@ -1294,12 +1298,11 @@ class ExtendedTemplateService extends TemplateService {
 							$userTyposcriptStyle = 'style="display:none;"';
 							$defaultTyposcriptStyle = '';
 						}
-						$deleteIconHTML = IconUtility::getSpriteIcon('actions-edit-undo', array(
-							'class' => 'typo3-tstemplate-ceditor-control undoIcon',
-							'alt' => 'Revert to default Constant',
-							'title' => 'Revert to default Constant',
-							'rel' => $idName
-						));
+						$deleteTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.deleteTitle', TRUE);
+						$deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL);
+						$deleteIconHTML = '<span title="' . $deleteTitle . '" alt="' . $deleteTitle . '"'
+							. ' class="typo3-tstemplate-ceditor-control undoIcon" rel="' . $idName . '">'
+							. $deleteIcon . '</span>';
 						$editIconHTML = IconUtility::getSpriteIcon('actions-document-open', array(
 							'class' => 'typo3-tstemplate-ceditor-control editIcon',
 							'alt' => 'Edit this Constant',
