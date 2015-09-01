@@ -168,6 +168,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'trash',
 			)
 		),
+		'actions-edit-merge-localization' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/edit-merge-localization.png',
+			)
+		),
 		'actions-edit-pick-date' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

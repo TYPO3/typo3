@@ -16,13 +16,14 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -336,7 +337,8 @@ class SingleFieldContainer extends AbstractContainer {
 			// Don't show content if it's for IRRE child records:
 			if ($fieldConfig['config']['type'] !== 'inline') {
 				if ($defaultLanguageValue !== '') {
-					$item .= '<div class="t3-form-original-language">' . FormEngineUtility::getLanguageIcon($table, $row, 0)
+					$item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', TRUE) . '">'
+						. FormEngineUtility::getLanguageIcon($table, $row, 0)
 						. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
 						. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 				}
@@ -350,7 +352,7 @@ class SingleFieldContainer extends AbstractContainer {
 						1
 					);
 					if ($defaultLanguageValue !== '') {
-						$item .= '<div class="t3-form-original-language">'
+						$item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', TRUE) . '">'
 							. FormEngineUtility::getLanguageIcon($table, $row, ('v' . $previewLanguage['ISOcode']))
 							. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
 							. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
@@ -373,10 +375,9 @@ class SingleFieldContainer extends AbstractContainer {
 	protected function getMergeBehaviourIcon($l10nMode) {
 		$icon = '';
 		if ($l10nMode === 'mergeIfNotBlank') {
-			$icon = IconUtility::getSpriteIcon(
-				'actions-edit-merge-localization',
-				array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank'))
-			);
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$icon = $iconFactory->getIcon('actions-edit-merge-localization', Icon::SIZE_SMALL);
 		}
 		return $icon;
 	}
