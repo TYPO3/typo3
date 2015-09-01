@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
 
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\IndexedSearch\Utility;
 
 /**
  * Index search frontend
@@ -169,8 +170,6 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public $lexerObj;
 
-	const WILDCARD_LEFT = 1;
-	const WILDCARD_RIGHT = 2;
 	/**
 	 * Main function, called from TypoScript as a USER_INT object.
 	 *
@@ -807,15 +806,15 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			switch ($theType) {
 				case '1':
 					// Part of word
-					$res = $this->searchWord($sWord, self::WILDCARD_LEFT | self::WILDCARD_RIGHT);
+					$res = $this->searchWord($sWord, Utility\LikeWildcard::BOTH);
 					break;
 				case '2':
 					// First part of word
-					$res = $this->searchWord($sWord, self::WILDCARD_RIGHT);
+					$res = $this->searchWord($sWord, Utility\LikeWildcard::RIGHT);
 					break;
 				case '3':
 					// Last part of word
-					$res = $this->searchWord($sWord, self::WILDCARD_LEFT);
+					$res = $this->searchWord($sWord, Utility\LikeWildcard::LEFT);
 					break;
 				case '10':
 					// Sounds like
@@ -892,13 +891,17 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Search for a word
 	 *
 	 * @param string $sWord Word to search for
-	 * @param int $mode Bit-field which can contain WILDCARD_LEFT and/or WILDCARD_RIGHT
+	 * @param int $wildcard Bit-field of Utility\LikeWildcard
 	 * @return bool|\mysqli_result SQL result pointer
 	 */
-	public function searchWord($sWord, $mode) {
-		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
-		$wildcard_right = $mode & self::WILDCARD_RIGHT ? '%' : '';
-		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $this->databaseConnection->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
+	public function searchWord($sWord, $wildcard) {
+		$likeWildcard = Utility\LikeWildcard::cast($wildcard);
+		$wSel = $likeWildcard->getLikeQueryPart(
+			'index_words',
+			'IW.baseword',
+			$sWord
+		);
+
 		$this->wSelClauses[] = $wSel;
 		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 		return $res;
@@ -924,11 +927,18 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return bool|\mysqli_result SQL result pointer
 	 */
 	public function searchSentence($sSentence) {
-		$res = $this->databaseConnection->exec_SELECTquery('ISEC.phash', 'index_section ISEC, index_fulltext IFT', 'IFT.fulltextdata LIKE \'%' . $this->databaseConnection->quoteStr($sSentence, 'index_fulltext') . '%\' AND
-				ISEC.phash = IFT.phash
-			' . $this->sectionTableWhere(), 'ISEC.phash');
 		$this->wSelClauses[] = '1=1';
-		return $res;
+		$likeWildcard = Utility\LikeWildcard::cast(Utility\LikeWildcard::BOTH);
+		$likePart = $likeWildcard->getLikeQueryPart(
+			'index_fulltext',
+			'IFT.fulltextdata',
+			$sSentence
+		);
+
+		return $this->databaseConnection->exec_SELECTquery('ISEC.phash',
+			'index_section ISEC, index_fulltext IFT',
+			$likePart . ' AND ISEC.phash = IFT.phash' . $this->sectionTableWhere(), 'ISEC.phash'
+		);
 	}
 
 	/**

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\IndexedSearch\Domain\Repository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\IndexedSearch\Indexer;
-use TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility;
+use TYPO3\CMS\IndexedSearch\Utility;
 
 /**
  * Index search abstraction to search through the index
@@ -155,10 +155,6 @@ class IndexSearchRepository {
 	 * @var bool
 	 */
 	protected $displayForbiddenRecords = FALSE;
-
-	// constants to help where to use wildcards in SQL like queries
-	const WILDCARD_LEFT = 1;
-	const WILDCARD_RIGHT = 2;
 
 	/**
 	 * initialize all options that are necessary for the search
@@ -345,15 +341,15 @@ class IndexSearchRepository {
 			switch ($theType) {
 				case '1':
 					// Part of word
-					$res = $this->searchWord($sWord, self::WILDCARD_LEFT | self::WILDCARD_RIGHT);
+					$res = $this->searchWord($sWord, Utility\LikeWildcard::BOTH);
 					break;
 				case '2':
 					// First part of word
-					$res = $this->searchWord($sWord, self::WILDCARD_RIGHT);
+					$res = $this->searchWord($sWord, Utility\LikeWildcard::RIGHT);
 					break;
 				case '3':
 					// Last part of word
-					$res = $this->searchWord($sWord, self::WILDCARD_LEFT);
+					$res = $this->searchWord($sWord, Utility\LikeWildcard::LEFT);
 					break;
 				case '10':
 					// Sounds like
@@ -434,13 +430,16 @@ class IndexSearchRepository {
 	 * Search for a word
 	 *
 	 * @param string $sWord the search word
-	 * @param int $mode constant from this class to see if the wildcard should be left and/or right of the search string
+	 * @param int $wildcard Bit-field of Utility\LikeWildcard
 	 * @return bool|\mysqli_result SQL result pointer
 	 */
-	protected function searchWord($sWord, $mode) {
-		$wildcard_left = $mode & self::WILDCARD_LEFT ? '%' : '';
-		$wildcard_right = $mode & self::WILDCARD_RIGHT ? '%' : '';
-		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $this->getDatabaseConnection()->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
+	protected function searchWord($sWord, $wildcard) {
+		$likeWildcard = Utility\LikeWildcard::cast($wildcard);
+		$wSel = $likeWildcard->getLikeQueryPart(
+			'index_words',
+			'IW.baseword',
+			$sWord
+		);
 		$this->wSelClauses[] = $wSel;
 		return $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 	}
@@ -465,16 +464,17 @@ class IndexSearchRepository {
 	 */
 	protected function searchSentence($sWord) {
 		$this->wSelClauses[] = '1=1';
-		$sWord = $this->getDatabaseConnection()->quoteStr(
-			$this->getDatabaseConnection()->escapeStrForLike($sWord, 'index_fulltext'),
-			'index_fulltext'
+		$likeWildcard = Utility\LikeWildcard::cast(Utility\LikeWildcard::BOTH);
+		$likePart = $likeWildcard->getLikeQueryPart(
+			'index_fulltext',
+			'IFT.fulltextdata',
+			$sWord
 		);
+
 		return $this->getDatabaseConnection()->exec_SELECTquery(
 			'ISEC.phash',
 			'index_section ISEC, index_fulltext IFT',
-			'IFT.fulltextdata LIKE \'%' . $sWord
-				. '%\' AND ISEC.phash = IFT.phash'
-				. $this->sectionTableWhere(),
+			$likePart . ' AND ISEC.phash = IFT.phash' . $this->sectionTableWhere(),
 			'ISEC.phash'
 		);
 	}
@@ -839,7 +839,7 @@ class IndexSearchRepository {
 	 * @return int Integer intepretation of the md5 hash of input string.
 	 */
 	protected function md5inthash($str) {
-		return IndexedSearchUtility::md5inthash($str);
+		return Utility\IndexedSearchUtility::md5inthash($str);
 	}
 
 	/**
@@ -851,7 +851,7 @@ class IndexSearchRepository {
 	 * @return bool TRUE if given tables are enabled
 	 */
 	protected function isTableUsed($table_list) {
-		return IndexedSearchUtility::isTableUsed($table_list);
+		return Utility\IndexedSearchUtility::isTableUsed($table_list);
 	}
 
 	/**
