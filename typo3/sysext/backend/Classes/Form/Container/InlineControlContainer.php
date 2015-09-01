@@ -556,8 +556,8 @@ class InlineControlContainer extends AbstractContainer {
 
 		$item = '
 			<a href="#" class="btn btn-default inlineNewRelationButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
-				' . $buttonStyle . ' onclick="' . htmlspecialchars($onClick) . '">
-				' . IconUtility::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) . '
+				' . $buttonStyle . ' onclick="' . htmlspecialchars($onClick) . '" title="' . $createNewRelationText . '">
+				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL) . '
 				' . $createNewRelationText . '
 			</a>';
 

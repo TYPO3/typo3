@@ -580,7 +580,7 @@ abstract class AbstractFormElement extends AbstractNode {
 						onclick="' . htmlspecialchars($aOnClick) . '"
 						class="btn btn-default"
 						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.browse_' . ($mode == 'db' ? 'db' : 'file'))) . '">
-						' . IconUtility::getSpriteIcon('actions-insert-record') . '
+						' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL) . '
 					</a>';
 			}
 			if (!$params['dontShowMoveIcons']) {
