@@ -82,6 +82,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'upload',
 			)
 		),
+		'actions-document-localize' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/document-localize.png',
+			)
+		),
 		'actions-document-move' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
