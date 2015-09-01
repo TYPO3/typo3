@@ -247,7 +247,7 @@ class EditFileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		// CSH button
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit');
 		// Save button
-		$theIcon = IconUtility::getSpriteIcon('actions-document-save');
+		$theIcon = $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL);
 		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
 		// Save and Close button
 		$theIcon = IconUtility::getSpriteIcon('actions-document-save-close');

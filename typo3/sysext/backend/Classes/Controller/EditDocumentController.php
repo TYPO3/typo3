@@ -1126,11 +1126,14 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 			'translation_save' => '',
 			'translation_saveclear' => ''
 		);
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		// Render SAVE type buttons:
 		// The action of each button is decided by its name attribute. (See doProcessData())
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
 			// SAVE button:
-			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="submit" name="_savedok" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '" />'));
+			$iconSave = $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL);
+			$buttons['save'] = '<a href="#" class="t3js-editform-submitButton" onclick="document.editform.submit();" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">' . $iconSave . '</a>';
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);

@@ -189,7 +189,7 @@ class PermissionAjaxController {
 		$elementId = 'o_' . $page;
 		$options = '<option value="0"></option>' . $options;
 		$selector = '<select name="new_page_owner" id="new_page_owner">' . $options . '</select>';
-		$saveButton = '<a class="saveowner" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '" title="Change owner">' . IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$saveButton = '<a class="saveowner" data-page="' . $page . '" data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '" title="Change owner">' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL) . '</a>';
 		$cancelButton = '<a class="restoreowner" data-page="' . $page . '"  data-owner="' . $ownerUid . '" data-element-id="' . $elementId . '"' . (!empty($username) ? ' data-username="' . htmlspecialchars($username) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 		return '<span id="' . $elementId . '">' . $selector . $saveButton . $cancelButton . '</span>';
 	}
@@ -231,7 +231,7 @@ class PermissionAjaxController {
 		$elementId = 'g_' . $page;
 		$options = '<option value="0"></option>' . $options;
 		$selector = '<select name="new_page_group" id="new_page_group">' . $options . '</select>';
-		$saveButton = '<a class="savegroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '" title="Change group">' . IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$saveButton = '<a class="savegroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '" title="Change group">' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL) . '</a>';
 		$cancelButton = '<a class="restoregroup" data-page="' . $page . '" data-group="' . $groupUid . '" data-element-id="' . $elementId . '"' . (!empty($groupname) ? ' data-groupname="' . htmlspecialchars($groupname) . '"' : '') . ' title="Cancel">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 		return '<span id="' . $elementId . '">' . $selector . $saveButton . $cancelButton . '</span>';
 	}

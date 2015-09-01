@@ -220,7 +220,9 @@ class TableController extends AbstractWizardController implements \TYPO3\CMS\Cor
 			$title = 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '"';
 			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '); return false;')) . '" ' . $title . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 			// Save
-			$buttons['save'] = IconUtility::getSpriteIcon('actions-document-save', array('html' => '<button class="c-inputButton" name="savedok" value="1"></button>', 'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE)));
+			$buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
+				. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+				. '</button>';
 			// Save & Close
 			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<button class="c-inputButton" name="saveandclosedok" value="1"></button>', 'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)));
 			// Reload
