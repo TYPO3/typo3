@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -457,10 +458,23 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass i
 						$temporaryFolderForExport->delete();
 					}
 
-					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_savedFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_savedInSBytes', TRUE), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))), 0, 1);
+					/** @var FlashMessage $flashMessage */
+					$flashMessage = GeneralUtility::makeInstance(
+						FlashMessage::class,
+						sprintf($GLOBALS['LANG']->getLL('exportdata_savedInSBytes', TRUE), $file->getPublicUrl(), GeneralUtility::formatSize(strlen($out))),
+						$GLOBALS['LANG']->getLL('exportdata_savedFile'),
+						FlashMessage::OK
+					);
 				} else {
-					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('exportdata_problemsSavingFile'), sprintf($GLOBALS['LANG']->getLL('exportdata_badPathS', TRUE), $this->getTemporaryFolderPath()), 0, 1, 2);
+					/** @var FlashMessage $flashMessage */
+					$flashMessage = GeneralUtility::makeInstance(
+						FlashMessage::class,
+						sprintf($GLOBALS['LANG']->getLL('exportdata_badPathS', TRUE), $saveFolder->getPublicUrl()),
+						$GLOBALS['LANG']->getLL('exportdata_problemsSavingFile'),
+						FlashMessage::ERROR
+					);
 				}
+				$this->content .= $flashMessage->render();
 			}
 		}
 		// OUTPUT to BROWSER:
