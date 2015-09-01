@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
+use TYPO3\CMS\Extbase\Service\FlexFormService;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Child class for the Web > Page module
@@ -1344,6 +1346,36 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
 			}
 		}
+
+		// If the previous hook did not render something,
+		// then check if a Fluid-based preview template was defined for this CType
+		// and render it via Fluid. Possible option:
+		// mod.web_layout.tt_content.preview.media = EXT:site_mysite/Resources/Private/Templates/Preview/Media.html
+		if ($drawItem) {
+			$tsConfig = BackendUtility::getModTSconfig($row['pid'], 'mod.web_layout.tt_content.preview');
+			if (!empty($tsConfig['properties'][$row['CType']])) {
+				$fluidTemplateFile = $tsConfig['properties'][$row['CType']];
+				$fluidTemplateFile = GeneralUtility::getFileAbsFileName($fluidTemplateFile);
+				if ($fluidTemplateFile) {
+					try {
+						/** @var StandaloneView $view */
+						$view = GeneralUtility::makeInstance(StandaloneView::class);
+						$view->setTemplatePathAndFilename($fluidTemplateFile);
+						$view->assignMultiple($row);
+						if (!empty($row['pi_flexform'])) {
+							/** @var FlexFormService $flexFormService */
+							$flexFormService = GeneralUtility::makeInstance(FlexFormService::class);
+							$view->assign('pi_flexform_transformed', $flexFormService->convertFlexFormContentToArray($row['pi_flexform']));
+						}
+						$out = $view->render();
+						$drawItem = FALSE;
+					} catch (\Exception $e) {
+						// Catch any exception to avoid breaking the view
+					}
+				}
+			}
+		}
+
 		// Draw preview of the item depending on its CType (if not disabled by previous hook):
 		if ($drawItem) {
 			switch ($row['CType']) {
