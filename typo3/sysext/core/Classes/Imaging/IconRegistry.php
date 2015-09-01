@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Imaging;
  */
 
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 
@@ -43,6 +44,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'close',
+			)
+		),
+		'actions-actions-document-duplicates-select' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/document-duplicates-select.png',
 			)
 		),
 		'actions-document-edit-access' => array(

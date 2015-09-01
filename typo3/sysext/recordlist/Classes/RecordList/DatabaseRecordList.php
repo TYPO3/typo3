@@ -1041,7 +1041,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						if ($this->clipNumPane()) {
 							$theData[$fCol] .= '<a class="btn btn-default" href="' . htmlspecialchars($this->listURL('', -1) . '&duplicateField=' . $fCol)
 								. '" title="' . $lang->getLL('clip_duplicates', TRUE) . '">'
-								. IconUtility::getSpriteIcon('actions-document-duplicates-select') . '</a>';
+								. $this->iconFactory->getIcon('actions-document-duplicates-select', Icon::SIZE_SMALL) . '</a>';
 						}
 						// If the table can be edited, add link for editing THIS field for all
 						// listed records:
