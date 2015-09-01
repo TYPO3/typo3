@@ -503,9 +503,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// If the count query returned any number of records, we perform the real query,
 		// selecting records.
 		if ($this->totalItems) {
-			// Fetch records only if not in single table mode or if in multi table mode and
-			// not collapsed
-			if ($listOnlyInSingleTableMode || !$this->table && $tableCollapsed) {
+			// Fetch records only if not in single table mode
+			if ($listOnlyInSingleTableMode) {
 				$dbCount = $this->totalItems;
 			} else {
 				// Set the showLimit to the number of records when outputting as CSV
@@ -547,14 +546,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$icon = $tableCollapsed
 						? IconUtility::getSpriteIcon('actions-view-list-expand', array('class' => 'collapseIcon'))
 						: IconUtility::getSpriteIcon('actions-view-list-collapse', array('class' => 'collapseIcon'));
-					$collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right">' . $icon . '</a>';
+					$collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($table) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($table) . '">' . $icon . '</a>';
 				}
 				$tableHeader .= $theData[$titleCol] . $collapseIcon;
 			}
-			// Render table rows only if in multi table view and not collapsed or if in
-			// single table view
+			// Render table rows only if in multi table view or if in single table view
 			$rowOutput = '';
-			if (!$listOnlyInSingleTableMode && (!$tableCollapsed || $this->table)) {
+			if (!$listOnlyInSingleTableMode || $this->table) {
 				// Fixing an order table for sortby tables
 				$this->currentTable = array();
 				$currentIdList = array();
@@ -654,6 +652,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				// The header row for the table is now created:
 				$out .= $this->renderListHeader($table, $currentIdList);
 			}
+
+			$collapseClass = $tableCollapsed && !$this->table ? 'collapse' : 'collapse in';
+			$dataState = $tableCollapsed && !$this->table ? 'collapsed' : 'expanded';
+
 			// The list of records is added after the header:
 			$out .= $rowOutput;
 			// ... and it is all wrapped in a table:
@@ -668,7 +670,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					<div class="panel-heading">
 					' . $tableHeader . '
 					</div>
-					<div class="table-fit">
+					<div class="table-fit ' . $collapseClass . '" id="recordlist-' . htmlspecialchars($table) . '" data-state="' . $dataState . '">
 						<table data-table="' . htmlspecialchars($table) . '" class="table table-striped table-hover' . ($listOnlyInSingleTableMode ? ' typo3-dblist-overview' : '') . '">
 							' . $out . '
 						</table>

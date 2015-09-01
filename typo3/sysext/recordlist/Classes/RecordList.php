@@ -193,6 +193,7 @@ class RecordList {
 		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$this->pageRenderer->loadJquery();
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
+		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
 	}
 
 	/**
