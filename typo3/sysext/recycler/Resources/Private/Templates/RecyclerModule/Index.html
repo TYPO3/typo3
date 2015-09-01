@@ -1,7 +1,8 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="iconButtons">
-	<a data-action="reload"><f:be.buttons.icon icon="actions-system-refresh" title="{f:translate(key:'button.reload')}" /></a>
+	<a data-action="reload" title="{f:translate(key:'button.reload')}"><core:icon identifier="actions-system-refresh" /></a>
 </f:section>
 
 <f:section name="content">

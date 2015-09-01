@@ -1,4 +1,5 @@
 {namespace s = TYPO3\CMS\Scheduler\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 
 <p class="lead">
 	<f:translate key="msg.infoScreenIntro" />
@@ -27,7 +28,9 @@
 					<td>
 						<div class="btn-group" role="group">
 							<span class="btn btn-default">
-								<f:be.buttons.icon uri="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" icon="actions-document-new" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}"/>
+								<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}">
+									<core:icon identifier="actions-document-new" />
+								</a>
 							</span>
 						</div>
 					</td>

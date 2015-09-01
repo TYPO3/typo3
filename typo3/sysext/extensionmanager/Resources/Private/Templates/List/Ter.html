@@ -1,10 +1,12 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="main"/>
 
 <f:section name="docheader-buttons">
 	<div id="upload-button-wrap">
-		<f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(key:'extensionList.uploadExtension')}"/>
+		<a href="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" title="{f:translate(key:'extensionList.uploadExtension')}">
+			<core:icon identifier="actions-edit-upload" />
+		</a>
 	</div>
 </f:section>
 

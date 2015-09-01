@@ -345,6 +345,8 @@ define('TYPO3/CMS/Lang/LanguageModule', ['jquery', 'moment', 'datatables', 'TYPO
 				LanguageModule.handleActionEvent($element.parent(), event);
 			} else if ($element.parent().parent().data('action') !== undefined) {
 				LanguageModule.handleActionEvent($element.parent().parent(), event);
+			} else if ($element.parent().parent().parent().parent().data('action') !== undefined) {
+				LanguageModule.handleActionEvent($element.parent().parent().parent().parent(), event);
 			}
 		});
 	};

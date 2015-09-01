@@ -1,4 +1,5 @@
 {namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Administration"/>
 
@@ -21,7 +22,9 @@
 					<tr>
 						<th></th>
 						<th>
-							<f:be.buttons.icon title="{f:translate(key:'administration.removeAllEntries')}" icon="actions-edit-delete" uri="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:\'ALL\',depth:depth,mode:mode}')}"/>
+							<a href="{f:uri.action(action:'deleteIndexedItem', arguments:'{id:\'ALL\', depth:depth, mode:mode}')}" title="{f:translate(key:'administration.removeAllEntries')}">
+								<core:icon identifier="actions-edit-delete" />
+							</a>
 						</th>
 						<th>
 							<f:translate key="field.fileName"/>
@@ -61,7 +64,9 @@
 												<f:if condition="{i.index} == 0"> {line.row.title}</f:if>
 											</td>
 											<td>
-												<f:be.buttons.icon  title="{f:translate(key:'administration.removeEntry')}" icon="actions-edit-delete" uri="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:l.phash,depth:depth,mode:mode}')}"/>
+												<a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{id:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
+													<core:icon identifier="actions-edit-delete" />
+												</a>
 											</td>
 											<td>
 												<f:image src="{l.icon}"/>

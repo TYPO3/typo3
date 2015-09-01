@@ -1,3 +1,4 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:be.container
 	includeCssFiles="{
 		0:'{f:uri.resource(path:\'Css/ui-lightness/jquery-ui-1.10.3.custom.min.css\')}',
@@ -24,15 +25,14 @@
 			</div>
 			<div class="typo3-docheader-buttons">
 				<div class="left">
-					<f:be.buttons.icon uri="{url}"
-						additionalAttributes="{onclick: 'window.open(this.href,\'newTYPO3frontendWindow\').focus();return false;'}"
-						icon="actions-document-view" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}"
-					/>
+					<a href="{url}" onclick="window.open(this.href, 'newTYPO3frontendWindow').focus();return false;" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}">
+						<core:icon identifier="actions-document-view" />
+					</a>
 				</div>
 				<div class="right">
-					<f:be.buttons.icon
-							uri="javascript:document.getElementById('tx_viewpage_iframe').contentWindow.location.reload(true);"
-							icon="actions-system-refresh" title="{f:translate(key: 'refreshPage')}" />
+					<a href="javascript:document.getElementById('tx_viewpage_iframe').contentWindow.location.reload(true);" title="{f:translate(key: 'refreshPage')}">
+						<core:icon identifier="actions-system-refresh" />
+					</a>
 					<f:be.buttons.shortcut/>
 				</div>
 			</div>

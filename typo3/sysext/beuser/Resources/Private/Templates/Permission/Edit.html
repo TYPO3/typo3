@@ -4,9 +4,11 @@
 <f:layout name="Permission" />
 
 <f:section name="iconButtons">
-	<f:be.buttons.icon uri="{f:uri.action(action:'index')}" icon="actions-view-go-back" />
+	<a href="{f:uri.action(action:'index')}">
+		<core:icon identifier="actions-view-go-back" />
+	</a>
 	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}">
-		<core:icon identifier="actions-document-view" size="small" />
+		<core:icon identifier="actions-document-view" />
 	</a>
 </f:section>
 

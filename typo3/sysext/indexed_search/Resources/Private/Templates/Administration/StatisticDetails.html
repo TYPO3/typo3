@@ -1,4 +1,5 @@
 {namespace is=TYPO3\CMS\IndexedSearch\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Administration"/>
 
@@ -194,5 +195,7 @@
 </f:section>
 
 <f:section name="Buttons">
-	<f:be.buttons.icon title="{f:translate(key:'administration.back')}" icon="actions-view-go-back" uri="{f:uri.action(action:'statistic')}"/>
+	<a href="{f:uri.action(action:'statistic')}" title="{f:translate(key:'administration.back')}">
+		<core:icon identifier="actions-view-go-back" />
+	</a>
 </f:section>

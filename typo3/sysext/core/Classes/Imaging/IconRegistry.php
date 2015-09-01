@@ -124,6 +124,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'clipboard',
 			)
 		),
+		'actions-document-save' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/document-save.png'
+			)
+		),
+		'actions-document-save-close' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/document-save-close.png'
+			)
+		),
 		'actions-document-view' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -298,6 +310,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'refresh',
 			)
 		),
+		'actions-system-refresh' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'refresh',
+			)
+		),
 		'actions-version-swap-version' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -308,6 +326,42 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'check-square-o',
+			)
+		),
+		'actions-view-go-back' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-double-left',
+			)
+		),
+		'actions-view-go-up' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'level-up',
+			)
+		),
+		'actions-view-paging-first' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'step-backward',
+			)
+		),
+		'actions-view-paging-last' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'step-forward',
+			)
+		),
+		'actions-view-paging-previous' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'arrow-left',
+			)
+		),
+		'actions-view-paging-next' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'arrow-right',
 			)
 		),
 

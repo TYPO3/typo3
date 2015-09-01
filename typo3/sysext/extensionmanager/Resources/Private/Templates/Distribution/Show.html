@@ -3,7 +3,9 @@
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
-	<f:be.buttons.icon uri="{f:uri.action(controller: 'List',action: 'distributions')}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
+	<a href="{f:uri.action(controller: 'List',action: 'distributions')}" title="{f:translate(key:'extConfTemplate.backToList')}">
+		<core:icon identifier="actions-view-go-back" />
+	</a>
 </f:section>
 
 <f:section name="module-headline">
@@ -45,12 +47,12 @@
 						</f:if>
 						<li>
 							<button class="btn btn-default distribution-openViewModule" onclick="top.goToModule('web_ViewpageView');">
-								<f:be.buttons.icon icon="actions-document-view"	/><f:translate key="distribution.welcome.openViewModule" />
+								<core:icon identifier="actions-document-view" /><f:translate key="distribution.welcome.openViewModule" />
 							</button>
 						</li>
 						<li>
 							<button class="btn btn-default distribution-openPageModule" onclick="top.goToModule('web_page');">
-								<f:be.buttons.icon icon="actions-document-open"	/><f:translate key="distribution.welcome.openPageModule" />
+								<core:icon identifier="actions-document-open" /><f:translate key="distribution.welcome.openPageModule" />
 							</button>
 						</li>
 					</f:then>

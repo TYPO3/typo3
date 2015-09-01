@@ -684,7 +684,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 			ExtensionManager.configurationFieldSupport();
 			var $validate = $('.validate');
 			$validate.validate();
-			$(document).on('click', '.t3-icon-document-save-close', function() {
+			$(document).on('click', '.t3js-save-close', function() {
 				$validate.append($('<input />', {type: 'hidden', name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]', value: 'saveAndClose'})).submit();
 			});
 

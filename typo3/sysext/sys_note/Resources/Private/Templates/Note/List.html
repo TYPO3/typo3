@@ -1,4 +1,5 @@
 {namespace notes=TYPO3\CMS\SysNote\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 
 <f:layout name="Default" />
 
@@ -28,10 +29,12 @@
 						</f:if>
 
 						<div class="right icons">
-							<f:be.buttons.icon uri="{notes:deleteLink(id:note.uid)}"
-											   icon="actions-edit-delete"
-											   additionalAttributes="{class: 't3js-modal-trigger', data-severity: 'warning', data-title: '{f:translate(key: \'LLL:EXT:lang/locallang_common.xlf:delete\')}', data-content: '{f:translate(key: \'LLL:EXT:lang/locallang_alt_doc.xlf:deleteWarning\')}', data-button-close-text: '{f:translate(key: \'LLL:EXT:lang/locallang_common.xlf:cancel\')}'}" />
-							<f:be.buttons.icon uri="{notes:editLink(id:note.uid)}" icon="actions-document-open" />
+							<a href="{notes:deleteLink(id:note.uid)}" class="t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:lang/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:cancel')}">
+								<core:icon identifier="actions-edit-delete" />
+							</a>
+							<a href="{notes:editLink(id:note.uid)}">
+								<core:icon identifier="actions-document-open" />
+							</a>
 						</div>
 					</div>
 					<div class="content">

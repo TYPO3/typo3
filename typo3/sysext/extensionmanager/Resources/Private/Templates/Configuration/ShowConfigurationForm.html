@@ -1,10 +1,17 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="main" />
 
 <f:section name="docheader-buttons">
-	<f:be.buttons.icon uri="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extension.key})}" icon="actions-view-go-back" title="{f:translate(key:'extConfTemplate.backToList')}" />
-	<f:be.buttons.icon uri="javascript:document.configurationform.submit();" icon="actions-document-save" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:save')}" />
-	<f:be.buttons.icon uri="#" icon="actions-document-save-close" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:saveAndClose')}" />
+	<a href="{f:uri.action(action:'index',controller:'List',additionalParams:{search:extension.key})}" title="{f:translate(key:'extConfTemplate.backToList')}">
+		<core:icon identifier="actions-view-go-back" />
+	</a>
+	<a href="javascript:document.configurationform.submit();" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:save')}">
+		<core:icon identifier="actions-document-save" />
+	</a>
+	<a href="#" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:saveAndClose')}" class="t3js-save-close">
+		<core:icon identifier="actions-document-save-close" />
+	</a>
 </f:section>
 
 <f:section name="module-headline">
