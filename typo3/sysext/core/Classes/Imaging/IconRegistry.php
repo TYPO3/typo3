@@ -210,6 +210,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/actions/insert-record.png',
 			)
 		),
+		'actions-insert-reference' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/insert-reference.png',
+			)
+		),
 		'actions-markstate' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

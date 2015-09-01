@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Impexp;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -3786,6 +3788,9 @@ class ImportExport {
 	 * @see singleRecordLines()
 	 */
 	public function addFiles($rels, &$lines, $preCode, $htmlColorClass = '', $tokenID = '') {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		foreach ($rels as $ID) {
 			// Process file:
 			$pInfo = array();
@@ -3870,7 +3875,7 @@ class ImportExport {
 						$pInfo['updatePath'] = $fI['parentRelFileName'];
 					}
 					$pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$extID]);
-					$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-reference');
+					$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL);
 					$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];
