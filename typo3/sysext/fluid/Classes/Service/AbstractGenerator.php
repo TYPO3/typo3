@@ -78,15 +78,18 @@ abstract class AbstractGenerator {
 	 * @return string Tag name
 	 */
 	protected function getTagNameForClass($className, $namespace) {
-		$strippedClassName = substr($className, strlen($namespace));
+		/// Strip namespace from the beginning and "ViewHelper" from the end of the class name
+		$strippedClassName = substr($className, strlen($namespace), -10);
 		$classNameParts = explode(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR, $strippedClassName);
-
-		if (count($classNameParts) == 1) {
-			$tagName = lcfirst(substr($classNameParts[0], 0, -10)); // strip the "ViewHelper" ending
-		} else {
-			$tagName = lcfirst($classNameParts[0]) . '.' . lcfirst(substr($classNameParts[1], 0, -10));
-		}
-		return $tagName;
+		return implode(
+			'.',
+			array_map(
+				function($element) {
+					return lcfirst($element);
+				},
+				$classNameParts
+			)
+		);
 	}
 
 	/**
