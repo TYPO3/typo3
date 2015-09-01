@@ -520,8 +520,8 @@ var inline = {
 		// cannot be hidden at all (no hidden field)
 		if ($formObj.length && $valueObj.length) {
 			hiddenValue = $formObj[0].checked;
-			$formObj[0].remove();
-			$valueObj[0].remove();
+			$formObj.first().remove();
+			$valueObj.first().remove();
 		}
 
 		// Update DOM
