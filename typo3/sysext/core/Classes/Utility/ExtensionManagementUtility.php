@@ -1629,7 +1629,9 @@ tt_content.' . $key . $prefix . ' {
 			$codeCache = static::getCacheManager()->getCache('cache_core');
 			if ($codeCache->has($cacheIdentifier)) {
 				// substr is necessary, because the php frontend wraps php code around the cache value
-				$GLOBALS['TCA'] = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
+				$cacheData = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
+				$GLOBALS['TCA'] = $cacheData['tca'];
+				GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $cacheData['categoryRegistry']);
 			} else {
 				static::buildBaseTcaFromSingleFiles();
 				static::createBaseTcaCacheFile();
@@ -1723,7 +1725,7 @@ tt_content.' . $key . $prefix . ' {
 	static protected function createBaseTcaCacheFile() {
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$codeCache = self::getCacheManager()->getCache('cache_core');
-		$codeCache->set(static::getBaseTcaCacheIdentifier(), serialize($GLOBALS['TCA']));
+		$codeCache->set(static::getBaseTcaCacheIdentifier(), serialize(array('tca' => $GLOBALS['TCA'], 'categoryRegistry' => \TYPO3\CMS\Core\Category\CategoryRegistry::getInstance())));
 	}
 
 	/**
@@ -1732,7 +1734,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return string
 	 */
 	static protected function getBaseTcaCacheIdentifier() {
-		return 'tca_base_' . sha1(TYPO3_version . PATH_site . 'tca' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
+		return 'tca_base_' . sha1(TYPO3_version . PATH_site . 'tca_with_category_registry' . serialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['runtimeActivatedPackages']));
 	}
 
 	/**
