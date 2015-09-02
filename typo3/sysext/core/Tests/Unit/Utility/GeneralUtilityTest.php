@@ -2014,14 +2014,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	// Tests concerning sanitizeLocalUrl
 	////////////////////////////////////////
 	/**
-	 * Data provider for valid sanitizeLocalUrl's
+	 * Data provider for valid sanitizeLocalUrl paths
 	 *
 	 * @return array Valid url
 	 */
-	public function sanitizeLocalUrlValidUrlDataProvider() {
+	public function sanitizeLocalUrlValidPathsDataProvider() {
 		$subDirectory = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
 		$typo3SiteUrl = Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$typo3RequestHost = Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
+
 		return array(
 			'alt_intro.php' => array('alt_intro.php'),
 			'alt_intro.php?foo=1&bar=2' => array('alt_intro.php?foo=1&bar=2'),
@@ -2039,17 +2040,78 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @dataProvider sanitizeLocalUrlValidUrlDataProvider
+	 * @param string $path
+	 * @dataProvider sanitizeLocalUrlValidPathsDataProvider
 	 */
-	public function sanitizeLocalUrlAcceptsNotEncodedValidUrls($url) {
+	public function sanitizeLocalUrlAcceptsNotEncodedValidPaths($path) {
+		$this->assertEquals($path, Utility\GeneralUtility::sanitizeLocalUrl($path));
+	}
+
+	/**
+	 * @test
+	 * @param string $path
+	 * @dataProvider sanitizeLocalUrlValidPathsDataProvider
+	 */
+	public function sanitizeLocalUrlAcceptsEncodedValidPaths($path) {
+		$this->assertEquals(rawurlencode($path), Utility\GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
+	}
+
+	/**
+	 * Data provider for valid sanitizeLocalUrl's
+	 *
+	 * @return array Valid url
+	 */
+	public function sanitizeLocalUrlValidUrlsDataProvider() {
+		$host = 'localhost';
+		$subDirectory = '/cms/';
+
+		return array(
+			$subDirectory . 'typo3/alt_intro.php' => array(
+				$subDirectory . 'typo3/alt_intro.php',
+				$host,
+				$subDirectory,
+			),
+			$subDirectory . 'index.php' => array(
+				$subDirectory . 'index.php',
+				$host,
+				$subDirectory,
+			),
+			'http://' . $host . '/typo3/alt_intro.php' => array(
+				'http://' . $host . '/typo3/alt_intro.php',
+				$host,
+				'',
+			),
+			'http://' . $host . $subDirectory . 'typo3/alt_intro.php' => array(
+				'http://' . $host . $subDirectory . 'typo3/alt_intro.php',
+				$host,
+				$subDirectory,
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param string $url
+	 * @param string $host
+	 * @param string $subDirectory
+	 * @dataProvider sanitizeLocalUrlValidUrlsDataProvider
+	 */
+	public function sanitizeLocalUrlAcceptsNotEncodedValidUrls($url, $host, $subDirectory) {
+		$_SERVER['HTTP_HOST'] = $host;
+		$_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
 		$this->assertEquals($url, Utility\GeneralUtility::sanitizeLocalUrl($url));
 	}
 
 	/**
 	 * @test
-	 * @dataProvider sanitizeLocalUrlValidUrlDataProvider
+	 * @param string $url
+	 * @param string $host
+	 * @param string $subDirectory
+	 * @dataProvider sanitizeLocalUrlValidUrlsDataProvider
 	 */
-	public function sanitizeLocalUrlAcceptsEncodedValidUrls($url) {
+	public function sanitizeLocalUrlAcceptsEncodedValidUrls($url, $host, $subDirectory) {
+		$_SERVER['HTTP_HOST'] = $host;
+		$_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
 		$this->assertEquals(rawurlencode($url), Utility\GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
 	}
 
