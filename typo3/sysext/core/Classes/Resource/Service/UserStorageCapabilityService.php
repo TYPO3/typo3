@@ -71,8 +71,12 @@ class UserStorageCapabilityService {
 	protected function renderFileInformationContent(array $fileRecord, $isPublic) {
 		$template = '
 		<div class="t3-form-field-item">
+			<div class="checkbox">
+				<label>
+					<input class="checkbox" value="1" name="data[sys_file_storage][{uid}][is_public]_0" type="checkbox" %s>
+				</label>
+			</div>
 			<input name="data[sys_file_storage][{uid}][is_public]" value="0" type="hidden">
-			<input class="checkbox" value="1" name="data[sys_file_storage][{uid}][is_public]_0" type="checkbox" %s>
 		</div>';
 
 		$content = sprintf($template,
