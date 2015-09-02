@@ -19,12 +19,12 @@ define('TYPO3/CMS/Backend/Toolbar/ClearCacheMenu', ['jquery'], function($) {
 
 	var ClearCacheMenu = {
 		$spinnerElement: $('<span>', {
-			'class': 't3-icon fa fa-circle-o-notch fa-spin'
+			'class': 'fa fa-circle-o-notch fa-spin'
 		}),
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',
 			menuItemSelector: '.dropdown-menu a',
-			toolbarIconSelector: '.dropdown-toggle span.t3-icon'
+			toolbarIconSelector: '.dropdown-toggle i.fa'
 		}
 	};
 

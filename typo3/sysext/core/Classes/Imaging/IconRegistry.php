@@ -40,6 +40,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Action icons
+		'apps-toolbar-menu-cache' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'bolt',
+			)
+		),
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
