@@ -473,15 +473,19 @@ class Check {
 	}
 
 	/**
-	 * Check that always_populate_raw_post_data has been set to -1 on PHP 5.6 or newer
+	 * Check that always_populate_raw_post_data has been set to -1 on PHP between 5.6 and 7.0
 	 *
 	 * @return Status\StatusInterface
 	 */
 	protected function checkAlwaysPopulateRawPostDataSetting() {
 		$minimumPhpVersion = '5.6.0';
+		$maximumPhpVersion = '7.0.0';
 		$currentPhpVersion = phpversion();
 		$currentAlwaysPopulaterRawPostDataSetting = ini_get('always_populate_raw_post_data');
-		if (version_compare($currentPhpVersion, $minimumPhpVersion) >= 0 && $currentAlwaysPopulaterRawPostDataSetting !== '-1') {
+		if (version_compare($currentPhpVersion, $maximumPhpVersion) >= 0) {
+			$status = new Status\OkStatus();
+			$status->setTitle('PHP always_populate_raw_post_data is removed as of PHP 7.0 or newer');
+		} elseif (version_compare($currentPhpVersion, $minimumPhpVersion) >= 0 && $currentAlwaysPopulaterRawPostDataSetting !== '-1') {
 			$status = new Status\ErrorStatus();
 			$status->setTitle('PHP always_populate_raw_post_data is deprecated');
 			$status->setMessage(
