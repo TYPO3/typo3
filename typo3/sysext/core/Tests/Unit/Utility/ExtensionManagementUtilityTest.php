@@ -1396,7 +1396,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase {
 		$mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
-		$mockCache->expects($this->once())->method('get');
+		$mockCache->expects($this->once())->method('get')->willReturn('<?php ' . serialize(array('tca' => array(), 'categoryRegistry' => CategoryRegistry::getInstance())) . '?>');
 		ExtensionManagementUtilityAccessibleProxy::loadBaseTca(TRUE);
 	}
 
