@@ -541,9 +541,8 @@ class RecordList {
 		// searchbox toolbar
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
 			$markers['SEARCHBOX'] = $dblist->getSearchBox();
-			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="'
-				. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'
-				. IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
+			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">' . IconUtility::getSpriteIcon('apps-toolbar-menu-search') . '</a>';
 		}
 		// Build the <body> for the module
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);

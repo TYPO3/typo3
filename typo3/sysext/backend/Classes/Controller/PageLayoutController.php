@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -1079,7 +1080,8 @@ class PageLayoutController {
 		}
 		// Making search form:
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && !empty($tableOutput)) {
-			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" onclick="toggleSearchToolbox(); return false;" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.IconUtility::getSpriteIcon('apps-toolbar-menu-search').'</a>';
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
+			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">'.IconUtility::getSpriteIcon('apps-toolbar-menu-search') . '</a>';
 			$this->markers['SEARCHBOX'] = $dbList->getSearchBox(0);
 		}
 		// Additional footer content
@@ -1438,4 +1440,12 @@ class PageLayoutController {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
+	/**
+	 * Returns current PageRenderer
+	 *
+	 * @return PageRenderer
+	 */
+	protected function getPageRenderer() {
+		return GeneralUtility::makeInstance(PageRenderer::class);
+	}
 }
