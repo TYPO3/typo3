@@ -1211,8 +1211,8 @@ class PageLayoutController {
 					. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
 					. '</button>';
 				// Save and close
-				$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x" value="1">'
-					. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
+				$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
+					. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
 					. '</button>';
 				// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-document-save-view') . '</a>';

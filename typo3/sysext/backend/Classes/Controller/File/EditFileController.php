@@ -250,7 +250,7 @@ class EditFileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		$theIcon = $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL);
 		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
 		// Save and Close button
-		$theIcon = IconUtility::getSpriteIcon('actions-document-save-close');
+		$theIcon = $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL);
 		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->returnUrl)) . '; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
 		// Cancel button
 		$theIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL);

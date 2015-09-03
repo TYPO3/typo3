@@ -224,7 +224,9 @@ class TableController extends AbstractWizardController implements \TYPO3\CMS\Cor
 				. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
 				. '</button>';
 			// Save & Close
-			$buttons['save_close'] = IconUtility::getSpriteIcon('actions-document-save-close', array('html' => '<button class="c-inputButton" name="saveandclosedok" value="1"></button>', 'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)));
+			$buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
+				. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+				. '</button>';
 			// Reload
 			$buttons['reload'] = IconUtility::getSpriteIcon('actions-system-refresh', array('html' => '<button class="c-inputButton" name="_refresh" value="1"></button>', 'title' => $this->getLanguageService()->getLL('forms_refresh', TRUE)));
 		}

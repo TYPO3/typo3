@@ -297,8 +297,8 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 						. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
 						. '</button>';
 					// SAVE AND CLOSE button
-					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="saveclose" value="1">'
-						. IconUtility::getSpriteIcon('actions-document-save-close', array('title' => $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE)))
+					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="saveclose" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
+						. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
 						. '</button>';
 					// CLOSE button
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
