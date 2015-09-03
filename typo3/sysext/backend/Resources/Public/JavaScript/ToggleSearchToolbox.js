@@ -13,8 +13,13 @@
 
 define('TYPO3/CMS/Backend/ToggleSearchToolbox', ['jquery'], function($) {
 	$(document).ready(function() {
+		var $toolbar = $('#db_list-searchbox-toolbar');
 		$('.t3js-toggle-search-toolbox').on('click', function() {
-			$('#db_list-searchbox-toolbar').toggle();
+			$toolbar.toggle();
+
+			if ($toolbar.is(':visible')) {
+				$('#search_field').focus();
+			}
 		});
 	});
 });
