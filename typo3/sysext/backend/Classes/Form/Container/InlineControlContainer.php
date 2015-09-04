@@ -445,7 +445,7 @@ class InlineControlContainer extends AbstractContainer {
 				}
 				break;
 			case 'localize':
-				$title = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', 1);
+				$title = $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localizeAllRecords', TRUE);
 				$icon = 'actions-document-localize';
 				$className = 'typo3-localizationLink';
 				$attributes['class'] = 'btn btn-default';
@@ -464,9 +464,9 @@ class InlineControlContainer extends AbstractContainer {
 				$className = '';
 		}
 		// Create the link:
-		$icon = $icon ? IconUtility::getSpriteIcon($icon, array('title' => htmlspecialchars($title))) : '';
+		$icon = $icon ? $this->iconFactory->getIcon($icon) : '';
 		$link = $this->wrapWithAnchor($icon . $title, '#', $attributes);
-		return '<div' . ($className ? ' class="' . $className . '"' : '') . '>' . $link . '</div>';
+		return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $link . '</div>';
 	}
 
 	/**
