@@ -33,7 +33,7 @@ return array(
 				'type' => 'check',
 				'items' => array(
 					'1' => array(
-						'0' => 'Disable'
+						'0' => 'Disable',
 					),
 				),
 			),
@@ -1671,6 +1671,7 @@ return array(
 											<config>
 												<type>input</type>
 												<size>23</size>
+												<default>a default value</default>
 											</config>
 										</TCEforms>
 									</input_1>
