@@ -38,6 +38,7 @@ return array(
 	),
 	'SYS' => array(
 		'isInitialInstallationInProgress' => TRUE,
+		'isInitialDatabaseImportDone' => FALSE,
 		'sitename' => 'New TYPO3 site',
 	),
 );

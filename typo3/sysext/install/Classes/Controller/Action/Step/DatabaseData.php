@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Install\Controller\Action\Step;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Install\Status\ErrorStatus;
+
 /**
  * Populate base tables, insert admin user, set install tool password
  */
@@ -22,13 +25,13 @@ class DatabaseData extends AbstractStepAction {
 	/**
 	 * Import tables and data, create admin user, create install tool password
 	 *
-	 * @return array<\TYPO3\CMS\Install\Status\StatusInterface>
+	 * @return \TYPO3\CMS\Install\Status\StatusInterface[]
 	 */
 	public function execute() {
 		$result = array();
 
-		/** @var \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
+		/** @var ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get(ConfigurationManager::class);
 
 		$postValues = $this->postValues['values'];
 
@@ -37,7 +40,7 @@ class DatabaseData extends AbstractStepAction {
 		// Check password and return early if not good enough
 		$password = $postValues['password'];
 		if (strlen($password) < 8) {
-			$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
+			$errorStatus = $this->objectManager->get(ErrorStatus::class);
 			$errorStatus->setTitle('Administrator password not secure enough!');
 			$errorStatus->setMessage(
 				'You are setting an important password here! It gives an attacker full control over your instance if cracked.' .
@@ -52,7 +55,10 @@ class DatabaseData extends AbstractStepAction {
 			$configurationManager->setLocalConfigurationValueByPath('SYS/sitename', $postValues['sitename']);
 		}
 
-		$this->importDatabaseData();
+		$result = $this->importDatabaseData();
+		if (!empty($result)) {
+			return $result;
+		}
 
 		// Insert admin user
 		$adminUserFields = array(
@@ -62,10 +68,22 @@ class DatabaseData extends AbstractStepAction {
 			'tstamp' => $GLOBALS['EXEC_TIME'],
 			'crdate' => $GLOBALS['EXEC_TIME']
 		);
-		$this->getDatabaseConnection()->exec_INSERTquery('be_users', $adminUserFields);
+		if (FALSE === $this->getDatabaseConnection()->exec_INSERTquery('be_users', $adminUserFields)) {
+			$errorStatus = $this->objectManager->get(ErrorStatus::class);
+			$errorStatus->setTitle('Administrator account not created!');
+			$errorStatus->setMessage(
+				'The administrator account could not be created. The following error occurred:' . LF .
+				$this->getDatabaseConnection()->sql_error()
+			);
+			$result[] = $errorStatus;
+			return $result;
+		};
 
 		// Set password as install tool password
 		$configurationManager->setLocalConfigurationValueByPath('BE/installToolPassword', $this->getHashedPassword($password));
+
+		// Mark the initial import as done
+		$this->markImportDatabaseDone();
 
 		return $result;
 	}
@@ -76,10 +94,11 @@ class DatabaseData extends AbstractStepAction {
 	 * @return bool
 	 */
 	public function needsExecution() {
-		$result = FALSE;
 		$existingTables = $this->getDatabaseConnection()->admin_get_tables();
 		if (empty($existingTables)) {
 			$result = TRUE;
+		} else {
+			$result = !$this->isImportDatabaseDone();
 		}
 		return $result;
 	}
@@ -97,9 +116,10 @@ class DatabaseData extends AbstractStepAction {
 	/**
 	 * Create tables and import static rows
 	 *
-	 * @return void
+	 * @return \TYPO3\CMS\Install\Status\StatusInterface[]
 	 */
 	protected function importDatabaseData() {
+		$result = array();
 		// Will load ext_localconf and ext_tables. This is pretty safe here since we are
 		// in first install (database empty), so it is very likely that no extension is loaded
 		// that could trigger a fatal at this point.
@@ -116,23 +136,64 @@ class DatabaseData extends AbstractStepAction {
 		$expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(TRUE);
 		$statements = $schemaMigrationService->getStatementArray($expectedSchemaString, TRUE);
 		list($_, $insertCount) = $schemaMigrationService->getCreateTables($statements, TRUE);
-
 		$fieldDefinitionsFile = $schemaMigrationService->getFieldDefinitions_fileContent($expectedSchemaString);
 		$fieldDefinitionsDatabase = $schemaMigrationService->getFieldDefinitions_database();
 		$difference = $schemaMigrationService->getDatabaseExtra($fieldDefinitionsFile, $fieldDefinitionsDatabase);
 		$updateStatements = $schemaMigrationService->getUpdateSuggestions($difference);
 
-		$schemaMigrationService->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
-		$schemaMigrationService->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
-		$schemaMigrationService->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
-
-		foreach ($insertCount as $table => $count) {
-			$insertStatements = $schemaMigrationService->getTableInsertStatements($statements, $table);
-			foreach ($insertStatements as $insertQuery) {
-				$insertQuery = rtrim($insertQuery, ';');
-				$database->admin_query($insertQuery);
+		foreach (array('add', 'change', 'create_table') as $action) {
+			$updateStatus = $schemaMigrationService->performUpdateQueries($updateStatements[$action], $updateStatements[$action]);
+			if ($updateStatus !== TRUE) {
+				foreach ($updateStatus as $statementIdentifier => $errorMessage) {
+					$result[$updateStatements[$action][$statementIdentifier]] = $errorMessage;
+				}
 			}
 		}
+
+		if (empty($result)) {
+			foreach ($insertCount as $table => $count) {
+				$insertStatements = $schemaMigrationService->getTableInsertStatements($statements, $table);
+				foreach ($insertStatements as $insertQuery) {
+					$insertQuery = rtrim($insertQuery, ';');
+					$database->admin_query($insertQuery);
+					if ($database->sql_error()) {
+						$result[$insertQuery] = $database->sql_error();
+					}
+				}
+			}
+		}
+
+		foreach ($result as $statement => &$message) {
+			$errorStatus = $this->objectManager->get(ErrorStatus::class);
+			$errorStatus->setTitle('Database query failed!');
+			$errorStatus->setMessage(
+				'Query:' . LF .
+				' ' . $statement . LF .
+				'Error:' . LF .
+				' ' . $message
+			);
+			$message = $errorStatus;
+		}
+
+		return array_values($result);
+	}
+
+	/**
+	 * Persist the information that the initial import has been performed
+	 */
+	protected function markImportDatabaseDone() {
+		$this->objectManager->get(ConfigurationManager::class)
+			->setLocalConfigurationValueByPath('SYS/isInitialDatabaseImportDone', TRUE);
+	}
+
+	/**
+	 * Checks if the initial import has been performed
+	 *
+	 * @return bool
+	 */
+	protected function isImportDatabaseDone() {
+		return $this->objectManager->get(ConfigurationManager::class)
+			->getLocalConfigurationValueByPath('SYS/isInitialDatabaseImportDone');
 	}
 
 }
