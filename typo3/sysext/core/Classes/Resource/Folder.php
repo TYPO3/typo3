@@ -114,7 +114,7 @@ class Folder implements FolderInterface {
 				$readablePath = '/';
 			}
 		}
-		return $readablePath . $this->name . '/';
+		return $readablePath . ($this->name ? $this->name . '/' : '');
 	}
 
 	/**
