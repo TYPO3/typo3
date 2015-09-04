@@ -475,7 +475,9 @@ class InlineRecordContainer extends AbstractContainer {
 			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $enabledControls);
 		}
 		if (isset($rec['__create'])) {
-			$cells['localize.isLocalizable'] = IconUtility::getSpriteIcon('actions-edit-localize-status-low', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE)));
+			$cells['localize.isLocalizable'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE) . '">'
+				. $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)
+				. '</span>';
 		} elseif (isset($rec['__remove'])) {
 			$cells['localize.wasRemovedInOriginal'] = IconUtility::getSpriteIcon('actions-edit-localize-status-high', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE)));
 		}

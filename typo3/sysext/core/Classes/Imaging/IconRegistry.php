@@ -184,6 +184,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'trash',
 			)
 		),
+		'actions-edit-localize-status-low' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/edit-localize-status-low.png',
+			)
+		),
 		'actions-edit-merge-localization' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
