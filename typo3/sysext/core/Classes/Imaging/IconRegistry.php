@@ -232,6 +232,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'retweet',
 			)
 		),
+		'actions-edit-restore' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/edit-restore.png',
+			)
+		),
 		'actions-edit-undo' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

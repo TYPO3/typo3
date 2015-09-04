@@ -56,10 +56,16 @@ class QueryView {
 	protected $formName = '';
 
 	/**
+	 * @var \TYPO3\CMS\Core\Imaging\IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * constructor
 	 */
 	public function __construct() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_t3lib_fullsearch.xlf');
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -549,8 +555,8 @@ class QueryView {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => GeneralUtility::linkThisScript(array())
-				)) . BackendUtility::getUrlToken('tceAction') . '">';
-			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore', array('title' => 'undelete only')) . '</a>';
+				)) . BackendUtility::getUrlToken('tceAction') . '" title="' . $GLOBALS['LANG']-getLL('undelete_only', TRUE) . '">';
+			$out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL) . '</a>';
 			$formEngineParameters = array(
 				'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
 				'returnUrl' => GeneralUtility::linkThisScript(array())

@@ -18,6 +18,9 @@
 			<trans-unit id="query_removed">
 				<source>"%s" query entry removed!</source>
 			</trans-unit>
+			<trans-unit id="undelete_only">
+				<source>undelete only</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
