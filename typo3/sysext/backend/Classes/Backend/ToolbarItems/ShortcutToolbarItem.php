@@ -113,9 +113,8 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @return string HTML
 	 */
 	public function getItem() {
-		$iconRegistry = GeneralUtility::makeInstance(IconFactory::class);
 		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
-		return '<span title="' . $title . '">' . $iconRegistry->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render() . '</span>';
+		return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render() . '</span>';
 	}
 
 	/**
@@ -765,7 +764,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				}
 				break;
 			case 'file_edit':
-				$icon = IconUtility::getSpriteIcon('mimetypes-text-html', array('title' => $titleAttribute));
+				$icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('mimetypes-text-html', Icon::SIZE_SMALL)->render() . '</span>';
 				break;
 			case 'wizard_rte':
 				$icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('mimetypes-word', Icon::SIZE_SMALL)->render() . '</span>';

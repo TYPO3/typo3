@@ -434,6 +434,14 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
+		// Mimetypes
+		'mimetypes-text-html' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'file-text-o',
+			)
+		),
+
 		// Overlays
 		'overlay-read-only' => array(
 			'provider' => FontawesomeIconProvider::class,
