@@ -419,7 +419,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'overlay-read-only' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'minus-circle',
+				'name' => 'times-circle',
 			)
 		),
 	);

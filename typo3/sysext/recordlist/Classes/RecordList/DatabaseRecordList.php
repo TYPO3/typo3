@@ -1242,9 +1242,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		if ($permsEdit) {
 			$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-			$icon = (!$this->isEditable($table) ? IconUtility::getSpriteIcon('actions-document-open-read-only') : $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL));
+			$iconIdentifier = 'actions-document-open';
+			$overlayIdentifier = !$this->isEditable($table) ? 'overlay-read-only' : NULL;
 			$editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
-				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $icon . '</a>';
+				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier) . '</a>';
 		} else {
 			$editAction = $this->spaceIcon;
 		}
