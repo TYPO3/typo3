@@ -239,15 +239,13 @@ class IconFactory
         }
 
         krsort($recordType);
-        /** @var IconRegistry $iconRegistry */
-        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         foreach ($recordType as $iconName) {
-            if ($iconRegistry->isRegistered($iconName)) {
+            if ($this->iconRegistry->isRegistered($iconName)) {
                 return $iconName;
             }
         }
 
-        return 'default-not-found';
+        return $this->iconRegistry->getDefaultIconIdentifier();
     }
 
     /**
@@ -335,8 +333,7 @@ class IconFactory
      */
     public function getIconForFileExtension($fileExtension, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = null)
     {
-        $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-        $iconName = $iconRegistry->getIconIdentifierForFileExtension($fileExtension);
+        $iconName = $this->iconRegistry->getIconIdentifierForFileExtension($fileExtension);
         return $this->getIcon($iconName, $size, $overlayIdentifier);
     }
 
@@ -409,13 +406,33 @@ class IconFactory
                 }
             }
 
-            // File
-        } else {
-            if ($resource instanceof File && $resource->isMissing()) {
+        // File
+        } elseif ($resource instanceof File) {
+            $mimeTypeIcon = $this->iconRegistry->getIconIdentifierForMimeType($resource->getMimeType());
+
+            // Check if we find a exact matching mime type
+            if ($mimeTypeIcon !== null) {
+                $iconIdentifier = $mimeTypeIcon;
+            } else {
+                $fileExtensionIcon = $this->iconRegistry->getIconIdentifierForFileExtension($resource->getExtension());
+                if ($fileExtensionIcon !== 'mimetypes-other-other') {
+                    // Fallback 1: icon by file extension
+                    $iconIdentifier = $fileExtensionIcon;
+                } else {
+                    // Fallback 2: icon by mime type with subtype replaced by *
+                    $mimeTypeParts = explode('/', $resource->getMimeType());
+                    $mimeTypeIcon = $this->iconRegistry->getIconIdentifierForMimeType($mimeTypeParts[0] . '/*');
+                    if ($mimeTypeIcon !== null) {
+                        $iconIdentifier = $mimeTypeIcon;
+                    } else {
+                        // Fallback 3: use 'mimetypes-other-other'
+                        $iconIdentifier = $fileExtensionIcon;
+                    }
+                }
+            }
+            if ($resource->isMissing()) {
                 $overlayIdentifier = 'overlay-missing';
             }
-            $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-            $iconIdentifier = $iconRegistry->getIconIdentifierForFileExtension($resource->getExtension());
         }
 
         unset($options['mount-root']);

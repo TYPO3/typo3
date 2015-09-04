@@ -179,4 +179,33 @@ class IconRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $result = $this->subject->getIconIdentifierForFileExtension('jpg');
         $this->assertEquals('xyz', $result);
     }
+
+    /**
+     * @test
+     */
+    public function registerMimeTypeIconRegisterAnIcon()
+    {
+        $this->subject->registerMimeTypeIcon('foo/bar', 'mimetype-foo-bar');
+        $result = $this->subject->getIconIdentifierForMimeType('foo/bar');
+        $this->assertEquals('mimetype-foo-bar', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function registerMimeTypeIconOverwriteAnExistingIcon()
+    {
+        $this->subject->registerMimeTypeIcon('video/*', 'mimetype-foo-bar');
+        $result = $this->subject->getIconIdentifierForMimeType('video/*');
+        $this->assertEquals('mimetype-foo-bar', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getIconIdentifierForMimeTypeWithUnknowMimeTypeReturnNull()
+    {
+        $result = $this->subject->getIconIdentifierForMimeType('bar/foo');
+        $this->assertEquals(null, $result);
+    }
 }

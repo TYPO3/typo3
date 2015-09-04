@@ -82,8 +82,17 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->iconRegistryMock = $this->prophesize(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
         $this->subject = new IconFactory($this->iconRegistryMock->reveal());
 
+        $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);
         $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(true);
         $this->iconRegistryMock->isDeprecated(Argument::any())->willReturn(false);
+        $this->iconRegistryMock->getDefaultIconIdentifier(Argument::any())->willReturn('default-not-found');
+        $this->iconRegistryMock->getIconIdentifierForMimeType('application/pdf')->willReturn('mimetypes-pdf');
+        $this->iconRegistryMock->getIconIdentifierForMimeType('image/*')->willReturn('mimetypes-media-image');
+        $this->iconRegistryMock->getIconIdentifierForMimeType(Argument::any())->willReturn(null);
+        $this->iconRegistryMock->getIconIdentifierForFileExtension(Argument::any())->willReturn('mimetypes-other-other');
+        $this->iconRegistryMock->getIconIdentifierForFileExtension('foo')->willReturn('mimetypes-other-other');
+        $this->iconRegistryMock->getIconIdentifierForFileExtension('pdf')->willReturn('mimetypes-pdf');
+        $this->iconRegistryMock->getIconIdentifierForFileExtension('png')->willReturn('mimetypes-media-image');
         $this->iconRegistryMock->getIconConfigurationByIdentifier(Argument::any())->willReturn([
             'provider' => FontawesomeIconProvider::class,
             'options' => array(
@@ -316,6 +325,7 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $resourceProphecy = $this->prophesize(File::class);
         $resourceProphecy->isMissing()->willReturn(false);
         $resourceProphecy->getExtension()->willReturn('pdf');
+        $resourceProphecy->getMimeType()->willReturn('');
 
         $this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-pdf">',
             $this->subject->getIconForResource($resourceProphecy->reveal())->render());
@@ -361,13 +371,37 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     }
 
     /**
+     * Tests the returns of file pdf with known mime-type
+     *
+     * @test
+     */
+    public function getIconForResourceWithMimeTypeApplicationPdfReturnsPdfIcon()
+    {
+        $fileObject = $this->getTestSubjectFileObject('pdf', 'application/pdf');
+        $result = $this->subject->getIconForResource($fileObject)->render();
+        $this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-pdf">', $result);
+    }
+
+    /**
+     * Tests the returns of file with custom image mime-type
+     *
+     * @test
+     */
+    public function getIconForResourceWithCustomImageMimeTypeReturnsImageIcon()
+    {
+        $fileObject = $this->getTestSubjectFileObject('custom', 'image/my-custom-extension');
+        $result = $this->subject->getIconForResource($fileObject)->render();
+        $this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-media-image">', $result);
+    }
+
+    /**
      * Tests the returns of file png
      *
      * @test
      */
     public function getIconForResourceWithPngFileReturnsIcon()
     {
-        $fileObject = $this->getTestSubjectFileObject('png');
+        $fileObject = $this->getTestSubjectFileObject('png', 'image/png');
         $result = $this->subject->getIconForResource($fileObject)->render();
         $this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-media-image">', $result);
     }
@@ -530,14 +564,16 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * Create file object to use as test subject
      *
-     * @param $extension
+     * @param string $extension
+     * @param string $mimeType
      * @return \TYPO3\CMS\Core\Resource\File
      */
-    protected function getTestSubjectFileObject($extension)
+    protected function getTestSubjectFileObject($extension, $mimeType = '')
     {
         $mockedStorage = $this->getMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class, array(), array(), '', false);
         $mockedFile = $this->getMock(\TYPO3\CMS\Core\Resource\File::class, array(), array(array(), $mockedStorage));
-        $mockedFile->expects($this->once())->method('getExtension')->will($this->returnValue($extension));
+        $mockedFile->expects($this->atMost(1))->method('getExtension')->will($this->returnValue($extension));
+        $mockedFile->expects($this->atLeastOnce())->method('getMimeType')->will($this->returnValue($mimeType));
         return $mockedFile;
     }
 

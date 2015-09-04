@@ -1854,6 +1854,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     );
 
     /**
+     * Mapping of mime types to icons
+     *
+     * @var string[]
+     */
+    protected $mimeTypeMapping = array(
+        'video/*' => 'mimetypes-media-video',
+        'audio/*' => 'mimetypes-media-audio',
+        'image/*' => 'mimetypes-media-image',
+        'text/*' => 'mimetypes-text-text',
+    );
+
+    /**
      * Array of deprecated icons, add deprecated icons to this array and remove it from registry
      * - Index of this array contains the deprecated icon
      * - Value of each entry must contain the deprecation message and can contain an identifier which replaces the old identifier
@@ -1940,7 +1952,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Registers an icon for a file extension.
+     * Register an icon for a file extension
      *
      * @param string $fileExtension
      * @param string $iconIdentifier
@@ -1948,6 +1960,17 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
     public function registerFileExtension($fileExtension, $iconIdentifier)
     {
         $this->fileExtensionMapping[$fileExtension] = $iconIdentifier;
+    }
+
+    /**
+     * Register an icon for a mime-type
+     *
+     * @param string $mimeType
+     * @param string $iconIdentifier
+     */
+    public function registerMimeTypeIcon($mimeType, $iconIdentifier)
+    {
+        $this->mimeTypeMapping[$mimeType] = $iconIdentifier;
     }
 
     /**
@@ -2014,6 +2037,20 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             $fileExtension = 'default';
         }
         return $this->fileExtensionMapping[$fileExtension];
+    }
+
+    /**
+     * Get iconIdentifier for given mimeType
+     *
+     * @param string $mimeType
+     * @return string|null Returns null if no icon is registered for the mimeType
+     */
+    public function getIconIdentifierForMimeType($mimeType)
+    {
+        if (!isset($this->mimeTypeMapping[$mimeType])) {
+            return null;
+        }
+        return $this->mimeTypeMapping[$mimeType];
     }
 
     /**
