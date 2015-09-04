@@ -88,8 +88,8 @@ class SqlParser {
 	 */
 	public function __construct(DatabaseConnection $databaseConnection = NULL) {
 		$this->databaseConnection = $databaseConnection ?: $GLOBALS['TYPO3_DB'];
-		$this->sqlCompiler = GeneralUtility::makeInstance(SqlCompilers\Adodb::class);
-		$this->nativeSqlCompiler = GeneralUtility::makeInstance(SqlCompilers\Mysql::class);
+		$this->sqlCompiler = GeneralUtility::makeInstance(SqlCompilers\Adodb::class, $this->databaseConnection);
+		$this->nativeSqlCompiler = GeneralUtility::makeInstance(SqlCompilers\Mysql::class, $this->databaseConnection);
 	}
 
 	/**
