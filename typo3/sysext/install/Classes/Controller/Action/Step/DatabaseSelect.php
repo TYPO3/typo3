@@ -41,7 +41,7 @@ class DatabaseSelect extends AbstractStepAction {
 		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		if ($postValues['type'] === 'new') {
 			$newDatabaseName = $postValues['new'];
-			if (strlen($newDatabaseName) <= 50) {
+			if ($this->isValidDatabaseName($newDatabaseName)) {
 				$createDatabaseResult = $this->databaseConnection->admin_query('CREATE DATABASE ' . $newDatabaseName . ' CHARACTER SET utf8');
 				if ($createDatabaseResult) {
 					$localConfigurationPathValuePairs['DB/database'] = $newDatabaseName;
@@ -51,8 +51,8 @@ class DatabaseSelect extends AbstractStepAction {
 					$errorStatus->setTitle('Unable to create database');
 					$errorStatus->setMessage(
 						'Database with name ' . $newDatabaseName . ' could not be created.' .
-						' Either your database name contains special chars (only alphanumeric characters are allowed)' .
-						' or your database user probably does not have sufficient permissions to create it.' .
+						' Either your database name contains a reserved keyword or your database' .
+						' user does not have sufficient permissions to create it.' .
 						' Please choose an existing (empty) database or contact administration.'
 					);
 					$result[] = $errorStatus;
@@ -61,7 +61,11 @@ class DatabaseSelect extends AbstractStepAction {
 				/** @var $errorStatus \TYPO3\CMS\Install\Status\ErrorStatus */
 				$errorStatus = $this->objectManager->get(\TYPO3\CMS\Install\Status\ErrorStatus::class);
 				$errorStatus->setTitle('Database name not valid');
-				$errorStatus->setMessage('Given database name must be shorter than fifty characters.');
+				$errorStatus->setMessage(
+					'Given database name must be shorter than fifty characters' .
+					' and consist solely of basic latin letters (a-z), digits (0-9), dollar signs ($)' .
+					' and underscores (_).'
+				);
 				$result[] = $errorStatus;
 			}
 		} elseif ($postValues['type'] === 'existing' && !empty($postValues['existing'])) {
@@ -170,6 +174,16 @@ class DatabaseSelect extends AbstractStepAction {
 		$this->databaseConnection->setDatabasePort($GLOBALS['TYPO3_CONF_VARS']['DB']['port']);
 		$this->databaseConnection->setDatabaseSocket($GLOBALS['TYPO3_CONF_VARS']['DB']['socket']);
 		$this->databaseConnection->sql_pconnect();
+	}
+
+	/**
+	 * Validate the database name against the lowest common denominator of valid identifiers across different DBMS
+	 *
+	 * @param string $databaseName
+	 * @return bool
+	 */
+	protected function isValidDatabaseName($databaseName) {
+		return strlen($databaseName) <= 50 && preg_match('/^[a-zA-Z0-9\$_]*$/', $databaseName);
 	}
 
 }
