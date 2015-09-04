@@ -768,7 +768,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				$icon = IconUtility::getSpriteIcon('mimetypes-text-html', array('title' => $titleAttribute));
 				break;
 			case 'wizard_rte':
-				$icon = IconUtility::getSpriteIcon('mimetypes-word', array('title' => $titleAttribute));
+				$icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('mimetypes-word', Icon::SIZE_SMALL)->render() . '</span>';
 				break;
 			default:
 				if ($languageService->moduleLabels['tabs_images'][$row['module_name'] . '_tab']) {

@@ -419,6 +419,13 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
+		'mimetypes-word' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'file-word-o',
+			)
+		),
+
 		// Status
 		'status-status-current' => array(
 			'provider' => FontawesomeIconProvider::class,
