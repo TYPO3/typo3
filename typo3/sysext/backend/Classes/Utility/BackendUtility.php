@@ -3163,7 +3163,6 @@ class BackendUtility {
 	 * @param bool/string $backPathOverride Backpath that should be used instead of the global $BACK_PATH
 	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return string Calculated URL
-	 * @internal
 	 */
 	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
 		if ($backPathOverride) {
