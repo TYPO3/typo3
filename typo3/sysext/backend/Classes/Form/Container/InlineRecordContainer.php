@@ -479,7 +479,9 @@ class InlineRecordContainer extends AbstractContainer {
 				. $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)
 				. '</span>';
 		} elseif (isset($rec['__remove'])) {
-			$cells['localize.wasRemovedInOriginal'] = IconUtility::getSpriteIcon('actions-edit-localize-status-high', array('title' => $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE)));
+			$cells['localize.wasRemovedInOriginal'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE) . '">'
+				. $this->iconFactory->getIcon('actions-edit-localize-status-high', Icon::SIZE_SMALL)
+				. '</span>';
 		}
 		// "Info": (All records)
 		if ($enabledControls['info'] && !$isNewItem) {
