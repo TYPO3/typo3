@@ -19,11 +19,11 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 
 	var ShortcutMenu = {
 		$spinnerElement: $('<span>', {
-			class: 't3-icon fa fa-circle-o-notch fa-spin'
+			class: 'fa fa-circle-o-notch fa-spin'
 		}),
 		options: {
 			containerSelector: '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',
-			toolbarIconSelector: '.dropdown-toggle span.t3-icon',
+			toolbarIconSelector: '.dropdown-toggle .fa',
 			toolbarMenuSelector: '.dropdown-menu',
 			shortcutItemSelector: '.dropdown-menu .shortcut',
 			shortcutDeleteSelector: '.shortcut-delete',

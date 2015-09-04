@@ -46,6 +46,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'bolt',
 			)
 		),
+		'apps-toolbar-menu-shortcut' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'star',
+			)
+		),
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

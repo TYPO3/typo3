@@ -113,12 +113,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * @return string HTML
 	 */
 	public function getItem() {
-		return IconUtility::getSpriteIcon(
-			'apps-toolbar-menu-shortcut',
-			array(
-				'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE),
-			)
-		);
+		$iconRegistry = GeneralUtility::makeInstance(IconFactory::class);
+		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
+		return '<span title="' . $title . '">' . $iconRegistry->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render() . '</span>';
 	}
 
 	/**
