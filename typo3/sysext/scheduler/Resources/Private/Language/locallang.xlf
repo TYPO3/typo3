@@ -144,6 +144,9 @@
 			<trans-unit id="label.tableGarbageCollection.numberOfDays">
 				<source>Delete entries older than given number of days</source>
 			</trans-unit>
+			<trans-unit id="label.optimizeDatabaseTables.selectTables">
+				<source>Database tables</source>
+			</trans-unit>
 			<trans-unit id="label.type">
 				<source>Type</source>
 			</trans-unit>
@@ -315,6 +318,12 @@
 			<trans-unit id="msg.userNotCreated">
 				<source>The creation of the "_cli_scheduler" user failed.</source>
 			</trans-unit>
+			<trans-unit id="msg.selectionOfNonExistingDatabaseTables">
+				<source>Some of the selected database tables do not exist. Please select only valid tables.</source>
+			</trans-unit>
+			<trans-unit id="msg.noDatabaseTablesSelected">
+				<source>Please select at least one database table.</source>
+			</trans-unit>
 			<trans-unit id="none">
 				<source>None</source>
 			</trans-unit>
@@ -395,6 +404,12 @@
 			</trans-unit>
 			<trans-unit id="recyclerGarbageCollection.description">
 				<source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
+			</trans-unit>
+			<trans-unit id="optimizeDatabaseTable.name">
+				<source>Optimize MySQL database tables</source>
+			</trans-unit>
+			<trans-unit id="optimizeDatabaseTable.description">
+				<source>This task executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Warning! Tables will be locked during the optimization process.</source>
 			</trans-unit>
 		</body>
 	</file>
