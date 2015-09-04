@@ -7,8 +7,8 @@
 	<td nowrap="nowrap">{record.pageTitle} ({record.pid})</td>
 	<td nowrap="nowrap" class="text-right">
 		<div class="btn-group">
-			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}">
-				<f:be.buttons.icon icon="apps-pagetree-collapse" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}" />
+			<a class="btn btn-default" data-action="expand" data-toggle="collapse" data-target="#{record.table}_{record.uid}" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.expand')}">
+				<core:icon identifier="apps-pagetree-collapse" />
 			</a>
 			<a class="btn btn-default" data-action="undo" title="{f:translate(key: 'LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.undo')}">
 				<core:icon identifier="actions-edit-undo" />

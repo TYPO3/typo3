@@ -21,7 +21,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
@@ -49,6 +51,7 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
  * <output>
  * Here the "actions-document-new" icon is returned, but without link.
  * </output>
+ * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
  */
 class IconViewHelper extends AbstractBackendViewHelper implements CompilableInterface {
 
@@ -64,6 +67,7 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 	 * @param array $additionalAttributes Additional tag attributes. They will be added directly to the resulting HTML tag.
 	 *
 	 * @return string The rendered icon with or without link
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
 	 */
 	public function render($uri = '', $icon = 'actions-document-close', $title = '', $additionalAttributes = array()) {
 		return static::renderStatic(
@@ -83,14 +87,17 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 	 * @param callable $renderChildrenClosure
 	 * @param RenderingContextInterface $renderingContext
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use \TYPO3\CMS\Core\ViewHelpers\IconViewHelper instead
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		GeneralUtility::logDeprecatedFunction();
 		$uri = $arguments['uri'];
 		$icon = $arguments['icon'];
 		$title = $arguments['title'];
 		$additionalAttributes = $arguments['additionalAttributes'];
 		$additionalTagAttributes = '';
-		$icon = IconUtility::getSpriteIcon($icon, array('title' => $title));
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$icon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIcon($icon, Icon::SIZE_SMALL) . '</span>';
 		if (empty($uri)) {
 			return $icon;
 		}

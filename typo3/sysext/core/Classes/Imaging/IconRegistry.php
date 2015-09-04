@@ -342,6 +342,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Action Icons
+		'apps-pagetree-collapse' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-right',
+			)
+		),
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
