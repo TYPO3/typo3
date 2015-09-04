@@ -1133,7 +1133,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
 			// SAVE button:
 			$iconSave = $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL);
-			$buttons['save'] = '<a href="#" class="t3js-editform-submitButton" onclick="document.editform.submit();" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">' . $iconSave . '</a>';
+			$buttons['save'] = '<button name="_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">' . $iconSave . '</button>';
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
