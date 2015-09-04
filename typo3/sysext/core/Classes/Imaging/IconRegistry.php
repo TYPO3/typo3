@@ -226,6 +226,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'download',
 			)
 		),
+		'actions-edit-add' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'plus-circle',
+			)
+		),
 		'actions-edit-delete' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -385,7 +391,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'actions-selection-delete' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'remove',
+				'name' => 'trash',
 			)
 		),
 		'actions-system-cache-clear-impact-low' => array(
@@ -533,10 +539,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
-		'mimetypes-word' => array(
+		// specials
+		'empty-empty' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
-				'name' => 'file-word-o',
+				'name' => 'empty-empty',
 			)
 		),
 
@@ -547,12 +554,60 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'caret-right',
 			)
 		),
+		'status-dialog-ok' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check-circle',
+			)
+		),
+		'status-dialog-notification' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-circle',
+			)
+		),
+		'status-dialog-warning' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-triangle',
+			)
+		),
+		'status-dialog-error' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-circle',
+			)
+		),
+		'status-warning-lock' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/warning-lock.png',
+			)
+		),
+		'status-status-permission-granted' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check',
+			)
+		),
+		'status-status-permission-denied' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'times',
+			)
+		),
 
 		// Mimetypes
 		'mimetypes-text-html' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'file-text-o',
+			)
+		),
+		'mimetypes-word' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'file-word-o',
 			)
 		),
 

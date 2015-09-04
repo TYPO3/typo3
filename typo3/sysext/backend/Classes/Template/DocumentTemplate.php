@@ -1287,7 +1287,7 @@ function jumpToUrl(URL) {
 				// Do nothing
 		}
 		if ($icon) {
-			return IconUtility::getSpriteIcon($icon);
+			return $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render();
 		}
 	}
 

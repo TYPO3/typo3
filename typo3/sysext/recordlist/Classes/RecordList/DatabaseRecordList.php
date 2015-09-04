@@ -358,7 +358,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			&& !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
 		$tableCollapsed = (bool)$this->tablesCollapsed[$table];
 		// prepare space icon
-		$this->spaceIcon = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+		$this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 		// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 		$this->fieldArray = array();
 		// title Column

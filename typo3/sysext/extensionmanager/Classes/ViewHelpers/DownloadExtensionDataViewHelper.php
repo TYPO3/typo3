@@ -42,7 +42,7 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 
 		$filePrefix = PATH_site . $extension['siteRelPath'];
 		if (!file_exists(($filePrefix . 'ext_tables.sql')) && !file_exists(($filePrefix . 'ext_tables_static+adt.sql'))) {
-			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uriBuilder->reset();

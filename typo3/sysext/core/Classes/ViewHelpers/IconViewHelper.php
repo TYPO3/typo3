@@ -23,7 +23,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
- * Displays sprite icon identified by iconName key
+ * Displays icon identified by icon identifier
  */
 class IconViewHelper extends AbstractViewHelper implements CompilableInterface {
 

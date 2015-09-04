@@ -1,4 +1,3 @@
-{namespace be = TYPO3\CMS\Backend\ViewHelpers}
 {namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 
@@ -25,14 +24,14 @@
 	</td>
 	<td class="col-control">
 		<div class="btn-group" role="group">
-			<a class="btn btn-default" href="#" onclick="top.launchView('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" size="small"/></a>
-			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_groups][{backendUserGroup.uid}]=edit&returnUrl={returnUrl}')}"><core:icon identifier="actions-document-open" size="small"/></a>
+			<a class="btn btn-default" href="#" onclick="top.launchView('be_groups', '{backendUserGroup.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
+			<a class="btn btn-default" href="{bu:editRecord(parameters: 'edit[be_groups][{backendUserGroup.uid}]=edit&returnUrl={returnUrl}')}"><core:icon identifier="actions-document-open" /></a>
 			<f:if condition="{backendUserGroup.hidden}">
 				<f:then>
-					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" size="small"/></a>
+					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=0', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.unhide')}"><core:icon identifier="actions-edit-unhide" /></a>
 				</f:then>
 				<f:else>
-					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" size="small"/></a>
+					<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_groups][{backendUserGroup.uid}][hidden]=1', redirectUrl: redirectUrl)}" title="{f:translate(key:'visibility.hide')}"><core:icon identifier="actions-edit-hide" /></a>
 				</f:else>
 			</f:if>
 		</div>

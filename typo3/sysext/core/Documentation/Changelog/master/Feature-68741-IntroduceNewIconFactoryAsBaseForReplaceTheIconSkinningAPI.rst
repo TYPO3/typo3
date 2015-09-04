@@ -93,11 +93,11 @@ The core provides a fluid ViewHelper which makes it really easy to use icons wit
 .. code-block:: html
 
 	{namespace core = TYPO3\CMS\Core\ViewHelpers}
-	<core:icon identifier="my-icon-identifier" size="small" />
-	<!-- use the "default" size if none given ->
+	<core:icon identifier="my-icon-identifier" />
+	<!-- use the "small" size if none given ->
 	<core:icon identifier="my-icon-identifier" />
 	<core:icon identifier="my-icon-identifier" size="large" />
-	<core:icon identifier="my-icon-identifier" size="small" overlay="overlay-identifier" />
+	<core:icon identifier="my-icon-identifier" overlay="overlay-identifier" />
 	<core:icon identifier="my-icon-identifier" size="default" overlay="overlay-identifier" />
 	<core:icon identifier="my-icon-identifier" size="large" overlay="overlay-identifier" />
 

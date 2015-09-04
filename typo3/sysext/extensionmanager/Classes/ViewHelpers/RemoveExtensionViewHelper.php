@@ -37,17 +37,16 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extension['key'])) {
-			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 		}
 		if (
 			!in_array($extension['type'], \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallTypes()) ||
 			$extension['type'] === 'System'
 		) {
-			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 		}
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$action = 'removeExtension';
 		$uriBuilder->reset();

@@ -1704,7 +1704,7 @@ class ElementBrowser {
 				$ATag_e = '</a>';
 			}
 		}
-		$pBicon = $ATag2 ? IconUtility::getSpriteIcon('actions-edit-add') : '';
+		$pBicon = $ATag2 ? $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() : '';
 		$pText = htmlspecialchars(GeneralUtility::fixed_lgd_cs($mainPageRec['title'], $titleLen));
 		$out .= $picon . $ATag2 . $pBicon . $ATag_e . $ATag . $pText . $ATag_e . '<br />';
 		// Initialize the record listing:
@@ -1981,7 +1981,7 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-						<td>' . $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $ATag_e . '</td>
+						<td>' . $ATag . '<span title="' .  $lang->getLL('addToList', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '</td>
 						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 					</tr>';
@@ -1993,7 +1993,7 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
-						<td>' . $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $ATag_e . '</td>
+						<td>' . $ATag . '<span title="' . $lang->getLL('addToList', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '</td>
 						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td>&nbsp;</td>
 					</tr>';
@@ -2089,7 +2089,7 @@ class ElementBrowser {
 				$lines[] = '
 					<tr class="bgColor4">
 						<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
-						<td>' . $aTag . IconUtility::getSpriteIcon('actions-edit-add', array('title' =>  $lang->getLL('addToList', TRUE))) . $aTag_e . ' </td>
+						<td>' . $aTag . '<span title="' . $lang->getLL('addToList', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $aTag_e . ' </td>
 						<td>&nbsp;</td>
 					</tr>';
 			}
@@ -2186,7 +2186,7 @@ class ElementBrowser {
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td nowrap="nowrap">' . ($imgInfo[0] != $IW
 						? '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('noLimit' => '1')))
-						. '">' . IconUtility::getSpriteIcon('status-dialog-warning', array('title' => $lang->getLL('clickToRedrawFullSize', TRUE)))
+						. '" title="' . $lang->getLL('clickToRedrawFullSize', TRUE) . '">' . $this->iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render()
 						. '</a>'
 						: '')
 					. $pDim . '&nbsp;</td>

@@ -988,7 +988,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					$lastExecution = '-';
 					$isRunning = FALSE;
 					$showAsDisabled = FALSE;
-					$startExecutionElement = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+					$startExecutionElement = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 					// Restore the serialized task and pass it a reference to the scheduler object
 					/** @var $task \TYPO3\CMS\Scheduler\Task\AbstractTask|\TYPO3\CMS\Scheduler\ProgressProviderInterface */
 					$task = unserialize($schedulerRecord['serialized_task_object']);
@@ -1134,10 +1134,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 								. '<td class="right">' . $schedulerRecord['uid'] . '</td>'
 								. '<td colspan="6">' . $executionStatusOutput . '</td>'
 								. '<td nowrap="nowrap"><div class="btn-group" role="group">'
-									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
-									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
+									. '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>'
+									. '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>'
 									. $deleteAction
-									. '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>'
+									. '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>'
 								. '</div></td>'
 							. '</tr>';
 					}

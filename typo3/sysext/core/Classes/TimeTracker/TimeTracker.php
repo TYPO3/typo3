@@ -13,7 +13,9 @@ namespace TYPO3\CMS\Core\TimeTracker;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Frontend Timetracking functions
@@ -188,7 +190,8 @@ class TimeTracker {
 		if (strlen($content) > 30) {
 			$placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';
 		}
-		$this->tsStackLog[$k]['message'][] = IconUtility::getSpriteIcon($this->wrapIcon[$num]) . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$num], Icon::SIZE_SMALL) . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
 	}
 
 	/**
@@ -327,7 +330,7 @@ class TimeTracker {
 			if (!$flag_tree && $data['stackPointer']) {
 				$temp = array();
 				foreach ($data['tsStack'] as $k => $v) {
-					$temp[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(implode($v, $k ? '.' : '/'), -$keyLgd);
+					$temp[] = GeneralUtility::fixed_lgd_cs(implode($v, $k ? '.' : '/'), -$keyLgd);
 				}
 				array_pop($temp);
 				$temp = array_reverse($temp);
@@ -337,12 +340,12 @@ class TimeTracker {
 				}
 			}
 			if ($flag_tree) {
-				$tmp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $data['key'], TRUE);
+				$tmp = GeneralUtility::trimExplode('.', $data['key'], TRUE);
 				$theLabel = end($tmp);
 			} else {
 				$theLabel = $data['key'];
 			}
-			$theLabel = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
+			$theLabel = GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
 			$theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
 			$keyLabel = $theLabel . $keyLabel;
 			$item .= '<td class="' . $logRowClass . '">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
@@ -462,7 +465,7 @@ class TimeTracker {
 	protected function fixCLen($c, $v) {
 		$len = $v == 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength'];
 		if (strlen($c) > $len) {
-			$c = '<span style="color:green;">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($c, $len)) . '</span>';
+			$c = '<span style="color:green;">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($c, $len)) . '</span>';
 		} else {
 			$c = htmlspecialchars($c);
 		}

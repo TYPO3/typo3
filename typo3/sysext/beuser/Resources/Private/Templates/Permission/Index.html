@@ -6,7 +6,7 @@
 
 <f:section name="iconButtons">
 	<a href="#" onclick="{previewUrl}" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}">
-		<core:icon identifier="actions-document-view" size="small" />
+		<core:icon identifier="actions-document-view" />
 	</a>
 </f:section>
 
@@ -65,7 +65,7 @@
 												arguments="{id: data.row._ORIG_uid, depth: depth}"
 												title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
 											>
-												<core:icon identifier="actions-document-open" size="small"/>
+												<core:icon identifier="actions-document-open" />
 											</f:link.action>
 										</f:then>
 										<f:else>
@@ -74,7 +74,7 @@
 												arguments="{id: data.row.uid, depth: depth}"
 												title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
 											>
-												<core:icon identifier="actions-document-open" size="small"/>
+												<core:icon identifier="actions-document-open" />
 											</f:link.action>
 										</f:else>
 									</f:if>
@@ -118,7 +118,7 @@
 													data-lockstate="1"
 													title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr')}"
 												>
-													<be:spriteManagerIcon iconName="status-warning-lock" />
+													<core:icon identifier="status-warning-lock" />
 												</a>
 											</f:then>
 											<f:else>
@@ -199,11 +199,11 @@
 				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4_t" /></td>
 			</tr>
 			<tr>
-				<td nowrap="nowrap"><be:spriteManagerIcon iconName="status-status-permission-granted" options="{class:'text-success'}" /></td>
-				<td nowrap="nowrap"><be:spriteManagerIcon iconName="status-status-permission-denied" options="{class:'text-danger'}" /></td>
-				<td nowrap="nowrap"><be:spriteManagerIcon iconName="status-status-permission-granted" options="{class:'text-success'}" /></td>
-				<td nowrap="nowrap"><be:spriteManagerIcon iconName="status-status-permission-denied" options="{class:'text-danger'}" /></td>
-				<td nowrap="nowrap"><be:spriteManagerIcon iconName="status-status-permission-denied" options="{class:'text-danger'}" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
 				<td nowrap="nowrap"><span class="number">5</span></td>
 				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8_t" /></td>
 			</tr>
@@ -211,7 +211,7 @@
 	</div>
 	<p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:def" /></p>
 	<p>
-		<be:spriteManagerIcon iconName="status-status-permission-granted" options="{class:'text-success'}" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br/>
-		<be:spriteManagerIcon iconName="status-status-permission-denied" options="{class:'text-danger'}" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied" />
+		<core:icon identifier="status-status-permission-granted" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br/>
+		<core:icon identifier="status-status-permission-denied" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied" />
 	</p>
 </f:section>

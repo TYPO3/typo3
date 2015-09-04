@@ -37,13 +37,13 @@
 							arguments="{backendUser: onlineUser.backendUser, sessionId: session.id}"
 							data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:lang/locallang_common.xlf:cancel\')}'}"
 						>
-							<core:icon identifier="actions-document-close" size="small"/>
+							<core:icon identifier="actions-document-close" />
 							<f:translate key="endSession" />
 						</f:link.action>
 					</f:else>
 				</f:if>
 				<a class="btn btn-default" href="#" onclick="top.launchView('be_users', '{onlineUser.backendUser.uid}',''); return false;">
-					<core:icon identifier="actions-document-info" size="small"/>
+					<core:icon identifier="actions-document-info" />
 				</a>
 			</div>
 		</td>

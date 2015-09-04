@@ -778,7 +778,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					// @todo: hardcoded width as we don't have a way to address module icons with an API yet.
 					$icon = '<img src="' . htmlspecialchars($icon) . '" alt="' . $titleAttribute . '" width="16">';
 				} else {
-					$icon = IconUtility::getSpriteIcon('empty-empty', array('title' => $titleAttribute));
+					$icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 				}
 		}
 		return $icon;

@@ -19,6 +19,8 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\QueryView;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Integrity\DatabaseIntegrityCheck;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -389,7 +391,8 @@ class DatabaseIntegrityView extends BaseScriptClass {
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!GeneralUtility::inList($admin->lostPagesList, $data['pid'])) {
-							$lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '">' . IconUtility::getSpriteIcon('status-dialog-error', array('title' => $lang->getLL('fixLostRecord'))) . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+							$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+							$lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '" title="' . $lang->getLL('fixLostRecord', TRUE) . '">' . $iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
 						} else {
 							$lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
 						}

@@ -493,8 +493,8 @@ class InlineRecordContainer extends AbstractContainer {
 				$table = $foreign_table;
 			}
 			$cells['info'] = '
-				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;')) . '">
-					' . IconUtility::getSpriteIcon('status-dialog-information', array('title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE))) . '
+				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;')) . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE) . '">
+					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()  . '
 				</a>';
 		}
 		// If the table is NOT a read-only table, then show these links:
@@ -508,8 +508,8 @@ class InlineRecordContainer extends AbstractContainer {
 						$style = ' style="' . $config['inline']['inlineNewButtonStyle'] . '"';
 					}
 					$cells['new'] = '
-						<a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '"' . $style . '>
-							' . IconUtility::getSpriteIcon(('actions-' . ($isPagesTable ? 'page' : 'document') . '-new'), array('title' => $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE))) . '
+						<a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE) . '" ' . $style . '>
+							' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page' : 'document') . '-new', Icon::SIZE_SMALL)->render()  . '
 						</a>';
 				}
 			}

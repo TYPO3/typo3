@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * View helper for configure extension link
@@ -57,7 +60,8 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 			$this->tag->setContent($content);
 			$content = $this->tag->render();
 		} elseif ($forceConfiguration) {
-			$content = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$content = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 		}
 
 		return $content;

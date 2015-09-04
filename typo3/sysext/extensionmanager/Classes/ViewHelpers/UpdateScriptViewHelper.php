@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * View helper for update script link
@@ -64,7 +67,8 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 			$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-extensionmanager-update-script'));
 			$tag = $this->tag->render();
 		} else {
-			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 		}
 		return $tag;
 	}

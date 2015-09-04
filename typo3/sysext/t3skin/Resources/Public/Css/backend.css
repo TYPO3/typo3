@@ -7856,8 +7856,20 @@ button.close {
 .icon-actions-edit-copy-release,
 .icon-actions-edit-cut-release,
 .icon-overlay-read-only,
-.icon-status-status-current {
+.icon-status-status-current,
+.icon-status-dialog-error,
+.icon-status-status-permission-denied {
   color: #c83c3c;
+}
+.icon-status-dialog-ok,
+.icon-status-status-permission-granted {
+  color: #79a548;
+}
+.icon-status-dialog-notification {
+  color: #333333;
+}
+.icon-status-dialog-warning {
+  color: #e8a33d;
 }
 .clearfix:before,
 .clearfix:after,

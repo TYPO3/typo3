@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Documentation\Slots;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Documentation\ViewHelpers\FormatsViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 
@@ -72,9 +75,10 @@ class ExtensionManager {
 				);
 			}
 		} else {
-			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
-			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
-			$actions[] = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$actions[] = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
+			$actions[] = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
+			$actions[] = '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 		}
 	}
 

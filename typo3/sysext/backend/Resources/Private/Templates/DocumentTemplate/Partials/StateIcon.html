@@ -1,7 +1,7 @@
-{namespace be = TYPO3\CMS\Backend\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
 <f:switch expression="{item.stateIcon}">
-	<f:case value="-1"><be:spriteManagerIcon iconName="status-dialog-ok" /></f:case>
-	<f:case value="1"><be:spriteManagerIcon iconName="status-dialog-notification" /></f:case>
-	<f:case value="2"><be:spriteManagerIcon iconName="status-dialog-warning" /></f:case>
-	<f:case value="3"><be:spriteManagerIcon iconName="status-dialog-error" /></f:case>
+	<f:case value="-1"><core:icon identifier="status-dialog-ok" /></f:case>
+	<f:case value="1"><core:icon identifier="status-dialog-notification" /></f:case>
+	<f:case value="2"><core:icon identifier="status-dialog-warning" /></f:case>
+	<f:case value="3"><core:icon identifier="status-dialog-error" /></f:case>
 </f:switch>

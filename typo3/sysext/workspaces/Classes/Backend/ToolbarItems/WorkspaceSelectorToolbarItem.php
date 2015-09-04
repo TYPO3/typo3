@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -80,12 +82,10 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 		$languageService = $this->getLanguageService();
 
 		$index = 0;
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$activeWorkspace = (int)$backendUser->workspace;
 		$stateCheckedIcon = IconUtility::getSpriteIcon('status-status-checked');
-		$stateUncheckedIcon = IconUtility::getSpriteIcon('empty-empty', array(
-			'title' => $languageService->getLL('bookmark_inactive')
-		));
-
+		$stateUncheckedIcon = '<span title="' . $languageService->getLL('bookmark_inactive', TRUE) . '">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 		$workspaceSections = array(
 			'top' => array(),
 			'items' => array(),

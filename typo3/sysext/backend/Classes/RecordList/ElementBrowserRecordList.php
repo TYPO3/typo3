@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\RecordList;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
@@ -110,10 +111,10 @@ class ElementBrowserRecordList extends DatabaseRecordList {
 		$title = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 		$ficon = IconUtility::getSpriteIconForRecord($table, $row);
 		$aOnClick = 'return insertElement(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($row['uid']) . ', \'db\', ' . GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ');';
-		$ATag = '<a href="#" onclick="' . $aOnClick . '">';
+		$ATag = '<a href="#" onclick="' . $aOnClick . '" title="' . $this->getLanguageService()->getLL('addToList', TRUE) . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 		$ATag_e = '</a>';
-		return $ATag . IconUtility::getSpriteIcon('actions-edit-add', array('title' => $this->getLanguageService()->getLL('addToList', TRUE))) . $ATag_e . $ATag_alt . $code . $ATag_e;
+		return $ATag . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL) . $ATag_e . $ATag_alt . $code . $ATag_e;
 	}
 
 	/**

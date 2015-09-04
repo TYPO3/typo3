@@ -313,7 +313,7 @@ class FileList extends AbstractRecordList {
 	 */
 	public function getTable($rowlist) {
 		// prepare space icon
-		$this->spaceIcon = '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+		$this->spaceIcon = '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
 
 		// @todo use folder methods directly when they support filters
 		$storage = $this->folderObject->getStorage();
@@ -935,7 +935,7 @@ class FileList extends AbstractRecordList {
 			} elseif ($fileOrFolderObject instanceof File) {
 				$infoOnClick = 'top.launchView( \'_FILE\', ' . GeneralUtility::quoteJSvalue($fullIdentifier) . ');return false;';
 			}
-			$cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.info') . '">' . IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
+			$cells['info'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($infoOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.info') . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
 		} else {
 			$cells['info'] = $this->spaceIcon;
 		}

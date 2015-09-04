@@ -65,7 +65,7 @@ class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInter
 		/** @var IconFactory $iconFactory */
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($backendUser->getUid() === (int)$beUser->user['uid']) {
-			return '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 		}
 
 		$urlParameters = [

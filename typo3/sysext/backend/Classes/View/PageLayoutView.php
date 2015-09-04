@@ -1226,7 +1226,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						. '][' . $hiddenField . ']=' . $value;
 					$out .= '<a class="btn btn-default" href="' . htmlspecialchars($this->getPageLayoutController()->doc->issueCommand($params))
 						. '" title="' . $this->getLanguageService()->getLL($label, TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-edit-' . strtolower($label)) . '</a>';
+						. $this->iconFactory->getIcon('actions-edit-' . strtolower($label), Icon::SIZE_SMALL) . '</a>';
 				}
 				// Delete
 				$params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
@@ -1258,7 +1258,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$displayMoveButtons = TRUE;
 						}
 					} else {
-						$moveButtonContent .= '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+						$moveButtonContent .= '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 					}
 					// Move element down:
 					if ($this->tt_contentData['next'][$row['uid']]) {
@@ -1271,7 +1271,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$displayMoveButtons = TRUE;
 						}
 					} else {
-						$moveButtonContent .= '<span class="btn btn-default disabled">' . IconUtility::getSpriteIcon('empty-empty') . '</span>';
+						$moveButtonContent .= '<span class="btn btn-default disabled">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 					}
 					if ($displayMoveButtons) {
 						$out .= '<div class="btn-group btn-group-sm" role="group">' . $moveButtonContent . '</div>';

@@ -35,5 +35,5 @@ This ViewHelper has an argument for the new state parameter.
 .. code-block:: html
 
 	{namespace core = TYPO3\CMS\Core\ViewHelpers}
-	<core:icon identifier="my-icon-identifier" size="small" state="disabled" />
+	<core:icon identifier="my-icon-identifier" state="disabled" />
 

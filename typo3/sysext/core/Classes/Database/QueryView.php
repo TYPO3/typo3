@@ -549,7 +549,8 @@ class QueryView {
 		$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
 		$out .= '<td><div class="btn-group">';
 		if (!$row['deleted']) {
-			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-information') . '</a>';
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
 			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 		} else {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
