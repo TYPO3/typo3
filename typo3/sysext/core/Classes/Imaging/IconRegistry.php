@@ -148,6 +148,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/actions/document-save-close.png'
 			)
 		),
+		'actions-document-save-new' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/document-save-new.png'
+			)
+		),
 		'actions-document-synchronize' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(

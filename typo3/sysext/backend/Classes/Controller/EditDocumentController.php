@@ -1149,7 +1149,8 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
-				$buttons['save_new'] = IconUtility::getSpriteIcon('actions-document-save-new', array('html' => '<input type="submit" class="c-inputButton t3js-editform-submitButton" name="_savedoknew" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '" />'));
+				$iconSaveNew = $iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL);
+				$buttons['save_new'] = '<button name="_savedoknew" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '">' . $iconSaveNew . '</button>';
 			}
 			// SAVE / CLOSE
 			$iconSaveClose = $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL);
