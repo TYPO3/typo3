@@ -3333,7 +3333,6 @@ class BackendUtility {
 	 * @param bool $backPathOverride (unused)
 	 * @param bool $returnAbsoluteUrl If set to TRUE, the URL returned will be absolute, $backPathOverride will be ignored in this case
 	 * @return string Calculated URL
-	 * @internal
 	 */
 	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
 		/** @var UriBuilder $uriBuilder */
