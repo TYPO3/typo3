@@ -50,6 +50,14 @@ class DefaultConfiguration extends AbstractStepAction {
 		// Setting SYS/isInitialInstallationInProgress to FALSE marks this instance installation as complete
 		$configurationValues['SYS/isInitialInstallationInProgress'] = FALSE;
 
+		// Mark upgrade wizards as done
+		$this->loadExtLocalconfDatabaseAndExtTables();
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $updateClassName) {
+				$configurationValues['INSTALL/wizardDone/' . $updateClassName] = 1;
+			}
+		}
+
 		/** @var $configurationManager \TYPO3\CMS\Core\Configuration\ConfigurationManager */
 		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Core\Configuration\ConfigurationManager::class);
 		$configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
