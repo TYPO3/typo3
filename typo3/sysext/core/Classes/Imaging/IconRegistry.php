@@ -137,21 +137,39 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 		'actions-document-save' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/actions/document-save.png'
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-save.svg',
+			)
+		),
+		'actions-document-save-cleartranslationcache' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-save-cleartranslationcache.svg',
 			)
 		),
 		'actions-document-save-close' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/actions/document-save-close.png'
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-save-close.svg',
 			)
 		),
 		'actions-document-save-new' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/actions/document-save-new.png'
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-save-new.svg',
+			)
+		),
+		'actions-document-save-translation' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-save-translation.svg',
+			)
+		),
+		'actions-document-save-view' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-save-view.svg',
 			)
 		),
 		'actions-document-synchronize' => array(

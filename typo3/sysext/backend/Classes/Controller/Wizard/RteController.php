@@ -255,8 +255,9 @@ class RteController extends AbstractWizardController implements \TYPO3\CMS\Core\
 				. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
 				. '</button>';
 			// Save & View
-			$buttons['save_view'] = '<button class="c-inputButton" name="_savedokview_x" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '">'
-				. IconUtility::getSpriteIcon('actions-document-save-view', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE)))
+			$buttons['save_view'] = '<button class="c-inputButton" name="_savedokview_x" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '"  title="'
+				. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">'
+				. $this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)
 				. '</button>';
 			// Save & Close
 			$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x" onclick="' . htmlspecialchars('document.editform.redirect.value=' . GeneralUtility::quoteJSvalue($closeUrl) . '; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="'

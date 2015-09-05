@@ -1132,8 +1132,9 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 		// The action of each button is decided by its name attribute. (See doProcessData())
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
 			// SAVE button:
-			$iconSave = $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL);
-			$buttons['save'] = '<button name="_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">' . $iconSave . '</button>';
+			$buttons['save'] = '<button name="_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
+				. $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+				. '</button>';
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
 				$pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
@@ -1144,21 +1145,29 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 					$excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
 				}
 				if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE) || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'].'.']['previewPageId'])) {
-					$buttons['save_view'] = IconUtility::getSpriteIcon('actions-document-save-view', array('html' => '<input onclick="window.open(\'\', \'newTYPO3frontendWindow\');" type="submit" class="c-inputButton t3js-editform-submitButton" name="_savedokview" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" />'));
+					$buttons['save_view'] = '<button name="_savedokview" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" onclick="window.open(\'\', \'newTYPO3frontendWindow\');">'
+						. $iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)
+						. '</button>';
 				}
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
-				$iconSaveNew = $iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL);
-				$buttons['save_new'] = '<button name="_savedoknew" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '">' . $iconSaveNew . '</button>';
+				$buttons['save_new'] = '<button name="_savedoknew" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '">'
+					. $iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL)
+					. '</button>';
 			}
 			// SAVE / CLOSE
-			$iconSaveClose = $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL);
-			$buttons['save_close'] = '<button name="_saveandclosedok" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">' . $iconSaveClose . '</button>';
+			$buttons['save_close'] = '<button name="_saveandclosedok" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
+				. $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+				. '</button>';
 			// FINISH TRANSLATION / SAVE / CLOSE
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation']) {
-				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok" src="sysext/t3skin/images/icons/actions/document-save-translation.png" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', TRUE) . '" /> ';
-				$buttons['translation_saveclear'] = '<input type="image" class="c-inputButton" name="_translation_savedokclear" src="sysext/t3skin/images/icons/actions/document-save-cleartranslationcache.png" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', TRUE) . '" />';
+				$buttons['translation_save'] = '<button name="_translation_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', TRUE) . '">'
+					. $iconFactory->getIcon('actions-document-save-translation', Icon::SIZE_SMALL)
+					. '</button>';
+				$buttons['translation_saveclear'] = '<button name="_translation_savedokclear" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', TRUE) . '">'
+					. $iconFactory->getIcon('actions-document-save-cleartranslationcache', Icon::SIZE_SMALL)
+					. '</button>';
 			}
 		}
 		// CLOSE button:

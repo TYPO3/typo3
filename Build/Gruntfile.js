@@ -130,6 +130,12 @@ module.exports = function(grunt) {
 			// Action Icons
 			icons_action: {
 				files: {
+					'<%= paths.backend %>Public/Icons/Action/actions-document-save-cleartranslationcache.svg': '<%= paths.icons %>Action/actions-document-save-cleartranslationcache.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-save-close.svg': '<%= paths.icons %>Action/actions-document-save-close.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-save-new.svg': '<%= paths.icons %>Action/actions-document-save-new.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-save-translation.svg': '<%= paths.icons %>Action/actions-document-save-translation.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-save-view.svg': '<%= paths.icons %>Action/actions-document-save-view.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-save.svg': '<%= paths.icons %>Action/actions-document-save.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-low.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-low.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-medium.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-medium.svg'
