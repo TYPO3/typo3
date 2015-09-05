@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\File;
@@ -1920,7 +1921,7 @@ class ElementBrowser {
 			$fileExtension = $fileObject->getExtension();
 			// Thumbnail/size generation:
 			$imgInfo = array();
-			if (GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
+			if (GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']), strtolower($fileExtension)) && !$noThumbs) {
 				$processedFile = $fileObject->process(
 					ProcessedFile::CONTEXT_IMAGEPREVIEW,
 					array('width' => 64, 'height' => 64)
@@ -2390,10 +2391,20 @@ class ElementBrowser {
 		if ($count === '0') {
 			return '';
 		}
+		$pArr = explode('|', $this->bparams);
+		$allowedExtensions = isset($pArr[3]) ? GeneralUtility::trimExplode(',', $pArr[3], TRUE) : [];
+
 		$count = (int)$count === 0 ? 1 : (int)$count;
 		// Create header, showing upload path:
 		$header = $folderObject->getIdentifier();
 		$lang = $this->getLanguageService();
+		// Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
+		$fileExtList = array();
+		foreach ($allowedExtensions as $fileExt) {
+			if (GeneralUtility::verifyFilenameAgainstDenyPattern($fileExt)) {
+				$fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+			}
+		}
 		$code = '
 			<br />
 			<!--
@@ -2426,6 +2437,16 @@ class ElementBrowser {
 			. '&bparams=' . rawurlencode($this->bparams)
 			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
+
+		if (!empty($fileExtList)) {
+			$code .= '
+				<div class="help-block">
+					' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', TRUE) . '<br>
+					' . implode(' ', $fileExtList) . '
+				</div>
+			';
+		}
+
 		$code .= '
 			<div id="c-override">
 				<label>
@@ -2439,7 +2460,66 @@ class ElementBrowser {
 		$code .= '</td>
 					</tr>
 				</table>
+			</form>';
+
+		// Add online media
+		// Create a list of allowed file extensions in a readable format "youtube, vimeo" etc.
+		$fileExtList = array();
+		$onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
+		foreach ($onlineMediaFileExt as $fileExt) {
+			if (
+				GeneralUtility::verifyFilenameAgainstDenyPattern($fileExt)
+				&& (empty($allowedExtensions) || in_array($fileExt, $allowedExtensions, TRUE))
+			) {
+				$fileExtList[] = '<span class="label label-success">' . strtoupper(htmlspecialchars($fileExt)) . '</span>';
+			}
+		}
+		if (!empty($fileExtList)) {
+			$code .= '
+				<!--
+			Form, adding online media urls:
+				-->
+				<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('online_media')) . '" method="post" name="editform1"'
+				. ' id="typo3-addMediaForm">
+					<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
+						<tr>
+							<td>' . $this->barheader($lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media', TRUE) . ':') . '</td>
+						</tr>
+						<tr>
+							<td class="c-wCell c-hCell"><strong>' . $lang->getLL('path', TRUE) . ':</strong> '
+				. htmlspecialchars($header) . '</td>
+						</tr>
+						<tr>
+							<td class="c-wCell c-hCell">
+								<input type="text" name="file[newMedia][0][url]"' . $this->doc->formWidth(35)
+				. ' size="50" placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', TRUE) . '" />
+					<input type="hidden" name="file[newMedia][0][target]" value="'
+				. htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />
+					<input type="hidden" name="file[newMedia][0][allowed]" value="'
+				. htmlspecialchars(implode(',', $allowedExtensions)) . '" />
+					<button>' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', TRUE) . '</button>
+					<div class="help-block">
+						' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.allowedProviders') . '<br>
+						' . implode(' ', $fileExtList) . '
+					</div>
+						';
+		}
+
+		// Make footer of upload form, including the submit button:
+		$redirectValue = $this->getThisScript()
+			. 'act=' . $this->act
+			. '&mode=' . $this->mode
+			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
+			. '&bparams=' . rawurlencode($this->bparams)
+			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
+		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
+
+		$code .= '</td>
+					</tr>
+				</table>
 			</form><br />';
+
+
 		return $code;
 	}
 

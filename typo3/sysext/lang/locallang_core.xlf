@@ -619,6 +619,33 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="file_newfolder.php.number_of_folders">
 				<source>Number of folders:</source>
 			</trans-unit>
+			<trans-unit id="online_media.new_media">
+				<source>Add new media asset</source>
+			</trans-unit>
+			<trans-unit id="online_media.new_media.label">
+				<source>Url of remote source:</source>
+			</trans-unit>
+			<trans-unit id="online_media.new_media.allowedProviders">
+				<source>Allowed media providers:</source>
+			</trans-unit>
+			<trans-unit id="online_media.new_media.button">
+				<source>Add media by URL</source>
+			</trans-unit>
+			<trans-unit id="online_media.new_media.submit">
+				<source>Add media</source>
+			</trans-unit>
+			<trans-unit id="online_media.new_media.added">
+				<source>Added media</source>
+			</trans-unit>
+			<trans-unit id="online_media.new_media.placeholder">
+				<source>Paste media url here...</source>
+			</trans-unit>
+			<trans-unit id="online_media.error.new_media.failed">
+				<source>Adding media failed</source>
+			</trans-unit>
+			<trans-unit id="online_media.error.invalid_url">
+				<source>Unknown/not allowed URL</source>
+			</trans-unit>
 			<trans-unit id="file_clipupload.php.warning_head">
 				<source>Upload path error</source>
 			</trans-unit>

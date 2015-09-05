@@ -742,7 +742,7 @@ class FileList extends AbstractRecordList {
 							$flashMessage = \TYPO3\CMS\Core\Resource\Utility\BackendUtility::getFlashMessageForMissingFile($fileObject);
 							$theData[$field] .= $flashMessage->render();
 							// Thumbnails?
-						} elseif ($this->thumbs && $this->isImage($ext)) {
+						} elseif ($this->thumbs && ($this->isImage($ext) || $this->isMediaFile($ext))) {
 							$processedFile = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 							if ($processedFile) {
 								$thumbUrl = $processedFile->getPublicUrl(TRUE);
@@ -790,6 +790,16 @@ class FileList extends AbstractRecordList {
 	 */
 	public function isImage($ext) {
 		return GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($ext));
+	}
+
+	/**
+	 * Returns TRUE if $ext is an media-extension according to $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
+	 *
+	 * @param string $ext File extension
+	 * @return bool
+	 */
+	public function isMediaFile($ext) {
+		return GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'], strtolower($ext));
 	}
 
 	/**

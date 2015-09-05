@@ -62,6 +62,12 @@ if (!\TYPO3\CMS\Core\Core\Bootstrap::usesComposerClassLoading()) {
 		'dumpClassLoadingInformation'
 	);
 }
+$signalSlotDispatcher->connect(
+	TYPO3\CMS\Core\Resource\ResourceStorage::class,
+	\TYPO3\CMS\Core\Resource\Service\FileProcessingService::SIGNAL_PreFileProcess,
+	\TYPO3\CMS\Core\Resource\OnlineMedia\Processing\PreviewProcessing::class,
+	'processFile'
+);
 
 unset($signalSlotDispatcher);
 
@@ -71,6 +77,14 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = \TYPO3\CMS\Core\C
 $rendererRegistry = \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::getInstance();
 $rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer::class);
 $rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer::class);
+$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer::class);
+$rendererRegistry->registerRendererClass(\TYPO3\CMS\Core\Resource\Rendering\VimeoRenderer::class);
+unset($rendererRegistry);
 
 $textExtractorRegistry = \TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry::getInstance();
 $textExtractorRegistry->registerTextExtractor(\TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor::class);
+unset($textExtractorRegistry);
+
+$extractorRegistry = \TYPO3\CMS\Core\Resource\Index\ExtractorRegistry::getInstance();
+$extractorRegistry->registerExtractionService(\TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor::class);
+unset($extractorRegistry);

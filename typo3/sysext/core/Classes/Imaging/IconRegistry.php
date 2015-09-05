@@ -715,6 +715,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/actions/template-new.png',
 			)
 		),
+		'actions-online-media-add' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'cloud',
+			)
+		),
 
 		// Extensions
 		'extensions-extensionmanager-update-script' => array(

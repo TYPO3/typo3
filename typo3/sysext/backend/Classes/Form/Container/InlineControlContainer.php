@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
@@ -172,6 +172,9 @@ class InlineControlContainer extends AbstractContainer {
 		$this->inlineData['nested'][$nameObject] = $this->data['tabAndInlineStack'];
 
 		// If relations are required to be unique, get the uids that have already been used on the foreign side of the relation
+		$uniqueMax = 0;
+		$possibleRecords = [];
+		$uniqueIds = [];
 		if ($config['foreign_unique']) {
 			// If uniqueness *and* selector are set, they should point to the same field - so, get the configuration of one:
 			$selConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($config, $config['foreign_unique']);
@@ -497,6 +500,7 @@ class InlineControlContainer extends AbstractContainer {
 	 */
 	protected function renderPossibleRecordsSelectorTypeGroupDB($conf, &$PA) {
 		$backendUser = $this->getBackendUserAuthentication();
+		$languageService = $this->getLanguageService();
 
 		$config = $PA['fieldConf']['config'];
 		ArrayUtility::mergeRecursiveWithOverrule($config, $conf);
@@ -507,9 +511,9 @@ class InlineControlContainer extends AbstractContainer {
 		$mode = 'db';
 		$showUpload = FALSE;
 		if (!empty($config['appearance']['createNewRelationLinkTitle'])) {
-			$createNewRelationText = $this->getLanguageService()->sL($config['appearance']['createNewRelationLinkTitle'], TRUE);
+			$createNewRelationText = $languageService->sL($config['appearance']['createNewRelationLinkTitle'], TRUE);
 		} else {
-			$createNewRelationText = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
+			$createNewRelationText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.createNewRelation', TRUE);
 		}
 		if (is_array($config['appearance'])) {
 			if (isset($config['appearance']['elementBrowserType'])) {
@@ -539,8 +543,12 @@ class InlineControlContainer extends AbstractContainer {
 				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL) . '
 				' . $createNewRelationText . '
 			</a>';
-
 		$isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
+		$allowedArray = GeneralUtility::trimExplode(',', $allowed, TRUE);
+		$onlineMediaAllowed = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
+		if (!empty($allowedArray)) {
+			$onlineMediaAllowed = array_intersect($allowedArray, $onlineMediaAllowed);
+		}
 		if ($showUpload && $isDirectFileUploadEnabled) {
 			$folder = $backendUser->getDefaultUploadFolder();
 			if (
@@ -557,15 +565,31 @@ class InlineControlContainer extends AbstractContainer {
 					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
 					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
 					><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload">&nbsp;</span>';
-				$item .= $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
+				$item .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', TRUE);
 				$item .= '</a>';
+
+				if (!empty($onlineMediaAllowed)) {
+					$buttonText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.button', TRUE);
+					$placeholder = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', TRUE);
+					$buttonSubmit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', TRUE);
+					$item .= '
+						<span class="btn btn-default t3js-online-media-add-btn"
+							data-file-irre-object="' . htmlspecialchars($objectPrefix) . '"
+							data-online-media-allowed="' . htmlspecialchars(implode(',', $onlineMediaAllowed)) . '"
+							data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
+							title="' . $buttonText . '"
+							data-btn-submit="' . $buttonSubmit . '"
+							data-placeholder="' . $placeholder . '"
+							>
+							'. $this->iconFactory->getIcon('actions-online-media-add', Icon::SIZE_SMALL) . '
+							' . $buttonText . '</span>';
+				}
 			}
 		}
 
 		$item = '<div class="form-control-wrap">' . $item . '</div>';
 		$allowedList = '';
-		$allowedArray = GeneralUtility::trimExplode(',', $allowed, TRUE);
-		$allowedLabel = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', TRUE);
+		$allowedLabel = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.allowedFileExtensions', TRUE);
 		foreach ($allowedArray as $allowedItem) {
 			$allowedList .= '<span class="label label-success">' . strtoupper($allowedItem) . '</span> ';
 		}
@@ -627,7 +651,7 @@ class InlineControlContainer extends AbstractContainer {
 				}
 				$item .= '
 				<span class="input-group-btn">
-					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" . title="' . $createNewRelationText .'">
+					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" title="' . $createNewRelationText .'">
 						' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . $createNewRelationText . '
 					</a>
 				</span>';

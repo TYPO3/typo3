@@ -121,6 +121,12 @@ return [
 		'controller' => Controller\File\FileUploadController::class
 	],
 
+	// Add new online media
+	'online_media' => [
+		'path' => '/online-media',
+		'controller' => Controller\OnlineMediaController::class
+	],
+
 	/** DB Records-related routes */
 	// Register record history module
 	'record_history' => [

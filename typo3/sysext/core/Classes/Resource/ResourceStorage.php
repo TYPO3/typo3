@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Exception\InvalidTargetFolderException;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\Index\Indexer;
@@ -1214,6 +1215,14 @@ class ResourceStorage implements ResourceStorageInterface {
 		if ($this->isOnline()) {
 			// Pre-process the public URL by an accordant slot
 			$this->emitPreGeneratePublicUrlSignal($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
+
+			if (
+				$publicUrl === NULL
+				&& $resourceObject instanceof File
+				&& ($helper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($resourceObject)) !== FALSE
+			) {
+				$publicUrl = $helper->getPublicUrl($resourceObject, $relativeToCurrentScript);
+			}
 
 			// If slot did not handle the signal, use the default way to determine public URL
 			if ($publicUrl === NULL) {
