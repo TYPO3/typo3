@@ -272,9 +272,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
 				$onClick = htmlspecialchars(BackendUtility::editOnClick($params, '', -1));
-				$buttons['edit'] = '<a href="#" onclick="' . $onClick . '" title="'
-					. $lang->getLL('editPage', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-page-open') . '</a>';
+				$buttons['edit'] = '<a href="#" onclick="' . $onClick . '" title="' . $lang->getLL('editPage', TRUE) . '">'
+					. $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)
+					. '</a>';
 			}
 			// Paste
 			if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {

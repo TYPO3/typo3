@@ -514,7 +514,9 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			// Perform some access checks:
 			$a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
 			$a_wp = $GLOBALS['BE_USER']->check('modules', $pageModule);
-			$adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'' . $pageModule . '\'); return false;">' . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL) . '</a>';
+			$adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'' . $pageModule . '\'); return false;">'
+				. $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)
+				. '</a>';
 			$adminLink .= '<a class="btn btn-default" href="#" onclick="top.loadEditId(' . $row['uid'] . ');top.goToModule(\'web_list\'); return false;">' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL) . '</a>';
 			// "View page" icon is added:
 			$adminLink .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($row['uid'], '', BackendUtility::BEgetRootLine($row['uid']))) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';

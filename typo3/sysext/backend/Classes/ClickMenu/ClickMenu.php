@@ -680,7 +680,7 @@ class ClickMenu {
 		$url = BackendUtility::getModuleUrl('record_edit', array(
 			'edit[pages][' . $uid . ']' => 'edit'
 		));
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editPageProperties')), IconUtility::getSpriteIcon('actions-page-open'), $this->urlRefForCM($url, 'returnUrl'), 1);
+		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editPageProperties')), $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 1);
 	}
 
 	/**
@@ -1006,7 +1006,7 @@ class ClickMenu {
 		}
 
 		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
-		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon($iconName), $editOnClick . 'top.nav.refresh();');
+		return $this->linkItem($this->label($type), $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL), $editOnClick . 'top.nav.refresh();');
 	}
 
 	/**

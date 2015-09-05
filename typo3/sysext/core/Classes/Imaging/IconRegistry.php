@@ -305,9 +305,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 		'actions-page-open' => array(
-			'provider' => FontawesomeIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'pencil-square-o',
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-page-open.svg',
 			)
 		),
 		'actions-system-cache-clear-impact-low' => array(

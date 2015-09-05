@@ -1192,11 +1192,9 @@ class PageLayoutController {
 
 				// Edit page properties
 				$editPageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
-				$buttons['edit_page'] = '<a href="#" ' .
-					'onclick="' . $editPageOnClick . '"' .
-					'title="' . $lang->getLL('editPageProperties', TRUE) . '">' .
-					IconUtility::getSpriteIcon('actions-page-open') .
-					'</a>';
+				$buttons['edit_page'] = '<a href="#" onclick="' . $editPageOnClick . '" title="' . $lang->getLL('editPageProperties', TRUE) . '">'
+					. $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)
+					. '</a>';
 			}
 
 			// Add CSH (Context Sensitive Help) icon to tool bar
