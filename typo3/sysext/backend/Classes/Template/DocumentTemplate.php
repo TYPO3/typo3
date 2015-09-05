@@ -668,7 +668,7 @@ function jumpToUrl(URL) {
 
 		if ($shortcutExist) {
 			return '<a class="active" title="">' .
-				IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
+			$this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL) . '</a>';
 		}
 
 		$url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
@@ -677,7 +677,7 @@ function jumpToUrl(URL) {
 
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' .
-			IconUtility::getSpriteIcon('actions-system-shortcut-new') . '</a>';
+			$this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL) . '</a>';
 	}
 
 	/**

@@ -400,6 +400,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'refresh',
 			)
 		),
+		'actions-system-shortcut-new' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/system-shortcut-new.png',
+			)
+		),
 		'actions-system-refresh' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
