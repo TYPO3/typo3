@@ -130,6 +130,10 @@ module.exports = function(grunt) {
 			// Action Icons
 			icons_action: {
 				files: {
+					'<%= paths.backend %>Public/Icons/Action/actions-document-paste-after.svg': '<%= paths.icons %>Action/actions-document-paste-after.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-paste-before.svg': '<%= paths.icons %>Action/actions-document-paste-before.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-paste-into.svg': '<%= paths.icons %>Action/actions-document-paste-into.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-document-paste.svg': '<%= paths.icons %>Action/actions-document-paste.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-cleartranslationcache.svg': '<%= paths.icons %>Action/actions-document-save-cleartranslationcache.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-close.svg': '<%= paths.icons %>Action/actions-document-save-close.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-new.svg': '<%= paths.icons %>Action/actions-document-save-new.svg',

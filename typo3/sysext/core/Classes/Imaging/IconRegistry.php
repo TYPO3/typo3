@@ -118,22 +118,34 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'pencil',
 			)
 		),
-		'actions-document-paste-after' => array(
-			'provider' => FontawesomeIconProvider::class,
+		'actions-document-paste' => array(
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'clipboard',
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-paste.svg',
+			)
+		),
+		'actions-document-paste-after' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-paste-after.svg',
+			)
+		),
+		'actions-document-paste-before' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-paste-before.svg',
+			)
+		),
+		'actions-document-paste-into' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-paste-into.svg',
 			)
 		),
 		'actions-document-select' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'check-square-o',
-			)
-		),
-		'actions-document-paste-into' => array(
-			'provider' => FontawesomeIconProvider::class,
-			'options' => array(
-				'name' => 'clipboard',
 			)
 		),
 		'actions-document-save' => array(
