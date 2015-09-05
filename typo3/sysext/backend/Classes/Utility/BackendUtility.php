@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\PreparedStatement;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -2740,7 +2742,9 @@ class BackendUtility {
 		if ((!empty($helpText) || $hasHelpTextOverload) && ExtensionManagementUtility::isLoaded('cshmanual')) {
 			// If no text was given, just use the regular help icon
 			if ($text == '') {
-				$text = IconUtility::getSpriteIcon('actions-system-help-open');
+				/** @var IconFactory $iconFactory */
+				$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+				$text = $iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL);
 				$abbrClassAdd = '-icon';
 			}
 			$text = '<abbr class="t3-help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';

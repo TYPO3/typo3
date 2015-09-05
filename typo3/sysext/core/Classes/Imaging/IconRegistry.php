@@ -328,6 +328,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-cache-clear-impact-high.svg',
 			)
 		),
+		'actions-system-help-open' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-help-open.svg',
+			)
+		),
 		'actions-system-extension-configure' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

@@ -138,7 +138,8 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save.svg': '<%= paths.icons %>Action/actions-document-save.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-low.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-low.svg',
-					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-medium.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-medium.svg'
+					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-medium.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-medium.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-system-help-open.svg': '<%= paths.icons %>Action/actions-system-help-open.svg'
 				}
 			},
 			// Avatar Icons

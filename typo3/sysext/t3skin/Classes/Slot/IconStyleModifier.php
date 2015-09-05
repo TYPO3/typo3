@@ -81,7 +81,6 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-sqldump' => 'fa-database',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-update' => 'fa-refresh',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-extension-uninstall' => 'fa-minus-square',
-		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-help-open' => 'fa-question-circle',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-list-open' => 'fa-list-alt',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-refresh' => 'fa-refresh',
 		't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-shortcut-new' => 'fa-star',
