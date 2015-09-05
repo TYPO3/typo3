@@ -598,6 +598,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'caret-right',
 			)
 		),
+		'status-status-locked' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'lock',
+			)
+		),
 		'status-status-sorting-asc' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

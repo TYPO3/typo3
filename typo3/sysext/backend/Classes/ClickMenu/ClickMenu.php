@@ -393,7 +393,7 @@ class ClickMenu {
 			$this->rec = array();
 		}
 		// Return the printed elements:
-		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
+		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
 	}
 
 	/**
@@ -453,7 +453,7 @@ class ClickMenu {
 		if (!is_array($menuItems)) {
 			$menuItems = array();
 		}
-		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
+		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
 	}
 
 	/**
@@ -519,7 +519,12 @@ class ClickMenu {
 		if ($this->listFrame) {
 			$addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
 		}
-		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : '')), 'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $uid, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam)) . ');return false;');
+		$icon = $this->iconFactory->getIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : ''), Icon::SIZE_SMALL)->render();
+		return $this->linkItem(
+			$this->label($type),
+			$icon,
+			'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB($table, $uid, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam)) . ');return false;'
+		);
 	}
 
 	/**
@@ -542,7 +547,11 @@ class ClickMenu {
 			$conf = $loc;
 		}
 		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl($table, $uid, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);}';
-		return $this->linkItem($this->label('paste' . $type), IconUtility::getSpriteIcon('actions-document-paste-' . $type), $editOnClick . 'return false;');
+		return $this->linkItem(
+			$this->label('paste' . $type),
+			$this->iconFactory->getIcon('actions-document-paste-' . $type, Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;'
+		);
 	}
 
 	/**
@@ -554,7 +563,11 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_info($table, $uid) {
-		return $this->linkItem($this->label('info'), $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL), 'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . ');');
+		return $this->linkItem(
+			$this->label('info'),
+			$this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render(),
+			'top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . ');'
+		);
 	}
 
 	/**
@@ -567,7 +580,11 @@ class ClickMenu {
 	 */
 	public function DB_history($table, $uid) {
 		$url = BackendUtility::getModuleUrl('record_history', array('element' => $table . ':' . $uid));
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_history')), $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 0);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_history')),
+			$this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render(),
+			$this->urlRefForCM($url, 'returnUrl')
+		);
 	}
 
 	/**
@@ -594,7 +611,11 @@ class ClickMenu {
 		}
 
 		$url = BackendUtility::getModuleUrl('system_BeuserTxPermission', $parameters);
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_perms')), IconUtility::getSpriteIcon('status-status-locked'), $this->urlRefForCM($url), 0);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_perms')),
+			$this->iconFactory->getIcon('status-status-locked', Icon::SIZE_SMALL)->render(),
+			$this->urlRefForCM($url)
+		);
 	}
 
 	/**
@@ -613,8 +634,8 @@ class ClickMenu {
 		$url = BackendUtility::getModuleUrl('web_list', $urlParams, '', TRUE);
 		return $this->linkItem(
 			$this->languageService->makeEntities($this->languageService->getLL('CM_db_list')),
-			$this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL), 'top.nextLoadModuleUrl=' . GeneralUtility::quoteJSvalue($url) . ';top.goToModule(\'web_list\', 1);',
-			0
+			$this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render(),
+			'top.nextLoadModuleUrl=' . GeneralUtility::quoteJSvalue($url) . ';top.goToModule(\'web_list\', 1);'
 		);
 	}
 
@@ -631,7 +652,11 @@ class ClickMenu {
 		// Hardcoded field for tt_content elements.
 		$url = BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $uid;
 		$url .= ($table === 'tt_content' ? '&sys_language_uid=' . (int)$rec['sys_language_uid'] : '');
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_moveWizard' . ($table === 'pages' ? '_page' : ''))), IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-move'), $this->urlRefForCM($url, 'returnUrl'), 0);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_moveWizard' . ($table === 'pages' ? '_page' : ''))),
+			$this->iconFactory->getIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-move', Icon::SIZE_SMALL)->render(),
+			$this->urlRefForCM($url, 'returnUrl')
+		);
 	}
 
 	/**
@@ -650,7 +675,11 @@ class ClickMenu {
 
 		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
 		$url = $table === 'pages' ? BackendUtility::getModuleUrl('db_new', ['id' => $uid, 'pagesOnly' => 1]) : $newContentWizScriptPath . 'id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')), $this->iconFactory->getIcon(($table === 'pages' ? 'actions-page-new' : 'actions-document-new'), Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 0);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')),
+			$this->iconFactory->getIcon(($table === 'pages' ? 'actions-page-new' : 'actions-document-new'), Icon::SIZE_SMALL)->render(),
+			$this->urlRefForCM($url, 'returnUrl')
+		);
 	}
 
 	/**
@@ -666,7 +695,12 @@ class ClickMenu {
 			'columnsOnly' => rawurlencode((implode(',', $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) . ($table === 'pages' ? ',extendToSubpages' : ''))),
 			'edit[' . $table . '][' . $uid . ']' => 'edit'
 		));
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editAccess')), $this->iconFactory->getIcon('actions-document-edit-access', Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 1);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_editAccess')),
+			$this->iconFactory->getIcon('actions-document-edit-access', Icon::SIZE_SMALL)->render(),
+			$this->urlRefForCM($url, 'returnUrl'),
+			1
+		);
 	}
 
 	/**
@@ -680,7 +714,12 @@ class ClickMenu {
 		$url = BackendUtility::getModuleUrl('record_edit', array(
 			'edit[pages][' . $uid . ']' => 'edit'
 		));
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_editPageProperties')), $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 1);
+		return $this->linkItem(
+			$this->languageService->makeEntities($this->languageService->getLL('CM_editPageProperties')),
+			$this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render(),
+			$this->urlRefForCM($url, 'returnUrl'),
+			1
+		);
 	}
 
 	/**
@@ -696,7 +735,7 @@ class ClickMenu {
 		$newPageModule = trim($this->backendUser->getTSConfigVal('options.overridePageModule'));
 		$pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 		$loc = 'top.content.list_frame';
-		$theIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+		$theIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 
 		$link = BackendUtility::getModuleUrl('record_edit', array(
 			'edit[' . $table . '][' . $uid . ']' => 'edit'
@@ -724,7 +763,7 @@ class ClickMenu {
 			? GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('record_edit', array('edit[' . $table . '][-' . $uid . ']' => 'new')) . '&returnUrl=') . '+top.rawurlencode(' . $location . '.pathname+' . $location . '.search)'
 			: GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', array('id' => (int)$uid)));
 		$editOnClick = 'if(' . $frame . '){' . $frame . '.location.href=' . $module . ';}';
-		$icon = IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new');
+		$icon = $this->iconFactory->getIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new', Icon::SIZE_SMALL)->render();
 		return $this->linkItem($this->label('new'), $icon, $editOnClick);
 	}
 
@@ -740,7 +779,7 @@ class ClickMenu {
 	public function DB_delete($table, $uid, $elInfo) {
 		$loc = 'top.content.list_frame';
 		if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord'))))) . ')';
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')))) . ')';
 		} else {
 			$conf = '1==1';
 		}
@@ -753,7 +792,11 @@ class ClickMenu {
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
 		}
-		return $this->linkItem($this->label('delete'), $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL), $editOnClick . 'return false;');
+		return $this->linkItem(
+			$this->label('delete'),
+			$this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;'
+		);
 	}
 
 	/**
@@ -765,7 +808,7 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_view($id, $anchor = '') {
-		$icon = $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL);
+		$icon = $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render();
 		return $this->linkItem($this->label('view'), $icon, BackendUtility::viewOnClick($id, '', NULL, $anchor) . ';');
 	}
 
@@ -777,7 +820,10 @@ class ClickMenu {
 	 * @internal
 	 */
 	public function DB_tempMountPoint($page_id) {
-		return $this->linkItem($this->label('tempMountPoint'), IconUtility::getSpriteIcon('apps-pagetree-page-mountpoint'), 'if (top.content.nav_frame) {
+		return $this->linkItem(
+			$this->label('tempMountPoint'),
+			$this->iconFactory->getIcon('apps-pagetree-page-mountpoint', Icon::SIZE_SMALL)->render(),
+			'if (top.content.nav_frame) {
 				var node = top.TYPO3.Backend.NavigationContainer.PageTree.getSelected();
 				if (node === null) {
 					return false;
@@ -830,7 +876,12 @@ class ClickMenu {
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
 		}
-		return $this->linkItem($title, $this->iconFactory->getIcon('actions-edit-' . ($rec[$flagField] ? 'un' : '') . 'hide', Icon::SIZE_SMALL), $editOnClick . 'return false;', 1);
+		return $this->linkItem(
+			$title,
+			$this->iconFactory->getIcon('actions-edit-' . ($rec[$flagField] ? 'un' : '') . 'hide', Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;',
+			1
+		);
 	}
 
 	/***************************************
@@ -1006,7 +1057,11 @@ class ClickMenu {
 		}
 
 		$editOnClick = 'if(' . $loc . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($scriptUrl . '&target=' . rawurlencode($path)) . ($noReturnUrl ? '' : '+\'&returnUrl=\'+top.rawurlencode(' . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
-		return $this->linkItem($this->label($type), $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL), $editOnClick . 'top.nav.refresh();');
+		return $this->linkItem(
+			$this->label($type),
+			$this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'top.nav.refresh();'
+		);
 	}
 
 	/**
@@ -1029,7 +1084,11 @@ class ClickMenu {
 		if ($this->listFrame) {
 			$addParam['reloadListFrame'] = $this->alwaysContentFrame ? 2 : 1;
 		}
-		return $this->linkItem($this->label($type), IconUtility::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : '')), 'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlFile($path, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam)) . ');return false;');
+		return $this->linkItem(
+			$this->label($type),
+			$this->iconFactory->getIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : ''), Icon::SIZE_SMALL)->render(),
+			'TYPO3.ClickMenu.fetch(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlFile($path, ($type === 'copy' ? 1 : 0), ($isSel == $type), $addParam)) . ');return false;'
+		);
 	}
 
 	/**
@@ -1052,7 +1111,11 @@ class ClickMenu {
 			GeneralUtility::quoteJSvalue(
 				'&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode()
 			) . ';};';
-		return $this->linkItem($this->label('delete'), $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL), $editOnClick . 'return false;');
+		return $this->linkItem(
+			$this->label('delete'),
+			$this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;'
+		);
 	}
 
 	/**
@@ -1072,7 +1135,11 @@ class ClickMenu {
 			$conf = $loc;
 		}
 		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=' . GeneralUtility::quoteJSvalue($this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=') . '+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  };top.nav.refresh();';
-		return $this->linkItem($this->label('pasteinto'), $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL), $editOnClick . 'return false;');
+		return $this->linkItem(
+			$this->label('pasteinto'),
+			$this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;'
+		);
 	}
 
 	/**
@@ -1157,7 +1224,11 @@ class ClickMenu {
 				'&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' .
 				$this->backendUser->veriCode()
 			) . ';};top.nav.refresh();';
-		return $this->linkItem($this->label($action . 'Page_' . $into), IconUtility::getSpriteIcon('actions-document-paste-' . $into), $editOnClick . 'return false;', 0);
+		return $this->linkItem(
+			$this->label($action . 'Page_' . $into),
+			$this->iconFactory->getIcon('actions-document-paste-' . $into, Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;'
+		);
 	}
 
 	/**
@@ -1178,7 +1249,11 @@ class ClickMenu {
 				'&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' .
 				$this->backendUser->veriCode()
 			) . ';};top.nav.refresh();';
-		return $this->linkItem($this->label($action . 'Folder_into'), IconUtility::getSpriteIcon('apps-pagetree-drag-move-into'), $editOnClick . 'return false;', 0);
+		return $this->linkItem(
+			$this->label($action . 'Folder_into'),
+			$this->iconFactory->getIcon('apps-pagetree-drag-move-into', Icon::SIZE_SMALL)->render(),
+			$editOnClick . 'return false;'
+		);
 	}
 
 	/***************************************
