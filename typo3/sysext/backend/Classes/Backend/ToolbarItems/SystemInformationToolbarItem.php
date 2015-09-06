@@ -17,7 +17,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use \TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -275,9 +276,10 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	 * @return string Icon HTML
 	 */
 	public function getItem() {
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo', TRUE);
-		return IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $title))
-				. '<span id="t3js-systeminformation-counter" class="badge"></span>';
+		$icon = $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL);
+		return '<span title="' . $title . '">' . $icon . '<span id="t3js-systeminformation-counter" class="badge"></span></span>';
 	}
 
 	/**
