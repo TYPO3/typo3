@@ -44,6 +44,7 @@ class ContextMenuAction {
 	 * Class
 	 *
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	protected $class = '';
 
@@ -134,8 +135,10 @@ class ContextMenuAction {
 	 * Returns the class
 	 *
 	 * @return string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getClass() {
+		GeneralUtility::logDeprecatedFunction();
 		return $this->class;
 	}
 
@@ -143,8 +146,10 @@ class ContextMenuAction {
 	 * Sets the class
 	 *
 	 * @param string $class
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function setClass($class) {
+		GeneralUtility::logDeprecatedFunction();
 		$this->class = $class;
 	}
 
@@ -245,7 +250,6 @@ class ContextMenuAction {
 			'label' => $this->getLabel(),
 			'id' => $this->getId(),
 			'icon' => $this->getIcon(),
-			'class' => $this->getClass(),
 			'callbackAction' => $this->getCallbackAction(),
 			'type' => $this->getType(),
 			'customAttributes' => $this->getCustomAttributes()

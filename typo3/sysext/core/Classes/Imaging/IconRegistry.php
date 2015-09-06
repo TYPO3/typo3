@@ -394,6 +394,24 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-page-open.svg',
 			)
 		),
+		'actions-pagetree-collapse' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-right',
+			)
+		),
+		'actions-pagetree-expand' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-down',
+			)
+		),
+		'actions-pagetree-mountroot' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'anchor',
+			)
+		),
 		'actions-selection-delete' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -550,6 +568,14 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'empty-empty',
+			)
+		),
+
+		// Miscellaneous icons
+		'miscellaneous-placeholder' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Miscellaneous/miscellaneous-placeholder.svg',
 			)
 		),
 

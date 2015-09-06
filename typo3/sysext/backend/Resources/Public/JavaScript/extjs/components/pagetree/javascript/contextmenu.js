@@ -135,8 +135,7 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 						text: contextMenuConfiguration[singleAction]['label'],
 						cls: 'contextMenu-subMenu',
 						menu: subMenu,
-						icon: contextMenuConfiguration[singleAction]['icon'],
-						iconCls: contextMenuConfiguration[singleAction]['class']
+						icon: contextMenuConfiguration[singleAction]['icon']
 					};
 				}
 			} else if (contextMenuConfiguration[singleAction]['type'] === 'divider') {
@@ -151,15 +150,12 @@ TYPO3.Components.PageTree.ContextMenu = Ext.extend(Ext.menu.Menu, {
 					var component = {
 						'text': contextMenuConfiguration[singleAction]['label'],
 						'icon': contextMenuConfiguration[singleAction]['icon'],
-						'iconCls': contextMenuConfiguration[singleAction]['class'],
 						'callbackAction': contextMenuConfiguration[singleAction]['callbackAction'],
 						'customAttributes': contextMenuConfiguration[singleAction]['customAttributes']
 					};
 					component.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
 						'<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}">',
-							'<span class="{hrefTarget}">',
-								'<span class="x-menu-item-icon" unselectable="on"><span class="{iconCls}"></span></span>',
-							'</span>',
+							'<span class="x-menu-item-icon" unselectable="on">{icon}</span>',
 							'<span class="x-menu-item-text">{text}</span>',
 						'</a>'
 					);

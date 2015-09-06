@@ -21,7 +21,7 @@ if (TYPO3_MODE === 'BE') {
 		9100 {
 			name = exportT3d
 			label = LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:export
-			spriteIcon = actions-document-export-t3d
+			iconName = actions-document-export-t3d
 			callbackAction = exportT3d
 		}
 
@@ -29,7 +29,7 @@ if (TYPO3_MODE === 'BE') {
 		9200 {
 			name = importT3d
 			label = LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:import
-			spriteIcon = actions-document-import-t3d
+			iconName = actions-document-import-t3d
 			callbackAction = importT3d
 		}
 	';
