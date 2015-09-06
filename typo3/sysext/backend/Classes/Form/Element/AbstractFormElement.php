@@ -650,7 +650,7 @@ abstract class AbstractFormElement extends AbstractNode {
 					onClick="' . $rOnClickInline . '"
 					data-fieldname="' . $fName . '"
 					title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remove_selected')) . '">
-					' . IconUtility::getSpriteIcon('actions-selection-delete') . '
+					' . $this->iconFactory->getIcon('actions-selection-delete', Icon::SIZE_SMALL) . '
 				</a>';
 		}
 

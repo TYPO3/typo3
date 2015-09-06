@@ -376,6 +376,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-page-open.svg',
 			)
 		),
+		'actions-selection-delete' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'remove',
+			)
+		),
 		'actions-system-cache-clear-impact-low' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
