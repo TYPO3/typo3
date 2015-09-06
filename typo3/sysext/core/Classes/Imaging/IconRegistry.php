@@ -514,16 +514,16 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'list-alt',
 			)
 		),
+		'actions-system-shortcut-new' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'star',
+			)
+		),
 		'actions-version-open' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
 				'name' => 'refresh',
-			)
-		),
-		'actions-system-shortcut-new' => array(
-			'provider' => BitmapIconProvider::class,
-			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/actions/system-shortcut-new.png',
 			)
 		),
 		'actions-system-tree-search-open' => array(

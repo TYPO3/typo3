@@ -666,9 +666,10 @@ function jumpToUrl(URL) {
 		$shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
 		$shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
 
+		$icon = '<span>' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</span>';
+
 		if ($shortcutExist) {
-			return '<a class="active" title="">' .
-			$this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL) . '</a>';
+			return '<a class="active" title="">' . $icon . '</a>';
 		}
 
 		$url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
@@ -676,8 +677,7 @@ function jumpToUrl(URL) {
 			', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
 
 		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' .
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' .
-			$this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL) . '</a>';
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', TRUE) . '">' . $icon . '</a>';
 	}
 
 	/**
