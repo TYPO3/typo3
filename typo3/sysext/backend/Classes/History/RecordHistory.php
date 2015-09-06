@@ -442,7 +442,7 @@ class RecordHistory {
 			// Build up single line
 			$singleLine = array();
 			// Diff link
-			$image = IconUtility::getSpriteIcon('actions-document-history-open', array('title' => $GLOBALS['LANG']->getLL('sumUpChanges', TRUE)));
+			$image = '<span title="' . $GLOBALS['LANG']->getLL('sumUpChanges', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</span>';
 			$singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
 			// remove first link
 			$singleLine[] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
