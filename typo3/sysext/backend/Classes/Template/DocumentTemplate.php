@@ -569,7 +569,7 @@ function jumpToUrl(URL) {
 			'uPT' => 1,
 			'vC' => $beUser->veriCode()
 		];
-		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $params . BackendUtility::getUrlToken('tceAction') . '&redirect=';
+		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . $params . '&redirect=';
 		if ((int)$redirectUrl === -1) {
 			$url = GeneralUtility::quoteJSvalue($url) . '+T3_THIS_LOCATION';
 		} else {

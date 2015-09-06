@@ -1111,8 +1111,10 @@ class FormEngine {
 	 * @param string $formName Context of the token
 	 * @param string $tokenName The name of the token GET/POST variable
 	 * @return string A complete input field
+	 * @deprecated since TYPO3 7, will be removed in TYPO3 8. All backend modules and routes are secured by default now. If you need a form field with a token, use the form protection directly.
 	 */
 	static public function getHiddenTokenField($formName = 'securityToken', $tokenName = 'formToken') {
+		GeneralUtility::logDeprecatedFunction();
 		$formprotection = FormProtectionFactory::get();
 		return '<input type="hidden" name="' . $tokenName . '" value="' . $formprotection->generateToken($formName) . '" />';
 	}

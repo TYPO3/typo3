@@ -748,7 +748,7 @@ class ClickMenu {
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
-				'&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction')
+				'&cmd[' . $table . '][' . $uid . '][delete]=1&prErr=1&vC=' . $this->backendUser->veriCode()
 			) . ';};';
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
@@ -825,7 +825,7 @@ class ClickMenu {
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
-				'&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction')
+				'&data[' . $table . '][' . $uid . '][' . $flagField . ']=' . ($rec[$flagField] ? 0 : 1) . '&prErr=1&vC=' . $this->backendUser->veriCode()
 			) . ';};';
 		if ($table === 'pages') {
 			$editOnClick .= 'top.nav.refresh.defer(500, top.nav);';
@@ -1050,7 +1050,7 @@ class ClickMenu {
 			GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') . '&redirect=') . '+top.rawurlencode(' .
 			$this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
-				'&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction')
+				'&file[delete][0][data]=' . rawurlencode($path) . '&vC=' . $this->backendUser->veriCode()
 			) . ';};';
 		return $this->linkItem($this->label('delete'), $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL), $editOnClick . 'return false;');
 	}
@@ -1155,7 +1155,7 @@ class ClickMenu {
 			$this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
 				'&cmd[pages][' . $srcUid . '][' . $action . ']=' . $negativeSign . $dstUid . '&prErr=1&vC=' .
-				$this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction')
+				$this->backendUser->veriCode()
 			) . ';};top.nav.refresh();';
 		return $this->linkItem($this->label($action . 'Page_' . $into), IconUtility::getSpriteIcon('actions-document-paste-' . $into), $editOnClick . 'return false;', 0);
 	}
@@ -1176,7 +1176,7 @@ class ClickMenu {
 			$this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search)+' .
 			GeneralUtility::quoteJSvalue(
 				'&file[' . $action . '][0][data]=' . $srcPath . '&file[' . $action . '][0][target]=' . $dstPath . '&prErr=1&vC=' .
-				$this->backendUser->veriCode() . BackendUtility::getUrlToken('tceAction')
+				$this->backendUser->veriCode()
 			) . ';};top.nav.refresh();';
 		return $this->linkItem($this->label($action . 'Folder_into'), IconUtility::getSpriteIcon('apps-pagetree-drag-move-into'), $editOnClick . 'return false;', 0);
 	}

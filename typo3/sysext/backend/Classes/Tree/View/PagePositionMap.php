@@ -488,9 +488,9 @@ class PagePositionMap {
 	public function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang = 0) {
 		$table = 'tt_content';
 		if (is_array($row)) {
-			$location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction');
+			$location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=-' . $row['uid'] . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode();
 		} else {
-			$location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode() . BackendUtility::getUrlToken('tceAction');
+			$location = BackendUtility::getModuleUrl('tce_db') . '&cmd[' . $table . '][' . $moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&data[' . $table . '][' . $moveUid . '][colPos]=' . $vv . '&prErr=1&vC=' . $GLOBALS['BE_USER']->veriCode();
 		}
 		$location .= '&redirect=' . rawurlencode($this->R_URI);
 		// returns to prev. page

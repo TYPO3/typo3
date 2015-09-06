@@ -2426,7 +2426,6 @@ class ElementBrowser {
 			. '&bparams=' . rawurlencode($this->bparams)
 			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
-		$code .= FormEngine::getHiddenTokenField('tceAction');
 		$code .= '
 			<div id="c-override">
 				<label>
@@ -2494,7 +2493,6 @@ class ElementBrowser {
 			. '&bparams=' . rawurlencode($this->bparams)
 			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />'
-			. FormEngine::getHiddenTokenField('tceAction')
 			. '<input class="btn btn-default" type="submit" name="submit" value="'
 			. $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />';
 		$code .= '</td>

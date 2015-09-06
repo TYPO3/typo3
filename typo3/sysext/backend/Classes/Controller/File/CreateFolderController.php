@@ -184,7 +184,6 @@ class CreateFolderController implements \TYPO3\CMS\Core\Http\ControllerInterface
 				</div><div class="form-group">
 					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.submit', TRUE) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				';
 			// Switching form tags:
@@ -225,7 +224,6 @@ class CreateFolderController implements \TYPO3\CMS\Core\Http\ControllerInterface
 				<div class="form-group">
 					<input class="btn btn-default" type="submit" value="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile_submit', TRUE) . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 				';
 			$pageContent .= $this->doc->section($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_newfolder.php.newfile'), $code);

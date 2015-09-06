@@ -741,7 +741,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 				}
 			}
 			function deleteRecord(table,id,url) {	//
-				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1' . BackendUtility::getUrlToken('tceAction') . '&redirect="+escape(url)+"&vC=' . $beUser->veriCode() . '&prErr=1&uPT=1";
+				window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $beUser->veriCode() . '&prErr=1&uPT=1";
 			}
 		';
 
@@ -1278,7 +1278,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 			<input type="hidden" name="closeDoc" value="0" />
 			<input type="hidden" name="doSave" value="0" />
 			<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
-			<input type="hidden" name="_scrollPosition" value="" />' . FormEngine::getHiddenTokenField('editRecord');
+			<input type="hidden" name="_scrollPosition" value="" />';
 		return $formContent;
 	}
 
@@ -1370,13 +1370,13 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 								$redirectUrl = BackendUtility::getModuleUrl('record_edit', array(
 									'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $lang['uid'],
 									'returnUrl' => $this->retUrl
-								)) . BackendUtility::getUrlToken('editRecord');
+								));
 								$href = $this->doc->issueCommand('&cmd[' . $table . '][' . $rowsByLang[0]['uid'] . '][localize]=' . $lang['uid'], $redirectUrl);
 							} else {
 								$href = BackendUtility::getModuleUrl('record_edit', array(
 									'edit[' . $table . '][' . $rowsByLang[$lang['uid']]['uid'] . ']' => 'edit',
 									'returnUrl' => $this->retUrl
-								)) . BackendUtility::getUrlToken('editRecord');
+								));
 							}
 							$langSelItems[$lang['uid']] = '
 								<option value="' . htmlspecialchars($href) . '"' . ($currentLanguage == $lang['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($lang['title'] . $newTranslation)) . '</option>';
@@ -1411,7 +1411,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 					'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
 					'returnUrl' => GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))
 				));
-				HttpUtility::redirect($location . BackendUtility::getUrlToken('editRecord'));
+				HttpUtility::redirect($location);
 			}
 		}
 	}
@@ -1670,10 +1670,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 
 		// Checks, if a save button has been clicked (or the doSave variable is sent)
 		if ($this->doProcessData()) {
-			$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-			if ($formProtection->validateToken(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('formToken'), 'editRecord')) {
-				$this->processData();
-			}
+			$this->processData();
 		}
 
 		$this->init();

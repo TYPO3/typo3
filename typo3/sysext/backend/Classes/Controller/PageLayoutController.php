@@ -544,7 +544,7 @@ class PageLayoutController {
 
 				function deleteRecord(table,id,url) {	//
 					if (confirm(' . GeneralUtility::quoteJSvalue($lang->getLL('deleteWarning')) . ')) {
-						window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $this->getBackendUser()->veriCode() . BackendUtility::getUrlToken('tceAction') . '&prErr=1&uPT=1";
+						window.location.href = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $this->getBackendUser()->veriCode() . '&prErr=1&uPT=1";
 					}
 					return false;
 				}
@@ -905,7 +905,7 @@ class PageLayoutController {
 							'returnUrl' => $this->returnUrl
 						)
 					) : $this->R_URI)) . '" />
-					' . FormEngine::getHiddenTokenField('tceAction');
+					';
 				// Add JavaScript as needed around the form:
 				$theCode = $tceForms->printNeededJSFunctions_top() . $theCode . $tceForms->printNeededJSFunctions();
 				// Add warning sign if record was "locked":

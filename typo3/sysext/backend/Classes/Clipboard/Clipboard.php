@@ -606,7 +606,7 @@ class Clipboard {
 		if (is_array($update)) {
 			$urlParameters['CB[update]'] = $update;
 		}
-		return BackendUtility::getModuleUrl($table === '_FILE' ? 'tce_file' : 'tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
+		return BackendUtility::getModuleUrl($table === '_FILE' ? 'tce_file' : 'tce_db', $urlParameters);
 	}
 
 	/**
@@ -627,7 +627,7 @@ class Clipboard {
 		if ($setRedirect) {
 			$urlParameters['redirect'] = GeneralUtility::linkThisScript(array('CB' => ''));
 		}
-		return BackendUtility::getModuleUrl($file ? 'tce_file' : 'tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
+		return BackendUtility::getModuleUrl($file ? 'tce_file' : 'tce_db', $urlParameters);
 	}
 
 	/**

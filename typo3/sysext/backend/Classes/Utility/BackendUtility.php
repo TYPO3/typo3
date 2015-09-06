@@ -3363,8 +3363,10 @@ class BackendUtility {
 	 * @param string $tokenName The name of the token GET variable
 	 * @throws \InvalidArgumentException
 	 * @return string A URL GET variable including ampersand
+	 * @deprecated since TYPO3 7, will be removed in TYPO3 8. All backend modules and routes are secured by default now. If you need a url parameter with a token, use the form protection directly.
 	 */
 	static public function getUrlToken($formName = 'securityToken', $tokenName = 'formToken') {
+		GeneralUtility::logDeprecatedFunction();
 		$formProtection = FormProtectionFactory::get();
 		return '&' . $tokenName . '=' . $formProtection->generateToken($formName);
 	}

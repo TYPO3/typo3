@@ -248,12 +248,8 @@ class SimpleDataHandlerController implements \TYPO3\CMS\Core\Http\ControllerInte
 	 * @return \Psr\Http\Message\ResponseInterface $response
 	 */
 	public function processRequest(ServerRequestInterface $request) {
-		$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
-		$formToken = isset($request->getQueryParams()['formToken']) ? $request->getQueryParams()['formToken'] : $request->getParsedBody()['formToken'];
-		if ($formProtection->validateToken($formToken, 'tceAction')) {
-			$this->initClipboard();
-			$this->main();
-		}
+		$this->initClipboard();
+		$this->main();
 
 		// Write errors to flash message queue
 		if ($this->prErr) {

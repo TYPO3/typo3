@@ -175,7 +175,6 @@ class ReplaceFileController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 					<input class="btn btn-primary" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_replace.php.submit', TRUE) . '" />
 					<input class="btn btn-danger" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE) . '" onclick="backToList(); return false;" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
-					' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				</div>
 		';
 		$code .= '</form>';

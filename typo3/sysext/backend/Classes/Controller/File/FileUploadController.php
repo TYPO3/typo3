@@ -172,7 +172,6 @@ class FileUploadController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		$content .= '
 			<div id="c-submit">
 				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
-				' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction') . '
 				<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.php.submit', TRUE) . '" />
 			</div>
 		';

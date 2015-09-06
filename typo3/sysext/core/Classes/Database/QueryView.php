@@ -555,7 +555,7 @@ class QueryView {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => GeneralUtility::linkThisScript(array())
-				)) . BackendUtility::getUrlToken('tceAction') . '" title="' . $GLOBALS['LANG']-getLL('undelete_only', TRUE) . '">';
+				)) . '" title="' . $GLOBALS['LANG']-getLL('undelete_only', TRUE) . '">';
 			$out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL) . '</a>';
 			$formEngineParameters = array(
 				'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
@@ -565,7 +565,7 @@ class QueryView {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => $redirectUrl
-				)) . BackendUtility::getUrlToken('tceAction') . '">';
+				)) . '">';
 			$out .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-restore-edit', array('title' => 'undelete and edit')) . '</a>';
 		}
 		$_params = array($table => $row);

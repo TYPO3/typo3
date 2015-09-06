@@ -75,7 +75,7 @@ class RemoveUserViewHelper extends AbstractViewHelper implements CompilableInter
 			'uPT' => 1,
 			'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
 		];
-		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction');
+		$url = BackendUtility::getModuleUrl('tce_db', $urlParameters);
 
 		return '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars($url) . '"'
 			. ' data-severity="warning"'

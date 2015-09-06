@@ -709,7 +709,7 @@ class FileList extends AbstractRecordList {
 										'justLocalized' => 'sys_file_metadata:' . $metaDataRecord['uid'] . ':' . $languageId,
 										'returnUrl' => $this->listURL()
 									];
-									$returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters) . BackendUtility::getUrlToken('editRecord');
+									$returnUrl = BackendUtility::getModuleUrl('record_edit', $parameters);
 									$href = $this->fileListController->doc->issueCommand(
 										'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
 										$returnUrl
@@ -955,7 +955,7 @@ class FileList extends AbstractRecordList {
 				$confirmationCheck = '1 == 1';
 			}
 
-			$removeOnClick = 'if (' . $confirmationCheck . ') { top.content.list_frame.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') .'&file[delete][0][data]=' . rawurlencode($fileOrFolderObject->getCombinedIdentifier()) . '&vC=' . $this->getBackendUser()->veriCode() . BackendUtility::getUrlToken('tceAction') . '&redirect=') . '+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);};';
+			$removeOnClick = 'if (' . $confirmationCheck . ') { top.content.list_frame.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('tce_file') .'&file[delete][0][data]=' . rawurlencode($fileOrFolderObject->getCombinedIdentifier()) . '&vC=' . $this->getBackendUser()->veriCode() . '&redirect=') . '+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);};';
 
 			$cells['delete'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($removeOnClick) . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.delete') . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</a>';
 		} else {

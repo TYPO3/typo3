@@ -196,7 +196,7 @@ class RteController extends AbstractWizardController implements \TYPO3\CMS\Core\
 				</table>';
 			// Adding hidden fields:
 			$formContent .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI) . '" />
-						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />' . FormEngine::getHiddenTokenField('tceAction');
+						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />';
 			// Finally, add the whole setup:
 			$this->content .= $formEngine->printNeededJSFunctions_top() . $formContent . $formEngine->printNeededJSFunctions();
 		} else {

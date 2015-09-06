@@ -68,7 +68,7 @@ class IssueCommandViewHelper extends AbstractViewHelper implements CompilableInt
 			$parametersArray = GeneralUtility::explodeUrl2Array($arguments['parameters']);
 			$urlParameters += $parametersArray;
 		}
-		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters) . BackendUtility::getUrlToken('tceAction'));
+		return htmlspecialchars(BackendUtility::getModuleUrl('tce_db', $urlParameters));
 	}
 
 }

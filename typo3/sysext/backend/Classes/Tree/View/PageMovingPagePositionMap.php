@@ -40,7 +40,7 @@ class PageMovingPagePositionMap extends PagePositionMap {
 	 * @return string Onclick attribute content
 	 */
 	public function onClickEvent($pid, $newPagePID) {
-		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') . '&cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&redirect=' . rawurlencode($this->R_URI) . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction')) . ';return false;';
+		return 'window.location.href=' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tce_db') . '&cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&redirect=' . rawurlencode($this->R_URI) . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode()) . ';return false;';
 	}
 
 	/**
