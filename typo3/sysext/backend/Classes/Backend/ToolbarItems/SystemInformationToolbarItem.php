@@ -79,12 +79,18 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	protected $signalSlotDispatcher = NULL;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		if (!$this->checkAccess()) {
 			return;
 		}
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
 		$extPath = ExtensionManagementUtility::extPath('backend');
 		/* @var $view StandaloneView */
@@ -276,9 +282,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	 * @return string Icon HTML
 	 */
 	public function getItem() {
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo', TRUE);
-		$icon = $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL);
+		$icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL);
 		return '<span title="' . $title . '">' . $icon . '<span id="t3js-systeminformation-counter" class="badge"></span></span>';
 	}
 

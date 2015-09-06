@@ -3353,7 +3353,9 @@ class BackendUtility {
 	 * @return string A complete <a href=""> tag
 	 */
 	static public function getListViewLink($urlParameters = array(), $linkTitle = '', $linkText = '') {
-		return '<a href="' . htmlspecialchars(self::getModuleUrl('web_list', $urlParameters)) . '" title="' . htmlspecialchars($linkTitle) . '">' . IconUtility::getSpriteIcon('actions-system-list-open') . htmlspecialchars($linkText) . '</a>';
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		return '<a href="' . htmlspecialchars(self::getModuleUrl('web_list', $urlParameters)) . '" title="' . htmlspecialchars($linkTitle) . '">' . $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL) . htmlspecialchars($linkText) . '</a>';
 	}
 
 	/**

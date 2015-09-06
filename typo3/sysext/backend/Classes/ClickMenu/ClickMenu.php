@@ -613,7 +613,7 @@ class ClickMenu {
 		$url = BackendUtility::getModuleUrl('web_list', $urlParams, '', TRUE);
 		return $this->linkItem(
 			$this->languageService->makeEntities($this->languageService->getLL('CM_db_list')),
-			IconUtility::getSpriteIcon('actions-system-list-open'), 'top.nextLoadModuleUrl=' . GeneralUtility::quoteJSvalue($url) . ';top.goToModule(\'web_list\', 1);',
+			$this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL), 'top.nextLoadModuleUrl=' . GeneralUtility::quoteJSvalue($url) . ';top.goToModule(\'web_list\', 1);',
 			0
 		);
 	}

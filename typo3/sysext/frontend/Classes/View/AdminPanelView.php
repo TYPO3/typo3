@@ -676,7 +676,7 @@ class AdminPanelView {
 				'id' => $id,
 				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 			);
-			$icon = IconUtility::getSpriteIcon('actions-system-list-open', array('title' => $this->extGetLL('edit_db_list', FALSE)));
+			$icon = '<span title="' . $this->extGetLL('edit_db_list', FALSE) . '">' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</span>';
 			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', $urlParams)) . '">' . $icon . '</a>';
 		}
 

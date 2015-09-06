@@ -611,7 +611,7 @@ class ElementInformationController implements \TYPO3\CMS\Core\Http\ControllerInt
 			$url = BackendUtility::getModuleUrl('web_list', array('id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')));
 			$pageActionIcons .= '
 				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
-					' . IconUtility::getSpriteIcon('actions-system-list-open') . '
+					' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL) . '
 				</a>';
 
 			// View page button
