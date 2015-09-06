@@ -127,7 +127,9 @@ class RequestHandler implements RequestHandlerInterface {
 		// Initialize admin panel since simulation settings are required here:
 		if ($this->controller->isBackendUserLoggedIn()) {
 			$GLOBALS['BE_USER']->initializeAdminPanel();
-			$this->bootstrap->loadExtensionTables(TRUE);
+			$this->bootstrap
+					->initializeBackendRouter()
+					->loadExtensionTables(TRUE);
 		} else {
 			$this->bootstrap->loadCachedTca();
 		}
