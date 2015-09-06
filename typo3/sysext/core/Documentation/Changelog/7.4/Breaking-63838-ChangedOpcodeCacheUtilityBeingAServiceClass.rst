@@ -27,6 +27,6 @@ Create an instance of ``OpcodeCacheService`` and call its method by the object o
 
 Example:
 
-.. code-block:: [php]
+.. code-block:: php
 
 	GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($cacheEntryPathAndFilename);

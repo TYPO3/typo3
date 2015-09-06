@@ -12,6 +12,7 @@ The CE table (processing) configuration
 * ``Text enclosure``
 * ``Table header position``
 * ``Use table footer``
+
 were in EXT:css_styled_content configured/saved in a flexform. This has now been moved to regular database fields.
 
 

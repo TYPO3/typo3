@@ -9,7 +9,7 @@ The move buttons of the TCA type ``group`` can now be explicitly disabled with t
 ``hideMoveIcons`` option. Before these icons where only automatically removed if
 ``maxitems`` was set to 1.
 
-.. code-block:: [php]
+.. code-block:: php
 
 	'options' => array(
 		'label' => 'Options',
