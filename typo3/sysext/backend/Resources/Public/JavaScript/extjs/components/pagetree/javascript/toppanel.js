@@ -434,7 +434,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		var topPanelButton = new Ext.Button({
 			id: this.id + '-button-newNode',
 			cls: this.id + '-button',
-			iconCls: TYPO3.Components.PageTree.Sprites.NewNode,
+			text: TYPO3.Components.PageTree.Icons.NewNode,
 			tooltip: TYPO3.Components.PageTree.LLL.buttonNewNode
 		});
 

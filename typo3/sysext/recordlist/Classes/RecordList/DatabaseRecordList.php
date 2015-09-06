@@ -977,7 +977,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$permsAdditional = ($table === 'pages' ? 8 : 16);
 						if ($this->calcPerms & $permsAdditional && $this->showNewRecLink($table)) {
 							$spriteIcon = $table === 'pages'
-								? IconUtility::getSpriteIcon('actions-page-new')
+								? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
 								: IconUtility::getSpriteIcon('actions-document-new');
 							if ($table === 'tt_content' && $this->newWizards) {
 								// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
@@ -1300,7 +1300,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
 					if ($this->showNewRecLink($table)) {
 						$params = '&edit[' . $table . '][' . -($row['_MOVE_PLH'] ? $row['_MOVE_PLH_uid'] : $row['uid']) . ']=new';
-						$icon = ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-new') : $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
+						$icon = ($table == 'pages' ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
 						$newAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 							. '" title="' . $this->getLanguageService()->getLL('new' . ($table == 'pages ' ? 'Page' : 'Record'), TRUE) . '">'
 							. $icon . '</a>';

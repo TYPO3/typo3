@@ -639,8 +639,9 @@ class AdminPanelView {
 			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_move_page') . '">' . $icon . '</a>';
 		}
 		if ($perms & Permission::PAGE_NEW) {
-			$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->extGetLL('edit_newPage', FALSE)));
-			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '">' . $icon . '</a>';
+			$toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '" title="' . $this->extGetLL('edit_newPage') . '">'
+				. $iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
+				. '</a>';
 		}
 		if ($perms & Permission::PAGE_EDIT) {
 			$icon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);

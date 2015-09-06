@@ -316,7 +316,9 @@ class NewRecordController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		if (!$this->pagesOnly) {
 			// New page
 			if ($this->showNewRecLink('pages')) {
-				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', TRUE) . '">'
+					. $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
+					. '</a>';
 			}
 			// CSH
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_regular');
@@ -397,7 +399,7 @@ class NewRecordController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
 		$pageIcon = IconUtility::getSpriteIconForRecord($table, array());
-		$newPageIcon = IconUtility::getSpriteIcon('actions-page-new');
+		$newPageIcon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL);
 		$rowContent = '';
 		// New pages INSIDE this pages
 		$newPageLinks = array();

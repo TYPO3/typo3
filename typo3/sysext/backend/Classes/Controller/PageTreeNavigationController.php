@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\View\PageTreeView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -82,9 +84,15 @@ class PageTreeNavigationController {
 	public $template;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		GeneralUtility::deprecationLog('PageTreeNavigationController is deprecated in favor of new pagetrees');
 		$GLOBALS['SOBE'] = $this;
 		$this->init();
@@ -226,7 +234,9 @@ class PageTreeNavigationController {
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		// New Page
 		$onclickNewPageWizard = 'top.content.list_frame.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['pagesOnly' => 1, 'id' => ''])) . '+Tree.pageID;';
-		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', TRUE) . '">' . IconUtility::getSpriteIcon('actions-page-new') . '</a>';
+		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', TRUE) . '">'
+			. $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
+			. '</a>';
 		// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . $iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL)->render() . '</a>';
 		// CSH

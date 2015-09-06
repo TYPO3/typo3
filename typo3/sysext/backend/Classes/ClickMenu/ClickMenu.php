@@ -650,7 +650,7 @@ class ClickMenu {
 
 		$newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
 		$url = $table === 'pages' ? BackendUtility::getModuleUrl('db_new', ['id' => $uid, 'pagesOnly' => 1]) : $newContentWizScriptPath . 'id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
-		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')), IconUtility::getSpriteIcon('actions-' . ($table === 'pages' ? 'page' : 'document') . '-new'), $this->urlRefForCM($url, 'returnUrl'), 0);
+		return $this->linkItem($this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')), $this->iconFactory->getIcon(($table === 'pages' ? 'actions-page-new' : 'actions-document-new'), Icon::SIZE_SMALL), $this->urlRefForCM($url, 'returnUrl'), 0);
 	}
 
 	/**

@@ -9780,9 +9780,8 @@ ul.typo3-messages {
   margin-bottom: 50px;
 }
 #typo3-pagetree .typo3-pagetree-topPanel-button {
+  margin: 0;
   margin-right: 1px;
-  margin-top: 3px;
-  margin-bottom: -2px;
   padding: 2px 3px 4px 3px;
 }
 #typo3-pagetree .x-toolbar-ct {

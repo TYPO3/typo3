@@ -140,6 +140,7 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-translation.svg': '<%= paths.icons %>Action/actions-document-save-translation.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-view.svg': '<%= paths.icons %>Action/actions-document-save-view.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save.svg': '<%= paths.icons %>Action/actions-document-save.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-page-new.svg': '<%= paths.icons %>Action/actions-page-new.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-move.svg': '<%= paths.icons %>Action/actions-page-move.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-open.svg': '<%= paths.icons %>Action/actions-page-open.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',

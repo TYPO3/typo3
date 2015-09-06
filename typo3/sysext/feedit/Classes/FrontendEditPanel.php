@@ -133,7 +133,9 @@ class FrontendEditPanel {
 		}
 		if (isset($allow['new'])) {
 			if ($table === 'pages') {
-				$icon = IconUtility::getSpriteIcon('actions-page-new', array('title' => $this->backendUser->extGetLL('p_newSubpage')));
+				$icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_newSubpage')) . '">'
+					. $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
+					. '</span>';
 				$panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '');
 			} else {
 				$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->backendUser->extGetLL('p_newRecordAfter')));
