@@ -62,7 +62,6 @@ class IconStyleModifier {
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-to-top t3-btn t3-btn-moveoption-top' => 'fa-angle-double-up t3-btn t3-btn-moveoption-top',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-up t3-btn t3-btn-moveoption-up' => 'fa-angle-up t3-btn t3-btn-moveoption-up',
 		't3-icon t3-icon-actions t3-icon-actions-move t3-icon-move-up' => 'fa-angle-up',
-		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-move' => 'fa-arrows',
 		't3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-new' => 'fa-plus-square',
 		// @todo t3-btn-* is still used in FormEngine.js refactor to use data attributes in HTML
 		't3-icon t3-icon-actions t3-icon-actions-selection t3-icon-selection-delete t3-btn t3-btn-removeoption' => 'fa-times t3-btn t3-btn-removeoption',

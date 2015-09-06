@@ -1259,7 +1259,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($permsEdit && ($table === 'tt_content' || $table === 'pages')) {
 			$onClick = 'return jumpExt(\'' . BackendUtility::getModuleUrl('move_element') . '&table=' . $table . '&uid=' . $row['uid'] . '\');';
 			$linkTitleLL = $this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page'), TRUE);
-			$icon = ($table == 'pages' ? IconUtility::getSpriteIcon('actions-page-move') : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
+			$icon = ($table == 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
 			$moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon . '</a>';
 			$this->addActionToCellGroup($cells, $moveAction, 'move');
 		}

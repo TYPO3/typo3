@@ -316,6 +316,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'square-o',
 			)
 		),
+		'actions-page-move' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-page-move.svg',
+			)
+		),
 		'actions-page-open' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
