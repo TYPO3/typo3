@@ -1980,22 +1980,14 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return array Valid url
 	 */
 	public function sanitizeLocalUrlValidPathsDataProvider() {
-		$subDirectory = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-		$typo3SiteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		$typo3RequestHost = GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST');
-
 		return array(
 			'alt_intro.php' => array('alt_intro.php'),
 			'alt_intro.php?foo=1&bar=2' => array('alt_intro.php?foo=1&bar=2'),
-			$subDirectory . 'typo3/alt_intro.php' => array($subDirectory . 'typo3/alt_intro.php'),
-			$subDirectory . 'index.php' => array($subDirectory . 'index.php'),
 			'../index.php' => array('../index.php'),
 			'../typo3/alt_intro.php' => array('../typo3/alt_intro.php'),
 			'../~userDirectory/index.php' => array('../~userDirectory/index.php'),
 			'../typo3/index.php?var1=test-case&var2=~user' => array('../typo3/index.php?var1=test-case&var2=~user'),
 			PATH_site . 'typo3/alt_intro.php' => array(PATH_site . 'typo3/alt_intro.php'),
-			$typo3SiteUrl . 'typo3/alt_intro.php' => array($typo3SiteUrl . 'typo3/alt_intro.php'),
-			$typo3RequestHost . $subDirectory . '/index.php' => array($typo3RequestHost . $subDirectory . '/index.php')
 		);
 	}
 
