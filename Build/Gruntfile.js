@@ -149,6 +149,12 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Action/actions-system-help-open.svg': '<%= paths.icons %>Action/actions-system-help-open.svg'
 				}
 			},
+			// Action Icons
+			icons_apps: {
+				files: {
+					'<%= paths.backend %>Public/Icons/App/apps-pagetree-root.svg': '<%= paths.icons %>App/apps-pagetree-root.svg',
+				}
+			},
 			// Avatar Icons
 			icons_avatar: {
 				files: {

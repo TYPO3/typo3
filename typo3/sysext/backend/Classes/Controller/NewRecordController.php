@@ -273,7 +273,7 @@ class NewRecordController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 				$iconImgTag = IconUtility::getSpriteIconForRecord('pages', $this->pageinfo, array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
 				$title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
 			} else {
-				$iconImgTag = IconUtility::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
+				$iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . '</span>';
 				$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 			}
 			$this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . '</span><br />';
@@ -500,7 +500,7 @@ class NewRecordController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 								}
 								$_EXTKEY = 'system';
 								$thisTitle = $lang->getLL('system_records');
-								$iconFile['system'] = IconUtility::getSpriteIcon('apps-pagetree-root');
+								$iconFile['system'] = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL);
 							}
 							if ($groupName == '' || $groupName != $_EXTKEY) {
 								$groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];

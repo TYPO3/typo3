@@ -393,7 +393,7 @@ class ClickMenu {
 			$this->rec = array();
 		}
 		// Return the printed elements:
-		return $this->printItems($menuItems, $root ? IconUtility::getSpriteIcon('apps-pagetree-root') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
+		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
 	}
 
 	/**
@@ -453,7 +453,7 @@ class ClickMenu {
 		if (!is_array($menuItems)) {
 			$menuItems = array();
 		}
-		return $this->printItems($menuItems, $root ? IconUtility::getSpriteIcon('apps-pagetree-root') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
+		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
 	}
 
 	/**

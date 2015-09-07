@@ -52,6 +52,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'star',
 			)
 		),
+		'apps-pagetree-root' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-pagetree-root.svg',
+			)
+		),
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

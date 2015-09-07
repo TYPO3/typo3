@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -616,7 +618,8 @@ abstract class AbstractTreeView {
 	 * @return string Icon image tag.
 	 */
 	public function getRootIcon($rec) {
-		return $this->wrapIcon(IconUtility::getSpriteIcon('apps-pagetree-root'), $rec);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		return $this->wrapIcon($iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render(), $rec);
 	}
 
 	/**

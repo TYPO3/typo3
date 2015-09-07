@@ -681,7 +681,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass i
 					// If the page is actually the root, handle it differently
 					// NOTE: we don't compare integers, because the number actually comes from the split string above
 					if ($referenceParts[1] === '0') {
-						$iconAndTitle = IconUtility::getSpriteIcon('apps-pagetree-root') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+						$iconAndTitle = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 					} else {
 						$record = BackendUtility::getRecordWSOL('pages', $referenceParts[1]);
 						$iconAndTitle = IconUtility::getSpriteIconForRecord('pages', $record)

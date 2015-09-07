@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -288,6 +290,7 @@ class Commands {
 	 * @return \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode
 	 */
 	static public function getNewNode($record, $mountPoint = 0) {
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if (self::$titleLength === NULL) {
 			self::$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 			self::$addIdAsPrefix = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
@@ -346,7 +349,7 @@ class Commands {
 		if ((int)$record['uid'] !== 0) {
 			$spriteIconCode = IconUtility::getSpriteIconForRecord('pages', $record);
 		} else {
-			$spriteIconCode = IconUtility::getSpriteIcon('apps-pagetree-root');
+			$spriteIconCode = $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
 		}
 		$subNode->setSpriteIconCode($spriteIconCode);
 		if (

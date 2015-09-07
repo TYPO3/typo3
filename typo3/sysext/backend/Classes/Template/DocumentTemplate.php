@@ -1865,7 +1865,7 @@ function jumpToUrl(URL) {
 		} else {
 			// On root-level of page tree
 			// Make Icon
-			$iconImg = IconUtility::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
+			$iconImg = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . '</span>';
 			if ($GLOBALS['BE_USER']->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
