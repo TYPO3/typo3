@@ -466,6 +466,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'arrow-right',
 			)
 		),
+		'actions-window-open' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'arrows-alt',
+			)
+		),
 
 		'mimetypes-word' => array(
 			'provider' => FontawesomeIconProvider::class,
