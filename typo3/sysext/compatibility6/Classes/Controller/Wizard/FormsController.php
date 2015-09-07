@@ -274,7 +274,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 			// Save & Close
 			$buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL) . '</button>';
 			// Reload
-			$buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1">' . IconUtility::getSpriteIcon('actions-system-refresh', array('title' => $this->getLanguageService()->getLL('forms_refresh', TRUE))) . '</button>';
+			$buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '">' . $this->iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL) . '</button>';
 		}
 		return $buttons;
 	}
