@@ -288,7 +288,7 @@ class CleanUp extends Action\AbstractAction {
 		if ($failedDeletions) {
 			/** @var ErrorStatus $message */
 			$message = $this->objectManager->get(ErrorStatus::class);
-			$message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/logs/typo3.log)');
+			$message->setTitle('Failed to delete ' . $failedDeletions . ' processed files. See TYPO3 log (by default typo3temp/logs/typo3_*.log)');
 		} else {
 			/** @var OkStatus $message */
 			$message = $this->objectManager->get(OkStatus::class);
