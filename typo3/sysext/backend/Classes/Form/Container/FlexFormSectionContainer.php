@@ -161,8 +161,8 @@ class FlexFormSectionContainer extends AbstractContainer {
 		$html[] = 		'</strong>';
 		$html[] = 	'</div>';
 		$html[] = 	'<div class="t3-form-field-toggle-flexsection t3-form-flexsection-toggle">';
-		$html[] = 		'<a href="#">';
-		$html[] = 			IconUtility::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll;
+		$html[] = 		'<a href="#" title="' . $toggleAll . '">';
+		$html[] = 			$iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL) . $toggleAll;
 		$html[] = 		'</a>';
 		$html[] = 	'</div>';
 		$html[] = 	'<div';

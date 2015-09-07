@@ -320,6 +320,54 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => SvgIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-page-move.svg',
+			),
+		),
+		'actions-move' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'arrows',
+			)
+		),
+		'actions-move-down' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-down',
+			)
+		),
+		'actions-move-left' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-left',
+			)
+		),
+		'actions-move-move' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'bars',
+			)
+		),
+		'actions-move-right' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-right',
+			)
+		),
+		'actions-move-to-bottom' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-double-down',
+			)
+		),
+		'actions-move-to-top' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-double-up',
+			)
+		),
+		'actions-move-up' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-up',
 			)
 		),
 		'actions-page-open' => array(

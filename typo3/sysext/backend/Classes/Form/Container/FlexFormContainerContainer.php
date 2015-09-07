@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 
@@ -44,20 +46,13 @@ class FlexFormContainerContainer extends AbstractContainer {
 		// Every container adds its own part to the id prefix
 		$flexFormFieldIdentifierPrefix = $flexFormFieldIdentifierPrefix . '-' . GeneralUtility::shortMd5(uniqid('id', TRUE));
 
-		$toggleIcons = IconUtility::getSpriteIcon(
-			'actions-move-down',
-			array(
-				'class' => 't3-flex-control-toggle-icon-open',
-				'style' => $flexFormContainerElementCollapsed ? 'display: none;' : '',
-			)
-		);
-		$toggleIcons .= IconUtility::getSpriteIcon(
-			'actions-move-right',
-			array(
-				'class' => 't3-flex-control-toggle-icon-close',
-				'style' => $flexFormContainerElementCollapsed ? '' : 'display: none;',
-			)
-		);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$toggleIcons = '<span class="t3-flex-control-toggle-icon-open" style="' . ($flexFormContainerElementCollapsed ? 'display: none;' : '') . '">'
+			. $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)
+			. '</span>';
+		$toggleIcons .= '<span class="t3-flex-control-toggle-icon-close" style="' . ($flexFormContainerElementCollapsed ? '' : 'display: none;') . '">'
+			. $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)
+			. '</span>';
 
 		$flexFormContainerCounter = $this->globalOptions['flexFormContainerCounter'];
 		$actionFieldName = '_ACTION_FLEX_FORM'
@@ -74,20 +69,10 @@ class FlexFormContainerContainer extends AbstractContainer {
 		$userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
 		if ($userHasAccessToDefaultLanguage) {
 			$moveAndDeleteContent[] = '<div class="pull-right">';
-			$moveAndDeleteContent[] = IconUtility::getSpriteIcon(
-				'actions-move-move',
-				array(
-					'title' => 'Drag to Move', // @todo: hardcoded title ...
-					'class' => 't3-js-sortable-handle'
-				)
-			);
-			$moveAndDeleteContent[] = IconUtility::getSpriteIcon(
-				'actions-edit-delete',
-				array(
-					'title' => 'Delete', // @todo: hardcoded title ...
-					'class' => 't3-js-delete'
-				)
-			);
+			// @todo: hardcoded title ...
+			$moveAndDeleteContent[] = '<span title="Drag to Move" class="t3-js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL) . '</span>';
+			// @todo: hardcoded title ...
+			$moveAndDeleteContent[] = '<span title="Delete" class="t3-js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</span>';
 			$moveAndDeleteContent[] = '</div>';
 		}
 

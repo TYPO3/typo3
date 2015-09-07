@@ -490,14 +490,14 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 					// @todo $inputStyle undefined
 					$brTag = $inputStyle ? '' : '<br />';
 					if ($k != 1) {
-						$ctrl .= '<button name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-to-top', array('title' => $this->getLanguageService()->getLL('table_top', TRUE))) . '</button>' . $brTag;
-						$ctrl .= '<button name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-up', array('title' => $this->getLanguageService()->getLL('table_up', TRUE))) . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL) . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</button>' . $brTag;
 					}
 					$ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . ' title = "' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_LARGE) . '</button>' . $brTag;
 
 					if ($k != (count($formCfgArray)/2)) {
-						$ctrl .= '<button name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-down', array('title' => $this->getLanguageService()->getLL('table_down', TRUE))) . '</button>' . $brTag;
-						$ctrl .= '<button name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . $onClick . '>' . IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $this->getLanguageService()->getLL('table_bottom', TRUE))) . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL) . '</button>' . $brTag;
 					}
 
 					$ctrl .= '<button name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-template-new') . '</button>' . $brTag;

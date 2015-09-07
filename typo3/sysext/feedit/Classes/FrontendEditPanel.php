@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -114,9 +115,9 @@ class FrontendEditPanel {
 		}
 		// Hiding in workspaces because implementation is incomplete
 		if (isset($allow['move']) && $sortField && $this->backendUser->workspace === 0) {
-			$icon = IconUtility::getSpriteIcon('actions-move-up', array('title' => $this->backendUser->extGetLL('p_moveUp')));
+			$icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_moveUp')) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</span>';
 			$panel .= $this->editPanelLinkWrap($icon, $formName, 'up');
-			$icon = IconUtility::getSpriteIcon('actions-move-down', array('title' => $this->backendUser->extGetLL('p_moveDown')));
+			$icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_moveDown')) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</span>';
 			$panel .= $this->editPanelLinkWrap($icon, $formName, 'down');
 		}
 		// Hiding in workspaces because implementation is incomplete

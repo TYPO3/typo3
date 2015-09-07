@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\RecordList;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -327,14 +329,15 @@ abstract class AbstractRecordList {
 	public function fwd_rwd_HTML($type, $pointer, $table = '') {
 		$content = '';
 		$tParam = $table ? '&table=' . rawurlencode($table) : '';
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		switch ($type) {
 			case 'fwd':
 				$href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
-				$content = '<a href="' . htmlspecialchars($href) . '">' . IconUtility::getSpriteIcon('actions-move-up') . '</a> <i>[1 - ' . $pointer . ']</i>';
+				$content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</a> <i>[1 - ' . $pointer . ']</i>';
 				break;
 			case 'rwd':
 				$href = $this->listURL() . '&pointer=' . $pointer . $tParam;
-				$content = '<a href="' . htmlspecialchars($href) . '">' . IconUtility::getSpriteIcon('actions-move-down') . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
+				$content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
 				break;
 		}
 		return $content;

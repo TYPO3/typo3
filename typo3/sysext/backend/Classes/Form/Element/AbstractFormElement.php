@@ -590,7 +590,7 @@ abstract class AbstractFormElement extends AbstractNode {
 							class="btn btn-default t3-btn-moveoption-top"
 							data-fieldname="' . $fName . '"
 							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_top')) . '">
-							' . IconUtility::getSpriteIcon('actions-move-to-top') . '
+							' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL) . '
 						</a>';
 
 				}
@@ -599,14 +599,14 @@ abstract class AbstractFormElement extends AbstractNode {
 						class="btn btn-default t3-btn-moveoption-up"
 						data-fieldname="' . $fName . '"
 						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_up')) . '">
-						' . IconUtility::getSpriteIcon('actions-move-up') . '
+						' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '
 					</a>';
 				$icons['L'][] = '
 					<a href="#"
 						class="btn btn-default t3-btn-moveoption-down"
 						data-fieldname="' . $fName . '"
 						title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_down')) . '">
-						' . IconUtility::getSpriteIcon('actions-move-down') . '
+						' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '
 					</a>';
 				if ($sSize >= 5) {
 					$icons['L'][] = '
@@ -614,7 +614,7 @@ abstract class AbstractFormElement extends AbstractNode {
 							class="btn btn-default t3-btn-moveoption-bottom"
 							data-fieldname="' . $fName . '"
 							title="' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move_to_bottom')) . '">
-							' . IconUtility::getSpriteIcon('actions-move-to-bottom') . '
+							' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL) . '
 						</a>';
 				}
 			}

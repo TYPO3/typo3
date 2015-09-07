@@ -1316,7 +1316,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$moveUpAction = '<a class="btn btn-default" href="#" onclick="'
 						. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 						. '" title="' . $this->getLanguageService()->getLL('moveUp', TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-move-up') . '</a>';
+						. $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</a>';
 				} else {
 					$moveUpAction = $this->spaceIcon;
 				}
@@ -1328,7 +1328,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$moveDownAction = '<a class="btn btn-default" href="#" onclick="'
 						. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 						. '" title="' . $this->getLanguageService()->getLL('moveDown', TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-move-down') . '</a>';
+						. $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</a>';
 				} else {
 					$moveDownAction = $this->spaceIcon;
 				}
@@ -1406,7 +1406,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$moveLeftAction = '<a class="btn btn-default" href="#" onclick="'
 						. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 						. '" title="' . $this->getLanguageService()->getLL('prevLevel', TRUE) . '">'
-						. IconUtility::getSpriteIcon('actions-move-left') . '</a>';
+						. $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL) . '</a>';
 					$this->addActionToCellGroup($cells, $moveLeftAction, 'moveLeft');
 				}
 				// Down (Paste as subpage to the page right above)
@@ -1417,7 +1417,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						$moveRightAction = '<a class="btn btn-default" href="#" onclick="'
 							. htmlspecialchars('return jumpToUrl(' . $module->doc->issueCommand($params, -1) . ');')
 							. '" title="' . $this->getLanguageService()->getLL('nextLevel', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-move-right') . '</a>';
+							. $this->iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL) . '</a>';
 					} else {
 						$moveRightAction = $this->spaceIcon;
 					}
