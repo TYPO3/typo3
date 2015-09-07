@@ -470,10 +470,9 @@ class FileList extends AbstractRecordList {
 			$parentFolder = $currentFolder->getParentFolder();
 			if ($parentFolder->getIdentifier() !== $currentFolder->getIdentifier() && $currentStorage->isWithinFileMountBoundaries($parentFolder)) {
 				$levelUp = $this->linkWrapDir(
-					IconUtility::getSpriteIcon(
-						'actions-view-go-up',
-						array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE))
-					),
+					'<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE) . '">'
+					. $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL)
+					. '</span>',
 					$parentFolder
 				);
 			}

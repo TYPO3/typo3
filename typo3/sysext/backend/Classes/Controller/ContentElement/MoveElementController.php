@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -83,6 +85,11 @@ class MoveElementController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 	public $content;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -114,6 +121,7 @@ class MoveElementController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 		// Starting document content (header):
 		$this->content = '';
 		$this->content .= $this->doc->header($this->getLanguageService()->getLL('movingElement'));
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -169,7 +177,7 @@ class MoveElementController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 						$pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
 								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
@@ -219,7 +227,7 @@ class MoveElementController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array(
 									'uid' => (int)$pageInfo['pid'],
 									'moveUid' => $this->moveUid
-								))) . '">' . IconUtility::getSpriteIcon('actions-view-go-up') . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
 								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
