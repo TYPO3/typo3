@@ -272,6 +272,7 @@ class MoveElementController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 			'csh' => '',
 			'back' => ''
 		);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($this->page_id) {
 			if ((string)$this->table == 'pages') {
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages');
@@ -279,7 +280,7 @@ class MoveElementController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs');
 			}
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 			}
 		}
 		return $buttons;

@@ -325,7 +325,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$href = htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl, array('id' => $this->id)));
 				$buttons['back'] = '<a href="' . $href . '" class="typo3-goBack" title="'
 					. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">'
-					. IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+					. $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 			}
 		}
 		return $buttons;

@@ -316,7 +316,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 						'id' => $this->id
 					);
 					$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 			// Shortcut

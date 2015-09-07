@@ -329,7 +329,7 @@ class NewRecordController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 		}
 		// Back
 		if ($this->R_URI) {
-			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 		}
 		if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 			// View

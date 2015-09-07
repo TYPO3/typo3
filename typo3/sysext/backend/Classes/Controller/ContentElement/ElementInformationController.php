@@ -494,7 +494,7 @@ class ElementInformationController implements \TYPO3\CMS\Core\Http\ControllerInt
 		if ($returnUrl) {
 			$backLink .= '
 				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '>
-					' . IconUtility::getSpriteIcon('actions-view-go-back') . '
+					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '
 					' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back', TRUE) . '
 				</a>';
 		}

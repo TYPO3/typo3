@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -234,9 +236,10 @@ class CreateFolderController implements \TYPO3\CMS\Core\Http\ControllerInterface
 		$docHeaderButtons = array(
 			'back' => ''
 		);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		// Back
 		if ($this->returnUrl) {
-			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 		}
 		// Add the HTML as a section:
 		$markerArray = array(

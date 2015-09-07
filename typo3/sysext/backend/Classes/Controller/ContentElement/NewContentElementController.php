@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -339,10 +341,11 @@ class NewContentElementController implements \TYPO3\CMS\Core\Http\ControllerInte
 			'csh' => '',
 			'back' => ''
 		);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($this->id && $this->access) {
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce');
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 			}
 		}
 		return $buttons;

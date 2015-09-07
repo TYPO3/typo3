@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -186,9 +188,10 @@ class ReplaceFileController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 		$docHeaderButtons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_rename');
 		// Back
 		if ($this->returnUrl) {
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl))
 				. '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">'
-				. IconUtility::getSpriteIcon('actions-view-go-back')
+				. $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)
 				. '</a>';
 		}
 		// Add the HTML as a section:

@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -131,7 +133,8 @@ class ElementHistoryController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 		// Start history object
 		$historyObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
 		if ($historyObj->returnUrl) {
-			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 		}
 		return $buttons;
 	}
