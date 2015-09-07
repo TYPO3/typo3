@@ -742,13 +742,13 @@ Would you like to save now in order to refresh the display?</source>
 				<source>[menu]</source>
 			</trans-unit>
 			<trans-unit id="rm.saveDoc">
-				<source>Save document</source>
+				<source>Save</source>
 			</trans-unit>
 			<trans-unit id="rm.saveDocShow">
-				<source>Save document and view page</source>
+				<source>Save and view page</source>
 			</trans-unit>
 			<trans-unit id="rm.saveCloseDoc">
-				<source>Save and close document</source>
+				<source>Save and close</source>
 			</trans-unit>
 			<trans-unit id="rm.translationSaveDoc">
 				<source>Translation finished, save and close</source>
@@ -757,16 +757,16 @@ Would you like to save now in order to refresh the display?</source>
 				<source>Translation NOT finished, Save</source>
 			</trans-unit>
 			<trans-unit id="rm.saveCloseAllDocs">
-				<source>Save and close all documents</source>
+				<source>Save and close all</source>
 			</trans-unit>
 			<trans-unit id="rm.saveNewDoc">
-				<source>Save document and create a new one</source>
+				<source>Save and create a new one</source>
 			</trans-unit>
 			<trans-unit id="rm.closeDoc">
-				<source>Close document</source>
+				<source>Close</source>
 			</trans-unit>
 			<trans-unit id="rm.closeAllDocs">
-				<source>Close all documents</source>
+				<source>Close all</source>
 			</trans-unit>
 			<trans-unit id="rm.clearCache_clearCache">
 				<source>Clear cache</source>
