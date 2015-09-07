@@ -554,6 +554,30 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'caret-right',
 			)
 		),
+		'status-status-sorting-asc' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-up',
+			)
+		),
+		'status-status-sorting-desc' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-down',
+			)
+		),
+		'status-status-sorting-light-asc' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-up',
+			)
+		),
+		'status-status-sorting-light-desc' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'caret-down',
+			)
+		),
 		'status-dialog-ok' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

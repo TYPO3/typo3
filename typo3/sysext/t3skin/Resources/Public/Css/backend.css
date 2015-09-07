@@ -7861,6 +7861,14 @@ button.close {
 .icon-status-status-permission-denied {
   color: #c83c3c;
 }
+.icon-status-status-sorting-light-asc,
+.icon-status-status-sorting-light-desc {
+  color: #fff;
+}
+.icon-status-status-sorting-asc,
+.icon-status-status-sorting-desc {
+  color: #737373;
+}
 .icon-status-dialog-ok,
 .icon-status-status-permission-granted {
   color: #79a548;

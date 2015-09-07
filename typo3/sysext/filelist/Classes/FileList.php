@@ -809,7 +809,7 @@ class FileList extends AbstractRecordList {
 		if ($this->sort === $col) {
 			// Check reverse sorting
 			$params['SET']['reverse'] = ($this->sortRev ? '0' : '1');
-			$sortArrow = IconUtility::getSpriteIcon('status-status-sorting-light-' . ($this->sortRev ? 'desc' : 'asc'));
+			$sortArrow = $this->iconFactory->getIcon('status-status-sorting-light-' . ($this->sortRev ? 'desc' : 'asc'), Icon::SIZE_SMALL);
 		} else {
 			$params['SET']['reverse'] = 0;
 			$sortArrow = '';
