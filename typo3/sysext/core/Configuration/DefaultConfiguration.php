@@ -85,7 +85,7 @@ return array(
 		 * @deprecated since 4.6 - will be removed in 6.2.
 		 */
 		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
-		'textfile_ext' => 'txt,ts,html,htm,css,tmpl,js,sql,xml,csv,xlf',		// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
+		'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf',		// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
 		'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,pdf,svg,ai,mov,avi',// Commalist of file extensions perceived as media files by TYPO3. Lowercase and no spaces between!
 		'binPath' => '',						// String: List of absolute paths where external programs should be searched for. Eg. <code>/usr/local/webbin/,/home/xyz/bin/</code>. (ImageMagick path have to be configured separately)
 		'binSetup' => '',						// String (textarea): List of programs (separated by newline or comma). By default programs will be searched in default paths and the special paths defined by 'binPath'. When PHP has openbasedir enabled the programs can not be found and have to be configured here. Example: <code>perl=/usr/bin/perl,unzip=/usr/local/bin/unzip</code>
