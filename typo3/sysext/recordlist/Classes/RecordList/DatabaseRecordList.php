@@ -1113,26 +1113,26 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		$currentPage = floor($this->firstElementNumber / $this->iLimit) + 1;
 		// Compile first, previous, next, last and refresh buttons
 		if ($currentPage > 1) {
-			$labelFirst = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:first');
-			$labelPrevious = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:previous');
-			$first = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1) . '">'
-				. IconUtility::getSpriteIcon('actions-view-paging-first', array('title' => $labelFirst)) . '</a></li>';
-			$previous = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1) . '">'
-				. IconUtility::getSpriteIcon('actions-view-paging-previous', array('title' => $labelPrevious)) . '</a></li>';
+			$labelFirst = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:first', TRUE);
+			$labelPrevious = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:previous', TRUE);
+			$first = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage(1) . '" title="' . $labelFirst . '">'
+				. $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL) . '</a></li>';
+			$previous = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage - 1) . '" title="' . $labelPrevious . '">'
+				. $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL) . '</a></li>';
 		} else {
-			$first = '<li class="disabled"><span>' . IconUtility::getSpriteIcon('actions-view-paging-first') . '</span></li>';
-			$previous = '<li class="disabled"><span>' . IconUtility::getSpriteIcon('actions-view-paging-previous') . '</span></li>';
+			$first = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-first', Icon::SIZE_SMALL) . '</span></li>';
+			$previous = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-previous', Icon::SIZE_SMALL) . '</span></li>';
 		}
 		if ($currentPage < $totalPages) {
-			$labelNext = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:next');
-			$labelLast = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:last');
-			$next = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1) . '">'
-				. IconUtility::getSpriteIcon('actions-view-paging-next', array('title' => $labelNext)) . '</a></li>';
-			$last = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages) . '">'
-				. IconUtility::getSpriteIcon('actions-view-paging-last', array('title' => $labelLast)) . '</a></li>';
+			$labelNext = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:next', TRUE);
+			$labelLast = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:last', TRUE);
+			$next = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($currentPage + 1) . '" title="' . $labelNext . '">'
+				. $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL) . '</a></li>';
+			$last = '<li><a href="' . $listURL . '&pointer=' . $this->getPointerForPage($totalPages) . '" title="' . $labelLast . '">'
+				. $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL) . '</a></li>';
 		} else {
-			$next = '<li class="disabled"><span>' . IconUtility::getSpriteIcon('actions-view-paging-next') . '</span></li>';
-			$last = '<li class="disabled"><span>' . IconUtility::getSpriteIcon('actions-view-paging-last') . '</span></li>';
+			$next = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-next', Icon::SIZE_SMALL) . '</span></li>';
+			$last = '<li class="disabled"><span>' . $this->iconFactory->getIcon('actions-view-paging-last', Icon::SIZE_SMALL) . '</span></li>';
 		}
 		$reload = '<li><a href="#" onclick="document.dblistForm.action=\'' . $listURL
 			. '&pointer=\'+calculatePointer(document.getElementById(\'jumpPage-' . $renderPart
