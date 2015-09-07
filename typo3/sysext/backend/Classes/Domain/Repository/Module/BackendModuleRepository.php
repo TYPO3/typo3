@@ -242,7 +242,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => $moduleName,
 				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
 				'onclick' => 'top.goToModule(' . GeneralUtility::quoteJSvalue($moduleName) . ');',
-				'icon' => $this->getModuleIcon($moduleName, $moduleData),
+				'icon' => $this->getModuleIcon($moduleName . '_tab', $moduleData),
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
 			);
