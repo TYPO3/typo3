@@ -64,6 +64,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-pagetree-root.svg',
 			)
 		),
+		'apps-toolbar-menu-search' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-toolbar-menu-search.svg',
+			)
+		),
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -316,6 +322,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'upload',
 			)
 		),
+		'actions-filter' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-filter.svg',
+			)
+		),
 		'actions-insert-record' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
@@ -424,6 +436,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'trash',
 			)
 		),
+		'actions-search' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-search.svg',
+			)
+		),
 		'actions-system-cache-clear-impact-low' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -506,6 +524,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:t3skin/images/icons/actions/system-shortcut-new.png',
+			)
+		),
+		'actions-system-tree-search-open' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-tree-search-open.svg',
 			)
 		),
 		'actions-system-refresh' => array(

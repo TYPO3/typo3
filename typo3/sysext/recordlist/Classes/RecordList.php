@@ -17,9 +17,10 @@ namespace TYPO3\CMS\Recordlist;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -186,6 +187,11 @@ class RecordList {
 	protected $pageRenderer = NULL;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -202,6 +208,7 @@ class RecordList {
 	 * @return void
 	 */
 	public function init() {
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$backendUser = $this->getBackendUserAuthentication();
 		$this->perms_clause = $backendUser->getPagePermsClause(1);
 		// Get session data
@@ -542,7 +549,7 @@ class RecordList {
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
 			$markers['SEARCHBOX'] = $dblist->getSearchBox();
 			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">' . IconUtility::getSpriteIcon('apps-toolbar-menu-search') . '</a>';
+			$markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL) . '</a>';
 		}
 		// Build the <body> for the module
 		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);

@@ -19,6 +19,8 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -531,6 +533,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 	 * @return string HTML for the search box
 	 */
 	public function getSearchBox($formFields = TRUE) {
+		/** @var $iconFactory IconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$lang = $this->getLanguageService();
 		// Setting form-elements, if applicable:
 		$formElements = array('', '');
@@ -564,7 +568,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 								</div>
 								<div class="form-group">
 									<button type="submit" class="btn btn-default" name="search" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '">
-										<i class="fa fa-search"></i> ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '
+										' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL) . ' ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '
 									</button>
 								</div>
 							</div>

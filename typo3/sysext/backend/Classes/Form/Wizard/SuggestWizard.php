@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -36,6 +38,8 @@ class SuggestWizard {
 	 * @return string The HTML code for the selector
 	 */
 	public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config) {
+		/** @var $iconFactory IconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$languageService = $this->getLanguageService();
 		$isFlexFormField = $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex';
 		if ($isFlexFormField) {
@@ -73,7 +77,7 @@ class SuggestWizard {
 		$selector = '
 		<div class="autocomplete t3-form-suggest-container">
 			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-search"></i></span>
+				<span class="input-group-addon">' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL) . '</span>
 				<input type="search" class="t3-form-suggest form-control"
 					placeholder="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.findRecord') . '"
 					data-fieldname="' . $fieldname . '"

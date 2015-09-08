@@ -140,19 +140,23 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-translation.svg': '<%= paths.icons %>Action/actions-document-save-translation.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-view.svg': '<%= paths.icons %>Action/actions-document-save-view.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save.svg': '<%= paths.icons %>Action/actions-document-save.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-filter.svg': '<%= paths.icons %>Action/actions-filter.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-new.svg': '<%= paths.icons %>Action/actions-page-new.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-move.svg': '<%= paths.icons %>Action/actions-page-move.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-open.svg': '<%= paths.icons %>Action/actions-page-open.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-search.svg': '<%= paths.icons %>Action/actions-search.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-low.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-low.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-medium.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-medium.svg',
-					'<%= paths.backend %>Public/Icons/Action/actions-system-help-open.svg': '<%= paths.icons %>Action/actions-system-help-open.svg'
+					'<%= paths.backend %>Public/Icons/Action/actions-system-help-open.svg': '<%= paths.icons %>Action/actions-system-help-open.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-system-tree-search-open.svg': '<%= paths.icons %>Action/actions-system-tree-search-open.svg'
 				}
 			},
 			// Action Icons
 			icons_apps: {
 				files: {
 					'<%= paths.backend %>Public/Icons/App/apps-pagetree-root.svg': '<%= paths.icons %>App/apps-pagetree-root.svg',
+					'<%= paths.backend %>Public/Icons/App/apps-toolbar-menu-search.svg': '<%= paths.icons %>App/apps-toolbar-menu-search.svg'
 				}
 			},
 			// Avatar Icons
