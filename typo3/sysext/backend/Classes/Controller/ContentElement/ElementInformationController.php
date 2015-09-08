@@ -490,7 +490,7 @@ class ElementInformationController implements \TYPO3\CMS\Core\Http\ControllerInt
 	 */
 	protected function renderBackButton() {
 		$backLink = '';
-		$returnUrl = GeneralUtility::_GET('returnUrl');
+		$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GET('returnUrl'));
 		if ($returnUrl) {
 			$backLink .= '
 				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '>

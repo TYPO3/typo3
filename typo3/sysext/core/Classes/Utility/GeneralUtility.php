@@ -3829,6 +3829,7 @@ Connection: close
 		$sanitizedUrl = '';
 		$decodedUrl = rawurldecode($url);
 		if (!empty($url) && self::removeXSS($decodedUrl) === $decodedUrl) {
+			$parsedUrl = parse_url($decodedUrl);
 			$testAbsoluteUrl = self::resolveBackPath($decodedUrl);
 			$testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
 			// Pass if URL is on the current host:
@@ -3840,7 +3841,7 @@ Connection: close
 				$sanitizedUrl = $url;
 			} elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] === '/') {
 				$sanitizedUrl = $url;
-			} elseif (strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] !== '/') {
+			} elseif (empty($parsedUrl['scheme']) && strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && $decodedUrl[0] !== '/') {
 				$sanitizedUrl = $url;
 			}
 		}
