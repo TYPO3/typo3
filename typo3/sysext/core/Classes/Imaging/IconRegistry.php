@@ -52,6 +52,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'star',
 			)
 		),
+		'apps-toolbar-menu-workspace' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'th-large',
+			)
+		),
 		'apps-pagetree-root' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -580,6 +586,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Status
+		'status-status-checked' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check',
+			)
+		),
 		'status-status-current' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

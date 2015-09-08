@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Workspaces\Backend\ToolbarItems;
  */
 
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -33,6 +32,11 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 	protected $availableWorkspaces;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -40,6 +44,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 		$wsService = GeneralUtility::makeInstance(WorkspaceService::class);
 		$this->availableWorkspaces = $wsService->getAvailableWorkspaces();
 
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->addInlineLanguageLabel('Workspaces.workspaceTitle', WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu');
@@ -64,12 +69,8 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 			return '';
 		}
 
-		return IconUtility::getSpriteIcon(
-			'apps-toolbar-menu-workspace',
-			array(
-				'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', TRUE),
-			)
-		);
+		return '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', TRUE) . '">'
+			. $this->iconFactory->getIcon('apps-toolbar-menu-workspace', Icon::SIZE_SMALL)->render() . '</span>';
 	}
 
 	/**
@@ -82,10 +83,9 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface {
 		$languageService = $this->getLanguageService();
 
 		$index = 0;
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$activeWorkspace = (int)$backendUser->workspace;
-		$stateCheckedIcon = IconUtility::getSpriteIcon('status-status-checked');
-		$stateUncheckedIcon = '<span title="' . $languageService->getLL('bookmark_inactive', TRUE) . '">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
+		$stateCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
+		$stateUncheckedIcon = '<span title="' . $languageService->getLL('bookmark_inactive', TRUE) . '">' . $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 		$workspaceSections = array(
 			'top' => array(),
 			'items' => array(),
