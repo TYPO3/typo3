@@ -22,7 +22,11 @@
 		<tbody>
 			<f:for each="{registeredClasses}" key="class" as="classInfo">
 				<tr>
-					<td>{classInfo.title}</td>
+					<td>
+						<a href="{s:moduleLink(controller:'scheduler', action: 'add', arguments: '{class: class}')}" title="{f:translate(key:'LLL:EXT:lang/locallang_common.xlf:new')}">
+							{classInfo.title}
+						</a>
+					</td>
 					<td>{classInfo.extension}</td>
 					<td>{classInfo.description}</td>
 					<td>
