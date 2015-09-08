@@ -51,6 +51,9 @@ class FunctionalTestsBootstrap {
 	 */
 	protected function loadClassFiles() {
 		$testsDirectory = __DIR__ . '/../Tests/';
+		if (!class_exists('PHPUnit_Framework_TestCase')) {
+			die('PHPUnit wasn\'t found. Please check your settings and command.');
+		}
 		require_once($testsDirectory . 'BaseTestCase.php');
 		require_once($testsDirectory . 'FunctionalTestCase.php');
 		require_once($testsDirectory . 'FunctionalTestCaseBootstrapUtility.php');
@@ -120,6 +123,10 @@ class FunctionalTestsBootstrap {
 
 		return strtr($webRoot, '\\', '/');
 	}
+}
+
+if (PHP_SAPI !== 'cli') {
+	die('This script supports command line usage only. Please check your command.');
 }
 
 $bootstrap = new FunctionalTestsBootstrap();

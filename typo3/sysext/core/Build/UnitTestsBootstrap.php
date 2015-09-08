@@ -171,7 +171,11 @@ class UnitTestsBootstrap {
 	 * @return UnitTestsBootstrap fluent interface
 	 */
 	protected function includeAndStartCoreBootstrap() {
-		require_once PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+		$bootstrapPath = PATH_site . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+		if (!file_exists($bootstrapPath)) {
+			die('Bootstrap can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+		}
+		require_once $bootstrapPath;
 
 		Bootstrap::getInstance()
 			->baseSetup()
@@ -209,6 +213,10 @@ class UnitTestsBootstrap {
 
 		return $this;
 	}
+}
+
+if (PHP_SAPI !== 'cli') {
+	die('This script supports command line usage only. Please check your command.');
 }
 
 $bootstrap = new UnitTestsBootstrap();
