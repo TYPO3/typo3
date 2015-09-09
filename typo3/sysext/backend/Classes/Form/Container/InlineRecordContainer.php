@@ -413,7 +413,7 @@ class InlineRecordContainer extends AbstractContainer {
 				$recTitle = BackendUtility::getNoRecordTitle(TRUE);
 			}
 		} else {
-			$recTitle = BackendUtility::getRecordTitle($foreign_table, $rec, TRUE);
+			$recTitle = BackendUtility::getRecordTitle($foreign_table, FormEngineUtility::databaseRowCompatibility($rec), TRUE);
 		}
 
 		$altText = BackendUtility::getRecordIconAltText($rec, $foreign_table);
