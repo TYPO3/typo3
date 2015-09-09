@@ -192,7 +192,11 @@ class Icon {
 	 * @return string
 	 */
 	public function render() {
-		return $this->__toString();
+		$overlayIconMarkup = '';
+		if ($this->overlayIcon !== NULL) {
+			$overlayIconMarkup = '<span class="icon-overlay icon-' . htmlspecialchars($this->overlayIcon->getIdentifier()) . '">' . $this->overlayIcon->getMarkup() . '</span>';
+		}
+		return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon());
 	}
 
 	/**
@@ -201,11 +205,7 @@ class Icon {
 	 * @return string
 	 */
 	public function __toString() {
-		$overlayIconMarkup = '';
-		if ($this->overlayIcon !== NULL) {
-			$overlayIconMarkup = '<span class="icon-overlay icon-' . htmlspecialchars($this->overlayIcon->getIdentifier()) . '">' . $this->overlayIcon->getMarkup() . '</span>';
-		}
-		return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon());
+		return $this->render();
 	}
 
 	/**
