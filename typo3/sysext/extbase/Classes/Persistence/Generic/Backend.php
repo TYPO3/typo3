@@ -691,8 +691,12 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected function insertRelationInRelationtable(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($propertyName);
+		$parentUid = $parentObject->getUid();
+		if ($parentObject->_getProperty('_localizedUid') !== NULL) {
+			$parentUid = $parentObject->_getProperty('_localizedUid');
+		}
 		$row = array(
-			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
+			$columnMap->getParentKeyFieldName() => (int)$parentUid,
 			$columnMap->getChildKeyFieldName() => (int)$object->getUid(),
 			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int)$sortingPosition : 0
 		);
