@@ -78,7 +78,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 		} else {
 			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
 			$editOnClick = BackendUtility::editOnClick($params);
-			$startAnchor = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $title . '>';
+			$startAnchor = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $title . '">';
 		}
 		$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 		$ret .= $startAnchor . '<strong>' . $label . '</strong></a>';
