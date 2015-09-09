@@ -26,10 +26,9 @@ class FileInfoHook {
 	 * User function for sys_file (element)
 	 *
 	 * @param array $propertyArray the array with additional configuration options.
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj the TCEforms parent object
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderFileInfo(array $propertyArray, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
+	public function renderFileInfo(array $propertyArray) {
 		$fileRecord = $propertyArray['row'];
 		$fileObject = NULL;
 		if ($fileRecord['uid'] > 0) {
@@ -43,10 +42,9 @@ class FileInfoHook {
 	 * User function for sys_file_meta (element)
 	 *
 	 * @param array $propertyArray the array with additional configuration options.
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj the TCEforms parent object
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderFileMetadataInfo(array $propertyArray, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
+	public function renderFileMetadataInfo(array $propertyArray) {
 		$fileMetadataRecord = $propertyArray['row'];
 		$fileObject = NULL;
 		if ($fileMetadataRecord['file'] > 0) {

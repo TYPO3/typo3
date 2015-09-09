@@ -28,10 +28,9 @@ class UserStorageCapabilityService {
 	 * for storages driven by special driver such as Flickr, ...
 	 *
 	 * @param array $propertyArray the array with additional configuration options.
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj the TCEforms parent object
 	 * @return string
 	 */
-	public function renderIsPublic(array $propertyArray, \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj) {
+	public function renderIsPublic(array $propertyArray) {
 
 		$isPublic = $GLOBALS['TCA']['sys_file_storage']['columns']['is_public']['config']['default'];
 		$fileRecord = $propertyArray['row'];

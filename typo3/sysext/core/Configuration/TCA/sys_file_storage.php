@@ -63,7 +63,7 @@ return array(
 			'config' => array(
 				'default' => TRUE,
 				'type' => 'user',
-				'userFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserStorageCapabilityService.php:TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService->renderIsPublic',
+				'userFunc' => \TYPO3\CMS\Core\Resource\Service\UserStorageCapabilityService::class . '->renderIsPublic',
 			)
 		),
 		'is_writable' => array(

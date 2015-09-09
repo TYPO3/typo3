@@ -15,10 +15,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Form\FormEngine;
 
 /**
- * Generation of TCEform elements of the type "user"
+ * Generation of elements of the type "user"
  */
 class UserElement extends AbstractFormElement {
 
@@ -35,13 +34,11 @@ class UserElement extends AbstractFormElement {
 		$parameterArray['parameters'] = isset($parameterArray['fieldConf']['config']['parameters'])
 			? $parameterArray['fieldConf']['config']['parameters']
 			: array();
-		// Instance of FormEngine is kept here for backwards compatibility - but it is a dummy only
-		$parameterArray['pObj'] = $this;
 		$resultArray = $this->initializeResultArray();
 		$resultArray['html'] = GeneralUtility::callUserFunction(
 			$parameterArray['fieldConf']['config']['userFunc'],
 			$parameterArray,
-			$dummyFormEngine
+			$this
 		);
 		return $resultArray;
 	}

@@ -30,7 +30,7 @@ interface DatabaseFileIconsHookInterface {
 	 * @param string $rightbox Thumbnail view of images. Only filled if there are other types as images. This images will be shown right next to the selectorbox.
 	 * @param string $fName Form element name
 	 * @param array $uidList The array of item-uids. Have a look at \TYPO3\CMS\Backend\Form\FormEngine::dbFileIcons parameter "$itemArray
-	 * @param array $additionalParams Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid. For more information have a look at PHPDoc-Comment of \TYPO3\CMS\Backend\Form\FormEngine::dbFileIcons
+	 * @param array $additionalParams Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid.
 	 * @param object $parentObject Parent object
 	 * @return void
 	 */
