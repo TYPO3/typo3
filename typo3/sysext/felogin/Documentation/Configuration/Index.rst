@@ -671,7 +671,7 @@ userfields
    Description
          Array of fields from the fe\_users table. Each field can have its own
          stdWrap configuration. These fields can be used as markers in the
-         template (e.g. ###USERNAME###)
+         template (e.g. ###FEUSER\_USERNAME###)
 
    Default
          ::
