@@ -67,7 +67,7 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 	 * Initializes editor events
 	 */
 	T3editor.initializeEditorEvents = function(codemirror) {
-		$('input[type="submit"], button[type="submit"]').on('click', function(e) {
+		$('button[name^="_save"]').on('click', function(e) {
 			codemirror.options.originalTextarea.val(codemirror.editor.getCode());
 		});
 
