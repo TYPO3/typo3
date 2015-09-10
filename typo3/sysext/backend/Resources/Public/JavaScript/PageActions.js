@@ -26,6 +26,7 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 			}
 		},
 		identifier: {
+			pageTitle: '.t3js-title-inlineedit',
 			hiddenElements: '.t3js-hidden-record'
 		},
 		elements: {
@@ -62,7 +63,7 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 	};
 
 	PageActions.initializeElements = function() {
-		PageActions.elements.$pageTitle = $('h1');
+		PageActions.elements.$pageTitle = $(PageActions.identifier.pageTitle + ':first');
 		PageActions.elements.$showHiddenElementsCheckbox = $('#checkTt_content_showHidden');
 	};
 

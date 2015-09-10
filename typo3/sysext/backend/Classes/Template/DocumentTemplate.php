@@ -958,7 +958,7 @@ function jumpToUrl(URL) {
 		$str = '
 
 	<!-- MAIN Header in page top -->
-	<h1>' . htmlspecialchars($text) . '</h1>
+	<h1 class="t3js-title-inlineedit">' . htmlspecialchars($text) . '</h1>
 ';
 		return $this->sectionEnd() . $str;
 	}
