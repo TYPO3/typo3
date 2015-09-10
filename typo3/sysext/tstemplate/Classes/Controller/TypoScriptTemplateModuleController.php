@@ -557,14 +557,15 @@ page.10.value = HELLO WORLD!
 			return $lines;
 		}
 
+		$statusCheckedIcon = $this->iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
 		foreach ($pArray as $k => $v) {
 			if (MathUtility::canBeInterpretedAsInteger($k)) {
 				if (isset($pArray[$k . '_'])) {
 					$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 						<td nowrap><span style="width: 1px; height: 1px; display:inline-block; margin-left: ' . $c * 20 . 'px"></span>' . '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $k))) . '">' . IconUtility::getSpriteIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $k), array('title' => ('ID: ' . $k))) . GeneralUtility::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 						<td>' . $pArray[($k . '_')]['count'] . '</td>
-						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
-						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? IconUtility::getSpriteIcon('status-status-checked') : '&nbsp;') . '</td>
+						<td>' . ($pArray[$k . '_']['root_max_val'] > 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
+						<td>' . ($pArray[$k . '_']['root_min_val'] == 0 ? $statusCheckedIcon : '&nbsp;') . '</td>
 						</tr>';
 				} else {
 					$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">

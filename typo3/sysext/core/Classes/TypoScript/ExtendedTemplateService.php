@@ -663,6 +663,8 @@ class ExtendedTemplateService extends TemplateService {
 		$a = 0;
 		$c = count($keyArr);
 		static $i = 0;
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		foreach ($keyArr as $key => $value) {
 			$HTML = '';
 			$a++;
@@ -696,11 +698,12 @@ class ExtendedTemplateService extends TemplateService {
 				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))
 				. $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
+			$statusCheckedIcon = $iconFactory->getIcon('status-status-checked', Icon::SIZE_SMALL)->render();
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap="nowrap">' . $HTML . '</td>
-							<td align="center">' . ($row['root'] ? IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;</td>
-							<td align="center">' . ($row['clConf'] ? IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
-							<td align="center">' . ($row['clConst'] ? IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center">' . ($row['root'] ? $statusCheckedIcon : '') . '&nbsp;&nbsp;</td>
+							<td align="center">' . ($row['clConf'] ? $statusCheckedIcon : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['pid'] ?: '') . '</td>
 							<td align="center">' . ($RL >= 0 ? $RL : '') . '</td>
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
