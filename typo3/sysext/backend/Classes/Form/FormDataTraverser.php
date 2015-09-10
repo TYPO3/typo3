@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Form;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -187,8 +186,6 @@ class FormDataTraverser {
 		$possibleUidsCount = count($possibleUids);
 		if ($possibleUidsCount === 1) {
 			$relatedRow = $this->getRecordRow($possibleUids[0]);
-		} elseif ($possibleUidsCount > 1) {
-			$relatedRow = $this->getMatchingRecordRowByTranslation($possibleUids, $fieldConfig);
 		}
 
 		return $relatedRow;
@@ -365,11 +362,22 @@ class FormDataTraverser {
 			$fieldConfig['foreign_table_where'] .= ' AND ' . $fieldConfig['foreign_table'] . '.uid IN (' . $value . ')';
 		}
 
-		$PA = array();
-		$PA['fieldConf']['config'] = $fieldConfig;
-		$PA['fieldTSConfig'] = FormEngineUtility::getTSconfigForTableRow($this->currentTable, $this->currentRow, $fieldName);
-		$PA['fieldConf']['config'] = FormEngineUtility::overrideFieldConf($PA['fieldConf']['config'], $PA['fieldTSConfig']);
-		$selectItemArray = FormEngineUtility::getSelectItems($this->currentTable, $fieldName, $this->currentRow, $PA);
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+		$formDataInput = [
+			'vanillaUid' => (int)$this->currentRow['uid'],
+			'tableName' => $this->currentTable,
+			'command' => 'edit',
+		];
+		$formDataResult = $formDataCompiler->compile($formDataInput);
+		$selectItemArray = [];
+		if (isset($formDataResult['processedTca']['columns'][$fieldName]['config']['items'])
+			&& is_array($formDataResult['processedTca']['columns'][$fieldName]['config']['items'])
+		) {
+			$selectItemArray = $formDataResult['processedTca']['columns'][$fieldName]['config']['items'];
+		}
 
 		if ($isTraversable && !empty($selectItemArray)) {
 			$this->currentTable = $fieldConfig['foreign_table'];
