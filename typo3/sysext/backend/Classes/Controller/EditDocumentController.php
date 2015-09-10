@@ -997,7 +997,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 								if (!$this->storeTitle) {
 									$this->storeTitle = $this->recTitle
 										? htmlspecialchars($this->recTitle)
-										: BackendUtility::getRecordTitle($table, $formData['databaseRow'], TRUE);
+										: BackendUtility::getRecordTitle($table, FormEngineUtility::databaseRowCompatibility($formData['databaseRow']), TRUE);
 								}
 
 								$this->elementsData[] = array(

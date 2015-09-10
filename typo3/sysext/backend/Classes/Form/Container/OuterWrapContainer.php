@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -97,7 +98,7 @@ class OuterWrapContainer extends AbstractContainer {
 
 			$newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
 
-			$recordLabel = BackendUtility::getRecordTitle($table, $row, TRUE, FALSE);
+			$recordLabel = BackendUtility::getRecordTitle($table, FormEngineUtility::databaseRowCompatibility($row), TRUE, FALSE);
 			if ($table === 'pages') {
 				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
 				$pageTitle = sprintf($label, $tableTitle, $recordLabel);
