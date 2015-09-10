@@ -192,7 +192,7 @@ class FormResultCompiler {
 		$jsFile = array();
 
 		// @todo: this is messy here - "additional hidden fields" should be handled elsewhere
-		$out = implode(LF, $this->hiddenFieldAccum);
+		$html = implode(LF, $this->hiddenFieldAccum);
 
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
 		// load the main module for FormEngine with all important JS functions
@@ -257,7 +257,7 @@ class FormResultCompiler {
 		}
 		// We want to load jQuery-ui inside our js. Enable this using requirejs.
 		$this->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/jsfunc.inline.js');
-		$out .= '
+		$out = '
 		inline.setNoTitleString("' . addslashes(BackendUtility::getNoRecordTitle(TRUE)) . '");
 		';
 
@@ -293,7 +293,7 @@ class FormResultCompiler {
 		$out .= LF . implode(LF, $this->additionalJS_post) . LF . $this->extJSCODE;
 
 		$spacer = LF . TAB;
-		$out = $spacer . implode($spacer, $jsFile) . GeneralUtility::wrapJS($out);
+		$out = $html . $spacer . implode($spacer, $jsFile) . GeneralUtility::wrapJS($out);
 
 		return $out;
 	}
