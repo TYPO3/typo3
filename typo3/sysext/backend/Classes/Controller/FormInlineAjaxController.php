@@ -231,7 +231,7 @@ class FormInlineAjaxController {
 				}
 			}
 			// Set language of new child record to the language of the parent record:
-			if ($parent['localizationMode'] === 'select') {
+			if ($parent['localizationMode'] === 'select' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
 				$parentRecord = $inlineRelatedRecordResolver->getRecord($parent['table'], $parent['uid']);
 				$parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
 				$childLanguageField = $GLOBALS['TCA'][$current['table']]['ctrl']['languageField'];
