@@ -6,7 +6,7 @@ return array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'type' => 'type',
+		'type' => 'file:type',
 		'hideTable' => TRUE,
 		'rootLevel' => TRUE,
 		'languageField' => 'sys_language_uid',
