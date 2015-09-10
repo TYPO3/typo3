@@ -57,7 +57,13 @@ class InlineRelatedRecordResolver {
 			} else {
 				$language = (int)$language;
 			}
-			$transOrigPointer = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+			if (isset($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']])
+				&& is_array($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']])
+			) {
+				$transOrigPointer = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']][0];
+			} else {
+				$transOrigPointer = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+			}
 			$transOrigTable = BackendUtility::getOriginalTranslationTable($table);
 
 			if ($language > 0 && $transOrigPointer) {
