@@ -267,8 +267,12 @@ class InlineRecordContainer extends AbstractContainer {
 		$options = $formDataCompiler->compile($formDataCompilerInput);
 		$options['renderType'] = 'fullRecordContainer';
 
-		if (!MathUtility::canBeInterpretedAsInteger($row['uid'])) {
-			$options['databaseRow']['uid'] = $row['uid'];
+		// @todo: This hack merges data from already prepared row over fresh row again.
+		// @todo: This really must fall ...
+		foreach ($row as $field => $value) {
+			if ($command === 'new' && is_string($value) && $value !== '' && array_key_exists($field, $options['databaseRow'])) {
+				$options['databaseRow'][$field] = $value;
+			}
 		}
 
 		return $this->nodeFactory->create($options)->render();
