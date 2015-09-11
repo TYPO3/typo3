@@ -54,16 +54,15 @@ class SwitchUserViewHelper extends AbstractViewHelper implements CompilableInter
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		$backendUser = $arguments['backendUser'];
-
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($backendUser->getUid() == $GLOBALS['BE_USER']->user['uid'] || !$backendUser->isActive()) {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 		}
 		$title = LocalizationUtility::translate('switchBackMode', 'beuser');
 		return '<a class="btn btn-default" href="' .
 			htmlspecialchars(GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid()))) .
 			'" target="_top" title="' . htmlspecialchars($title) . '">' .
-			IconUtility::getSpriteIcon(('actions-system-backend-user-switch')) . '</a>';
+			$iconFactory->getIcon('actions-system-backend-user-switch', Icon::SIZE_SMALL)->render() . '</a>';
 	}
 
 }

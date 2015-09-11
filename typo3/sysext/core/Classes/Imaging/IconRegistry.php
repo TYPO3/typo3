@@ -472,6 +472,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-search.svg',
 			)
 		),
+		'actions-system-backend-user-switch'  => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'sign-out',
+			)
+		),
 		'actions-system-cache-clear-impact-low' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
