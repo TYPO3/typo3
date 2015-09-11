@@ -486,6 +486,9 @@ class FileContentParser {
 							$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 						}
 					}
+					if (!empty($pdfInfo['title'])) {
+						$contentArr['title'] = $pdfInfo['title'];
+					}
 					$this->setLocaleForServerFileSystem(TRUE);
 				}
 				break;
