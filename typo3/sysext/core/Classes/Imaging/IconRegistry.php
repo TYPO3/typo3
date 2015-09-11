@@ -782,6 +782,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'file-word-o',
 			)
 		),
+		'mimetypes-x-content-template-static' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template-static.png',
+			)
+		),
 
 		// Spinner
 		'spinner-circle-dark' => array(

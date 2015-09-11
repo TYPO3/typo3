@@ -677,7 +677,7 @@ class ExtendedTemplateService extends TemplateService {
 			$alttext .= $row['pid'] ? ' - ' . BackendUtility::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
 			$icon = substr($row['templateID'], 0, 3) === 'sys'
 				? IconUtility::getSpriteIconForRecord('sys_template', $row, array('title' => $alttext))
-				: IconUtility::getSpriteIcon('mimetypes-x-content-template-static', array('title' => $alttext));
+				: '<span title="' . htmlspecialchars($alttext) . '">' . $iconFactory->getIcon('mimetypes-x-content-template-static', Icon::SIZE_SMALL)->render() . '</span>';
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
 				$urlParameters = array(
 					'id' => $GLOBALS['SOBE']->id,
