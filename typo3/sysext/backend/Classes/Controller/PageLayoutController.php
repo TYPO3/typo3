@@ -1149,9 +1149,6 @@ class PageLayoutController {
 	 * @return array all available buttons as an assoc. array
 	 */
 	protected function getButtons($function = '') {
-		/** @var IconFactory $iconFactory */
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
 		$lang = $this->getLanguageService();
 		$buttons = array(
 			'view' => '',
@@ -1183,7 +1180,7 @@ class PageLayoutController {
 		}
 		// Cache
 		if (!$this->modTSconfig['properties']['disableAdvanced']) {
-			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . IconUtility::getSpriteIcon('actions-system-cache-clear') . '</a>';
+			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
@@ -1287,7 +1284,7 @@ class PageLayoutController {
 									)
 								) . '#latest'
 							) . ');return false;') . '"
-						title="' . $lang->getLL('recordHistory', TRUE) . '">' . $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</a>';
+						title="' . $lang->getLL('recordHistory', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</a>';
 				}
 			}
 		}

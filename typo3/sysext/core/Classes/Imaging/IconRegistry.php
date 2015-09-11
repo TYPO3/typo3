@@ -478,6 +478,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'sign-out',
 			)
 		),
+		'actions-system-cache-clear' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'bolt',
+			)
+		),
 		'actions-system-cache-clear-impact-low' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
