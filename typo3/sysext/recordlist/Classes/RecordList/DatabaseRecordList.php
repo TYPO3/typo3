@@ -311,7 +311,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// Reload
 			$buttons['reload'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="'
 				. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL) . '</a>';
+				. $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL) . '</a>';
 			// Shortcut
 			if ($backendUser->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->getDocumentTemplate()->makeShortcutIcon(
@@ -1138,7 +1138,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			. '&pointer=\'+calculatePointer(document.getElementById(\'jumpPage-' . $renderPart
 			. '\').value); document.dblistForm.submit(); return true;" title="'
 			. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:reload', TRUE) . '">'
-			. $this->iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL) . '</a></li>';
+			. $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL) . '</a></li>';
 		if ($renderPart === 'top') {
 			// Add js to traverse a page select input to a pointer value
 			$content = '

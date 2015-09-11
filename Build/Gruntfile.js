@@ -144,6 +144,7 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Action/actions-page-new.svg': '<%= paths.icons %>Action/actions-page-new.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-move.svg': '<%= paths.icons %>Action/actions-page-move.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-open.svg': '<%= paths.icons %>Action/actions-page-open.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-refresh.svg': '<%= paths.icons %>Action/actions-refresh.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-search.svg': '<%= paths.icons %>Action/actions-search.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-high.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-high.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-system-cache-clear-impact-low.svg': '<%= paths.icons %>Action/actions-system-cache-clear-impact-low.svg',

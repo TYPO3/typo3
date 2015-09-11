@@ -284,7 +284,7 @@ class FileList extends AbstractRecordList {
 			}
 
 		}
-		$buttons['refresh'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">' . $this->iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL) . '</a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', TRUE) . '">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL) . '</a>';
 		return array($buttons, $otherMarkers);
 	}
 

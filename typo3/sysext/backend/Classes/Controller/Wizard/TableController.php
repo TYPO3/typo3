@@ -229,7 +229,7 @@ class TableController extends AbstractWizardController implements \TYPO3\CMS\Cor
 				. '</button>';
 			// Reload
 			$buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL)
+				. $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)
 				. '</button>';
 		}
 		return $buttons;

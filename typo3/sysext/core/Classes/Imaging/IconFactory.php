@@ -44,6 +44,13 @@ class IconFactory {
 	 * @return Icon
 	 */
 	public function getIcon($identifier, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = NULL, IconState $state = NULL) {
+		if ($this->iconRegistry->isDeprecated($identifier)) {
+			$deprecationSettings = $this->iconRegistry->getDeprecationSettings($identifier);
+			GeneralUtility::deprecationLog(sprintf($deprecationSettings['message'], $identifier));
+			if (!empty($deprecationSettings['replacement'])) {
+				$identifier = $deprecationSettings['replacement'];
+			}
+		}
 		if (!$this->iconRegistry->isRegistered($identifier)) {
 			$identifier = $this->iconRegistry->getDefaultIconIdentifier();
 		}

@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class IconRegistry, which makes it possible to register custom icons
@@ -472,6 +473,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'anchor',
 			)
 		),
+		'actions-refresh' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-refresh.svg',
+			)
+		),
 		'actions-selection-delete' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -584,12 +591,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => SvgIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-system-tree-search-open.svg',
-			)
-		),
-		'actions-system-refresh' => array(
-			'provider' => FontawesomeIconProvider::class,
-			'options' => array(
-				'name' => 'refresh',
 			)
 		),
 		'actions-version-swap-version' => array(
@@ -869,6 +870,28 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	);
 
 	/**
+	 * Array of deprecated icons, add deprecated icons to this array and remove it from registry
+	 * - Index of this array contains the deprecated icon
+	 * - Value of each entry must contain the deprecation message and can contain an identifier which replaces the old identifier
+	 *
+	 * Example:
+	 * array(
+	 *   'deprecated-icon-identifier' => array(
+	 *      'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8',
+	 *      'replacement' => 'alternative-icon-identifier' // must be registered
+	 *   )
+	 * )
+	 *
+	 * @var array
+	 */
+	protected $deprecatedIcons = array(
+		'actions-system-refresh' => array(
+			'replacement' => 'actions-refresh',
+			'message' => '%s is deprecated since TYPO3 CMS 7, this icon will be removed in TYPO3 CMS 8'
+		)
+	);
+
+	/**
 	 * @var string
 	 */
 	protected $defaultIconIdentifier = 'default-not-found';
@@ -879,7 +902,16 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool
 	 */
 	public function isRegistered($identifier) {
-		return !empty($this->icons[$identifier]);
+		return isset($this->icons[$identifier]);
+	}
+
+	/**
+	 * @param string $identifier
+	 *
+	 * @return bool
+	 */
+	public function isDeprecated($identifier) {
+		return isset($this->deprecatedIcons[$identifier]);
 	}
 
 	/**
@@ -919,7 +951,27 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!$this->isRegistered($identifier)) {
 			throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
 		}
+		if ($this->isDeprecated($identifier)) {
+			$deprecationSettings = $this->getDeprecationSettings($identifier);
+			GeneralUtility::deprecationLog(sprintf($deprecationSettings['message'], $identifier));
+			if (!empty($deprecationSettings['replacement'])) {
+				$identifier = $deprecationSettings['replacement'];
+			}
+		}
 		return $this->icons[$identifier];
+	}
+
+	/**
+	 * @param string $identifier
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getDeprecationSettings($identifier) {
+		if (!$this->isDeprecated($identifier)) {
+			throw new Exception('Icon with identifier "' . $identifier . '" is not deprecated"', 1437425804);
+		}
+		return $this->deprecatedIcons[$identifier];
 	}
 
 	/**
@@ -929,4 +981,5 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getAllRegisteredIconIdentifiers() {
 		return array_keys($this->icons);
 	}
+
 }

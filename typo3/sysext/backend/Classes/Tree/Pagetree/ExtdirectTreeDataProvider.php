@@ -195,7 +195,6 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 				'temporaryMountPoint' => Commands::getMountPointPath()
 			),
 			'Sprites' => array(
-				'Refresh' => IconUtility::getSpriteIconClasses('actions-system-refresh'),
 				'InputClear' => IconUtility::getSpriteIconClasses('actions-input-clear'),
 				'TrashCan' => IconUtility::getSpriteIconClasses('actions-edit-delete'),
 				'TrashCanRestore' => IconUtility::getSpriteIconClasses('actions-edit-restore'),
@@ -204,6 +203,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 			'Icons' => array(
 				'NewNode' => (string)$this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL),
 				'Filter' => (string)$this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL),
+				'Refresh' => (string)$this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)
 			)
 		);
 		return $configuration;

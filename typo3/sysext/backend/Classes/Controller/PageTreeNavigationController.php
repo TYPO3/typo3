@@ -236,7 +236,7 @@ class PageTreeNavigationController {
 			. $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
 			. '</a>';
 		// Refresh
-		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . $iconFactory->getIcon('actions-system-refresh', Icon::SIZE_SMALL)->render() . '</a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.refresh', TRUE) . '">' . $iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
 		// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', BackendUtility::cshItem('xMOD_csh_corebe', 'pagetree'));
 		return $buttons;
