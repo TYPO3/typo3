@@ -776,6 +776,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'file-text-o',
 			)
 		),
+		'mimetypes-text-csv' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/text-csv.png',
+			)
+		),
 		'mimetypes-word' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
