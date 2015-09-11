@@ -504,42 +504,21 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				// auto generate ID for auto_increment fields if not present (static import needs this!)
 				// should we check the table name here (static_*)?
 				if (isset($this->cache_autoIncFields[$table])) {
-					if (isset($fields_values[$this->cache_autoIncFields[$table]])) {
-						$new_id = $fields_values[$this->cache_autoIncFields[$table]];
-						if ($table != 'tx_dbal_debuglog') {
-							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
-						}
-					} elseif (!$this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
+					if (!isset($fields_values[$this->cache_autoIncFields[$table]]) && !$this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
 						// The table does not support auto-incremented fields, fall back to
 						// using a sequence table to simulate the auto-increment
-						$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID($table . '_' . $this->cache_autoIncFields[$table], $this->handlerInstance[$this->lastHandlerKey]->sequenceStart);
-						$fields_values[$this->cache_autoIncFields[$table]] = $new_id;
-						if ($table != 'tx_dbal_debuglog') {
-							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
-						}
+						$fields_values[$this->cache_autoIncFields[$table]] = $this->handlerInstance[$this->lastHandlerKey]->GenID($table . '_' . $this->cache_autoIncFields[$table], $this->handlerInstance[$this->lastHandlerKey]->sequenceStart);
 					}
 				}
 				$this->lastQuery = $this->INSERTquery($table, $fields_values, $no_quote_fields);
 				if (is_string($this->lastQuery)) {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
-					if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID && !empty($this->cache_autoIncFields[$table])) {
-						// The table is able to retrieve the ID of the last insert, use it to update the blob below
-						$new_id = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
-						if ($table !== 'tx_dbal_debuglog') {
-							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
-						}
-					}
+					$this->updateLastInsertId($table, $fields_values);
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
 					if ((string)$this->lastQuery[0] !== '') {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
-						if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID && !empty($this->cache_autoIncFields[$table])) {
-							// The table is able to retrieve the ID of the last insert, use it to update the blob below
-							$new_id = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
-							if ($table !== 'tx_dbal_debuglog') {
-								$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
-							}
-						}
+						$new_id = $this->updateLastInsertId($table, $fields_values);
 					}
 					if (is_array($this->lastQuery[1])) {
 						foreach ($this->lastQuery[1] as $field => $content) {
@@ -2056,6 +2035,30 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	public function MySQLActualType($meta) {
 		GeneralUtility::logDeprecatedFunction();
 		return $this->dbmsSpecifics->getNativeFieldType($meta);
+	}
+
+	/**
+	 * Update the id information for the last inserted record
+	 *
+	 * @param string $table
+	 * @param array $fieldValues
+	 * @return null|int
+	 */
+	protected function updateLastInsertId($table, array $fieldValues) {
+		if ($table === 'tx_dbal_debuglog') {
+			return NULL;
+		}
+		$newId = NULL;
+		if (isset($fieldValues[$this->cache_autoIncFields[$table]])) {
+			$newId = $fieldValues[$this->cache_autoIncFields[$table]];
+		} elseif ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID && !empty($this->cache_autoIncFields[$table])) {
+			// The table is able to retrieve the ID of the last insert
+			$newId = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
+		}
+		if ($newId !== NULL) {
+			$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $newId;
+		}
+		return $newId;
 	}
 
 	/*********************************************
