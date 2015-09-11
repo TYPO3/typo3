@@ -982,7 +982,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						. ' title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:stop', TRUE) . '" class="icon">' .
 						$this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
 					$runAction = '<a class="btn btn-default" href="' . htmlspecialchars($this->moduleUri . '&tx_scheduler[execute][]=' . $schedulerRecord['uid']) . '" title="' . $this->getLanguageService()->getLL('action.run_task', TRUE) . '" class="icon">' .
-						IconUtility::getSpriteIcon('extensions-scheduler-run-task') . '</a>';
+						$this->iconFactory->getIcon('extensions-scheduler-run-task', Icon::SIZE_SMALL)->render() . '</a>';
 
 					// Define some default values
 					$lastExecution = '-';

@@ -672,6 +672,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'refresh',
 			)
 		),
+		'extensions-scheduler-run-task' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'play-circle',
+			)
+		),
 
 		// specials
 		'empty-empty' => array(
