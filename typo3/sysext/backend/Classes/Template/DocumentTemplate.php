@@ -599,7 +599,7 @@ function jumpToUrl(URL) {
 			$title = strip_tags(BackendUtility::getRecordTitle($table, $row));
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid']);
 		} else {
-			$iconImgTag = IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
+			$iconImgTag = '<span title="' . htmlspecialchars($path) . '">' . $this->iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL) . '</span>';
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 

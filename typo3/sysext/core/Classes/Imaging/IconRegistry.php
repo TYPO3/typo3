@@ -64,6 +64,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'th-large',
 			)
 		),
+		'apps-pagetree-page-domain' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-domain.png',
+			)
+		),
 		'apps-pagetree-root' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(

@@ -24,6 +24,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
@@ -79,9 +81,11 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
 			// Setting icon with clickmenu + uid
 			$theIcon .= ' <em>[PID: ' . $pageRecord['uid'] . ']</em>';
 		} else {
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			// On root-level of page tree
 			// Make Icon
-			$theIcon = IconUtility::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
+			$theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL) . '</span>';
 			if ($GLOBALS['BE_USER']->user['admin']) {
 				$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', 0);
 			}
