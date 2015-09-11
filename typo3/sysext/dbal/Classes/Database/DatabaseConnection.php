@@ -522,11 +522,18 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				$this->lastQuery = $this->INSERTquery($table, $fields_values, $no_quote_fields);
 				if (is_string($this->lastQuery)) {
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
+					if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID && !empty($this->cache_autoIncFields[$table])) {
+						// The table is able to retrieve the ID of the last insert, use it to update the blob below
+						$new_id = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
+						if ($table !== 'tx_dbal_debuglog') {
+							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
+						}
+					}
 				} else {
 					$this->handlerInstance[$this->lastHandlerKey]->StartTrans();
 					if ((string)$this->lastQuery[0] !== '') {
 						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery[0], FALSE);
-						if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID) {
+						if ($this->handlerInstance[$this->lastHandlerKey]->hasInsertID && !empty($this->cache_autoIncFields[$table])) {
 							// The table is able to retrieve the ID of the last insert, use it to update the blob below
 							$new_id = $this->handlerInstance[$this->lastHandlerKey]->Insert_ID($table, $this->cache_autoIncFields[$table]);
 							if ($table !== 'tx_dbal_debuglog') {
