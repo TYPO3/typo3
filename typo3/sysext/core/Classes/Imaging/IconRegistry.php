@@ -562,6 +562,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'angle-double-left',
 			)
 		),
+		'actions-view-go-forward' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'angle-double-right',
+			)
+		),
 		'actions-view-go-up' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

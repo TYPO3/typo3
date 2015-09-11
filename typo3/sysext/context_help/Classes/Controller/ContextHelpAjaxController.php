@@ -15,9 +15,10 @@ namespace TYPO3\CMS\ContextHelp\Controller;
  */
 
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /**
  * Class ContextHelpAjaxController
@@ -51,7 +52,9 @@ class ContextHelpAjaxController {
 	 */
 	protected function getContextHelp($table, $field) {
 		$helpTextArray = BackendUtility::helpTextArray($table, $field);
-		$moreIcon = $helpTextArray['moreInfo'] ? IconUtility::getSpriteIcon('actions-view-go-forward') : '';
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$moreIcon = $helpTextArray['moreInfo'] ? $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render() : '';
 		return array(
 			'title' => $helpTextArray['title'],
 			'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',

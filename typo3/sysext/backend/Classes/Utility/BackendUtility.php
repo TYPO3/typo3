@@ -2719,7 +2719,9 @@ class BackendUtility {
 		}
 		// Add see also arrow if we have more info
 		if ($helpTextArray['moreInfo']) {
-			$arrow = IconUtility::getSpriteIcon('actions-view-go-forward');
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$arrow = $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render();
 		}
 		// Wrap description and arrow in p tag
 		if ($helpTextArray['description'] !== NULL || $arrow) {
