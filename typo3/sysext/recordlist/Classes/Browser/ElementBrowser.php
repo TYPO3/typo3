@@ -2046,7 +2046,7 @@ class ElementBrowser {
 			. ', \'\', \'\',\'\',1);">';
 		// Add the foder icon
 		$folderIcon = $aTag;
-		$folderIcon .= IconUtility::getSpriteIcon('apps-filetree-folder-default');
+		$folderIcon .= $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL);
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($baseFolder->getName(), $titleLength));
 		$folderIcon .= '</a>';
 		$content .= $folderIcon . '<br />';
@@ -2057,7 +2057,7 @@ class ElementBrowser {
 			$subFolderIdentifier = $subFolder->getCombinedIdentifier();
 			// Create folder icon:
 			$icon = '<span style="width: 16px; height: 16px; display: inline-block;"></span>';
-			$icon .= IconUtility::getSpriteIcon('apps-filetree-folder-default', array('title' => htmlspecialchars($subFolder->getName())));
+			$icon .= '<span title="' . htmlspecialchars($subFolder->getName()) . '">' . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL) . '</span>';
 			// Create links for adding the folder:
 			if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
 				$aTag = '<a href="#" onclick="return set_folderpath(' . GeneralUtility::quoteJSvalue($subFolderIdentifier)
