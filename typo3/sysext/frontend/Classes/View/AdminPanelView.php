@@ -663,7 +663,8 @@ class AdminPanelView {
 				);
 				$tsfe->sys_page->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
-					$icon = IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay', array('title' => $this->extGetLL('edit_editPageOverlay', FALSE)));
+					$icon = '<span title="' . $this->extGetLL('edit_editPageOverlay', TRUE) . '">'
+						. $iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL) . '</span>';
 					$url = BackendUtility::getModuleUrl('record_edit', array(
 						'edit[pages_language_overlay][' . $row['uid'] . ']' => 'edit',
 						'noView' => 1,

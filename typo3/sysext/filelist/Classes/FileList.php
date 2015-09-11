@@ -726,12 +726,9 @@ class FileList extends AbstractRecordList {
 							$theData[$field] = ' <div class="localisationData btn-group" data-fileid="' . $fileObject->getUid() . '"' .
 								(empty($translations) ? ' style="display: none;"' : '') . '>' . $languageCode . '</div>';
 							$theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
-								IconUtility::getSpriteIcon(
-									'mimetypes-x-content-page-language-overlay',
-									array(
-										'title' => $GLOBALS['LANG']->getLL('translateMetadata')
-									)
-								) . '</a>';
+								'<span title="' . $GLOBALS['LANG']->getLL('translateMetadata', TRUE) . '">'
+								. $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL) . '</span>'
+								. '</a>';
 						}
 						break;
 					case '_REF_':

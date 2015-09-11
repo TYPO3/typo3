@@ -1215,7 +1215,7 @@ class PageLayoutController {
 					$buttons['edit_language'] = '<a href="#" ' .
 						'onclick="' . $editLanguageOnClick . '"' .
 						'title="' . $lang->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
-						IconUtility::getSpriteIcon('mimetypes-x-content-page-language-overlay') .
+						$this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL) .
 						'</a>';
 				}
 
