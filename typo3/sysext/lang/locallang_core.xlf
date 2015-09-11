@@ -1230,6 +1230,9 @@ Check also the following points:\n
 			<trans-unit id="labels.deleteTitle">
 				<source>Revert to default Constant</source>
 			</trans-unit>
+			<trans-unit id="labels.editTitle">
+				<source>Edit this Constant</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

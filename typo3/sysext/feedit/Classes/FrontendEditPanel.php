@@ -110,7 +110,7 @@ class FrontendEditPanel {
 			$panel .= $this->backendUser->adminPanel->ext_makeToolBar();
 		}
 		if (isset($allow['edit'])) {
-			$icon = IconUtility::getSpriteIcon('actions-document-open', array('title' => $this->backendUser->extGetLL('p_editRecord')));
+			$icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_editRecord')) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</span>';
 			$panel .= $this->editPanelLinkWrap($icon, $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
 		}
 		// Hiding in workspaces because implementation is incomplete
@@ -213,12 +213,9 @@ class FrontendEditPanel {
 		// Special content is about to be shown, so the cache must be disabled.
 		$this->frontendController->set_no_cache('Display frontend edit icons', TRUE);
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
-		$optionsArray = array(
-			'title' => htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', FALSE),
-			'class' => 'frontEndEditIcons',
-			'style' => $conf['styleAttribute'] ? htmlspecialchars($conf['styleAttribute']) : ''
-		);
-		$iconImg = $conf['iconImg'] ? $conf['iconImg'] : IconUtility::getSpriteIcon('actions-document-open', $optionsArray);
+		$iconImg = '<span title="' . htmlspecialchars($iconTitle, ENT_COMPAT, 'UTF-8', FALSE) . '" class="frontEndEditIcons" style="' . ($conf['styleAttribute'] ? htmlspecialchars($conf['styleAttribute']) : '') . '">'
+			. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)
+			. '</span>';
 		$nV = GeneralUtility::_GP('ADMCMD_view') ? 1 : 0;
 
 		$url = BackendUtility::getModuleUrl(

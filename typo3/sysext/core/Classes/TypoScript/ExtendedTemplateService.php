@@ -1169,6 +1169,7 @@ class ExtendedTemplateService extends TemplateService {
 					$raname = substr(md5($params['name']), 0, 10);
 					$aname = '\'' . $raname . '\'';
 					list($fN, $fV, $params, $idName) = $this->ext_fNandV($params);
+					$idName = htmlspecialchars($idName);
 					switch ($typeDat['type']) {
 						case 'int':
 
@@ -1306,12 +1307,11 @@ class ExtendedTemplateService extends TemplateService {
 						$deleteIconHTML = '<span title="' . $deleteTitle . '" alt="' . $deleteTitle . '"'
 							. ' class="typo3-tstemplate-ceditor-control undoIcon" rel="' . $idName . '">'
 							. $deleteIcon . '</span>';
-						$editIconHTML = IconUtility::getSpriteIcon('actions-document-open', array(
-							'class' => 'typo3-tstemplate-ceditor-control editIcon',
-							'alt' => 'Edit this Constant',
-							'title' => 'Edit this Constant',
-							'rel' => $idName
-						));
+						$editTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.editTitle', TRUE);
+						$editIcon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+						$editIconHTML = '<span title="' . $editTitle . '" alt="' . $editTitle . '"'
+							. ' class="typo3-tstemplate-ceditor-control editIcon" rel="' . $idName . '">'
+							. $editIcon . '</span>';
 						$constantCheckbox = '<input type="hidden" name="' . $checkboxName . '" id="' . $checkboxID . '" value="' . $checkboxValue . '"/>';
 						// If there's no default value for the field, use a static label.
 						if (!$params['default_value']) {

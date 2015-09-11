@@ -725,7 +725,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
 							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
-							. IconUtility::getSpriteIcon('actions-document-open') . '</a>'
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>'
 							: ''
 						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->pageRecord['title'], 20));
 				}
