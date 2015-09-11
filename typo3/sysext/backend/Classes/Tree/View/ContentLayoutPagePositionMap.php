@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Position map class for content elements within the page module
  */
@@ -37,7 +41,7 @@ class ContentLayoutPagePositionMap extends PagePositionMap {
 	 * @return string Wrapped title string.
 	 */
 	public function wrapRecordTitle($str, $row) {
-		$aOnClick = 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('tt_content:' . $row['uid'])))) . ');return false;';
+		$aOnClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('tt_content:' . $row['uid'])))) . ');return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
 	}
 
@@ -50,7 +54,7 @@ class ContentLayoutPagePositionMap extends PagePositionMap {
 	 * @see printRecordMap()
 	 */
 	public function wrapColumnHeader($str, $vv) {
-		$aOnClick = 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('_EDIT_COL:' . $vv)))) . ');return false;';
+		$aOnClick = 'jumpToUrl(' . GeneralUtility::quoteJSvalue($GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => ('_EDIT_COL:' . $vv)))) . ');return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
 	}
 
@@ -70,7 +74,7 @@ class ContentLayoutPagePositionMap extends PagePositionMap {
 		} else {
 			$location = $GLOBALS['SOBE']->local_linkThisScript(array('edit_record' => 'tt_content:new/' . $pid . '/' . $vv));
 		}
-		return 'jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($location) . ');return false;';
+		return 'jumpToUrl(' . GeneralUtility::quoteJSvalue($location) . ');return false;';
 	}
 
 	/**
@@ -82,7 +86,9 @@ class ContentLayoutPagePositionMap extends PagePositionMap {
 	 */
 	public function wrapRecordHeader($str, $row) {
 		if ($row['uid'] == $this->moveUid) {
-			return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-current') . $str;
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			return $iconFactory->getIcon('status-status-current', Icon::SIZE_SMALL)->render() . $str;
 		} else {
 			return $str;
 		}
