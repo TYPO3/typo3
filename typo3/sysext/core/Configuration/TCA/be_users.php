@@ -18,10 +18,6 @@ return array(
 		),
 		'type' => 'admin',
 		'typeicon_column' => 'admin',
-		'typeicons' => array(
-			'0' => 'be_users.gif',
-			'1' => 'be_users_admin.gif'
-		),
 		'typeicon_classes' => array(
 			'0' => 'status-user-backend',
 			'1' => 'status-user-admin',

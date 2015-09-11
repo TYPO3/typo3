@@ -44,19 +44,6 @@ return array(
 			'html' => 'mimetypes-x-content-html',
 			'default' => 'mimetypes-x-content-text'
 		),
-		'typeicons' => array(
-			'header' => 'tt_content_header.gif',
-			'bullets' => 'tt_content_bullets.gif',
-			'table' => 'tt_content_table.gif',
-			'uploads' => 'tt_content_uploads.gif',
-			'menu' => 'tt_content_menu.gif',
-			'list' => 'tt_content_list.gif',
-			'login' => 'tt_content_login.gif',
-			'shortcut' => 'tt_content_shortcut.gif',
-			'script' => 'tt_content_script.gif',
-			'div' => 'tt_content_div.gif',
-			'html' => 'tt_content_html.gif'
-		),
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,menu_type',
 		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'

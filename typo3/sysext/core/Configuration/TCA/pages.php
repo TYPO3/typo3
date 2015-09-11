@@ -56,11 +56,6 @@ return array(
 			'page-contentFromPid-hideinmenu' => 'apps-pagetree-page-content-from-page-hideinmenu',
 			'default' => 'apps-pagetree-page-default'
 		),
-		'typeicons' => array(
-			'1' => 'pages.gif',
-			'254' => 'sysf.gif',
-			'255' => 'recycler.gif'
-		),
 		'searchFields' => 'title,alias,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
 	),
 	'interface' => array(

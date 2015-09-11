@@ -155,18 +155,6 @@ abstract class AbstractSpriteHandler implements SpriteIconGeneratorInterface {
 
 					$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
 				}
-				// If records types are available, register them
-				if (isset($tcaCtrl['typeicon_column']) && is_array($tcaCtrl['typeicons'])) {
-					foreach ($tcaCtrl['typeicons'] as $type => $icon) {
-						// In CSS we need a path relative to the css file
-						// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
-						if (strpos($icon, '/') === FALSE) {
-							$icon = $skinPath . 'gfx/i/' . $icon;
-						}
-						$icon = GeneralUtility::resolveBackPath($icon);
-						$resultArray['tcarecords-' . $tableName . '-' . $type] = $icon;
-					}
-				}
 			}
 		}
 		return $resultArray;

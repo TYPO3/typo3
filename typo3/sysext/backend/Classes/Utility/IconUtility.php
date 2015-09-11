@@ -157,9 +157,7 @@ class IconUtility {
 				$iconfile = $GLOBALS['PAGES_TYPES']['default']['icon'];
 			}
 		} else {
-			if (!($iconfile = $GLOBALS['TCA'][$table]['ctrl']['typeicons'][$row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']]])) {
-				$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ?: $table . '.gif';
-			}
+			$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ?: $table . '.gif';
 		}
 		// Setting path of iconfile if not already set. Default is "gfx/i/"
 		if (!strstr($iconfile, '/')) {

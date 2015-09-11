@@ -25,9 +25,6 @@ return array(
 			'default' => 'mimetypes-x-content-template-extension',
 			'1' => 'mimetypes-x-content-template'
 		),
-		'typeicons' => array(
-			'0' => 'template_add.gif'
-		),
 		'searchFields' => 'title,constants,config'
 	),
 	'interface' => array(

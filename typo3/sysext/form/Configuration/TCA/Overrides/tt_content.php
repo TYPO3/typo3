@@ -3,7 +3,6 @@ defined('TYPO3_MODE') or die();
 
 // add an CType element "mailform"
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['mailform'] = 'mimetypes-x-content-form';
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons']['mailform'] = 'tt_content_form.gif';
 
 // check if there is already a forms tab and add the item after that, otherwise
 // add the tab item as well

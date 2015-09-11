@@ -365,14 +365,6 @@ $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = array_merge(
 		'text' => 'mimetypes-x-content-text'
 	)
 );
-$GLOBALS['TCA']['tt_content']['ctrl']['typeicons'] = array_merge(
-	$GLOBALS['TCA']['tt_content']['ctrl']['typeicons'],
-	array(
-		'textpic' => 'tt_content_textpic.gif',
-		'image' => 'tt_content_image.gif',
-		'text' => 'tt_content.gif'
-	)
-);
 array_splice(
 	$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'],
 	2,
