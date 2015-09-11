@@ -622,6 +622,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'arrow-right',
 			)
 		),
+		'actions-view-table-collapse' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'chevron-left',
+			)
+		),
+		'actions-view-table-expand' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'chevron-right',
+			)
+		),
 		'actions-window-open' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

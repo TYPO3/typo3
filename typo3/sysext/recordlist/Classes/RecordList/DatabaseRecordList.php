@@ -529,8 +529,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					. '</span> (<span class="t3js-table-total-items">' . $this->totalItems . '</span>)';
 			} else {
 				$icon = $this->table
-					? IconUtility::getSpriteIcon('actions-view-table-collapse', array('title' => $lang->getLL('contractView', TRUE)))
-					: IconUtility::getSpriteIcon('actions-view-table-expand', array('title' => $lang->getLL('expandView', TRUE)));
+					? '<span title="' . $lang->getLL('contractView', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-table-collapse', Icon::SIZE_SMALL) . '</span>'
+					: '<span title="' . $lang->getLL('expandView', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-table-expand', Icon::SIZE_SMALL) . '</span>';
 				$theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $this->totalItems . '</span>) ' . $icon);
 			}
 			if ($listOnlyInSingleTableMode) {
