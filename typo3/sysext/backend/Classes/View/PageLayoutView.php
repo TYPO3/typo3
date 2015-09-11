@@ -395,8 +395,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return string HTML for the listing
 	 */
 	public function getTable_tt_content($id) {
-		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->ext_CALC_PERMS);
 		$backendUser = $this->getBackendUser();
+		$this->pageinfo = BackendUtility::readPageAccess($this->id, $backendUser->getPagePermsClause($this->ext_CALC_PERMS));
 		$this->initializeLanguages();
 		$this->initializeClipboard();
 		$pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), TRUE));
