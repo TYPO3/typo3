@@ -145,7 +145,9 @@ class FrontendEditPanel {
 		// Hiding in workspaces because implementation is incomplete
 		// Hiding for localizations because it is unknown what should be the function in that case
 		if (isset($allow['delete']) && $this->backendUser->workspace === 0 && !$dataArr['_LOCALIZED_UID']) {
-			$icon = IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $this->backendUser->extGetLL('p_delete')));
+			$icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_delete')) . '">'
+				. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)
+				. '</span>';
 			$panel .= $this->editPanelLinkWrap($icon, $formName, 'delete', '', $this->backendUser->extGetLL('p_deleteConfirm'));
 		}
 		// Final

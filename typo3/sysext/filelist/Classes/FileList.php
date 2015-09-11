@@ -422,7 +422,7 @@ class FileList extends AbstractRecordList {
 					}
 					if ($this->clipObj->current !== 'normal' && $iOut) {
 						$cells[] = $this->linkClipboardHeaderIcon(IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $this->getLanguageService()->getLL('clip_selectMarked', TRUE))), $table, 'setCB');
-						$cells[] = $this->linkClipboardHeaderIcon(IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $this->getLanguageService()->getLL('clip_deleteMarked'))), $table, 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
+						$cells[] = $this->linkClipboardHeaderIcon('<span title="' . $this->getLanguageService()->getLL('clip_deleteMarked', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL), $table, 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
 						$onClick = 'checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;';
 						$cells[] = '<a class="btn btn-default" rel="" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->getLL('clip_markRecords', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL) . '</a>';
 					}

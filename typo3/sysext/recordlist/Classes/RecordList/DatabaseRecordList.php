@@ -939,7 +939,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 						// The "Delete marked" link:
 						$cells['delete'] = $this->linkClipboardHeaderIcon(
-							IconUtility::getSpriteIcon('actions-edit-delete', array('title' => $lang->getLL('clip_deleteMarked', TRUE))),
+							'<span title="' . $lang->getLL('clip_deleteMarked', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</span>',
 							$table,
 							'delete',
 							sprintf($lang->getLL('clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']))
