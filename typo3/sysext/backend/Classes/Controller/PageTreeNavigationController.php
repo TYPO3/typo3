@@ -250,13 +250,10 @@ class PageTreeNavigationController {
 	protected function getWorkspaceInfo() {
 		if (ExtensionManagementUtility::isLoaded('workspaces') && ($this->getBackendUser()->workspace !== 0 || $this->getBackendUser()->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))) {
 			$wsTitle = htmlspecialchars(WorkspaceService::getWorkspaceTitle($this->getBackendUser()->workspace));
-			$workspaceInfo = '
-				<div class="bgColor4 workspace-info">' . IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array(
-				'title' => $wsTitle,
-				'onclick' => 'top.goToModule(\'web_WorkspacesWorkspaces\');',
-				'style' => 'cursor:pointer;'
-			)) . $wsTitle . '</div>
-			';
+
+			$workspaceInfo = '<div class="bgColor4 workspace-info"><span title="' . $wsTitle . '" onclick="top.goToModule(\'web_WorkspacesWorkspaces\');" style="cursor:pointer;">'
+					. $this->iconFactory->getIcon('apps-toolbar-menu-workspace', Icon::SIZE_SMALL)->render() . '</span>'
+					. $wsTitle . '</div>';
 		} else {
 			$workspaceInfo = '';
 		}
