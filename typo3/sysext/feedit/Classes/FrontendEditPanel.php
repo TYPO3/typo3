@@ -138,7 +138,9 @@ class FrontendEditPanel {
 					. '</span>';
 				$panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '');
 			} else {
-				$icon = IconUtility::getSpriteIcon('actions-document-new', array('title' => $this->backendUser->extGetLL('p_newRecordAfter')));
+				$icon = '<span title="' . htmlspecialchars($this->backendUser->extGetLL('p_newRecordAfter')) . '">'
+					. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)
+					. '</span>';
 				$panel .= $this->editPanelLinkWrap($icon, $formName, 'new', $currentRecord, '', $newUID);
 			}
 		}

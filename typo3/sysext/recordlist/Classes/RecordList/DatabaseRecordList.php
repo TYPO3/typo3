@@ -978,7 +978,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 						if ($this->calcPerms & $permsAdditional && $this->showNewRecLink($table)) {
 							$spriteIcon = $table === 'pages'
 								? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
-								: IconUtility::getSpriteIcon('actions-document-new');
+								: $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
 							if ($table === 'tt_content' && $this->newWizards) {
 								// If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 								$tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
