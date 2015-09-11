@@ -408,8 +408,10 @@ class AdminPanelView {
 			$beUser->extPageInTreeInfo = array();
 			$beUser->extPageInTreeInfo[] = array($tsfe->page['uid'], htmlspecialchars($tsfe->page['title']), $depth + 1);
 			$beUser->extGetTreeList($tsfe->id, $depth, 0, $beUser->getPagePermsClause(1));
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			foreach ($beUser->extPageInTreeInfo as $key => $row) {
-				$outTable .= '<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . IconUtility::getSpriteIcon('apps-pagetree-page-default') . htmlspecialchars($row[1]) . '</td><td>' . $beUser->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
+				$outTable .= '<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . $iconFactory->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL) . htmlspecialchars($row[1]) . '</td><td>' . $beUser->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
 			}
 			$outTable = '<table class="typo3-adminPanel-table"><thead><tr><th colspan="2">' . $this->extGetLL('cache_cacheEntries') . '</th></tr></thead>' . $outTable . '</table>';
 			$outTable .= '<span class="fa fa-bolt clear-cache-icon"><!-- --></span><input class="btn btn-default clear-cache" type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
