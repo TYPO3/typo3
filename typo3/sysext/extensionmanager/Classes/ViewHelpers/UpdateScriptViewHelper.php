@@ -54,6 +54,8 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 		// If the "class.ext_update.php" file exists, build link to the update script screen
 		/** @var $updateScriptUtility \TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility */
 		$updateScriptUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\UpdateScriptUtility::class);
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($updateScriptUtility->checkUpdateScriptExists($extensionKey)) {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
 			$action = 'show';
@@ -64,11 +66,10 @@ class UpdateScriptViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVie
 			);
 			$this->tag->addAttribute('href', $uri);
 			$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.update.script', 'extensionmanager'));
-			$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('extensions-extensionmanager-update-script'));
+			$this->tag->setContent($iconFactory->getIcon('extensions-extensionmanager-update-script', Icon::SIZE_SMALL)->render());
 			$tag = $this->tag->render();
 		} else {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL) . '</span>';
+			return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';
 		}
 		return $tag;
 	}

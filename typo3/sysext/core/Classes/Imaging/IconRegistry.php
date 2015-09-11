@@ -659,6 +659,14 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
+		// Extensions
+		'extensions-extensionmanager-update-script' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'refresh',
+			)
+		),
+
 		// specials
 		'empty-empty' => array(
 			'provider' => FontawesomeIconProvider::class,
