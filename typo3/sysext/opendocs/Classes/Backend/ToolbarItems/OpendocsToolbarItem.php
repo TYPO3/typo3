@@ -83,7 +83,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 		$title = $this->getLanguageService()->getLL('toolbaritem', TRUE);
 
 		$opendocsMenu = array();
-		$opendocsMenu[] = IconUtility::getSpriteIcon('apps-toolbar-menu-opendocs', array('title' => $title));
+		$opendocsMenu[] = '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL) . '</span>';
 		$opendocsMenu[] = '<span class="badge" id="tx-opendocs-counter">' . $numDocs . '</span>';
 
 		return implode(LF, $opendocsMenu);

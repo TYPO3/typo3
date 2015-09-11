@@ -88,6 +88,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-pagetree-root.svg',
 			)
 		),
+		'apps-toolbar-menu-opendocs' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'file',
+			)
+		),
 		'apps-toolbar-menu-search' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
