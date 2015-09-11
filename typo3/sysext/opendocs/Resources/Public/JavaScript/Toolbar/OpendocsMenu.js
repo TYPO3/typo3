@@ -20,7 +20,7 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 
 	var OpendocsMenu = {
 		$spinnerElement: $('<span>', {
-			'class': 't3-icon fa fa-circle-o-notch spinner fa-spin'
+			'class': 'fa fa-circle-o-notch fa-spin'
 		}),
 		options: {
 			containerSelector: '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',
@@ -28,7 +28,7 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 			closeSelector: '.dropdown-list-link-close',
 			menuContainerSelector: '.dropdown-menu',
 			menuItemSelector: '.dropdown-menu li a',
-			toolbarIconSelector: '.dropdown-toggle span.t3-icon',
+			toolbarIconSelector: '.dropdown-toggle i.fa',
 			openDocumentsItemsSelector: 'li.opendoc',
 			counterSelector: '#tx-opendocs-counter'
 		}
