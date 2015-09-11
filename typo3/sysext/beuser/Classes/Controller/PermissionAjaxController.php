@@ -278,7 +278,7 @@ class PermissionAjaxController {
 	protected function renderToggleEditLock($page, $editLockState) {
 		$page = (int)$page;
 		if ($editLockState === 1) {
-			$ret = '<span id="el_' . $page . '"><a class="editlock" data-page="' . $page . '" data-lockstate="1" title="The page and all content is locked for editing by all non-Admin users.">' . IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>';
+			$ret = '<span id="el_' . $page . '"><a class="editlock" data-page="' . $page . '" data-lockstate="1" title="The page and all content is locked for editing by all non-Admin users.">' . $this->iconFactory->getIcon('status-warning-lock', Icon::SIZE_SMALL) . '</a></span>';
 		} else {
 			$ret = '<span id="el_' . $page . '"><a class="editlock" data-page="' . $page . '" data-lockstate="0" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>';
 		}
