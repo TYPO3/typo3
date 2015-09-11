@@ -923,7 +923,9 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					// If the numeric clipboard pads are enabled, display the control icons for that:
 					if ($this->clipObj->current != 'normal') {
 						// The "select" link:
-						$spriteIcon = IconUtility::getSpriteIcon('actions-edit-copy', array('title' => $lang->getLL('clip_selectMarked', TRUE)));
+						$spriteIcon = '<span title="' . $lang->getLL('clip_selectMarked', TRUE) . '">'
+							. $this->iconFactory->getIcon('actions-edit-copy', Icon::SIZE_SMALL)
+							. '</span>';
 						$cells['copyMarked'] = $this->linkClipboardHeaderIcon($spriteIcon, $table, 'setCB');
 						// The "edit marked" link:
 						$editIdList = implode(',', $currentIdList);
