@@ -1291,7 +1291,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$href = BackendUtility::getModuleUrl('system_BeuserTxPermission') . '&id=' . $row['uid'] . '&return_id=' . $row['uid'] . '&edit=1';
 				$permsAction = '<a class="btn btn-default" href="' . htmlspecialchars($href) . '" title="'
 					. $this->getLanguageService()->getLL('permissions', TRUE) . '">'
-					. IconUtility::getSpriteIcon('status-status-locked') . '</a>';
+					. $this->iconFactory->getIcon('status-status-locked', Icon::SIZE_SMALL)->render() . '</a>';
 				$this->addActionToCellGroup($cells, $permsAction, 'perms');
 			}
 			// "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
