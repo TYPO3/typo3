@@ -543,9 +543,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$title = $tableCollapsed
 						? $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.expandTable', TRUE)
 						: $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.collapseTable', TRUE);
-					$icon = $tableCollapsed
-						? IconUtility::getSpriteIcon('actions-view-list-expand', array('class' => 'collapseIcon'))
-						: IconUtility::getSpriteIcon('actions-view-list-collapse', array('class' => 'collapseIcon'));
+					$icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL) . '</span>';
 					$collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($table) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($table) . '">' . $icon . '</a>';
 				}
 				$tableHeader .= $theData[$titleCol] . $collapseIcon;

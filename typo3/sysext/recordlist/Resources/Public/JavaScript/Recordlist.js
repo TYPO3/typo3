@@ -36,7 +36,7 @@ define('TYPO3/CMS/Recordlist/Recordlist', ['jquery', 'TYPO3/CMS/Backend/Storage'
 				$target = $($me.data('target')),
 				isExpanded = $target.data('state') === 'expanded';
 
-			$me.find('.t3-icon').toggleClass(Recordlist.classes.toggleIconState.collapsed).toggleClass(Recordlist.classes.toggleIconState.expanded);
+			$me.find('.collapseIcon .icon-unify .fa').toggleClass(Recordlist.classes.toggleIconState.collapsed).toggleClass(Recordlist.classes.toggleIconState.expanded);
 
 			// Store collapse state in UC
 			var storedModuleDataList = {};

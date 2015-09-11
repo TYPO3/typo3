@@ -580,6 +580,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'check-square-o',
 			)
 		),
+		'actions-view-list-collapse' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'chevron-up',
+			)
+		),
+		'actions-view-list-expand' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'chevron-down',
+			)
+		),
 		'actions-view-go-back' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
