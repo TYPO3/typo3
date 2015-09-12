@@ -18,21 +18,21 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations;
+use TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case
  */
-class DatabaseRowGroupRelationsTest extends UnitTestCase {
+class TcaGroupTest extends UnitTestCase {
 
 	/**
-	 * @var DatabaseRowGroupRelations
+	 * @var TcaGroup
 	 */
 	protected $subject;
 
 	public function setUp() {
-		$this->subject = new DatabaseRowGroupRelations();
+		$this->subject = new TcaGroup();
 	}
 
 	/**

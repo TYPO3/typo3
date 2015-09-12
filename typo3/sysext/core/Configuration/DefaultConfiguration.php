@@ -348,14 +348,14 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => array(
 						'depends' => array(
-							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => array(
@@ -450,7 +450,7 @@ return array(
 				'flexFormSegment' => array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowGroupRelations::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
 						),

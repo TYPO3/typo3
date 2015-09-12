@@ -22,14 +22,13 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Resolve databaseRow field content to the real connected rows for type=group
  */
-class DatabaseRowGroupRelations implements FormDataProviderInterface {
+class TcaGroup implements FormDataProviderInterface {
 
 	/**
 	 * Initialize new row with default values from various sources
 	 *
 	 * @param array $result
 	 * @return array
-	 * @todo: Should be renamed to TcaGroup to be in line with the other element based classes
 	 * @todo: Should not implode valid values with | again, container & elements should work
 	 * @todo: with the array as it was done for select items
 	 * @throws \UnexpectedValueException
