@@ -3723,6 +3723,9 @@ class ImportExport {
 	 * @see singleRecordLines()
 	 */
 	public function addRelations($rels, &$lines, $preCode, $recurCheck = array(), $htmlColorClass = '') {
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		foreach ($rels as $dat) {
 			$table = $dat['table'];
 			$uid = $dat['id'];
@@ -3762,7 +3765,7 @@ class ImportExport {
 				$staticFixed = TRUE;
 			}
 
-			$spriteIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($spriteIconName, array('class' => $spriteIconClass, 'title' => $pInfo['ref']));
+			$spriteIcon = '<span class="' . $spriteIconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($spriteIconName, Icon::SIZE_SMALL) . '</span>';
 
 			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $spriteIcon;
 			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
