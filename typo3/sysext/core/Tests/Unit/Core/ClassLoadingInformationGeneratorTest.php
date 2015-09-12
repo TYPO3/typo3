@@ -26,25 +26,31 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 	 */
 	public function isIgnoredClassNameIgnoresTestClassesDataProvider() {
 		return array(
-			array('FoTest', TRUE),
-			array('FoLowercasetest', TRUE),
-			array('DifferentClassTes', FALSE),
-			array('Test', TRUE),
-			array('FoFixture', TRUE),
-			array('FoLowercasefixture', TRUE),
-			array('DifferentClassFixtur', FALSE),
-			array('Fixture', TRUE),
+			'FoTest' => array('FoTest', TRUE),
+			'FoLowercasetest' => array('FoLowercasetest', FALSE),
+			'DifferentClassTes' => array('DifferentClassTes', FALSE),
+			'Test' => array('Test', TRUE),
+			'FoFixture' => array('FoFixture', TRUE),
+			'FoLowercasefixture' => array('FoLowercasefixture', FALSE),
+			'DifferentClassFixtur' => array('DifferentClassFixtur', FALSE),
+			'Fixture' => array('Fixture', TRUE),
+			'Latest' => array('Latest', FALSE),
+			'LaTest' => array('LaTest', TRUE),
+			'Tx_RedirectTest_Domain_Model_Test' => array('Tx_RedirectTest_Domain_Model_Test', FALSE),
 		);
 	}
 
 	/**
 	 * @test
 	 * @dataProvider isIgnoredClassNameIgnoresTestClassesDataProvider
+	 *
+	 * @param string $className
+	 * @param bool $expectedResult
 	 */
-	public function isIgnoredClassNameIgnoresTestClasses($path, $expectedResult) {
+	public function isIgnoredClassNameIgnoresTestClasses($className, $expectedResult) {
 		$generator = $this->getAccessibleMock(ClassLoadingInformationGenerator::class, ['dummy']);
 
-		$this->assertEquals($expectedResult, $generator->_call('isIgnoredClassName', $path));
+		$this->assertEquals($expectedResult, $generator->_call('isIgnoredClassName', $className));
 	}
 
 }

@@ -44,36 +44,32 @@ class ClassLoadingInformationGenerator {
 		$psr4 = array();
 		$packagePath = $package->getPackagePath();
 
-		try {
-			$manifest = self::getPackageManager()->getComposerManifest($package->getPackagePath());
-			if (!empty($manifest->autoload->{'psr-4'})) {
-				$psr4manifest = json_decode(json_encode($manifest->autoload->{'psr-4'}), TRUE);
-				if (is_array($psr4manifest)) {
-					foreach ($psr4manifest as $namespacePrefix => $path) {
-						$namespacePath = $packagePath . $path;
-						if ($useRelativePaths) {
-							$psr4[$namespacePrefix] = $this->makePathRelative($namespacePath, realpath($namespacePath));
-						} else {
-							$psr4[$namespacePrefix] = $namespacePath;
-						}
+		$manifest = self::getPackageManager()->getComposerManifest($package->getPackagePath());
+		if (!empty($manifest->autoload->{'psr-4'})) {
+			$psr4manifest = json_decode(json_encode($manifest->autoload->{'psr-4'}), TRUE);
+			if (is_array($psr4manifest)) {
+				foreach ($psr4manifest as $namespacePrefix => $path) {
+					$namespacePath = $packagePath . $path;
+					if ($useRelativePaths) {
+						$psr4[$namespacePrefix] = $this->makePathRelative($namespacePath, realpath($namespacePath));
+					} else {
+						$psr4[$namespacePrefix] = $namespacePath;
 					}
 				}
 			}
-		} catch (MissingPackageManifestException $e) {
-			// Ignore missing composer manifest
-		}
-
-		foreach (ClassMapGenerator::createMap($packagePath) as $class => $path) {
-			if ($this->isIgnoredPath($packagePath, $path)) {
-				continue;
-			}
-			if ($this->isIgnoredClassName($class)) {
-				continue;
-			}
-			if ($useRelativePaths) {
-				$classMap[$class] = self::makePathRelative($packagePath, $path);
-			} else {
-				$classMap[$class] = $path;
+		} else {
+			foreach (ClassMapGenerator::createMap($packagePath) as $class => $path) {
+				if ($this->isIgnoredPath($packagePath, $path)) {
+					continue;
+				}
+				if ($this->isIgnoredClassName($class)) {
+					continue;
+				}
+				if ($useRelativePaths) {
+					$classMap[$class] = self::makePathRelative($packagePath, $path);
+				} else {
+					$classMap[$class] = $path;
+				}
 			}
 		}
 
@@ -104,8 +100,8 @@ class ClassLoadingInformationGenerator {
 	 * @return bool
 	 */
 	protected function isIgnoredClassName($className) {
-		foreach (array('test', 'fixture') as $suffix) {
-			if (strtolower(substr($className, 0 - strlen($suffix))) === $suffix) {
+		foreach (array('Test', 'Fixture') as $suffix) {
+			if (preg_match('/(^|[a-z])' . $suffix . '$/', $className)) {
 				return TRUE;
 			}
 		}
