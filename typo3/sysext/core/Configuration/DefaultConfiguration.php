@@ -438,7 +438,6 @@ return array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
