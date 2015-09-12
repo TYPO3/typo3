@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -3375,7 +3376,7 @@ class DataHandler {
 		}
 
 		// Initializing:
-		$theNewID = uniqid('NEW', TRUE);
+		$theNewID = StringUtility::getUniqueId('NEW');
 		$enableField = isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) ? $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] : '';
 		$headerField = $GLOBALS['TCA'][$table]['ctrl']['label'];
 		// Getting default data:
@@ -3628,7 +3629,7 @@ class DataHandler {
 	 * @return int Returns the new ID of the record (if applicable)
 	 */
 	public function insertNewCopyVersion($table, $fieldArray, $realPid) {
-		$id = uniqid('NEW', TRUE);
+		$id = StringUtility::getUniqueId('NEW');
 		// $fieldArray is set as current record.
 		// The point is that when new records are created as copies with flex type fields there might be a field containing information about which DataStructure to use and without that information the flexforms cannot be correctly processed.... This should be OK since the $checkValueRecord is used by the flexform evaluation only anyways...
 		$this->checkValue_currentRecord = $fieldArray;

@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 
 /**
@@ -96,7 +97,7 @@ class ImageManipulationElement extends AbstractFormElement {
 				$config['ratios'][$ratio] = $languageService->sL($label, TRUE);
 			}
 
-			$formFieldId = str_replace('.', '', uniqid('formengine-image-manipulation-', TRUE));
+			$formFieldId = StringUtility::getUniqueId('formengine-image-manipulation-');
 			$wizardData = array(
 				'file' => $file->getUid(),
 				'zoom' => $config['enableZoom'] ? '1' : '0',

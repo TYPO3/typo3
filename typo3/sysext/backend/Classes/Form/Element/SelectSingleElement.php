@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
@@ -110,7 +110,7 @@ class SelectSingleElement extends AbstractFormElement {
 		}
 
 		// Initialization:
-		$selectId = str_replace('.', '', uniqid('tceforms-select-', TRUE));
+		$selectId = StringUtility::getUniqueId('tceforms-select-');
 		$selectedIndex = 0;
 		$selectedIcon = '';
 		$selectedValueFound = FALSE;

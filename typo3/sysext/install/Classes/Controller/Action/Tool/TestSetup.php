@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller\Action\Tool;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Install\Controller\Action;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test various system setup settings
@@ -187,7 +188,7 @@ class TestSetup extends Action\AbstractAction {
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('install') . 'Resources/Private/Font/vera.ttf',
 			'Testing true type'
 		);
-		$outputFile = PATH_site . 'typo3temp/installTool-' . uniqid('createTrueTypeFontTestImage', TRUE) . '.gif';
+		$outputFile = PATH_site . 'typo3temp/installTool-' . StringUtility::getUniqueId('createTrueTypeFontTestImage') . '.gif';
 		imagegif($image, $outputFile);
 
 		/** @var \TYPO3\CMS\Install\Status\StatusInterface $message */
@@ -232,7 +233,7 @@ class TestSetup extends Action\AbstractAction {
 			} else {
 				$imageProcessor->IM_commands = array();
 				$inputFile = $this->imageBasePath . 'TestInput/Test.' . $formatToTest;
-				$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('read', TRUE) . '-' . $formatToTest;
+				$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read') . '-' . $formatToTest;
 				$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '170', '', '', '', array(), TRUE);
 				$result['title'] = 'Read ' . $formatToTest;
 				if ($imResult !== NULL) {
@@ -268,7 +269,7 @@ class TestSetup extends Action\AbstractAction {
 
 		// Gif
 		$inputFile = $this->imageBasePath . 'TestInput/Test.gif';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('write-gif', TRUE);
+		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-gif');
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '', '', '', '', array(), TRUE);
 		if ($imResult !== NULL && is_file($imResult[3])) {
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress']) {
@@ -301,7 +302,7 @@ class TestSetup extends Action\AbstractAction {
 		// Png
 		$inputFile = $this->imageBasePath . 'TestInput/Test.png';
 		$imageProcessor->IM_commands = array();
-		$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('write-png', TRUE);
+		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('write-png');
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '', '', '', '', array(), TRUE);
 		if ($imResult !== NULL) {
 			$testResults['png']['title'] = 'Write png';
@@ -334,7 +335,7 @@ class TestSetup extends Action\AbstractAction {
 
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('scale-gif', TRUE);
+		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-gif');
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'gif', '150', '', '', '', array(), TRUE);
 		if ($imResult !== NULL) {
 			$testResults['gif-to-gif']['title'] = 'gif to gif';
@@ -347,7 +348,7 @@ class TestSetup extends Action\AbstractAction {
 
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.png';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('scale-png', TRUE);
+		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-png');
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'png', '150', '', '', '', array(), TRUE);
 		if ($imResult !== NULL) {
 			$testResults['png-to-png']['title'] = 'png to png';
@@ -360,7 +361,7 @@ class TestSetup extends Action\AbstractAction {
 
 		$imageProcessor->IM_commands = array();
 		$inputFile = $this->imageBasePath . 'TestInput/Transparent.gif';
-		$imageProcessor->imageMagickConvert_forceFileNameBody = uniqid('scale-jpg', TRUE);
+		$imageProcessor->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('scale-jpg');
 		$imResult = $imageProcessor->imageMagickConvert($inputFile, 'jpg', '150', '', '-opaque white -background white -flatten', '', array(), TRUE);
 		if ($imResult !== NULL) {
 			$testResults['gif-to-jpg']['title'] = 'gif to jpg';
@@ -394,7 +395,7 @@ class TestSetup extends Action\AbstractAction {
 		$overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
 		$maskFile = $this->imageBasePath . 'TestInput/MaskBlackWhite.gif';
 		$resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
-			. uniqid($imageProcessor->alternativeOutputKey . 'combine1', TRUE) . '.jpg';
+			. StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine1') . '.jpg';
 		$imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, TRUE);
 		$result = $imageProcessor->getImageDimensions($resultFile);
 		if ($result) {
@@ -411,7 +412,7 @@ class TestSetup extends Action\AbstractAction {
 		$overlayFile = $this->imageBasePath . 'TestInput/Test.jpg';
 		$maskFile = $this->imageBasePath . 'TestInput/MaskCombine.jpg';
 		$resultFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix
-			. uniqid($imageProcessor->alternativeOutputKey . 'combine2', TRUE) . '.jpg';
+			. StringUtility::getUniqueId($imageProcessor->alternativeOutputKey . 'combine2') . '.jpg';
 		$imageProcessor->combineExec($inputFile, $overlayFile, $maskFile, $resultFile, TRUE);
 		$result = $imageProcessor->getImageDimensions($resultFile);
 		if ($result) {
@@ -450,7 +451,7 @@ class TestSetup extends Action\AbstractAction {
 			'color' => 'olive',
 		);
 		$imageProcessor->makeBox($image, $conf, $workArea);
-		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . uniqid('gdSimple', TRUE) . '.' . $gifOrPng;
+		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdSimple') . '.' . $gifOrPng;
 		$imageProcessor->ImageWrite($image, $outputFile);
 		$result = $imageProcessor->getImageDimensions($outputFile);
 		$testResults['simple'] = array();
@@ -468,7 +469,7 @@ class TestSetup extends Action\AbstractAction {
 			'color' => 'olive',
 		);
 		$imageProcessor->makeBox($image, $conf, $workArea);
-		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . uniqid('gdBox', TRUE) . '.' . $gifOrPng;
+		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdBox') . '.' . $gifOrPng;
 		$imageProcessor->ImageWrite($image, $outputFile);
 		$result = $imageProcessor->getImageDimensions($outputFile);
 		$testResults['box'] = array();
@@ -494,7 +495,7 @@ class TestSetup extends Action\AbstractAction {
 		);
 		$conf['BBOX'] = $imageProcessor->calcBBox($conf);
 		$imageProcessor->makeText($image, $conf, $workArea);
-		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . uniqid('gdText', TRUE) . '.' . $gifOrPng;
+		$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdText') . '.' . $gifOrPng;
 		$imageProcessor->ImageWrite($image, $outputFile);
 		$result = $imageProcessor->getImageDimensions($outputFile);
 		$testResults['text'] = array();
@@ -509,7 +510,7 @@ class TestSetup extends Action\AbstractAction {
 			$conf['offset'] = '17,65';
 			$conf['niceText'] = 1;
 			$imageProcessor->makeText($image, $conf, $workArea);
-			$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . uniqid('gdNiceText', TRUE) . '.' . $gifOrPng;
+			$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('gdNiceText') . '.' . $gifOrPng;
 			$imageProcessor->ImageWrite($image, $outputFile);
 			$result = $imageProcessor->getImageDimensions($outputFile);
 			$testResults['niceText']['title'] = 'Render text with TrueType font using \'niceText\' option';
@@ -545,7 +546,7 @@ class TestSetup extends Action\AbstractAction {
 			// Warning: Re-uses $image from above!
 			$imageProcessor->makeShadow($image, $conf['shadow.'], $workArea, $conf);
 			$imageProcessor->makeText($image, $conf, $workArea);
-			$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . uniqid('GDwithText-niceText-shadow', TRUE) . '.' . $gifOrPng;
+			$outputFile = $imageProcessor->tempPath . $imageProcessor->filenamePrefix . StringUtility::getUniqueId('GDwithText-niceText-shadow') . '.' . $gifOrPng;
 			$imageProcessor->ImageWrite($image, $outputFile);
 			$result = $imageProcessor->getImageDimensions($outputFile);
 			$testResults['shadow']['title'] = 'Render \'niceText\' with a shadow under';

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Rsaauth\Backend;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * This class contains an OpenSSL backend for the TYPO3 RSA authentication
@@ -84,7 +85,7 @@ class CommandLineBackend extends AbstractBackend {
 		}
 
 		// Create a temporary file. Security: tempnam() sets permissions to 0600
-		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid('', TRUE));
+		$privateKeyFile = tempnam($this->temporaryDirectory, StringUtility::getUniqueId());
 
 		// Generate the private key.
 		//
@@ -127,9 +128,9 @@ class CommandLineBackend extends AbstractBackend {
 	 */
 	public function decrypt($privateKey, $data) {
 		// Key must be put to the file
-		$privateKeyFile = tempnam($this->temporaryDirectory, uniqid('', TRUE));
+		$privateKeyFile = tempnam($this->temporaryDirectory, StringUtility::getUniqueId());
 		file_put_contents($privateKeyFile, $privateKey);
-		$dataFile = tempnam($this->temporaryDirectory, uniqid('', TRUE));
+		$dataFile = tempnam($this->temporaryDirectory, StringUtility::getUniqueId());
 		file_put_contents($dataFile, base64_decode($data));
 		// Prepare the command
 		$command = $this->opensslPath . ' rsautl -inkey ' . escapeshellarg($privateKeyFile) . ' -in ' . escapeshellarg($dataFile) . ' -decrypt';

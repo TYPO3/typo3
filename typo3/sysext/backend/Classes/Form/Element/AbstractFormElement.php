@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
-use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -25,8 +24,8 @@ use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Form\Wizard\SuggestWizard;
 use TYPO3\CMS\Backend\Form\Wizard\ValueSliderWizard;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -434,7 +433,7 @@ abstract class AbstractFormElement extends AbstractNode {
 					}
 					$otherWizards[] =
 						'<select' .
-							' id="' . str_replace('.', '', uniqid('tceforms-select-', TRUE)) . '"' .
+							' id="' . StringUtility::getUniqueId('tceforms-select-') . '"' .
 							' class="form-control tceforms-select tceforms-wizardselect"' .
 							' name="_WIZARD' . $fName . '"' .
 							' onchange="' . htmlspecialchars($assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc)) . '"'.
@@ -563,7 +562,7 @@ abstract class AbstractFormElement extends AbstractNode {
 			: $params['size'];
 		if (!$selector) {
 			$isMultiple = $params['maxitems'] != 1 && $params['size'] != 1;
-			$selector = '<select id="' . str_replace('.', '', uniqid('tceforms-multiselect-', TRUE)) . '" '
+			$selector = '<select id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '" '
 				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="form-control tceforms-multiselect"')
 				. ($isMultiple ? ' multiple="multiple"' : '')
 				. ' name="' . $fName . '_list" ' . $this->getValidationDataAsDataAttribute($config) . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)

@@ -1,14 +1,6 @@
 <?php
 namespace typo3\sysext\form\Tests\Unit\Domain;
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute;
-use TYPO3\CMS\Form\Domain\Model\Attribute\AttributesAttribute;
-use TYPO3\CMS\Form\Localization;
-use TYPO3\CMS\Form\Request;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -21,6 +13,15 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Form\Domain\Model\Attribute\AbstractAttribute;
+use TYPO3\CMS\Form\Domain\Model\Attribute\AttributesAttribute;
+use TYPO3\CMS\Form\Localization;
+use TYPO3\CMS\Form\Request;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Test case for class \TYPO3\CMS\Form\Domain\Model\Attribute\AttributesAttribute
@@ -53,7 +54,7 @@ class AttributesAttributeTest extends UnitTestCase {
 		$requestProphecy = $this->prophesize(Request::class);
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		GeneralUtility::setSingletonInstance(Request::class, $requestProphecy->reveal());
-		$this->elementId = uniqid('elementId_', TRUE);
+		$this->elementId = StringUtility::getUniqueId('elementId_');
 		$this->subject = new AttributesAttribute($this->elementId);
 	}
 

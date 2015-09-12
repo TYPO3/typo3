@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Mediace\ContentObject;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Contains QTOBJECT content object.
@@ -49,7 +50,7 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		$typeConf = $conf[$type . '.'];
 		// Add QTobject js-file
 		$this->getPageRenderer()->addJsFile($this->getPathToLibrary('flashmedia/qtobject/qtobject.js'));
-		$replaceElementIdString = str_replace('.', '', uniqid('mmqt', TRUE));
+		$replaceElementIdString = StringUtility::getUniqueId('mmqt');
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;
 		// Merge with default parameters

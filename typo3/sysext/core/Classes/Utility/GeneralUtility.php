@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -1232,7 +1233,7 @@ class GeneralUtility {
 	static protected function generateRandomBytesFallback($bytesToReturn) {
 		$bytes = '';
 		// We initialize with somewhat random.
-		$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2) . microtime() . uniqid('', TRUE) . getmypid();
+		$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2) . microtime() . StringUtility::getUniqueId() . getmypid();
 		while (!isset($bytes[($bytesToReturn - 1)])) {
 			$randomState = sha1(microtime() . mt_rand() . $randomState);
 			$bytes .= sha1(mt_rand() . $randomState, TRUE);
@@ -2822,7 +2823,7 @@ Connection: close
 		$result = FALSE;
 
 		if (is_dir($directory)) {
-			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove', TRUE) . '/';
+			$temporaryDirectory = rtrim($directory, '/') . '.' . StringUtility::getUniqueId('remove') . '/';
 			if (rename($directory, $temporaryDirectory)) {
 				if ($flushOpcodeCache) {
 					GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive($directory);

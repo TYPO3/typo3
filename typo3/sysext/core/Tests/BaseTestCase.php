@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * The mother of all test cases.
  *
@@ -114,7 +116,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string Fully qualified name of the built class, will not be empty
 	 */
 	protected function buildAccessibleProxy($className) {
-		$accessibleClassName = str_replace('.', '', $this->getUniqueId('Tx_Phpunit_AccessibleProxy'));
+		$accessibleClassName = $this->getUniqueId('Tx_Phpunit_AccessibleProxy');
 		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 
@@ -277,7 +279,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string
 	 */
 	protected function getUniqueId($prefix = '') {
-		return $prefix . str_replace('.', '', uniqid(mt_rand(), TRUE));
+		return $prefix . StringUtility::getUniqueId(mt_rand());
 	}
 
 }

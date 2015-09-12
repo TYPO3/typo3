@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -1604,7 +1605,7 @@ class QueryGenerator {
 	protected function getDateTimePickerField($name, $timestamp, $type) {
 		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '%H:%M %m-%d-%Y' : '%H:%M %d-%m-%Y';
 		$value = ($timestamp > 0 ? strftime($dateFormat, $timestamp) : '');
-		$id = uniqid('dt_');
+		$id = StringUtility::getUniqueId('dt_');
 		$html = array();
 		$html[] = '<div class="input-group" id="' . $id . '-wrapper">';
 		$html[] = '		<input name="' . htmlspecialchars($name) . '_hr" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" data-date-offset="0" type="text" id="' . $id . '">';

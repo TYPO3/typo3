@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Scheduler\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -25,6 +24,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 use TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility;
@@ -312,7 +312,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// If the user does not exist, try creating it
 		if ($checkUser == -1) {
 			// Prepare necessary data for _cli_scheduler user creation
-			$password = uniqid('scheduler', TRUE);
+			$password = StringUtility::getUniqueId('scheduler');
 			if (SaltedPasswordsUtility::isUsageEnabled()) {
 				$objInstanceSaltedPW = SaltFactory::getSaltingInstance();
 				$password = $objInstanceSaltedPW->getHashedPassword($password);

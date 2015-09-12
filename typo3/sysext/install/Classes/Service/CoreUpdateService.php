@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 use TYPO3\CMS\Install\Status\ErrorStatus;
@@ -205,7 +206,7 @@ class CoreUpdateService {
 
 		if ($success) {
 			// Explicit write check to document root
-			$file = PATH_site . uniqid('install-core-update-test-', TRUE);
+			$file = PATH_site . StringUtility::getUniqueId('install-core-update-test-');
 			$result = @touch($file);
 			if (!$result) {
 				$success = FALSE;
@@ -221,7 +222,7 @@ class CoreUpdateService {
 			if (!$this->checkCoreFilesAvailable($version)) {
 				// Explicit write check to upper directory of current core location
 				$coreLocation = @realPath($this->symlinkToCoreFiles . '/../');
-				$file = $coreLocation . '/' . uniqid('install-core-update-test-', TRUE);
+				$file = $coreLocation . '/' . StringUtility::getUniqueId('install-core-update-test-');
 				$result = @touch($file);
 				if (!$result) {
 					$success = FALSE;

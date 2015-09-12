@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Generation of TCEform elements of the type "input"
@@ -168,7 +169,7 @@ class InputElement extends AbstractFormElement {
 		// calculate attributes
 		$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
 		$attributes['data-formengine-input-params'] = json_encode($paramsList);
-		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
+		$attributes['id'] = StringUtility::getUniqueId('formengine-input-');
 		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
 		$attributes['value'] = '';
 		if (isset($config['max']) && (int)$config['max'] > 0) {

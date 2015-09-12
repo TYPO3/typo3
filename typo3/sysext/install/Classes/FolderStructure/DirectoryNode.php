@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\FolderStructure;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\Status;
 
 /**
@@ -243,7 +244,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface {
 	 * @return bool TRUE if test file creation was successful
 	 */
 	protected function canFileBeCreated() {
-		$testFileName = uniqid('installToolTest_', TRUE);
+		$testFileName = StringUtility::getUniqueId('installToolTest_');
 		$result = @touch($this->getAbsolutePath() . '/' . $testFileName);
 		if ($result === TRUE) {
 			unlink($this->getAbsolutePath() . '/' . $testFileName);

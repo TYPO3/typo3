@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -110,7 +110,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 			$options['renderType'] = 'flexFormContainerContainer';
 			$flexFormContainerContainerTemplateResult = $this->nodeFactory->create($options)->render();
 
-			$uniqueId = str_replace('.', '', uniqid('idvar', TRUE));
+			$uniqueId = StringUtility::getUniqueId('idvar');
 			$identifierPrefixJs = 'replace(/' . $flexFormFieldIdentifierPrefix . '-/g,"' . $flexFormFieldIdentifierPrefix . '-"+' . $uniqueId . '+"-")';
 			$identifierPrefixJs .= '.replace(/(tceforms-(datetime|date)field-)/g,"$1" + (new Date()).getTime())';
 

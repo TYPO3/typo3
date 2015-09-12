@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * EXAMPLE for using the impexp-class for exporting stuff:
@@ -2107,11 +2108,11 @@ class ImportExport {
 					$this->import_mapId['sys_file_metadata'][$record['uid']] = $recordInDatabase['uid'];
 					$ID = $recordInDatabase['uid'];
 				} else {
-					$ID = uniqid('NEW', TRUE);
+					$ID = StringUtility::getUniqueId('NEW');
 				}
 
 			} else {
-				$ID = uniqid('NEW', TRUE);
+				$ID = StringUtility::getUniqueId('NEW');
 			}
 			$this->import_newId[$table . ':' . $ID] = array('table' => $table, 'uid' => $uid);
 			if ($table == 'pages') {
@@ -2315,7 +2316,7 @@ class ImportExport {
 												}
 											}
 											if ($fileObject !== NULL) {
-												$refId = uniqid('NEW', TRUE);
+												$refId = StringUtility::getUniqueId('NEW');
 												$refIds[] = $refId;
 												$updateData['sys_file_reference'][$refId] = array(
 													'uid_local' => $fileObject->getUid(),

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * A caching backend which stores cache entries by using Redis with phpredis
  * PHP module. Redis is a noSQL database with very good scaling characteristics
@@ -474,7 +476,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface {
 	protected function removeIdentifierEntriesAndRelations(array $identifiers, array $tags) {
 		// Set a temporary entry which holds all identifiers that need to be removed from
 		// the tag to identifiers sets
-		$uniqueTempKey = 'temp:' . uniqid('', TRUE);
+		$uniqueTempKey = 'temp:' . StringUtility::getUniqueId();
 		$prefixedKeysToDelete = array($uniqueTempKey);
 		$prefixedIdentifierToTagsKeysToDelete = array();
 		foreach ($identifiers as $identifier) {

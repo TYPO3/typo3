@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Service\FlexFormService;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -484,8 +485,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						. $this->getLanguageService()->getLL('content', TRUE) . '</a>';
 				}
 				$content[$key] .= '
-				<div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . str_replace('.', '', uniqid('', TRUE)) . '">
-					<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . uniqid('', TRUE) . '">'
+				<div class="t3-page-ce t3js-page-ce" data-page="' . (int)$id . '" id="' . StringUtility::getUniqueId() . '">
+					<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id . '-' . StringUtility::getUniqueId() . '">'
 						. $link
 					. '</div>
 					<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
@@ -515,7 +516,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$editUidList .= $row['uid'] . ',';
 						$disableMoveAndNewButtons = $this->defLangBinding && $lP > 0;
 						if (!$this->tt_contentConfig['languageMode']) {
-							$singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . str_replace('.', '', uniqid('', TRUE)) . '">';
+							$singleElementHTML .= '<div class="t3-page-ce-dragitem" id="' . StringUtility::getUniqueId() . '">';
 						}
 						$singleElementHTML .= $this->tt_content_drawHeader(
 							$row,
@@ -538,7 +539,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$singleElementHTML .= '<div class="t3-page-ce t3js-page-ce">';
 						}
 						$singleElementHTML .= '<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-' . $key . '-' . 'page-' . $id .
-							'-' . str_replace('.', '', uniqid('', TRUE)) . '">';
+							'-' . StringUtility::getUniqueId() . '">';
 						// Add icon "new content element below"
 						if (!$disableMoveAndNewButtons && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
 							// New content element:

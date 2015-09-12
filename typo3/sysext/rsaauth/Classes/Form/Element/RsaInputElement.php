@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Generation of form element of the type rsaInput
@@ -107,7 +108,7 @@ class RsaInputElement extends AbstractFormElement {
 		// calculate attributes
 		$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
 		$attributes['data-formengine-input-params'] = json_encode($paramsList);
-		$attributes['id'] = str_replace('.', '', uniqid('formengine-input-', TRUE));
+		$attributes['id'] = StringUtility::getUniqueId('formengine-input-');
 		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
 		if (isset($config['max']) && (int)$config['max'] > 0) {
 			$attributes['maxlength'] = (int)$config['max'];

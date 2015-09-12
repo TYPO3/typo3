@@ -110,4 +110,16 @@ class StringUtility {
 		return $position !== FALSE && $position === $haystackLength - $needleLength;
 	}
 
+	/**
+	 * This function generates a unique id by using the more entropy parameter.
+	 * Furthermore the dots are removed so the id can be used inside HTML attributes e.g. id.
+	 *
+	 * @param string $prefix
+	 * @return string
+	 */
+	static public function getUniqueId($prefix = '') {
+		$uniqueId = uniqid($prefix, TRUE);
+		return str_replace('.', '', $uniqueId);
+	}
+
 }

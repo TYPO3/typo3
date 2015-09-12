@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -161,7 +161,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 				: '';
 			$sOnChange = implode('', $parameterArray['fieldChangeFunc']);
 
-			$multiSelectId = str_replace('.', '', uniqid('tceforms-multiselect-', TRUE));
+			$multiSelectId = StringUtility::getUniqueId('tceforms-multiselect-');
 			$itemsToSelect = '
 				<select data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '" data-exclusivevalues="'
 				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '_sel" '

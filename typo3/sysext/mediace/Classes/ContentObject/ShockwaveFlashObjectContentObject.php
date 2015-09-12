@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Mediace\ContentObject;
  */
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Contains SWFOBJECT content object.
@@ -100,7 +101,7 @@ class ShockwaveFlashObjectContentObject extends \TYPO3\CMS\Frontend\ContentObjec
 		if (!$flashVersion) {
 			$flashVersion = '9';
 		}
-		$replaceElementIdString = str_replace('.', '', uniqid('mmswf', TRUE));
+		$replaceElementIdString = StringUtility::getUniqueId('mmswf');
 		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
 		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
 		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];

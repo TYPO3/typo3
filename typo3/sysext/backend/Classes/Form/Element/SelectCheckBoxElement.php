@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
@@ -145,7 +145,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 
 					// Build item array
 					$groups[$currentGroup]['items'][] = array(
-						'id' => str_replace('.', '', uniqid('select_checkbox_row_', TRUE)),
+						'id' => StringUtility::getUniqueId('select_checkbox_row_'),
 						'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
 						'value' => $p[1],
 						'checked' => $checked,
@@ -165,7 +165,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 			foreach ($itemArray as $theNoMatchValue => $temp) {
 				// Build item array
 				$groups[$currentGroup]['items'][] = array(
-					'id' => str_replace('.', '', uniqid('select_checkbox_row_', TRUE)),
+					'id' => StringUtility::getUniqueId('select_checkbox_row_'),
 					'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
 					'value' => $theNoMatchValue,
 					'checked' => 1,

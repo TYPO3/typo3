@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Framework;
  */
 
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * DataHandler Actions
@@ -59,7 +60,7 @@ class ActionService {
 			if (!isset($recordData['pid'])) {
 				$recordData['pid'] = $pageId;
 			}
-			$currentUid = uniqid('NEW', TRUE);
+			$currentUid = StringUtility::getUniqueId('NEW');
 			$newTableIds[$tableName][] = $currentUid;
 			$dataMap[$tableName][$currentUid] = $recordData;
 			if ($previousTableName !== NULL && $previousUid !== NULL) {
@@ -131,7 +132,7 @@ class ActionService {
 			$currentUid = $recordData['uid'];
 			if ($recordData['uid'] === '__NEW') {
 				$recordData['pid'] = $pageId;
-				$currentUid = uniqid('NEW', TRUE);
+				$currentUid = StringUtility::getUniqueId('NEW');
 			}
 			unset($recordData['uid']);
 			$dataMap[$tableName][$currentUid] = $recordData;

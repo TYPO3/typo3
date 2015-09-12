@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
@@ -139,7 +140,7 @@ class TextElement extends AbstractFormElement {
 			}
 
 			// calculate attributes
-			$attributes['id'] = str_replace('.', '', uniqid('formengine-textarea-', TRUE));
+			$attributes['id'] = StringUtility::getUniqueId('formengine-textarea-');
 			$attributes['name'] = $parameterArray['itemFormElName'];
 			if (!empty($styles)) {
 				$attributes['style'] = implode(' ', $styles);

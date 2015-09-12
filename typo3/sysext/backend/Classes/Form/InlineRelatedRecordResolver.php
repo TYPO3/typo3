@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -122,7 +123,7 @@ class InlineRelatedRecordResolver {
 					if (!empty($foreignTranslationPointerField)) {
 						$record[$foreignTranslationPointerField] = $record['uid'];
 					}
-					$newId = uniqid('NEW', TRUE);
+					$newId = StringUtility::getUniqueId('NEW');
 					$record['uid'] = $newId;
 					$record['pid'] = $inlineFirstPid;
 					$relatedRecords['records'][$newId] = $record;
@@ -141,7 +142,7 @@ class InlineRelatedRecordResolver {
 	 */
 	public function getNewRecord($pid, $table) {
 		$record = $this->getRecord($table, $pid, 'new');
-		$record['uid'] = uniqid('NEW', TRUE);
+		$record['uid'] = StringUtility::getUniqueId('NEW');
 		$newRecordPid = $pid;
 		$pageTS = BackendUtility::getPagesTSconfig($pid);
 		// @todo: this is to force new foreign records to a different pid via pageTS - should be handled elsewhere

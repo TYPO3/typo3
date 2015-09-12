@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
@@ -137,7 +137,7 @@ class SelectSingleBoxElement extends AbstractFormElement {
 		$size = $config['autoSizeMax']
 			? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
 			: $size;
-		$selectBox = '<select id="' . str_replace('.', '', uniqid($cssPrefix, TRUE)) . '" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '[]" '
+		$selectBox = '<select id="' . StringUtility::getUniqueId($cssPrefix) . '" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '[]" '
 			. 'class="form-control ' . $cssPrefix . '"' . ($size ? ' size="' . $size . '" ' : '')
 			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $parameterArray['onFocus']
 			. ' ' . $this->getValidationDataAsDataAttribute($config) . $selector_itemListStyle . $disabled . '>

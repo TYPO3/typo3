@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
  */
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * On "new" command, initialize uid with an unqique uid
@@ -40,10 +40,8 @@ class DatabaseUniqueUidNewRow implements FormDataProviderInterface {
 				1437991120
 			);
 		}
-		// @todo: There is a dot in this uid that can give us headaches if the
-		// @todo: uid is used as id argument in HTML. It would probably better
-		// @todo: to remove the dot here already.
-		$result['databaseRow']['uid'] = uniqid('NEW', TRUE);
+		$result['databaseRow']['uid'] = StringUtility::getUniqueId('NEW');
+
 		return $result;
 	}
 

@@ -10,8 +10,10 @@ namespace TYPO3\CMS\Core\Cache\Backend;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * A caching backend which stores cache entries in files, but does not support or
@@ -237,7 +239,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		if ($entryIdentifier === '') {
 			throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1334756736);
 		}
-		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . uniqid('', TRUE) . '.temp';
+		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . StringUtility::getUniqueId() . '.temp';
 		$result = file_put_contents($temporaryCacheEntryPathAndFilename, $data);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
 		if ($result === FALSE) {

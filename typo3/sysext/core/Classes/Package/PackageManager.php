@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * The default TYPO3 Package Manager
@@ -189,7 +190,7 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$cacheEntryIdentifier = $this->getCacheEntryIdentifier();
 		if ($cacheEntryIdentifier !== NULL && !$this->coreCache->has($cacheEntryIdentifier)) {
 			// Package objects get their own cache entry, so PHP does not have to parse the serialized string
-			$packageObjectsCacheEntryIdentifier = str_replace('.', '', uniqid('PackageObjects_', TRUE));
+			$packageObjectsCacheEntryIdentifier = StringUtility::getUniqueId('PackageObjects_');
 			// Build cache file
 			$packageCache = array(
 				'packageStatesConfiguration'  => $this->packageStatesConfiguration,

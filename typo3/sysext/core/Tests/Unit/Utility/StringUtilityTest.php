@@ -259,4 +259,19 @@ class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		StringUtility::beginsWith($string, $part);
 	}
 
+	/**
+	 * @test
+	 */
+	public function getUniqueIdReturnsIdWithPrefix() {
+		$id = StringUtility::getUniqueId('NEW');
+		$this->assertEquals('NEW', substr($id, 0, 3));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getUniqueIdReturnsIdWithoutDot() {
+		$this->assertNotContains('.', StringUtility::getUniqueId());
+	}
+
 }
