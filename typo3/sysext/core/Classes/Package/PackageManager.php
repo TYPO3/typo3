@@ -887,12 +887,17 @@ class PackageManager implements \TYPO3\CMS\Core\SingletonInterface {
 				throw new Exception\InvalidPackageManifestException('The composer.json found for extension "' . basename($manifestPath) . '" is invalid!', 1439555561);
 			}
 		}
+
 		try {
 			$extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath);
-			$composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(basename($manifestPath), $extensionManagerConfiguration, $composerManifest ?: new \stdClass());
+			$composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
+				basename($manifestPath),
+				$extensionManagerConfiguration,
+				$composerManifest ?: new \stdClass()
+			);
 		} catch (Exception\InvalidPackageManifestException $e) {
 			if ($composerManifest === NULL) {
-				throw new Exception\MissingPackageManifestException('Neither a composer.json nor an ext_emconf.php file was found for extension "' . basename($manifestPath) . '"', 1439555560);
+				throw $e;
 			}
 		}
 
