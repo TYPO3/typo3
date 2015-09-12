@@ -758,7 +758,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$warning = '<a href="#" onclick="alert('
 						. GeneralUtility::quoteJSvalue($lockInfo['msg']) . '); return false;" title="'
 						. htmlspecialchars($lockInfo['msg']) . '">'
-						. IconUtility::getSpriteIcon('status-warning-in-use') . '</a>';
+						. $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL) . '</a>';
 				}
 				$theData[$fCol] = $theData['__label'] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
 				// Render thumbnails, if:

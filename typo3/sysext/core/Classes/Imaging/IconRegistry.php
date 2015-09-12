@@ -774,6 +774,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/status/warning-lock.png',
 			)
 		),
+		'status-warning-in-use' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/warning-in-use.png',
+			)
+		),
 		'status-status-permission-granted' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

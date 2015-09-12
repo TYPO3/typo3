@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,10 +72,13 @@ class PageTreeView extends BrowseTreeView {
 	 * @return string Page icon
 	 */
 	public function wrapIcon($thePageIcon, &$row) {
+		/** @var $iconFactory IconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);;
 		// If the record is locked, present a warning sign.
 		if ($lockInfo = BackendUtility::isRecordLocked('pages', $row['uid'])) {
 			$aOnClick = 'alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;';
-			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '</a>';
+			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'
+				. '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL) . '</span></a>';
 		} else {
 			$lockIcon = '';
 		}

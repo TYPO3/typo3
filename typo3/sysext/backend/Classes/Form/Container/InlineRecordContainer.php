@@ -662,7 +662,7 @@ class InlineRecordContainer extends AbstractContainer {
 		if ($lockInfo = BackendUtility::isRecordLocked($foreign_table, $rec['uid'])) {
 			$cells['locked'] = '
 				<a class="btn btn-default" href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;">
-					' . IconUtility::getSpriteIcon('status-warning-in-use', array('title' => $lockInfo['msg'])) . '
+					' . '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL) . '</span>' . '
 				</a>';
 		}
 		// Hook: Post-processing of single controls for specific child records:

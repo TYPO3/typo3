@@ -1288,7 +1288,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
 			$additionalIcons[] = '<a href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg'])
 				. ');return false;" title="' . htmlspecialchars($lockInfo['msg']) . '">'
-				. IconUtility::getSpriteIcon('status-warning-in-use') . '</a>';
+				. $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL) . '</a>';
 		}
 		// Call stats information hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
