@@ -35,7 +35,13 @@ define('TYPO3/CMS/Rsaauth/RsaEncryptionModule', ['jquery', './RsaLibrary'], func
 		initialize: function() {
 			$(':input[data-rsa-encryption]').closest('form').each(function() {
 				var $this = $(this);
-				$this.on('submit', RsaEncryption.handleFormSubmitRequest);
+
+				// Store the original submit handler that is executed later
+				$this.data('original-onsubmit', $this.attr('onsubmit'));
+
+				// Remove the original submit handler and register RsaEncryption.handleFormSubmitRequest instead
+				$this.removeAttr('onsubmit').on('submit', RsaEncryption.handleFormSubmitRequest);
+
 				// Bind submit event first (this is a dirty hack with jquery internals, but there is no way around that)
 				var handlers = $._data(this, 'events').submit;
 				var handler = handlers.pop();
@@ -107,6 +113,14 @@ define('TYPO3/CMS/Rsaauth/RsaEncryptionModule', ['jquery', './RsaLibrary'], func
 			} else {
 				// Create a hidden input field to fake pressing the submit button
 				RsaEncryption.$currentForm.append('<input type="hidden" name="commandLI" value="Submit">');
+
+				// Restore the original submit handler
+				var originalOnSubmit = RsaEncryption.$currentForm.data('original-onsubmit');
+				if (typeof originalOnSubmit === 'string' && originalOnSubmit.length > 0) {
+					RsaEncryption.$currentForm.attr('onsubmit', originalOnSubmit);
+					RsaEncryption.$currentForm.removeData('original-onsubmit');
+				}
+
 				// Submit the form
 				RsaEncryption.$currentForm.trigger('submit');
 			}
