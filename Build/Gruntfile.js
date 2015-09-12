@@ -205,6 +205,12 @@ module.exports = function(grunt) {
 					'<%= paths.sysext %>backend/Resources/Public/Icons/Spinner/spinner-circle-dark.svg': '<%= paths.icons %>Spinner/spinner-circle-dark.svg',
 					'<%= paths.sysext %>backend/Resources/Public/Icons/Spinner/spinner-circle-light.svg': '<%= paths.icons %>Spinner/spinner-circle-light.svg'
 				}
+			},
+			// Overlay Icons
+			icons_overlay: {
+				files: {
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-read-only.svg': '<%= paths.icons %>Overlay/overlay-read-only.svg'
+				}
 			}
 		}
 	});

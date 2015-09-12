@@ -843,11 +843,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 
 		// Overlays
 		'overlay-read-only' => array(
-			'provider' => FontawesomeIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'times-circle',
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-read-only.svg',
 			)
-		),
+		)
 	);
 
 	/**
