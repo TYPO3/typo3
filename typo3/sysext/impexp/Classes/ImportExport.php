@@ -3735,8 +3735,8 @@ class ImportExport {
 				$this->error($pInfo['ref'] . ' was recursive...');
 				continue;
 			}
-			$spriteIconName = 'status-status-checked';
-			$spriteIconClass = '';
+			$iconName = 'status-status-checked';
+			$iconClass = '';
 			$staticFixed = FALSE;
 			$record = NULL;
 			if ($uid > 0) {
@@ -3744,7 +3744,7 @@ class ImportExport {
 				if (!is_array($record)) {
 					if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
 						$pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
-						$spriteIconClass = 'text-info';
+						$iconClass = 'text-info';
 						$staticFixed = TRUE;
 					} else {
 						$doesRE = $this->doesRecordExist($table, $uid);
@@ -3752,8 +3752,8 @@ class ImportExport {
 						$pInfo['title'] = htmlspecialchars($pInfo['ref']);
 						$pInfo['title'] = '<span title="' . htmlspecialchars($lostPath) . '">' . $pInfo['title'] . '</span>';
 						$pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : ' (Path: ' . $lostPath . ')');
-						$spriteIconClass = 'text-danger';
-						$spriteIconName = 'status-dialog-warning';
+						$iconClass = 'text-danger';
+						$iconName = 'status-dialog-warning';
 					}
 				} else {
 					$pInfo['title'] = htmlspecialchars($record['title']);
@@ -3765,7 +3765,7 @@ class ImportExport {
 				$staticFixed = TRUE;
 			}
 
-			$spriteIcon = '<span class="' . $spriteIconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($spriteIconName, Icon::SIZE_SMALL) . '</span>';
+			$spriteIcon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($iconName, Icon::SIZE_SMALL) . '</span>';
 
 			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $spriteIcon;
 			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
