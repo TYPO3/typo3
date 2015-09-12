@@ -170,6 +170,12 @@ class TcaFlexTest extends UnitTestCase {
 			],
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				],
 			],
 		];
 
@@ -247,6 +253,12 @@ class TcaFlexTest extends UnitTestCase {
 			],
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				],
 			],
 		];
 
@@ -307,6 +319,12 @@ class TcaFlexTest extends UnitTestCase {
 			'ROOT' => '',
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 		$expected['databaseRow']['aField'] = [
@@ -354,7 +372,7 @@ class TcaFlexTest extends UnitTestCase {
 						'aField.' => [
 							'aFlex.' => [
 								'langDisable' => 1,
-							] ,
+							],
 						],
 					],
 				],
@@ -366,7 +384,12 @@ class TcaFlexTest extends UnitTestCase {
 			'ROOT' => '',
 			'meta' => [
 				'availableLanguageCodes' => [],
-				'langDisable' => 1,
+				'langDisable' => TRUE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -409,7 +432,7 @@ class TcaFlexTest extends UnitTestCase {
 					'aTable.' => [
 						'aField.' => [
 							'aFlex.' => [
-								'langChildren' => 0,
+								'langChildren' => FALSE,
 							],
 						],
 					],
@@ -422,7 +445,12 @@ class TcaFlexTest extends UnitTestCase {
 			'ROOT' => '',
 			'meta' => [
 				'availableLanguageCodes' => [],
-				'langChildren' => 0,
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -495,6 +523,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [],
 		];
@@ -564,6 +598,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [],
 		];
@@ -637,6 +677,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'aSheet' => [
@@ -727,6 +773,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'aSheet' => [
@@ -817,6 +869,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'aSheet' => [
@@ -903,6 +961,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -981,6 +1045,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -1049,6 +1119,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -1125,6 +1201,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -1211,6 +1293,12 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
 				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -1319,7 +1407,7 @@ class TcaFlexTest extends UnitTestCase {
 									<T3DataStructure>
 										<ROOT></ROOT>
 										<meta>
-											<langDisabled>1</langDisabled>
+											<langDisable>1</langDisable>
 										</meta>
 									</T3DataStructure>
 								',
@@ -1340,7 +1428,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
-				'langDisabled' => '1',
+				'langDisable' => TRUE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -1410,7 +1505,7 @@ class TcaFlexTest extends UnitTestCase {
 									<T3DataStructure>
 										<ROOT></ROOT>
 										<meta>
-											<langDisabled>0</langDisabled>
+											<langDisable>0</langDisable>
 										</meta>
 									</T3DataStructure>
 								',
@@ -1432,7 +1527,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
-				'langDisabled' => '0',
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -1484,7 +1586,7 @@ class TcaFlexTest extends UnitTestCase {
 									<T3DataStructure>
 										<ROOT></ROOT>
 										<meta>
-											<langDisabled>0</langDisabled>
+											<langDisable>0</langDisable>
 										</meta>
 									</T3DataStructure>
 								',
@@ -1507,7 +1609,15 @@ class TcaFlexTest extends UnitTestCase {
 					0 => 'DEF',
 					1 => 'EN',
 				],
-				'langDisabled' => '0',
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+					1 => 'EN',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -1571,7 +1681,7 @@ class TcaFlexTest extends UnitTestCase {
 									<T3DataStructure>
 										<ROOT></ROOT>
 										<meta>
-											<langDisabled>0</langDisabled>
+											<langDisable>0</langDisable>
 										</meta>
 									</T3DataStructure>
 								',
@@ -1595,7 +1705,15 @@ class TcaFlexTest extends UnitTestCase {
 					0 => 'DEF',
 					1 => 'EN',
 				],
-				'langDisabled' => '0',
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+					1 => 'EN',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -1662,7 +1780,7 @@ class TcaFlexTest extends UnitTestCase {
 									<T3DataStructure>
 										<ROOT></ROOT>
 										<meta>
-											<langDisabled>0</langDisabled>
+											<langDisable>0</langDisable>
 											<langChildren>1</langChildren>
 										</meta>
 									</T3DataStructure>
@@ -1685,8 +1803,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
-				'langDisabled' => '0',
-				'langChildren' => '1',
+				'langDisable' => FALSE,
+				'langChildren' => TRUE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 		];
 
@@ -1756,7 +1880,7 @@ class TcaFlexTest extends UnitTestCase {
 									<T3DataStructure>
 										<ROOT></ROOT>
 										<meta>
-											<langDisabled>0</langDisabled>
+											<langDisable>0</langDisable>
 											<langChildren>1</langChildren>
 										</meta>
 									</T3DataStructure>
@@ -1781,8 +1905,15 @@ class TcaFlexTest extends UnitTestCase {
 					0 => 'DEF',
 					1 => 'EN',
 				],
-				'langDisabled' => '0',
-				'langChildren' => '1',
+				'langDisable' => FALSE,
+				'langChildren' => TRUE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+					1 => 'EN',
+				]
 			],
 		];
 
@@ -1882,6 +2013,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -1979,6 +2118,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2076,6 +2223,15 @@ class TcaFlexTest extends UnitTestCase {
 					0 => 'DEF',
 					1 => 'EN',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+					1 => 'EN',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF'
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2173,11 +2329,19 @@ class TcaFlexTest extends UnitTestCase {
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
-				'langChildren' => 1,
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 					1 => 'EN',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => TRUE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+					1 => 'EN'
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2430,6 +2594,15 @@ class TcaFlexTest extends UnitTestCase {
 					0 => 'DEF',
 					1 => 'EN',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+					1 => 'EN',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2583,11 +2756,19 @@ class TcaFlexTest extends UnitTestCase {
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
 			'meta' => [
-				'langChildren' => 1,
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 					1 => 'EN',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => TRUE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+					1 => 'EN',
+				]
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2715,6 +2896,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				],
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2838,6 +3027,14 @@ class TcaFlexTest extends UnitTestCase {
 				'availableLanguageCodes' => [
 					0 => 'DEF',
 				],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [
+					0 => 'DEF',
+				],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				],
 			],
 			'sheets' => [
 				'sDEF' => [
@@ -2875,6 +3072,146 @@ class TcaFlexTest extends UnitTestCase {
 		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['templateRows']['aFlexContainer']['el']['aFlexField']['vDEF'] = 'defaultValue';
 
 		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * Date provider for addDataSetsLanguageFlags
+	 *
+	 * @return array
+	 */
+	public function addDataSetsLanguageFlagsDataProvider() {
+		return array(
+			'Default values are set' => array(
+				'<T3DataStructure>
+					<ROOT></ROOT>
+				</T3DataStructure>',
+				FALSE,
+				FALSE,
+				[],
+				[0 => 'DEF'],
+			),
+			'langDisable is set to FALSE' => array(
+				'<T3DataStructure>
+					<ROOT></ROOT>
+					<meta>
+						<langDisable>0</langDisable>
+					</meta>
+				</T3DataStructure>',
+				FALSE,
+				FALSE,
+				[],
+				[0 => 'DEF'],
+			),
+			'langDisable is set to TRUE' => array(
+				'<T3DataStructure>
+					<ROOT></ROOT>
+					<meta>
+						<langDisable>1</langDisable>
+					</meta>
+				</T3DataStructure>',
+				TRUE,
+				FALSE,
+				[],
+				[0 => 'DEF'],
+			),
+			'langChildren is set to FALSE' => array(
+				'<T3DataStructure>
+					<ROOT></ROOT>
+					<meta>
+						<langChildren>0</langChildren>
+					</meta>
+				</T3DataStructure>',
+				FALSE,
+				FALSE,
+				[],
+				[0 => 'DEF'],
+			),
+			'langChildren is set to TRUE' => array(
+				'<T3DataStructure>
+					<ROOT></ROOT>
+					<meta>
+						<langChildren>1</langChildren>
+					</meta>
+				</T3DataStructure>',
+				FALSE,
+				TRUE,
+				[0 => 'DEF'],
+				[],
+			),
+			'langDisable and langChildren are set' => array(
+				'<T3DataStructure>
+					<ROOT></ROOT>
+					<meta>
+						<langDisable>1</langDisable>
+						<langChildren>1</langChildren>
+					</meta>
+				</T3DataStructure>',
+				TRUE,
+				TRUE,
+				[0 => 'DEF'],
+				[],
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @param $flexform
+	 * @param $expectedLangDisable
+	 * @param $expectedLangChildren
+	 * @param $expectedLanguagesOnSheetLevel
+	 * @param $expectedLanguagesOnElement
+	 * @dataProvider addDataSetsLanguageFlagsDataProvider
+	 */
+	public function addDataSetsLanguageFlags($flexform, $expectedLangDisable, $expectedLangChildren, $expectedLanguagesOnSheetLevel, $expectedLanguagesOnElement) {
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => [
+					'data' => [
+						'sDEF' => [
+							'lDEF' => [
+								'input_1' => [
+									'vDEF' => 'input1 text',
+								],
+							],
+						],
+					],
+					'meta' => [],
+				],
+				'pointerField' => 'aFlex',
+			],
+			'systemLanguageRows' => [
+				0 => [
+					'uid' => 0,
+					'iso' => 'DEF',
+				],
+				1 => [
+					'uid' => 1,
+					'iso' => 'EN',
+				],
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'flex',
+							'ds_pointerField' => 'pointerField',
+							'ds' => [
+								'aFlex' => $flexform,
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$result = $this->subject->addData($input);
+
+		$this->assertEquals($expectedLangDisable, $result['processedTca']['columns']['aField']['config']['ds']['meta']['langDisable']);
+		$this->assertEquals($expectedLangChildren, $result['processedTca']['columns']['aField']['config']['ds']['meta']['langChildren']);
+		$this->assertEquals($expectedLanguagesOnSheetLevel, $result['processedTca']['columns']['aField']['config']['ds']['meta']['languagesOnSheetLevel']);
+		$this->assertEquals($expectedLanguagesOnElement, $result['processedTca']['columns']['aField']['config']['ds']['meta']['languagesOnElement']);
 	}
 
 }

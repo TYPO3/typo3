@@ -39,19 +39,6 @@ class FlexFormLanguageContainer extends AbstractContainer {
 		$flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
 		$flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
 
-		// Determine available languages
-		// @todo: Would be better to have evaluated langChildren & langDisable in meta already, prepared by data provider
-		$langChildren = (bool)$flexFormDataStructureArray['meta']['langChildren'];
-		$langDisabled = (bool)$flexFormDataStructureArray['meta']['langDisable'];
-
-		$availableLanguageCodes = $flexFormDataStructureArray['meta']['availableLanguageCodes'];
-		// @todo: Would be better to have $languagesOnSheetLevel and $languagesOnElementLevel prepared in meta already
-		if ($langChildren || $langDisabled) {
-			$languagesOnSheetLevel = [ 'DEF' ];
-		} else {
-			$languagesOnSheetLevel = $availableLanguageCodes;
-		}
-
 		// Tabs or no tabs - that's the question
 		$hasTabs = FALSE;
 		if (count($flexFormDataStructureArray['sheets']) > 1) {
@@ -60,9 +47,9 @@ class FlexFormLanguageContainer extends AbstractContainer {
 
 		$resultArray = $this->initializeResultArray();
 
-		foreach ($languagesOnSheetLevel as $lKey) {
+		foreach ($flexFormDataStructureArray['meta']['languagesOnSheetLevel'] as $lKey) {
 			// Add language as header
-			if (!$langChildren && !$langDisabled) {
+			if (!$flexFormDataStructureArray['meta']['langChildren'] && !$flexFormDataStructureArray['meta']['langDisable']) {
 				$resultArray['html'] .= LF . '<strong>' . FormEngineUtility::getLanguageIcon($table, $row, ('v' . $lKey)) . $lKey . ':</strong>';
 			}
 

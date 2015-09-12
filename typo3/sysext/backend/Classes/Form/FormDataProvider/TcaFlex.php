@@ -304,6 +304,13 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 			}
 		}
 
+		$modifiedDataStructure['meta']['langDisable'] = isset($modifiedDataStructure['meta']['langDisable'])
+			? (bool)$modifiedDataStructure['meta']['langDisable']
+			: FALSE;
+		$modifiedDataStructure['meta']['langChildren'] = isset($modifiedDataStructure['meta']['langChildren'])
+			? (bool)$modifiedDataStructure['meta']['langChildren']
+			: FALSE;
+
 		$result['processedTca']['columns'][$fieldName]['config']['ds'] = $modifiedDataStructure;
 
 		return $result;
@@ -391,8 +398,8 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 		$backendUser = $this->getBackendUser();
 		$dataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
 
-		$langDisabled = (bool)$dataStructure['meta']['langDisabled'];
-		$langChildren = (bool)$dataStructure['meta']['langChildren'];
+		$langDisabled = $dataStructure['meta']['langDisable'];
+		$langChildren = $dataStructure['meta']['langChildren'];
 
 		// Existing page language overlays are only considered if options.checkPageLanguageOverlay is set in userTs
 		$checkPageLanguageOverlay = FALSE;
@@ -488,13 +495,16 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 		$dataValues = $result['databaseRow'][$fieldName];
 
 		$availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
-		if ((bool)$dataStructure['meta']['langChildren']) {
+		if ($dataStructure['meta']['langChildren']) {
 			$languagesOnSheetLevel = [ 'DEF' ];
 			$languagesOnElementLevel = $availableLanguageCodes;
 		} else {
 			$languagesOnSheetLevel = $availableLanguageCodes;
 			$languagesOnElementLevel = [ 'DEF' ];
 		}
+
+		$result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['languagesOnSheetLevel'] = $languagesOnSheetLevel;
+		$result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['languagesOnElement'] = $languagesOnElementLevel;
 
 		if (!isset($dataStructure['sheets']) || !is_array($dataStructure['sheets'])) {
 			return $result;
