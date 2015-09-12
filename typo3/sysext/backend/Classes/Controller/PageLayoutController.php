@@ -1190,7 +1190,7 @@ class PageLayoutController {
 					'uid' => $this->eRParts[1],
 					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 				];
-				$buttons['move_record'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', $urlParameters)) . '">' . IconUtility::getSpriteIcon(('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move'), array('class' => 'c-inputButton', 'title' => $lang->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), TRUE))) . '</a>';
+				$buttons['move_record'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('move_element', $urlParameters)) . '" title="' . $lang->getLL('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page'), TRUE) . '">' . $this->iconFactory->getIcon('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page') . '-move', Icon::SIZE_SMALL)->render() . '</a>';
 			}
 
 			// Edit page properties and page language overlay icons
