@@ -28,249 +28,213 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 class SelectCheckBoxElement extends AbstractFormElement {
 
 	/**
-	 * @var array Result array given returned by render() - This property is a helper until class is properly refactored
-	 */
-	protected $resultArray = array();
-
-	/**
 	 * Render check boxes
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->data['tableName'];
-		$field = $this->data['fieldName'];
-		$row = $this->data['databaseRow'];
-		$parameterArray = $this->data['parameterArray'];
+		$html = [];
 		// Field configuration from TCA:
+		$parameterArray = $this->data['parameterArray'];
 		$config = $parameterArray['fieldConf']['config'];
-		$disabled = '';
-		if ($config['readOnly']) {
-			$disabled = ' disabled="disabled"';
-		}
-		$this->resultArray = $this->initializeResultArray();
-		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		$selItems = $parameterArray['fieldConf']['config']['items'];
+		$disabled = !empty($config['readOnly']);
 
-		// Creating the label for the "No Matching Value" entry.
-		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-			? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
+		$selItems = $config['items'];
+		if (!empty($selItems)) {
+			// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
+			$itemArray = array_flip($parameterArray['itemFormElValue']);
 
-		$html = $this->getSingleField_typeSelect_checkbox($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel);
-
-		// Wizards:
-		if (!$disabled) {
-			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
-		}
-		$this->resultArray['html'] = $html;
-		return $this->resultArray;
-	}
-
-	/**
-	 * Creates a checkbox list (renderMode = "checkbox")
-	 *
-	 * @param string $table See getSingleField_typeSelect()
-	 * @param string $field See getSingleField_typeSelect()
-	 * @param array $row See getSingleField_typeSelect()
-	 * @param array $parameterArray See getSingleField_typeSelect()
-	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param array $selItems Items available for selection
-	 * @param string $noMatchingLabel Label for no-matching-value
-	 * @return string The HTML code for the item
-	 */
-	protected function getSingleField_typeSelect_checkbox($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel) {
-		if (empty($selItems)) {
-			return '';
-		}
-		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
-		$itemArray = array_flip($parameterArray['itemFormElValue']);
-		$output = '';
-
-		// Disabled
-		$disabled = 0;
-		if ($config['readOnly']) {
-			$disabled = 1;
-		}
-		// Traverse the Array of selector box items:
-		$groups = array();
-		$currentGroup = 0;
-		$c = 0;
-		$sOnChange = '';
-		if (!$disabled) {
-			$sOnChange = implode('', $parameterArray['fieldChangeFunc']);
-			// Used to accumulate the JS needed to restore the original selection.
-			foreach ($selItems as $p) {
-				// Non-selectable element:
-				if ($p[1] === '--div--') {
-					$selIcon = '';
-					if (isset($p[2]) && $p[2] != 'empty-empty') {
-						$selIcon = FormEngineUtility::getIconHtml($p[2]);
-					}
-					$currentGroup++;
-					$groups[$currentGroup]['header'] = array(
-						'icon' => $selIcon,
-						'title' => htmlspecialchars($p[0])
-					);
-				} else {
-
-					// Check if some help text is available
-					// Since TYPO3 4.5 help text is expected to be an associative array
-					// with two key, "title" and "description"
-					// For the sake of backwards compatibility, we test if the help text
-					// is a string and use it as a description (this could happen if items
-					// are modified with an itemProcFunc)
-					$hasHelp = FALSE;
-					$help = '';
-					$helpArray = array();
-					if (!empty($p[3])) {
-						$hasHelp = TRUE;
-						if (is_array($p[3])) {
-							$helpArray = $p[3];
-						} else {
-							$helpArray['description'] = $p[3];
+			// Traverse the Array of selector box items:
+			$groups = array();
+			$currentGroup = 0;
+			$c = 0;
+			$sOnChange = '';
+			if (!$disabled) {
+				$sOnChange = implode('', $parameterArray['fieldChangeFunc']);
+				// Used to accumulate the JS needed to restore the original selection.
+				foreach ($selItems as $p) {
+					// Non-selectable element:
+					if ($p[1] === '--div--') {
+						$selIcon = '';
+						if (isset($p[2]) && $p[2] != 'empty-empty') {
+							$selIcon = FormEngineUtility::getIconHtml($p[2]);
 						}
-					}
-					if ($hasHelp) {
-						$help = BackendUtility::wrapInHelp('', '', '', $helpArray);
-					}
+						$currentGroup++;
+						$groups[$currentGroup]['header'] = array(
+							'icon' => $selIcon,
+							'title' => htmlspecialchars($p[0])
+						);
+					} else {
+						// Check if some help text is available
+						// Since TYPO3 4.5 help text is expected to be an associative array
+						// with two key, "title" and "description"
+						// For the sake of backwards compatibility, we test if the help text
+						// is a string and use it as a description (this could happen if items
+						// are modified with an itemProcFunc)
+						$hasHelp = FALSE;
+						$help = '';
+						$helpArray = array();
+						if (!empty($p[3])) {
+							$hasHelp = TRUE;
+							if (is_array($p[3])) {
+								$helpArray = $p[3];
+							} else {
+								$helpArray['description'] = $p[3];
+							}
+						}
+						if ($hasHelp) {
+							$help = BackendUtility::wrapInHelp('', '', '', $helpArray);
+						}
 
-					// Selected or not by default:
-					$checked = 0;
-					if (isset($itemArray[$p[1]])) {
-						$checked = 1;
-						unset($itemArray[$p[1]]);
-					}
+						// Selected or not by default:
+						$checked = 0;
+						if (isset($itemArray[$p[1]])) {
+							$checked = 1;
+							unset($itemArray[$p[1]]);
+						}
 
+						// Build item array
+						$groups[$currentGroup]['items'][] = array(
+							'id' => StringUtility::getUniqueId('select_checkbox_row_'),
+							'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
+							'value' => $p[1],
+							'checked' => $checked,
+							'disabled' => FALSE,
+							'class' => '',
+							'icon' => (!empty($p[2]) ? FormEngineUtility::getIconHtml($p[2]) : $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()),
+							'title' => htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE),
+							'help' => $help
+						);
+						$c++;
+					}
+				}
+			}
+			// Remaining values (invalid):
+			if (!empty($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
+				$currentGroup++;
+				// Creating the label for the "No Matching Value" entry.
+				$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+					? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+					: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
+				foreach ($itemArray as $theNoMatchValue => $temp) {
 					// Build item array
 					$groups[$currentGroup]['items'][] = array(
 						'id' => StringUtility::getUniqueId('select_checkbox_row_'),
 						'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
-						'value' => $p[1],
-						'checked' => $checked,
+						'value' => $theNoMatchValue,
+						'checked' => 1,
 						'disabled' => $disabled,
-						'class' => '',
-						'icon' => (!empty($p[2]) ? FormEngineUtility::getIconHtml($p[2]) : $this->iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()),
-						'title' => htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE),
-						'help' => $help
+						'class' => 'danger',
+						'icon' => '',
+						'title' => htmlspecialchars(@sprintf($noMatchingLabel, $theNoMatchValue), ENT_COMPAT, 'UTF-8', FALSE),
+						'help' => ''
 					);
 					$c++;
 				}
 			}
-		}
-		// Remaining values (invalid):
-		if (!empty($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-			$currentGroup++;
-			foreach ($itemArray as $theNoMatchValue => $temp) {
-				// Build item array
-				$groups[$currentGroup]['items'][] = array(
-					'id' => StringUtility::getUniqueId('select_checkbox_row_'),
-					'name' => $parameterArray['itemFormElName'] . '[' . $c . ']',
-					'value' => $theNoMatchValue,
-					'checked' => 1,
-					'disabled' => $disabled,
-					'class' => 'danger',
-					'icon' => '',
-					'title' => htmlspecialchars(@sprintf($noMatchingLabel, $theNoMatchValue), ENT_COMPAT, 'UTF-8', FALSE),
-					'help' => ''
-				);
-				$c++;
+			// Add an empty hidden field which will send a blank value if all items are unselected.
+			$html[] = '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="">';
+
+			// Building the checkboxes
+			foreach ($groups as $groupKey => $group) {
+				$groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
+				$html[] = '<div class="panel panel-default">';
+				if (is_array($group['header'])) {
+					$html[] = '<div class="panel-heading">';
+					$html[] = '<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="true" aria-controls="' . $groupId . '">';
+					$html[] = $group['header']['icon'];
+					$html[] = $group['header']['title'];
+					$html[] = '</a>';
+					$html[] = '</div>';
+				}
+				if (is_array($group['items']) && !empty($group['items'])) {
+					$tableRows = [];
+					$checkGroup = array();
+					$uncheckGroup = array();
+					$resetGroup = array();
+
+					// Render rows
+					foreach ($group['items'] as $item) {
+						$tableRows[] = '<tr class="' . $item['class'] . '">';
+						$tableRows[] = 	'<td class="col-checkbox">';
+						$tableRows[] = 		'<input type="checkbox" '
+											. 'id="' . $item['id'] . '" '
+											. 'name="' . htmlspecialchars($item['name']) . '" '
+											. 'value="' . htmlspecialchars($item['value']) . '" '
+											. 'onclick="' . htmlspecialchars($sOnChange) . '" '
+											. ($item['checked'] ? 'checked=checked ' : '')
+											. ($item['disabled'] ? 'disabled=disabled ' : '')
+											. $parameterArray['onFocus'] . '>';
+						$tableRows[] = 	'</td>';
+						$tableRows[] = 	'<td class="col-icon">';
+						$tableRows[] = 		'<label class="label-block" for="' . $item['id'] . '">' . $item['icon'] . '</label>';
+						$tableRows[] = 	'</td>';
+						$tableRows[] = 	'<td class="col-title">';
+						$tableRows[] = 		'<label class="label-block" for="' . $item['id'] . '">' . $item['title'] . '</label>';
+						$tableRows[] = 	'</td>';
+						$tableRows[] = 	'<td>' . $item['help'] . '</td>';
+						$tableRows[] = '</tr>';
+						$checkGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=1;';
+						$uncheckGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=0;';
+						$resetGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=' . $item['checked'] . ';';
+					}
+
+					// Build toggle group checkbox
+					$toggleGroupCheckbox = '';
+					if (!empty($resetGroup)) {
+						$toggleGroupCheckbox = '<input type="checkbox" '
+							. 'class="checkbox" '
+							. 'onclick="if (checked) {' . htmlspecialchars(implode('', $checkGroup) . '} else {' . implode('', $uncheckGroup)) . '}">';
+					}
+
+					// Build reset group button
+					$resetGroupBtn = '';
+					if (!empty($resetGroup)) {
+						$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', TRUE);
+						$resetGroupBtn = '<a href="#" '
+							. 'class="btn btn-default" '
+							. 'onclick="' . implode('', $resetGroup) . ' return false;" '
+							. 'title="' . $title . '">'
+							. $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . ' '
+							. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '</a>';
+					}
+
+					$html[] = '<div id="' . $groupId . '" class="panel-collapse collapse in" role="tabpanel">';
+					$html[] = 	'<div class="table-fit">';
+					$html[] = 		'<table class="table table-transparent table-hover">';
+					$html[] = 			'<thead>';
+					$html[] = 				'<tr>';
+					$html[] = 					'<th class="col-checkbox">' . $toggleGroupCheckbox . '</th>';
+					$html[] = 					'<th class="col-icon"></th>';
+					$html[] = 					'<th class="text-right" colspan="2">' . $resetGroupBtn . '</th>';
+					$html[] = 				'</tr>';
+					$html[] = 			'</thead>';
+					$html[] = 			'<tbody>' . implode(LF, $tableRows) . '</tbody>';
+					$html[] = 		'</table>';
+					$html[] = 	'</div>';
+					$html[] = '</div>';
+				}
+				$html[] = '</div>';
 			}
 		}
-		// Add an empty hidden field which will send a blank value if all items are unselected.
-		$output .= '<input type="hidden" class="select-checkbox" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="" />';
 
-		// Building the checkboxes
-		foreach ($groups as $groupKey => $group) {
-			$groupId = htmlspecialchars($parameterArray['itemFormElID']) . '-group-' . $groupKey;
-			$output .= '<div class="panel panel-default">';
-			if (is_array($group['header'])) {
-				$output .= '
-					<div class="panel-heading">
-						<a data-toggle="collapse" href="#' . $groupId . '" aria-expanded="true" aria-controls="' . $groupId . '">
-							' . $group['header']['icon'] . '
-							' . $group['header']['title'] . '
-						</a>
-					</div>
-					';
-			}
-			if (is_array($group['items']) && !empty($group['items'])) {
-				$tableRows = '';
-				$checkGroup = array();
-				$uncheckGroup = array();
-				$resetGroup = array();
-
-				// Render rows
-				foreach ($group['items'] as $item) {
-					$tableRows .= '
-						<tr class="' . $item['class'] . '">
-							<td class="col-checkbox">
-								<input type="checkbox"
-									id="' . $item['id'] . '"
-									name="' . htmlspecialchars($item['name']) . '"
-									value="' . htmlspecialchars($item['value']) . '"
-									onclick="' . htmlspecialchars($sOnChange) . '"
-									' . ($item['checked'] ? ' checked=checked' : '') . '
-									' . ($item['disabled'] ? ' disabled=disabled' : '') . '
-									' . $parameterArray['onFocus'] . ' />
-							</td>
-							<td class="col-icon">
-								<label class="label-block" for="' . $item['id'] . '">' . $item['icon'] . '</label>
-							</td>
-							<td class="col-title">
-								<label class="label-block" for="' . $item['id'] . '">' . $item['title'] . '</label>
-							</td>
-							<td>' . $item['help'] . '</td>
-						</tr>
-						';
-					$checkGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=1;';
-					$uncheckGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked=0;';
-					$resetGroup[] = 'document.editform[' . GeneralUtility::quoteJSvalue($item['name']) . '].checked='.$item['checked'] . ';';
-				}
-
-				// Build toggle group checkbox
-				$toggleGroupCheckbox = '';
-				if (!empty($resetGroup)) {
-					$toggleGroupCheckbox = '
-						<input type="checkbox" class="checkbox" onclick="if (checked) {' . htmlspecialchars(implode('', $checkGroup) . '} else {' . implode('', $uncheckGroup)) . '}">
-						';
-				}
-
-				// Build reset group button
-				$resetGroupBtn = '';
-				if (!empty($resetGroup)) {
-					$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', TRUE);
-					$resetGroupBtn = '
-						<a href="#" class="btn btn-default" onclick="' . implode('', $resetGroup) . ' return false;'
-						. '" title="' . $title . '">
-							' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . '
-							' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '
-						</a>
-						';
-				}
-
-				$output .= '
-					<div id="' . $groupId . '" class="panel-collapse collapse in" role="tabpanel">
-						<div class="table-fit">
-							<table class="table table-transparent table-hover">
-								<thead>
-									<tr>
-										<th class="col-checkbox">' . $toggleGroupCheckbox . '</th>
-										<th class="col-icon"></th>
-										<th class="text-right" colspan="2">' . $resetGroupBtn . '</th>
-									</tr>
-								</thead>
-								<tbody>' . $tableRows . '</tbody>
-							</table>
-						</div>
-					</div>
-					';
-			}
-			$output .= '</div>';
+		if (!$disabled) {
+			$html = $this->renderWizards(
+				array(implode(LF, $html)),
+				$config['wizards'],
+				$this->data['tableName'],
+				$this->data['databaseRow'],
+				$this->data['fieldName'],
+				$parameterArray,
+				$parameterArray['itemFormElName'],
+				BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
+			);
 		}
 
-		return $output;
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = $html;
+
+		return $resultArray;
 	}
 
 }
