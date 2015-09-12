@@ -798,6 +798,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'times',
 			)
 		),
+		'status-status-reference-soft' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/status-reference-soft.png',
+			)
+		),
 
 		// Mimetypes
 		'mimetypes-text-html' => array(

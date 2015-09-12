@@ -3672,11 +3672,13 @@ class ImportExport {
 		}
 		// Soft ref
 		if (!empty($record['softrefs'])) {
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$preCode_A = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;';
 			$preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			foreach ($record['softrefs'] as $info) {
 				$pInfo = array();
-				$pInfo['preCode'] = $preCode_A . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-reference-soft');
+				$pInfo['preCode'] = $preCode_A . $iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL);
 				$pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
 				if ($info['subst']['type']) {
 					if (strlen($info['subst']['title'])) {
@@ -3765,9 +3767,9 @@ class ImportExport {
 				$staticFixed = TRUE;
 			}
 
-			$spriteIcon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($iconName, Icon::SIZE_SMALL) . '</span>';
+			$icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($iconName, Icon::SIZE_SMALL) . '</span>';
 
-			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $spriteIcon;
+			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $icon;
 			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
 			$pInfo['type'] = 'rel';
 			if (!$staticFixed || $this->showStaticRelations) {
