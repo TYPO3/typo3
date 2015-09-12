@@ -620,9 +620,9 @@ class ElementBrowser {
 					return false;
 				}
 				function checkReference() {	//
-					if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName']
-						. ' && window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"] ) {
-						return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"];
+					if (window.opener && window.opener.document && window.opener.document.querySelector(\'form[name="'
+						. $this->P['formName'] . '"] [data-formengine-input-name="' . $this->P['itemName'] . '"]\')) {
+						return window.opener.document.querySelector(\'form[name="' . $this->P['formName'] . '"] [data-formengine-input-name="' . $this->P['itemName'] . '"]\');
 					} else {
 						close();
 					}

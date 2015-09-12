@@ -565,7 +565,7 @@ abstract class AbstractFormElement extends AbstractNode {
 			$selector = '<select id="' . StringUtility::getUniqueId('tceforms-multiselect-') . '" '
 				. ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '" class="form-control tceforms-multiselect"')
 				. ($isMultiple ? ' multiple="multiple"' : '')
-				. ' name="' . $fName . '_list" ' . $this->getValidationDataAsDataAttribute($config) . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
+				. ' data-formengine-input-name="' . htmlspecialchars($fName) . '" ' . $this->getValidationDataAsDataAttribute($config) . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt)
 				. '</select>';
 		}
 		$icons = array(

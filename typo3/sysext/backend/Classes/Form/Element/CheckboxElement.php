@@ -126,14 +126,13 @@ class CheckboxElement extends AbstractFormElement {
 			$numberOfItems,
 			implode('', $additionalInformation['fieldChangeFunc'])
 		);
-		$checkboxName = $additionalInformation['itemFormElName'] . '_' . $itemCounter;
 		$checkboxId = $additionalInformation['itemFormElID'] . '_' . $itemCounter;
 		return '
 			<div class="checkbox' . ($inline ? ' checkbox-inline' : '') . (!$disabled ? '' : ' disabled') . '">
 				<label>
 					<input type="checkbox"
 						value="1"
-						name="' . htmlspecialchars($checkboxName) . '"
+						data-formengine-input-name="' . htmlspecialchars($additionalInformation['itemFormElName']) . '"
 						' . $checkboxParameters . '
 						' . $additionalInformation['onFocus'] . '
 						' . (!$disabled ?: ' disabled="disabled"') . '

@@ -88,7 +88,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		}
 		// Setting this hidden field (as a flag that JavaScript can read out)
 		if (!$disabled) {
-			$item .= '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '" />';
+			$item .= '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . ($config['multiple'] ? 1 : 0) . '" />';
 		}
 		// Set max and min items:
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
@@ -159,7 +159,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			$multiSelectId = StringUtility::getUniqueId('tceforms-multiselect-');
 			$itemsToSelect = '
 				<select data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '" data-exclusivevalues="'
-				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '_sel" '
+				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
 				. ' class="form-control t3js-formengine-select-itemstoselect" '
 				. ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"'
 				. $parameterArray['onFocus'] . $this->getValidationDataAsDataAttribute($config) . $selector_itemListStyle . '>

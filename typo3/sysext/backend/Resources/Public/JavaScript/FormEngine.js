@@ -423,8 +423,17 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 
 		// if an appendix is set, return the field with the appendix (like _mul or _list)
 		if (appendix) {
-			var $fieldEl = $(':input[name="' + fieldName + appendix + '"]', $formEl);
-			if ($fieldEl.length > 0 || noFallback === true) {
+			var $fieldEl;
+			switch (appendix) {
+				case '_list':
+					$fieldEl = $(':input.tceforms-multiselect[data-formengine-input-name="' + fieldName + '"]', $formEl);
+					break;
+				case '_mul':
+				case '_hr':
+					$fieldEl = $(':input[type=hidden][data-formengine-input-name="' + fieldName + '"]', $formEl);
+					break;
+			}
+			if (($fieldEl && $fieldEl.length > 0) || noFallback === true) {
 				return $fieldEl;
 			}
 		}

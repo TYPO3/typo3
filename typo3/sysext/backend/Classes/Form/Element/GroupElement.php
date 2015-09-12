@@ -88,7 +88,7 @@ class GroupElement extends AbstractFormElement {
 				. ', \'RemoveFirstIfFull\', ' . GeneralUtility::quoteJSvalue($maxitems) . '); ' . $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		}
 
-		$html = '<input type="hidden" class="t3js-group-hidden-field" name="' . $parameterArray['itemFormElName'] . '_mul" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
+		$html = '<input type="hidden" class="t3js-group-hidden-field" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . ($config['multiple'] ? 1 : 0) . '"' . $disabled . ' />';
 
 		// Define parameters for all types below
 		$commonParameters = array(

@@ -1608,7 +1608,7 @@ class QueryGenerator {
 		$id = StringUtility::getUniqueId('dt_');
 		$html = array();
 		$html[] = '<div class="input-group" id="' . $id . '-wrapper">';
-		$html[] = '		<input name="' . htmlspecialchars($name) . '_hr" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" data-date-offset="0" type="text" id="' . $id . '">';
+		$html[] = '		<input data-formengine-input-name="' . htmlspecialchars($name) . '" value="' . $value . '" class="form-control t3js-datetimepicker t3js-clearable" data-date-type="' . htmlspecialchars($type) . '" data-date-offset="0" type="text" id="' . $id . '">';
 		$html[] = '		<input name="' . htmlspecialchars($name) . '" value="' . (int)$timestamp . '" type="hidden">';
 		$html[] = '		<span class="input-group-btn">';
 		$html[] = '			<label class="btn btn-default" for="' . $id . '">';

@@ -169,8 +169,8 @@ class InputTextElement extends AbstractFormElement {
 		// calculate attributes
 		$attributes['data-formengine-validation-rules'] = $this->getValidationDataAsJsonString($config);
 		$attributes['data-formengine-input-params'] = json_encode($paramsList);
+		$attributes['data-formengine-input-name'] = htmlspecialchars($parameterArray['itemFormElName']);
 		$attributes['id'] = StringUtility::getUniqueId('formengine-input-');
-		$attributes['name'] = $parameterArray['itemFormElName'] . '_hr';
 		$attributes['value'] = '';
 		if (isset($config['max']) && (int)$config['max'] > 0) {
 			$attributes['maxlength'] = (int)$config['max'];
@@ -236,7 +236,8 @@ class InputTextElement extends AbstractFormElement {
 			$row,
 			$fieldName,
 			$parameterArray,
-			$parameterArray['itemFormElName'] . '_hr', $specConf
+			$parameterArray['itemFormElName'],
+			$specConf
 		);
 
 		// Add a wrapper to remain maximum width

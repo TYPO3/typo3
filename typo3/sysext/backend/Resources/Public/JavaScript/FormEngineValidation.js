@@ -109,7 +109,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 	 */
 	FormEngineValidation.initializeInputField = function(fieldName) {
 		var $field = $('[name="' + fieldName + '"]');
-		var $humanReadableField = $('[name="' + fieldName + '_hr"]');
+		var $humanReadableField = $('[data-formengine-input-name="' + fieldName + '"]');
 		var $checkboxField = $('[name="' + fieldName + '_cb"]');
 		var $mainField = $('[name="' + $field.data('main-field') + '"]');
 		if ($mainField.length === 0) {
@@ -143,14 +143,14 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		$humanReadableField.data('main-field', fieldName);
 		$humanReadableField.data('config', config);
 		$humanReadableField.on('change', function() {
-			FormEngineValidation.updateInputField($(this).attr('name'));
+			FormEngineValidation.updateInputField($(this).attr('data-formengine-input-name'));
 		});
 		$humanReadableField.on('keyup', FormEngineValidation.validate);
 
 		$checkboxField.data('main-field', fieldName);
 		$checkboxField.data('config', config);
 		$checkboxField.on('click', function() {
-			FormEngineValidation.updateInputField($(this).attr('name'));
+			FormEngineValidation.updateInputField($(this).attr('data-formengine-input-name'));
 		});
 	};
 
@@ -216,7 +216,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 		if ($mainField.length === 0) {
 			$mainField = $field;
 		}
-		var $humanReadableField = $('[name="' + $mainField.attr('name') + '_hr"]');
+		var $humanReadableField = $('[data-formengine-input-name="' + $mainField.attr('name') + '"]');
 
 		var config = $mainField.data('config');
 		if (typeof config !== 'undefined') {
