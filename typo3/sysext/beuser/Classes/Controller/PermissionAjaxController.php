@@ -298,18 +298,20 @@ class PermissionAjaxController {
 		GeneralUtility::logDeprecatedFunction();
 		$str = '';
 		$permissions = array(1, 16, 2, 4, 8);
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		foreach ($permissions as $permission) {
 			if ($int & $permission) {
-				$str .= IconUtility::getSpriteIcon('status-status-permission-granted', array(
-					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'class' => 'change-permission text-success',
-					'data-page' => $pageId,
-					'data-permissions' => $int,
-					'data-mode' => 'delete',
-					'data-who' => $who,
-					'data-bits' => $permission,
-					'style' => 'cursor:pointer'
-				));
+				$str .= '<span title="' . $GLOBALS['LANG']->getLL($permission, TRUE)
+					. ' class="change-permission text-success"'
+					. ' data-page="' . $pageId . '"'
+					. ' data-permissions="' . $int . '"'
+					. ' data-mode="delete"'
+					. ' data-who="' . $who . '"'
+					. ' data-bits="' . $permission . '"'
+					. ' style="cursor:pointer">'
+					. $iconFactory->getIcon('status-status-permission-granted', Icon::SIZE_SMALL)
+					. '</span>';
 			} else {
 				$str .= IconUtility::getSpriteIcon('status-status-permission-denied', array(
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
