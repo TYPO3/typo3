@@ -3804,7 +3804,7 @@ class ImportExport {
 					return;
 				}
 			}
-			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-reference-hard');
+			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL);
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];

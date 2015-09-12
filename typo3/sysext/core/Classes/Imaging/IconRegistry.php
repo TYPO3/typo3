@@ -702,6 +702,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'lock',
 			)
 		),
+		'status-status-reference-hard' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/status-reference-hard.png',
+			)
+		),
 		'status-status-sorting-asc' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
