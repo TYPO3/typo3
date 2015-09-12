@@ -70,6 +70,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'th-large',
 			)
 		),
+		'apps-toolbar-menu-actions' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'cog',
+			)
+		),
 		'apps-pagetree-page-domain' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(

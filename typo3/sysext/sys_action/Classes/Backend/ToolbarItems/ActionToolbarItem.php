@@ -17,6 +17,9 @@ namespace TYPO3\CMS\SysAction\Backend\ToolbarItems;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Adds action links to the backend's toolbar
@@ -42,12 +45,10 @@ class ActionToolbarItem implements ToolbarItemInterface {
 	 * @return string HTML
 	 */
 	public function getItem() {
-		return IconUtility::getSpriteIcon(
-			'apps-toolbar-menu-actions',
-			array(
-				'title' => $this->getLanguageService()->getLL('action_toolbaritem', TRUE)
-			)
-		);
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$title = $this->getLanguageService()->getLL('action_toolbaritem', TRUE);
+		return '<span title="' . $title . '">' . $iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render() . '</span>';
 	}
 
 	/**
