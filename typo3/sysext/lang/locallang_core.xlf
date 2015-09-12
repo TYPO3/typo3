@@ -1009,6 +1009,9 @@ Would you like to save now in order to refresh the display?</source>
 			<trans-unit id="cm.allowedFileExtensions">
 				<source>Allowed file extensions:</source>
 			</trans-unit>
+			<trans-unit id="sortable.dragmove">
+				<source>Drag to move</source>
+			</trans-unit>
 			<trans-unit id="tree.defaultPageTitle">
 				<source>[Default Title]</source>
 			</trans-unit>

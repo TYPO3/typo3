@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Flex form container implementation
@@ -68,10 +68,8 @@ class FlexFormContainerContainer extends AbstractContainer {
 		$userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
 		if ($userHasAccessToDefaultLanguage) {
 			$moveAndDeleteContent[] = '<div class="pull-right">';
-			// @todo: hardcoded title ...
-			$moveAndDeleteContent[] = '<span title="Drag to Move" class="t3-js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL) . '</span>';
-			// @todo: hardcoded title ...
-			$moveAndDeleteContent[] = '<span title="Delete" class="t3-js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</span>';
+			$moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', TRUE) . '" class="t3-js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL) . '</span>';
+			$moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="t3-js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</span>';
 			$moveAndDeleteContent[] = '</div>';
 		}
 
@@ -117,6 +115,13 @@ class FlexFormContainerContainer extends AbstractContainer {
 	 */
 	protected function getBackendUserAuthentication() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
