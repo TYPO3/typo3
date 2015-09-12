@@ -334,6 +334,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/actions/edit-restore.png',
 			)
 		),
+		'actions-edit-restore-edit' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/edit-undelete-edit.png',
+			)
+		),
 		'actions-edit-undo' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

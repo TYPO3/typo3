@@ -21,6 +21,9 @@
 			<trans-unit id="undelete_only">
 				<source>undelete only</source>
 			</trans-unit>
+			<trans-unit id="undelete_and_edit">
+				<source>undelete and edit</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
