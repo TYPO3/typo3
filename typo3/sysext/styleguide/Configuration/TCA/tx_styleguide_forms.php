@@ -1200,10 +1200,9 @@ return array(
 				'items' => array(
 					array('foo 1', 1),
 					array('foo 2', 2),
-					array('foo 3', 4),
 					array('divider', '--div--'),
+					array('foo 3', 3),
 					array('foo 4', 4),
-					array('foo 5', 5),
 
 				),
 				'renderMode' => 'singlebox',
