@@ -1203,7 +1203,6 @@ return array(
 					array('divider', '--div--'),
 					array('foo 3', 3),
 					array('foo 4', 4),
-
 				),
 				'renderMode' => 'singlebox',
 				'maxitems' => 2,
