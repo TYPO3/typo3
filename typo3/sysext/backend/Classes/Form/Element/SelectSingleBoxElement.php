@@ -14,12 +14,11 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 
 /**
  * Create a widget with a select box where multiple items can be selected
@@ -29,139 +28,227 @@ use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 class SelectSingleBoxElement extends AbstractFormElement {
 
 	/**
-	 * @var array Result array given returned by render() - This property is a helper until class is properly refactored
-	 */
-	protected $resultArray = array();
-
-	/**
 	 * This will render a selector box element, or possibly a special construction with two selector boxes.
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
 	 */
 	public function render() {
-		$table = $this->data['tableName'];
-		$field = $this->data['fieldName'];
-		$row = $this->data['databaseRow'];
 		$parameterArray = $this->data['parameterArray'];
 		// Field configuration from TCA:
 		$config = $parameterArray['fieldConf']['config'];
-		$disabled = '';
-		if ($config['readOnly']) {
-			$disabled = ' disabled="disabled"';
+		$selectItems = $parameterArray['fieldConf']['config']['items'];
+
+		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
+		$itemArray = array_flip($parameterArray['itemFormElValue']);
+		$optionElements = [];
+		$initiallySelectedIndices = [];
+
+		foreach ($selectItems as $i => $item) {
+			$value = $item[1];
+			$attributes = [];
+
+			// Selected or not by default
+			if (isset($itemArray[$value])) {
+				$attributes['selected'] = 'selected';
+				$initiallySelectedIndices[] = $i;
+				unset($itemArray[$value]);
+			}
+
+			// Non-selectable element
+			if ((string)$value === '--div--') {
+				$attributes['disabled'] = 'disabled';
+				$attributes['class'] = 'formcontrol-select-divider';
+			}
+
+			$optionElements[] = $this->renderOptionElement($value, $item[0], $attributes);
 		}
-		$this->resultArray = $this->initializeResultArray();
-		// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-		$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-		$selItems = $parameterArray['fieldConf']['config']['items'];
 
-		// Creating the label for the "No Matching Value" entry.
-		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-			? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
-			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
+		// Remaining values:
+		if (!empty($itemArray)
+			&& !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement']
+			&& !$config['disableNoMatchingValueElement']) {
 
-		$html = $this->getSingleField_typeSelect_singlebox($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel);
+			// Creating the label for the "No Matching Value" entry.
+			$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+				? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
+				: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
+
+			foreach ($itemArray as $unmatchedValue => $temp) {
+				// Compile <option> tag:
+				array_unshift($optionElements, $this->renderOptionElement(
+					$unmatchedValue,
+					// @todo Check if we can get rid of "@" here (catches missing %s in $noMatchingLabel)
+					@sprintf($noMatchingLabel, $unmatchedValue),
+					['selected' => 'selected']
+				));
+			}
+		}
+
+		$selectElement = $this->renderSelectElement($optionElements, $parameterArray, $config);
+		$resetButtonElement = $this->renderResetButtonElement($parameterArray['itemFormElName'] . '[]', $initiallySelectedIndices);
+		$html = [];
+
+		// Add an empty hidden field which will send a blank value if all items are unselected.
+		if (empty($config['readOnly'])) {
+			$html[] = '<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="">';
+		}
+
+		// Put it all together
+		$width = $this->formMaxWidth($this->defaultInputWidth);
+		$html = array_merge($html, [
+			'<div class="form-control-wrap" ' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>',
+				'<div class="form-wizards-wrap form-wizards-aside">',
+					'<div class="form-wizards-element">',
+						$selectElement,
+					'</div>',
+					'<div class="form-wizards-items">',
+						$resetButtonElement,
+					'</div>',
+				'</div>',
+			'</div>',
+			'<p>',
+				'<em>' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL', TRUE) . '</em>',
+			'</p>',
+		]);
+		$html = implode(LF, $html);
 
 		// Wizards:
-		if (!$disabled) {
-			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
+		if (empty($config['readOnly'])) {
+			$html = $this->renderWizards(
+				[$html],
+				$config['wizards'],
+				$this->data['tableName'],
+				$this->data['databaseRow'],
+				$this->data['fieldName'],
+				$parameterArray,
+				$parameterArray['itemFormElName'],
+				BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
+			);
 		}
-		$this->resultArray['html'] = $html;
-		return $this->resultArray;
+
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = $html;
+
+		return $resultArray;
 	}
 
 	/**
-	 * Creates a selectorbox list (renderMode = "singlebox")
+	 * Renders a <select> element
 	 *
-	 * @param string $table See getSingleField_typeSelect()
-	 * @param string $field See getSingleField_typeSelect()
-	 * @param array $row See getSingleField_typeSelect()
-	 * @param array $parameterArray See getSingleField_typeSelect()
-	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param array $selItems Items available for selection
-	 * @param string $noMatchingLabel Label for no-matching-value
-	 * @return string The HTML code for the item
+	 * @param array $optionElements List of rendered <option> elements
+	 * @param array $parameterArray
+	 * @param array $config Field configuration
+	 * @return string
 	 */
-	protected function getSingleField_typeSelect_singlebox($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel) {
-		$languageService = $this->getLanguageService();
-		// Get values in an array (and make unique, which is fine because there can be no duplicates anyway):
-		$itemArray = array_flip($parameterArray['itemFormElValue']);
-		$item = '';
-		$disabled = '';
-		if ($config['readOnly']) {
-			$disabled = ' disabled="disabled"';
-		}
-		// Traverse the Array of selector box items:
-		$opt = array();
-		// Used to accumulate the JS needed to restore the original selection.
-		$restoreCmd = array();
-		$c = 0;
-		foreach ($selItems as $p) {
-			// Selected or not by default:
-			$sM = '';
-			if (isset($itemArray[$p[1]])) {
-				$sM = ' selected="selected"';
-				$restoreCmd[] = 'document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'] . '[]') . '].options[' . $c . '].selected=1;';
-				unset($itemArray[$p[1]]);
-			}
-			// Non-selectable element:
-			$nonSel = '';
-			if ((string)$p[1] === '--div--') {
-				$nonSel = ' onclick="this.selected=0;" class="formcontrol-select-divider"';
-			}
-			// Compile <option> tag:
-			$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . $sM . $nonSel . '>'
-				. htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
-			$c++;
-		}
-		// Remaining values:
-		if (!empty($itemArray) && !$parameterArray['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement']) {
-			foreach ($itemArray as $theNoMatchValue => $temp) {
-				// Compile <option> tag:
-				array_unshift($opt, '<option value="' . htmlspecialchars($theNoMatchValue) . '" selected="selected">'
-					. htmlspecialchars(@sprintf($noMatchingLabel, $theNoMatchValue), ENT_COMPAT, 'UTF-8', FALSE) . '</option>');
-			}
-		}
-		// Compile selector box:
-		$sOnChange = implode('', $parameterArray['fieldChangeFunc']);
-		$selector_itemListStyle = isset($config['itemListStyle'])
-			? ' style="' . htmlspecialchars($config['itemListStyle']) . '"'
-			: '';
+	protected function renderSelectElement(array $optionElements, array $parameterArray, array $config) {
+		$selectItems = $parameterArray['fieldConf']['config']['items'];
 		$size = (int)$config['size'];
 		$cssPrefix = $size === 1 ? 'tceforms-select' : 'tceforms-multiselect';
-		$size = $config['autoSizeMax']
-			? MathUtility::forceIntegerInRange(count($selItems) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax'])
-			: $size;
-		$selectBox = '<select id="' . StringUtility::getUniqueId($cssPrefix) . '" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '[]" '
-			. 'class="form-control ' . $cssPrefix . '"' . ($size ? ' size="' . $size . '" ' : '')
-			. ' multiple="multiple" onchange="' . htmlspecialchars($sOnChange) . '"' . $parameterArray['onFocus']
-			. ' ' . $this->getValidationDataAsDataAttribute($config) . $selector_itemListStyle . $disabled . '>
-						' . implode('
-						', $opt) . '
-					</select>';
-		// Add an empty hidden field which will send a blank value if all items are unselected.
-		if (!$disabled) {
-			$item .= '<input type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="" />';
+
+		if ($config['autoSizeMax']) {
+			$size = MathUtility::forceIntegerInRange(
+				count($selectItems) + 1,
+				MathUtility::forceIntegerInRange($size, 1),
+				$config['autoSizeMax']
+			);
 		}
-		// Put it all into a table:
-		$onClick = htmlspecialchars('document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'] . '[]') . '].selectedIndex=-1;' . implode('', $restoreCmd) . ' return false;');
-		$width = $this->formMaxWidth($this->defaultInputWidth);
-		$item .= '
-			<div class="form-control-wrap" ' . ($width ? ' style="max-width: ' . $width . 'px"' : '') . '>
-				<div class="form-wizards-wrap form-wizards-aside">
-					<div class="form-wizards-element">
-						' . $selectBox . '
-					</div>
-					<div class="form-wizards-items">
-						<a href="#" class="btn btn-default" onclick="' . $onClick . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection', TRUE) . '">'
-							. $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . '</a>
-					</div>
-				</div>
-			</div>
-			<p>
-				<em>' . htmlspecialchars($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.holdDownCTRL')) . '</em>
-			</p>
-			';
-		return $item;
+
+		$attributes = [
+			'name' => $parameterArray['itemFormElName'] . '[]',
+			'multiple' => 'multiple',
+			'onchange' => implode('', $parameterArray['fieldChangeFunc']),
+			'id' => StringUtility::getUniqueId($cssPrefix),
+			'class' => 'form-control ' . $cssPrefix,
+		];
+
+		if ($size) {
+			$attributes['size'] = $size;
+		}
+
+		if ($config['readOnly']) {
+			$attributes['disabled'] = 'disabled';
+		}
+
+		if (isset($config['itemListStyle'])) {
+			$attributes['style'] = $config['itemListStyle'];
+		}
+
+		$html = [
+			'<select ' . $this->implodeAttributes($attributes) . ' ' . $parameterArray['onFocus'] . ' ' . $this->getValidationDataAsDataAttribute($config) . '>',
+				implode(LF, $optionElements),
+			'</select>',
+		];
+
+		return implode(LF, $html);
+	}
+
+	/**
+	 * Renders a single <option> element
+	 *
+	 * @param string $value The option value
+	 * @param string $label The option label
+	 * @param array $attributes Map of attribute names and values
+	 * @return string
+	 */
+	protected function renderOptionElement($value, $label, array $attributes = []) {
+		$html = [
+			'<option value="' . htmlspecialchars($value) . '" ' . $this->implodeAttributes($attributes) . '>',
+				htmlspecialchars($label, ENT_COMPAT, 'UTF-8', FALSE),
+			'</option>'
+
+		];
+
+		return implode('', $html);
+	}
+
+	/**
+	 * Renders a button for resetting to the selection on initial load
+	 *
+	 * @param string $formElementName Form element name
+	 * @param array $initiallySelectedIndices List of initially selected option indices
+	 * @return string
+	 */
+	protected function renderResetButtonElement($formElementName, array $initiallySelectedIndices) {
+		$formElementName = GeneralUtility::quoteJSvalue($formElementName);
+		$resetCode = [
+			'document.editform[' . $formElementName . '].selectedIndex=-1'
+		];
+		foreach ($initiallySelectedIndices as $index) {
+			$resetCode[] = 'document.editform[' . $formElementName . '].options[' . $index . '].selected=1';
+		}
+		$resetCode[] = 'return false';
+
+		$attributes = [
+			'href' => '#',
+			'class' => 'btn btn-default',
+			'onclick' => htmlspecialchars(implode(';', $resetCode)),
+			// htmlspecialchars() is done by $this->implodeAttributes()
+			'title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection')
+		];
+
+		$html = [
+			'<a ' . $this->implodeAttributes($attributes) . '>',
+				$this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL),
+			'</a>',
+		];
+
+		return implode('', $html);
+	}
+
+	/**
+	 * Build an HTML attributes string from a map of attributes
+	 *
+	 * All attribute values are passed through htmlspecialchars()
+	 *
+	 * @param array $attributes Map of attribute names and values
+	 * @return string
+	 */
+	protected function implodeAttributes(array $attributes = []) {
+		$html = [];
+		foreach ($attributes as $name => $value) {
+			$html[] = $name . '="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8', FALSE) . '"';
+		}
+		return implode(' ', $html);
 	}
 
 }
