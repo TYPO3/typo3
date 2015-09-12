@@ -600,13 +600,9 @@ class InlineControlContainer extends AbstractContainer {
 			$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);;
 			// Create option tags:
 			$opt = array();
-			$styleAttrValue = '';
 			foreach ($selItems as $p) {
-				if ($config['iconsInOptionTags']) {
-					$styleAttrValue = FormEngineUtility::optionTagStyle($p[2]);
-				}
 				if (!in_array($p[1], $uniqueIds)) {
-					$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) . '"' : '') . '>' . htmlspecialchars($p[0]) . '</option>';
+					$opt[] = '<option value="' . htmlspecialchars($p[1]) . '">' . htmlspecialchars($p[0]) . '</option>';
 				}
 			}
 			// Put together the selector box:

@@ -66,7 +66,6 @@ return array(
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
 				'maxitems' => '20',
-				'iconsInOptionTags' => 1,
 				'enableMultiSelectFilterTextfield' => TRUE,
 				'wizards' => array(
 					'_VERTICAL' => 1,
@@ -152,7 +151,6 @@ return array(
 				'size' => '3',
 				'maxitems' => 100,
 				'autoSizeMax' => 10,
-				'iconsInOptionTags' => 1,
 				'wizards' => array(
 					'_VERTICAL' => 1,
 					'edit' => array(
@@ -322,7 +320,6 @@ return array(
 				'autoSizeMax' => 50,
 				'maxitems' => '100',
 				'renderMode' => 'checkbox',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'allowed_languages' => array(

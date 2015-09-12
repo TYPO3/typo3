@@ -108,14 +108,8 @@ class SelectSingleBoxElement extends AbstractFormElement {
 			if ((string)$p[1] === '--div--') {
 				$nonSel = ' onclick="this.selected=0;" class="formcontrol-select-divider"';
 			}
-			// Icon style for option tag:
-			$styleAttrValue = '';
-			if ($config['iconsInOptionTags']) {
-				$styleAttrValue = FormEngineUtility::optionTagStyle($p[2]);
-			}
 			// Compile <option> tag:
-			$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . $sM . $nonSel
-				. ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) . '"' : '') . '>'
+			$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"' . $sM . $nonSel . '>'
 				. htmlspecialchars($p[0], ENT_COMPAT, 'UTF-8', FALSE) . '</option>';
 			$c++;
 		}

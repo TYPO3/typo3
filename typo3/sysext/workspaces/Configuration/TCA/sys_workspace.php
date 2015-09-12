@@ -94,7 +94,6 @@ return array(
 				'maxitems' => 25,
 				'autoSizeMax' => 10,
 				'renderMode' => 'checkbox',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'publish_time' => array(

@@ -525,4 +525,36 @@ class TcaMigrationTest extends UnitTestCase {
 		$subject = new TcaMigration();
 		$this->assertEquals($expected, $subject->migrate($input));
 	}
+
+	/**
+	 * @test
+	 */
+	public function migrateRemovesIconsInOptionTags() {
+		$input = array(
+			'aTable' => array(
+				'columns' => array(
+					'foo' => array(
+						'config' => array(
+							'type' => 'select',
+							'iconsInOptionTags' => 1,
+						),
+					),
+				),
+			),
+		);
+		$expected = array(
+			'aTable' => array(
+				'columns' => array(
+					'foo' => array(
+						'config' => array(
+							'type' => 'select',
+						),
+					),
+				),
+			),
+		);
+
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
 }

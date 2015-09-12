@@ -146,13 +146,8 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		if (!$disabled) {
 			// Create option tags:
 			$opt = array();
-			$styleAttrValue = '';
 			foreach ($selItems as $p) {
-				if ($config['iconsInOptionTags']) {
-					$styleAttrValue = FormEngineUtility::optionTagStyle($p[2]);
-				}
 				$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"'
-					. ($styleAttrValue ? ' style="' . htmlspecialchars($styleAttrValue) . '"' : '')
 					. ' title="' . $p[0] . '">' . $p[0] . '</option>';
 			}
 			// Put together the selector box:

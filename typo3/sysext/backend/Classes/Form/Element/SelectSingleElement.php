@@ -177,11 +177,6 @@ class SelectSingleElement extends AbstractFormElement {
 				// ICON
 				if ($icon && !$suppressIcons && (!$onlySelectedIconShown || $selected)) {
 					$onClick = 'document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . '].selectedIndex=' . $selectItemCounter . ';';
-					if ($config['iconsInOptionTags']) {
-						$onClick .= 'document.getElementById(' . GeneralUtility::quoteJSvalue($selectId . '_icon') . ').innerHTML = '
-							. 'document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ']'
-							. '.options[' . $selectItemCounter . '].getAttribute(\'data-icon\'); ';
-					}
 					$onClick .= implode('', $parameterArray['fieldChangeFunc']);
 					$onClick .= 'this.blur();return false;';
 					$selectIcons[] = array(
@@ -225,23 +220,11 @@ class SelectSingleElement extends AbstractFormElement {
 
 		// Create item form fields:
 		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=' . $selectedIndex . ';} ';
-		if ($config['iconsInOptionTags']) {
-			$sOnChange .= 'document.getElementById(' . GeneralUtility::quoteJSvalue($selectId . '_icon') . ').innerHTML = this.options[this.selectedIndex].getAttribute(\'data-icon\'); ';
-		}
 		$sOnChange .= implode('', $parameterArray['fieldChangeFunc']);
-
-		// Add icons in option tags
-		$prepend = '';
-		$append = '';
-		if ($config['iconsInOptionTags']) {
-			$prepend = '<div class="input-group"><div id="' . $selectId . '_icon" class="input-group-addon input-group-icon t3js-formengine-select-prepend">' . $selectedIcon . '</div>';
-			$append = '</div>';
-		}
 
 		// Build the element
 		$out .= '
 			<div class="form-control-wrap">
-				' . $prepend . '
 				<select'
 					. ' id="' . $selectId . '"'
 					. ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
@@ -254,7 +237,6 @@ class SelectSingleElement extends AbstractFormElement {
 					. '>
 					' . $options . '
 				</select>
-				' . $append . '
 			</div>';
 
 		// Create icon table:

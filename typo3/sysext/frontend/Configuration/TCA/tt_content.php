@@ -119,7 +119,6 @@ return array(
 				'default' => 'text',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 				'authMode_enforce' => 'strict',
-				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1
 			)
 		),
@@ -566,7 +565,6 @@ return array(
 				),
 				'selicon_cols' => 6,
 				'default' => '0',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'imageborder' => array(
@@ -802,7 +800,6 @@ return array(
 				'itemsProcFunc' => \TYPO3\CMS\Frontend\Hooks\TableColumnHooks::class . '->sortPluginList',
 				'default' => '',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
-				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1
 			)
 		),

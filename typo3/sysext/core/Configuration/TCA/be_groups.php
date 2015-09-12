@@ -61,7 +61,6 @@ return array(
 				'size' => '3',
 				'maxitems' => 100,
 				'autoSizeMax' => 10,
-				'iconsInOptionTags' => 1,
 				'wizards' => array(
 					'_VERTICAL' => 1,
 					'edit' => array(
@@ -152,7 +151,6 @@ return array(
 				'autoSizeMax' => 50,
 				'maxitems' => 20,
 				'renderMode' => 'checkbox',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'tables_modify' => array(
@@ -164,7 +162,6 @@ return array(
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
 				'renderMode' => 'checkbox',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'tables_select' => array(
@@ -176,7 +173,6 @@ return array(
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
 				'renderMode' => 'checkbox',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'non_exclude_fields' => array(
@@ -243,7 +239,6 @@ return array(
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
 				'renderMode' => 'checkbox',
-				'iconsInOptionTags' => 1
 			)
 		),
 		'description' => array(
@@ -281,7 +276,6 @@ return array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 20,
-				'iconsInOptionTags' => 1
 			)
 		),
 		'category_perms' => array(

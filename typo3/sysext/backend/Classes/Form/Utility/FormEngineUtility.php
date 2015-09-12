@@ -206,36 +206,6 @@ class FormEngineUtility {
 	}
 
 	/**
-	 * Creates style attribute content for option tags in a selector box, primarily setting
-	 * it up to show the icon of an element as background image (works in mozilla)
-	 *
-	 * @param string $iconString Icon string for option item
-	 * @return string Style attribute content, if any
-	 * @internal
-	 */
-	static public function optionTagStyle($iconString) {
-		if (!$iconString) {
-			return '';
-		}
-		list($selIconFile, $selIconInfo) = static::getIcon($iconString);
-		if (empty($selIconFile)) {
-			// Skip background style if image is unavailable
-			return '';
-		}
-		$padLeft = $selIconInfo[0] + 4;
-		if ($padLeft >= 18 && $padLeft <= 24) {
-			// In order to get the same padding for all option tags even if icon sizes differ a little,
-			// set it to 22 if it was between 18 and 24 pixels
-			$padLeft = 22;
-		}
-		$padTop = MathUtility::forceIntegerInRange(($selIconInfo[1] - 12) / 2, 0);
-		$styleAttr = 'background: #fff url(' . $selIconFile . ') 0% 50% no-repeat; height: '
-			. MathUtility::forceIntegerInRange(($selIconInfo[1] + 2 - $padTop), 0)
-			. 'px; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
-		return $styleAttr;
-	}
-
-	/**
 	 * Extracts FlexForm parts of a form element name like
 	 * data[table][uid][field][sDEF][lDEF][FlexForm][vDEF]
 	 * Helper method used in inline

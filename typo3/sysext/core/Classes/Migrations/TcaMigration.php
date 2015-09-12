@@ -46,6 +46,7 @@ class TcaMigration {
 		$tca = $this->migrateShowItemAdditionalPaletteToOwnPalette($tca);
 		$tca = $this->migrateIconsForFormFieldWizardsToNewLocation($tca);
 		$tca = $this->migrateExtAndSysextPathToEXTPath($tca);
+		$tca = $this->migrateIconsInOptionTags($tca);
 		// @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
 		return $tca;
 	}
@@ -440,5 +441,29 @@ class TcaMigration {
 			}
 		}
 		return $tca;
+	}
+
+	/**
+	 * Migrate "iconsInOptionTags" for "select" TCA fields
+	 *
+	 * @param array $tca Incoming TCA
+	 * @return array Migrated TCA
+	 */
+	protected function migrateIconsInOptionTags($tca) {
+		$newTca = $tca;
+
+		foreach ($newTca as $table => &$tableDefinition) {
+			if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+				continue;
+			}
+			foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+				if (isset($fieldConfig['config']['iconsInOptionTags'])) {
+					unset($fieldConfig['config']['iconsInOptionTags']);
+					$this->messages[] = 'Configuration option "iconsInOptionTags" was removed from field "' . $fieldName . '" in TCA table "' . $table . '"';
+				}
+			}
+		}
+
+		return $newTca;
 	}
 }

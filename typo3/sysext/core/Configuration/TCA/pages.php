@@ -124,7 +124,6 @@ return array(
 					)
 				),
 				'default' => (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
-				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1
 			)
 		),
@@ -724,7 +723,6 @@ return array(
 					)
 				),
 				'default' => '',
-				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1
 			)
 		),
