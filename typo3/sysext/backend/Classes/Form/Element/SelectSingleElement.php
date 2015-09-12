@@ -29,11 +29,6 @@ use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 class SelectSingleElement extends AbstractFormElement {
 
 	/**
-	 * @var array Result array given returned by render() - This property is a helper until class is properly refactored
-	 */
-	protected $resultArray = array();
-
-	/**
 	 * Render single element
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
@@ -45,45 +40,13 @@ class SelectSingleElement extends AbstractFormElement {
 		$parameterArray = $this->data['parameterArray'];
 		$config = $parameterArray['fieldConf']['config'];
 
-		$disabled = '';
-		if ($config['readOnly']) {
-			$disabled = ' disabled="disabled"';
-		}
-
-		$this->resultArray = $this->initializeResultArray();
-
-		$selItems = $parameterArray['fieldConf']['config']['items'];
+		$selectItems = $parameterArray['fieldConf']['config']['items'];
 
 		// Creating the label for the "No Matching Value" entry.
 		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 
-		$html = $this->getSingleField_typeSelect_single($table, $field, $row, $parameterArray, $config, $selItems, $noMatchingLabel);
-
-		// Wizards:
-		if (!$disabled) {
-			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-			$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
-		}
-		$this->resultArray['html'] = $html;
-		return $this->resultArray;
-	}
-
-	/**
-	 * Creates a single-selector box
-	 *
-	 * @param string $table See getSingleField_typeSelect()
-	 * @param string $field See getSingleField_typeSelect()
-	 * @param array $row See getSingleField_typeSelect()
-	 * @param array $parameterArray See getSingleField_typeSelect()
-	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param array $selectItems Items available for selection
-	 * @param string $noMatchingLabel Label for no-matching-value
-	 * @return string The HTML code for the item
-	 */
-	protected function getSingleField_typeSelect_single($table, $field, $row, $parameterArray, $config, $selectItems, $noMatchingLabel) {
 		// Check against inline uniqueness
 		/** @var InlineStackProcessor $inlineStackProcessor */
 		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
@@ -118,10 +81,9 @@ class SelectSingleElement extends AbstractFormElement {
 		$size = (int)$config['size'];
 
 		// Style set on <select/>
-		$out = '';
 		$options = '';
 		$disabled = FALSE;
-		if ($config['readOnly']) {
+		if (!empty($config['readOnly'])) {
 			$disabled = TRUE;
 			$onlySelectedIconShown = TRUE;
 		}
@@ -223,7 +185,7 @@ class SelectSingleElement extends AbstractFormElement {
 		$sOnChange .= implode('', $parameterArray['fieldChangeFunc']);
 
 		// Build the element
-		$out .= '
+		$html = '
 			<div class="form-control-wrap">
 				<select'
 					. ' id="' . $selectId . '"'
@@ -248,24 +210,40 @@ class SelectSingleElement extends AbstractFormElement {
 			$selectIconColumns = ($selectIconColumns > 12 ? 12 : $selectIconColumns);
 			$selectIconRows = ceil(count($selectIcons) / $selectIconColumns);
 			$selectIcons = array_pad($selectIcons, $selectIconRows * $selectIconColumns, '');
-			$out .= '<div class="table-fit table-fit-inline-block"><table class="table table-condensed table-white table-center"><tbody><tr>';
+			$html .= '<div class="table-fit table-fit-inline-block"><table class="table table-condensed table-white table-center"><tbody><tr>';
 			$selectIconTotalCount = count($selectIcons);
 			for ($selectIconCount = 0; $selectIconCount < $selectIconTotalCount; $selectIconCount++) {
 				if ($selectIconCount % $selectIconColumns === 0 && $selectIconCount !== 0) {
-					$out .= '</tr><tr>';
+					$html .= '</tr><tr>';
 				}
-				$out .= '<td>';
+				$html .= '<td>';
 				if (is_array($selectIcons[$selectIconCount])) {
-					$out .= (!$onlySelectedIconShown ? '<a href="#" title="' . $selectIcons[$selectIconCount]['title'] . '" onClick="' . htmlspecialchars($selectIcons[$selectIconCount]['onClick']) . '">' : '');
-					$out .= $selectIcons[$selectIconCount]['icon'];
-					$out .= (!$onlySelectedIconShown ? '</a>' : '');
+					$html .= (!$onlySelectedIconShown ? '<a href="#" title="' . $selectIcons[$selectIconCount]['title'] . '" onClick="' . htmlspecialchars($selectIcons[$selectIconCount]['onClick']) . '">' : '');
+					$html .= $selectIcons[$selectIconCount]['icon'];
+					$html .= (!$onlySelectedIconShown ? '</a>' : '');
 				}
-				$out .= '</td>';
+				$html .= '</td>';
 			}
-			$out .= '</tr></tbody></table></div>';
+			$html .= '</tr></tbody></table></div>';
 		}
 
-		return $out;
-	}
+		// Wizards:
+		if (!$disabled) {
+			$html = $this->renderWizards(
+				array($html),
+				$config['wizards'],
+				$table,
+				$row,
+				$field,
+				$parameterArray,
+				$parameterArray['itemFormElName'],
+				BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
+			);
+		}
 
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = $html;
+
+		return $resultArray;
+	}
 }
