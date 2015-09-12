@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -67,11 +69,13 @@ class PermissionsViewHelper extends AbstractViewHelper implements CompilableInte
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		// The two main icon classes are static during one call. They trigger relatively expensive
 		// calculation with a signal and object creation and thus make sense to have them cached.
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if (!static::$grantedCssClasses) {
 			static::$grantedCssClasses = IconUtility::getSpriteIconClasses('status-status-permission-granted');
 		}
 		if (!static::$deniedCssClasses) {
-			static::$deniedCssClasses = IconUtility::getSpriteIconClasses('status-status-permission-denied');
+			static::$deniedCssClasses = $iconFactory->getIcon('status-status-permission-denied')->render();
 		}
 
 		$masks = array(1, 16, 2, 4, 8);

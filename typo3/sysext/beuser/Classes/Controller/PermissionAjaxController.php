@@ -304,25 +304,25 @@ class PermissionAjaxController {
 			if ($int & $permission) {
 				$str .= '<span title="' . $GLOBALS['LANG']->getLL($permission, TRUE)
 					. ' class="change-permission text-success"'
-					. ' data-page="' . $pageId . '"'
-					. ' data-permissions="' . $int . '"'
+					. ' data-page="' . (int)$pageId . '"'
+					. ' data-permissions="' . (int)$int . '"'
 					. ' data-mode="delete"'
-					. ' data-who="' . $who . '"'
+					. ' data-who="' . htmlspecialchars($who) . '"'
 					. ' data-bits="' . $permission . '"'
 					. ' style="cursor:pointer">'
 					. $iconFactory->getIcon('status-status-permission-granted', Icon::SIZE_SMALL)
 					. '</span>';
 			} else {
-				$str .= IconUtility::getSpriteIcon('status-status-permission-denied', array(
-					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'class' => 'change-permission text-danger',
-					'data-page' => $pageId,
-					'data-permissions' => $int,
-					'data-mode' => 'add',
-					'data-who' => $who,
-					'data-bits' => $permission,
-					'style' => 'cursor:pointer'
-				));
+				$str .= '<span title="' . $GLOBALS['LANG']->getLL($permission, TRUE) . '"'
+					. ' class="change-permission text-danger"'
+					. ' data-page="' . (int)$pageId . '"'
+					. ' data-permissions="' . (int)$int . '"'
+					. ' data-mode="add"'
+					. ' data-who="' . htmlspecialchars($who) . '"'
+					. ' data-bits="' . $permission . '"'
+					. ' style="cursor:pointer">'
+					. $iconFactory->getIcon('status-status-permission-denied', Icon::SIZE_SMALL)
+					. '</span>';
 			}
 		}
 		return '<span id="' . $pageId . '_' . $who . '">' . $str . '</span>';
