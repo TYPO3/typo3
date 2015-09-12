@@ -823,6 +823,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/status/status-reference-soft.png',
 			)
 		),
+		'status-status-edit-read-only' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/status-edit-read-only.png',
+			)
+		),
 
 		// Mimetypes
 		'mimetypes-text-html' => array(

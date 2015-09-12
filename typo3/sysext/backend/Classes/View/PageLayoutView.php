@@ -2003,10 +2003,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @return string IMG tag for icon.
 	 */
 	public function noEditIcon($label = 'noEditItems') {
-		return IconUtility::getSpriteIcon(
-			'status-edit-read-only',
-			array('title' => $this->getLanguageService()->getLL($label, TRUE))
-		);
+		$title = $this->getLanguageService()->getLL($label, TRUE);
+		return '<span title="' . $title . '">' . $this->iconFactory->getIcon('status-status-edit-read-only', Icon::SIZE_SMALL)->render() . '</span>';
 	}
 
 	/**
