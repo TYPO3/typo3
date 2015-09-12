@@ -3635,7 +3635,7 @@ class ImportExport {
 						$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
 					}
 				}
-				// Diff vieiw:
+				// Diff view:
 				if ($this->showDiff) {
 					// For IMPORTS, get new id:
 					if ($newUid = $this->import_mapId[$table][$uid]) {
@@ -3858,7 +3858,7 @@ class ImportExport {
 					$this->error('MISSING RTE original FILE: ' . $ID, 1);
 				}
 				$pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
-				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-reference-file');
+				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL);
 				$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
 				$pInfo['size'] = $fI['filesize'];
