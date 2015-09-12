@@ -417,7 +417,7 @@ class TcaMigration {
 				) {
 					foreach ($fieldConfig['config']['items'] as &$itemConfig) {
 						// more then two values? then the third entry is the image path
-						if (count($itemConfig) > 2) {
+						if (!empty($itemConfig[2])) {
 							// If the path starts with ext/ or sysext/ migrate it
 							if (
 								StringUtility::beginsWith($itemConfig[2], 'ext/')
