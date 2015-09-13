@@ -206,6 +206,21 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-word.svg': '<%= paths.icons %>Mimetype/mimetypes-word.svg'
 				}
 			},
+			// ContentElement Icons
+			icons_contentelement: {
+				files: {
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-bullets.svg': '<%= paths.icons %>ContentElement/content-bullets.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-header.svg': '<%= paths.icons %>ContentElement/content-header.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-image.svg': '<%= paths.icons %>ContentElement/content-image.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-plugin.svg': '<%= paths.icons %>ContentElement/content-plugin.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-special-divider.svg': '<%= paths.icons %>ContentElement/content-special-divider.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-special-html.svg': '<%= paths.icons %>ContentElement/content-special-html.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-special-menu.svg': '<%= paths.icons %>ContentElement/content-special-menu.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-table.svg': '<%= paths.icons %>ContentElement/content-table.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-text.svg': '<%= paths.icons %>ContentElement/content-text.svg',
+					'<%= paths.sysext %>backend/Resources/Public/Icons/ContentElement/content-textpic.svg': '<%= paths.icons %>ContentElement/content-textpic.svg'
+				}
+			},
 			// Miscellaneous Icons
 			icons_miscellaneous: {
 				files: {

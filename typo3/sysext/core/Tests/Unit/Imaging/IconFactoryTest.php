@@ -399,6 +399,16 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	//
 
 	/**
+	 * Tests the returns of NULL table + empty array
+	 *
+	 * @test
+	 */
+	public function getIconForRecordWithNullTableReturnsMissingIcon() {
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-default-not-found">',
+			$this->subject->getIconForRecord('', array())->render());
+	}
+
+	/**
 	 * Tests the returns of tt_content + empty record
 	 *
 	 * @test
@@ -482,7 +492,6 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockRecord = $this->mockRecord;
 		$mockRecord['hidden'] = '1';
 		$result = $this->subject->getIconForRecord('tt_content', $mockRecord)->render();
-		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay"> </span>';
 		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-x-content-text">', $result);
 		$this->assertContains('<span class="icon-overlay icon-overlay-hidden">', $result);
 	}

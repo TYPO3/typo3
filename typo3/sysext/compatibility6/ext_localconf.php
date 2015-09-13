@@ -48,7 +48,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPo
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
 	elements.mailform {
-		icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/mailform.gif
+		iconIdentifier = content-elements-mailform
 		title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_title
 		description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_description
 		tt_content_defValues {
@@ -88,7 +88,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php'][
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
 	elements.search {
-		icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/searchform.gif
+		iconIdentifier = content-elements-searchform
 		title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_search_title
 		description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_search_description
 		tt_content_defValues.CType = search

@@ -973,6 +973,110 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
+		// Content Elements
+		'content-header' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-header.svg'
+			)
+		),
+		'content-text' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-text.svg'
+			)
+		),
+		'content-textpic' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-textpic.svg'
+			)
+		),
+		'content-image' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-image.svg'
+			)
+		),
+		'content-bullets' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-bullets.svg'
+			)
+		),
+		'content-table' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-table.svg'
+			)
+		),
+		'content-elements-login' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/login_form.gif'
+			)
+		),
+		'content-elements-mailform' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/mailform.gif'
+			)
+		),
+		'content-elements-searchform' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/searchform.gif'
+			)
+		),
+		'content-special-uploads' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/filelinks.gif'
+			)
+		),
+		'content-special-menu' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-special-menu.svg'
+			)
+		),
+		'content-special-media' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/multimedia.gif'
+			)
+		),
+		'content-special-indexed_search' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:indexed_search/Resources/Public/Images/ce_wiz.png'
+			)
+		),
+		'content-special-html' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-special-html.svg'
+			)
+		),
+		'content-special-div' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-special-divider.svg'
+			)
+		),
+		'content-special-shortcut' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:frontend/Resources/Public/Icons/ContentElementWizard/shortcut.gif'
+			)
+		),
+		'content-plugin' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/ContentElement/content-plugin.svg'
+			)
+		),
+
 		// Status
 		'status-user-admin' => array(
 			'provider' => BitmapIconProvider::class,

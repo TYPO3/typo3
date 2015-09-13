@@ -5,7 +5,7 @@
 mod.wizards.newContentElement.wizardItems {
 	common.elements {
 		header {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/regular_header.gif
+			iconIdentifier = content-header
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_headerOnly_description
 			tt_content_defValues {
@@ -13,7 +13,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		textmedia {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/text_image_right.gif
+			iconIdentifier = content-textpic
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_textMedia_description
 			tt_content_defValues {
@@ -22,7 +22,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		bullets {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/bullet_list.gif
+			iconIdentifier = content-bullets
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_bulletList_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_bulletList_description
 			tt_content_defValues {
@@ -30,7 +30,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		table {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/table.gif
+			iconIdentifier = content-table
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_table_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:common_table_description
 			tt_content_defValues {
@@ -38,7 +38,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		uploads {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/filelinks.gif
+			iconIdentifier = content-special-uploads
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_filelinks_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_filelinks_description
 			tt_content_defValues {
@@ -51,7 +51,7 @@ mod.wizards.newContentElement.wizardItems {
 
 	special.elements {
 		menu {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/sitemap2.gif
+			iconIdentifier = content-special-menu
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_menus_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_menus_description
 			tt_content_defValues {
@@ -60,7 +60,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		html {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/html.gif
+			iconIdentifier = content-special-html
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_plainHTML_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_plainHTML_description
 			tt_content_defValues {
@@ -68,7 +68,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		div {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/div.gif
+			iconIdentifier = content-special-div
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_divider_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_divider_description
 			tt_content_defValues {
@@ -76,7 +76,7 @@ mod.wizards.newContentElement.wizardItems {
 			}
 		}
 		shortcut {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/shortcut.gif
+			iconIdentifier = content-special-shortcut
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_shortcut_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:special_shortcut_description
 			tt_content_defValues {

@@ -6,7 +6,7 @@ mod.wizards.newContentElement.wizardItems {
 	plugins.header = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins
 	plugins.elements {
 		general {
-			icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/user_defined.gif
+			iconIdentifier = content-plugin
 			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_title
 			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:plugins_general_description
 			tt_content_defValues.CType = list
