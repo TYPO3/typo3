@@ -14,12 +14,11 @@ namespace TYPO3\CMS\Backend\Form\Element;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
  * Render a widget with two boxes side by side.
@@ -29,11 +28,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 class SelectMultipleSideBySideElement extends AbstractFormElement {
 
 	/**
-	 * @var array Result array given returned by render() - This property is a helper until class is properly refactored
-	 */
-	protected $resultArray = array();
-
-	/**
 	 * Render side by side element.
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
@@ -41,54 +35,24 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 	public function render() {
 		$table = $this->data['tableName'];
 		$field = $this->data['fieldName'];
-		$row = $this->data['databaseRow'];
 		$parameterArray = $this->data['parameterArray'];
 		// Field configuration from TCA:
 		$config = $parameterArray['fieldConf']['config'];
-		$disabled = '';
-		if ($config['readOnly']) {
-			$disabled = ' disabled="disabled"';
-		}
-		$this->resultArray = $this->initializeResultArray();
 
 		// Creating the label for the "No Matching Value" entry.
 		$noMatchingLabel = isset($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			? $this->getLanguageService()->sL($parameterArray['fieldTSConfig']['noMatchingValue_label'])
 			: '[ ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.noMatchingValue') . ' ]';
 
-		$html = $this->getSingleField_typeSelect_multiple($table, $field, $parameterArray, $config, $noMatchingLabel);
-
-		// Wizards:
-		if (!$disabled) {
-			// "Extra" configuration; Returns configuration for the field based on settings found in the "types" fieldlist.
-			$specConf = BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras']);
-			$html = $this->renderWizards(array($html), $config['wizards'], $table, $row, $field, $parameterArray, $parameterArray['itemFormElName'], $specConf);
-		}
-		$this->resultArray['html'] = $html;
-		return $this->resultArray;
-	}
-
-	/**
-	 * Creates a multiple-selector box (two boxes, side-by-side)
-	 *
-	 * @param string $table See getSingleField_typeSelect()
-	 * @param string $field See getSingleField_typeSelect()
-	 * @param array $parameterArray See getSingleField_typeSelect()
-	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param string $noMatchingLabel Label for no-matching-value
-	 * @return string The HTML code for the item
-	 */
-	protected function getSingleField_typeSelect_multiple($table, $field, $parameterArray, $config, $noMatchingLabel) {
-		$languageService = $this->getLanguageService();
-		$selItems = $parameterArray['fieldConf']['config']['items'];
-		$item = '';
+		$selItems = $config['items'];
+		$html = '';
 		$disabled = '';
 		if ($config['readOnly']) {
 			$disabled = ' disabled="disabled"';
 		}
 		// Setting this hidden field (as a flag that JavaScript can read out)
 		if (!$disabled) {
-			$item .= '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . ($config['multiple'] ? 1 : 0) . '" />';
+			$html .= '<input type="hidden" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" value="' . ($config['multiple'] ? 1 : 0) . '" />';
 		}
 		// Set max and min items:
 		$maxitems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
@@ -115,7 +79,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 				$itemArray[1] = rawurlencode(@sprintf($noMatchingLabel, $itemValue));
 			} else {
 				if (isset($parameterArray['fieldTSConfig']['altLabels.'][$itemValue])) {
-					$itemArray[1] = rawurlencode($languageService->sL($parameterArray['fieldTSConfig']['altLabels.'][$itemValue]));
+					$itemArray[1] = rawurlencode($this->getLanguageService()->sL($parameterArray['fieldTSConfig']['altLabels.'][$itemValue]));
 				}
 				if (isset($parameterArray['fieldTSConfig']['altIcons.'][$itemValue])) {
 					$itemArray[2] = $parameterArray['fieldTSConfig']['altIcons.'][$itemValue];
@@ -140,15 +104,14 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		}
 		$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemsArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 
-		$itemsToSelect = '';
+		$itemsToSelect = [];
 		$filterTextfield = '';
 		$filterSelectbox = '';
 		if (!$disabled) {
 			// Create option tags:
 			$opt = array();
 			foreach ($selItems as $p) {
-				$opt[] = '<option value="' . htmlspecialchars($p[1]) . '"'
-					. ' title="' . $p[0] . '">' . $p[0] . '</option>';
+				$opt[] = '<option value="' . htmlspecialchars($p[1]) . '" title="' . $p[0] . '">' . $p[0] . '</option>';
 			}
 			// Put together the selector box:
 			$selector_itemListStyle = isset($config['itemListStyle'])
@@ -157,46 +120,48 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			$sOnChange = implode('', $parameterArray['fieldChangeFunc']);
 
 			$multiSelectId = StringUtility::getUniqueId('tceforms-multiselect-');
-			$itemsToSelect = '
-				<select data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '" data-exclusivevalues="'
-				. htmlspecialchars($config['exclusiveKeys']) . '" id="' . $multiSelectId . '" data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
-				. ' class="form-control t3js-formengine-select-itemstoselect" '
-				. ($size ? ' size="' . $size . '"' : '') . ' onchange="' . htmlspecialchars($sOnChange) . '"'
-				. $parameterArray['onFocus'] . $this->getValidationDataAsDataAttribute($config) . $selector_itemListStyle . '>
-					' . implode('
-					', $opt) . '
-				</select>';
+			$itemsToSelect[] = '<select data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
+				. 'data-exclusivevalues="' . htmlspecialchars($config['exclusiveKeys']) . '" '
+				. 'id="' . $multiSelectId . '" '
+				. 'data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" '
+				. 'class="form-control t3js-formengine-select-itemstoselect" '
+				. ($size ? ' size="' . $size . '" ' : '')
+				. 'onchange="' . htmlspecialchars($sOnChange) . '" '
+				. $parameterArray['onFocus']
+				. $this->getValidationDataAsDataAttribute($config)
+				. $selector_itemListStyle
+				. '>';
+			$itemsToSelect[] = implode(LF, $opt);
+			$itemsToSelect[] = '</select>';
 
 			// enable filter functionality via a text field
+			$filterTextfield = [];
 			if ($config['enableMultiSelectFilterTextfield']) {
-				$filterTextfield = '
-					<span class="input-group input-group-sm">
-						<span class="input-group-addon">
-							<span class="fa fa-filter"></span>
-						</span>
-						<input class="t3js-formengine-multiselect-filter-textfield form-control" value="" />
-					</span>';
+				$filterTextfield[] = '<span class="input-group input-group-sm">';
+				$filterTextfield[] = 	'<span class="input-group-addon">';
+				$filterTextfield[] = 		'<span class="fa fa-filter"></span>';
+				$filterTextfield[] = 	'</span>';
+				$filterTextfield[] = 	'<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
+				$filterTextfield[] = '</span>';
 			}
 
 			// enable filter functionality via a select
 			if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
 				$filterDropDownOptions = array();
 				foreach ($config['multiSelectFilterItems'] as $optionElement) {
-					$optionValue = $languageService->sL(isset($optionElement[1]) && $optionElement[1] != '' ? $optionElement[1]
+					$optionValue = $this->getLanguageService()->sL(isset($optionElement[1]) && $optionElement[1] != '' ? $optionElement[1]
 						: $optionElement[0]);
-					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($languageService->sL($optionElement[0])) . '">'
+					$filterDropDownOptions[] = '<option value="' . htmlspecialchars($this->getLanguageService()->sL($optionElement[0])) . '">'
 						. htmlspecialchars($optionValue) . '</option>';
 				}
-				$filterSelectbox = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">
-						' . implode('
-						', $filterDropDownOptions) . '
-					</select>';
+				$filterSelectbox = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">'
+					. implode(LF, $filterDropDownOptions) . '</select>';
 			}
 		}
 
-		if (!empty(trim($filterSelectbox)) && !empty(trim($filterTextfield))) {
+		if (!empty(trim($filterSelectbox)) && !empty($filterTextfield)) {
 			$filterSelectbox = '<div class="form-multigroup-item form-multigroup-element">' . $filterSelectbox . '</div>';
-			$filterTextfield = '<div class="form-multigroup-item form-multigroup-element">' . $filterTextfield . '</div>';
+			$filterTextfield = '<div class="form-multigroup-item form-multigroup-element">' . implode(LF, $filterTextfield) . '</div>';
 			$selectBoxFilterContents = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">' . $filterSelectbox . $filterTextfield . '</div>';
 		} else {
 			$selectBoxFilterContents = trim($filterSelectbox . ' ' . $filterTextfield);
@@ -213,16 +178,33 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			'maxitems' => $maxitems,
 			'info' => '',
 			'headers' => array(
-				'selector' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.selected'),
-				'items' => $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.items'),
+				'selector' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.selected'),
+				'items' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.items'),
 				'selectorbox' => $selectBoxFilterContents,
 			),
 			'noBrowser' => 1,
-			'rightbox' => $itemsToSelect,
+			'rightbox' => implode(LF, $itemsToSelect),
 			'readOnly' => $disabled
 		);
-		$item .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemsArray, '', $params, $parameterArray['onFocus']);
-		return $item;
+		$html .= $this->dbFileIcons($parameterArray['itemFormElName'], '', '', $itemsArray, '', $params, $parameterArray['onFocus']);
+
+		// Wizards:
+		if (!$disabled) {
+			$html = $this->renderWizards(
+				array($html),
+				$config['wizards'],
+				$table,
+				$this->data['databaseRow'],
+				$field,
+				$parameterArray,
+				$parameterArray['itemFormElName'],
+				BackendUtility::getSpecConfParts($parameterArray['fieldConf']['defaultExtras'])
+			);
+		}
+
+		$resultArray = $this->initializeResultArray();
+		$resultArray['html'] = $html;
+		return $resultArray;
 	}
 
 	/**
@@ -231,5 +213,4 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 	protected function getBackendUserAuthentication() {
 		return $GLOBALS['BE_USER'];
 	}
-
 }
