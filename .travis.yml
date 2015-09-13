@@ -66,7 +66,7 @@ script:
     if [[ "$UNIT_TESTS" == "yes" ]]; then
       echo;
       echo "Running unit tests";
-      ./bin/phpunit --colors -c typo3/sysext/core/Build/UnitTests.xml
+      ./bin/phpunit -c typo3/sysext/core/Build/UnitTests.xml
     fi
   - >
     if [[ "$FUNCTIONAL_TESTS" == "yes" ]]; then
@@ -75,7 +75,7 @@ script:
         export typo3DatabaseHost="localhost";
         export typo3DatabaseUsername="root";
         export typo3DatabasePassword="";
-        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit --colors -c typo3/sysext/core/Build/FunctionalTests.xml {}'
+        find . -wholename '*typo3/sysext/*/Tests/Functional/*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; ./bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml {}'
     fi
   - >
     if [[ "$PHP_LINT" == "yes" ]]; then
