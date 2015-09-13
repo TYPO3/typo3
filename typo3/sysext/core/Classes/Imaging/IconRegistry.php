@@ -47,6 +47,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/apps/filetree-folder-default.png',
 			)
 		),
+		'apps-filetree-mount' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-mount.png'
+			)
+		),
 		'apps-filetree-root' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
