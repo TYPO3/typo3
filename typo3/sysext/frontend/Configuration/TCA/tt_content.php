@@ -220,8 +220,8 @@ return array(
 			)
 		),
 		'l18n_parent' => array(
-			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
@@ -311,6 +311,7 @@ return array(
 			)
 		),
 		'rowDescription' => array(
+			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.description',
 			'config' => array(
 				'type' => 'text',
@@ -319,8 +320,8 @@ return array(
 			)
 		),
 		'header_link' => array(
-			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link',
 			'exclude' => 1,
+			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_link',
 			'config' => array(
 				'type' => 'input',
 				'size' => 50,
