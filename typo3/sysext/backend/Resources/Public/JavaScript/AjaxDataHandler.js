@@ -111,6 +111,16 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 		}
 		$anchorElement.data('state', nextState).data('params', nextParams);
 
+		// Update tooltip title
+		$anchorElement.tooltip('hide').one('hidden.bs.tooltip', function() {
+			var nextTitle = $anchorElement.data('toggleTitle');
+			// Bootstrap Tooltip internally uses only .attr('data-original-title')
+			$anchorElement
+				.data('toggleTitle', $anchorElement.attr('data-original-title'))
+				.attr('data-original-title', nextTitle)
+				.tooltip('show');
+		});
+
 		var $iconElement = $anchorElement.find('i');
 		$iconElement.addClass(className);
 

@@ -1345,17 +1345,21 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				if ($this->isRecordCurrentBackendUser($table, $row)) {
 					$hideAction = $this->spaceIcon;
 				} else {
+					$hideTitle = $this->getLanguageService()->getLL('hide' . ($table == 'pages' ? 'Page' : ''), TRUE);
+					$unhideTitle = $this->getLanguageService()->getLL('unHide' . ($table == 'pages' ? 'Page' : ''), TRUE);
 					if ($row[$hiddenField]) {
 						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=0';
 						$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="hidden" href="#"'
 									  . ' data-params="' . htmlspecialchars($params) . '"'
-									  . ' title="' . $this->getLanguageService()->getLL(('unHide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
+									  . ' title="' . $unhideTitle . '"'
+									  . ' data-toggle-title="' . $hideTitle . '">'
 									  . $this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL) . '</a>';
 					} else {
 						$params = 'data[' . $table . '][' . $rowUid . '][' . $hiddenField . ']=1';
 						$hideAction = '<a class="btn btn-default t3js-record-hide" data-state="visible" href="#"'
 									  . ' data-params="' . htmlspecialchars($params) . '"'
-									  . ' title="' . $this->getLanguageService()->getLL(('hide' . ($table == 'pages' ? 'Page' : '')), TRUE) . '">'
+									  . ' title="' . $hideTitle . '"'
+									  . ' data-toggle-title="' . $unhideTitle . '">'
 									  . $this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL) . '</a>';
 					}
 				}
