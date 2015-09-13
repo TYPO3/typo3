@@ -383,7 +383,7 @@ class Clipboard {
 							$thumb = '';
 							$folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
 							$size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
-							$icon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName() . ' ' . $size));
+							$icon = '<span title="' . htmlspecialchars($fileObject->getName() . ' ' . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
 							if (!$folder && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
 								$processedFile = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array());
 								if ($processedFile) {

@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
@@ -54,6 +56,11 @@ class FolderTreeView extends AbstractTreeView {
 	protected $scope;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * If file-drag mode is set, temp and recycler folders are filtered out.
 	 * @var bool
 	 */
@@ -84,6 +91,7 @@ class FolderTreeView extends AbstractTreeView {
 	public function __construct() {
 		parent::init();
 		$this->storages = $this->BE_USER->getFileStorages();
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -302,7 +310,8 @@ class FolderTreeView extends AbstractTreeView {
 				$rootLevelFolderName .= ' (' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_mod_file.xlf:sys_file_storage.isOffline') . ')';
 			}
 			// Preparing rootRec for the mount
-			$firstHtml .= $this->wrapIcon(IconUtility::getSpriteIconForResource($rootLevelFolder, array('mount-root' => TRUE)), $rootLevelFolder);
+			$icon = $this->iconFactory->getIconForResource($rootLevelFolder, Icon::SIZE_SMALL, NULL, array('mount-root' => TRUE));
+			$firstHtml .= $this->wrapIcon($icon, $rootLevelFolder);
 			$row = array(
 				'uid' => $folderHashSpecUID,
 				'title' => $rootLevelFolderName,
@@ -388,7 +397,9 @@ class FolderTreeView extends AbstractTreeView {
 				if ($role !== FolderInterface::ROLE_DEFAULT) {
 					$row['_title'] = '<strong>' . $subFolderName . '</strong>';
 				}
-				$icon = IconUtility::getSpriteIconForResource($subFolder, array('title' => $subFolderName, 'folder-open' => (bool)$isOpen));
+				$icon = '<span title="' . htmlspecialchars($subFolderName). '">'
+					. $this->iconFactory->getIconForResource($subFolder, Icon::SIZE_SMALL, NULL, array('folder-open' => (bool)$isOpen))
+					. '</span>';
 				$HTML .= $this->wrapIcon($icon, $subFolder);
 			}
 			// Finally, add the row/HTML content to the ->tree array in the reserved key.

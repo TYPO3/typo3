@@ -18,9 +18,15 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\InaccessibleFolder;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Imaging\IconFactory
+ * TestCase for \TYPO3\CMS\Core\Imaging\IconFactory
  */
 class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -222,6 +228,66 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				'<span class="icon icon-size-small icon-state-default icon-actions-document-close">'
 			],
 		);
+	}
+
+	//
+	// Tests for getIconForFileExtension
+	//
+
+	/**
+	 * Tests the return of an icon for a file without extension
+	 *
+	 * @test
+	 */
+	public function getIconForFileWithNoFileTypeReturnsDefaultFileIcon() {
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-other-other">',
+			$this->subject->getIconForFileExtension('')->render());
+	}
+
+	/**
+	 * Tests the return of an icon for an unknown file type
+	 *
+	 * @test
+	 */
+	public function getIconForFileWithUnknownFileTypeReturnsDefaultFileIcon() {
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-other-other">',
+			$this->subject->getIconForFileExtension('foo')->render());
+	}
+
+	/**
+	 * Tests the return of an icon for a file with extension pdf
+	 *
+	 * @test
+	 */
+	public function getIconForFileWithFileTypePdfReturnsPdfSprite() {
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-pdf">',
+			$this->subject->getIconForFileExtension('pdf')->render());
+	}
+
+	/**
+	 * Tests the return of an icon for a file with extension png
+	 *
+	 * @test
+	 */
+	public function getIconForFileWithFileTypePngReturnsPngSprite() {
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-media-image">',
+			$this->subject->getIconForFileExtension('png')->render());
+	}
+
+	//
+	// Tests for getIconForResource
+	//
+
+	/**
+	 * @test
+	 */
+	public function getIconForResourceReturnsCorrectMarkupForFileResources() {
+		$resourceProphecy = $this->prophesize(File::class);
+		$resourceProphecy->isMissing()->willReturn(FALSE);
+		$resourceProphecy->getExtension()->willReturn('pdf');
+
+		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-pdf">',
+			$this->subject->getIconForResource($resourceProphecy->reveal())->render());
 	}
 
 }

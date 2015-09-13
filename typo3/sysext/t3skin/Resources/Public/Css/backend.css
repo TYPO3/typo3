@@ -10631,12 +10631,6 @@ fieldset[disabled] .table .btn-default.active {
 .table .col-icon .t3-icon {
   margin: 0;
 }
-.table .col-icon img {
-  margin: 0;
-  display: block;
-  height: 16px;
-  width: 16px;
-}
 .table .col-icon,
 .table .col-checkbox {
   padding-right: 0;

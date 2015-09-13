@@ -911,10 +911,9 @@ class ClickMenu {
 			$userMayEditStorage = FALSE;
 			$identifier = $fileObject->getCombinedIdentifier();
 			if ($fileObject instanceof Folder) {
-				$icon = IconUtility::getSpriteIconForResource($fileObject, array(
-					'class' => 'absmiddle',
-					'title' => htmlspecialchars($fileObject->getName())
-				));
+				$icon = '<span title="' . htmlspecialchars($fileObject->getName()) . '" class="absmiddle">'
+					. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)
+					. '</span>';
 				$folder = TRUE;
 				if ($fileObject->getIdentifier() === $fileObject->getStorage()->getRootLevelFolder()->getIdentifier()) {
 					$isStorageRoot = TRUE;
@@ -929,10 +928,10 @@ class ClickMenu {
 					$isOnline = FALSE;
 				}
 			} else {
-				$icon = IconUtility::getSpriteIconForResource($fileObject, array(
-					'class' => 'absmiddle',
-					'title' => htmlspecialchars($fileObject->getName() . ' (' . GeneralUtility::formatSize($fileObject->getSize()) . ')')
-				));
+				$title = $fileObject->getName() . ' (' . GeneralUtility::formatSize($fileObject->getSize()) . ')';
+				$icon = '<span class="absmiddle" title="' . htmlspecialchars($title). '">'
+					. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)
+					.'</span>';
 			}
 			// Hide
 			if (!in_array('hide', $this->disabledItems) && $isStorageRoot && $userMayEditStorage) {

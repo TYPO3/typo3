@@ -40,17 +40,41 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
-		// Action icons
+		// App icons
 		'apps-filetree-folder-default' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/apps/filetree-folder-default.png',
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-default.svg',
+			)
+		),
+		'apps-filetree-folder-locked' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-locked.svg',
+			)
+		),
+		'apps-filetree-folder-opened' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-opened.svg',
+			)
+		),
+		'apps-filetree-folder-recycler' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-recycler.svg',
+			)
+		),
+		'apps-filetree-folder-temp' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-temp.svg',
 			)
 		),
 		'apps-filetree-mount' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-mount.png'
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-mount.svg',
 			)
 		),
 		'apps-filetree-root' => array(
@@ -113,6 +137,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-toolbar-menu-search.svg',
 			)
 		),
+
+		// Action Icons
 		'actions-document-close' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -831,22 +857,112 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Mimetypes
-		'mimetypes-text-html' => array(
-			'provider' => FontawesomeIconProvider::class,
+		'mimetypes-compressed' => array(
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'file-text-o',
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-compressed.svg'
+			)
+		),
+		'mimetypes-excel' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-excel.svg'
+			)
+		),
+		'mimetypes-executable-executable' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-executable-executable.svg'
+			)
+		),
+		'mimetypes-pdf' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-pdf.svg'
+			)
+		),
+		'mimetypes-powerpoint' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-powerpoint.svg'
+			)
+		),
+		'mimetypes-media-audio' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-audio.svg'
+			)
+		),
+		'mimetypes-media-flash' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-flash.svg'
+			)
+		),
+		'mimetypes-media-image' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-image.svg'
+			)
+		),
+		'mimetypes-media-video' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-video.svg'
+			)
+		),
+		'mimetypes-other-other' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-other-other.svg'
+			)
+		),
+		'mimetypes-text-css' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-css.svg'
 			)
 		),
 		'mimetypes-text-csv' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/mimetypes/text-csv.png',
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-csv.svg'
+			)
+		),
+		'mimetypes-text-html' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-html.svg'
+			)
+		),
+		'mimetypes-text-js' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-js.svg'
+			)
+		),
+		'mimetypes-text-php' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-php.svg'
+			)
+		),
+		'mimetypes-text-ts' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-ts.svg'
+			)
+		),
+		'mimetypes-text-text' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-text-text.svg'
 			)
 		),
 		'mimetypes-word' => array(
-			'provider' => FontawesomeIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'file-word-o',
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-word.svg'
 			)
 		),
 		'mimetypes-x-content-page-language-overlay' => array(
@@ -901,6 +1017,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => SvgIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-locked.svg'
+			)
+		),
+		'overlay-missing' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-missing.svg'
 			)
 		),
 		'overlay-readonly' => array(

@@ -248,19 +248,18 @@ class FileList extends AbstractRecordList {
 		);
 		// Makes the code for the folder icon in the top
 		if ($folderObject) {
-			$title = htmlspecialchars($folderObject->getReadablePath());
+			$title = $folderObject->getReadablePath();
 			// Start compiling the HTML
 			// If this is some subFolder under the mount root....
 			if ($folderObject->getStorage()->isWithinFileMountBoundaries($folderObject)) {
 				// The icon with link
-				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIconForResource($folderObject, array('title' => $title));
-				// No HTML specialchars here - HTML like <strong> </strong> is allowed
-				$otherMarkers['TITLE'] .= GeneralUtility::removeXSS(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
+				$otherMarkers['PAGE_ICON'] = '<span title="' . htmlspecialchars($title) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL) . '</span>';
 			} else {
 				// This is the root folder
-				$otherMarkers['PAGE_ICON'] = IconUtility::getSpriteIconForResource($folderObject, array('title' => $title, 'mount-root' => TRUE));
-				$otherMarkers['TITLE'] .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
+				$otherMarkers['PAGE_ICON'] = '<span title="' . htmlspecialchars($title) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL, NULL, array('mount-root' => TRUE)) . '</span>';
 			}
+			$otherMarkers['TITLE'] .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, -($this->fixedL + 20)));
+
 			if ($this->clickMenus) {
 				$otherMarkers['PAGE_ICON'] = $this->fileListController->doc->wrapClickMenuOnIcon($otherMarkers['PAGE_ICON'], $folderObject->getCombinedIdentifier());
 			}
@@ -521,7 +520,7 @@ class FileList extends AbstractRecordList {
 			$this->counter++;
 
 			// The icon with link
-			$theIcon = IconUtility::getSpriteIconForResource($folderObject, array('title' => $folderName));
+			$theIcon = '<span title="' . htmlspecialchars($folderName) . '">' . $this->iconFactory->getIconForResource($folderObject, Icon::SIZE_SMALL) . '</span>';
 			if (!$isLocked && $this->clickMenus) {
 				$theIcon = $this->fileListController->doc->wrapClickMenuOnIcon($theIcon, $folderObject->getCombinedIdentifier());
 			}
@@ -657,7 +656,8 @@ class FileList extends AbstractRecordList {
 			$ext = $fileObject->getExtension();
 			$fileName = trim($fileObject->getName());
 			// The icon with link
-			$theIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileName . ' [' . (int)$fileObject->getUid() . ']'));
+			$theIcon = '<span title="' . htmlspecialchars($fileName . ' [' . (int)$fileObject->getUid() . ']') . '">'
+				. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
 			if ($this->clickMenus) {
 				$theIcon = $this->fileListController->doc->wrapClickMenuOnIcon($theIcon, $fileObject->getCombinedIdentifier());
 			}

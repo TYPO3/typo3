@@ -622,7 +622,7 @@ function jumpToUrl(URL) {
 	public function getResourceHeader(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, $tWrap = array('', ''), $enableClickMenu = TRUE) {
 		try {
 			$path = $resource->getStorage()->getName() . $resource->getParentFolder()->getIdentifier();
-			$iconImgTag = IconUtility::getSpriteIconForResource($resource, array('title' => htmlspecialchars($path)));
+			$iconImgTag = '<span title="' . htmlspecialchars($path) . '">' . $this->iconFactory->getIconForResource($resource, Icon::SIZE_SMALL) . '</span>';
 		} catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
 			$iconImgTag = '';
 		}

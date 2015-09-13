@@ -54,6 +54,7 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
 	 * @return string
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
+		/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
 		$documentTranslation = $arguments['documentTranslation'];
 
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -64,6 +65,7 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
 			'sxw' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>'
 		);
 		$formats = $documentTranslation->getFormats();
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
 		foreach ($formats as $format) {
 			$output = '';
@@ -89,7 +91,7 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
 				$format->getFormat()
 			);
 			$output .= ' title="' . htmlspecialchars($title) . '">';
-			$spriteIconHtml = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($extension);
+			$spriteIconHtml = $iconFactory->getIconForFileExtension($extension, Icon::SIZE_SMALL)->render();
 			$output .= $spriteIconHtml . '</a>' . LF;
 			$keyFormat = $format->getFormat();
 			if ($keyFormat === 'json') {

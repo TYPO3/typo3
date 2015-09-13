@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Filelist;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -45,16 +47,15 @@ class FileFacade {
 	 */
 	public function __construct(\TYPO3\CMS\Core\Resource\FileInterface $resource) {
 		$this->resource = $resource;
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getIcon() {
-		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForResource(
-			$this->resource,
-			array('title' => $this->resource->getName() . ' [' . (int)$this->resource->getProperty('uid') . ']')
-		);
+		$title = htmlspecialchars($this->resource->getName(). ' [' . (int)$this->resource->getProperty('uid') . ']');
+		return '<span title="' . $title . '">' . $this->iconFactory->getIconForResource($this->resource, Icon::SIZE_SMALL) . '</span>';
 	}
 
 	/**

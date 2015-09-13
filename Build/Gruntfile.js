@@ -156,6 +156,12 @@ module.exports = function(grunt) {
 			// Action Icons
 			icons_apps: {
 				files: {
+					'<%= paths.backend %>Public/Icons/App/apps-filetree-folder-default.svg': '<%= paths.icons %>App/apps-filetree-folder-default.svg',
+					'<%= paths.backend %>Public/Icons/App/apps-filetree-folder-locked.svg': '<%= paths.icons %>App/apps-filetree-folder-locked.svg',
+					'<%= paths.backend %>Public/Icons/App/apps-filetree-folder-opened.svg': '<%= paths.icons %>App/apps-filetree-folder-opened.svg',
+					'<%= paths.backend %>Public/Icons/App/apps-filetree-folder-recycler.svg': '<%= paths.icons %>App/apps-filetree-folder-recycler.svg',
+					'<%= paths.backend %>Public/Icons/App/apps-filetree-folder-temp.svg': '<%= paths.icons %>App/apps-filetree-folder-temp.svg',
+					'<%= paths.backend %>Public/Icons/App/apps-filetree-mount.svg': '<%= paths.icons %>App/apps-filetree-mount.svg',
 					'<%= paths.backend %>Public/Icons/App/apps-pagetree-root.svg': '<%= paths.icons %>App/apps-pagetree-root.svg',
 					'<%= paths.backend %>Public/Icons/App/apps-toolbar-menu-search.svg': '<%= paths.icons %>App/apps-toolbar-menu-search.svg'
 				}
@@ -170,6 +176,29 @@ module.exports = function(grunt) {
 			icons_default: {
 				files: {
 					'<%= paths.backend %>Public/Icons/Default/default-not-found.svg': '<%= paths.icons %>Default/default-not-found.svg'
+				}
+			},
+			// Mimetypes
+			icons_mimetypes: {
+				files: {
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-compressed.svg': '<%= paths.icons %>Mimetype/mimetypes-compressed.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-excel.svg': '<%= paths.icons %>Mimetype/mimetypes-excel.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-executable-executable.svg': '<%= paths.icons %>Mimetype/mimetypes-executable-executable.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-audio.svg': '<%= paths.icons %>Mimetype/mimetypes-media-audio.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-flash.svg': '<%= paths.icons %>Mimetype/mimetypes-media-flash.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-image.svg': '<%= paths.icons %>Mimetype/mimetypes-media-image.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-video.svg': '<%= paths.icons %>Mimetype/mimetypes-media-video.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-other-other.svg': '<%= paths.icons %>Mimetype/mimetypes-other-other.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-pdf.svg': '<%= paths.icons %>Mimetype/mimetypes-pdf.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-powerpoint.svg': '<%= paths.icons %>Mimetype/mimetypes-powerpoint.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-css.svg': '<%= paths.icons %>Mimetype/mimetypes-text-css.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-csv.svg': '<%= paths.icons %>Mimetype/mimetypes-text-csv.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-html.svg': '<%= paths.icons %>Mimetype/mimetypes-text-html.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-js.svg': '<%= paths.icons %>Mimetype/mimetypes-text-js.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-php.svg': '<%= paths.icons %>Mimetype/mimetypes-text-php.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-text.svg': '<%= paths.icons %>Mimetype/mimetypes-text-text.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-text-ts.svg': '<%= paths.icons %>Mimetype/mimetypes-text-ts.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-word.svg': '<%= paths.icons %>Mimetype/mimetypes-word.svg'
 				}
 			},
 			// Miscellaneous Icons
@@ -220,6 +249,7 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-hidden.svg': '<%= paths.icons %>Overlay/overlay-hidden.svg',
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-includes-subpages.svg': '<%= paths.icons %>Overlay/overlay-includes-subpages.svg',
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-locked.svg': '<%= paths.icons %>Overlay/overlay-locked.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-missing.svg': '<%= paths.icons %>Overlay/overlay-missing.svg',
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-readonly.svg': '<%= paths.icons %>Overlay/overlay-readonly.svg',
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-restricted.svg': '<%= paths.icons %>Overlay/overlay-restricted.svg',
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-scheduled.svg': '<%= paths.icons %>Overlay/overlay-scheduled.svg',

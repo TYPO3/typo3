@@ -15,10 +15,11 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 
@@ -131,6 +132,7 @@ abstract class AbstractContainer extends AbstractNode {
 			// Showing thumbnails:
 			$thumbnail = '';
 			$imgs = array();
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			foreach ($itemArray as $imgRead) {
 				$imgParts = explode('|', $imgRead);
 				$imgPath = rawurldecode($imgParts[0]);
@@ -139,12 +141,10 @@ abstract class AbstractContainer extends AbstractNode {
 				// Icon + click menu:
 				$absFilePath = GeneralUtility::getFileAbsFileName($config['config']['uploadfolder'] ? $config['config']['uploadfolder'] . '/' . $imgPath : $imgPath);
 				$fileInformation = pathinfo($imgPath);
-				$fileIcon = IconUtility::getSpriteIconForFile(
-					$imgPath,
-					array(
-						'title' => htmlspecialchars($fileInformation['basename'] . ($absFilePath && @is_file($absFilePath) ? ' (' . GeneralUtility::formatSize(filesize($absFilePath)) . 'bytes)' : ' - FILE NOT FOUND!'))
-					)
-				);
+				$title = $fileInformation['basename'] . ($absFilePath && @is_file($absFilePath))
+					? ' (' . GeneralUtility::formatSize(filesize($absFilePath)) . ')'
+					: ' - FILE NOT FOUND!';
+				$fileIcon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForFileExtension($fileInformation['extension'], Icon::SIZE_SMALL)->render() . '</span>';
 				$imgs[] =
 					'<span class="text-nowrap">' .
 					BackendUtility::thumbCode(

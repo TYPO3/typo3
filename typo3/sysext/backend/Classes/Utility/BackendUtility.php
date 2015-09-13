@@ -1678,6 +1678,7 @@ class BackendUtility {
 		$thumbData = '';
 		$fileReferences = static::resolveFileReferences($table, $field, $row);
 		// FAL references
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($fileReferences !== NULL) {
 			foreach ($fileReferences as $fileReferenceObject) {
 				$fileObject = $fileReferenceObject->getOriginalFile();
@@ -1702,7 +1703,7 @@ class BackendUtility {
 							'alt="' . htmlspecialchars($fileReferenceObject->getName()) . '" />';
 				} else {
 					// Icon
-					$imgTag = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName()));
+					$imgTag = '<span title="' . htmlspecialchars($fileObject->getName()) . '">' . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
 				}
 				if ($linkInfoPopup) {
 					$onClick = 'top.launchView(\'_FILE\',\'' . (int)$fileObject->getUid() . '\',' . GeneralUtility::quoteJSvalue($backPath) . '); return false;';
@@ -1757,7 +1758,7 @@ class BackendUtility {
 						}
 					} else {
 						// Gets the icon
-						$fileIcon = IconUtility::getSpriteIconForResource($fileObject, array('title' => $fileObject->getName()));
+						$fileIcon = '<span title="' . htmlspecialchars($fileObject->getName()) . '">' . $iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
 						if ($linkInfoPopup) {
 							$onClick = 'top.launchView(\'_FILE\', ' . GeneralUtility::quoteJSvalue($fileName) . ',\'\',' . GeneralUtility::quoteJSvalue($backPath) . '); return false;';
 							$thumbData .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $fileIcon . '</a> ';
