@@ -1645,6 +1645,13 @@ class BackendUtility {
 				 * We just catch the exception here
 				 * Reasoning: There is nothing an editor or even admin could do
 				 */
+			} catch (\InvalidArgumentException $e) {
+				/**
+				 * The storage does not exist anymore
+				 * Log the exception message for admins as they maybe can restore the storage
+				 */
+				$logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", referenceUid: ' . $referenceUid . ')';
+				GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			}
 		}
 

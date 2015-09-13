@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1575,7 +1576,23 @@ class PageRepository {
 		$currentId = !empty($element['uid']) ? $element['uid'] : 0;
 
 		// Fetch the references of the default element
-		$references = $fileRepository->findByRelation($tableName, $fieldName, $currentId);
+		try {
+			$references = $fileRepository->findByRelation($tableName, $fieldName, $currentId);
+		} catch (FileDoesNotExistException $e) {
+			/**
+			 * We just catch the exception here
+			 * Reasoning: There is nothing an editor or even admin could do
+			 */
+			return array();
+		} catch (\InvalidArgumentException $e) {
+			/**
+			 * The storage does not exist anymore
+			 * Log the exception message for admins as they maybe can restore the storage
+			 */
+			$logMessage = $e->getMessage() . ' (table: "' . $tableName . '", fieldName: "' . $fieldName . '", currentId: ' . $currentId . ')';
+			GeneralUtility::sysLog($logMessage, 'core', GeneralUtility::SYSLOG_SEVERITY_ERROR);
+			return array();
+		}
 
 		$localizedId = NULL;
 		if (isset($element['_LOCALIZED_UID'])) {

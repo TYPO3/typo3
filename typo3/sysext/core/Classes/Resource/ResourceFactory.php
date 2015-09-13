@@ -551,9 +551,9 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
 	 * @param int $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
 	 * @param bool $raw Whether to get raw results without performing overlays
-	 *
-	 * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
 	 * @return FileReference
+	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
 	 */
 	public function getFileReferenceObject($uid, array $fileReferenceData = array(), $raw = FALSE) {
 		if (!is_numeric($uid)) {
