@@ -17,8 +17,11 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Fill the "systemLanguageRows" part of the result array
@@ -74,7 +77,28 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 					$dbRow['iso'] = $lg_iso_2['lg_iso_2'];
 				}
 			} else {
-				// @todo: Not having iso code at all is maybe a bad idea ... throw an exception instead?
+				// No iso code could be found. This is currently possible in the system but discouraged.
+				// So, code within FormEngine has to be suited to work with an empty iso code. However,
+				// it may impact certain multi language scenarios, so we add a flash message hinting for
+				// incomplete configuration here.
+				// It might be possible to convert this to a non-catchable exception later if
+				// it iso code is enforced on a different layer of the system (tca required + migration wizard).
+				$message = sprintf(
+					$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:error.missingLanguageIsocode'),
+					$dbRow['title'],
+					$dbRow['uid']
+				);
+				/** @var FlashMessage $flashMessage */
+				$flashMessage = GeneralUtility::makeInstance(
+						FlashMessage::class,
+						$message,
+						'',
+						FlashMessage::ERROR
+				);
+				/** @var $flashMessageService FlashMessageService */
+				$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
+				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+				$defaultFlashMessageQueue->enqueue($flashMessage);
 				$dbRow['iso'] = '';
 			}
 			unset($dbRow['language_isocode']);
@@ -92,5 +116,12 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 	 */
 	protected function getDatabase() {
 		return $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 }

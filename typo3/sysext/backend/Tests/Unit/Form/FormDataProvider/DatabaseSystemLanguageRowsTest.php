@@ -18,8 +18,13 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Test case
@@ -132,6 +137,55 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 				],
 			],
 		];
+		$this->assertSame($expected, $this->subject->addData([]));
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataAddFlashMessageWithMissingIsoCode() {
+		$dbRows = [
+			[
+				'uid' => 3,
+				'title' => 'french',
+				'language_isocode' => '',
+				'static_lang_isocode' => '',
+			],
+		];
+		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
+		// Needed for backendUtility::getRecord()
+		$GLOBALS['TCA']['static_languages'] = [ 'foo' ];
+		$expected = [
+			'systemLanguageRows' => [
+				0 => [
+					'uid' => 0,
+					'title' => 'Default Language',
+					'iso' => 'DEF',
+				],
+				3 => [
+					'uid' => 3,
+					'title' => 'french',
+					'iso' => '',
+				],
+			],
+		];
+
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		/** @var FlashMessage|ObjectProphecy $flashMessage */
+		$flashMessage = $this->prophesize(FlashMessage::class);
+		GeneralUtility::addInstance(FlashMessage::class, $flashMessage->reveal());
+		/** @var FlashMessageService|ObjectProphecy $flashMessageService */
+		$flashMessageService = $this->prophesize(FlashMessageService::class);
+		GeneralUtility::setSingletonInstance(FlashMessageService::class, $flashMessageService->reveal());
+		/** @var FlashMessageQueue|ObjectProphecy $flashMessageQueue */
+		$flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
+		$flashMessageService->getMessageQueueByIdentifier(Argument::cetera())->willReturn($flashMessageQueue->reveal());
+
+		$flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
+
 		$this->assertSame($expected, $this->subject->addData([]));
 	}
 
