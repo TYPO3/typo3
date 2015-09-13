@@ -49,7 +49,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'apps-filetree-root' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
-				'source' => 't3skin/images/icons/apps/filetree-root.png',
+				'source' => 'EXT:t3skin/images/icons/apps/filetree-root.png',
 			)
 		),
 		'apps-toolbar-menu-cache' => array(
