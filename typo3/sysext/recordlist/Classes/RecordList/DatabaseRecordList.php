@@ -1386,7 +1386,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					$warningText = $this->getLanguageService()->getLL($actionName . 'Warning') . ' "' . $title . '" ' . '[' . $table . ':' . $row['uid'] . ']' . $refCountMsg;
 
 					$params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-					$icon = IconUtility::getSpriteIcon('actions-edit-' . $actionName);
+					$icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, Icon::SIZE_SMALL)->render();
 					$linkTitle = $this->getLanguageService()->getLL($actionName, TRUE);
 					$deleteAction = '<a class="btn btn-default t3js-record-delete" href="#" '
 									. ' data-l10parent="' . htmlspecialchars($row['l10n_parent']) . '"'
