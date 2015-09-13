@@ -11,7 +11,7 @@
 	backupGlobals="true"
 	backupStaticAttributes="false"
 	bootstrap="FunctionalTestsBootstrap.php"
-	colors="false"
+	colors="true"
 	convertErrorsToExceptions="true"
 	convertWarningsToExceptions="true"
 	forceCoversAnnotation="false"

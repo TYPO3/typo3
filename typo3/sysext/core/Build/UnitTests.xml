@@ -2,7 +2,7 @@
 	backupGlobals="true"
 	backupStaticAttributes="false"
 	bootstrap="UnitTestsBootstrap.php"
-	colors="false"
+	colors="true"
 	convertErrorsToExceptions="true"
 	convertWarningsToExceptions="true"
 	forceCoversAnnotation="false"
