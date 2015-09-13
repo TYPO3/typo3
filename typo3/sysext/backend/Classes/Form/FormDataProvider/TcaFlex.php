@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -60,6 +61,7 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 			$result = $this->removeExcludeFieldsFromDataStructure($result, $fieldName, $flexIdentifier);
 			$result = $this->removeDisabledFieldsFromDataStructure($result, $fieldName, $pageTsConfigOfFlex);
 			$result = $this->prepareLanguageHandlingInDataValues($result, $fieldName);
+			$result = $this->migrateFlexformTcaDataStructureElements($result, $fieldName);
 			$result = $this->modifyDataStructureAndDataValuesByFlexFormSegmentGroup($result, $fieldName, $pageTsConfigOfFlex);
 		}
 
@@ -848,6 +850,66 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * On-the-fly migration for flex form "TCA"
+	 *
+	 * @param array $result Result array
+	 * @param string $fieldName Currently handled field name
+	 * @return array Modified result
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
+	 */
+	protected function migrateFlexformTcaDataStructureElements(array $result, $fieldName) {
+		$modifiedDataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
+		$modifiedDataStructure = $this->migrateFlexformTcaRecursive($modifiedDataStructure, $result['tableName'], $fieldName);
+		$result['processedTca']['columns'][$fieldName]['config']['ds'] = $modifiedDataStructure;
+		return $result;
+	}
+
+	/**
+	 * Recursively migrate flex form TCA
+	 *
+	 * @param array $structure Given hierarchy
+	 * @param string $table
+	 * @param string $fieldName
+	 * @return array Modified hierarchy
+	 */
+
+	protected function migrateFlexformTcaRecursive($structure, $table, $fieldName) {
+		$newStructure = [];
+		foreach ($structure as $key => $value) {
+			if ($key === 'el' && is_array($value)) {
+				$newSubStructure = [];
+				$tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
+				foreach ($value as $subKey => $subValue) {
+					// On-the-fly migration for flex form "TCA"
+					// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
+					$dummyTca = array(
+						'dummyTable' => array(
+							'columns' => array(
+								'dummyField' => $subValue,
+							),
+						),
+					);
+					$migratedTca = $tcaMigration->migrate($dummyTca);
+					$messages = $tcaMigration->getMessages();
+					if (!empty($messages)) {
+						$context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed'
+							. ' with TYPO3 CMS 8. Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
+						array_unshift($messages, $context);
+						GeneralUtility::deprecationLog(implode(LF, $messages));
+					}
+					$newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
+				}
+				$value = $newSubStructure;
+			}
+			if (is_array($value)) {
+				$value = $this->migrateFlexformTcaRecursive($value, $table, $fieldName);
+			}
+			$newStructure[$key] = $value;
+		}
+		return $newStructure;
 	}
 
 	/**

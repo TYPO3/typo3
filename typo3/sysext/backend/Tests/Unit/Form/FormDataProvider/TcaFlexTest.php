@@ -2631,4 +2631,250 @@ class TcaFlexTest extends UnitTestCase {
 		$this->assertEquals($expected, $this->subject->addData($input));
 	}
 
+	/**
+	 * @test
+	 */
+	public function addDataMigratesFlexformTca() {
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => [
+					'data' => [],
+					'meta' => [],
+				],
+				'pointerField' => 'aFlex',
+			],
+			'systemLanguageRows' => [
+				0 => [
+					'uid' => 0,
+					'iso' => 'DEF',
+				],
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'flex',
+							'ds_pointerField' => 'pointerField',
+							'ds' => [
+								'aFlex' => '
+									<T3DataStructure>
+										<ROOT>
+											<type>array</type>
+											<el>
+												<aFlexField>
+													<TCEforms>
+														<label>aFlexFieldLabel</label>
+														<config>
+															<type>text</type>
+															<default>defaultValue</default>
+															<wizards type="array">
+																<t3editor type="array">
+																	<type>userFunc</type>
+																	<userFunc>TYPO3\CMS\T3editor\FormWizard->main</userFunc>
+																	<title>t3editor</title>
+																	<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
+																	<module type="array">
+																		<name>wizard_table</name>
+																	</module>
+																	<params type="array">
+																		<format>html</format>
+																	</params>
+																</t3editor>
+															</wizards>
+														</config>
+													</TCEforms>
+												</aFlexField>
+											</el>
+										</ROOT>
+									</T3DataStructure>
+								',
+							],
+						],
+					],
+				],
+			],
+			'pageTsConfigMerged' => [],
+		];
+
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
+			\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
+		];
+
+		/** @var LanguageService|ObjectProphecy $languageService */
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
+		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
+
+		$expected = $input;
+		$expected['processedTca']['columns']['aField']['config']['ds'] = [
+			'meta' => [
+				'availableLanguageCodes' => [
+					0 => 'DEF',
+				],
+			],
+			'sheets' => [
+				'sDEF' => [
+					'ROOT' => [
+						'type' => 'array',
+						'el' => [
+							'aFlexField' => [
+								'label' => 'aFlexFieldLabel',
+								'config' => [
+									'type' => 'text',
+									'default' => 'defaultValue',
+									'renderType' => 't3editor',
+									'format' => 'html',
+								],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataMigratesFlexformTcaInContainer() {
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => [
+					'data' => [],
+					'meta' => [],
+				],
+				'pointerField' => 'aFlex',
+			],
+			'systemLanguageRows' => [
+				0 => [
+					'uid' => 0,
+					'iso' => 'DEF',
+				],
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'flex',
+							'ds_pointerField' => 'pointerField',
+							'ds' => [
+								'aFlex' => '
+									<T3DataStructure>
+										<ROOT>
+											<type>array</type>
+											<el>
+												<section_1>
+													<title>section_1</title>
+													<type>array</type>
+													<section>1</section>
+													<el>
+														<aFlexContainer>
+															<type>array</type>
+															<title>aFlexContainerLabel</title>
+															<el>
+																<aFlexField>
+																	<TCEforms>
+																		<label>aFlexFieldLabel</label>
+																		<config>
+																			<type>text</type>
+																			<default>defaultValue</default>
+																			<wizards type="array">
+																				<t3editor type="array">
+																					<type>userFunc</type>
+																					<userFunc>TYPO3\CMS\T3editor\FormWizard->main</userFunc>
+																					<title>t3editor</title>
+																					<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_table.gif</icon>
+																					<module type="array">
+																						<name>wizard_table</name>
+																					</module>
+																					<params type="array">
+																						<format>html</format>
+																					</params>
+																				</t3editor>
+																			</wizards>
+																		</config>
+																	</TCEforms>
+																</aFlexField>
+															</el>
+														</aFlexContainer>
+													</el>
+												</section_1>
+											</el>
+										</ROOT>
+									</T3DataStructure>
+								',
+							],
+						],
+					],
+				],
+			],
+			'pageTsConfigMerged' => [],
+		];
+
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
+			\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
+		];
+
+		/** @var LanguageService|ObjectProphecy $languageService */
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
+		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
+
+		$expected = $input;
+		$expected['processedTca']['columns']['aField']['config']['ds'] = [
+			'meta' => [
+				'availableLanguageCodes' => [
+					0 => 'DEF',
+				],
+			],
+			'sheets' => [
+				'sDEF' => [
+					'ROOT' => [
+						'type' => 'array',
+						'el' => [
+							'section_1' => [
+								'title' => 'section_1',
+								'type' => 'array',
+								'section' => '1',
+								'el' => [
+									'aFlexContainer' => [
+										'type' => 'array',
+										'title' => 'aFlexContainerLabel',
+										'el' => [
+											'aFlexField' => [
+												'label' => 'aFlexFieldLabel',
+												'config' => [
+													'type' => 'text',
+													'default' => 'defaultValue',
+													'renderType' => 't3editor',
+													'format' => 'html',
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['templateRows']['aFlexContainer']['el']['aFlexField']['vDEF'] = 'defaultValue';
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
 }
