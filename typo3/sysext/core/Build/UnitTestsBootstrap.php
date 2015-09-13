@@ -95,6 +95,10 @@ class UnitTestsBootstrap {
 		define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
 		$_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
+		if (!file_exists(PATH_thisScript)) {
+			die('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+		}
+
 		return $this;
 	}
 
