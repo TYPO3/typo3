@@ -17,23 +17,18 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\FlexFormSegment;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Resolve and prepare flex structure data and add resolved data structure to TCA in
- * $fieldName['config']['ds'] as well as resolved value array in $databaseRow
+ * Process data structures and data values, calculate defaults.
+ *
+ * This is typically the last provider, executed after TcaFlexPrepare
  */
-class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface {
+class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInterface {
 
 	/**
-	 * Resolve flex data structures and prepare flex data values.
-	 *
-	 * First, resolve ds pointer stuff and parse both ds and dv. Then normalize some
-	 * details to have aligned array nesting for the rest of the method and the render
-	 * engine. Next determine possible pageTsConfig overrides and apply them to ds.
+	 * Determine possible pageTsConfig overrides and apply them to ds.
 	 * Determine available languages and sanitize dv for further processing. Then kick
 	 * and validate further details like excluded fields. Finally for each possible
 	 * value and ds call FormDataCompiler with set FlexFormSegment group to resolve
@@ -48,166 +43,16 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 				continue;
 			}
 
-			// @todo: It would probably be better to split this provider into multiple provider. At least it
-			// @todo: would be nice to have the data structure and value fetching and parsing available as
-			// @todo: stand alone provider.
-			$result = $this->initializeDataStructure($result, $fieldName);
-			$result = $this->initializeDataValues($result, $fieldName);
-			$result = $this->createDefaultSheetInDataStructureIfNotGiven($result, $fieldName);
-			$result = $this->removeTceFormsArrayKeyFromDataStructureElements($result, $fieldName);
 			$flexIdentifier = $this->getFlexIdentifier($result, $fieldName);
 			$pageTsConfigOfFlex = $this->getPageTsOfFlex($result, $fieldName, $flexIdentifier);
 			$result = $this->modifyOuterDataStructure($result, $fieldName, $pageTsConfigOfFlex);
 			$result = $this->removeExcludeFieldsFromDataStructure($result, $fieldName, $flexIdentifier);
 			$result = $this->removeDisabledFieldsFromDataStructure($result, $fieldName, $pageTsConfigOfFlex);
 			$result = $this->prepareLanguageHandlingInDataValues($result, $fieldName);
-			$result = $this->migrateFlexformTcaDataStructureElements($result, $fieldName);
 			$result = $this->modifyDataStructureAndDataValuesByFlexFormSegmentGroup($result, $fieldName, $pageTsConfigOfFlex);
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Fetch / initialize data structure
-	 *
-	 * @param array $result Result array
-	 * @param $fieldName string Currently handled field name
-	 * @return array Modified result
-	 * @throws \UnexpectedValueException
-	 */
-	protected function initializeDataStructure(array $result, $fieldName) {
-		// Fetch / initialize data structure
-		$dataStructureArray = BackendUtility::getFlexFormDS(
-			$result['processedTca']['columns'][$fieldName]['config'],
-			$result['databaseRow'],
-			$result['tableName'],
-			$fieldName
-		);
-		// If data structure can't be parsed, this is a developer error, so throw a non catchable exception
-		// @todo: It might be ok to have a non parsable ds if field is not displayed anyway
-		// @todo: Parse flex only for showitem validated fields and after displayCondition evaluation?
-		if (!is_array($dataStructureArray)) {
-			throw new \UnexpectedValueException(
-				'Data structure error: ' . $dataStructureArray,
-				1440506893
-			);
-		}
-		if (!isset($dataStructureArray['meta']) || !is_array($dataStructureArray['meta'])) {
-			$dataStructureArray['meta'] = array();
-		}
-		// This kicks one array depth:  config['ds']['matchingIdentifier'] becomes config['ds']
-		$result['processedTca']['columns'][$fieldName]['config']['ds'] = $dataStructureArray;
-		return $result;
-	}
-
-	/**
-	 * Parse / initialize value from xml string to array
-	 *
-	 * @param array $result Result array
-	 * @param $fieldName string Currently handled field name
-	 * @return array Modified result
-	 */
-	protected function initializeDataValues(array $result, $fieldName) {
-		if (!array_key_exists($fieldName, $result['databaseRow'])) {
-			$result['databaseRow'][$fieldName] = '';
-		}
-		$valueArray = [];
-		if (isset($result['databaseRow'][$fieldName])) {
-			$valueArray = $result['databaseRow'][$fieldName];
-		}
-		if (!is_array($result['databaseRow'][$fieldName])) {
-			$valueArray = GeneralUtility::xml2array($result['databaseRow'][$fieldName]);
-		}
-		if (!is_array($valueArray)) {
-			$valueArray = [];
-		}
-		if (!isset($valueArray['data'])) {
-			$valueArray['data'] = [];
-		}
-		if (!isset($valueArray['meta'])) {
-			$valueArray['meta'] = [];
-		}
-		$result['databaseRow'][$fieldName] = $valueArray;
-		return $result;
-	}
-
-	/**
-	 * Add a sheet structure if data structure has none yet to simplify further handling.
-	 *
-	 * Example TCA field config:
-	 * ['config']['ds']['ROOT'] becomes
-	 * ['config']['ds']['sheets']['sDEF']['ROOT']
-	 *
-	 * @param array $result Result array
-	 * @param string $fieldName Currently handled field name
-	 * @return array Modified result
-	 * @throws \UnexpectedValueException
-	 */
-	protected function createDefaultSheetInDataStructureIfNotGiven(array $result, $fieldName) {
-		$modifiedDataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
-		if (isset($modifiedDataStructure['ROOT']) && isset($modifiedDataStructure['sheets'])) {
-			throw new \UnexpectedValueException(
-				'Parsed data structure has both ROOT and sheets on top level',
-				1440676540
-			);
-		}
-		if (isset($modifiedDataStructure['ROOT']) && is_array($modifiedDataStructure['ROOT'])) {
-			$modifiedDataStructure['sheets']['sDEF']['ROOT'] = $modifiedDataStructure['ROOT'];
-			unset($modifiedDataStructure['ROOT']);
-		}
-		$result['processedTca']['columns'][$fieldName]['config']['ds'] = $modifiedDataStructure;
-		return $result;
-	}
-
-	/**
-	 * Remove "TCEforms" key from all elements in data structure to simplify further parsing.
-	 *
-	 * Example config:
-	 * ['config']['ds']['sheets']['sDEF']['ROOT']['el']['anElement']['TCEforms']['label'] becomes
-	 * ['config']['ds']['sheets']['sDEF']['ROOT']['el']['anElement']['label']
-	 *
-	 * @param array $result Result array
-	 * @param string $fieldName Currently handled field name
-	 * @return array Modified result
-	 */
-	protected function removeTceFormsArrayKeyFromDataStructureElements(array $result, $fieldName) {
-		$modifiedDataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
-		$modifiedDataStructure = $this->removeElementTceFormsRecursive($modifiedDataStructure);
-		$result['processedTca']['columns'][$fieldName]['config']['ds'] = $modifiedDataStructure;
-		return $result;
-	}
-
-	/**
-	 * Moves ['el']['something']['TCEforms'] to ['el']['something'] and ['ROOT']['TCEforms'] to ['ROOT'] recursive
-	 *
-	 * @param array $structure Given hierarchy
-	 * @return array Modified hierarchy
-	 */
-	protected function removeElementTceFormsRecursive(array $structure) {
-		$newStructure = [];
-		foreach ($structure as $key => $value) {
-			if ($key === 'ROOT' && is_array($value) && isset($value['TCEforms'])) {
-				$value = array_merge($value, $value['TCEforms']);
-				unset($value['TCEforms']);
-			}
-			if ($key === 'el' && is_array($value)) {
-				$newSubStructure = [];
-				foreach ($value as $subKey => $subValue) {
-					if (is_array($subValue) && count($subValue) === 1 && isset($subValue['TCEforms'])) {
-						$newSubStructure[$subKey] = $subValue['TCEforms'];
-					} else {
-						$newSubStructure[$subKey] = $subValue;
-					}
-				}
-				$value = $newSubStructure;
-			}
-			if (is_array($value)) {
-				$value = $this->removeElementTceFormsRecursive($value);
-			}
-			$newStructure[$key] = $value;
-		}
-		return $newStructure;
 	}
 
 	/**
@@ -291,8 +136,6 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 		if (isset($modifiedDataStructure['sheets']) && is_array($modifiedDataStructure['sheets'])) {
 			// Handling multiple sheets
 			foreach ($modifiedDataStructure['sheets'] as $sheetName => $sheetStructure) {
-				$modifiedDataStructure['sheets'][$sheetName] = $this->resolvePossibleExternalFile($sheetStructure);
-
 				if (isset($pageTsConfig[$sheetName . '.']) && is_array($pageTsConfig[$sheetName . '.'])) {
 					$pageTsOfSheet = $pageTsConfig[$sheetName . '.'];
 
@@ -718,26 +561,6 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 	}
 
 	/**
-	 * Single fields can be extracted to files again. This is resolved here.
-	 *
-	 * @todo: Why is this not done in BackendUtility::getFlexFormDS() directly? If done there, the two methods
-	 * @todo: GeneralUtility::resolveSheetDefInDS() and GeneralUtility::resolveAllSheetsInDS() could be killed
-	 * @todo: since this resolving is basically the only really useful thing they actually do.
-	 *
-	 * @param string|array $sheetStructure Not resolved structure
-	 * @return array Parsed sheet structure
-	 */
-	protected function resolvePossibleExternalFile($sheetStructure) {
-		if (!is_array($sheetStructure)) {
-			$file = GeneralUtility::getFileAbsFileName($sheetStructure);
-			if ($file && @is_file($file)) {
-				$sheetStructure = GeneralUtility::xml2array(GeneralUtility::getUrl($file));
-			}
-		}
-		return $sheetStructure;
-	}
-
-	/**
 	 * Modify data structure of a single "sheet"
 	 * Sets "secondary" data like sheet names and so on, but does NOT modify single elements
 	 *
@@ -864,66 +687,6 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 			}
 		}
 		return $result;
-	}
-
-	/**
-	 * On-the-fly migration for flex form "TCA"
-	 *
-	 * @param array $result Result array
-	 * @param string $fieldName Currently handled field name
-	 * @return array Modified result
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
-	 */
-	protected function migrateFlexformTcaDataStructureElements(array $result, $fieldName) {
-		$modifiedDataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
-		$modifiedDataStructure = $this->migrateFlexformTcaRecursive($modifiedDataStructure, $result['tableName'], $fieldName);
-		$result['processedTca']['columns'][$fieldName]['config']['ds'] = $modifiedDataStructure;
-		return $result;
-	}
-
-	/**
-	 * Recursively migrate flex form TCA
-	 *
-	 * @param array $structure Given hierarchy
-	 * @param string $table
-	 * @param string $fieldName
-	 * @return array Modified hierarchy
-	 */
-
-	protected function migrateFlexformTcaRecursive($structure, $table, $fieldName) {
-		$newStructure = [];
-		foreach ($structure as $key => $value) {
-			if ($key === 'el' && is_array($value)) {
-				$newSubStructure = [];
-				$tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
-				foreach ($value as $subKey => $subValue) {
-					// On-the-fly migration for flex form "TCA"
-					// @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. This can be removed *if* no additional TCA migration is added with CMS 8, see class TcaMigration
-					$dummyTca = array(
-						'dummyTable' => array(
-							'columns' => array(
-								'dummyField' => $subValue,
-							),
-						),
-					);
-					$migratedTca = $tcaMigration->migrate($dummyTca);
-					$messages = $tcaMigration->getMessages();
-					if (!empty($messages)) {
-						$context = 'FormEngine did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed'
-							. ' with TYPO3 CMS 8. Merge the following changes into the flex form definition of table "' . $table . '"" in field "' . $fieldName . '"":';
-						array_unshift($messages, $context);
-						GeneralUtility::deprecationLog(implode(LF, $messages));
-					}
-					$newSubStructure[$subKey] = $migratedTca['dummyTable']['columns']['dummyField'];
-				}
-				$value = $newSubStructure;
-			}
-			if (is_array($value)) {
-				$value = $this->migrateFlexformTcaRecursive($value, $table, $fieldName);
-			}
-			$newStructure[$key] = $value;
-		}
-		return $newStructure;
 	}
 
 	/**

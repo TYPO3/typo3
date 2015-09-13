@@ -410,7 +410,7 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaColumnsOverrides::class
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
@@ -418,10 +418,20 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
 						),
 					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+						),
+					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
@@ -438,7 +448,7 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
 							// GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
