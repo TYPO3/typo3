@@ -36,6 +36,7 @@ class FieldProviderTest extends UnitTestCase {
 		/** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command1 */
 		$command1 = $this->getAccessibleMock(Command::class, array(), array(), '', FALSE);
 		$command1->expects($this->once())->method('isInternal')->will($this->returnValue(FALSE));
+		$command1->expects($this->once())->method('isCliOnly')->will($this->returnValue(FALSE));
 		$command1->expects($this->once())->method('getControllerClassName')->will($this->returnValue(MockACommandController::class));
 		$command1->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncA'));
 		$command1->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extbase:mocka:funca'));
@@ -43,6 +44,7 @@ class FieldProviderTest extends UnitTestCase {
 		/** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command2 */
 		$command2 = $this->getAccessibleMock(Command::class, array(), array(), '', FALSE);
 		$command2->expects($this->once())->method('isInternal')->will($this->returnValue(FALSE));
+		$command2->expects($this->once())->method('isCliOnly')->will($this->returnValue(FALSE));
 		$command2->expects($this->once())->method('getControllerClassName')->will($this->returnValue('Acme\\Mypkg\\Command\\MockBCommandController'));
 		$command2->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncB'));
 		$command2->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('mypkg:mockb:funcb'));
@@ -50,6 +52,7 @@ class FieldProviderTest extends UnitTestCase {
 		/** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command3 */
 		$command3 = $this->getAccessibleMock(Command::class, array(), array(), '', FALSE);
 		$command3->expects($this->once())->method('isInternal')->will($this->returnValue(FALSE));
+		$command3->expects($this->once())->method('isCliOnly')->will($this->returnValue(FALSE));
 		$command3->expects($this->once())->method('getControllerClassName')->will($this->returnValue('Tx_Extbase_Command_MockCCommandController'));
 		$command3->expects($this->once())->method('getControllerCommandName')->will($this->returnValue('FuncC'));
 		$command3->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('extbase:mockc:funcc'));
@@ -72,6 +75,66 @@ class FieldProviderTest extends UnitTestCase {
 		$this->assertContains('<option title="test" value="extbase:mocka:funca">Extbase MockA: FuncA</option>', $actualResult['code']);
 		$this->assertContains('<option title="test" value="mypkg:mockb:funcb">Mypkg MockB: FuncB</option>', $actualResult['code']);
 		$this->assertContains('<option title="test" value="extbase:mockc:funcc">Extbase MockC: FuncC</option>', $actualResult['code']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getCommandControllerActionFieldSkipsInternalCommands() {
+		/** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command1 */
+		$command = $this->getAccessibleMock(Command::class, array(), array(), '', FALSE);
+		$command->method('isInternal')->will($this->returnValue(TRUE));
+		$command->method('isCliOnly')->will($this->returnValue(FALSE));
+		$command->method('getControllerClassName')->will($this->returnValue(MockACommandController::class));
+		$command->method('getControllerCommandName')->will($this->returnValue('FuncA'));
+		$command->method('getCommandIdentifier')->will($this->returnValue('extbase:mocka:funca'));
+
+		/** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
+		$commandManager = $this->getMock(CommandManager::class, array('getAvailableCommands'));
+		$commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($command)));
+
+		/** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+		$fieldProvider = $this->getAccessibleMock(
+			FieldProvider::class,
+			array('getActionLabel'),
+			array(),
+			'',
+			FALSE
+		);
+		$fieldProvider->_set('commandManager', $commandManager);
+		$fieldProvider->expects($this->once())->method('getActionLabel')->will($this->returnValue('some label'));
+		$actualResult = $fieldProvider->_call('getCommandControllerActionField', array());
+		$this->assertNotContains('<option title="test" value="extbase:mocka:funca">Extbase MockA: FuncA</option>', $actualResult['code']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getCommandControllerActionFieldSkipsCliOnlyCommands() {
+		/** @var Command|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $command1 */
+		$command = $this->getAccessibleMock(Command::class, array(), array(), '', FALSE);
+		$command->method('isInternal')->will($this->returnValue(FALSE));
+		$command->method('isCliOnly')->will($this->returnValue(TRUE));
+		$command->method('getControllerClassName')->will($this->returnValue(MockACommandController::class));
+		$command->method('getControllerCommandName')->will($this->returnValue('FuncA'));
+		$command->method('getCommandIdentifier')->will($this->returnValue('extbase:mocka:funca'));
+
+		/** @var CommandManager|\PHPUnit_Framework_MockObject_MockObject $commandManager */
+		$commandManager = $this->getMock(CommandManager::class, array('getAvailableCommands'));
+		$commandManager->expects($this->any())->method('getAvailableCommands')->will($this->returnValue(array($command)));
+
+		/** @var FieldProvider|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $fieldProvider */
+		$fieldProvider = $this->getAccessibleMock(
+			FieldProvider::class,
+			array('getActionLabel'),
+			array(),
+			'',
+			FALSE
+		);
+		$fieldProvider->_set('commandManager', $commandManager);
+		$fieldProvider->expects($this->once())->method('getActionLabel')->will($this->returnValue('some label'));
+		$actualResult = $fieldProvider->_call('getCommandControllerActionField', array());
+		$this->assertNotContains('<option title="test" value="extbase:mocka:funca">Extbase MockA: FuncA</option>', $actualResult['code']);
 	}
 
 	/**

@@ -217,6 +217,15 @@ class Command {
 	}
 
 	/**
+	 * Tells if this command is meant to be used on CLI only.
+	 *
+	 * @return bool
+	 */
+	public function isCliOnly() {
+		return $this->getCommandMethodReflection()->isTaggedWith('cli');
+	}
+
+	/**
 	 * Tells if this command flushes all caches and thus needs special attention in the interactive shell.
 	 *
 	 * Note that neither this method nor the @flushesCaches annotation is currently part of the official API.

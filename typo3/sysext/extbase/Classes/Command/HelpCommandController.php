@@ -62,7 +62,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 	 * ./cli_dispatch.phpsh extbase help <command identifier>
 	 *
 	 * @param string $commandIdentifier Identifier of a command for more details
-	 * @return void
+	 * @cli
 	 */
 	public function helpCommand($commandIdentifier = NULL) {
 		if ($commandIdentifier === NULL) {

@@ -124,27 +124,28 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		$commands = $this->commandManager->getAvailableCommands();
 		$options = array();
 		foreach ($commands as $command) {
-			if ($command->isInternal() === FALSE) {
-				$className = $command->getControllerClassName();
-				if (strpos($className, '\\')) {
-					$classNameParts = explode('\\', $className);
-					// Skip vendor and product name for core classes
-					if (strpos($className, 'TYPO3\\CMS\\') === 0) {
-						$classPartsToSkip = 2;
-					} else {
-						$classPartsToSkip = 1;
-					}
-					$classNameParts = array_slice($classNameParts, $classPartsToSkip);
-					$extensionName = $classNameParts[0];
-					$controllerName = $classNameParts[2];
-				} else {
-					$classNameParts = explode('_', $className);
-					$extensionName = $classNameParts[1];
-					$controllerName = $classNameParts[3];
-				}
-				$identifier = $command->getCommandIdentifier();
-				$options[$identifier] = $extensionName . ' ' . str_replace('CommandController', '', $controllerName) . ': ' . $command->getControllerCommandName();
+			if ($command->isInternal() === TRUE || $command->isCliOnly() === TRUE) {
+				continue;
 			}
+			$className = $command->getControllerClassName();
+			if (strpos($className, '\\')) {
+				$classNameParts = explode('\\', $className);
+				// Skip vendor and product name for core classes
+				if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+					$classPartsToSkip = 2;
+				} else {
+					$classPartsToSkip = 1;
+				}
+				$classNameParts = array_slice($classNameParts, $classPartsToSkip);
+				$extensionName = $classNameParts[0];
+				$controllerName = $classNameParts[2];
+			} else {
+				$classNameParts = explode('_', $className);
+				$extensionName = $classNameParts[1];
+				$controllerName = $classNameParts[3];
+			}
+			$identifier = $command->getCommandIdentifier();
+			$options[$identifier] = $extensionName . ' ' . str_replace('CommandController', '', $controllerName) . ': ' . $command->getControllerCommandName();
 		}
 		$name = 'action';
 		$currentlySelectedCommand = $this->task !== NULL ? $this->task->getCommandIdentifier() : NULL;

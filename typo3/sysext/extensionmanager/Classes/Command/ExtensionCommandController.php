@@ -48,6 +48,7 @@ class ExtensionCommandController extends CommandController {
 	 *
 	 * @param string $extensionKey
 	 * @return void
+	 * @cli
 	 */
 	public function installCommand($extensionKey) {
 		$this->emitPackagesMayHaveChangedSignal();
@@ -65,6 +66,7 @@ class ExtensionCommandController extends CommandController {
 	 *
 	 * @param string $extensionKey
 	 * @return void
+	 * @cli
 	 */
 	public function uninstallCommand($extensionKey) {
 		/** @var $service \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
@@ -79,6 +81,7 @@ class ExtensionCommandController extends CommandController {
 	 * creating or updating this info properly during extension (de-)activation.
 	 *
 	 * @return void
+	 * @cli
 	 */
 	public function dumpClassLoadingInformationCommand() {
 		if (Bootstrap::usesComposerClassLoading()) {
