@@ -861,10 +861,52 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Overlays
-		'overlay-read-only' => array(
+		'overlay-deleted' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-read-only.svg',
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-deleted.svg'
+			)
+		),
+		'overlay-hidden' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-hidden.svg'
+			)
+		),
+		'overlay-includes-subpages' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-includes-subpages.svg'
+			)
+		),
+		'overlay-locked' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-locked.svg'
+			)
+		),
+		'overlay-readonly' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-readonly.svg',
+			)
+		),
+		'overlay-restricted' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-restricted.svg'
+			)
+		),
+		'overlay-scheduled' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-scheduled.svg'
+			)
+		),
+		'overlay-translated' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-translated.svg'
 			)
 		)
 	);

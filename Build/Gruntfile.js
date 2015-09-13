@@ -216,7 +216,14 @@ module.exports = function(grunt) {
 			// Overlay Icons
 			icons_overlay: {
 				files: {
-					'<%= paths.backend %>Public/Icons/Overlay/overlay-read-only.svg': '<%= paths.icons %>Overlay/overlay-read-only.svg'
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-deleted.svg': '<%= paths.icons %>Overlay/overlay-deleted.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-hidden.svg': '<%= paths.icons %>Overlay/overlay-hidden.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-includes-subpages.svg': '<%= paths.icons %>Overlay/overlay-includes-subpages.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-locked.svg': '<%= paths.icons %>Overlay/overlay-locked.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-readonly.svg': '<%= paths.icons %>Overlay/overlay-readonly.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-restricted.svg': '<%= paths.icons %>Overlay/overlay-restricted.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-scheduled.svg': '<%= paths.icons %>Overlay/overlay-scheduled.svg',
+					'<%= paths.backend %>Public/Icons/Overlay/overlay-translated.svg': '<%= paths.icons %>Overlay/overlay-translated.svg'
 				}
 			}
 		}

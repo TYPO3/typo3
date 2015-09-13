@@ -36,7 +36,7 @@ class IconTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var string
 	 */
-	protected $overlayIdentifier = 'overlay-read-only';
+	protected $overlayIdentifier = 'overlay-readonly';
 
 	/**
 	 * Set up

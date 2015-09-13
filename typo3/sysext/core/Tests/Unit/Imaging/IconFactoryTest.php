@@ -112,8 +112,8 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @dataProvider differentSizesDataProvider
 	 */
 	public function getIconByIdentifierAndSizeAndWithOverlayReturnsIconWithCorrectOverlayMarkupIfRegisteredIconIdentifierIsUsed($size) {
-		$this->assertContains('<span class="icon-overlay icon-overlay-read-only">',
-			$this->subject->getIcon($this->registeredIconIdentifier, $size['input'], 'overlay-read-only')->render());
+		$this->assertContains('<span class="icon-overlay icon-overlay-readonly">',
+			$this->subject->getIcon($this->registeredIconIdentifier, $size['input'], 'overlay-readonly')->render());
 	}
 
 	/**
@@ -173,8 +173,8 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @param string $size
 	 */
 	public function getIconByIdentifierAndSizeAndOverlayReturnsNotFoundIconWithCorrectMarkupIfUnregisteredIdentifierIsUsed($size) {
-		$this->assertContains('<span class="icon-overlay icon-overlay-read-only">',
-			$this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'], 'overlay-read-only')->render());
+		$this->assertContains('<span class="icon-overlay icon-overlay-readonly">',
+			$this->subject->getIcon($this->notRegisteredIconIdentifier, $size['input'], 'overlay-readonly')->render());
 	}
 
 	/**

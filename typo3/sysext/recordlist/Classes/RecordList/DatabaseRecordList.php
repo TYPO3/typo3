@@ -1243,7 +1243,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		if ($permsEdit) {
 			$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
 			$iconIdentifier = 'actions-document-open';
-			$overlayIdentifier = !$this->isEditable($table) ? 'overlay-read-only' : NULL;
+			$overlayIdentifier = !$this->isEditable($table) ? 'overlay-readonly' : NULL;
 			$editAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
 				. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier) . '</a>';
 		} else {
