@@ -34,9 +34,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $icons = array(
 		// Default icon, fallback
 		'default-not-found' => array(
-			'provider' => FontawesomeIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'times-circle',
+				'source' => 'EXT:backend/Resources/Public/Icons/Default/default-not-found.svg',
 			)
 		),
 

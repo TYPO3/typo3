@@ -166,6 +166,12 @@ module.exports = function(grunt) {
 					'<%= paths.sysext %>backend/Resources/Public/Icons/avatar-default.svg': '<%= paths.icons %>Avatar/avatar-default.svg'
 				}
 			},
+			// Default Icons
+			icons_default: {
+				files: {
+					'<%= paths.backend %>Public/Icons/Default/default-not-found.svg': '<%= paths.icons %>Default/default-not-found.svg'
+				}
+			},
 			// Miscellaneous Icons
 			icons_miscellaneous: {
 				files: {
