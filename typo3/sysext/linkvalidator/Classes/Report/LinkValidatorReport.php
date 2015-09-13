@@ -498,11 +498,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		// Fallback, if there is no label
 		$fieldName = !empty($fieldName) ? $fieldName : $row['field'];
 		// column "Element"
-		$element = IconUtility::getSpriteIconForRecord(
-			$table,
-			$row,
-			array('title' => $table . ':' . $row['record_uid'])
-		);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$element = '<span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">' . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
 		$element .= $elementHeadline;
 		$element .= ' ' . sprintf($this->getLanguageService()->getLL('list.field'), $fieldName);
 		$markerArray['actionlink'] = $actionLink;

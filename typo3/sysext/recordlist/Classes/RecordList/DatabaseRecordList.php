@@ -738,12 +738,11 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		// Incr. counter.
 		$this->counter++;
 		// The icon with link
-		$altText = htmlspecialchars(BackendUtility::getRecordIconAltText($row, $table));
-		$iconImg = IconUtility::getSpriteIconForRecord(
-			$table,
-			$row,
-			array('title' => $altText, 'style' => $indent ? ' margin-left: ' . $indent . 'px;' : '')
-		);
+		$altText = BackendUtility::getRecordIconAltText($row, $table);
+		$additionalStyle = $indent ? ' style="margin-left: ' . $indent . 'px;"' : '';
+		$iconImg = '<span title="' . $altText . '" ' . $additionalStyle . '>'
+			. $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render()
+			. '</span>';
 		$theIcon = $this->clickMenuEnabled ? $this->getModule()->doc->wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
 		// Preparing and getting the data-array
 		$theData = array();

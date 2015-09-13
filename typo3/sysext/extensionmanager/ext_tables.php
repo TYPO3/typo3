@@ -26,11 +26,3 @@ if (TYPO3_MODE === 'BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['Extension Manager'][] =
 		\TYPO3\CMS\Extensionmanager\Report\ExtensionStatus::class;
 }
-
-// Register specific icon for update script button
-\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-	array(
-		'update-script' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('extensionmanager') . 'Resources/Public/Images/Icons/ExtensionUpdateScript.png'
-	),
-	'extensionmanager'
-);

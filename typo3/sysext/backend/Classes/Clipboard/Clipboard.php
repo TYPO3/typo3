@@ -415,7 +415,7 @@ class Clipboard {
 						if (is_array($rec)) {
 							$lines[] = '
 								<tr>
-									<td nowrap="nowrap" class="col-icon">' . $this->linkItemText(IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars(BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . '</td>
+									<td nowrap="nowrap" class="col-icon">' . $this->linkItemText($this->iconFactory->getIconForRecord($table, $rec, Icon::SIZE_SMALL)->render(), $rec, $table) . '</td>
 									<td nowrap="nowrap" width="95%">' . $this->linkItemText(htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
 									<td nowrap="nowrap" class="col-control">
 										<div class="btn-group">
@@ -486,7 +486,7 @@ class Clipboard {
 				foreach ($rows as $rec) {
 					$lines[] = '
 					<tr>
-						<td nowrap="nowrap" class="col-icon">' . IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;')) . '</td>
+						<td nowrap="nowrap" class="col-icon">' . $this->iconFactory->getIconForRecord($table, $rec, Icon::SIZE_SMALL)->render() . '</td>
 						<td nowrap="nowrap" width="95%">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $rec), $this->getBackendUser()->uc['titleLen'])) . $modeData . '</td>
 						<td nowrap="nowrap" class="col-control"></td>
 					</tr>';

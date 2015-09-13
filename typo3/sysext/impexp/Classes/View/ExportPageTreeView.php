@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Impexp\View;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
@@ -85,7 +88,8 @@ class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$this->ids = $curIds;
 		if ($pid > 0) {
 			$rootRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pid);
-			$firstHtml = IconUtility::getSpriteIconForRecord('pages', $rootRec);
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$firstHtml = $iconFactory->getIconForRecord('pages', $rootRec, Icon::SIZE_SMALL)->render();
 		} else {
 			$rootRec = array(
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],

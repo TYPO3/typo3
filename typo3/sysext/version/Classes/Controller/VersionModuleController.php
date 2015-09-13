@@ -358,14 +358,14 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$adminLinks = $this->adminLinks($this->table, $row);
 			$content .= '
 				<tr' . ($row['uid'] != $this->uid ? '' : ' class="active"') . '>
-					<td  class="col-icon">' .
+					<td class="col-icon">' .
 						($row['uid'] != $this->uid ?
 							'<a href="' . $this->doc->issueCommand('&cmd[' . $this->table . '][' . $this->uid . '][version][swapWith]=' . $row['uid'] . '&cmd[' . $this->table . '][' . $this->uid . '][version][action]=swap') . '" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', TRUE) . '">' . $this->iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL) . '</a>' :
 							'<span title="' . $GLOBALS['LANG']->getLL('currentOnlineVersion', TRUE) . '">' . $this->iconFactory->getIcon('status-status-current', Icon::SIZE_SMALL) . '</span>'
 						) . '
 					</td>
-					<td  class="col-icon">' . IconUtility::getSpriteIconForRecord($this->table, $row) . '</td>
-					<td>' . BackendUtility::getRecordTitle($this->table, $row, TRUE) . '</td>
+					<td class="col-icon">' . $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render() . '</td>
+					<td>' . htmlspecialchars(BackendUtility::getRecordTitle($this->table, $row, TRUE)) . '</td>
 					<td>' . $row['uid'] . '</td>
 					<td>' . $row['t3ver_oid'] . '</td>
 					<td>' . $row['t3ver_id'] . '</td>
@@ -445,7 +445,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				$content .= '
 					<table class="table">
 						<tr>
-							<th class="col-icon">' . IconUtility::getSpriteIconForRecord($table, array()) . '</th>
+							<th class="col-icon">' . $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</th>
 							<th class="col-title">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], TRUE) . '</th>
 							<th></th>
 							<th></th>
@@ -454,8 +454,8 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 					$ownVer = $this->lookForOwnVersions($table, $subrow['uid']);
 					$content .= '
 						<tr>
-							<td class="col-icon">' . IconUtility::getSpriteIconForRecord($table, $subrow) . '</td>
-							<td class="col-title">' . BackendUtility::getRecordTitle($table, $subrow, TRUE) . '</td>
+							<td class="col-icon">' . $this->iconFactory->getIconForRecord($table, $subrow, Icon::SIZE_SMALL)->render() . '</td>
+							<td class="col-title">' . htmlspecialchars(BackendUtility::getRecordTitle($table, $subrow, TRUE)) . '</td>
 							<td>' . ($ownVer > 1 ? '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_txversionM1', array('table' => $table, 'uid' => $subrow['uid']))) . '">' . ($ownVer - 1) . '</a>' : '') . '</td>
 							<td class="col-control">' . $this->adminLinks($table, $subrow) . '</td>
 						</tr>';

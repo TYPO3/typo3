@@ -15,6 +15,8 @@ namespace TYPO3\CMS\WizardSortpages\View;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -72,11 +74,12 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$lines[] = '<th>' . $lang->getLL('wiz_changeOrder_tCreate') . '</th>';
 				$lines[] = '</tr></thead>';
 
+				$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 				foreach ($menuItems as $rec) {
 					$m_perms_clause = $this->getBackendUser()->getPagePermsClause(2);
 					// edit permissions for that page!
 					$pRec = BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-					$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? '<strong class="text-danger">' . $lang->getLL('wiz_W', TRUE) . '</strong></span> ' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
+					$lines[] = '<tr><td nowrap="nowrap">' . $iconFactory->getIconForRecord('pages', $rec, Icon::SIZE_SMALL)->render() . (!is_array($pRec) ? '<strong class="text-danger">' . $lang->getLL('wiz_W', TRUE) . '</strong></span> ' : '') . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</td>
 					<td nowrap="nowrap">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($rec['subtitle'], $this->getBackendUser()->uc['titleLen'])) . '</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['tstamp']) . '</td>
 					<td nowrap="nowrap">' . BackendUtility::datetime($rec['crdate']) . '</td>

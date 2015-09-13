@@ -268,7 +268,7 @@ class NewRecordController {
 			}
 			// Set header-HTML and return_url
 			if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
-				$iconImgTag = IconUtility::getSpriteIconForRecord('pages', $this->pageinfo, array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
+				$iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIconForRecord('pages', $this->pageinfo, Icon::SIZE_SMALL)->render() . '</span>';
 				$title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
 			} else {
 				$iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . '</span>';
@@ -402,14 +402,14 @@ class NewRecordController {
 		// New Page
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
-		$pageIcon = IconUtility::getSpriteIconForRecord($table, array());
+		$pageIcon = $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
 		$newPageIcon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL);
 		$rowContent = '';
 		// New pages INSIDE this pages
 		$newPageLinks = array();
 		if ($displayNewPagesIntoLink && $this->isTableAllowedForThisPage($this->pageinfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ?: $this->id), 'pages')) {
 			// Create link to new page inside:
-			$newPageLinks[] = $this->linkWrap(IconUtility::getSpriteIconForRecord($table, array()) . $lang->sL($v['ctrl']['title'], TRUE) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', TRUE) . ')', $table, $this->id);
+			$newPageLinks[] = $this->linkWrap($this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . $lang->sL($v['ctrl']['title'], TRUE) . ' (' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.inside', TRUE) . ')', $table, $this->id);
 		}
 		// New pages AFTER this pages
 		if ($displayNewPagesAfterLink && $this->isTableAllowedForThisPage($this->pidInfo, 'pages') && $this->getBackendUserAuthentication()->check('tables_modify', 'pages') && $this->getBackendUserAuthentication()->workspaceCreateNewRecord($this->pidInfo['uid'], 'pages')) {
@@ -448,7 +448,7 @@ class NewRecordController {
 						&& (($v['ctrl']['rootLevel'] xor $this->id) || $v['ctrl']['rootLevel'] == -1)
 						&& $this->getBackendUserAuthentication()->workspaceCreateNewRecord(($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id), $table)
 					) {
-						$newRecordIcon = IconUtility::getSpriteIconForRecord($table, array());
+						$newRecordIcon = $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
 						$rowContent = '';
 						$thisTitle = '';
 						// Create new link for record:

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -515,7 +517,8 @@ class PagePositionMap {
 	 * @return string HTML
 	 */
 	public function getRecordHeader($row) {
-		$line = IconUtility::getSpriteIconForRecord('tt_content', $row, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($row, 'tt_content'))));
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$line = '<span title="' . BackendUtility::getRecordIconAltText($row, 'tt_content') . '">' . $iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render() . '</span>';
 		$line .= BackendUtility::getRecordTitle('tt_content', $row, TRUE);
 		return $this->wrapRecordTitle($line, $row);
 	}

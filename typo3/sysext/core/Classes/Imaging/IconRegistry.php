@@ -19,12 +19,18 @@ use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Class IconRegistry, which makes it possible to register custom icons
  * from within an extension.
  */
 class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
+
+	/**
+	 * @var bool
+	 */
+	protected $tcaInitialized = FALSE;
 
 	/**
 	 * Registered icons
@@ -41,16 +47,34 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// App icons
+		'apps-clipboard-images' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/clipboard-images.png'
+			)
+		),
+		'apps-clipboard-list' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/clipboard-list.png'
+			)
+		),
 		'apps-filetree-folder-default' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-default.svg',
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-default.svg'
 			)
 		),
 		'apps-filetree-folder-locked' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-locked.svg',
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-folder-locked.svg'
+			)
+		),
+		'apps-filetree-folder-media' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/filetree-folder-media.png'
 			)
 		),
 		'apps-filetree-folder-opened' => array(
@@ -107,6 +131,85 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'cog',
 			)
 		),
+
+		'apps-pagetree-page-backend-users' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-backend-users.png',
+			)
+		),
+		'apps-pagetree-page-backend-users-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-backend-users-hideinmenu.png',
+			)
+		),
+		'apps-pagetree-page-backend-users-root' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-backend-users-root.png',
+			)
+		),
+		'apps-pagetree-page-content-from-page' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-content-from-page.png',
+			)
+		),
+		'apps-pagetree-page-content-from-page-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-content-from-page-hideinmenu.png',
+			)
+		),
+		'apps-pagetree-folder-contains-approve' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-approve.png',
+			)
+		),
+		'apps-pagetree-folder-contains-board' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-board.png',
+			)
+		),
+		'apps-pagetree-folder-contains-fe_users' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-fe_users.png',
+			)
+		),
+		'apps-pagetree-folder-contains-news' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-news.png',
+			)
+		),
+		'apps-pagetree-folder-contains-shop' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-contains-shop.png',
+			)
+		),
+		'apps-pagetree-folder-default' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-default.png',
+			)
+		),
+		'apps-pagetree-folder-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-folder-default.png',
+			)
+		),
+		'apps-pagetree-folder-root' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-domain.png',
+			)
+		),
 		'apps-pagetree-page-domain' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
@@ -119,6 +222,101 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-default.png',
 			)
 		),
+		'apps-pagetree-page-mountpoint' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint.png',
+			)
+		),
+		'apps-pagetree-page-mountpoint-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint-hideinmenu.png',
+			)
+		),
+		'apps-pagetree-page-mountpoint-root' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint-root.png',
+			)
+		),
+		'apps-pagetree-page-recycler' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-recycler.png',
+			)
+		),
+		'apps-pagetree-page-recycler-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-recycler.png',
+			)
+		),
+		'apps-pagetree-page-not-in-menu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-not-in-menu.png',
+			)
+		),
+		'apps-pagetree-page-shortcut-external' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut-external.png',
+			)
+		),
+		'apps-pagetree-page-shortcut' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut.png',
+			)
+		),
+		'apps-pagetree-page-shortcut-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut-hideinmenu.png',
+			)
+		),
+		'apps-pagetree-page-shortcut-root' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut-root.png',
+			)
+		),
+		'apps-pagetree-page-shortcut-external-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut-external-hideinmenu.png',
+			)
+		),
+		'apps-pagetree-page-shortcut-external-root' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-shortcut-external-root.png',
+			)
+		),
+		'apps-pagetree-spacer' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-spacer.png',
+			)
+		),
+		'apps-pagetree-spacer-hideinmenu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-spacer.png',
+			)
+		),
+		'apps-pagetree-spacer-root' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-domain.png',
+			)
+		),
+
+
+
+
+
 		'apps-pagetree-root' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -753,6 +951,72 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Status
+		'status-user-admin' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/user-admin.png'
+			)
+		),
+		'status-user-backend' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/user-backend.png'
+			)
+		),
+		'status-user-frontend' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/user-frontend.png'
+			)
+		),
+		'status-user-group-backend' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/user-group-backend.png'
+			)
+		),
+		'status-user-group-frontend' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/user-group-frontend.png'
+			)
+		),
+		'status-dialog-ok' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check-circle',
+			)
+		),
+		'status-dialog-notification' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-circle'
+			)
+		),
+		'status-dialog-warning' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-triangle'
+			)
+		),
+		'status-dialog-error' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-circle'
+			)
+		),
+		'status-warning-lock' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/warning-lock.png'
+			)
+		),
+		'status-warning-in-use' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/status/warning-in-use.png'
+			)
+		),
 		'status-status-checked' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -801,42 +1065,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'caret-down',
 			)
 		),
-		'status-dialog-ok' => array(
-			'provider' => FontawesomeIconProvider::class,
-			'options' => array(
-				'name' => 'check-circle',
-			)
-		),
-		'status-dialog-notification' => array(
-			'provider' => FontawesomeIconProvider::class,
-			'options' => array(
-				'name' => 'exclamation-circle',
-			)
-		),
-		'status-dialog-warning' => array(
-			'provider' => FontawesomeIconProvider::class,
-			'options' => array(
-				'name' => 'exclamation-triangle',
-			)
-		),
-		'status-dialog-error' => array(
-			'provider' => FontawesomeIconProvider::class,
-			'options' => array(
-				'name' => 'exclamation-circle',
-			)
-		),
-		'status-warning-lock' => array(
-			'provider' => BitmapIconProvider::class,
-			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/status/warning-lock.png',
-			)
-		),
-		'status-warning-in-use' => array(
-			'provider' => BitmapIconProvider::class,
-			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/status/warning-in-use.png',
-			)
-		),
 		'status-status-permission-granted' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(
@@ -863,6 +1091,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		),
 
 		// Mimetypes
+		'mimetypes-application' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-application.svg'
+			)
+		),
 		'mimetypes-compressed' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -873,12 +1107,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => SvgIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-excel.svg'
-			)
-		),
-		'mimetypes-executable-executable' => array(
-			'provider' => SvgIconProvider::class,
-			'options' => array(
-				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-executable-executable.svg'
 			)
 		),
 		'mimetypes-pdf' => array(
@@ -971,16 +1199,210 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-word.svg'
 			)
 		),
+
+		// Special Mimetypes
+		'mimetypes-x-content-divider' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-divider.png'
+			)
+		),
+		'mimetypes-x-content-domain' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-domain.png'
+			)
+		),
+		'mimetypes-x-content-form' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-form.png'
+			)
+		),
+		'mimetypes-x-content-form-search' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-form-search.png'
+			)
+		),
+		'mimetypes-x-content-header' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-header.png'
+			)
+		),
+		'mimetypes-x-content-html' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-html.png'
+			)
+		),
+		'mimetypes-x-content-image' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-image.png'
+			)
+		),
+		'mimetypes-x-content-link' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-link.png'
+			)
+		),
+		'mimetypes-x-content-list-bullets' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-list-bullets.png'
+			)
+		),
+		'mimetypes-x-content-list-files' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-list-files.png'
+			)
+		),
+		'mimetypes-x-content-login' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-login.png'
+			)
+		),
+		'mimetypes-x-content-menu' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-menu.png'
+			)
+		),
+		'mimetypes-x-content-multimedia' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-multimedia.png'
+			)
+		),
 		'mimetypes-x-content-page-language-overlay' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-page-language-overlay.gif',
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-page-language-overlay.gif'
+			)
+		),
+		'mimetypes-x-content-plugin' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-plugin.png'
+			)
+		),
+		'mimetypes-x-content-script' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-script.png'
+			)
+		),
+		'mimetypes-x-content-table' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-table.png'
+			)
+		),
+		'mimetypes-x-content-template' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template.png'
+			)
+		),
+		'mimetypes-x-content-template-extension' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template-extension.png'
 			)
 		),
 		'mimetypes-x-content-template-static' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template-static.png',
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template-static.png'
+			)
+		),
+		'mimetypes-x-content-text' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-text.png'
+			)
+		),
+		'mimetypes-x-content-text-picture' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-text-picture.png'
+			)
+		),
+		'mimetypes-x-backend_layout' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/icons/gfx/i/backend_layout.gif'
+			)
+		),
+		'mimetypes-x-index_config' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/icons/gfx/i/default.gif'
+			)
+		),
+		'mimetypes-x-sys_action' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:sys_action/Resources/Public/Images/x-sys_action.png'
+			)
+		),
+		'mimetypes-x-sys_category' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_category.png'
+			)
+		),
+		'mimetypes-x-sys_language' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_language.gif'
+			)
+		),
+		'mimetypes-x-sys_news' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_news.png'
+			)
+		),
+		'mimetypes-x-sys_note' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:sys_note/ext_icon.png'
+			)
+		),
+		'mimetypes-x-sys_workspace' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_workspace.png'
+			)
+		),
+		'mimetypes-x-sys_filemounts' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/icons/gfx/i/_icon_ftp.gif'
+			)
+		),
+		'mimetypes-x-sys_file_storage' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/icons/gfx/i/_icon_ftp.gif'
+			)
+		),
+		'mimetypes-x-tx_rtehtmlarea_acronym' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:rtehtmlarea/Resources/Public/Images/Plugins/Abbreviation/abbreviation.gif'
+			)
+		),
+		'mimetypes-x-tx_scheduler_task_group' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:scheduler/ext_icon.png'
 			)
 		),
 
@@ -1168,6 +1590,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws Exception
 	 */
 	public function getIconConfigurationByIdentifier($identifier) {
+		// In some cases TCA is not available, auto register TCA icons
+		// only the first time the TCA is available
+		if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
+			$this->registerTCAIcons();
+		}
 		if (!$this->isRegistered($identifier)) {
 			throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
 		}
@@ -1200,6 +1627,59 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getAllRegisteredIconIdentifiers() {
 		return array_keys($this->icons);
+	}
+
+	/**
+	 * Load icons from TCA for each table and add them as "tcarecords-XX" to $this->icons
+	 */
+	protected function registerTCAIcons() {
+		// if TCA is not available, e.g. for some unit test, return directly
+		if (!is_array($GLOBALS['TCA'])) {
+			return;
+		}
+
+		$resultArray = array();
+
+		$tcaTables = array_keys($GLOBALS['TCA']);
+		// check every table in the TCA, if an icon is needed
+		foreach ($tcaTables as $tableName) {
+			// This method is only needed for TCA tables where typeicon_classes are not configured
+			if (is_array($GLOBALS['TCA'][$tableName])) {
+				$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
+				$icon = NULL;
+				if (isset($tcaCtrl['iconfile'])) {
+					if (StringUtility::beginsWith($tcaCtrl['iconfile'], 'EXT:')) {
+						$icon = $tcaCtrl['iconfile'];
+					} elseif (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
+						$icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($tcaCtrl['iconfile']);
+					}
+					$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
+				}
+			}
+		}
+		if (!empty($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'])) {
+			foreach ($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $iconIdentifier => $iconFile) {
+				if (StringUtility::beginsWith($iconFile, '../typo3conf/ext/')) {
+					$iconFile = str_replace('../typo3conf/ext/', 'EXT:', $iconFile);
+				}
+				$resultArray[$iconIdentifier] = $iconFile;
+			}
+		}
+
+		foreach ($resultArray as $iconIdentifier => $iconFilePath) {
+			if (StringUtility::endsWith(strtolower($iconFilePath), 'svg')) {
+				$iconProviderClass = SvgIconProvider::class;
+			} else {
+				$iconProviderClass = BitmapIconProvider::class;
+			}
+			$this->icons[$iconIdentifier] = array(
+				'provider' => $iconProviderClass,
+				'options' => array(
+					'source' => $iconFilePath
+				)
+			);
+		}
+		$this->tcaInitialized = TRUE;
 	}
 
 }

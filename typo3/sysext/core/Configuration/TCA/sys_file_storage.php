@@ -12,7 +12,9 @@ return array(
 		'versioningWS_alwaysAllowLiveEdit' => TRUE, // Only have LIVE records of file storages
 		'enablecolumns' => array(),
 		'requestUpdate' => 'driver',
-		'iconfile' => '_icon_ftp.gif',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_file_storage'
+		),
 		'searchFields' => 'name,description'
 	),
 	'interface' => array(

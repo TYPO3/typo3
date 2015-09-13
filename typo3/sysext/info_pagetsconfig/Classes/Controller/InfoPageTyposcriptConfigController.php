@@ -321,6 +321,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 			return $lines;
 		}
 
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		foreach ($pageArray as $identifier => $_) {
 			if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
 				continue;
@@ -331,21 +332,16 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 					<td nowrap style="' . $cellStyle . '">
 						<a href="'
 					. htmlspecialchars(GeneralUtility::linkThisScript(array('id' => $identifier)))
-					. '">'
-					. IconUtility::getSpriteIconForRecord(
-						'pages',
-						BackendUtility::getRecordWSOL('pages', $identifier), array('title' => ('ID: ' . $identifier))
-					)
+					. '" title="' . htmlspecialchars('ID: ' . $identifier) . '">'
+					. $iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render()
 					. GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30) . '</a></td>
 					<td>' . ($pageArray[($identifier . '_')]['includeLines'] === 0 ? '' : $pageArray[($identifier . '_')]['includeLines']) . '</td>
 					<td>' . ($pageArray[$identifier . '_']['writtenLines'] === 0 ? '' : $pageArray[$identifier . '_']['writtenLines']) . '</td>
 					</tr>';
 			} else {
 				$lines[] = '<tr>
-					<td nowrap style="' . $cellStyle . '">
-					' . IconUtility::getSpriteIconForRecord(
-						'pages',
-						BackendUtility::getRecordWSOL('pages', $identifier))
+					<td nowrap style="' . $cellStyle . '">'
+					. $iconFactory->getIconForRecord('pages', BackendUtility::getRecordWSOL('pages', $identifier), Icon::SIZE_SMALL)->render()
 					. GeneralUtility::fixed_lgd_cs($pageArray[$identifier], 30) . '</td>
 					<td></td>
 					<td></td>

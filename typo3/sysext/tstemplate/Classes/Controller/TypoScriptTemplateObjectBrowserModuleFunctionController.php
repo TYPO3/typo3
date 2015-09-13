@@ -18,6 +18,8 @@ use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
@@ -221,9 +223,10 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 		// initialize
 		$theOutput = '';
 		if ($existTemplate) {
-			$content = ' ' . IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . ' <strong>'
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$content = ' ' . $iconFactory->getIconForRecord('sys_template', $tplRow, Icon::SIZE_SMALL)->render() . ' <strong>'
 				. $this->pObj->linkWrapTemplateTitle($tplRow['title'], ($bType == 'setup' ? 'config' : 'constants')) . '</strong>'
-				. htmlspecialchars(trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : '');
+				. (trim($tplRow['sitetitle']) ? htmlspecialchars(' (' . $tplRow['sitetitle'] . ')') : '');
 			$theOutput .= $this->pObj->doc->section($lang->getLL('currentTemplate'), $content);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);

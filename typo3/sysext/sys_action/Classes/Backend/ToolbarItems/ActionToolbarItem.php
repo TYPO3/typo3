@@ -98,11 +98,12 @@ class ActionToolbarItem implements ToolbarItemInterface {
 		}
 
 		if ($queryResource) {
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
 				$actions[] = array(
 					$actionRow['title'],
 					BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-					IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
+					$iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
 				);
 			}
 			$databaseConnection->sql_free_result($queryResource);

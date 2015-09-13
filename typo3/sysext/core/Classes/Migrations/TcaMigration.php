@@ -47,6 +47,7 @@ class TcaMigration {
 		$tca = $this->migrateIconsForFormFieldWizardsToNewLocation($tca);
 		$tca = $this->migrateExtAndSysextPathToEXTPath($tca);
 		$tca = $this->migrateIconsInOptionTags($tca);
+		$tca = $this->migrateIconfileRelativePathOrFilenameOnlyToExtReference($tca);
 		// @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
 		return $tca;
 	}
@@ -466,4 +467,32 @@ class TcaMigration {
 
 		return $newTca;
 	}
+
+	/**
+	 * Migrate "iconfile" references which starts with ../ to EXT: and consisting of filename only to absolute paths in EXT:t3skin
+	 *
+	 * @param array $tca Incoming TCA
+	 * @return array Migrated TCA
+	 */
+	protected function migrateIconfileRelativePathOrFilenameOnlyToExtReference($tca) {
+		foreach ($tca as $table => &$tableDefinition) {
+			if (!isset($tableDefinition['ctrl']) || !is_array($tableDefinition['ctrl'])) {
+				continue;
+			}
+			if (!isset($tableDefinition['ctrl']['iconfile'])) {
+				continue;
+			}
+			if (StringUtility::beginsWith($tableDefinition['ctrl']['iconfile'], '../typo3conf/ext/')) {
+				$tableDefinition['ctrl']['iconfile'] = str_replace('../typo3conf/ext/', 'EXT:', $tableDefinition['ctrl']['iconfile']);
+				$tcaPath = implode('.', [$table, 'ctrl', 'iconfile']);
+				$this->messages[] = '[' . $tcaPath . '] relative path to ../typo3conf/ext/ is deprecated, use EXT: instead';
+			} elseif (strpos($tableDefinition['ctrl']['iconfile'], '/') === FALSE) {
+				$tableDefinition['ctrl']['iconfile'] = 'EXT:t3skin/icons/gfx/i/' . $tableDefinition['ctrl']['iconfile'];
+				$tcaPath = implode('.', [$table, 'ctrl', 'iconfile']);
+				$this->messages[] = '[' . $tcaPath . '] filename only is deprecated, use EXT: or absolute reference instead';
+			}
+		}
+		return $tca;
+	}
+
 }

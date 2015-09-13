@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Utility\File;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
@@ -408,13 +410,14 @@ class ExtendedFileUtility extends BasicFileUtility {
 				$shortcutContent = array();
 				$brokenReferences = array();
 
+				$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 				foreach ($refIndexRecords as $fileReferenceRow) {
 					if ($fileReferenceRow['tablename'] === 'sys_file_reference') {
 						$row = $this->transformFileReferenceToRecordReference($fileReferenceRow);
 						$shortcutRecord = BackendUtility::getRecord($row['tablename'], $row['recuid']);
 
 						if ($shortcutRecord) {
-							$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
+							$icon = $iconFactory->getIconForRecord($row['tablename'], $shortcutRecord, Icon::SIZE_SMALL)->render();
 							$tagParameters = array(
 								'class'           => 't3-js-clickmenutrigger',
 								'data-table'      => $row['tablename'],

@@ -23,7 +23,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -73,8 +72,10 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
 		// Add icon with clickmenu, etc:
 		if ($pageRecord['uid']) {
 			// If there IS a real page
-			$alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-			$theIcon = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
+			$altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
+			/** @var IconFactory $iconFactory */
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
 			// Make Icon:
 			$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
 

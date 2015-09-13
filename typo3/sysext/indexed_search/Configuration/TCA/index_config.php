@@ -13,7 +13,9 @@ return array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime'
 		),
-		'iconfile' => 'default.gif'
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-index_config'
+		)
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,title,description,type,depth,table2index,alternative_source_pid,get_params,chashcalc,filepath,extensions'

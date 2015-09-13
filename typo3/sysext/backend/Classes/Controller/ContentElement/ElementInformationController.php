@@ -679,7 +679,7 @@ class ElementInformationController {
 				$parentRecordTitle = is_array($parentRecord)
 					? BackendUtility::getRecordTitle('pages', $parentRecord)
 					: '';
-				$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
+				$icon = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
 				$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
 				$urlParameters = [
 					'edit' => [
@@ -779,7 +779,7 @@ class ElementInformationController {
 		foreach ($rows as $row) {
 			$record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
 			if ($record) {
-				$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
+				$icon = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
 				$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
 
 				$urlParameters = [

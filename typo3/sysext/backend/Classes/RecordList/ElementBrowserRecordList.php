@@ -109,7 +109,7 @@ class ElementBrowserRecordList extends DatabaseRecordList {
 			$code = BackendUtility::getRecordTitlePrep($code, $this->fixedL);
 		}
 		$title = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
-		$ficon = IconUtility::getSpriteIconForRecord($table, $row);
+		$ficon = $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
 		$aOnClick = 'return insertElement(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($row['uid']) . ', \'db\', ' . GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ');';
 		$ATag = '<a href="#" onclick="' . $aOnClick . '" title="' . $this->getLanguageService()->getLL('addToList', TRUE) . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';

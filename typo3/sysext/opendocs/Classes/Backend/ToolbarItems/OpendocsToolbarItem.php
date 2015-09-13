@@ -143,7 +143,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface {
 			return '';
 		}
 		$label = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
-		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $record);
+		$icon = $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_SMALL)->render();
 		$link = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('record_edit') . '&' . $document[2];
 		$pageId = (int)$document[3]['uid'];
 		if ($document[3]['table'] !== 'pages') {

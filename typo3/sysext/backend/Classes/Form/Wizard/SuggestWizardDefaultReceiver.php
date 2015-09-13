@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -147,6 +149,7 @@ class SuggestWizardDefaultReceiver {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $this->selectClause, '', $this->orderByStatement, $start . ', 50');
 		$allRowsCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		if ($allRowsCount) {
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// check if we already have collected the maximum number of records
 				if (count($rows) > $this->maxItems) {
@@ -158,9 +161,7 @@ class SuggestWizardDefaultReceiver {
 				if (!$this->checkRecordAccess($row, $row['uid'])) {
 					continue;
 				}
-				$spriteIcon = IconUtility::getSpriteIconForRecord(
-					$this->table, $row, array('style' => 'margin: 0 4px 0 -20px; padding: 0;')
-				);
+				$spriteIcon = $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
 				$uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
 				$path = $this->getRecordPath($row, $uid);
 				if (strlen($path) > 30) {
@@ -331,11 +332,12 @@ class SuggestWizardDefaultReceiver {
 	 *
 	 * @param array $row The record to get the icon for
 	 * @return string The path to the icon
-	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconUtility::getSpriteIconForRecord() directly
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory::getIconForRecord() directly
 	 */
 	protected function getIcon($row) {
 		GeneralUtility::logDeprecatedFunction();
-		return IconUtility::getSpriteIconForRecord($this->mmForeignTable ?: $this->table, $row);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		return $iconFactory->getIconForRecord($this->mmForeignTable ?: $this->table, $row, Icon::SIZE_SMALL)->render();
 	}
 
 	/**

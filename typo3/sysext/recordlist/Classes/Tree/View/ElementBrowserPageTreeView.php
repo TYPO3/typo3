@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -43,7 +45,8 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
 	 */
 	public function wrapTitle($title, $v, $ext_pArrPages) {
 		if ($ext_pArrPages) {
-			$ficon = IconUtility::getSpriteIconForRecord('pages', $v);
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$ficon = $iconFactory->getIconForRecord('pages', $v, Icon::SIZE_SMALL)->render();
 			$onClick = 'return insertElement(\'pages\', \'' . $v['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($v['title']) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ',\'\',1);';
 		} else {
 			$onClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $v['uid']) . ');';

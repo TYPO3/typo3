@@ -14,7 +14,9 @@ return array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'iconfile' => 'backend_layout.gif',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-backend_layout'
+		),
 		'selicon_field' => 'icon',
 		'selicon_field_path' => 'uploads/media',
 		'thumbnail' => 'resources'

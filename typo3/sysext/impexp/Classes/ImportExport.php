@@ -3649,7 +3649,10 @@ class ImportExport {
 					}
 				}
 			}
-			$pInfo['preCode'] = $preCode . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, (array)$this->dat['records'][($table . ':' . $uid)]['data'], array('title' => htmlspecialchars(($table . ':' . $uid))));
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$pInfo['preCode'] = $preCode . '<span title="' . htmlspecialchars($table . ':' . $uid) . '">'
+				. $iconFactory->getIconForRecord($table, (array)$this->dat['records'][($table . ':' . $uid)]['data'], Icon::SIZE_SMALL)->render()
+				. '</span>';
 			$pInfo['title'] = htmlspecialchars($record['title']);
 			// View page:
 			if ($table === 'pages') {

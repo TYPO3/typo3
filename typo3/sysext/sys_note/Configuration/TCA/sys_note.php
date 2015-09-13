@@ -9,8 +9,10 @@ return array(
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'delete' => 'deleted',
 		'title' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
-		'iconfile' => 'EXT:sys_note/ext_icon.png',
-		'sortby' => 'sorting',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_note'
+		),
+		'sortby' => 'sorting'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'category,subject,message,personal'

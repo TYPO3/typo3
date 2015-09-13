@@ -595,7 +595,7 @@ function jumpToUrl(URL) {
 	public function getHeader($table, $row, $path, $noViewPageIcon = FALSE, $tWrap = array('', ''), $enableClickMenu = TRUE) {
 		$viewPage = '';
 		if (is_array($row) && $row['uid']) {
-			$iconImgTag = IconUtility::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
+			$iconImgTag = '<span title="' . htmlspecialchars($path) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
 			$title = strip_tags(BackendUtility::getRecordTitle($table, $row));
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid']);
 		} else {
@@ -1857,7 +1857,7 @@ function jumpToUrl(URL) {
 		// If there IS a real page
 		if (is_array($pageRecord) && $pageRecord['uid']) {
 			$alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => $alttext));
+			$iconImg = '<span title="' . htmlspecialchars($alttext) . '">' . $this->iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
 			// Make Icon:
 			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 			$uid = $pageRecord['uid'];

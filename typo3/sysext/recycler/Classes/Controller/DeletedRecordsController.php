@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Recycler\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
@@ -56,6 +58,7 @@ class DeletedRecordsController {
 		if (is_array($deletedRowsArray)) {
 			$lang = $this->getLanguageService();
 			$backendUser = $this->getBackendUser();
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
 			foreach ($deletedRowsArray as $table => $rows) {
 				$total += count($deletedRowsArray[$table]);
@@ -65,7 +68,7 @@ class DeletedRecordsController {
 					$jsonArray['rows'][] = array(
 						'uid' => $row['uid'],
 						'pid' => $row['pid'],
-						'icon' => IconUtility::getSpriteIconForRecord($table, $row),
+						'icon' => $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render(),
 						'pageTitle' => RecyclerUtility::getUtf8String($pageTitle),
 						'table' => $table,
 						'crdate' => BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]),

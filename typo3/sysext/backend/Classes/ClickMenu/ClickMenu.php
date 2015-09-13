@@ -392,8 +392,9 @@ class ClickMenu {
 		if (!is_array($this->rec)) {
 			$this->rec = array();
 		}
+
 		// Return the printed elements:
-		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
+		return $this->printItems($menuItems);
 	}
 
 	/**
@@ -453,7 +454,7 @@ class ClickMenu {
 		if (!is_array($menuItems)) {
 			$menuItems = array();
 		}
-		return $this->printItems($menuItems, $root ? $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) : IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($this->rec, $table)))) . BackendUtility::getRecordTitle($table, $this->rec, TRUE));
+		return $this->printItems($menuItems);
 	}
 
 	/**
@@ -1017,7 +1018,7 @@ class ClickMenu {
 		// Processing by external functions?
 		$menuItems = $this->externalProcessingOfFileMenuItems($menuItems);
 		// Return the printed elements:
-		return $this->printItems($menuItems, $icon . $fileObject->getName());
+		return $this->printItems($menuItems);
 	}
 
 	/**
@@ -1190,7 +1191,7 @@ class ClickMenu {
 		// Processing by external functions?
 		$menuItems = $this->externalProcessingOfDBMenuItems($menuItems);
 		// Return the printed elements:
-		return $this->printItems($menuItems, IconUtility::getSpriteIconForRecord($table, $this->rec, array('title' => BackendUtility::getRecordTitle($table, $this->rec, TRUE))));
+		return $this->printItems($menuItems);
 	}
 
 	/**

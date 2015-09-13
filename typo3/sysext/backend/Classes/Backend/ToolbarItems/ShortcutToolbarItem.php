@@ -182,7 +182,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			// No shortcuts added yet, show a small help message how to add shortcuts
 			$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', TRUE);
 			$icon = '<span title="' . $title . '">' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</span>';
-			$label = str_replace('%icon%', $icon, $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription'));
+			$label = str_replace('%icon%', $icon, $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription', TRUE));
 			$compiledShortcutMenu = '<p>' . $label . '</p>';
 		} else {
 			$compiledShortcutMenu = implode(LF, $shortcutMenu);
@@ -756,9 +756,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 					);
 					$result = $databaseConnection->exec_SELECT_queryArray($sqlQueryParts);
 					$row = $databaseConnection->sql_fetch_assoc($result);
-					$icon = IconUtility::getSpriteIconForRecord($table, (array)$row, array('title' => $titleAttribute));
+					$icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, (array)$row, Icon::SIZE_SMALL)->render() . '</span>';
 				} elseif ($shortcut['type'] == 'new') {
-					$icon = IconUtility::getSpriteIconForRecord($table, array(), array('title' => $titleAttribute));
+					$icon = '<span title="' . $titleAttribute . '">' . $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render() . '</span>';
 				}
 				break;
 			case 'file_edit':

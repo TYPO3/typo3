@@ -382,7 +382,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$res = $this->getDatabaseConnection()->exec_SELECTquery('*', 'be_users', 'cruser_id=' . $this->getBackendUser()->user['uid'] . ' AND createdByAction=' . (int)$action['uid'] . BackendUtility::deleteClause('be_users'), '', 'username');
 		// Render the user records
 		while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
-			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('be_users', $row, array('title' => 'uid=' . $row['uid']));
+			$icon = '<span title="' . htmlspecialchars('uid=' . $row['uid']) . '">' . $this->iconFactory->getIconForRecord('be_users', $row, Icon::SIZE_SMALL)->render() . '</span>';
 			$line = $icon . $this->action_linkUserName($row['username'], $row['realName'], $action['uid'], $row['uid']);
 			// Selected user
 			if ($row['uid'] == $selectedUser) {
@@ -685,7 +685,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'description' => BackendUtility::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]),
 				'descriptionHtml' => $description,
 				'link' => $link,
-				'icon' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], array('title' => htmlspecialchars($path)))
+				'icon' => '<span title="' . htmlspecialchars($path) . '">' . $this->iconFactory->getIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], Icon::SIZE_SMALL)->render() . '</span>'
 			);
 		}
 		// Render the record list

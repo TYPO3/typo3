@@ -13,7 +13,9 @@ return array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'iconfile' => '_icon_ftp.gif',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_filemounts'
+		),
 		'useColumnsForDefaultValues' => 'path,base',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE,
 		'searchFields' => 'title,path'

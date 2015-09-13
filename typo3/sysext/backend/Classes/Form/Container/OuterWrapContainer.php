@@ -16,11 +16,12 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /**
  * Render header and footer row.
@@ -61,15 +62,8 @@ class OuterWrapContainer extends AbstractContainer {
 			$recordPath = BackendUtility::getRecordPath($this->data['effectivePid'], $permissionsClause, 15);
 		}
 
-		// @todo: Hack for getSpriteIconForRecord
-		$recordForIconUtility = $row;
-		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) && is_array($row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']])) {
-			$recordForIconUtility[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']] = implode(
-				',',
-				$row[$GLOBALS['TCA'][$table]['ctrl']['typeicon_column']]
-			);
-		}
-		$icon = IconUtility::getSpriteIconForRecord($table, $recordForIconUtility, array('title' => $recordPath));
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$icon = '<span title="' . htmlspecialchars($recordPath) . '">' . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
 
 		// @todo: Could this be done in a more clever way? Does it work at all?
 		$tableTitle = $languageService->sL($this->data['processedTca']['ctrl']['title']);

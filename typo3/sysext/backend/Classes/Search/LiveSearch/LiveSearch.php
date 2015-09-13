@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -196,7 +198,6 @@ class LiveSearch {
 	 * @param string $orderBy
 	 * @param string $limit MySql Limit notation
 	 * @return array
-	 * @see \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord()
 	 * @see getTitleFromCurrentRow()
 	 * @see getEditLink()
 	 */
@@ -212,12 +213,14 @@ class LiveSearch {
 		);
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			$title = 'id=' . $row['uid'] . ', pid=' . $row['pid'];
 			$collect[] = array(
 				'id' => $tableName . ':' . $row['uid'],
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
 				'typeLabel' =>  $this->getTitleOfCurrentRecordType($tableName),
-				'iconHTML' => IconUtility::getSpriteIconForRecord($tableName, $row, array('title' => 'id=' . $row['uid'] . ', pid=' . $row['pid'])),
+				'iconHTML' => '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIconForRecord($tableName, $row, Icon::SIZE_SMALL)->render() . '</span>',
 				'title' => BackendUtility::getRecordTitle($tableName, $row),
 				'editLink' => $this->getEditLink($tableName, $row)
 			);

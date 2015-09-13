@@ -186,7 +186,7 @@ module.exports = function(grunt) {
 				files: {
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-compressed.svg': '<%= paths.icons %>Mimetype/mimetypes-compressed.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-excel.svg': '<%= paths.icons %>Mimetype/mimetypes-excel.svg',
-					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-executable-executable.svg': '<%= paths.icons %>Mimetype/mimetypes-executable-executable.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-application.svg': '<%= paths.icons %>Mimetype/mimetypes-application.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-audio.svg': '<%= paths.icons %>Mimetype/mimetypes-media-audio.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-flash.svg': '<%= paths.icons %>Mimetype/mimetypes-media-flash.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-image.svg': '<%= paths.icons %>Mimetype/mimetypes-media-image.svg',

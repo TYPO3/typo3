@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -150,7 +149,7 @@ class MoveElementController {
 			// Get record for element:
 			$elRow = BackendUtility::getRecordWSOL($this->table, $this->moveUid);
 			// Headerline: Icon, record title:
-			$headerLine = IconUtility::getSpriteIconForRecord($this->table, $elRow, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($elRow, $this->table))));
+			$headerLine = '<span title="' . BackendUtility::getRecordIconAltText($elRow, $this->table) . '">' . $this->iconFactory->getIconForRecord($this->table, $elRow, Icon::SIZE_SMALL)->render() . '</span>';
 			$headerLine .= BackendUtility::getRecordTitle($this->table, $elRow, TRUE);
 			// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$headerLine .= $this->doc->spacer(5);
@@ -177,7 +176,7 @@ class MoveElementController {
 							if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
 								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
-								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
+								$code .= $this->iconFactory->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
 						}
 					}
@@ -201,7 +200,7 @@ class MoveElementController {
 					$posMap->moveOrCopy = $this->makeCopy ? 'copy' : 'move';
 					$posMap->cur_sys_language = $this->sys_language;
 					// Headerline for the parent page: Icon, record title:
-					$headerLine = IconUtility::getSpriteIconForRecord('pages', $pageInfo, array('title' => htmlspecialchars(BackendUtility::getRecordIconAltText($pageInfo, 'pages'))));
+					$headerLine = '<span title="' . BackendUtility::getRecordIconAltText($pageInfo, 'pages') . '">' . $this->iconFactory->getIconForRecord('pages', $pageInfo, Icon::SIZE_SMALL)->render() . '</span>';
 					$headerLine .= BackendUtility::getRecordTitle('pages', $pageInfo, TRUE);
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					// SHARED page-TSconfig settings.
@@ -227,7 +226,7 @@ class MoveElementController {
 									'moveUid' => $this->moveUid
 								))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
-								$code .= IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
+								$code .= $this->iconFactory->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
 						}
 					}
@@ -270,7 +269,6 @@ class MoveElementController {
 			'csh' => '',
 			'back' => ''
 		);
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($this->page_id) {
 			if ((string)$this->table == 'pages') {
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_pages');
@@ -278,7 +276,7 @@ class MoveElementController {
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs');
 			}
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 			}
 		}
 		return $buttons;

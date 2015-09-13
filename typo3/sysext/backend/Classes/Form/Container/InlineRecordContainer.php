@@ -18,25 +18,24 @@ use TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
+use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
 
 /**
  * Render a single inline record relation.
@@ -422,15 +421,7 @@ class InlineRecordContainer extends AbstractContainer {
 
 		$altText = BackendUtility::getRecordIconAltText($rec, $foreign_table);
 
-		// @todo: Hack for getSpriteIconForRecord
-		$recordForIconUtility = $rec;
-		if (isset($GLOBALS['TCA'][$foreign_table]['ctrl']['typeicon_column']) && is_array($rec[$GLOBALS['TCA'][$foreign_table]['ctrl']['typeicon_column']])) {
-			$recordForIconUtility[$GLOBALS['TCA'][$foreign_table]['ctrl']['typeicon_column']] = implode(
-				',',
-				$rec[$GLOBALS['TCA'][$foreign_table]['ctrl']['typeicon_column']]
-			);
-		}
-		$iconImg = IconUtility::getSpriteIconForRecord($foreign_table, $recordForIconUtility, array('title' => htmlspecialchars($altText), 'id' => $objectId . '_icon'));
+		$iconImg = '<span title="' . $altText . '" id="' . htmlspecialchars($objectId) . '_icon' . '">' . $this->iconFactory->getIconForRecord($foreign_table, $rec, Icon::SIZE_SMALL)->render() . '</span>';
 		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
 		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 		$thumbnail = FALSE;
@@ -458,10 +449,10 @@ class InlineRecordContainer extends AbstractContainer {
 					if ($processedImage->getProperty('width')) {
 						$imageUrl = $processedImage->getPublicUrl(TRUE);
 						$thumbnail = '<img src="' . $imageUrl . '" ' .
-									 'width="' . $processedImage->getProperty('width') . '" ' .
-									 'height="' . $processedImage->getProperty('height') . '" ' .
-									 'alt="' . htmlspecialchars($altText) . '" ' .
-									 'title="' . htmlspecialchars($altText) . '">';
+							'width="' . $processedImage->getProperty('width') . '" ' .
+							'height="' . $processedImage->getProperty('height') . '" ' .
+							'alt="' . htmlspecialchars($altText) . '" ' .
+							'title="' . htmlspecialchars($altText) . '">';
 					}
 				}
 			}
@@ -543,7 +534,7 @@ class InlineRecordContainer extends AbstractContainer {
 			}
 			$cells['info'] = '
 				<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(('top.launchView(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($uid) . '); return false;')) . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:showInfo', TRUE) . '">
-					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()  . '
+					' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '
 				</a>';
 		}
 		// If the table is NOT a read-only table, then show these links:
@@ -558,7 +549,7 @@ class InlineRecordContainer extends AbstractContainer {
 					}
 					$cells['new'] = '
 						<a class="btn btn-default inlineNewButton ' . $this->inlineData['config'][$nameObject]['md5'] . '" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:new' . ($isPagesTable ? 'Page' : 'Record')), TRUE) . '" ' . $style . '>
-							' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page' : 'document') . '-new', Icon::SIZE_SMALL)->render()  . '
+							' . $this->iconFactory->getIcon('actions-' . ($isPagesTable ? 'page' : 'document') . '-new', Icon::SIZE_SMALL)->render() . '
 						</a>';
 				}
 			}
@@ -596,8 +587,8 @@ class InlineRecordContainer extends AbstractContainer {
 					));
 					$editOnClick = 'if (top.content.list_frame) {' .
 						'top.content.list_frame.location.href=' .
-							GeneralUtility::quoteJSvalue($url . '&returnUrl=') .
-							'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search)' .
+						GeneralUtility::quoteJSvalue($url . '&returnUrl=') .
+						'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search)' .
 						';' .
 					'}';
 					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
@@ -610,7 +601,8 @@ class InlineRecordContainer extends AbstractContainer {
 			// "Delete" link:
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & Permission::PAGE_DELETE
 					|| !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT
-					|| $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)) {
+					|| $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)
+			) {
 				$onClick = htmlspecialchars(('if (confirm('
 					. GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	'
 					. 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');'
@@ -630,15 +622,15 @@ class InlineRecordContainer extends AbstractContainer {
 					$title = $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:unHide' . ($isPagesTable ? 'Page' : '')), TRUE);
 					$cells['hide.unhide'] = '
 						<a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="'
-							. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
-							$this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL) . '
+						. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
+						$this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL) . '
 						</a>';
 				} else {
 					$title = $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE);
 					$cells['hide.hide'] = '
 						<a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="'
-							. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
-							$this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL) . '
+						. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
+						$this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL) . '
 						</a>';
 				}
 			}
@@ -747,7 +739,7 @@ class InlineRecordContainer extends AbstractContainer {
 				}
 				// Check internals regarding access
 				$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
-				if ($hasAccess|| (int)$calcPRec['pid'] === 0 && $isRootLevelRestrictionIgnored) {
+				if ($hasAccess || (int)$calcPRec['pid'] === 0 && $isRootLevelRestrictionIgnored) {
 					$hasAccess = (bool)$backendUser->recordEditAccessInternals($table, $calcPRec);
 				}
 			}

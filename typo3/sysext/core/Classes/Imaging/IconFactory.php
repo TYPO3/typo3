@@ -14,11 +14,11 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
@@ -35,6 +35,8 @@ class IconFactory {
 	protected $iconRegistry;
 
 	/**
+	 * Mapping of file extensions to mimetypes
+	 *
 	 * @var string[]
 	 */
 	protected $fileExtensionMapping = array(
@@ -75,8 +77,8 @@ class IconFactory {
 		'mid' => 'mimetypes-media-audio',
 		'swf' => 'mimetypes-media-flash',
 		'swa' => 'mimetypes-media-flash',
-		'exe' => 'mimetypes-executable-executable',
-		'com' => 'mimetypes-executable-executable',
+		'exe' => 'mimetypes-application',
+		'com' => 'mimetypes-application',
 		't3x' => 'mimetypes-compressed',
 		't3d' => 'mimetypes-compressed',
 		'zip' => 'mimetypes-compressed',
@@ -110,6 +112,38 @@ class IconFactory {
 	);
 
 	/**
+	 * Mapping of record status to overlays
+	 *
+	 * @var string[]
+	 */
+	protected $recordStatusMapping = array(
+		'hidden' => 'overlay-hidden',
+		'fe_group' => 'overlay-restricted',
+		'starttime' => 'overlay-scheduled',
+		'endtime' => 'overlay-scheduled',
+		'futureendtime' => 'overlay-scheduled',
+		'readonly' => 'overlay-readonly',
+		'deleted' => 'overlay-deleted',
+		'missing' => 'overlay-missing',
+		'translated' => 'overlay-translated',
+		'protectedSection' => 'overlay-includes-subpages'
+	);
+
+	/**
+	 * Order of priorities for overlays
+	 *
+	 * @var string[]
+	 */
+	protected $overlayPriorities = array(
+		'hidden',
+		'starttime',
+		'endtime',
+		'futureendtime',
+		'protectedSection',
+		'fe_group'
+	);
+
+	/**
 	 * @param IconRegistry $iconRegistry
 	 */
 	public function __construct(IconRegistry $iconRegistry = NULL) {
@@ -138,11 +172,193 @@ class IconFactory {
 		$iconConfiguration = $this->iconRegistry->getIconConfigurationByIdentifier($identifier);
 		$iconConfiguration['state'] = $state;
 		$icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
+
 		/** @var IconProviderInterface $iconProvider */
 		$iconProvider = GeneralUtility::makeInstance($iconConfiguration['provider']);
 		$iconProvider->prepareIconMarkup($icon, $iconConfiguration['options']);
 
 		return $icon;
+	}
+
+	/**
+	 * This method is used throughout the TYPO3 Backend to show icons for a DB record
+	 *
+	 * @param string $table The TCA table name
+	 * @param array $row The DB record of the TCA table
+	 * @param string $size "large" "small" or "default", see the constants of the Icon class
+	 * @return Icon
+	 */
+	public function getIconForRecord($table, array $row, $size = Icon::SIZE_DEFAULT) {
+		$iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row);
+		$overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row);
+		if (empty($overlayIdentifier)) {
+			$overlayIdentifier = NULL;
+		}
+		return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
+	}
+
+	/**
+	 * This helper functions looks up the column that is used for the type of the chosen TCA table and then fetches the
+	 * corresponding iconName based on the chosen icon class in this TCA.
+	 * The TCA looks up
+	 * - [ctrl][typeicon_column]
+	 * -
+	 * This method solely takes care of the type of this record, not any statuses used for overlays.
+	 *
+	 * see EXT:core/Configuration/TCA/pages.php for an example with the TCA table "pages"
+	 *
+	 * @param string $table The TCA table
+	 * @param array $row The selected record
+	 * @return string The icon identifier string for the icon of that DB record
+	 */
+	protected function mapRecordTypeToIconIdentifier($table, array $row) {
+		$recordType = array();
+		$ref = NULL;
+
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
+			$column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
+			if (isset($row[$column])) {
+				// even if not properly documented the value of the typeicon_column in a record could be an array (multiselect)
+				// in typeicon_classes a key could consist of a commaseparated string "foo,bar"
+				// but mostly it should be only one entry in that array
+				if (is_array($row[$column])) {
+					$recordType[1] = implode(',', $row[$column]);
+				} else {
+					$recordType[1] = $row[$column];
+				}
+			} else {
+				$recordType[1] = 'default';
+			}
+			// Workaround to give nav_hide pages a complete different icon
+			// Although it's not a separate doctype
+			// and to give root-pages an own icon
+			if ($table === 'pages') {
+				if ((int)$row['nav_hide'] > 0) {
+					$recordType[2] = $recordType[1] . '-hideinmenu';
+				}
+				if ((int)$row['is_siteroot'] > 0) {
+					$recordType[3] = $recordType[1] . '-root';
+				}
+				if (!empty($row['module'])) {
+					$recordType[4] = 'contains-' . $row['module'];
+				}
+				if ((int)$row['content_from_pid'] > 0) {
+					$recordType[4] = (int)$row['nav_hide'] === 0 ? 'page-contentFromPid' : 'page-contentFromPid-hideinmenu';
+				}
+			}
+			if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+				foreach ($recordType as $key => $type) {
+					if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type])) {
+						$recordType[$key] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type];
+					} else {
+						unset($recordType[$key]);
+					}
+				}
+				$recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+				if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask'])) {
+					$recordType[5] = str_replace('###TYPE###', $row[$column], $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']);
+				}
+				if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
+					$parameters = array('row' => $row);
+					$recordType[6] = GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], $parameters, $ref);
+				}
+			} else {
+				foreach ($recordType as &$type) {
+					$type = 'tcarecords-' . $table . '-' . $type;
+				}
+				unset($type);
+				$recordType[0] = 'tcarecords-' . $table . '-default';
+			}
+		} elseif (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+			$recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+		} else {
+			$recordType[0] = 'tcarecords-' . $table . '-default';
+		}
+
+		krsort($recordType);
+		/** @var IconRegistry $iconRegistry */
+		$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+		foreach ($recordType as $iconName) {
+			if ($iconRegistry->isRegistered($iconName)) {
+				return $iconName;
+			}
+		}
+
+		return 'default-not-found';
+	}
+
+	/**
+	 * This helper functions checks if the DB record ($row) has any special status based on the TCA settings like hidden,
+	 * starttime etc, and then returns a specific icon overlay identifier for the overlay of this DB record
+	 * This method solely takes care of the overlay of this record, not any type
+	 *
+	 * @param string $table The TCA table
+	 * @param array $row The selected record
+	 * @return string The status with the highest priority
+	 */
+	protected function mapRecordTypeToOverlayIdentifier($table, array $row) {
+		$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+		// Calculate for a given record the actual visibility at the moment
+		$status = array(
+			'hidden' => FALSE,
+			'starttime' => FALSE,
+			'endtime' => FALSE,
+			'futureendtime' => FALSE,
+			'fe_group' => FALSE,
+			'deleted' => FALSE,
+			'protectedSection' => FALSE,
+			'nav_hide' => (bool)$row['nav_hide']
+		);
+		// Icon state based on "enableFields":
+		if (is_array($tcaCtrl['enablecolumns'])) {
+			$enableColumns = $tcaCtrl['enablecolumns'];
+			// If "hidden" is enabled:
+			if (isset($enableColumns['disabled']) && !empty($row[$enableColumns['disabled']])) {
+				$status['hidden'] = TRUE;
+			}
+			// If a "starttime" is set and higher than current time:
+			if (!empty($enableColumns['starttime']) && $GLOBALS['EXEC_TIME'] < (int)$row[$enableColumns['starttime']]) {
+				$status['starttime'] = TRUE;
+			}
+			// If an "endtime" is set
+			if (!empty($enableColumns['endtime'])) {
+				if ((int)$row[$enableColumns['endtime']] > 0) {
+					if ((int)$row[$enableColumns['endtime']] < $GLOBALS['EXEC_TIME']) {
+						// End-timing applies at this point.
+						$status['endtime'] = TRUE;
+					} else {
+						// End-timing WILL apply in the future for this element.
+						$status['futureendtime'] = TRUE;
+					}
+				}
+			}
+			// If a user-group field is set
+			if (!empty($enableColumns['fe_group']) && $row[$enableColumns['fe_group']]) {
+				$status['fe_group'] = TRUE;
+			}
+		}
+		// If "deleted" flag is set (only when listing records which are also deleted!)
+		if (isset($tcaCtrl['delete']) && !empty($row[$tcaCtrl['delete']])) {
+			$status['deleted'] = TRUE;
+		}
+		// Detecting extendToSubpages (for pages only)
+		if ($table === 'pages' && (int)$row['extendToSubpages'] > 0) {
+			$status['protectedSection'] = TRUE;
+		}
+		if (isset($row['t3ver_state']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+			$status['deleted'] = TRUE;
+		}
+
+		// Now only show the status with the highest priority
+		$iconName = '';
+		foreach ($this->overlayPriorities as $priority) {
+			if ($status[$priority]) {
+				$iconName = $this->recordStatusMapping[$priority];
+				break;
+			}
+		}
+
+		return $iconName;
 	}
 
 	/**

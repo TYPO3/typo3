@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 use TYPO3\CMS\Backend\Module\AbstractFunctionModule;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -110,9 +112,10 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule {
 		$lang = $this->getLanguageService();
 		if ($existTemplate) {
 			$siteTitle = trim($GLOBALS['tplRow']['sitetitle']);
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$theOutput .= $this->pObj->doc->section(
 				$lang->getLL('currentTemplate', TRUE),
-				IconUtility::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow'])
+				$iconFactory->getIconForRecord('sys_template', $GLOBALS['tplRow'], Icon::SIZE_SMALL)->render()
 					. '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>'
 					. htmlspecialchars($siteTitle ? ' (' . $siteTitle . ')' : '')
 			);

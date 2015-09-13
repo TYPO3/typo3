@@ -8,7 +8,9 @@ return array(
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
 		'sortby' => 'sorting',
-		'iconfile' => 'EXT:scheduler/ext_icon.png',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-tx_scheduler_task_group'
+		),
 		'adminOnly' => 1, // Only admin users can edit
 		'rootLevel' => 1,
 		'enablecolumns' => array(

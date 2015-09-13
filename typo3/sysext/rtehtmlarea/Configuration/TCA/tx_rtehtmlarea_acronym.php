@@ -11,7 +11,9 @@ return array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
-		'iconfile' => 'EXT:rtehtmlarea/Resources/Public/Images/Plugins/Abbreviation/abbreviation.gif'
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-tx_rtehtmlarea_acronym'
+		)
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden,sys_language_uid,term,acronym'

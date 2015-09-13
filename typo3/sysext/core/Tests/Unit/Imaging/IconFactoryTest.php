@@ -19,11 +19,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\FolderInterface;
-use TYPO3\CMS\Core\Resource\InaccessibleFolder;
-use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * TestCase for \TYPO3\CMS\Core\Imaging\IconFactory
@@ -274,10 +269,6 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->subject->getIconForFileExtension('png')->render());
 	}
 
-	//
-	// Tests for getIconForResource
-	//
-
 	/**
 	 * @test
 	 */
@@ -289,5 +280,10 @@ class IconFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertContains('<span class="icon icon-size-default icon-state-default icon-mimetypes-pdf">',
 			$this->subject->getIconForResource($resourceProphecy->reveal())->render());
 	}
+
+	//
+	// Test for getIconForRecord
+	//
+
 
 }

@@ -1615,8 +1615,8 @@ class ElementBrowser {
 				<ul class="list-tree list-tree-root list-tree-root-clean">
 					<li class="list-tree-control-open">
 						<span class="list-tree-group">
-							<span class="list-tree-icon">' . IconUtility::getSpriteIconForRecord('pages', $mainPageRec) . '</span>
-							<span class="list-tree-title">' . BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE) . '</span>
+							<span class="list-tree-icon">' . $this->iconFactory->getIconForRecord('pages', $mainPageRec, Icon::SIZE_SMALL)->render() . '</span>
+							<span class="list-tree-title">' . htmlspecialchars(BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE)) . '</span>
 						</span>
 						<ul>
 				';
@@ -1634,7 +1634,7 @@ class ElementBrowser {
 			$c = 0;
 			while ($row = $db->sql_fetch_assoc($res)) {
 				$c++;
-				$icon = IconUtility::getSpriteIconForRecord('tt_content', $row);
+				$icon = $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render();
 				$selected = '';
 				if ($this->curUrlInfo['act'] == 'page' && $this->curUrlInfo['cElement'] == $row['uid']) {
 					$selected = ' class="active"';
@@ -1648,7 +1648,7 @@ class ElementBrowser {
 							</span>
 							<span class="list-tree-title">
 								<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">
-									' . BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '
+									' . htmlspecialchars(BackendUtility::getRecordTitle('tt_content', $row, TRUE)) . '
 								</a>
 							</span>
 						</span>
@@ -1696,7 +1696,7 @@ class ElementBrowser {
 		$ATag2 = '';
 		$picon = '';
 		if (is_array($mainPageRec)) {
-			$picon = IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
+			$picon = $this->iconFactory->getIconForRecord('pages', $mainPageRec, Icon::SIZE_SMALL)->render();
 			if (in_array('pages', $tablesArr)) {
 				$ATag = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', '
 					. GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',1);">';

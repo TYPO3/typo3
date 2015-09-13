@@ -27,11 +27,3 @@ if (TYPO3_MODE === 'BE') {
 		'EXT:scheduler/Resources/Private/Language/locallang_csh_scheduler.xlf'
 	);
 }
-
-// Register specific icon for run task button
-\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons(
-	array(
-		'run-task' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('scheduler') . 'Resources/Public/Images/Icons/RunTask.png'
-	),
-	'scheduler'
-);

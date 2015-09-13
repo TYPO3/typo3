@@ -377,9 +377,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if (substr($field, 0, 6) == 'table_') {
 							$f2 = substr($field, 6);
 							if ($GLOBALS['TCA'][$f2]) {
-								$theData[$field] = '&nbsp;' . IconUtility::getSpriteIconForRecord($f2, array(), array(
-									'title' => $this->getLanguageService()->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], TRUE)
-									));
+								$theData[$field] = '&nbsp;' . '<span title="' . $this->getLanguageService()->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], TRUE) . '">' . $this->iconFactory->getIconForRecord($f2, array(), Icon::SIZE_SMALL)->render() . '</span>';
 							}
 						} else {
 							$theData[$field] = '&nbsp;&nbsp;<strong>'
@@ -723,7 +721,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
 					$params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
 					$lPLabel = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon(
-						IconUtility::getSpriteIconForRecord('pages_language_overlay', $lpRecord),
+						$this->iconFactory->getIconForRecord('pages_language_overlay', $lpRecord, Icon::SIZE_SMALL)->render(),
 						'pages_language_overlay',
 						$lpRecord['uid']
 					) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
@@ -735,7 +733,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				} else {
 					$params = '&edit[pages][' . $this->id . ']=edit';
 					$lPLabel = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon(
-							IconUtility::getSpriteIconForRecord('pages', $this->pageRecord),
+							$this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(),
 							'pages',
 							$this->id
 						) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
@@ -1434,7 +1432,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$tableName = empty($split[0]) ? 'tt_content' : $split[0];
 							$shortcutRecord = BackendUtility::getRecord($tableName, $split[1]);
 							if (is_array($shortcutRecord)) {
-								$icon = IconUtility::getSpriteIconForRecord($tableName, $shortcutRecord);
+								$icon = $this->iconFactory->getIconForRecord($tableName, $shortcutRecord, Icon::SIZE_SMALL)->render();
 								$icon = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon($icon, $tableName,
 									$shortcutRecord['uid'], 1, '', '+copy,info,edit,view');
 								$shortcutContent[] = $icon
@@ -2050,7 +2048,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	public function getIcon($table, $row) {
 		// Initialization
 		$altText = BackendUtility::getRecordIconAltText($row, $table);
-		$icon = IconUtility::getSpriteIconForRecord($table, $row, array('title' => $altText));
+		$icon = '<span title="' . $altText . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
 		$this->counter++;
 		// The icon with link
 		if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
@@ -2177,18 +2175,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				if ($c || GeneralUtility::inList('tt_content', $tName)) {
 					// Add row to menu:
 					$out .= '
-					<td><a href="#' . $tName . '"></a>' . IconUtility::getSpriteIconForRecord(
-							$tName,
-							array(),
-							array('title' => $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE))
-						) . '</td>';
+					<td><a href="#' . $tName . '" title="' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE) . '"></a>'
+						. $this->iconFactory->getIconForRecord($tName, array(), Icon::SIZE_SMALL)->render()
+						. '</td>';
 					// ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
-					$this->activeTables[$tName] = IconUtility::getSpriteIconForRecord(
-							$tName,
-							array(),
-							array('title' => $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE)
-									. ': ' . $c . ' ' . $this->getLanguageService()->getLL('records', TRUE))
-						) . '&nbsp;' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE);
+					$title = $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE)
+						. ': ' . $c . ' ' . $this->getLanguageService()->getLL('records', TRUE);
+					$this->activeTables[$tName] = '<span title="' . $title. '">'
+						. $this->iconFactory->getIconForRecord($tName, array(), Icon::SIZE_SMALL)->render()
+						. '</span>'
+						. '&nbsp;' . $this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'], TRUE);
 				}
 			}
 		}

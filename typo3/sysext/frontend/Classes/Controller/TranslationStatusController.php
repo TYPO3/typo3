@@ -93,7 +93,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 			$tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(1));
 			$tree->addField('l18n_cfg');
 			// Creating top icon; the current page
-			$HTML = IconUtility::getSpriteIconForRecord('pages', $treeStartingRecord);
+			$HTML = $this->iconFactory->getIconForRecord('pages', $treeStartingRecord, Icon::SIZE_SMALL)->render();
 			$tree->tree[] = array(
 				'row' => $treeStartingRecord,
 				'HTML' => $HTML
@@ -172,11 +172,7 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 					if (is_array($row)) {
 						$langRecUids[$langRow['uid']][] = $row['uid'];
 						$status = $row['_HIDDEN'] ? (GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg'] & 1 ? 'danger' : '') : 'success';
-						$icon = IconUtility::getSpriteIconForRecord(
-							'pages_language_overlay',
-							$row,
-							array('class' => 'c-recIcon')
-						);
+						$icon = $this->iconFactory->getIconForRecord('pages_language_overlay', $row, Icon::SIZE_SMALL)->render();
 						$info = $icon . htmlspecialchars(
 								GeneralUtility::fixed_lgd_cs($row['title'], $titleLen)
 							) . ((string)$row['nav_title'] !== '' ? ' [Nav: <em>' . htmlspecialchars(
