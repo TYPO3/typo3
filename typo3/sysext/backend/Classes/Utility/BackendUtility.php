@@ -58,9 +58,17 @@ class BackendUtility {
 	 * Cache the TCA configuration of tables with their types during runtime
 	 *
 	 * @var array
-	 * @see getTCAtypes()
+	 * @see self::getTCAtypes()
 	 */
 	static protected $tcaTableTypeConfigurationCache = array();
+
+	/**
+	 * Cache the processed titles of records during runtime
+	 *
+	 * @var array
+	 * @see self::getRecordTitle()
+	 */
+	static protected $recordTitleCache = array();
 
 	/*******************************************
 	 *
@@ -2097,6 +2105,12 @@ class BackendUtility {
 	 * @return string
 	 */
 	static public function getRecordTitle($table, $row, $prep = FALSE, $forceResult = TRUE) {
+		$cacheIdentifier = $table . '-' . $row['uid'] . '-prep-' . (int)$prep . '-forceResult-' . (int)$forceResult;
+		if (isset(self::$recordTitleCache[$cacheIdentifier])) {
+			return self::$recordTitleCache[$cacheIdentifier];
+		}
+
+		$recordTitle = '';
 		if (is_array($GLOBALS['TCA'][$table])) {
 			// If configured, call userFunc
 			if ($GLOBALS['TCA'][$table]['ctrl']['label_userFunc']) {
@@ -2108,47 +2122,48 @@ class BackendUtility {
 				// Create NULL-reference
 				$null = NULL;
 				GeneralUtility::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['label_userFunc'], $params, $null);
-				$t = $params['title'];
+				$recordTitle = $params['title'];
 			} else {
 				if (is_array($row)) {
 					$row = self::replaceL10nModeFields($table, $row);
 				}
 
 				// No userFunc: Build label
-				$t = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
-				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$t === '')) {
+				$recordTitle = self::getProcessedValue($table, $GLOBALS['TCA'][$table]['ctrl']['label'], $row[$GLOBALS['TCA'][$table]['ctrl']['label']], 0, 0, FALSE, $row['uid'], $forceResult);
+				if ($GLOBALS['TCA'][$table]['ctrl']['label_alt'] && ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force'] || (string)$recordTitle === '')) {
 					$altFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], TRUE);
 					$tA = array();
-					if (!empty($t)) {
-						$tA[] = $t;
+					if (!empty($recordTitle)) {
+						$tA[] = $recordTitle;
 					}
 					foreach ($altFields as $fN) {
-						$t = trim(strip_tags($row[$fN]));
-						if ((string)$t !== '') {
-							$t = self::getProcessedValue($table, $fN, $t, 0, 0, FALSE, $row['uid']);
+						$recordTitle = trim(strip_tags($row[$fN]));
+						if ((string)$recordTitle !== '') {
+							$recordTitle = self::getProcessedValue($table, $fN, $recordTitle, 0, 0, FALSE, $row['uid']);
 							if (!$GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
 								break;
 							}
-							$tA[] = $t;
+							$tA[] = $recordTitle;
 						}
 					}
 					if ($GLOBALS['TCA'][$table]['ctrl']['label_alt_force']) {
-						$t = implode(', ', $tA);
+						$recordTitle = implode(', ', $tA);
 					}
 				}
 			}
 			// If the current result is empty, set it to '[No title]' (localized) and prepare for output if requested
 			if ($prep || $forceResult) {
 				if ($prep) {
-					$t = self::getRecordTitlePrep($t);
+					$recordTitle = self::getRecordTitlePrep($recordTitle);
 				}
-				if (trim($t) === '') {
-					$t = self::getNoRecordTitle($prep);
+				if (trim($recordTitle) === '') {
+					$recordTitle = self::getNoRecordTitle($prep);
 				}
 			}
-			return $t;
 		}
-		return '';
+		self::$recordTitleCache[$cacheIdentifier] = $recordTitle;
+
+		return $recordTitle;
 	}
 
 	/**
