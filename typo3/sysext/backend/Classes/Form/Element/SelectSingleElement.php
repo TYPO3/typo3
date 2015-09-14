@@ -106,9 +106,12 @@ class SelectSingleElement extends AbstractFormElement {
 		$selectItemGroups = array();
 		$selectIcons = array();
 		$selectedValue = '';
+		$hasIcons = FALSE;
+
 		if (!empty($parameterArray['itemFormElValue'])) {
 			$selectedValue = (string)$parameterArray['itemFormElValue'][0];
 		}
+
 		foreach ($selectItems as $item) {
 			if ($item[1] === '--div--') {
 				// IS OPTGROUP
@@ -117,18 +120,19 @@ class SelectSingleElement extends AbstractFormElement {
 				}
 				$selectItemGroups[$selectItemGroupCount]['header'] = array(
 					'title' => $item[0],
-					'icon' => (!empty($item[2]) ? FormEngineUtility::getIconHtml($item[2]) : ''),
 				);
 			} else {
 				// IS ITEM
 				$title = htmlspecialchars($item['0'], ENT_COMPAT, 'UTF-8', FALSE);
 				$icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $title, $title) : '';
 				$selected = $selectedValue === (string)$item[1];
+
 				if ($selected) {
 					$selectedIndex = $selectItemCounter;
 					$selectedIcon = $icon;
 					$selectedValueFound = TRUE;
 				}
+
 				$selectItemGroups[$selectItemGroupCount]['items'][] = array(
 					'title' => $title,
 					'value' => $item[1],
@@ -136,18 +140,16 @@ class SelectSingleElement extends AbstractFormElement {
 					'selected' => $selected,
 					'index' => $selectItemCounter
 				);
+
 				// ICON
 				if ($icon && !$suppressIcons && (!$onlySelectedIconShown || $selected)) {
-					$onClick = 'document.editform[' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . '].selectedIndex=' . $selectItemCounter . ';';
-					$onClick .= implode('', $parameterArray['fieldChangeFunc']);
-					$onClick .= 'this.blur();return false;';
 					$selectIcons[] = array(
 						'title' => $title,
 						'icon' => $icon,
 						'index' => $selectItemCounter,
-						'onClick' => $onClick
 					);
 				}
+
 				$selectItemCounter++;
 			}
 
@@ -170,62 +172,87 @@ class SelectSingleElement extends AbstractFormElement {
 
 			$optionGroup = is_array($selectItemGroup['header']);
 			$options .= ($optionGroup ? '<optgroup label="' . htmlspecialchars($selectItemGroup['header']['title'], ENT_COMPAT, 'UTF-8', FALSE) . '">' : '');
+
 			if (is_array($selectItemGroup['items'])) {
 				foreach ($selectItemGroup['items'] as $item) {
 					$options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
 						htmlspecialchars($item['icon']) . '"'
 						. ($item['selected'] ? ' selected="selected"' : '') . '>' . $item['title'] . '</option>';
 				}
+				$hasIcons = !empty($item['icon']);
 			}
+
 			$options .= ($optionGroup ? '</optgroup>' : '');
 		}
 
-		// Create item form fields:
-		$sOnChange = 'if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=' . $selectedIndex . ';} ';
-		$sOnChange .= implode('', $parameterArray['fieldChangeFunc']);
-
 		// Build the element
-		$html = '
-			<div class="form-control-wrap">
-				<select'
+		$html = ['<div class="form-control-wrap">'];
+
+		if ($hasIcons) {
+			$html[] = '<div class="input-group">';
+			$html[] = 	'<span class="input-group-addon input-group-icon">';
+			$html[] = 		$selectedIcon;
+			$html[] = 	'</span>';
+		}
+
+		$html[] = '<select'
 					. ' id="' . $selectId . '"'
 					. ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
 					. $this->getValidationDataAsDataAttribute($config)
 					. ' class="form-control form-control-adapt"'
 					. ($size ? ' size="' . $size . '"' : '')
-					. ' onchange="' . htmlspecialchars($sOnChange) . '"'
-					. $parameterArray['onFocus']
 					. ($disabled ? ' disabled="disabled"' : '')
-					. '>
-					' . $options . '
-				</select>
-			</div>';
+					. '>';
+		$html[] = 	$options;
+		$html[] = '</select>';
+
+		if ($hasIcons) {
+			$html[] = '</div>';
+		}
+
+		$html[] = '</div>';
 
 		// Create icon table:
 		if (!empty($selectIcons) && !$config['noIconsBelowSelect']) {
 			$selectIconColumns = (int)$config['selicon_cols'];
+
 			if (!$selectIconColumns) {
 				$selectIconColumns = count($selectIcons);
 			}
+
 			$selectIconColumns = ($selectIconColumns > 12 ? 12 : $selectIconColumns);
 			$selectIconRows = ceil(count($selectIcons) / $selectIconColumns);
 			$selectIcons = array_pad($selectIcons, $selectIconRows * $selectIconColumns, '');
-			$html .= '<div class="table-fit table-fit-inline-block"><table class="table table-condensed table-white table-center"><tbody><tr>';
-			$selectIconTotalCount = count($selectIcons);
-			for ($selectIconCount = 0; $selectIconCount < $selectIconTotalCount; $selectIconCount++) {
-				if ($selectIconCount % $selectIconColumns === 0 && $selectIconCount !== 0) {
-					$html .= '</tr><tr>';
+
+			$html[] = '<div class="t3js-forms-select-single-icons table-fit table-fit-inline-block">';
+			$html[] = 	'<table class="table table-condensed table-white table-center">';
+			$html[] = 		'<tbody>';
+			$html[] = 			'<tr>';
+
+			foreach ($selectIcons as $i => $selectIcon) {
+				if ($i % $selectIconColumns === 0 && $i !== 0) {
+					$html[] = 	'</tr>';
+					$html[] = 	'<tr>';
 				}
-				$html .= '<td>';
-				if (is_array($selectIcons[$selectIconCount])) {
-					$html .= (!$onlySelectedIconShown ? '<a href="#" title="' . $selectIcons[$selectIconCount]['title'] . '" onClick="' . htmlspecialchars($selectIcons[$selectIconCount]['onClick']) . '">' : '');
-					$html .= $selectIcons[$selectIconCount]['icon'];
-					$html .= (!$onlySelectedIconShown ? '</a>' : '');
+
+				$html[] = 			'<td>';
+
+				if (is_array($selectIcon)) {
+					$html[] = (!$onlySelectedIconShown ? '<a href="#" title="' . $selectIcon['title'] . '" data-select-index="' . $selectIcon['index'] . '">' : '');
+					$html[] = $selectIcon['icon'];
+					$html[] = (!$onlySelectedIconShown ? '</a>' : '');
 				}
-				$html .= '</td>';
+
+				$html[] = 			'</td>';
 			}
-			$html .= '</tr></tbody></table></div>';
+
+			$html[] = 			'</tr>';
+			$html[] = 		'</tbody>';
+			$html[] = 	'</table>';
+			$html[] = '</div>';
 		}
+
+		$html = implode(LF, $html);
 
 		// Wizards:
 		if (!$disabled) {
@@ -243,6 +270,21 @@ class SelectSingleElement extends AbstractFormElement {
 
 		$resultArray = $this->initializeResultArray();
 		$resultArray['html'] = $html;
+		$resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SelectSingleElement' => implode(LF, [
+			'function(SelectSingleElement) {',
+				'SelectSingleElement.initialize(',
+					GeneralUtility::quoteJSvalue('#' . $selectId) . ',',
+					'{',
+						'onChange: function() {',
+							implode('', $parameterArray['fieldChangeFunc']),
+						'},',
+						'onFocus: function() {',
+							$parameterArray['onFocus'],
+						'},',
+					'}',
+				');',
+			'}',
+		])];
 
 		return $resultArray;
 	}
