@@ -278,7 +278,9 @@ return array(
 				'tcaDatabaseRecord' => array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class => array(),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(
-						\TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class,
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\ReturnUrl::class,
+						)
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class => array(
 						'depends' => array(
@@ -287,7 +289,6 @@ return array(
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class => array(
 						'depends' => array(
-							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
 						),
 					),
@@ -410,10 +411,6 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
 						),
-						'before' => array(
-							// GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class,
-						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
 						'depends' => array(
@@ -438,6 +435,8 @@ return array(
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class => array(
 						'depends' => array(
+							// GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
@@ -448,8 +447,7 @@ return array(
 					),
 				),
 				'flexFormSegment' => array(
-					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
-					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
