@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 /**
  * Generation of TCEform elements of the type "input"
  */
-class InputElement extends AbstractFormElement {
+class InputTextElement extends AbstractFormElement {
 
 	/**
 	 * This will render a single-line input form field, possibly with various control/validation features

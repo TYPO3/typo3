@@ -72,7 +72,7 @@ class TextElement extends AbstractFormElement {
 
 		// must be called after the cols and rows calculation, so the parameters are applied
 		// to read-only fields as well.
-		// @todo: Same as in InputElement ...
+		// @todo: Same as in InputTextElement ...
 		if ($config['readOnly']) {
 			$config['cols'] = $cols;
 			$config['rows'] = $rows;
@@ -105,7 +105,7 @@ class TextElement extends AbstractFormElement {
 					// @todo: This is ugly: The code should find out on it's own whether a eval definition is a
 					// @todo: keyword like "date", or a class reference. The global registration could be dropped then
 					// Pair hook to the one in \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue_input_Eval()
-					// There is a similar hook for "evaluateFieldValue" in DataHandler and InputElement
+					// There is a similar hook for "evaluateFieldValue" in DataHandler and InputTextElement
 					if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func])) {
 						if (class_exists($func)) {
 							$evalObj = GeneralUtility::makeInstance($func);
