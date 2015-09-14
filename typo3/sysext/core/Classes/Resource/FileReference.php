@@ -282,7 +282,7 @@ class FileReference implements FileInterface {
 	/**
 	 * Get the MIME type of this file
 	 *
-	 * @return array file information
+	 * @return string mime type
 	 */
 	public function getMimeType() {
 		return $this->originalFile->getMimeType();

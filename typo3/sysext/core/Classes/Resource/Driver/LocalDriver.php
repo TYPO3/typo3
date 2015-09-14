@@ -649,6 +649,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 	public function getSpecificFileInformation($fileIdentifier, $containerPath, $property) {
 		$identifier = $this->canonicalizeAndCheckFileIdentifier($containerPath . PathUtility::basename($fileIdentifier));
 
+		/** @var FileInfo $fileInfo */
 		$fileInfo = GeneralUtility::makeInstance(FileInfo::class, $fileIdentifier);
 		switch ($property) {
 			case 'size':
@@ -662,7 +663,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver {
 			case 'name':
 				return PathUtility::basename($fileIdentifier);
 			case 'mimetype':
-				return $fileInfo->getMimeType();
+				return (string)$fileInfo->getMimeType();
 			case 'identifier':
 				return $identifier;
 			case 'storage':

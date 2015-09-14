@@ -68,7 +68,7 @@ interface FileInterface extends ResourceInterface {
 	/**
 	 * Get the MIME type of this file
 	 *
-	 * @return array file information
+	 * @return string mime type
 	 */
 	public function getMimeType();
 
@@ -107,7 +107,7 @@ interface FileInterface extends ResourceInterface {
 	public function setContents($contents);
 
 	/****************************************
-	 * STORAGE AND MANAGEMENT RELATED METHDOS
+	 * STORAGE AND MANAGEMENT RELATED METHODS
 	 ****************************************/
 	/**
 	 * Deletes this file from its storage. This also means that this object becomes useless.

@@ -248,7 +248,7 @@ abstract class AbstractFile implements FileInterface {
 	/**
 	 * Get the MIME type of this file
 	 *
-	 * @return array file information
+	 * @return string mime type
 	 */
 	public function getMimeType() {
 		return $this->properties['mime_type'] ?: array_pop($this->getStorage()->getFileInfoByIdentifier($this->getIdentifier(), array('mimetype')));
