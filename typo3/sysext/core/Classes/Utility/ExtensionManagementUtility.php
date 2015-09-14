@@ -1994,12 +1994,13 @@ tt_content.' . $key . $suffix . ' {
 	 * @param string $tableName Name of the table to be categorized
 	 * @param string $fieldName Name of the field to be used to store categories
 	 * @param array $options Additional configuration options
+	 * @param bool $override If TRUE, any category configuration for the same table / field is removed before the new configuration is added
 	 * @see addTCAcolumns
 	 * @see addToAllTCAtypes
 	 */
-	static public function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
+	static public function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array(), $override = FALSE) {
 		// Update the category registry
-		$result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options);
+		$result = CategoryRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options, $override);
 		if ($result === FALSE) {
 			$message = CategoryRegistry::class . ': no category registered for table "%s". Key was already registered.';
 			/** @var $logger \TYPO3\CMS\Core\Log\Logger */

@@ -260,7 +260,36 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				1, substr_count($typeConfig['showitem'], '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category')
 			);
 		}
-
 	}
 
+	/**
+	 * @test
+	 */
+	public function addAllowsSettingOfTheSameTableFieldTwice() {
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
+		$result = $this->subject->add('text_extension_a', $this->tables['first'], 'categories1', array(), TRUE);
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addInitializesMissingTypes() {
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
+		$GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd'] = array('showitem' => '');
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories1', array(), TRUE);
+		$this->assertSame(
+			1, substr_count($GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd']['showitem'], '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addAddsOnlyOneSqlString() {
+		$this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
+		$this->subject->add('text_extension_b', $this->tables['first'], 'categories1', array(), TRUE);
+		$sqlData = $this->subject->addExtensionCategoryDatabaseSchemaToTablesDefinition(array(), 'text_extension_a');
+		$this->assertEmpty($sqlData['sqlString'][0]);
+	}
 }

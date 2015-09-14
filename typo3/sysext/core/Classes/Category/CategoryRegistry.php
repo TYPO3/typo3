@@ -75,17 +75,22 @@ class CategoryRegistry implements SingletonInterface {
 	 *              + position: insert position of the categories field
 	 *              + label: backend label of the categories field
 	 *              + fieldConfiguration: TCA field config array to override defaults
+	 * @param bool $override If TRUE, any category configuration for the same table / field is removed before the new configuration is added
 	 * @return bool
 	 * @throws \InvalidArgumentException
 	 * @throws \RuntimeException
 	 */
-	public function add($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
+	public function add($extensionKey, $tableName, $fieldName = 'categories', array $options = array(), $override = FALSE) {
 		$didRegister = FALSE;
 		if (empty($tableName) || !is_string($tableName)) {
 			throw new \InvalidArgumentException('No or invalid table name "' . $tableName . '" given.', 1369122038);
 		}
 		if (empty($extensionKey) || !is_string($extensionKey)) {
 			throw new \InvalidArgumentException('No or invalid extension key "' . $extensionKey . '" given.', 1397836158);
+		}
+
+		if ($override) {
+			$this->remove($tableName, $fieldName);
 		}
 
 		if (!$this->isRegistered($tableName, $fieldName)) {
@@ -277,7 +282,6 @@ class CategoryRegistry implements SingletonInterface {
 
 			// Makes the new "categories" field to be visible in TSFE.
 			ExtensionManagementUtility::addToAllTCAtypes($tableName, $fieldList, $typesList, $position);
-
 		}
 	}
 
@@ -291,9 +295,9 @@ class CategoryRegistry implements SingletonInterface {
 	 */
 	protected function addCategoryTab($tableName, $fieldName) {
 		$fieldList = '';
-		if (!in_array($tableName, $this->addedCategoryTabs)) {
+		if (!isset($this->addedCategoryTabs[$tableName])) {
 			$fieldList .= '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category, ';
-			$this->addedCategoryTabs[] = $tableName;
+			$this->addedCategoryTabs[$tableName] = $tableName;
 		}
 		$fieldList .= $fieldName;
 		return $fieldList;
@@ -447,4 +451,31 @@ class CategoryRegistry implements SingletonInterface {
 		return $GLOBALS['LANG'];
 	}
 
+	/**
+	 * Removes the given field in the given table from the registry if it is found.
+	 *
+	 * @param string $tableName The name of the table for which the registration should be removed.
+	 * @param string $fieldName The name of the field for which the registration should be removed.
+	 */
+	protected function remove($tableName, $fieldName) {
+		if (!$this->isRegistered($tableName, $fieldName)) {
+			return;
+		}
+
+		unset($this->registry[$tableName][$fieldName]);
+
+		foreach ($this->extensions as $extensionKey => $tableFieldConfig) {
+			foreach ($tableFieldConfig as $extTableName => $fieldNameArray) {
+				if ($extTableName === $tableName && isset($fieldNameArray[$fieldName])) {
+					unset($this->extensions[$extensionKey][$tableName][$fieldName]);
+					break;
+				}
+			}
+		}
+
+		// If no more fields are configured we unregister the categories tab.
+		if (empty($this->registry[$tableName]) && isset($this->addedCategoryTabs[$tableName])) {
+			unset($this->addedCategoryTabs[$tableName]);
+		}
+	}
 }
