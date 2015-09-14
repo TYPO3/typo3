@@ -268,7 +268,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 			// CSH Buttons
 			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons');
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . IconUtility::getSpriteIcon('actions-document-close', array('title' => $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE))) . '</a>';
+			$buttons['close'] = '<button class="c-inputButton" name="closedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</button>';
 			// Save
 			$buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL) . '</button>';
 			// Save & Close
@@ -349,10 +349,10 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 				$tce->process_datamap();
 				// Re-load the record content:
 				$row = BackendUtility::getRecord($this->P['table'], $this->P['uid']);
-				// If the save/close button was pressed, then redirect the screen:
-				if (isset($_POST['saveandclosedok'])) {
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
-				}
+			}
+			// If the save/close or close button was pressed, then redirect the screen:
+			if (isset($_POST['saveandclosedok']) || isset($_POST['closedok'])) {
+				\TYPO3\CMS\Core\Utility\HttpUtility::redirect(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']));
 			}
 		} else {
 			// If nothing has been submitted, load the $bodyText variable from the selected database row:
@@ -500,7 +500,7 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 						$ctrl .= '<button name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL) . '</button>' . $brTag;
 					}
 
-					$ctrl .= '<button name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '">' . IconUtility::getSpriteIcon('actions-template-new') . '</button>' . $brTag;
+					$ctrl .= '<button name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-template-new', Icon::SIZE_SMALL) . '</button>' . $brTag;
 					$ctrl = '<span class="c-wizButtonsV">' . $ctrl . '</span>';
 					// Finally, put together the full row from the generated content above:
 					$bgC = $confData['type'] ? ' class="bgColor5"' : '';

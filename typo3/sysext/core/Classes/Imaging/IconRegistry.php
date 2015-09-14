@@ -683,6 +683,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'arrows-alt',
 			)
 		),
+		'actions-template-new' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/actions/template-new.png',
+			)
+		),
 
 		// Extensions
 		'extensions-extensionmanager-update-script' => array(
