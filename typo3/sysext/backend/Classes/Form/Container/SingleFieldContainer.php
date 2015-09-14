@@ -15,13 +15,11 @@ namespace TYPO3\CMS\Backend\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -31,11 +29,11 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 /**
  * Container around a "single field".
  *
- * This container is the last one in the chain before processing is hand over to single element classes.
+ * This container is the last one in the chain before processing is handed over to single element classes.
  * If a single field is of type flex or inline, it however creates FlexFormLanguageContainer or InlineControlContainer.
  *
  * The container does various checks and processing for a given single fields, for example it resolves
- * display conditions and the HTML to compare compare different languages.
+ * display conditions and the HTML to compare different languages.
  */
 class SingleFieldContainer extends AbstractContainer {
 
@@ -135,16 +133,15 @@ class SingleFieldContainer extends AbstractContainer {
 			$alertMsgOnChange = '';
 		}
 
-		if (in_array($fieldName, $this->data['hiddenFieldListArray'], TRUE)) {
-			// Render as a hidden field if this field had a forced value in overrideVals
-			// @todo: This is an ugly concept ... search for overrideVals and defVals for a full picture of this madness
-			$resultArray = $this->initializeResultArray();
-			// This hidden field can not just be returned as casual html since upper containers will then render a label and wrapping stuff - this is not wanted here
-			$value = $parameterArray['itemFormElValue'];
-			if (is_array($value)) {
-				$value = array_shift($value);
-			}
-			$resultArray['additionalHiddenFields'][] = '<input type="hidden" name="' . $parameterArray['itemFormElName'] . '" value="' . htmlspecialchars($value) . '" />';
+		if (array_key_exists($fieldName, $this->data['overrideValues'])) {
+			$options = [
+				'parameterArray' => [
+						'itemFormElName' => 'data[' . $table . '][' . $row['uid'] . '][' . $fieldName . ']',
+						'itemFormElValue' => $this->data['overrideValues'][$fieldName]
+				],
+				'renderType' => 'hidden'
+			];
+			$resultArray = $this->nodeFactory->create($options)->render();
 		} else {
 			// JavaScript code for event handlers:
 			$parameterArray['fieldChangeFunc'] = array();

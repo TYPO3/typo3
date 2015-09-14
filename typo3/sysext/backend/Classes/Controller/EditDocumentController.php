@@ -1011,7 +1011,7 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 								// Set additional FormData
 								// @todo: This is a hack and should be done differently
 								if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
-									$formData['hiddenFieldListArray'] = array_keys($this->overrideVals[$table]);
+									$formData['overrideValues'] = $this->overrideVals[$table];
 								}
 
 								if ($command !== 'new') {

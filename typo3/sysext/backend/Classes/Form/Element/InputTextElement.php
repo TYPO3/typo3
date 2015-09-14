@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Generation of TCEform elements of the type "input"
+ * Generation of TCEform elements of the type "input type=text"
  */
 class InputTextElement extends AbstractFormElement {
 

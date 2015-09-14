@@ -176,8 +176,7 @@ class FormDataCompiler {
 			'inlineFirstPid' => NULL,
 			// This array of fields will be set as hidden-fields instead of rendered normally!
 			// This is used by EditDocumentController to force some field values if set as "overrideVals" in _GP
-			// @todo: This is more a hack than a clean solution - controllers should take care of that on their own
-			'hiddenFieldListArray' => [],
+			'overrideValues' => [],
 
 			// @todo: must be handled / further defined
 			'elementBaseName' => '',
