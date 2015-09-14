@@ -104,7 +104,10 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			)
 		);
 		LoginRefresh.$timeoutModal.find('.modal-footer').append(
-			$('<button />', {class: 'btn btn-default', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_abort_button).on('click', function() {
+			$('<button />', {class: 'btn btn-default', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_login_logout_button).on('click', function() {
+				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
+			}),
+			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
 				$.ajax({
 					url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
 					method: 'GET',
@@ -112,9 +115,6 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 						LoginRefresh.hideTimeoutModal();
 					}
 				});
-			}),
-			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'logout'}).text(TYPO3.LLL.core.refresh_login_confirm_button).on('click', function() {
-				top.location.href = TYPO3.configuration.siteUrl + LoginRefresh.logoutUrl;
 			})
 		);
 		LoginRefresh.registerDefaultModalEvents(LoginRefresh.$timeoutModal);
