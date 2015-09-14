@@ -78,11 +78,17 @@ class OpcodeCacheUtility {
 				'error' => $apcVersion && VersionNumberUtility::convertVersionNumberToInteger($apcVersion) < 3001007,
 				'clearCallback' => function ($fileAbsPath) {
 					if ($fileAbsPath !== NULL && OpcodeCacheUtility::getCanInvalidate('APC')) {
-						// This may output a warning like: PHP Warning: apc_delete_file(): Could not stat file
-						// This warning isn't true, this means that apc was unable to generate the cache key
-						// which depends on the configuration of APC.
-						apc_delete_file($fileAbsPath);
+						if (is_dir($fileAbsPath)) {
+							// APC can't flush whole directories directly by just givin' the directory path.
+							// Instead retrieve all matching cache entries using an ApcIterator.
+							$quotedPath = preg_quote(rtrim($fileAbsPath, '/') . '/', '/');
+							$iterator = new \APCIterator('file', '/^'. $quotedPath . '.*/');
+							apc_delete_file($iterator);
+						} else {
+							apc_delete_file($fileAbsPath);
+						}
 					} else {
+						// Clear whole cache at once.
 						apc_clear_cache('opcode');
 					}
 				}

@@ -2955,10 +2955,10 @@ Connection: close
 		if (is_dir($directory)) {
 			$temporaryDirectory = rtrim($directory, '/') . '.' . uniqid('remove', TRUE) . '/';
 			if (rename($directory, $temporaryDirectory)) {
-				$flushOpcodeCache && OpcodeCacheUtility::clearAllActive($directory);
 				if ($keepOriginalDirectory) {
 					self::mkdir($directory);
 				}
+				$flushOpcodeCache && OpcodeCacheUtility::clearAllActive($directory);
 				clearstatcache();
 				$result = self::rmdir($temporaryDirectory, TRUE);
 			}
