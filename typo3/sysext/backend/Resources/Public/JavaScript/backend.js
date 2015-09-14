@@ -204,8 +204,5 @@ function debugObj(obj,name)	{	//
 var currentSubScript = "";
 var currentSubNavScript = "";
 
-	// Used for tab-panels:
-var DTM_currentTabs = [];
-
 	// status of WS FE preview
 var WorkspaceFrontendPreviewEnabled = TYPO3.configuration.workspaceFrontendPreviewEnabled;
