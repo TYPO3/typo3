@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -118,7 +120,8 @@ class FormEngineUtility {
 		}
 		$out = '';
 		if (static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] && static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] != 'empty-empty') {
-			$out .= IconUtility::getSpriteIcon(static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon']);
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$out .= $iconFactory->getIcon(static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'], Icon::SIZE_SMALL)->render();
 			$out .= '&nbsp;';
 		} elseif (static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['title']) {
 			$out .= '[' . static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] . ']';
@@ -192,7 +195,10 @@ class FormEngineUtility {
 			. ' />';
 		}
 
-		return IconUtility::getSpriteIcon($icon, array('alt' => $alt, 'title' => $title));
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		return '<span alt="' . htmlspecialchars($alt). '" title="' . htmlspecialchars($title) . '">'
+			. $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render()
+			. '</span>';
 	}
 
 	/**

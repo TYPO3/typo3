@@ -36,7 +36,8 @@ module.exports = function(grunt) {
 			sysext    : '<%= paths.root %>typo3/sysext/',
 			t3skin    : '<%= paths.sysext %>t3skin/Resources/',
 			backend   : '<%= paths.sysext %>backend/Resources/',
-			core      : '<%= paths.sysext %>core/Resources/'
+			core      : '<%= paths.sysext %>core/Resources/',
+			flags     : 'bower_components/region-flags/svg/'
 		},
 		less: {
 			t3skin: {
@@ -259,6 +260,17 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-scheduled.svg': '<%= paths.icons %>Overlay/overlay-scheduled.svg',
 					'<%= paths.backend %>Public/Icons/Overlay/overlay-translated.svg': '<%= paths.icons %>Overlay/overlay-translated.svg'
 				}
+			},
+			// Flags
+			flags: {
+				files: [{
+					expand: true,
+					cwd: '<%= paths.flags %>',
+					src: '*.svg',
+					dest: '<%= paths.sysext %>core/Resources/Public/Icons/Flags/SVG/',
+					ext: '.svg',
+					extDot: 'first'
+				}]
 			}
 		}
 	});

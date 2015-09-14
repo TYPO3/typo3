@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Workspaces\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -45,8 +47,9 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected function initializeAction() {
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$this->pageId = (int)GeneralUtility::_GP('id');
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$icons = array(
-			'language' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('flags-multiple'),
+			'language' => $iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
 			'integrity' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-information'),
 			'success' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-ok'),
 			'info' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-information'),

@@ -33,6 +33,11 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $tcaInitialized = FALSE;
 
 	/**
+	 * @var bool
+	 */
+	protected $flagsInitialized = FALSE;
+
+	/**
 	 * Registered icons
 	 *
 	 * @var array
@@ -1467,6 +1472,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-deleted.svg'
 			)
 		),
+		'overlay-edit' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'pencil'
+			)
+		),
 		'overlay-hidden' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -1491,6 +1502,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-missing.svg'
 			)
 		),
+		'overlay-new' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'plus-circle'
+			)
+		),
 		'overlay-readonly' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -1513,6 +1530,86 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => SvgIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-translated.svg'
+			)
+		),
+
+		// Flags will be auto-registered after we have the SVG files
+		'flags-multiple' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/multiple.png'
+			)
+		),
+		'flags-an' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/an.png'
+			)
+		),
+		'flags-bv' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/bv.png'
+			)
+		),
+		'flags-catalonia' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/catalonia.png'
+			)
+		),
+		'flags-cs' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/cs.png'
+			)
+		),
+		'flags-fam' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/fam.png'
+			)
+		),
+		'flags-hm' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/hm.png'
+			)
+		),
+		'flags-qc' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/qc.png'
+			)
+		),
+		'flags-scotland' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/scotland.png'
+			)
+		),
+		'flags-sj' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/sj.png'
+			)
+		),
+		'flags-tf' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/tf.png'
+			)
+		),
+		'flags-um' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/um.png'
+			)
+		),
+		'flags-wales' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/wales.png'
 			)
 		)
 	);
@@ -1543,6 +1640,13 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @var string
 	 */
 	protected $defaultIconIdentifier = 'default-not-found';
+
+	/**
+	* The constructor
+	*/
+	public function __construct() {
+		$this->registerFlags();
+	}
 
 	/**
 	 * @param string $identifier
@@ -1600,6 +1704,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		// only the first time the TCA is available
 		if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
 			$this->registerTCAIcons();
+		}
+		if ($this->flagsInitialized) {
+			$this->registerFlags();
 		}
 		if (!$this->isRegistered($identifier)) {
 			throw new Exception('Icon with identifier "' . $identifier . '" is not registered"', 1437425804);
@@ -1688,4 +1795,23 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->tcaInitialized = TRUE;
 	}
 
+	/**
+	 * register flags
+	 */
+	protected function registerFlags() {
+		$iconFolder = 'EXT:core/Resources/Public/Icons/Flags/SVG/';
+		$files = scandir(GeneralUtility::getFileAbsFileName($iconFolder));
+		foreach ($files as $file) {
+			if (!StringUtility::beginsWith($file, '.')) {
+				$identifier = strtolower(str_replace('.svg', '', $file));
+				$this->icons['flags-' . $identifier] = array(
+					'provider' => SvgIconProvider::class,
+					'options' => array(
+						'source' => $iconFolder . $file
+					)
+				);
+			}
+		}
+		$this->flagsInitialized = TRUE;
+	}
 }

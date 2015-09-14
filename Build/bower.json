@@ -41,6 +41,7 @@
     "Placeholders.js": "4.0.1",
     "taboverride": "4.0.2",
     "seiyria-bootstrap-slider": "4.8.1",
-    "devbridge-autocomplete": "1.2.21"
+    "devbridge-autocomplete": "1.2.21",
+    "region-flags": "*"
   }
 }

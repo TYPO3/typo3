@@ -82,7 +82,7 @@ class TranslationConfigurationProvider {
  				}
  			}
 			if ($languageRecord['flag'] !== '') {
-				$languages[$languageRecord['uid']]['flagIcon'] = IconUtility::mapRecordTypeToSpriteIconName('sys_language', $languageRecord);
+				$languages[$languageRecord['uid']]['flagIcon'] = 'flags-' . $languageRecord['flag'];
  			}
  		}
 		return $languages;

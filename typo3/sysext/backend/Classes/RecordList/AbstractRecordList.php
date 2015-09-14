@@ -413,7 +413,8 @@ abstract class AbstractRecordList {
 		$out = '';
 		$title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
 		if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
-			$out .= IconUtility::getSpriteIcon($this->languageIconTitles[$sys_language_uid]['flagIcon'], array('title' => $title));
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$out .= '<span title="' . $title . '">' . $iconFactory->getIcon($this->languageIconTitles[$sys_language_uid]['flagIcon'], Icon::SIZE_SMALL)->render() . '</span>';
 			if (!$addAsAdditionalText) {
 				return $out;
 			}

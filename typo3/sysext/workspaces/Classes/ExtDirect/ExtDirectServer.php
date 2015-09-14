@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -245,11 +247,12 @@ class ExtDirectServer extends AbstractHandler {
 	 * @return array
 	 */
 	public function getSystemLanguages() {
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$systemLanguages = array(
 			array(
 				'uid' => 'all',
 				'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('language.allLanguages', 'workspaces'),
-				'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('empty-empty')
+				'icon' => $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()
 			)
 		);
 		foreach ($this->getGridDataService()->getSystemLanguages() as $id => $systemLanguage) {
@@ -259,7 +262,7 @@ class ExtDirectServer extends AbstractHandler {
 			$systemLanguages[] = array(
 				'uid' => $id,
 				'title' => htmlspecialchars($systemLanguage['title']),
-				'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($systemLanguage['flagIcon'])
+				'icon' => $iconFactory->getIcon($systemLanguage['flagIcon'], Icon::SIZE_SMALL)->render()
 			);
 		}
 		$result = array(

@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -1653,7 +1652,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 					);
 					$language = BackendUtility::getRecord('sys_language', $lUid_OnPage, 'title');
 					if ($this->languageIconTitles[$lUid_OnPage]['flagIcon']) {
-						$lC = IconUtility::getSpriteIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon']);
+						$lC = $this->iconFactory->getIcon($this->languageIconTitles[$lUid_OnPage]['flagIcon'], Icon::SIZE_SMALL);
 					} else {
 						$lC = $this->languageIconTitles[$lUid_OnPage]['title'];
 					}

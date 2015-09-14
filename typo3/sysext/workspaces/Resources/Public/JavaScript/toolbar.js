@@ -362,7 +362,7 @@ TYPO3.Workspaces.Toolbar.LanguageSelector = new Ext.form.ComboBox({
 	triggerAction: 'all',
 	editable: false,
 	forceSelection: true,
-	tpl: '<tpl for="."><div class="x-combo-list-item"><span class="{cls}">&nbsp;</span> {title}</div></tpl>',
+	tpl: '<tpl for="."><div class="x-combo-list-item">{icon} {title}</div></tpl>',
 	store: new Ext.data.DirectStore({
 		storeId: 'languages',
 		root: 'data',
@@ -371,7 +371,7 @@ TYPO3.Workspaces.Toolbar.LanguageSelector = new Ext.form.ComboBox({
 		fields: [
 			{name : 'uid'},
 			{name : 'title'},
-			{name : 'cls'}
+			{name : 'icon'}
 		],
 		listeners: {
 			load: function() {

@@ -700,7 +700,6 @@ class FileList extends AbstractRecordList {
 								if (array_key_exists($languageId, $translations)) {
 									$title = htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('editMetadataForLanguage'), $language['title']));
 									// @todo the overlay for the flag needs to be added ($flagIcon . '-overlay')
-									$flagButtonIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
 									$urlParameters = [
 										'edit' => [
 											'sys_file_metadata' => [
@@ -709,6 +708,10 @@ class FileList extends AbstractRecordList {
 										],
 										'returnUrl' => $this->listURL()
 									];
+									$flagButtonIcon = $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-edit');
+									$data = array(
+										'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
+									);
 									$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 									$languageCode .= '<a href="' . htmlspecialchars($url)
 										. '" class="btn btn-default" title="' . $title . '">'
@@ -723,11 +726,7 @@ class FileList extends AbstractRecordList {
 										'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
 										$returnUrl
 									);
-									$flagButtonIcon = IconUtility::getSpriteIcon(
-										$flagIcon,
-										array('title' => sprintf($GLOBALS['LANG']->getLL('createMetadataForLanguage'), $language['title'])),
-										array($flagIcon . '-overlay' => array())
-									);
+									$flagButtonIcon = '<span title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('createMetadataForLanguage'), $language['title'])) . '">' . $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-new') . '</span>';
 									$languageCode .= '<a href="' . htmlspecialchars($href) . '" class="btn btn-default">' . $flagButtonIcon . '</a> ';
 								}
 							}

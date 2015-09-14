@@ -130,7 +130,7 @@ TYPO3.Workspaces.Configuration.Language = {
 	width: 30,
 	hideable: true,
 	sortable: true,
-	header: '<span class="' + TYPO3.settings.Workspaces.icons.language + '">&nbsp;</span>',
+	header: TYPO3.settings.Workspaces.icons.language,
 	filter: { type: 'string '},
 	renderer: function(value, metaData, record) {
 		return '<span class="' + record.json.language.cls + '" title="' + record.json.language.title + '">&nbsp;</span>';
