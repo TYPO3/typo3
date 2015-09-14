@@ -170,6 +170,115 @@ class DatabaseRowInitializeNewTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function addDataSetsDefaultDataOverrulingFormPageTs() {
+		$input = [
+			'command' => 'new',
+			'tableName' => 'aTable',
+			'vanillaUid' => 23,
+			'databaseRow' => [],
+			'pageTsConfig' => [
+				'TCAdefaults.' => [
+					'aTable.' => [
+						'aField' => 'pageTsValue',
+					],
+				],
+			],
+			'userTsConfig' => [
+				'TCAdefaults.' => [
+					'aTable.' => [
+						'aField' => 'userTsValue',
+					],
+				],
+			],
+			'vanillaTableTca' => [
+				'columns' => [
+					'aField' => [],
+				],
+			]
+		];
+		$expected = [
+			'aField' => 'pageTsValue',
+			'pid' => 23,
+		];
+		$result = $this->subject->addData($input);
+		$this->assertSame($expected, $result['databaseRow']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataSetsDefaultFromNeighborRow() {
+		$input = [
+			'command' => 'new',
+			'tableName' => 'aTable',
+			'vanillaUid' => 23,
+			'databaseRow' => [],
+			'neighborRow' => [
+				'aField' => 'valueFromNeighbor',
+			],
+			'vanillaTableTca' => [
+				'ctrl' => [
+					'useColumnsForDefaultValues' => 'aField',
+				],
+				'columns' => [
+					'aField' => [],
+				],
+			],
+		];
+		$expected = [
+			'aField' => 'valueFromNeighbor',
+			'pid' => 23,
+		];
+		$result = $this->subject->addData($input);
+		$this->assertSame($expected, $result['databaseRow']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataSetsDefaultDataOverrulingFromNeighborRow() {
+		$input = [
+			'command' => 'new',
+			'tableName' => 'aTable',
+			'vanillaUid' => 23,
+			'databaseRow' => [],
+			'neighborRow' => [
+				'aField' => 'valueFromNeighbor',
+			],
+			'pageTsConfig' => [
+				'TCAdefaults.' => [
+					'aTable.' => [
+						'aField' => 'pageTsValue',
+					],
+				],
+			],
+			'userTsConfig' => [
+				'TCAdefaults.' => [
+					'aTable.' => [
+						'aField' => 'userTsValue',
+					],
+				],
+			],
+			'vanillaTableTca' => [
+				'ctrl' => [
+					'useColumnsForDefaultValues' => 'aField',
+				],
+				'columns' => [
+					'aField' => [],
+				],
+			],
+		];
+		$expected = [
+			'aField' => 'valueFromNeighbor',
+			'pid' => 23,
+		];
+		$result = $this->subject->addData($input);
+		$this->assertSame($expected, $result['databaseRow']);
+	}
+
+	/**
+	 * @test
+	 */
 	public function addDataSetsDefaultDataFormGetIfColumnIsDenfinedInTca() {
 		$input = [
 			'command' => 'new',
@@ -308,7 +417,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function addDataSetsDefaultFromNeighborRow() {
+	public function addDataSetsDefaultDataOverrulingGetPost() {
 		$input = [
 			'command' => 'new',
 			'tableName' => 'aTable',
@@ -317,34 +426,19 @@ class DatabaseRowInitializeNewTest extends UnitTestCase {
 			'neighborRow' => [
 				'aField' => 'valueFromNeighbor',
 			],
-			'vanillaTableTca' => [
-				'ctrl' => [
-					'useColumnsForDefaultValues' => 'aField',
-				],
-				'columns' => [
-					'aField' => [],
+			'pageTsConfig' => [
+				'TCAdefaults.' => [
+					'aTable.' => [
+						'aField' => 'pageTsValue',
+					],
 				],
 			],
-		];
-		$expected = [
-			'aField' => 'valueFromNeighbor',
-			'pid' => 23,
-		];
-		$result = $this->subject->addData($input);
-		$this->assertSame($expected, $result['databaseRow']);
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsDoesNotOverrideDefaultFromNeighborRowIfOtherDefaultHasSetDataAlready() {
-		$input = [
-			'command' => 'new',
-			'tableName' => 'aTable',
-			'vanillaUid' => 23,
-			'databaseRow' => [],
-			'neighborRow' => [
-				'aField' => 'valueFromNeighbor',
+			'userTsConfig' => [
+				'TCAdefaults.' => [
+					'aTable.' => [
+						'aField' => 'userTsValue',
+					],
+				],
 			],
 			'vanillaTableTca' => [
 				'ctrl' => [

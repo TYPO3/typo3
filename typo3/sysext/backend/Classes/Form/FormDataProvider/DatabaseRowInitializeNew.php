@@ -24,6 +24,7 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface {
 
 	/**
 	 * Initialize new row with default values from various sources
+	 * There are 4 sources of default values. Mind the order, the last takes precedence.
 	 *
 	 * @param array $result
 	 * @return array
@@ -60,6 +61,21 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface {
 			}
 		}
 
+		// If a neighbor row is given (if vanillaUid was negative), field can be initialized with values
+		// from neighbor for fields registered in TCA['ctrl']['useColumnsForDefaultValues'].
+		if (is_array($result['neighborRow'])
+			&& !empty($result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'])
+		) {
+			$defaultColumns = GeneralUtility::trimExplode(',', $result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'], TRUE);
+			foreach ($defaultColumns as $fieldName) {
+				if (isset($result['vanillaTableTca']['columns'][$fieldName])
+					&& isset($result['neighborRow'][$fieldName])
+				) {
+					$databaseRow[$fieldName] = $result['neighborRow'][$fieldName];
+				}
+			}
+		}
+
 		// Apply default values from GET / POST
 		// @todo: Fetch this stuff from request object as soon as modules were moved to PSR-7
 		$defaultValuesFromGetPost = GeneralUtility::_GP('defVals');
@@ -69,25 +85,6 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface {
 			foreach ($defaultValuesFromGetPost[$tableName] as $fieldName => $fieldValue) {
 				if (isset($result['vanillaTableTca']['columns'][$fieldName])) {
 					$databaseRow[$fieldName] = $fieldValue;
-				}
-			}
-		}
-
-		// If a neighbor row is given (if vanillaUid was negative), field can be initialized with values
-		// from neighbor for fields registered in TCA['ctrl']['useColumnsForDefaultValues'].
-		if (is_array($result['neighborRow'])
-			&& isset($result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'])
-			&& !empty($result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'])
-		) {
-			$defaultColumns = GeneralUtility::trimExplode(',', $result['vanillaTableTca']['ctrl']['useColumnsForDefaultValues'], TRUE);
-			foreach ($defaultColumns as $fieldName) {
-				if (isset($result['vanillaTableTca']['columns'][$fieldName])
-					&& isset($result['neighborRow'][$fieldName])
-					// Set only if not initialized by other default
-					// @todo: Why shouldn't neighbor override a different default, where is that useful?
-					&& !isset($databaseRow[$fieldName])
-				) {
-					$databaseRow[$fieldName] = $result['neighborRow'][$fieldName];
 				}
 			}
 		}
