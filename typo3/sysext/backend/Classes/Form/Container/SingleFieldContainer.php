@@ -59,17 +59,20 @@ class SingleFieldContainer extends AbstractContainer {
 		$parameterArray = array();
 		$parameterArray['fieldConf'] = $this->data['processedTca']['columns'][$fieldName];
 
+		$languageField = $this->data['processedTca']['ctrl']['languageField'];
+
 		// A couple of early returns in case the field should not be rendered
 		// Check if this field is configured and editable according to exclude fields and other configuration
 		if (
-			// @todo: another user access rights check!
+			// Return if BE-user has no access rights to this field, @todo: another user access rights check!
 			$parameterArray['fieldConf']['exclude'] && !$backendUser->check('non_exclude_fields', $table . ':' . $fieldName)
 			|| $parameterArray['fieldConf']['config']['type'] === 'passthrough'
 			// @todo: Drop option "showIfRTE" ?
 			|| !$backendUser->isRTE() && $parameterArray['fieldConf']['config']['showIfRTE']
-			|| $this->data['processedTca']['ctrl']['languageField'] && !$parameterArray['fieldConf']['l10n_display'] && $parameterArray['fieldConf']['l10n_mode'] === 'exclude' && ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0)
+			// Return if field should not be rendered in translated records
+			|| $languageField && !$parameterArray['fieldConf']['l10n_display'] && $parameterArray['fieldConf']['l10n_mode'] === 'exclude' && is_array($row[$languageField]) && $row[$languageField][0] > 0
 			// @todo: localizationMode still needs handling!
-			|| $this->data['processedTca']['ctrl']['languageField'] && $this->data['localizationMode'] && $this->data['localizationMode'] !== $parameterArray['fieldConf']['l10n_cat']
+			|| $languageField && $this->data['localizationMode'] && $this->data['localizationMode'] !== $parameterArray['fieldConf']['l10n_cat']
 			|| $this->inlineFieldShouldBeSkipped()
 		) {
 			return $resultArray;
@@ -105,7 +108,7 @@ class SingleFieldContainer extends AbstractContainer {
 		// Set field to read-only if configured for translated records to show default language content as readonly
 		if ($parameterArray['fieldConf']['l10n_display']
 			&& GeneralUtility::inList($parameterArray['fieldConf']['l10n_display'], 'defaultAsReadonly')
-			&& $row[$this->data['processedTca']['ctrl']['languageField']] > 0
+			&& is_array($row[$languageField]) && $row[$languageField][0] > 0
 		) {
 			$parameterArray['fieldConf']['config']['readOnly'] = TRUE;
 			$parameterArray['itemFormElValue'] = $this->data['defaultLanguageData'][$table . ':' . $row['uid']][$fieldName];
