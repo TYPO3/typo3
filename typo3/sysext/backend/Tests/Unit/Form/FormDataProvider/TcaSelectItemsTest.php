@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -42,7 +43,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 	/**
 	 * @var array A backup of registered singleton instances
 	 */
-	protected $singletonInstances = array();
+	protected $singletonInstances = [];
 
 	public function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
@@ -124,6 +125,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataTranslatesItemLabels() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -152,6 +156,8 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$expected['processedTca']['columns']['aField']['config']['items'][0][2] = NULL;
 		$expected['processedTca']['columns']['aField']['config']['items'][0][3] = NULL;
 
+		$expected['databaseRow']['aField'] = ['aValue'];
+
 		$this->assertSame($expected, $this->subject->addData($input));
 	}
 
@@ -160,6 +166,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataKeepsIconFromItem() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -185,6 +194,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->sL(Argument::cetera())->willReturnArgument(0);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 
 		$this->assertSame($expected, $this->subject->addData($input));
 	}
@@ -200,7 +210,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 					'aField' => [
 						'config' => [
 							'type' => 'select',
-							'special' => 'anUnkownValue',
+							'special' => 'anUnknownValue',
 						],
 					],
 				],
@@ -217,6 +227,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataAddsTablesWithSpecialTables() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -251,6 +264,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->loadSingleTableDescription('aTable')->shouldBeCalled();
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		$expected['processedTca']['columns']['aField']['config']['items'] = [
 			0 => [
 				0 => 'aTitle',
@@ -270,6 +284,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataAddsTablesWithSpecialPageTypes() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -277,6 +294,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 						'config' => [
 							'type' => 'select',
 							'special' => 'pagetypes',
+							'items' => [],
 						],
 					],
 				],
@@ -306,6 +324,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->sL('aLabel')->shouldBeCalled()->willReturnArgument(0);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		$expected['processedTca']['columns']['aField']['config']['items'] = [
 			0 => [
 				0 => 'aLabel',
@@ -1066,13 +1085,13 @@ class TcaSelectItemsTest extends UnitTestCase {
 				0 => 'anImage.gif',
 				1 => 'anImage.gif',
 				2 => '../' . $directory . 'anImage.gif',
-				3 => null,
+				3 => NULL,
 			],
 			1 => [
 				0 => 'subdir/anotherImage.gif',
 				1 => 'subdir/anotherImage.gif',
 				2 => '../' . $directory . 'subdir/anotherImage.gif',
-				3 => null,
+				3 => NULL,
 			],
 		];
 
@@ -1265,7 +1284,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$databaseProphecy->sql_error()->shouldBeCalled()->willReturn(FALSE);
 		$databaseProphecy->quoteStr(Argument::cetera())->willReturnArgument(0);
 		$databaseProphecy->fullQuoteStr(Argument::cetera())->will(function ($args) {
-			return '\''. $args[0] . '\'';
+			return '\'' . $args[0] . '\'';
 		});
 		$databaseProphecy->sql_fetch_assoc(Argument::cetera())->shouldBeCalled()->willReturn(FALSE);
 		$databaseProphecy->sql_free_result(Argument::cetera())->shouldBeCalled()->willReturn(NULL);
@@ -1340,7 +1359,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$databaseProphecy->sql_error()->shouldBeCalled()->willReturn(FALSE);
 		$databaseProphecy->quoteStr(Argument::cetera())->willReturnArgument(0);
 		$databaseProphecy->fullQuoteStr(Argument::cetera())->will(function ($args) {
-			return '\''. $args[0] . '\'';
+			return '\'' . $args[0] . '\'';
 		});
 		$databaseProphecy->sql_fetch_assoc(Argument::cetera())->shouldBeCalled()->willReturn(FALSE);
 		$databaseProphecy->sql_free_result(Argument::cetera())->shouldBeCalled()->willReturn(NULL);
@@ -1355,6 +1374,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataForeignTableQueuesFlashMessageOnDatabaseError() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -1410,6 +1432,8 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$flashMessageQueue->enqueue($flashMessage)->shouldBeCalled();
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
+
 		$this->assertEquals($expected, $this->subject->addData($input));
 	}
 
@@ -1418,6 +1442,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataForeignTableHandlesForegnTableRows() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -1426,6 +1453,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 							'type' => 'select',
 							'foreign_table' => 'fTable',
 							'foreign_table_prefix' => 'aPrefix',
+							'items' => [],
 						],
 					],
 				]
@@ -1470,15 +1498,17 @@ class TcaSelectItemsTest extends UnitTestCase {
 				0 => 'aPrefix[LLL:EXT:lang/locallang_core.xlf:labels.no_title]',
 				1 => 1,
 				2 => 'status-status-icon-missing',
-				3 => null,
+				3 => NULL,
 			],
 			1 => [
 				0 => 'aPrefix[LLL:EXT:lang/locallang_core.xlf:labels.no_title]',
 				1 => 2,
 				2 => 'status-status-icon-missing',
-				3 => null,
+				3 => NULL,
 			],
 		];
+
+		$expected['databaseRow']['aField'] = ['aValue'];
 
 		$this->assertEquals($expected, $this->subject->addData($input));
 	}
@@ -1488,6 +1518,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataRemovesItemsByKeepItemsPageTsConfig() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -1527,6 +1560,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->sL(Argument::cetera())->willReturnArgument(0);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
 		$this->assertEquals($expected, $this->subject->addData($input));
@@ -1537,6 +1571,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataRemovesItemsByRemoveItemsPageTsConfig() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue'
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -1576,6 +1613,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->sL(Argument::cetera())->willReturnArgument(0);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
 		$this->assertEquals($expected, $this->subject->addData($input));
@@ -1586,6 +1624,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataRemovesItemsByLanguageFieldUserRestriction() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue'
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'ctrl' => [
@@ -1625,6 +1666,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$backendUserProphecy->checkLanguageAccess('remove')->shouldBeCalled()->willReturn(FALSE);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
 		$this->assertEquals($expected, $this->subject->addData($input));
@@ -1635,6 +1677,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataRemovesItemsByUserAuthModeRestriction() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue'
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -1672,6 +1717,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$backendUserProphecy->checkAuthMode('aTable', 'aField', 'remove', 'explicitAllow')->shouldBeCalled()->willReturn(FALSE);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
 		$this->assertEquals($expected, $this->subject->addData($input));
@@ -1682,6 +1728,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataKeepsAllPagesDoktypesForAdminUser() {
 		$input = [
+			'databaseRow' => [
+				'doktype' => 'keep'
+			],
 			'tableName' => 'pages',
 			'processedTca' => [
 				'columns' => [
@@ -1713,6 +1762,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$backendUserProphecy->isAdmin()->shouldBeCalled()->willReturn(TRUE);
 
 		$expected = $input;
+		$expected['databaseRow']['doktype'] = ['keep'];
 
 		$this->assertEquals($expected, $this->subject->addData($input));
 	}
@@ -1722,6 +1772,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataKeepsAllowedPageTypesForNonAdminUser() {
 		$input = [
+			'databaseRow' => [
+				'doktype' => 'keep',
+			],
 			'tableName' => 'pages',
 			'processedTca' => [
 				'columns' => [
@@ -1760,6 +1813,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		];
 
 		$expected = $input;
+		$expected['databaseRow']['doktype'] = ['keep'];
 		unset($expected['processedTca']['columns']['doktype']['config']['items'][1]);
 
 		$this->assertEquals($expected, $this->subject->addData($input));
@@ -1771,7 +1825,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	public function addDataCallsItemsProcFunc() {
 		$input = [
 			'tableName' => 'aTable',
-			'databaseRow' => [],
+			'databaseRow' => [
+				'aField' => 'aValue'
+			],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -1800,6 +1856,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->sL(Argument::cetera())->willReturnArgument(0);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		$expected['processedTca']['columns']['aField']['config'] = [
 			'type' => 'select',
 			'items' => [
@@ -1946,6 +2003,9 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	public function addDataTranslatesItemLabelsFromPageTsConfig() {
 		$input = [
+			'databaseRow' => [
+				'aField' => 'aValue',
+			],
 			'tableName' => 'aTable',
 			'processedTca' => [
 				'columns' => [
@@ -1985,10 +2045,285 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$languageService->sL('labelOverride')->shouldBeCalled()->willReturnArgument(0);
 
 		$expected = $input;
+		$expected['databaseRow']['aField'] = ['aValue'];
 		$expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
 
 		$this->assertSame($expected, $this->subject->addData($input));
 		$this->subject->addData($input);
 	}
 
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueSetsMmForeignRelationValues() {
+		$GLOBALS['TCA']['foreignTable'] = [];
+
+		/** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+		$backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+		$GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+		/** @var DatabaseConnection|ObjectProphecy $database */
+		$database = $this->prophesize(DatabaseConnection::class);
+		$GLOBALS['TYPO3_DB'] = $database->reveal();
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'uid' => 42,
+				// Two connected rows
+				'aField' => 2,
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 999,
+							'foreign_table' => 'foreignTable',
+							'MM' => 'aTable_foreignTable_mm',
+							'items' => [],
+						],
+					],
+				],
+			],
+		];
+		$fieldConfig = $input['processedTca']['columns']['aField']['config'];
+		/** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
+		$relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+		GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+
+		$relationHandlerUids = [
+			23,
+			24
+		];
+
+		$relationHandlerProphecy->start(2, 'foreignTable', 'aTable_foreignTable_mm', 42, 'aTable', $fieldConfig)->shouldBeCalled();
+		$relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = $relationHandlerUids;
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueSetsForeignRelationValues() {
+		$GLOBALS['TCA']['foreignTable'] = [];
+
+		/** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+		$backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+		$GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+		/** @var DatabaseConnection|ObjectProphecy $database */
+		$database = $this->prophesize(DatabaseConnection::class);
+		$GLOBALS['TYPO3_DB'] = $database->reveal();
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'uid' => 42,
+				// Two connected rows
+				'aField' => '22,23,24,25',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 999,
+							'foreign_table' => 'foreignTable',
+							'items' => [],
+						],
+					],
+				],
+			],
+		];
+		$fieldConfig = $input['processedTca']['columns']['aField']['config'];
+		/** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
+		$relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+		GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+
+		$relationHandlerUids = [
+			23,
+			24
+		];
+
+		$relationHandlerProphecy->start('22,23,24,25', 'foreignTable', '', 42, 'aTable', $fieldConfig)->shouldBeCalled();
+		$relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = $relationHandlerUids;
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueRemovesInvalidDynamicValues() {
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$GLOBALS['TCA']['foreignTable'] = [];
+
+		/** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+		$backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+		$GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+		/** @var DatabaseConnection|ObjectProphecy $database */
+		$database = $this->prophesize(DatabaseConnection::class);
+		$GLOBALS['TYPO3_DB'] = $database->reveal();
+
+		$relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+		GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+		$relationHandlerProphecy->start(Argument::cetera())->shouldBeCalled();
+		$relationHandlerProphecy->getValueArray(Argument::cetera())->shouldBeCalled()->willReturn([1]);
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => '1,2,bar,foo',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'foreign_table' => 'foreignTable',
+							'maxitems' => 999,
+							'items' => [
+								['foo', 'foo', NULL, NULL],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = ['foo', 1];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueKeepsValuesFromStaticItems() {
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => 'foo,bar',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 999,
+							'items' => [
+								['foo', 'foo', NULL, NULL],
+								['bar', 'bar', NULL, NULL],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = [
+			'foo',
+			'bar'
+		];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueDoesNotCallRelationManagerForStaticOnlyItems() {
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+		GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+		$relationHandlerProphecy->start(Argument::cetera())->shouldNotBeCalled();
+		$relationHandlerProphecy->getValueArray(Argument::cetera())->shouldNotBeCalled();
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => '1,2,bar,foo',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 999,
+							'items' => [
+								['foo', 'foo', NULL, NULL],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = ['foo'];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueDoesNotTouchValueForSingleSelects() {
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+		GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+		$relationHandlerProphecy->start(Argument::cetera())->shouldNotBeCalled();
+		$relationHandlerProphecy->getValueArray(Argument::cetera())->shouldNotBeCalled();
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => '1,2,bar,foo',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 1,
+							'items' => [
+								['foo', 'foo', NULL, NULL],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = ['1,2,bar,foo'];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+
+	}
 }

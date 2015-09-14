@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -47,7 +48,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
 		$table = $result['tableName'];
 
-		$newColumns = $result['processedTca']['columns'];
 		foreach ($result['processedTca']['columns'] as $fieldName => $fieldConfig) {
 			if (empty($fieldConfig['config']['type']) || $fieldConfig['config']['type'] !== 'select') {
 				continue;
@@ -55,7 +55,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
 			// Sanitize incoming item array
 			if (!is_array($fieldConfig['config']['items'])) {
-				$fieldConfig['config']['items'] = array();
+				$fieldConfig['config']['items'] = [];
 			}
 			foreach ($fieldConfig['config']['items'] as $item) {
 				if (!is_array($item)) {
@@ -69,7 +69,11 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 			$fieldConfig['config']['items'] = $this->addItemsFromPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
 			$fieldConfig['config']['items'] = $this->addItemsFromSpecial($result, $fieldName, $fieldConfig['config']['items']);
 			$fieldConfig['config']['items'] = $this->addItemsFromFolder($result, $fieldName, $fieldConfig['config']['items']);
+			$staticItems = $fieldConfig['config']['items'];
+
 			$fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
+			$dynamicItems = array_diff_key($fieldConfig['config']['items'], $staticItems);
+
 			$fieldConfig['config']['items'] = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
 			$fieldConfig['config']['items'] = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $fieldConfig['config']['items']);
 			$fieldConfig['config']['items'] = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $fieldConfig['config']['items']);
@@ -84,8 +88,11 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 			}
 
 			// Translate labels
-			$items = array();
-			foreach ($fieldConfig['config']['items'] as $item) {
+			$staticValues = [];
+			foreach ($fieldConfig['config']['items'] as $key => $item) {
+				if (!isset($dynamicItems[$key])) {
+					$staticValues[$item[1]] = $item;
+				}
 				if (isset($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
 					&& !empty($result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
 				) {
@@ -96,14 +103,19 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 				$value = strlen((string)$item[1]) > 0 ? $item[1] : '';
 				$icon = $item[2] ?: NULL;
 				$helpText = $item[3] ?: NULL;
-				$items[] = array($label, $value, $icon, $helpText);
+				$fieldConfig['config']['items'][$key] = [
+					$label,
+					$value,
+					$icon,
+					$helpText
+				];
 			}
-			$fieldConfig['config']['items'] = $items;
+			// Keys may contain table names, so a numeric array is created
+			$fieldConfig['config']['items'] = array_values($fieldConfig['config']['items']);
 
-			$newColumns[$fieldName] = $fieldConfig;
+			$result['processedTca']['columns'][$fieldName] = $fieldConfig;
+			$result['databaseRow'][$fieldName] = $this->processSelectFieldValue($result, $fieldName, $staticValues);
 		}
-
-		$result['processedTca']['columns'] = $newColumns;
 
 		return $result;
 	}
@@ -469,15 +481,13 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 			$result['pageTsConfigMerged']['TCEFORM.'][$table . '.'][$fieldName . '.']['removeItems'],
 			TRUE
 		);
-		$newItems = [];
-		foreach ($items as $itemValues) {
+		foreach ($items as $key => $itemValues) {
 			if (in_array($itemValues[1], $removeItems)) {
-				continue;
+				unset($items[$key]);
 			}
-			$newItems[] = $itemValues;
 		}
 
-		return $newItems;
+		return $items;
 	}
 
 	/**
@@ -497,13 +507,13 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 		}
 
 		$backendUser = $this->getBackendUser();
-		$newItems = [];
-		foreach ($items as $itemValues) {
-			if ($backendUser->checkLanguageAccess($itemValues[1])) {
-				$newItems[] = $itemValues;
+		foreach ($items as $key => $itemValues) {
+			if (!$backendUser->checkLanguageAccess($itemValues[1])) {
+				unset($items[$key]);
 			}
 		}
-		return $newItems;
+
+		return $items;
 	}
 
 	/**
@@ -524,14 +534,14 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
 		$backendUser = $this->getBackendUser();
 		$authMode = $result['processedTca']['columns'][$fieldName]['config']['authMode'];
-		$newItems = [];
-		foreach ($items as $itemValues) {
+		foreach ($items as $key => $itemValues) {
 			// @todo: checkAuthMode() uses $GLOBAL access for "individual" authMode - get rid of this
-			if ($backendUser->checkAuthMode($result['tableName'], $fieldName, $itemValues[1], $authMode)) {
-				$newItems[] = $itemValues;
+			if (!$backendUser->checkAuthMode($result['tableName'], $fieldName, $itemValues[1], $authMode)) {
+				unset($items[$key]);
 			}
 		}
-		return $newItems;
+
+		return $items;
 	}
 
 	/**
@@ -552,14 +562,14 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 			return $items;
 		}
 
-		$newItems = [];
 		$allowedPageTypes = $backendUser->groupData['pagetypes_select'];
-		foreach ($items as $itemValues) {
-			if (GeneralUtility::inList($allowedPageTypes, $itemValues[1])) {
-				$newItems[] = $itemValues;
+		foreach ($items as $key => $itemValues) {
+			if (!GeneralUtility::inList($allowedPageTypes, $itemValues[1])) {
+				unset($items[$key]);
 			}
 		}
-		return $newItems;
+
+		return $items;
 	}
 
 	/**
@@ -958,6 +968,95 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 		$foreignTableClauseArray['WHERE'] = $foreignTableClause;
 
 		return $foreignTableClauseArray;
+	}
+
+	/**
+	 * Validate and sanitize database row values of the select field with the given name.
+	 * Creates an array out of databaseRow[selectField] values.
+	 *
+	 * @param array $result The current result array.
+	 * @param string $fieldName Name of the current select field.
+	 * @param array $staticValues Array with statically defined items, item value is used as array key.
+	 * @return array
+	 */
+	protected function processSelectFieldValue(array $result, $fieldName, array $staticValues) {
+		$fieldConfig = $result['processedTca']['columns'][$fieldName];
+
+		// For single select fields we just keep the current value because the renderer
+		// will take care of showing the "Invalid value" text.
+		// @todo: move handling of invalid values to this data provider.
+		if (!isset($fieldConfig['config']['maxitems']) || (int)$fieldConfig['config']['maxitems'] <= 1) {
+			return array($result['databaseRow'][$fieldName]);
+		}
+
+		$currentDatabaseValues = array_key_exists($fieldName, $result['databaseRow']) ? $result['databaseRow'][$fieldName] : '';
+		$currentDatabaseValuesArray = GeneralUtility::trimExplode(',', $currentDatabaseValues);
+		$newDatabaseValueArray = [];
+
+		// Add all values that were defined by static methods and do not come from the relation
+		// e.g. TCA, TSconfig, itemProcFunc etc.
+		foreach ($currentDatabaseValuesArray as $value) {
+			if (isset($staticValues[$value])) {
+				$newDatabaseValueArray[] = $value;
+			}
+		}
+
+		if (isset($fieldConfig['config']['foreign_table']) && !empty($fieldConfig['config']['foreign_table'])) {
+			/** @var RelationHandler $relationHandler */
+			$relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+			$relationHandler->registerNonTableValues = !empty($fieldConfig['config']['allowNonIdValues']);
+			if (isset($fieldConfig['config']['MM']) && !empty($fieldConfig['config']['MM'])) {
+				// MM relation
+				$relationHandler->start(
+					$currentDatabaseValues,
+					$fieldConfig['config']['foreign_table'],
+					$fieldConfig['config']['MM'],
+					$result['databaseRow']['uid'],
+					$result['tableName'],
+					$fieldConfig['config']
+				);
+			} else {
+				// Non MM relation
+				// If not dealing with MM relations, use default live uid, not versioned uid for record relations
+				$relationHandler->start(
+					$currentDatabaseValues,
+					$fieldConfig['config']['foreign_table'],
+					'',
+					$this->getLiveUid($result),
+					$result['tableName'],
+					$fieldConfig['config']
+				);
+			}
+			$newDatabaseValueArray = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
+		}
+
+		return array_unique($newDatabaseValueArray);
+	}
+
+	/**
+	 * Gets the record uid of the live default record. If already
+	 * pointing to the live record, the submitted record uid is returned.
+	 *
+	 * @param array $result Result array
+	 * @return int
+	 * @throws \UnexpectedValueException
+	 */
+	protected function getLiveUid(array $result) {
+		$table = $result['tableName'];
+		$row = $result['databaseRow'];
+		$uid = $row['uid'];
+		if (!empty($result['processedTca']['ctrl']['versioningWS'])
+			&& $result['pid'] === -1
+		) {
+			if (empty($row['t3ver_oid'])) {
+				throw new \UnexpectedValueException(
+					'No t3ver_oid found for record ' . $row['uid'] . ' on table ' . $table,
+					1440066481
+				);
+			}
+			$uid = $row['t3ver_oid'];
+		}
+		return $uid;
 	}
 
 	/**

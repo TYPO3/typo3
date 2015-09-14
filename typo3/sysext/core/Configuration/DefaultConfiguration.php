@@ -431,18 +431,13 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
-						),
-					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class => array(
-						'depends' => array(
 							// GeneralUtility::getFlexFormDS() needs unchanged databaseRow values as string
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlex::class,
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
 						'depends' => array(
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
 				),
