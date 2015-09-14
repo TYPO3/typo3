@@ -193,7 +193,7 @@ class DatabaseData extends AbstractStepAction {
 	 */
 	protected function isImportDatabaseDone() {
 		return $this->objectManager->get(ConfigurationManager::class)
-			->getLocalConfigurationValueByPath('SYS/isInitialDatabaseImportDone');
+			->getConfigurationValueByPath('SYS/isInitialDatabaseImportDone');
 	}
 
 }
