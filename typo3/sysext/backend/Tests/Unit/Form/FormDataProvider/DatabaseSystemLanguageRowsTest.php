@@ -49,7 +49,9 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
-
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
 		$this->subject = new DatabaseSystemLanguageRows();
 	}
 
@@ -72,18 +74,89 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function addDataSetsDefaultLanguageEntry() {
+	public function addDataSetsDefaultLanguageAndAllEntries() {
 		$expected = [
 			'systemLanguageRows' => [
+				-1 => [
+					'uid' => -1,
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
+					'iso' => 'DEF',
+					'flagIconIdentifier' => 'flags-multiple',
+				],
 				0 => [
 					'uid' => 0,
-					'title' => 'Default Language',
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage',
 					'iso' => 'DEF',
+					'flagIconIdentifier' => 'empty-empty',
 				],
 			],
 		];
 		$this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn([]);
 		$this->assertSame($expected, $this->subject->addData([]));
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataSetsDefaultLanguageTitleFromPageTsConfig() {
+		$input = [
+			'pageTsConfig' => [
+				'mod.' => [
+					'SHARED.' => [
+						'defaultLanguageLabel' => 'foo',
+					],
+				]
+			],
+		];
+		$this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn([]);
+		$expected = $input;
+		$expected['systemLanguageRows'] = [
+			-1 => [
+				'uid' => -1,
+				'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
+				'iso' => 'DEF',
+				'flagIconIdentifier' => 'flags-multiple',
+			],
+			0 => [
+				'uid' => 0,
+				'title' => 'foo (LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage)',
+				'iso' => 'DEF',
+				'flagIconIdentifier' => 'empty-empty',
+			],
+		];
+		$this->assertSame($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataSetsDefaultLanguageFlagFromPageTsConfig() {
+		$input = [
+			'pageTsConfig' => [
+				'mod.' => [
+					'SHARED.' => [
+						'defaultLanguageFlag' => 'uk',
+					],
+				]
+			],
+		];
+		$this->dbProphecy->exec_SELECTgetRows(Argument::cetera())->willReturn([]);
+		$expected = $input;
+		$expected['systemLanguageRows'] = [
+			-1 => [
+				'uid' => -1,
+				'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
+				'iso' => 'DEF',
+				'flagIconIdentifier' => 'flags-multiple',
+			],
+			0 => [
+				'uid' => 0,
+				'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage',
+				'iso' => 'DEF',
+				'flagIconIdentifier' => 'flags-uk',
+			],
+		];
+		$this->assertSame($expected, $this->subject->addData($input));
 	}
 
 	/**
@@ -96,19 +169,28 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 				'title' => 'french',
 				'language_isocode' => 'fr',
 				'static_lang_isocode' => '',
+				'flag' => 'fr',
 			],
 		];
-		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode', 'sys_language', 'pid=0 AND hidden=0')->willReturn($dbRows);
+		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0 AND hidden=0')->willReturn($dbRows);
 		$expected = [
 			'systemLanguageRows' => [
+				-1 => [
+					'uid' => -1,
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
+					'iso' => 'DEF',
+					'flagIconIdentifier' => 'flags-multiple',
+				],
 				0 => [
 					'uid' => 0,
-					'title' => 'Default Language',
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage',
 					'iso' => 'DEF',
+					'flagIconIdentifier' => 'empty-empty',
 				],
 				3 => [
 					'uid' => 3,
 					'title' => 'french',
+					'flagIconIdentifier' => 'flags-fr',
 					'iso' => 'fr',
 				],
 			],
@@ -129,22 +211,31 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 				'title' => 'french',
 				'language_isocode' => '',
 				'static_lang_isocode' => 42,
+				'flag' => 'fr',
 			],
 		];
-		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
+		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
 		// Needed for backendUtility::getRecord()
 		$GLOBALS['TCA']['static_languages'] = [ 'foo' ];
 		$this->dbProphecy->exec_SELECTgetSingleRow('lg_iso_2', 'static_languages', 'uid=42')->shouldBeCalled()->willReturn( [ 'lg_iso_2' => 'FR' ] );
 		$expected = [
 			'systemLanguageRows' => [
+				-1 => [
+					'uid' => -1,
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
+					'iso' => 'DEF',
+					'flagIconIdentifier' => 'flags-multiple',
+				],
 				0 => [
 					'uid' => 0,
-					'title' => 'Default Language',
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage',
 					'iso' => 'DEF',
+					'flagIconIdentifier' => 'empty-empty',
 				],
 				3 => [
 					'uid' => 3,
 					'title' => 'french',
+					'flagIconIdentifier' => 'flags-fr',
 					'iso' => 'FR',
 				],
 			],
@@ -162,29 +253,34 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 				'title' => 'french',
 				'language_isocode' => '',
 				'static_lang_isocode' => '',
+				'flag' => 'fr',
 			],
 		];
-		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
+		$this->dbProphecy->exec_SELECTgetRows('uid,title,language_isocode,static_lang_isocode,flag', 'sys_language', 'pid=0 AND hidden=0')->shouldBeCalled()->willReturn($dbRows);
 		// Needed for backendUtility::getRecord()
 		$GLOBALS['TCA']['static_languages'] = [ 'foo' ];
 		$expected = [
 			'systemLanguageRows' => [
+				-1 => [
+					'uid' => -1,
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages',
+					'iso' => 'DEF',
+					'flagIconIdentifier' => 'flags-multiple',
+				],
 				0 => [
 					'uid' => 0,
-					'title' => 'Default Language',
+					'title' => 'LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage',
 					'iso' => 'DEF',
+					'flagIconIdentifier' => 'empty-empty',
 				],
 				3 => [
 					'uid' => 3,
 					'title' => 'french',
+					'flagIconIdentifier' => 'flags-fr',
 					'iso' => '',
 				],
 			],
 		];
-
-		$languageService = $this->prophesize(LanguageService::class);
-		$GLOBALS['LANG'] = $languageService->reveal();
-		$languageService->sL(Argument::cetera())->willReturnArgument(0);
 
 		/** @var FlashMessage|ObjectProphecy $flashMessage */
 		$flashMessage = $this->prophesize(FlashMessage::class);

@@ -321,9 +321,11 @@ class SingleFieldContainer extends AbstractContainer {
 			$fieldConfig = $this->data['processedTca']['columns'][$field];
 			// Don't show content if it's for IRRE child records:
 			if ($fieldConfig['config']['type'] !== 'inline') {
+				/** @var IconFactory $iconFactory */
+				$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 				if ($defaultLanguageValue !== '') {
 					$item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', TRUE) . '">'
-						. FormEngineUtility::getLanguageIcon($table, $row, 0)
+						. $iconFactory->getIcon($this->data['systemLanguageRows'][0]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
 						. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
 						. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 				}
@@ -338,7 +340,7 @@ class SingleFieldContainer extends AbstractContainer {
 					);
 					if ($defaultLanguageValue !== '') {
 						$item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', TRUE) . '">'
-							. FormEngineUtility::getLanguageIcon($table, $row, $previewLanguage['sys_language_uid'])
+							. $iconFactory->getIcon($this->data['systemLanguageRows'][$previewLanguage['sys_language_uid']]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
 							. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
 							. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 					}

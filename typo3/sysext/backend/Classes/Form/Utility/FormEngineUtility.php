@@ -57,11 +57,6 @@ class FormEngineUtility {
 	);
 
 	/**
-	 * @var array Cache of getLanguageIcon()
-	 */
-	static protected $cachedLanguageFlag = array();
-
-	/**
 	 * Overrides the TCA field configuration by TSconfig settings.
 	 *
 	 * Example TSconfig: TCEform.<table>.<field>.config.appearance.useSortable = 1
@@ -90,44 +85,6 @@ class FormEngineUtility {
 			}
 		}
 		return $fieldConfig;
-	}
-
-	/**
-	 * Initializes language icons etc.
-	 *
-	 * @param string $table Table name
-	 * @param array $row Record
-	 * @param string $sys_language_uid Sys language uid OR ISO language code prefixed with "v", eg. "vDA
-	 * @return string
-	 * @internal
-	 */
-	static public function getLanguageIcon($table, $row, $sys_language_uid) {
-		$mainKey = $table . ':' . $row['uid'];
-		if (!isset(static::$cachedLanguageFlag[$mainKey])) {
-			BackendUtility::fixVersioningPid($table, $row);
-			list($tscPID) = BackendUtility::getTSCpidCached($table, $row['uid'], $row['pid']);
-			/** @var $t8Tools TranslationConfigurationProvider */
-			$t8Tools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-			static::$cachedLanguageFlag[$mainKey] = $t8Tools->getSystemLanguages($tscPID);
-		}
-		// Convert sys_language_uid to sys_language_uid if input was in fact a string (ISO code expected then)
-		if (!MathUtility::canBeInterpretedAsInteger($sys_language_uid)) {
-			foreach (static::$cachedLanguageFlag[$mainKey] as $rUid => $cD) {
-				if ('v' . $cD['ISOcode'] === $sys_language_uid) {
-					$sys_language_uid = $rUid;
-				}
-			}
-		}
-		$out = '';
-		if (static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] && static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'] != 'empty-empty') {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$out .= $iconFactory->getIcon(static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['flagIcon'], Icon::SIZE_SMALL)->render();
-			$out .= '&nbsp;';
-		} elseif (static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['title']) {
-			$out .= '[' . static::$cachedLanguageFlag[$mainKey][$sys_language_uid]['title'] . ']';
-			$out .= '&nbsp;';
-		}
-		return $out;
 	}
 
 	/**

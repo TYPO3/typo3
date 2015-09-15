@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -39,7 +41,6 @@ class FlexFormElementContainer extends AbstractContainer {
 	public function render() {
 		$table = $this->data['tableName'];
 		$row = $this->data['databaseRow'];
-		$fieldName = $this->data['fieldName'];
 		$flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
 		$flexFormRowData = $this->data['flexFormRowData'];
 		$flexFormFormPrefix = $this->data['flexFormFormPrefix'];
@@ -47,6 +48,8 @@ class FlexFormElementContainer extends AbstractContainer {
 		$metaData = $this->data['parameterArray']['fieldConf']['config']['ds']['meta'];
 
 		$languageService = $this->getLanguageService();
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$resultArray = $this->initializeResultArray();
 		foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
 			if (
@@ -79,16 +82,13 @@ class FlexFormElementContainer extends AbstractContainer {
 				$sectionContainerResult = $this->nodeFactory->create($options)->render();
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
 			} else {
-				// Single element
-				$vDEFkey = 'vDEF';
-
 				if (is_array($metaData) && isset($metaData['langChildren']) && isset($metaData['languagesOnElement'])) {
 					$lkeys = $metaData['languagesOnElement'];
 					array_walk($lkeys, function (&$value) {
 						$value = 'v' . $value;
 					});
 				} else {
-					$lkeys = array($vDEFkey);
+					$lkeys = array('vDEF');
 				}
 				$html = array();
 				foreach ($lkeys as $lkey) {
@@ -144,18 +144,25 @@ class FlexFormElementContainer extends AbstractContainer {
 					$theTitle = htmlspecialchars($fakeParameterArray['fieldConf']['label']);
 					$defInfo = array();
 
-					$languageIcon = '';
-					if ($vDEFkey !== 'vDEF') {
-						$languageIcon = FormEngineUtility::getLanguageIcon($table, $row, $vDEFkey);
-					}
 					// Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
 					$processedTitle = str_replace('\\n', '<br />', $theTitle);
 					// @todo: Similar to the processing within SingleElementContainer ... use it from there?!
 					$html[] = '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
 					$html[] = '<label class="t3js-formengine-label">';
-					$html[] = $languageIcon;
-					if (is_array($metaData) && isset($metaData['langChildren'])) {
-						$html[] = FormEngineUtility::getLanguageIcon($table, $row, $lkey);
+					if (is_array($metaData) && isset($metaData['langChildren']) && $metaData['langChildren']) {
+						// Find language uid of this iso code
+						$languageUid = 0;
+						$lKeyWithoutV = substr($lkey, 1);
+						if ($lKeyWithoutV !== 'DEF') {
+							foreach ($this->data['systemLanguageRows'] as $systemLanguageRow) {
+								if ($systemLanguageRow['iso'] === $lKeyWithoutV) {
+									$languageUid = $systemLanguageRow['uid'];
+									break;
+								}
+							}
+						}
+						$languageIcon = $iconFactory->getIcon($this->data['systemLanguageRows'][$languageUid]['flagIconIdentifier'], Icon::SIZE_SMALL)->render();
+						$html[] = $languageIcon;
 					}
 					$html[] = BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
 					$html[] = '</label>';

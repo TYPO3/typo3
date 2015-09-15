@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -31,27 +32,47 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 	/**
 	 * Fetch available system languages and resolve iso code if necessary.
 	 *
-	 * @todo: This is similar to what TranslationConfigurationProvider->getSystemLanguages() does,
-	 * @todo: use the method as soon as bugs have been fixed in there.
-	 *
 	 * @param array $result
 	 * @return array
 	 * @throws \UnexpectedValueException
 	 */
 	public function addData(array $result) {
 		$database = $this->getDatabase();
+		$languageService = $this->getLanguageService();
+
+		$pageTs = $result['pageTsConfig'];
+		$defaultLanguageLabel = $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage');
+		if (isset($pageTs['mod.']['SHARED.']['defaultLanguageLabel'])) {
+			$defaultLanguageLabel = $pageTs['mod.']['SHARED.']['defaultLanguageLabel'] . ' (' . $languageService->sL($defaultLanguageLabel) . ')';
+		}
+		$defaultLanguageFlag = 'empty-empty';
+		if (isset($pageTs['mod.']['SHARED.']['defaultLanguageFlag'])) {
+			$defaultLanguageFlag = 'flags-' . $pageTs['mod.']['SHARED.']['defaultLanguageFlag'];
+		}
 
 		$languageRows = [
-			0 => [
-				'uid' => 0,
-				'title' => 'Default Language',
-				// Default "DEF" is a fallback preparation for flex form iso codes "lDEF"
+			-1 => [
+				// -1: "All" languages
+				'uid' => -1,
+				'title' => $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:multipleLanguages'),
+				// Same as for 0, but iso is used in flex form context only and duplication handled there
+				// @todo: Maybe drop this if flex form language handling is extracted?
 				'iso' => 'DEF',
+				'flagIconIdentifier' => 'flags-multiple',
+			],
+			0 => [
+				// 0: "Default" language
+				'uid' => 0,
+				'title' => $defaultLanguageLabel,
+				// Default "DEF" is a fallback preparation for flex form iso codes "lDEF"
+				// @todo: Maybe drop this if flex form language handling is extracted?
+				'iso' => 'DEF',
+				'flagIconIdentifier' => $defaultLanguageFlag,
 			],
 		];
 
 		$dbRows = $database->exec_SELECTgetRows(
-			'uid,title,language_isocode,static_lang_isocode',
+			'uid,title,language_isocode,static_lang_isocode,flag',
 			'sys_language',
 			'pid=0 AND hidden=0'
 		);
@@ -65,8 +86,14 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 
 		$isStaticInfoTablesLoaded = ExtensionManagementUtility::isLoaded('static_info_tables');
 		foreach ($dbRows as $dbRow) {
+			$uid = $dbRow['uid'];
+			$languageRows[$uid] = [
+				'uid' => $uid,
+				'title' => $dbRow['title'],
+				'flagIconIdentifier' => 'flags-' . $dbRow['flag'],
+			];
 			if (!empty($dbRow['language_isocode'])) {
-				$dbRow['iso'] = $dbRow['language_isocode'];
+				$languageRows[$uid]['iso'] = $dbRow['language_isocode'];
 			} elseif ($isStaticInfoTablesLoaded && !empty($dbRow['static_lang_isocode'])) {
 				GeneralUtility::deprecationLog(
 					'Usage of the field "static_lang_isocode" is discouraged, and will stop working with CMS 8. Use the built-in'
@@ -74,7 +101,7 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 				);
 				$lg_iso_2 = BackendUtility::getRecord('static_languages', $dbRow['static_lang_isocode'], 'lg_iso_2');
 				if ($lg_iso_2['lg_iso_2']) {
-					$dbRow['iso'] = $lg_iso_2['lg_iso_2'];
+					$languageRows[$uid]['iso'] = $lg_iso_2['lg_iso_2'];
 				}
 			} else {
 				// No iso code could be found. This is currently possible in the system but discouraged.
@@ -83,10 +110,12 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 				// incomplete configuration here.
 				// It might be possible to convert this to a non-catchable exception later if
 				// it iso code is enforced on a different layer of the system (tca required + migration wizard).
+				// @todo: This could be relaxed again if flex form language handling is extracted,
+				// @todo: since the rest of the FormEngine code does not rely on iso code?
 				$message = sprintf(
-					$this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:error.missingLanguageIsocode'),
+					$languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.missingLanguageIsocode'),
 					$dbRow['title'],
-					$dbRow['uid']
+					$uid
 				);
 				/** @var FlashMessage $flashMessage */
 				$flashMessage = GeneralUtility::makeInstance(
@@ -99,11 +128,8 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 				$flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 				$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 				$defaultFlashMessageQueue->enqueue($flashMessage);
-				$dbRow['iso'] = '';
+				$languageRows[$uid]['iso'] = '';
 			}
-			unset($dbRow['language_isocode']);
-			unset($dbRow['static_lang_isocode']);
-			$languageRows[(int)$dbRow['uid']] = $dbRow;
 		}
 
 		$result['systemLanguageRows'] = $languageRows;
@@ -124,4 +150,5 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface {
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
 	}
+
 }

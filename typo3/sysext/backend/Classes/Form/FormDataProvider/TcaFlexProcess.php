@@ -260,6 +260,7 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 
 		// Contains all language iso code that are valid and user has access to
 		$availableLanguageCodes = [];
+		$defaultCodeWasAdded = FALSE;
 		foreach ($systemLanguageRows as $systemLanguageRow) {
 			$isoCode = $systemLanguageRow['iso'];
 			$isAvailable = TRUE;
@@ -282,8 +283,14 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 					$isAvailable = FALSE;
 				}
 			}
+			if ($isoCode === 'DEF' && $defaultCodeWasAdded) {
+				$isAvailable = FALSE;
+			}
 			if ($isAvailable) {
 				$availableLanguageCodes[] = $isoCode;
+			}
+			if ($isoCode === 'DEF') {
+				$defaultCodeWasAdded = TRUE;
 			}
 		}
 		// Set the list of available languages in the data structure "meta" section to have it
@@ -603,7 +610,6 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 	 * @return array Modified result
 	 */
 	protected function setLanguageSheetsInDataValues(array $result, $fieldName, array $allowedKeys) {
-		$availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
 		$valueArray = [];
 		if (isset($result['databaseRow'][$fieldName]['data']) && is_array($result['databaseRow'][$fieldName]['data'])) {
 			$valueArray = $result['databaseRow'][$fieldName]['data'];

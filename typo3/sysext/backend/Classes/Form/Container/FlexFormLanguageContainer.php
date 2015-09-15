@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handle flex form language overlays.
@@ -31,13 +33,13 @@ class FlexFormLanguageContainer extends AbstractContainer {
 	 * Entry method
 	 *
 	 * @return array As defined in initializeResultArray() of AbstractNode
-	 * @todo: Implement langChildren=1 case where each single element is localized and not the whole thing.
 	 */
 	public function render() {
-		$table = $this->data['tableName'];
-		$row = $this->data['databaseRow'];
 		$flexFormDataStructureArray = $this->data['parameterArray']['fieldConf']['config']['ds'];
 		$flexFormRowData = $this->data['parameterArray']['itemFormElValue'];
+
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
 		// Tabs or no tabs - that's the question
 		$hasTabs = FALSE;
@@ -50,7 +52,21 @@ class FlexFormLanguageContainer extends AbstractContainer {
 		foreach ($flexFormDataStructureArray['meta']['languagesOnSheetLevel'] as $lKey) {
 			// Add language as header
 			if (!$flexFormDataStructureArray['meta']['langChildren'] && !$flexFormDataStructureArray['meta']['langDisable']) {
-				$resultArray['html'] .= LF . '<strong>' . FormEngineUtility::getLanguageIcon($table, $row, ('v' . $lKey)) . $lKey . ':</strong>';
+				// Find language uid of this iso code
+				$languageUid = 0;
+				if ($lKey !== 'DEF') {
+					foreach ($this->data['systemLanguageRows'] as $systemLanguageRow) {
+						if ($systemLanguageRow['iso'] === $lKey) {
+							$languageUid = $systemLanguageRow['uid'];
+							break;
+						}
+					}
+				}
+				$resultArray['html'] .= LF
+					. '<strong>'
+					. $iconFactory->getIcon($this->data['systemLanguageRows'][$languageUid]['flagIconIdentifier'], Icon::SIZE_SMALL)->render()
+					. htmlspecialchars($this->data['systemLanguageRows'][$languageUid]['title'])
+					. '</strong>';
 			}
 
 			// Default language "lDEF", other options are "lUK" or whatever country code
