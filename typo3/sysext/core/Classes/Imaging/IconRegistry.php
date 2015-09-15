@@ -145,10 +145,10 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'name' => 'close',
 			)
 		),
-		'actions-actions-document-duplicates-select' => array(
-			'provider' => BitmapIconProvider::class,
+		'actions-document-duplicates-select' => array(
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/actions/document-duplicates-select.png',
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-duplicates-select.svg',
 			)
 		),
 		'actions-document-edit-access' => array(

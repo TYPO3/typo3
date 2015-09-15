@@ -130,6 +130,7 @@ module.exports = function(grunt) {
 			// Action Icons
 			icons_action: {
 				files: {
+					'<%= paths.backend %>Public/Icons/Action/actions-document-duplicates-select.svg': '<%= paths.icons %>Action/actions-document-duplicates-select.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-paste-after.svg': '<%= paths.icons %>Action/actions-document-paste-after.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-paste-before.svg': '<%= paths.icons %>Action/actions-document-paste-before.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-paste-into.svg': '<%= paths.icons %>Action/actions-document-paste-into.svg',
