@@ -55,6 +55,14 @@ class SvgIconProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup() {
+		$this->subject->prepareIconMarkup($this->icon, array('source' => '/fileadmin/foo.svg'));
+		$this->assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+	}
+
+	/**
+	 * @test
+	 */
 	public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup() {
 		$this->subject->prepareIconMarkup($this->icon, array('source' => 'EXT:core/Resources/Public/Images/foo.svg'));
 		$this->assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.svg" width="16" height="16" />', $this->icon->getMarkup());

@@ -17,12 +17,12 @@ namespace TYPO3\CMS\Taskcenter\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Taskcenter\TaskInterface;
 
 /**
@@ -66,7 +66,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function menuConfig() {
 		$this->MOD_MENU = array('mode' => array());
 		$this->MOD_MENU['mode']['information'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_overview');
-		$this->MOD_MENU['mode']['tasks'] =  $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
+		$this->MOD_MENU['mode']['tasks'] = $this->getLanguageService()->sL('LLL:EXT:taskcenter/Resources/Private/Language/locallang.xlf:task_tasks');
 		/* Copied from parent::menuConfig, because parent is hardcoded to menu.function,
 		 * however menu.function is already used for the individual tasks.
 		 * Therefore we use menu.mode here.
@@ -263,7 +263,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							$icon = '<img src="' . $icon . '" title="' . $title . '" alt="' . $title . '" />';
 						}
 						if (@is_file($icon)) {
-							$icon = '<img' . IconUtility::skinImg('', $icon, 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
+							$icon = '<img src="' . PathUtility::getAbsoluteWebPath($icon) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
 						}
 					} else {
 						$icon = $item['icon'];

@@ -285,7 +285,6 @@ class IconFactory {
 	 * @param array $options
 	 * @param string $iconIdentifier
 	 * @param string $overlayIdentifier
-	 *
 	 * @return mixed
 	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
 	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException

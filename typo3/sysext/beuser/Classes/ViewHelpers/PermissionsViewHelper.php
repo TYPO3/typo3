@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -27,16 +26,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  * is much better performance wise.
  */
 class PermissionsViewHelper extends AbstractViewHelper implements CompilableInterface {
-
-	/**
-	 * @var string Cached Css classes for a "granted" icon
-	 */
-	static protected $grantedCssClasses = '';
-
-	/**
-	 * @var string Cached Css classes for a "denied" icon
-	 */
-	static protected $deniedCssClasses = '';
 
 	/**
 	 * @var array Cached labels for a single permission mask like "Delete page"
@@ -65,15 +54,6 @@ class PermissionsViewHelper extends AbstractViewHelper implements CompilableInte
 	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
-		// The two main icon classes are static during one call. They trigger relatively expensive
-		// calculation with a signal and object creation and thus make sense to have them cached.
-		if (!static::$grantedCssClasses) {
-			static::$grantedCssClasses = IconUtility::getSpriteIconClasses('status-status-permission-granted');
-		}
-		if (!static::$deniedCssClasses) {
-			static::$deniedCssClasses = IconUtility::getSpriteIconClasses('status-status-permission-denied');
-		}
-
 		$masks = array(1, 16, 2, 4, 8);
 
 		if (empty(static::$permissionLabels)) {
@@ -88,28 +68,20 @@ class PermissionsViewHelper extends AbstractViewHelper implements CompilableInte
 		$icon = '';
 		foreach ($masks as $mask) {
 			if ($arguments['permission'] & $mask) {
-				$icon .= '<span' .
-					' title="' . static::$permissionLabels[$mask] . '"' .
-					' class="' . static::$grantedCssClasses . ' change-permission text-success"' .
-					' data-page="' . $arguments['pageId'] . '"' .
-					' data-permissions="' . $arguments['permission'] . '"' .
-					' data-mode="delete"' .
-					' data-who="' . $arguments['scope'] . '"' .
-					' data-bits="' . $mask . '"' .
-					' style="cursor:pointer"' .
-				'></span>';
+				$permissionClass = 'fa-check text-success';
+				$mode = 'delete';
 			} else {
-				$icon .= '<span' .
-					' title="' . static::$permissionLabels[$mask] . '"' .
-					' class="' . static::$deniedCssClasses . ' change-permission text-danger"' .
-					' data-page="' . $arguments['pageId'] . '"' .
-					' data-permissions="' . $arguments['permission'] . '"' .
-					' data-mode="add"' .
-					' data-who="' . $arguments['scope'] . '"' .
-					' data-bits="' . $mask . '"' .
-					' style="cursor:pointer"' .
-				'></span>';
+				$permissionClass = 'fa-times text-danger';
+				$mode = 'add';
 			}
+			$icon .= '<span style="cursor:pointer"'
+				. ' title="' . htmlspecialchars(static::$permissionLabels[$mask]) . '"'
+				. ' data-page="' . $arguments['pageId'] . '"'
+				. ' data-permissions="' . $arguments['permission'] . '"'
+				. ' data-who="' . $arguments['scope'] . '"'
+				. ' data-bits="' . $mask . '"'
+				. ' data-mode="' . $mode . '"'
+				. ' class="t3-icon change-permission fa ' . $permissionClass . '"></span>';
 		}
 
 		return '<span id="' . $arguments['pageId'] . '_' . $arguments['scope'] . '">' . $icon . '</span>';

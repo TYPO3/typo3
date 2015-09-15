@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Testcase for \TYPO3\CMS\Core\Imaging\IconRegistry
+ * TestCase for \TYPO3\CMS\Core\Imaging\IconRegistry
  */
 class IconRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -113,4 +113,14 @@ class IconRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentiefiers() {
 		$this->assertInternalType('array', $this->subject->getAllRegisteredIconIdentifiers());
 	}
+
+	/**
+	 * @test
+	 */
+	public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers() {
+		$result = $this->subject->getAllRegisteredIconIdentifiers();
+		$this->assertInternalType('array', $result);
+		$this->assertContains('default-not-found', $result);
+	}
+
 }

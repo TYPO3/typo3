@@ -18,9 +18,10 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProviderInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * Class SvgIconProvider
+ * Class SvgIconProvider provides icons that are classic <img> tags using vectors as source
  */
 class SvgIconProvider implements IconProviderInterface {
 
@@ -35,11 +36,22 @@ class SvgIconProvider implements IconProviderInterface {
 	/**
 	 * @param Icon $icon
 	 * @param array $options
-	 *
 	 * @return string
+	 * @throws \InvalidArgumentException
 	 */
 	protected function generateMarkup(Icon $icon, array $options) {
-		$source = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($options['source']));
-		return '<img src="' . $source . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" />';
+		if (empty($options['source'])) {
+			throw new \InvalidArgumentException('The option "source" is required and must not be empty', 1440754980);
+		}
+
+		$source = $options['source'];
+
+		if (StringUtility::beginsWith($source, 'EXT:') || !StringUtility::beginsWith($source, '/')) {
+			$source = GeneralUtility::getFileAbsFileName($source);
+		}
+		$source = PathUtility::getAbsoluteWebPath($source);
+
+		return '<img src="' . htmlspecialchars($source) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" />';
 	}
+
 }
