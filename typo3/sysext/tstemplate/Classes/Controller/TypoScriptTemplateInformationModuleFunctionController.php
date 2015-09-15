@@ -67,20 +67,31 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 	 */
 	public function tableRow($label, $data, $field, $id) {
 		$lang = $this->getLanguageService();
-		$ret = '<tr><td>';
-		$title = $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE);
 		if ($field === 'config' || $field === 'constants') {
-			$urlParameters = array(
-				'id' => $this->pObj->id
-			);
-			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			$startAnchor = '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '" title="' . $title . '">';
+			$urlParameters = [
+				'id' => $this->pObj->id,
+				'e' => [
+					$field => 1
+				]
+			];
+			$url = BackendUtility::getModuleUrl('web_ts', $urlParameters);
 		} else {
-			$params = '&columnsOnly=' . $field . '&createExtension=0' . '&edit[sys_template][' . $id . ']=edit';
-			$editOnClick = BackendUtility::editOnClick($params);
-			$startAnchor = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $title . '">';
+			$urlParameters = [
+				'edit' => [
+					'sys_template' => [
+						$id => 'edit'
+					]
+				],
+				'columnsOnly' => $field,
+				'createExtension' => 0,
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			];
+			$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 		}
+		$title = $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE);
+		$startAnchor = '<a href="' . htmlspecialchars($url) . '" title="' . $title . '">';
 		$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+		$ret = '<tr><td>';
 		$ret .= $startAnchor . '<strong>' . $label . '</strong></a>';
 		$ret .= '</td><td width="80%">' . $data . '</td><td>' . $startAnchor . '<span class="btn btn-default">' . $icon . '</span></a></td></tr>';
 		return $ret;
@@ -178,12 +189,12 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
 		if ($newId) {
 			// Switch to new template
-			$urlParameters = array(
+			$urlParameters = [
 				'id' => $this->pObj->id,
 				'SET[templatesOnPage]' => $newId
-			);
-			$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-			HttpUtility::redirect($aHref);
+			];
+			$url = BackendUtility::getModuleUrl('web_ts', $urlParameters);
+			HttpUtility::redirect($url);
 		}
 		$tce = NULL;
 		$theOutput = '';
@@ -283,10 +294,19 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$outCode = '<div class="table-fit"><table class="table table-striped table-hover">' . $outCode . '</table></div>';
 
 			// Edit all icon:
-			$editOnClick = BackendUtility::editOnClick('&createExtension=0&edit[sys_template][' . $tplRow['uid'] . ']=edit');
+			$urlParameters = [
+				'edit' => [
+					'sys_template' => [
+						$tplRow['uid'] => 'edit'
+					]
+				],
+				'createExtension' => 0,
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			];
+			$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 			$title = $lang->getLL('editTemplateRecord', TRUE);
 			$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
-			$outCode .= '<br /><a class="btn btn-default" href="#" onclick="' . htmlspecialchars($editOnClick)
+			$outCode .= '<br /><a class="btn btn-default" href="' . htmlspecialchars($url)
 				. '"><strong>' . $icon . '&nbsp;' . $title . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);
 

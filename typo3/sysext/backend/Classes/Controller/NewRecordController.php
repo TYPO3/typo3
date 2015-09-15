@@ -361,10 +361,16 @@ class NewRecordController {
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {
 			// No pages yet, no need to prompt for position, redirect to page creation.
-			$javascript = stripslashes(BackendUtility::editOnClick('&edit[pages][0]=new&returnNewPageId=1', '', BackendUtility::getModuleUrl('db_new', array('id' => $this->id, 'pagesOnly' => '1'))));
-			$startPos = strpos($javascript, 'href=\'') + 6;
-			$endPos = strpos($javascript, '\';');
-			$url = substr($javascript, $startPos, $endPos - $startPos);
+			$urlParameters = [
+				'edit' => [
+					'pages' => [
+						0 => 'new'
+					]
+				],
+				'returnNewPageId' => 1,
+				'returnUrl' => BackendUtility::getModuleUrl('db_new', array('id' => $this->id, 'pagesOnly' => '1'))
+			];
+			$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 			@ob_end_clean();
 			HttpUtility::redirect($url);
 		}
@@ -588,14 +594,22 @@ class NewRecordController {
 	 * @return string The link.
 	 */
 	public function linkWrap($linkText, $table, $pid, $addContentTable = FALSE) {
-		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
+		$urlParameters = [
+			'edit' => [
+				$table => [
+					$pid => 'new'
+				]
+			],
+			'returnUrl' => $this->returnUrl
+		];
 		if ($table == 'pages' && $addContentTable) {
-			$parameters .= '&edit[tt_content][prev]=new&returnNewPageId=1';
+			$urlParameters['tt_content']['prev'] = 'new';
+			$urlParameters['returnNewPageId'] = 1;
 		} elseif ($table == 'pages_language_overlay') {
-			$parameters .= '&overrideVals[pages_language_overlay][doktype]=' . (int)$this->pageinfo['doktype'];
+			$urlParameters['overrideVals']['pages_language_overlay']['doktype'] = (int)$this->pageinfo['doktype'];
 		}
-		$onClick = BackendUtility::editOnClick($parameters, '', $this->returnUrl);
-		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $linkText . '</a>';
+		$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+		return '<a href="' . htmlspecialchars($url) . '">' . $linkText . '</a>';
 	}
 
 	/**

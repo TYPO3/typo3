@@ -604,12 +604,17 @@ class FileList extends AbstractRecordList {
 		try {
 			if ($fileObject instanceof File && $fileObject->isIndexed() && $fileObject->checkActionPermission('write') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata')) {
 				$metaData = $fileObject->_getMetaData();
-				$data = array(
-					'sys_file_metadata' => array($metaData['uid'] => 'edit')
-				);
-				$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), '', $this->listUrl());
+				$urlParameters = [
+					'edit' => [
+						'sys_file_metadata' => [
+							$metaData['uid'] => 'edit'
+						]
+					],
+					'returnUrl' => $this->listURL()
+				];
+				$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 				$title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata'));
-				$code = '<a href="#" title="' . $title . '" onclick="' . htmlspecialchars($editOnClick) . '">' . GeneralUtility::fixed_lgd_cs($code, $this->fixedL) . '</a>';
+				$code = '<a href="' . htmlspecialchars($url) . '" title="' . $title . '">' . GeneralUtility::fixed_lgd_cs($code, $this->fixedL) . '</a>';
 			}
 		} catch (\Exception $e) {
 			// intentional fall-through
@@ -696,12 +701,17 @@ class FileList extends AbstractRecordList {
 									$title = htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('editMetadataForLanguage'), $language['title']));
 									// @todo the overlay for the flag needs to be added ($flagIcon . '-overlay')
 									$flagButtonIcon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
-									$data = array(
-										'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
-									);
-									$editOnClick = BackendUtility::editOnClick(GeneralUtility::implodeArrayForUrl('edit', $data), '', $this->listUrl());
-									$languageCode .= '<a href="#" class="btn btn-default" onclick="'
-										. htmlspecialchars($editOnClick) . '" title="' . $title . '">'
+									$urlParameters = [
+										'edit' => [
+											'sys_file_metadata' => [
+												$translations[$languageId]['uid'] => 'edit'
+											]
+										],
+										'returnUrl' => $this->listURL()
+									];
+									$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+									$languageCode .= '<a href="' . htmlspecialchars($url)
+										. '" class="btn btn-default" title="' . $title . '">'
 										. $flagButtonIcon . '</a>';
 								} else {
 									$parameters = [

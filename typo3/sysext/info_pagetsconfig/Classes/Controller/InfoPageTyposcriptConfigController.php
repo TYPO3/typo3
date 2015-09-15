@@ -115,9 +115,17 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 							$row = BackendUtility::getRecordWSOL('pages', substr($k, 4));
 							$pTitle = $this->pObj->doc->getHeader('pages', $row, '', FALSE);
 							$editIdList = substr($k, 4);
-							$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=TSconfig';
-							$onclickUrl = BackendUtility::editOnClick($params);
-							$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+							$urlParameters = [
+								'edit' => [
+									'pages' => [
+										$editIdList => 'edit',
+									]
+								],
+								'columnsOnly' => 'TSconfig',
+								'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+							];
+							$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+							$editIcon = '<a href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
 						}
 						$TScontent = nl2br(htmlspecialchars(trim($v) . LF));
 						$tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
@@ -131,9 +139,17 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 					}
 				}
 				if (!empty($pUids)) {
-					$params = '&edit[pages][' . implode(',', $pUids) . ']=edit&columnsOnly=TSconfig';
-					$onclickUrl = BackendUtility::editOnClick($params);
-					$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
+					$urlParameters = [
+						'edit' => [
+							'pages' => [
+								implode(',', $pUids) => 'edit',
+							]
+						],
+						'columnsOnly' => 'TSconfig',
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					];
+					$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
+					$editIcon = '<a href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
 				} else {
 					$editIcon = '';
 				}

@@ -579,25 +579,28 @@ class ElementInformationController {
 		}
 
 		// Edit button
-		$editOnClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit');
+		$urlParameters = [
+			'edit' => [
+				$table => [
+					$uid => 'edit'
+				]
+			],
+			'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+		];
+		$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 		$pageActionIcons = '
-			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($editOnClick) . '">
+			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
 				' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '
 			</a>';
 
 		// History button
-		$historyOnClick = 'window.location.href=' .
-			GeneralUtility::quoteJSvalue(
-				BackendUtility::getModuleUrl(
-					'record_history',
-					array(
-						'element' => $table . ':' . $uid,
-						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-					)
-				)
-			) . '; return false;';
+		$urlParameters = [
+			'element' => $table . ':' . $uid,
+			'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+		];
+		$url = BackendUtility::getModuleUrl('record_history', $urlParameters);
 		$pageActionIcons .= '
-			<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($historyOnClick) . '">
+			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
 				' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '
 			</a>';
 
@@ -678,16 +681,24 @@ class ElementInformationController {
 					: '';
 				$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
 				$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-				$editOnClick = BackendUtility::editOnClick('&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit');
+				$urlParameters = [
+					'edit' => [
+						$row['tablename'] => [
+							$row['recuid'] => 'edit'
+						]
+					],
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				];
+				$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 				$infoData[] = '
 				<tr>
 					<td class="col-icon">
-						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '">
+						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '">
 							' . $icon . '
 						</a>
 					</td>
 					<td class="col-title">
-						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '" >
+						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '" >
 							' . BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '
 						</a>
 					</td>
@@ -770,16 +781,25 @@ class ElementInformationController {
 			if ($record) {
 				$icon = IconUtility::getSpriteIconForRecord($row['tablename'], $record);
 				$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-				$editOnClick = BackendUtility::editOnClick('&edit[' . $row['ref_table'] . '][' . $row['ref_uid'] . ']=edit');
+
+				$urlParameters = [
+					'edit' => [
+						$row['ref_table'] => [
+							$row['ref_uid'] => 'edit'
+						]
+					],
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				];
+				$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 				$infoData[] = '
 				<tr>
 					<td class="col-icon">
-						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '">
+						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '">
 							' . $icon . '
 						</a>
 					</td>
 					<td class="col-title">
-						<a href="#" onclick="' . htmlspecialchars($editOnClick) . '" title="id=' . $record['uid'] . '" >
+						<a href="' . htmlspecialchars($url) . '" title="id=' . $record['uid'] . '" >
 							' . BackendUtility::getRecordTitle($row['ref_table'], $record, TRUE) . '
 						</a>
 					</td>
