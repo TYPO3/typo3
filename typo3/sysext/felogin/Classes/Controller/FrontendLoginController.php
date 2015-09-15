@@ -716,7 +716,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 					}
 				} elseif ($this->logintype == '' && $redirMethod == 'login' && $this->conf['redirectPageLogin']) {
 					// If login and page not accessible
-					$this->cObj->typolink('', array(
+					$this->cObj->typoLink('', array(
 						'parameter' => $this->conf['redirectPageLogin'],
 						'linkAccessRestrictedPages' => TRUE
 					));
@@ -846,9 +846,9 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 			$this->conf['linkConfig.']['additionalParams'] = $additionalParams;
 		}
 		if ($returnUrl) {
-			return htmlspecialchars($this->cObj->typolink_url($this->conf['linkConfig.']));
+			return htmlspecialchars($this->cObj->typoLink_URL($this->conf['linkConfig.']));
 		} else {
-			return $this->cObj->typolink($label, $this->conf['linkConfig.']);
+			return $this->cObj->typoLink($label, $this->conf['linkConfig.']);
 		}
 	}
 

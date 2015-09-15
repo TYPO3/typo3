@@ -1708,7 +1708,7 @@ class ContentObjectRenderer {
 		if (!$enable) {
 			return $string;
 		}
-		$content = $this->typolink($string, $conf['typolink.']);
+		$content = $this->typoLink($string, $conf['typolink.']);
 		if (isset($conf['file.'])) {
 			$imageFile = $this->stdWrap($imageFile, $conf['file.']);
 		}
@@ -3356,7 +3356,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_typolink($content = '', $conf = array()) {
-		return $this->typolink($content, $conf['typolink.']);
+		return $this->typoLink($content, $conf['typolink.']);
 	}
 
 	/**
@@ -6596,7 +6596,7 @@ class ContentObjectRenderer {
 	 * @see typoLink()
 	 */
 	public function typoLink_URL($conf) {
-		$this->typolink('|', $conf);
+		$this->typoLink('|', $conf);
 		return $this->lastTypoLinkUrl;
 	}
 
@@ -6628,7 +6628,7 @@ class ContentObjectRenderer {
 		} else {
 			$conf['additionalParams'] .= $urlParameters;
 		}
-		$out = $this->typolink($label, $conf);
+		$out = $this->typoLink($label, $conf);
 		return $out;
 	}
 
@@ -6678,7 +6678,7 @@ class ContentObjectRenderer {
 	 */
 	public function typolinkWrap($conf) {
 		$k = md5(microtime());
-		return explode($k, $this->typolink($k, $conf));
+		return explode($k, $this->typoLink($k, $conf));
 	}
 
 	/**

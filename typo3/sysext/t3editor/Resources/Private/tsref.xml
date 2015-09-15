@@ -8001,7 +8001,7 @@ NOTE: This is only active for internal links!]]></description>
 ]]></default>
 		</property>
 		<property name="parameter" type="stdWrap">
-			<description><![CDATA[This is the data, that ->typolink uses to create the link. The value is trimmed and if it's empty, ->typolink returns the input value untouched.
+			<description><![CDATA[This is the data, that ->typoLink uses to create the link. The value is trimmed and if it's empty, ->typoLink returns the input value untouched.
 
 NOTE: If used from parseFunc, this value should be imported by:
 typolink.parameter.data = parameters : allParams
