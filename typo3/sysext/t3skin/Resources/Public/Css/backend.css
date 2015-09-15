@@ -14000,15 +14000,6 @@ div.typo3-listOptions {
 #typo3-browse-links-php .db_list-searchbox-toolbar .panel {
   margin: 0.5em 0;
 }
-.t3icon-ext-upload {
-  background: url('../../../../icons/gfx/upload.gif') 3px 4px no-repeat !important;
-}
-.t3icon-ext-cancel {
-  background: url('../../../../icons/gfx/icon_fatalerror.gif') 2px 3px no-repeat !important;
-}
-.t3iconstyle-center {
-  background-position: center center;
-}
 pre.ts-hl {
   font-family: "Lucida Console", "Lucida Sans Typewriter", "Bitsream Vera Sans Mono", monospace;
 }
@@ -14052,14 +14043,4 @@ pre.ts-hl .ts-linenum {
 #typo3-pagetree .workspace-info {
   background-color: #ffec97;
   font-weight: bold;
-}
-.t3icon-ext-upload {
-  background: url('../../../../icons/gfx/upload.gif') 1px 1px no-repeat !important;
-}
-.t3icon-ext-cancel {
-  background: url('../../../../icons/gfx/icon_fatalerror.gif') 1px 1px no-repeat !important;
-}
-.t3-upload-window-progressbar .x-progress-text div {
-  text-align: left;
-  text-indent: 6px;
 }
