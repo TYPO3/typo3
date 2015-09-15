@@ -7945,6 +7945,9 @@ button.close {
 .module-body {
   padding: 24px 24px;
 }
+.module-body > .callout:first-child {
+  margin-top: 0;
+}
 .module-docheader + .module-body {
   padding-top: 89px;
 }
@@ -12791,7 +12794,7 @@ iframe {
   width: 100%;
 }
 .t3-grid-container {
-  margin: 0px -10px;
+  margin: 0px -10px 18px;
 }
 .t3-grid-cell {
   background-color: #fafafa;

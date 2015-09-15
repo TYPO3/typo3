@@ -652,9 +652,10 @@ function jumpToUrl(URL) {
      * @param string $setList Is the list of SET[] variables to store (if any) - SET[] variables a stored in $GLOBALS["SOBE"]->MOD_SETTINGS for backend modules
      * @param string $modName Module name string
      * @param string|int $motherModName Is used to enter the "parent module name" if the module is a submodule under eg. Web>* or File>*. You can also set this value to 1 in which case the currentLoadedModule is sent to the shortcut script (so - not a fixed value!) - that is used in file_edit and wizard_rte modules where those are really running as a part of another module.
+     * @param string $classes
      * @return string HTML content
      */
-    public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '')
+    public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '', $classes = '')
     {
         $gvList = 'route,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
@@ -678,17 +679,17 @@ function jumpToUrl(URL) {
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
         $shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
 
-        $icon = '<span>' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</span>';
+        $icon = $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render();
 
         if ($shortcutExist) {
-            return '<a class="active" title="">' . $icon . '</a>';
+            return '<a class="active ' . htmlspecialchars($classes) . '" title="">' . $icon . '</a>';
         }
 
         $url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
         $onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) .
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
 
-        return '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' .
+        return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
             $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', true) . '">' . $icon . '</a>';
     }
 

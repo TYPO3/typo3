@@ -195,10 +195,12 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $shortcutMarkup = $documentTemplate->makeShortcutIcon(
             implode(',', $this->getVariables),
             implode(',', $this->setVariables),
-            $this->moduleName
+            $this->moduleName,
+            '',
+            'btn btn-sm btn-default'
         );
 
-        return '<span class="btn btn-sm btn-default">' . $shortcutMarkup . '</span>';
+        return $shortcutMarkup;
     }
 
     /**

@@ -143,7 +143,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
             'value' => $items['primary']->getValue()
         ];
         if (!empty($items['primary']->getOnClick())) {
-            $attributes['onclick'] = htmlspecialchars($items['primary']->getOnClick());
+            $attributes['onclick'] = $items['primary']->getOnClick();
         }
         $attributesString = '';
         foreach ($attributes as $key => $value) {
@@ -172,7 +172,7 @@ class SplitButton extends AbstractButton implements ButtonInterface
                 $optionAttributes['class'] = htmlspecialchars($option->getClasses());
             }
             if (!empty($option->getOnClick())) {
-                $optionAttributes['onclick'] = htmlspecialchars($option->getOnClick());
+                $optionAttributes['onclick'] = $option->getOnClick();
             }
             $optionAttributesString = '';
             foreach ($optionAttributes as $key => $value) {

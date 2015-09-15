@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class AbstractDatabaseRecordList extends AbstractRecordList
 {
+
     /**
      * Specify a list of tables which are the only ones allowed to be displayed.
      *
@@ -555,31 +556,31 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // Table with the search box:
         $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
-				<div id="typo3-dblist-search">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="form-inline form-inline-spaced">
-								<div class="form-group">
+                <div id="typo3-dblist-search">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-inline form-inline-spaced">
+                                <div class="form-group">
 									<input class="form-control" type="search" placeholder="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.enterSearchString', true) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchString', true) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
-								</div>
-								<div class="form-group">
+                                </div>
+                                <div class="form-group">
 									<label for="search_levels">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.search_levels', true) . ': </label>
 									' . $lMenu . '
-								</div>
-								<div class="form-group">
+                                </div>
+                                <div class="form-group">
 									<label for="showLimit">' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.label.limit', true) . ': </label>
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.limit', true) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(($this->showLimit ? $this->showLimit : '')) . '" />
-								</div>
-								<div class="form-group">
+                                </div>
+                                <div class="form-group">
 									<button type="submit" class="btn btn-default" name="search" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', true) . '">
 										' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', true) . '
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			' . $formElements[1] . '</div></div>';
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			' . $formElements[1] . '</div>';
         return $content;
     }
 
@@ -587,7 +588,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
      *
      * Various helper functions
      *
-     ******************************/
+	 ******************************/
     /**
      * Setting the field names to display in extended list.
      * Sets the internal variable $this->setFields
@@ -728,12 +729,11 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                                     $condition = '(' . $condition . ' AND ' . $tablePidField . '=' . $currentPid . ')';
                                 }
                                 $whereParts[] = $condition;
-                            } elseif (
-                                $fieldConfig['type'] == 'text' ||
+                            } elseif ($fieldConfig['type'] == 'text' ||
                                 $fieldConfig['type'] == 'flex' ||
                                 ($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
-                                $condition = $fieldName . ' LIKE \'%' . $this->searchString . '%\'';
-                                $whereParts[] = $condition;
+                                    $condition = $fieldName . ' LIKE \'%' . $this->searchString . '%\'';
+                                    $whereParts[] = $condition;
                             }
                         }
                     }
@@ -833,7 +833,9 @@ class AbstractDatabaseRecordList extends AbstractRecordList
         // If the title is blank, make a "no title" label:
         if ((string)$code === '') {
             $code = '<i>[' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
-                        BackendUtility::getRecordTitle($table, $row), $this->getBackendUserAuthentication()->uc['titleLen']));
+                BackendUtility::getRecordTitle($table, $row),
+                $this->getBackendUserAuthentication()->uc['titleLen']
+            ));
         } else {
             $code = htmlspecialchars(GeneralUtility::fixed_lgd_cs($code, $this->fixedL), ENT_QUOTES, 'UTF-8', false);
             if ($code != htmlspecialchars($origCode)) {
@@ -859,7 +861,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                 // "Show" link (only pages and tt_content elements)
                 if ($table == 'pages' || $table == 'tt_content') {
                     $code = '<a href="#" onclick="' . htmlspecialchars(
-                            BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $code . '</a>';
+                        BackendUtility::viewOnClick(($table == 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid']))
+                    ) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $code . '</a>';
                 }
                 break;
             case 'info':
@@ -949,7 +952,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList
 
         $urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
-        return $this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&');
+        return BackendUtility::getModuleUrl(GeneralUtility::_GP('M'), $urlParameters);
     }
 
     /**

@@ -102,15 +102,15 @@ define('TYPO3/CMS/Backend/PageActions', ['jquery'], function($) {
 	 */
 	PageActions.editPageTitle = function() {
 		var $inputFieldWrap = $(
-				'<form class="row">' +
-					'<div class="col-lg-4 col-md-6 col-sm-12">' +
-						'<div class="input-group">' +
+				'<form>' +
+					'<div class="form-group">' +
+						'<div class="input-group input-group-lg">' +
 							'<input class="form-control">' +
 							'<span class="input-group-btn">' +
-								'<button class="btn btn-default" type="button" data-action="submit"><span class="t3-icon fa fa-floppy-o"></span></button>' +
+								'<button class="btn btn-default" type="button" data-action="submit"><span class="t3-icon fa fa-floppy-o"></span></button> ' +
 							'</span>' +
 							'<span class="input-group-btn">' +
-								'<button class="btn btn-danger" type="button" data-action="cancel"><span class="t3-icon fa fa-times"></span></button>' +
+								'<button class="btn btn-default" type="button" data-action="cancel"><span class="t3-icon fa fa-times"></span></button> ' +
 							'</span>' +
 						'</div>' +
 					'</div>' +
