@@ -182,4 +182,120 @@ class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertNull($this->templateService->getFileName('something/../else'));
 	}
 
+	public function splitConfDataProvider() {
+		return array(
+			array(
+				array('splitConfiguration' => 'a'),
+				3,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'a'),
+					2 => array('splitConfiguration' => 'a')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a || b || c'),
+				5,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'b'),
+					2 => array('splitConfiguration' => 'c'),
+					3 => array('splitConfiguration' => 'c'),
+					4 => array('splitConfiguration' => 'c')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a || b |*| c'),
+				5,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'b'),
+					2 => array('splitConfiguration' => 'c'),
+					3 => array('splitConfiguration' => 'c'),
+					4 => array('splitConfiguration' => 'c')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a || b |*| c |*| d || e'),
+				7,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'b'),
+					2 => array('splitConfiguration' => 'c'),
+					3 => array('splitConfiguration' => 'c'),
+					4 => array('splitConfiguration' => 'c'),
+					5 => array('splitConfiguration' => 'd'),
+					6 => array('splitConfiguration' => 'e')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a || b |*| c |*| d || e'),
+				4,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'b'),
+					2 => array('splitConfiguration' => 'd'),
+					3 => array('splitConfiguration' => 'e')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a || b |*| c |*| d || e'),
+				3,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'd'),
+					2 => array('splitConfiguration' => 'e')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a || b |*||*| c || d'),
+				7,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'b'),
+					2 => array('splitConfiguration' => 'b'),
+					3 => array('splitConfiguration' => 'b'),
+					4 => array('splitConfiguration' => 'b'),
+					5 => array('splitConfiguration' => 'c'),
+					6 => array('splitConfiguration' => 'd')
+				)
+			),
+			array(
+				array('splitConfiguration' => '|*||*| a || b'),
+				7,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'a'),
+					2 => array('splitConfiguration' => 'a'),
+					3 => array('splitConfiguration' => 'a'),
+					4 => array('splitConfiguration' => 'a'),
+					5 => array('splitConfiguration' => 'a'),
+					6 => array('splitConfiguration' => 'b')
+				)
+			),
+			array(
+				array('splitConfiguration' => 'a |*| b || c |*|'),
+				7,
+				array(
+					0 => array('splitConfiguration' => 'a'),
+					1 => array('splitConfiguration' => 'b'),
+					2 => array('splitConfiguration' => 'c'),
+					3 => array('splitConfiguration' => 'b'),
+					4 => array('splitConfiguration' => 'c'),
+					5 => array('splitConfiguration' => 'b'),
+					6 => array('splitConfiguration' => 'c')
+				)
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider splitConfDataProvider
+	 * @see https://docs.typo3.org/typo3cms/TyposcriptReference/ObjectsAndProperties/Index.html#objects-optionsplit
+	 */
+	public function splitConfArraytest($configuration, $splitCount, $expected) {
+		$actual = $this->templateService->splitConfArray($configuration, $splitCount);
+		$this->assertSame($expected, $actual);
+	}
 }
