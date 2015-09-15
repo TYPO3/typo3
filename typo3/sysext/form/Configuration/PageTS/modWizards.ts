@@ -178,10 +178,13 @@ prefix = tx_form
 				}
 			}
 			checkbox {
-				showAccordions = label, attributes
+				showAccordions = label, attributes, validation
 				accordions {
 					attributes {
 						showProperties = name, value
+					}
+					validation {
+						showRules = required
 					}
 				}
 			}
