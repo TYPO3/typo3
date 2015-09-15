@@ -86,10 +86,29 @@ class DateViewHelperTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function viewHelperReturnsEmptyStringIfNULLIsGiven() {
+	public function viewHelperReturnsEmptyStringIfChildrenIsNULL() {
 		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(NULL));
 		$actualResult = $this->subject->render();
 		$this->assertEquals('', $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperReturnsCurrentDateIfEmptyStringIsGiven() {
+		$actualResult = $this->subject->render('');
+		$expectedResult = (new \DateTime())->format('Y-m-d');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function viewHelperReturnsCurrentDateIfChildrenIsEmptyString() {
+		$this->subject->expects($this->once())->method('renderChildren')->will($this->returnValue(''));
+		$actualResult = $this->subject->render();
+		$expectedResult = (new \DateTime())->format('Y-m-d');
+		$this->assertEquals($expectedResult, $actualResult);
 	}
 
 	/**
@@ -113,8 +132,9 @@ class DateViewHelperTest extends UnitTestCase {
 	/**
 	 * @test
 	 * @expectedException \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 * @expectedExceptionMessageRegExp /"foo" could not be parsed by \\DateTime constructor: .* Unexpected character$/
 	 */
-	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
+	public function viewHelperThrowsExceptionWithOriginalMessageIfDateStringCantBeParsed() {
 		$this->subject->render('foo');
 	}
 
