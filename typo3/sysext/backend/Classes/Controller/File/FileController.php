@@ -14,9 +14,9 @@ namespace TYPO3\CMS\Backend\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
  * Before TYPO3 4.3, it was located in typo3/tce_file.php and redirected back to a
  * $redirectURL. Since 4.3 this class is also used for accessing via AJAX
  */
-class FileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class FileController {
 
 	/**
 	 * Array of file-operations.
@@ -169,18 +169,17 @@ class FileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->main();
 
 		// Push errors to flash message queue, if there are any
 		$this->fileProcessor->pushErrorMessagesToFlashMessageQueue();
 		BackendUtility::setUpdateSignal('updateFolderTree');
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		if ($this->redirect) {
 			$response = $response->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect));
 			return $response->withStatus(303);

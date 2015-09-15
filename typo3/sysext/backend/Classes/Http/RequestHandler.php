@@ -14,13 +14,13 @@ namespace TYPO3\CMS\Backend\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
-use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Backend\Routing\Router;
-use TYPO3\CMS\Backend\Routing\Route;
 
 /**
  * General RequestHandler for the TYPO3 Backend. This is used for all Backend requests except for CLI
@@ -60,10 +60,10 @@ class RequestHandler implements RequestHandlerInterface {
 	/**
 	 * Handles any backend request
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return NULL|\Psr\Http\Message\ResponseInterface
+	 * @param ServerRequestInterface $request
+	 * @return NULL|ResponseInterface
 	 */
-	public function handleRequest(\Psr\Http\Message\ServerRequestInterface $request) {
+	public function handleRequest(ServerRequestInterface $request) {
 		// enable dispatching via Request/Response logic only for typo3/index.php
 		// This fallback will be removed in TYPO3 CMS 8, as only index.php will be allowed
 		$path = substr($request->getUri()->getPath(), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')));
@@ -122,10 +122,10 @@ class RequestHandler implements RequestHandlerInterface {
 	/**
 	 * This request handler can handle any backend request (but not CLI).
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
+	 * @param ServerRequestInterface $request
 	 * @return bool If the request is not a CLI script, TRUE otherwise FALSE
 	 */
-	public function canHandleRequest(\Psr\Http\Message\ServerRequestInterface $request) {
+	public function canHandleRequest(ServerRequestInterface $request) {
 		return (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI));
 	}
 
@@ -140,50 +140,18 @@ class RequestHandler implements RequestHandlerInterface {
 	}
 
 	/**
-	 * Wrapper method for static form protection utility
+	 * Dispatch the request to the appropriate controller through the Backend Dispatcher which resolves the routing
 	 *
-	 * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
-	 */
-	protected function getFormProtection() {
-		return FormProtectionFactory::get();
-	}
-
-	/**
-	 * Checks if the request token is valid. This is checked to see if the route is really
-	 * created by the same instance. Should be called for all routes in the backend except
-	 * for the ones that don't require a login.
-	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return bool
-	 * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
-	 */
-	protected function isValidRequest($request) {
-		$token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
-		$route = $request->getAttribute('route');
-		return ($route->getOption('access') === 'public' || $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier')));
-	}
-
-	/**
-	 * Dispatch the request to the appropriate controller
-	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface
+	 * @param ServerRequestInterface $request
+	 * @return ResponseInterface
 	 * @throws RouteNotFoundException when no route is registered
-	 * @throws \RuntimeException when a route is found but the controller to be called does not implement the Controller Interface
+	 * @throws \InvalidArgumentException when a route is found but the target of the route cannot be called
 	 */
 	protected function dispatch($request) {
-		/** @var Route $route */
-		$router = GeneralUtility::makeInstance(Router::class);
-		$route = $router->matchRequest($request);
-		$request = $request->withAttribute('route', $route);
-		if (!$this->isValidRequest($request)) {
-			throw new RouteNotFoundException('Invalid request for route "' . $route->getPath() . '"', 1425389455);
-		}
-		$className = $route->getOption('controller');
-		$controller = GeneralUtility::makeInstance($className);
-		if (!$controller instanceof \TYPO3\CMS\Core\Http\ControllerInterface) {
-			throw new \RuntimeException('Requested controller "' . $className . '" does not implement the ControllerInterface', 1425389452);
-		}
-		return $controller->processRequest($request);
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		/** @var Dispatcher $dispatcher */
+		$dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+		return $dispatcher->dispatch($request, $response);
 	}
 }

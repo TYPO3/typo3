@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Controller;
  */
 
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
-use TYPO3\CMS\Core\Http\ControllerInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -25,12 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 
 /**
  * Class OnlineMediaController handles uploading online media
  */
-class OnlineMediaController implements ControllerInterface {
+class OnlineMediaController {
 
 	/**
 	 * @param array $_
@@ -58,9 +56,10 @@ class OnlineMediaController implements ControllerInterface {
 	 * Process add media request
 	 *
 	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$files = $request->getParsedBody()['file'];
 		$newMedia = [];
 		if (isset($files['newMedia'])) {
@@ -92,8 +91,6 @@ class OnlineMediaController implements ControllerInterface {
 			}
 		}
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$redirect = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
 		if ($redirect) {
 			$response = $response

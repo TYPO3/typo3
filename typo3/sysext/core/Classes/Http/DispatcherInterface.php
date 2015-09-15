@@ -13,25 +13,23 @@ namespace TYPO3\CMS\Core\Http;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * An interface every controller should implement
- * in order to deal with PSR-7 standard.
+ * An interface for dispatcher that delegate requests/responses to a certain callable, typically a
+ * controller / action combination.
  *
- * @internal please note that this API will be extended until TYPO3 CMS 7 LTS and is not public yet.
+ * Is usually called from the RequestHandler,
  */
-interface ControllerInterface {
+interface DispatcherInterface {
 
 	/**
-	 * Processes a typical request.
+	 * Main method to dispatch a request and its response to a callable object
 	 *
-	 * @param ServerRequestInterface $request The request object
-	 * @return ResponseInterface The response, created by the controller
-	 * @api
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processRequest(ServerRequestInterface $request);
-
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response);
 }

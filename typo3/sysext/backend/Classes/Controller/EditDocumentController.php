@@ -14,14 +14,13 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -41,7 +40,7 @@ use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
  * Script Class: Drawing the editing form for editing records in TYPO3.
  * Notice: It does NOT use tce_db.php to submit data to, rather it handles submissions itself
  */
-class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class EditDocumentController {
 
 	/**
 	 * GPvar "edit": Is an array looking approx like [tablename][list-of-ids]=command, eg.
@@ -1610,11 +1609,11 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 	/**
 	 * Injects the request object for the current request or subrequest
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
-
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		BackendUtility::lockRecords();
 
 		// Preprocessing, storing data if submitted to
@@ -1628,8 +1627,6 @@ class EditDocumentController implements \TYPO3\CMS\Core\Http\ControllerInterface
 		$this->init();
 		$this->main();
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($this->content);
 		return $response;
 	}

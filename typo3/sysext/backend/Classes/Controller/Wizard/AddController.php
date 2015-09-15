@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\OnTheFly;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -31,7 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Script Class for adding new items to a group/select field. Performs proper redirection as needed.
  * Script is typically called after new child record was added and then adds the new child to select value of parent.
  */
-class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class AddController extends AbstractWizardController {
 
 	/**
 	 * Content accumulation for the module.
@@ -148,13 +147,11 @@ class AddController extends AbstractWizardController implements \TYPO3\CMS\Core\
 	 * As this controller goes only through the main() method, it is rather simple for now
 	 *
 	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->main();
-
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		return $response;
 	}
 

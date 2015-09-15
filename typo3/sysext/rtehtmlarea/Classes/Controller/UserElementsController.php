@@ -15,14 +15,12 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
  */
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * User defined content for htmlArea RTE
  */
-class UserElementsController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class UserElementsController {
 
 	/**
 	 * @var string
@@ -125,14 +123,12 @@ class UserElementsController implements \TYPO3\CMS\Core\Http\ControllerInterface
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main_user() method, it is rather simple for now
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the prepared response object
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$content = $this->main_user($this->modData['openKeys']);
-
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($content);
 		return $response;
 	}
@@ -153,7 +149,7 @@ class UserElementsController implements \TYPO3\CMS\Core\Http\ControllerInterface
 	 * Print content
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
 	 */
 	public function printContent() {
 		GeneralUtility::logDeprecatedFunction();

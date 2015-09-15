@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Openid;
  */
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -27,7 +26,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * OpenID selection wizard for the backend
  */
-class Wizard extends OpenidService implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class Wizard extends OpenidService {
 
 	/**
 	 * OpenID of the user after authentication
@@ -54,15 +53,14 @@ class Wizard extends OpenidService implements \TYPO3\CMS\Core\Http\ControllerInt
 	 * Injects the request object for the current request or subrequest
 	 * Process the wizard and render HTML to response
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->processWizard();
 		$content = $this->renderContent();
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($content);
 		return $response;
 	}
@@ -71,7 +69,7 @@ class Wizard extends OpenidService implements \TYPO3\CMS\Core\Http\ControllerInt
 	 * Run the wizard and output HTML.
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
 	 */
 	public function main() {
 		GeneralUtility::logDeprecatedFunction();
@@ -82,7 +80,7 @@ class Wizard extends OpenidService implements \TYPO3\CMS\Core\Http\ControllerInt
 	/**
 	 * Run the wizard
 	 */
-	protected function processWizard(){
+	protected function processWizard() {
 		$p = GeneralUtility::_GP('P');
 		if (isset($p['itemName'])) {
 			$this->parentFormItemName = $p['itemName'];
@@ -225,8 +223,10 @@ class Wizard extends OpenidService implements \TYPO3\CMS\Core\Http\ControllerInt
 	 * Render HTML and output it
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
 	 */
-	protected function renderHtml(){
+	protected function renderHtml() {
+		GeneralUtility::logDeprecatedFunction();
 		header('HTTP/1.0 200 OK');
 		echo $this->renderContent();
 	}

@@ -18,7 +18,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
@@ -26,7 +25,7 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 /**
  * Script class for the Element Browser window.
  */
-class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class ElementBrowserController {
 
 	/**
 	 * The mode determines the main kind of output of the element browser.
@@ -77,12 +76,11 @@ class ElementBrowserController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main() method, it is rather simple for now
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the prepared response object
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$response->getBody()->write($this->main());
 		return $response;
 	}

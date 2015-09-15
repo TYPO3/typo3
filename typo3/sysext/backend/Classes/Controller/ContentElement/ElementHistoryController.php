@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Script Class for showing the history module of TYPO3s backend
  * @see \TYPO3\CMS\Backend\History\RecordHistory
  */
-class ElementHistoryController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class ElementHistoryController {
 
 	/**
 	 * @var string
@@ -58,17 +57,16 @@ class ElementHistoryController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main() method, it is rather simple for now
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->main();
 
 		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($this->content);
 		return $response;
 	}
@@ -109,7 +107,7 @@ class ElementHistoryController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
 	 */
 	public function printContent() {
 		GeneralUtility::logDeprecatedFunction();

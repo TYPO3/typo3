@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
  * Is not used by FormEngine though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
  * For all other cases than FormEngine it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to FormEngine, that will give you easy form-rendering as well.
  */
-class SimpleDataHandlerController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class SimpleDataHandlerController {
 
 	/**
 	 * Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (bool).
@@ -244,10 +244,11 @@ class SimpleDataHandlerController implements \TYPO3\CMS\Core\Http\ControllerInte
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main() method, it just redirects to the given URL afterwards.
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->initClipboard();
 		$this->main();
 
@@ -255,15 +256,12 @@ class SimpleDataHandlerController implements \TYPO3\CMS\Core\Http\ControllerInte
 		if ($this->prErr) {
 			$this->tce->printLogErrorMessages($this->redirect);
 		}
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		if ($this->redirect) {
-			$response = $response->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect));
-			return $response->withStatus(303);
-		} else {
-			// empty response
-			return $response;
+			$response = $response
+				->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
+				->withStatus(303);
 		}
+		return $response;
 	}
 
 	/**

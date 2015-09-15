@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\ControllerInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
@@ -31,7 +29,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  */
-class CreateFolderController implements ControllerInterface {
+class CreateFolderController {
 
 	/**
 	 * @var int
@@ -304,13 +302,13 @@ class CreateFolderController implements ControllerInterface {
 	/**
 	 * Processes the request, currently everything is handled and put together via "main()"
 	 *
-	 * @param ServerRequestInterface $request The request object
-	 * @return ResponseInterface $response The response, created by the controller
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->main();
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
+
 		$response->getBody()->write($this->content);
 		return $response;
 	}
@@ -319,7 +317,7 @@ class CreateFolderController implements ControllerInterface {
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the processRequest() method instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the mainAction() method instead
 	 */
 	public function printContent() {
 		GeneralUtility::logDeprecatedFunction();

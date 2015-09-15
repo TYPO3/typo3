@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Version\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -27,7 +27,7 @@ use TYPO3\CMS\Backend\Utility\IconUtility;
 /**
  * Versioning module, including workspace management
  */
-class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
 	 * Module configuration
@@ -531,17 +531,16 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 
 
 	/**
-	 * Injects the request object for the current request and gathers all data
+	 * Injects the request object for the current request and gathers all data.
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response the prepared response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->init();
 		$this->main();
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($this->content);
 		return $response;
 	}

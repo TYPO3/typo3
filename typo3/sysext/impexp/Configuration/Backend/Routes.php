@@ -7,6 +7,6 @@ return [
 	// Register click menu entry point
 	'xMOD_tximpexp' => [
 		'path' => '/record/importexport/',
-		'controller' => \TYPO3\CMS\Impexp\Controller\ImportExportController::class
+		'target' => \TYPO3\CMS\Impexp\Controller\ImportExportController::class . '::mainAction'
 	]
 ];

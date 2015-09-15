@@ -16,13 +16,12 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Content parsing for htmlArea RTE
  */
-class ParseHtmlController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class ParseHtmlController {
 
 	/**
 	 * @var string
@@ -76,14 +75,13 @@ class ParseHtmlController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main_parse_html() method, it is rather simple for now
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->content .= $this->main_parse_html($this->modData['openKeys']);
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($this->content);
 		$response = $response->withHeader('Content-Type', 'text/plain; charset=utf-8');
 		return $response;
@@ -105,7 +103,7 @@ class ParseHtmlController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 	 * Print content
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use processRequest() instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use mainAction() instead
 	 */
 	public function printContent() {
 		GeneralUtility::logDeprecatedFunction();

@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Impexp\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Main script class for the Import / Export facility
  */
-class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
 	 * @var array|\TYPO3\CMS\Core\Resource\File[]
@@ -205,16 +205,15 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass i
 	 *
 	 * external_ref[tables][]=table/_ALL
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$GLOBALS['SOBE'] = $this;
 		$this->init();
 		$this->main();
 
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($this->content);
 		return $response;
 	}

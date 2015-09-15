@@ -10,76 +10,74 @@ use TYPO3\CMS\Backend\Controller;
  *
  * Currently the "access" property is only used so no token creation + validation is made,
  * but will be extended further.
- *
- * @internal This is not a public API yet until TYPO3 CMS 7 LTS.
  */
 return [
 	// Login screen of the TYPO3 Backend
 	'login' => [
 		'path' => '/login',
 		'access' => 'public',
-		'controller' => Controller\LoginController::class
+		'target' => Controller\LoginController::class . '::formAction'
 	],
 
-	// Main backend rendering setup (backend.php) for the TYPO3 Backend
+	// Main backend rendering setup (previously called backend.php) for the TYPO3 Backend
 	'main' => [
 		'path' => '/main',
-		'controller' => Controller\BackendController::class
+		'target' => Controller\BackendController::class . '::mainAction'
 	],
 
 	// Logout script for the TYPO3 Backend
 	'logout' => [
 		'path' => '/logout',
-		'controller' => Controller\LogoutController::class
+		'target' => Controller\LogoutController::class . '::logoutAction'
 	],
 
 	// Register login frameset
 	'login_frameset' => [
 		'path' => '/login/frame',
-		'controller' => Controller\LoginFramesetController::class
+		'target' => Controller\LoginFramesetController::class . '::mainAction'
 	],
 
 	/** Wizards */
 	// Register backend_layout wizard
 	'wizard_backend_layout' => [
 		'path' => '/wizard/backend_layout',
-		'controller' => Controller\BackendLayoutWizardController::class
+		'target' => Controller\BackendLayoutWizardController::class . '::mainAction'
 	],
 
 	// Register colorpicker wizard
 	'wizard_colorpicker' => [
 		'path' => '/wizard/colorpicker',
-		'controller' => Controller\Wizard\ColorpickerController::class
+		'target' => Controller\Wizard\ColorpickerController::class . '::mainAction'
 	],
 
 	// Register table wizard
 	'wizard_table' => [
 		'path' => '/wizard/table',
-		'controller' => Controller\Wizard\TableController::class
+		'target' => Controller\Wizard\TableController::class . '::mainAction'
 	],
 
 	// Register rte wizard
 	'wizard_rte' => [
 		'path' => '/wizard/rte',
-		'controller' => Controller\Wizard\RteController::class
+		'target' => Controller\Wizard\RteController::class . '::mainAction'
 	],
 
 	// Register add wizard
 	'wizard_add' => [
 		'path' => '/wizard/add',
-		'controller' => Controller\Wizard\AddController::class
+		'target' => Controller\Wizard\AddController::class . '::mainAction'
 	],
 
 	// Register list wizard
 	'wizard_list' => [
 		'path' => '/wizard/list',
-		'controller' => Controller\Wizard\ListController::class
+		'target' => Controller\Wizard\ListController::class . '::mainAction'
 	],
 
 	// Register edit wizard
 	'wizard_edit' => [
 		'path' => '/wizard/edit',
-		'controller' => Controller\Wizard\EditController::class
+		'target' => Controller\Wizard\EditController::class . '::mainAction'
 	],
 
 
@@ -88,86 +86,86 @@ return [
 	// File navigation tree
 	'file_navframe' => [
 		'path' => '/folder/tree',
-		'controller' => Controller\FileSystemNavigationFrameController::class
+		'target' => Controller\FileSystemNavigationFrameController::class . '::mainAction'
 	],
 
 	// Editing the contents of a file
 	'file_edit' => [
 		'path' => '/file/editcontent',
-		'controller' => Controller\File\EditFileController::class
+		'target' => Controller\File\EditFileController::class . '::mainAction'
 	],
 
 	// Create a new folder
 	'file_newfolder' => [
 		'path' => '/file/new',
-		'controller' => Controller\File\CreateFolderController::class
+		'target' => Controller\File\CreateFolderController::class . '::mainAction'
 	],
 
 	// Rename a file
 	'file_rename' => [
 		'path' => '/file/rename',
-		'controller' => Controller\File\RenameFileController::class
+		'target' => Controller\File\RenameFileController::class . '::mainAction'
 	],
 
 	// Replace a file with a different one
 	'file_replace' => [
 		'path' => '/file/replace',
-		'controller' => Controller\File\ReplaceFileController::class
+		'target' => Controller\File\ReplaceFileController::class . '::mainAction'
 	],
 
 	// Upload new files
 	'file_upload' => [
 		'path' => '/file/upload',
-		'controller' => Controller\File\FileUploadController::class
+		'target' => Controller\File\FileUploadController::class . '::mainAction'
 	],
 
 	// Add new online media
 	'online_media' => [
 		'path' => '/online-media',
-		'controller' => Controller\OnlineMediaController::class
+		'target' => Controller\OnlineMediaController::class . '::mainAction'
 	],
 
 	/** DB Records-related routes */
 	// Register record history module
 	'record_history' => [
 		'path' => '/record/history',
-		'controller' => Controller\ContentElement\ElementHistoryController::class
+		'target' => Controller\ContentElement\ElementHistoryController::class . '::mainAction'
 	],
 
 	// Register new record
 	'db_new' => [
 		'path' => '/record/new',
-		'controller' => Controller\NewRecordController::class
+		'target' => Controller\NewRecordController::class . '::mainAction'
 	],
 
 	// Register new content element module
 	'new_content_element' => [
 		'path' => '/record/content/new',
-		'controller' => Controller\ContentElement\NewContentElementController::class
+		'target' => Controller\ContentElement\NewContentElementController::class . '::mainAction'
 	],
 
 	// Register move element module
 	'move_element' => [
 		'path' => '/record/move',
-		'controller' => Controller\ContentElement\MoveElementController::class
+		'target' => Controller\ContentElement\MoveElementController::class . '::mainAction'
 	],
 
 	// Register show item module
 	'show_item' => [
 		'path' => '/record/info',
-		'controller' => Controller\ContentElement\ElementInformationController::class
+		'target' => Controller\ContentElement\ElementInformationController::class . '::mainAction'
 	],
 
 	// Register browser
 	'browser' => [
 		'path' => '/record/browse',
-		'controller' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController::class
+		'target' => \TYPO3\CMS\Recordlist\Controller\ElementBrowserFramesetController::class . '::mainAction'
 	],
 
 	// Dummy document - displays nothing but background color.
 	'dummy' => [
 		'path' => '/empty',
-		'controller' => Controller\DummyController::class
+		'target' => Controller\DummyController::class . '::mainAction'
 	],
 
 	/** TYPO3 Core Engine-related routes */
@@ -179,7 +177,7 @@ return [
 	 */
 	'tce_db' => [
 		'path' => '/record/commit',
-		'controller' => Controller\SimpleDataHandlerController::class
+		'target' => Controller\SimpleDataHandlerController::class . '::mainAction'
 	],
 
 	/**
@@ -191,7 +189,7 @@ return [
 	 */
 	'tce_file' => [
 		'path' => '/file/commit',
-		'controller' => Controller\File\FileController::class
+		'target' => Controller\File\FileController::class . '::mainAction'
 	],
 
 	/**
@@ -201,6 +199,6 @@ return [
 	 */
 	'record_edit' => [
 		'path' => '/record/edit',
-		'controller' => Controller\EditDocumentController::class
+		'target' => Controller\EditDocumentController::class . '::mainAction'
 	],
 ];

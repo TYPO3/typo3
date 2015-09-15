@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller\Wizard;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,7 +24,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in FormEngine somewhere
  */
-class EditController extends AbstractWizardController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class EditController extends AbstractWizardController {
 
 	/**
 	 * Wizard parameters, coming from FormEngine linking to the wizard.
@@ -74,13 +73,11 @@ class EditController extends AbstractWizardController implements \TYPO3\CMS\Core
 	 * As this controller goes only through the main() method, it is rather simple for now
 	 *
 	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$content = $this->main();
-
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 		$response->getBody()->write($content);
 		return $response;
 	}

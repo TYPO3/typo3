@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 
@@ -24,17 +23,18 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
  * Script Class for logging a user out.
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
  */
-class LogoutController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class LogoutController {
 
 	/**
 	 * Injects the request object for the current request or subrequest
 	 * As this controller goes only through the main() method, it is rather simple for now
 	 * This will be split up in an abstract controller once proper routing/dispatcher is in place.
 	 *
-	 * @param ServerRequestInterface $request
-	 * @return ResponseInterface $response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function logoutAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->logout();
 
 		$redirectUrl = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
@@ -44,10 +44,9 @@ class LogoutController implements \TYPO3\CMS\Core\Http\ControllerInterface {
 			$uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
 			$redirectUrl = (string)$uriBuilder->buildUriFromRoute('login', array(), $uriBuilder::ABSOLUTE_URL);
 		}
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
-		$response =	$response->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectUrl));
-		return $response->withStatus(303);
+		return $response
+			->withStatus(303)
+			->withHeader('Location', GeneralUtility::locationHeaderUrl($redirectUrl));
 	}
 
 	/**

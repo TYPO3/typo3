@@ -25,12 +25,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\Response;
 
 /**
  * Script Class for the rename-file form
  */
-class ReplaceFileController implements \TYPO3\CMS\Core\Http\ControllerInterface {
+class ReplaceFileController {
 
 	/**
 	 * Document template object
@@ -210,13 +209,13 @@ class ReplaceFileController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 	/**
 	 * Processes the request, currently everything is handled and put together via "main()"
 	 *
-	 * @param ServerRequestInterface $request The request object
-	 * @return ResponseInterface $response The response, created by the controller
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->main();
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
+
 		$response->getBody()->write($this->content);
 		return $response;
 	}
@@ -225,7 +224,7 @@ class ReplaceFileController implements \TYPO3\CMS\Core\Http\ControllerInterface 
 	 * Outputting the accumulated content to screen
 	 *
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the processRequest() method instead
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use the mainAction() method instead
 	 */
 	public function printContent() {
 		GeneralUtility::logDeprecatedFunction();

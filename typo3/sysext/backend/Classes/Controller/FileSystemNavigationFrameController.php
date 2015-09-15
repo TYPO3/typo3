@@ -14,11 +14,9 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\Response;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
-use TYPO3\CMS\Backend\Utility\IconUtility;
-use TYPO3\CMS\Core\Http\ControllerInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +28,7 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 /**
  * Main script class for rendering of the folder tree
  */
-class FileSystemNavigationFrameController implements ControllerInterface {
+class FileSystemNavigationFrameController {
 
 	/**
 	 * Content accumulates in this variable.
@@ -80,14 +78,14 @@ class FileSystemNavigationFrameController implements ControllerInterface {
 	}
 
 	/**
-	 * @param ServerRequestInterface $request
-	 * @return Response
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->initPage();
 		$this->main();
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
+
 		$response->getBody()->write($this->content);
 		return $response;
 	}
