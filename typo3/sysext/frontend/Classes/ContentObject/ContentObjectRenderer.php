@@ -1417,7 +1417,11 @@ class ContentObjectRenderer {
 				if ($sourceInfo) {
 					$sourceConfiguration['width'] = $sourceInfo[0];
 					$sourceConfiguration['height'] = $sourceInfo[1];
-					$sourceConfiguration['src'] = htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $sourceInfo[3]);
+					$urlPrefix = '';
+					if (parse_url($sourceInfo[3], PHP_URL_HOST) === NULL) {
+						$urlPrefix = $GLOBALS['TSFE']->absRefPrefix;
+					}
+					$sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
 					$sourceConfiguration['selfClosingTagSlash'] = (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '');
 
 					$oneSourceCollection = $this->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', TRUE, TRUE);
