@@ -34,7 +34,7 @@ prefix = tx_form
 					showAccordions = legend, label, attributes, options, validation, filters, various
 					accordions {
 						attributes {
-							showProperties = accept, acceptcharset, accesskey, action, alt, checked, class, cols, dir, disabled, enctype, id, label, lang, maxlength, method, multiple, name, readonly, rows, selected, size, src, style, tabindex, title, type, value
+							showProperties = accept, acceptcharset, accesskey, action, alt, checked, class, cols, dir, disabled, enctype, id, label, lang, maxlength, method, multiple, name, placeholder, readonly, rows, selected, size, src, style, tabindex, title, type, value
 						}
 						label {
 							showProperties = label
@@ -214,7 +214,7 @@ prefix = tx_form
 				showAccordions = label, attributes, validation
 				accordions {
 					attributes {
-						showProperties = name
+						showProperties = name, placeholder
 					}
 					validation {
 						showRules = required, equals
@@ -239,7 +239,7 @@ prefix = tx_form
 				showAccordions = label, attributes, validation, filters
 				accordions {
 					attributes {
-						showProperties = name, cols, rows
+						showProperties = name, placeholder, cols, rows
 					}
 					filtering {
 						showFilters = alphabetic, alphanumeric, lowercase, regexp, stripnewlines, titlecase, trim, uppercase
@@ -253,7 +253,7 @@ prefix = tx_form
 				showAccordions = label, attributes, validation, filters
 				accordions {
 					attributes {
-						showProperties = name
+						showProperties = name, placeholder
 					}
 					validation {
 						showRules = alphabetic, alphanumeric, between, date, digit, email, equals, float, greaterthan, inarray, integer, ip, length, lessthan, regexp, required, uri

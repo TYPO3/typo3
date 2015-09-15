@@ -79,6 +79,7 @@ TYPO3.Form.Wizard.Elements.Basic.Textline = Ext.extend(TYPO3.Form.Wizard.Element
 					lang: '',
 					maxlength: '',
 					name: '',
+					placeholder: '',
 					readonly: '',
 					size: '',
 					style: '',

@@ -58,6 +58,7 @@ class TextlineJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
 		'lang',
 		'maxlength',
 		'name',
+		'placeholder',
 		'readonly',
 		'size',
 		'style',

@@ -78,6 +78,7 @@ TYPO3.Form.Wizard.Elements.Basic.Textarea = Ext.extend(TYPO3.Form.Wizard.Element
 					id: '',
 					lang: '',
 					name: '',
+					placeholder: '',
 					readonly: '',
 					rows: '5',
 					style: '',

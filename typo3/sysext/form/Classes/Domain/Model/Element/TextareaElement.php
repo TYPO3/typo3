@@ -33,6 +33,7 @@ class TextareaElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 		'id' => '',
 		'lang' => '',
 		'name' => '',
+		'placeholder' => '',
 		'readonly' => '',
 		'rows' => '5',
 		'style' => '',

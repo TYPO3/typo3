@@ -216,6 +216,9 @@
 			<trans-unit id="attributes_name">
 				<source>Name</source>
 			</trans-unit>
+			<trans-unit id="attributes_placeholder">
+				<source>Placeholder</source>
+			</trans-unit>
 			<trans-unit id="attributes_readonly">
 				<source>Readonly</source>
 			</trans-unit>

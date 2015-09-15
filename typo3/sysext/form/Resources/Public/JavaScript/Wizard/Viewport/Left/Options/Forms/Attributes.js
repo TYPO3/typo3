@@ -341,6 +341,18 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 						}
 					});
 					break;
+				case 'placeholder':
+					formItems.push({
+						fieldLabel: TYPO3.l10n.localize('attributes_placeholder'),
+						name: 'placeholder',
+						listeners: {
+							'triggerclick': {
+								scope: this,
+								fn: this.storeValue
+							}
+						}
+					});
+					break;
 				case 'readonly':
 					formItems.push({
 						xtype: 'checkbox',

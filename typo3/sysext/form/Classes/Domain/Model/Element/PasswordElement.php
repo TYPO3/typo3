@@ -34,6 +34,7 @@ class PasswordElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractEleme
 		'lang' => '',
 		'maxlength' => '',
 		'name' => '',
+		'placeholder' => '',
 		'readonly' => '',
 		'size' => '',
 		'style' => '',
