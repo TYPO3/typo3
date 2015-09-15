@@ -32,12 +32,11 @@ class UserFileMountService {
 	 * of a selected mount
 	 *
 	 * @param array $PA the array with additional configuration options.
-	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj Parent object
 	 * @return string The HTML code for the TCEform field
 	 */
-	public function renderTceformsSelectDropdown(&$PA, &$tceformsObj) {
+	public function renderTceformsSelectDropdown(&$PA) {
 		// If working for sys_filemounts table
-		$storageUid = (int)$PA['row']['base'];
+		$storageUid = (int)$PA['row']['base'][0];
 		if (!$storageUid) {
 			// If working for sys_file_collection table
 			$storageUid = (int)$PA['row']['storage'];
