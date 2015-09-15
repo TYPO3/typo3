@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Locking\Locker;
 use TYPO3\CMS\Core\Messaging\ErrorpageMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageGenerator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -133,8 +135,19 @@ class TypoScriptFrontendController {
 
 	/**
 	 * @var string
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. JumpURL handling is moved to extensions.
 	 */
 	public $jumpurl = '';
+
+	/**
+	 * Contains all URL handler instances that are active for the current request.
+	 *
+	 * The methods isGeneratePage(), isOutputting() and isINTincScript() depend on this property.
+	 *
+	 * @var \TYPO3\CMS\Frontend\Http\UrlHandlerInterface[]
+	 * @see initializeRedirectUrlHandlers()
+	 */
+	protected $activeUrlHandlers = [];
 
 	/**
 	 * Is set to 1 if a pageNotFound handler could have been called.
@@ -881,7 +894,7 @@ class TypoScriptFrontendController {
 	 * @param int $type The value of GeneralUtility::_GP('type')
 	 * @param bool|string $no_cache The value of GeneralUtility::_GP('no_cache'), evaluated to 1/0
 	 * @param string $cHash The value of GeneralUtility::_GP('cHash')
-	 * @param string $jumpurl The value of GeneralUtility::_GP('jumpurl')
+	 * @param string $jumpurl The value of GeneralUtility::_GP('jumpurl'), unused since TYPO3 CMS 7. Will have no effect in TYPO3 CMS 8 anymore
 	 * @param string $MP The value of GeneralUtility::_GP('MP')
 	 * @param string $RDCT The value of GeneralUtility::_GP('RDCT')
 	 * @see index_ts.php
@@ -2193,6 +2206,7 @@ class TypoScriptFrontendController {
 			if (isset($GET_VARS['cHash'])) {
 				$this->cHash = $GET_VARS['cHash'];
 			}
+			// @deprecated since TYPO3 7, remove in TYPO3 8 together with jumpurl property.
 			if (isset($GET_VARS['jumpurl'])) {
 				$this->jumpurl = $GET_VARS['jumpurl'];
 			}
@@ -2807,133 +2821,82 @@ class TypoScriptFrontendController {
 	}
 
 	/**
-	 * Checks if a formmail submission can be sent as email, also used for JumpURLs
-	 * should be removed once JumpURL is handled outside TypoScriptFrontendController
+	 * Loops over all configured URL handlers and registers all active handlers in the redirect URL handler array.
 	 *
-	 * @param string|NULL $locationData The input from $_POST['locationData']
-	 * @return void|int
+	 * @see $activeRedirectUrlHandlers
 	 */
-	protected function locDataCheck($locationData) {
-		$locData = explode(':', $locationData);
-		if (!$locData[1] || $this->sys_page->checkRecord($locData[1], $locData[2], 1)) {
-			// $locData[1] -check means that a record is checked only if the locationData has a value for a record else than the page.
-			if (!empty($this->sys_page->getPage($locData[0]))) {
-				return 1;
-			} else {
-				$this->getTimeTracker()->setTSlogMessage('LocationData Error: The page pointed to by location data (' . $locationData . ') was not accessible.', 2);
-			}
-		} else {
-			$this->getTimeTracker()->setTSlogMessage('LocationData Error: Location data (' . $locationData . ') record pointed to was not accessible.', 2);
+	public function initializeRedirectUrlHandlers() {
+		if (
+			empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'])
+		) {
+			return;
 		}
-		return NULL;
+
+		$urlHandlers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers'];
+		foreach ($urlHandlers as $identifier => $configuration) {
+			if (empty($configuration) || !is_array($configuration)) {
+				throw new \RuntimeException('Missing configuration for URL handler "' . $identifier . '".', 1442052263);
+			}
+			if (!is_string($configuration['handler']) || empty($configuration['handler']) || !class_exists($configuration['handler']) || !is_subclass_of($configuration['handler'], UrlHandlerInterface::class)) {
+				throw new \RuntimeException('The URL handler "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . UrlHandlerInterface::class . '".', 1442052249);
+			}
+		}
+
+		$orderedHandlers = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($urlHandlers);
+
+		foreach ($orderedHandlers as $configuration) {
+			/** @var UrlHandlerInterface $urlHandler */
+			$urlHandler = GeneralUtility::makeInstance($configuration['handler']);
+			if ($urlHandler->canHandleCurrentUrl()) {
+				$this->activeUrlHandlers[] = $urlHandler;
+			}
+		}
 	}
 
 	/**
-	 * Sets the jumpurl for page type "External URL"
+	 * Checks if the current page points to an external URL and stores this value in the redirectUrl variable.
+	 * The redirection will then be handled by the redirectToExternalUrl() method.
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. See handleExternalUrlPage()
 	 */
 	public function setExternalJumpUrl() {
-		if ((bool)$this->config['config']['disablePageExternalUrl'] === FALSE && $extUrl = $this->sys_page->getExtURL($this->page)) {
-			$this->jumpurl = $extUrl;
-			GeneralUtility::_GETset(GeneralUtility::hmac($this->jumpurl, 'jumpurl'), 'juHash');
-		}
+		GeneralUtility::logDeprecatedFunction();
+		$this->initializeRedirectUrlHandlers();
 	}
 
 	/**
 	 * Sends a header "Location" to jumpUrl, if jumpurl is set.
 	 * Will exit if a location header is sent (for instance if jumpUrl was triggered)
 	 *
-	 * "jumpUrl" is a concept where external links are redirected from the index_ts.php script, which first logs the URL.
+	 * "jumpUrl" is a concept where external links are redirected from the TYPO3 Frontend, but first logs the URL.
 	 *
 	 * @throws \Exception
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8. JumpURL handling is moved to extensions.
 	 */
 	public function jumpUrl() {
-		if ($this->jumpurl) {
-			if (GeneralUtility::_GP('juSecure')) {
-				$locationData = (string)GeneralUtility::_GP('locationData');
-				// Need a type cast here because mimeType is optional!
-				$mimeType = (string)GeneralUtility::_GP('mimeType');
-				$hArr = array(
-					$this->jumpurl,
-					$locationData,
-					$mimeType
-				);
-				$calcJuHash = GeneralUtility::hmac(serialize($hArr));
-				$juHash = (string)GeneralUtility::_GP('juHash');
-				if ($juHash === $calcJuHash) {
-					if ($this->locDataCheck($locationData)) {
-						// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
-						$this->jumpurl = rawurldecode($this->jumpurl);
-						// Deny access to files that match TYPO3_CONF_VARS[SYS][fileDenyPattern] and whose parent directory is typo3conf/ (there could be a backup file in typo3conf/ which does not match against the fileDenyPattern)
-						$absoluteFileName = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath($this->jumpurl), FALSE);
-						if (GeneralUtility::isAllowedAbsPath($absoluteFileName) && GeneralUtility::verifyFilenameAgainstDenyPattern($absoluteFileName) && !GeneralUtility::isFirstPartOfStr($absoluteFileName, (PATH_site . 'typo3conf'))) {
-							if (@is_file($absoluteFileName)) {
-								$mimeType = $mimeType ?: 'application/octet-stream';
-								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-								header('Content-Type: ' . $mimeType);
-								header('Content-Disposition: attachment; filename="' . basename($absoluteFileName) . '"');
-								header('Content-Length: ' . filesize($absoluteFileName));
-								GeneralUtility::flushOutputBuffers();
-								readfile($absoluteFileName);
-								die;
-							} else {
-								throw new \Exception('jumpurl Secure: "' . $this->jumpurl . '" was not a valid file!', 1294585193);
-							}
-						} else {
-							throw new \Exception('jumpurl Secure: The requested file was not allowed to be accessed through jumpUrl (path or file not allowed)!', 1294585194);
-						}
-					} else {
-						throw new \Exception('jumpurl Secure: locationData, ' . $locationData . ', was not accessible.', 1294585195);
-					}
-				} else {
-					throw new \Exception('jumpurl Secure: Calculated juHash did not match the submitted juHash.', 1294585196);
-				}
-			} else {
-				$allowRedirect = FALSE;
-				if (GeneralUtility::hmac($this->jumpurl, 'jumpurl') === (string)GeneralUtility::_GP('juHash')) {
-					$allowRedirect = TRUE;
-				} elseif (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])) {
-					foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $classReference) {
-						$hookObject = GeneralUtility::getUserObj($classReference);
-						$allowRedirectFromHook = FALSE;
-						if (method_exists($hookObject, 'jumpurlRedirectHandler')) {
-							$allowRedirectFromHook = $hookObject->jumpurlRedirectHandler($this->jumpurl, $this);
-						}
-						if ($allowRedirectFromHook === TRUE) {
-							$allowRedirect = TRUE;
-							break;
-						}
-					}
-				}
-				if ($allowRedirect) {
-					$TSConf = $this->getPagesTSconfig();
-					if ($TSConf['TSFE.']['jumpUrl_transferSession']) {
-						$uParts = parse_url($this->jumpurl);
-						$params = '&FE_SESSION_KEY=' . rawurlencode(($this->fe_user->id . '-' . md5(($this->fe_user->id . '/' . $this->TYPO3_CONF_VARS['SYS']['encryptionKey']))));
-						// Add the session parameter ...
-						$this->jumpurl .= ($uParts['query'] ? '' : '?') . $params;
-					}
-					$statusCode = HttpUtility::HTTP_STATUS_303;
-					if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
-						switch ((int)$TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
-							case 301:
-								$statusCode = HttpUtility::HTTP_STATUS_301;
-								break;
-							case 302:
-								$statusCode = HttpUtility::HTTP_STATUS_302;
-								break;
-							case 307:
-								$statusCode = HttpUtility::HTTP_STATUS_307;
-								break;
-						}
-					}
-					HttpUtility::redirect($this->jumpurl, $statusCode);
-				} else {
-					throw new \Exception('jumpurl: Calculated juHash did not match the submitted juHash.', 1359987599);
-				}
-			}
+		GeneralUtility::logDeprecatedFunction();
+		$this->redirectToExternalUrl();
+	}
+
+	/**
+	 * Loops over all registered URL handlers and lets them process the current URL.
+	 *
+	 * If no handler has stopped the current process (e.g. by redirecting) and a
+	 * the redirectUrl propert is not empty, the user will be redirected to this URL.
+	 *
+	 * @internal Should be called by the FrontendRequestHandler only.
+	 */
+	public function redirectToExternalUrl() {
+
+		foreach ($this->activeUrlHandlers as $redirectHandler) {
+			$redirectHandler->handle();
+		}
+
+		if (!empty($this->activeUrlHandlers)) {
+			throw new \RuntimeException('A URL handler is active but did not process the URL.', 1442305505);
 		}
 	}
 
@@ -3051,13 +3014,13 @@ class TypoScriptFrontendController {
 	 *
 	 *******************************************/
 	/**
-	 * Returns TRUE if the page should be generated
-	 * That is if jumpurl is not set and the cacheContentFlag is not set.
+	 * Returns TRUE if the page should be generated.
+	 * That is if no URL handler is active and the cacheContentFlag is not set.
 	 *
 	 * @return bool
 	 */
 	public function isGeneratePage() {
-		return !$this->cacheContentFlag && !$this->jumpurl;
+		return !$this->cacheContentFlag && empty($this->activeUrlHandlers);
 	}
 
 	/**
@@ -3575,12 +3538,12 @@ class TypoScriptFrontendController {
 	}
 
 	/**
-	 * Determines if there are any INTincScripts to include
+	 * Determines if there are any INTincScripts to include.
 	 *
-	 * @return bool Returns TRUE if scripts are found (and not jumpurl)
+	 * @return bool Returns TRUE if scripts are found and no URL handler is active.
 	 */
 	public function isINTincScript() {
-		return is_array($this->config['INTincScript']) && !$this->jumpurl;
+		return is_array($this->config['INTincScript']) && empty($this->activeUrlHandlers);
 	}
 
 	/**
@@ -3612,13 +3575,13 @@ class TypoScriptFrontendController {
 	 *******************************************/
 	/**
 	 * Determines if content should be outputted.
-	 * Outputting content is done only if jumpUrl is NOT set.
+	 * Outputting content is done only if no URL handler is active and no hook disables the output.
 	 *
-	 * @return bool Returns TRUE if $this->jumpurl is not set.
+	 * @return bool Returns TRUE if no redirect URL is set and no hook disables the output.
 	 */
 	public function isOutputting() {
-		// Initialize by status of jumpUrl:
-		$enableOutput = !$this->jumpurl;
+		// Initialize by status if there is a Redirect URL
+		$enableOutput = empty($this->activeUrlHandlers);
 		// Call hook for possible disabling of output:
 		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'])) {
 			$_params = array('pObj' => &$this, 'enableOutput' => &$enableOutput);

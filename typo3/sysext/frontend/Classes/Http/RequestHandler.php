@@ -189,8 +189,7 @@ class RequestHandler implements RequestHandlerInterface {
 		// Convert POST data to internal "renderCharset" if different from the metaCharset
 		$this->controller->convPOSTCharset();
 
-		// Check JumpUrl
-		$this->controller->setExternalJumpUrl();
+		$this->controller->initializeRedirectUrlHandlers();
 
 		$this->controller->handleDataSubmission();
 
@@ -253,8 +252,7 @@ class RequestHandler implements RequestHandlerInterface {
 		if ($this->controller->isOutputting() && $debugParseTime) {
 			$this->controller->content .= LF . '<!-- Parsetime: ' . $this->controller->scriptParseTime . 'ms -->';
 		}
-		// Check JumpUrl
-		$this->controller->jumpurl();
+		$this->controller->redirectToExternalUrl();
 		// Preview info
 		$this->controller->previewInfo();
 		// Hook for end-of-frontend

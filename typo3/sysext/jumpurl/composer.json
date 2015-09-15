@@ -1,0 +1,24 @@
+{
+	"name": "typo3/cms-jumpurl",
+	"type": "typo3-cms-extension",
+	"description": "TYPO3 Jump URL handling",
+	"homepage": "http://typo3.org",
+	"license": ["GPL-2.0+"],
+
+	"require": {
+		"typo3/cms-core": "*"
+	},
+	"replace": {
+		"jumpurl": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Jumpurl\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Jumpurl\\Tests\\": "Tests/"
+		}
+	}
+}

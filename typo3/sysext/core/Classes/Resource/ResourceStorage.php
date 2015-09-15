@@ -1551,13 +1551,14 @@ class ResourceStorage implements ResourceStorageInterface {
 	 * @param FileInterface $file
 	 * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
 	 * @param string $alternativeFilename the filename for the download (if $asDownload is set)
+	 * @param string $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
 	 * @return void
 	 */
-	public function dumpFileContents(FileInterface $file, $asDownload = FALSE, $alternativeFilename = NULL) {
+	public function dumpFileContents(FileInterface $file, $asDownload = FALSE, $alternativeFilename = NULL, $overrideMimeType = NULL) {
 		$downloadName = $alternativeFilename ?: $file->getName();
 		$contentDisposition = $asDownload ? 'attachment' : 'inline';
 		header('Content-Disposition: ' . $contentDisposition . '; filename="' . $downloadName . '"');
-		header('Content-Type: ' . $file->getMimeType());
+		header('Content-Type: ' . $overrideMimeType ?: $file->getMimeType());
 		header('Content-Length: ' . $file->getSize());
 
 		// Cache-Control header is needed here to solve an issue with browser IE8 and lower

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ExceptionHandlerInterface;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -4494,36 +4496,33 @@ class ContentObjectRenderer {
 		if (isset($conf['target.'])) {
 			$target = $this->stdWrap($target, $conf['target.']);
 		}
-		// The jumpURL feature will be taken care of by typoLink, only "jumpurl.secure = 1" is applyable needed for special link creation
 		$tsfe = $this->getTypoScriptFrontendController();
-		if ($conf['jumpurl.']['secure']) {
-			$alternativeJumpUrlParameter = isset($conf['jumpurl.']['parameter.']) ? $this->stdWrap($conf['jumpurl.']['parameter'], $conf['jumpurl.']['parameter.']) : $conf['jumpurl.']['parameter'];
-			$typoLinkConf = array(
-				'parameter' => $alternativeJumpUrlParameter ? $alternativeJumpUrlParameter : $tsfe->id . ',' . $tsfe->type,
-				'fileTarget' => $target,
-				'title' => $title,
-				'ATagParams' => $this->getATagParams($conf),
-				'additionalParams' => '&jumpurl=' . rawurlencode($theFileEnc) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) . $tsfe->getMethodUrlIdToken
-			);
-		} else {
-			$typoLinkConf = array(
-				'parameter' => $theFileEnc,
-				'fileTarget' => $target,
-				'title' => $title,
-				'ATagParams' => $this->getATagParams($conf)
-			);
+
+		$typoLinkConf = array(
+			'parameter' => $theFileEnc,
+			'fileTarget' => $target,
+			'title' => $title,
+			'ATagParams' => $this->getATagParams($conf)
+		);
+
+		if (isset($conf['typolinkConfiguration.'])) {
+			$additionalTypoLinkConfiguration = $conf['typolinkConfiguration.'];
+			// We only allow additional configuration. This is why the generated conf overwrites the additional conf.
+			ArrayUtility::mergeRecursiveWithOverrule($additionalTypoLinkConfiguration, $typoLinkConf);
+			$typoLinkConf = $additionalTypoLinkConfiguration;
 		}
-		// If the global jumpURL feature is activated, but is disabled for this
-		// filelink, the global parameter needs to be disabled as well for this link creation
-		$globalJumpUrlEnabled = $tsfe->config['config']['jumpurl_enable'];
-		if ($globalJumpUrlEnabled && isset($conf['jumpurl']) && $conf['jumpurl'] == 0) {
-			$tsfe->config['config']['jumpurl_enable'] = 0;
-		} elseif (!$globalJumpUrlEnabled && $conf['jumpurl']) {
-			$tsfe->config['config']['jumpurl_enable'] = 1;
+
+		if (isset($conf['jumpurl']) || isset($conf['jumpurl.'])) {
+			GeneralUtility::deprecationLog('The TypoScript jumpurl configuration is deprecated for file links since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8. Pass this configuration in the typolinkConfiguration property instead.');
+			if (isset($conf['jumpurl'])) {
+				$typoLinkConf['jumpurl'] = $conf['jumpurl'];
+			}
+			if (isset($conf['jumpurl.'])) {
+				$typoLinkConf['jumpurl.'] = $conf['jumpurl.'];
+			}
 		}
+
 		$theLinkWrap = $this->typoLink('|', $typoLinkConf);
-		// Now the original value is set again
-		$tsfe->config['config']['jumpurl_enable'] = $globalJumpUrlEnabled;
 		$theSize = filesize($theFile);
 		$fI = GeneralUtility::split_fileref($theFile);
 		$icon = '';
@@ -4621,42 +4620,6 @@ class ContentObjectRenderer {
 			$output = $this->stdWrap($output, $conf['stdWrap.']);
 		}
 		return $output;
-	}
-
-	/**
-	 * Returns a URL parameter string setting parameters for secure downloads by "jumpurl".
-	 * Helper function for filelink()
-	 *
-	 * @param string $jumpUrl The URL to jump to, basically the filepath
-	 * @param array $conf TypoScript properties for the "jumpurl.secure" property of "filelink
-	 * @return string URL parameters like "&juSecure=1.....
-	 * @access private
-	 * @see filelink()
-	 */
-	public function locDataJU($jumpUrl, $conf) {
-		$fI = pathinfo($jumpUrl);
-		$mimetype = '';
-		$mimetypeValue = '';
-		if ($fI['extension']) {
-			$mimeTypes = GeneralUtility::trimExplode(',', $conf['mimeTypes'], TRUE);
-			foreach ($mimeTypes as $v) {
-				$parts = explode('=', $v, 2);
-				if (strtolower($fI['extension']) == strtolower(trim($parts[0]))) {
-					$mimetypeValue = trim($parts[1]);
-					$mimetype = '&mimeType=' . rawurlencode($mimetypeValue);
-					break;
-				}
-			}
-		}
-		$locationData = $this->getTypoScriptFrontendController()->id . ':' . $this->currentRecord;
-		$rec = '&locationData=' . rawurlencode($locationData);
-		$hArr = array(
-			$jumpUrl,
-			$locationData,
-			$mimetypeValue
-		);
-		$juHash = '&juHash=' . GeneralUtility::hmac(serialize($hArr));
-		return '&juSecure=1' . $mimetype . $rec . $juHash;
 	}
 
 	/**
@@ -5369,7 +5332,6 @@ class ContentObjectRenderer {
 			$textpieces = explode($scheme, $data);
 			$pieces = count($textpieces);
 			$textstr = $textpieces[0];
-			$initP = '?id=' . $this->getTypoScriptFrontendController()->id . '&type=' . $this->getTypoScriptFrontendController()->type;
 			for ($i = 1; $i < $pieces; $i++) {
 				$len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
 				if (trim(substr($textstr, -1)) == '' && $len) {
@@ -5405,13 +5367,12 @@ class ContentObjectRenderer {
 					} else {
 						$target = $this->getTypoScriptFrontendController()->extTarget;
 					}
-					if ($this->getTypoScriptFrontendController()->config['config']['jumpurl_enable']) {
-						$jumpurl = 'http://' . $parts[0];
-						$juHash = GeneralUtility::hmac($jumpurl, 'jumpurl');
-						$res = '<a' . ' href="' . htmlspecialchars(($this->getTypoScriptFrontendController()->absRefPrefix . $this->getTypoScriptFrontendController()->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($jumpurl))) . '&juHash=' . $juHash . $this->getTypoScriptFrontendController()->getMethodUrlIdToken . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
-					} else {
-						$res = '<a' . ' href="' . $scheme . htmlspecialchars($parts[0]) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
-					}
+
+					// check for jump URLs or similar
+					$linkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_COMMON, $scheme . $parts[0], $conf);
+
+					$res = '<a href="' . htmlspecialchars($linkUrl) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
+
 					$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 					if ($conf['ATagBeforeWrap']) {
 						$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
@@ -5444,7 +5405,6 @@ class ContentObjectRenderer {
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
 		$tsfe = $this->getTypoScriptFrontendController();
-		$initP = '?id=' . $tsfe->id . '&type=' . $tsfe->type;
 		for ($i = 1; $i < $pieces; $i++) {
 			$len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
 			if (trim(substr($textstr, -1)) == '' && $len) {
@@ -5455,7 +5415,7 @@ class ContentObjectRenderer {
 				$parts[0] = substr($textpieces[$i], 0, $len);
 				$parts[1] = substr($textpieces[$i], $len);
 				$linktxt = preg_replace('/\\?.*/', '', $parts[0]);
-				list($mailToUrl, $linktxt) = $this->getMailTo($parts[0], $linktxt, $initP);
+				list($mailToUrl, $linktxt) = $this->getMailTo($parts[0], $linktxt);
 				$mailToUrl = $tsfe->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
 				$res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
 				$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
@@ -6171,7 +6131,6 @@ class ContentObjectRenderer {
 		$finalTagParts = array();
 		$finalTagParts['aTagParams'] = $this->getATagParams($conf);
 		$linkParameter = isset($conf['parameter.']) ? trim($this->stdWrap($conf['parameter'], $conf['parameter.'])) : trim($conf['parameter']);
-		$initP = '?id=' . $tsfe->id . '&type=' . $tsfe->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
 
@@ -6233,7 +6192,7 @@ class ContentObjectRenderer {
 			// If it's a mail address
 			case 'mailto':
 				$linkParameter = preg_replace('/^mailto:/i', '', $linkParameter);
-				list($this->lastTypoLinkUrl, $linktxt) = $this->getMailTo($linkParameter, $linktxt, $initP);
+				list($this->lastTypoLinkUrl, $linktxt) = $this->getMailTo($linkParameter, $linktxt);
 				$finalTagParts['url'] = $this->lastTypoLinkUrl;
 			break;
 
@@ -6261,14 +6220,8 @@ class ContentObjectRenderer {
 					$scheme = '';
 				}
 
-				if ($tsfe->config['config']['jumpurl_enable']) {
-					$url = $tsfe->absRefPrefix . $tsfe->config['mainScript'] . $initP;
-					$jumpurl = $scheme . $linkParameter;
-					$juHash = GeneralUtility::hmac($jumpurl, 'jumpurl');
-					$this->lastTypoLinkUrl = $url . '&jumpurl=' . rawurlencode($jumpurl) . '&juHash=' . $juHash . $tsfe->getMethodUrlIdToken;
-				} else {
-					$this->lastTypoLinkUrl = $scheme . $linkParameter;
-				}
+				$this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $scheme . $linkParameter, $conf);
+
 				$this->lastTypoLinkTarget = $target;
 				$finalTagParts['url'] = $this->lastTypoLinkUrl;
 				$finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
@@ -6285,18 +6238,7 @@ class ContentObjectRenderer {
 					if ($linktxt == '') {
 						$linktxt = $this->parseFunc(rawurldecode($linkParameter), array('makelinks' => 0), '< lib.parseFunc');
 					}
-					if ($tsfe->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
-						$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($linkParameter)));
-						$url = $tsfe->absRefPrefix . $tsfe->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($linkParameter);
-						if ($conf['jumpurl.']['secure']) {
-							$url .= $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']);
-						} else {
-							$url .= '&juHash=' . GeneralUtility::hmac($linkParameter, 'jumpurl');
-						}
-						$this->lastTypoLinkUrl =  $url . $tsfe->getMethodUrlIdToken;
-					} else {
-						$this->lastTypoLinkUrl = $tsfe->absRefPrefix . $linkParameter;
-					}
+					$this->lastTypoLinkUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $GLOBALS['TSFE']->absRefPrefix . $linkParameter, $conf);
 					$this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
 					$target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $tsfe->fileTarget;
 					if ($conf['fileTarget.']) {
@@ -6753,6 +6695,48 @@ class ContentObjectRenderer {
 	}
 
 	/**
+	 * Loops over all configured URL modifier hooks (if available) and returns the generated URL or NULL if no URL was generated.
+	 *
+	 * @param string $context The context in which the method is called (e.g. typoLink).
+	 * @param string $url The URL that should be processed.
+	 * @param array $typolinkConfiguration The current link configuration array.
+	 * @return string|NULL Returns NULL if URL was not processed or the processed URL as a string.
+	 * @throws \RuntimeException if a hook was registered but did not fulfill the correct parameters.
+	 */
+	protected function processUrl($context, $url, $typolinkConfiguration = array()) {
+		if (
+			empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'])
+			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'])
+		) {
+			return $url;
+		}
+
+		$urlProcessors = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors'];
+		foreach ($urlProcessors as $identifier => $configuration) {
+			if (empty($configuration) || !is_array($configuration)) {
+				throw new \RuntimeException('Missing configuration for URI processor "' . $identifier . '".', 1442050529);
+			}
+			if (!is_string($configuration['processor']) || empty($configuration['processor']) || !class_exists($configuration['processor']) || !is_subclass_of($configuration['processor'], UrlProcessorInterface::class)) {
+				throw new \RuntimeException('The URI processor "' . $identifier . '" defines an invalid provider. Ensure the class exists and implements the "' . UrlProcessorInterface::class . '".', 1442050579);
+			}
+		}
+
+		$orderedProcessors = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($urlProcessors);
+		$keepProcessing = TRUE;
+
+		foreach ($orderedProcessors as $configuration) {
+			/** @var UrlProcessorInterface $urlProcessor */
+			$urlProcessor = GeneralUtility::makeInstance($configuration['processor']);
+			$url = $urlProcessor->process($context, $url, $typolinkConfiguration, $this, $keepProcessing);
+			if (!$keepProcessing) {
+				break;
+			}
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Returns the &MP variable value for a page id.
 	 * The function will do its best to find a MP value that will keep the page id inside the current Mount Point rootline if any.
 	 *
@@ -6810,21 +6794,25 @@ class ContentObjectRenderer {
 
 	/**
 	 * Creates a href attibute for given $mailAddress.
-	 * The function uses spamProtectEmailAddresses and Jumpurl functionality for encoding the mailto statement.
+	 * The function uses spamProtectEmailAddresses for encoding the mailto statement.
 	 * If spamProtectEmailAddresses is disabled, it'll just return a string like "mailto:user@example.tld".
 	 *
 	 * @param string $mailAddress Email address
 	 * @param string $linktxt Link text, default will be the email address.
-	 * @param string $initP Initial link parameters, only used if Jumpurl functionality is enabled. Example: ?id=5&type=0
 	 * @return string Returns a numerical array with two elements: 1) $mailToUrl, string ready to be inserted into the href attribute of the <a> tag, b) $linktxt: The string between starting and ending <a> tag.
 	 */
-	public function getMailTo($mailAddress, $linktxt, $initP = '?') {
+	public function getMailTo($mailAddress, $linktxt) {
+
 		if ((string)$linktxt === '') {
 			$linktxt = $mailAddress;
 		}
-		$mailToUrl = 'mailto:' . $mailAddress;
+
+		$originalMailToUrl = 'mailto:' . $mailAddress;
+		$mailToUrl = $this->processUrl(UrlProcessorInterface::CONTEXT_MAIL, $originalMailToUrl);
+
 		$tsfe = $this->getTypoScriptFrontendController();
-		if (!$tsfe->config['config']['jumpurl_enable'] || $tsfe->config['config']['jumpurl_mailto_disable']) {
+		// no processing happened, therefore
+		if ($mailToUrl === $originalMailToUrl) {
 			if ($tsfe->spamProtectEmailAddresses) {
 				if ($tsfe->spamProtectEmailAddresses === 'ascii') {
 					$mailToUrl = $tsfe->encryptEmail($mailToUrl);
@@ -6843,14 +6831,9 @@ class ContentObjectRenderer {
 				}
 				$linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
 			}
-		} else {
-			$juHash = GeneralUtility::hmac($mailToUrl, 'jumpurl');
-			$mailToUrl = $tsfe->absRefPrefix . $tsfe->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($mailToUrl) . '&juHash=' . $juHash . $tsfe->getMethodUrlIdToken;
 		}
-		return array(
-			$mailToUrl,
-			$linktxt
-		);
+
+		return array($mailToUrl, $linktxt);
 	}
 
 	/**

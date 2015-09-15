@@ -1,0 +1,15 @@
+# This is the project specific Settings.yml file.
+# Place Sphinx specific build information here.
+# Settings given here will replace the settings of 'conf.py'.
+
+---
+conf.py:
+  copyright: 2015
+  project: JumpURL
+  version: 1
+  release: 1
+  intersphinx_mapping:
+    t3tsref:
+    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - null
+...

@@ -61,3 +61,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_prev
 
 // Register search key shortcuts
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
+
+// Register URL handler for external pages.
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers']['frontendExternalUrl'] = [
+	'handler' => \TYPO3\CMS\Frontend\Page\ExternalPageUrlHandler::class,
+];
