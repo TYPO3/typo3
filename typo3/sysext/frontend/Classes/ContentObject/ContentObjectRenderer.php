@@ -1669,7 +1669,11 @@ class ContentObjectRenderer {
 				if ($sourceInfo) {
 					$sourceConfiguration['width'] = $sourceInfo[0];
 					$sourceConfiguration['height'] = $sourceInfo[1];
-					$sourceConfiguration['src'] = htmlspecialchars($tsfe->absRefPrefix . $sourceInfo[3]);
+					$urlPrefix = '';
+					if (parse_url($sourceInfo[3], PHP_URL_HOST) === NULL) {
+						$urlPrefix = $tsfe->absRefPrefix;
+					}
+					$sourceConfiguration['src'] = htmlspecialchars($urlPrefix . $sourceInfo[3]);
 					$sourceConfiguration['selfClosingTagSlash'] = (!empty($tsfe->xhtmlDoctype) ? ' /' : '');
 
 					$oneSourceCollection = $this->substituteMarkerArray($sourceLayout, $sourceConfiguration, '###|###', TRUE, TRUE);
@@ -4567,7 +4571,11 @@ class ContentObjectRenderer {
 					} else {
 						$icon = $notFoundThumb;
 					}
-					$icon = '<img src="' . htmlspecialchars($tsfe->absRefPrefix . $icon) . '"' .
+					$urlPrefix = '';
+					if (parse_url($icon, PHP_URL_HOST) === NULL) {
+						$urlPrefix = $tsfe->absRefPrefix;
+					}
+					$icon = '<img src="' . htmlspecialchars($urlPrefix . $icon) . '"' .
 							'width="' . $sizeParts[0] . '" height="' . $sizeParts[1] . '" ' .
 							$this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
 				}
@@ -4576,7 +4584,7 @@ class ContentObjectRenderer {
 				$iconWidth = !empty($conf['icon.']['widthAttribute']) ? $conf['icon.']['widthAttribute'] : 18;
 				$conf['icon.']['heightAttribute'] = isset($conf['icon.']['heightAttribute.']) ? $this->stdWrap($conf['icon.']['heightAttribute'], $conf['icon.']['heightAttribute.']) : $conf['icon.']['heightAttribute'];
 				$iconHeight = !empty($conf['icon.']['heightAttribute']) ? $conf['icon.']['heightAttribute'] : 16;
-				$icon = '<img src="' . htmlspecialchars(($tsfe->absRefPrefix . $icon)) . '" width="' . $iconWidth . '" height="' . $iconHeight . '"' . $this->getBorderAttr(' border="0"') . $this->getAltParam($conf) . ' />';
+				$icon = '<img src="' . htmlspecialchars($tsfe->absRefPrefix . $icon) . '" width="' . $iconWidth . '" height="' . $iconHeight . '"' . $this->getBorderAttr(' border="0"') . $this->getAltParam($conf) . ' />';
 			}
 			if ($conf['icon_link'] && !$conf['combinedLink']) {
 				$icon = $this->wrap($icon, $theLinkWrap);
