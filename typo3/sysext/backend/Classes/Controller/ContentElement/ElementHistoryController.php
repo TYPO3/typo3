@@ -130,11 +130,11 @@ class ElementHistoryController implements \TYPO3\CMS\Core\Http\ControllerInterfa
 		);
 		// CSH
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'history_log');
-		// Start history object
-		$historyObj = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\History\RecordHistory::class);
-		if ($historyObj->returnUrl) {
+		// Get returnUrl parameter
+		$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
+		if ($returnUrl) {
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+			$buttons['back'] = '<a href="' . htmlspecialchars($returnUrl) . '" class="typo3-goBack">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 		}
 		return $buttons;
 	}
