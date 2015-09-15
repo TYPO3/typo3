@@ -17,11 +17,12 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Script Class for the New Content element wizard
@@ -117,6 +118,11 @@ class NewContentElementController {
 	protected $MCONF;
 
 	/**
+	 * @var IconFactory
+	 */
+	protected $iconFactory;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -158,6 +164,8 @@ class NewContentElementController {
 		$perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		$this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($this->pageInfo) ? 1 : 0;
+
+		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**
@@ -228,6 +236,9 @@ class NewContentElementController {
 					top.TYPO3ModuleMenu.refreshMenu();
 				}
 			');
+
+			$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+
 			// Traverse items for the wizard.
 			// An item is either a header or an item rendered with a radio button and title/description and icon:
 			$cc = ($key = 0);
@@ -252,19 +263,31 @@ class NewContentElementController {
 						$aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();" . (!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					}
 
-					$icon = $wInfo['icon'];
-					if (strpos($wInfo['icon'], '..') === FALSE && !GeneralUtility::isAbsPath($icon)) {
-						$icon = GeneralUtility::getFileAbsFileName($icon, TRUE, TRUE);
-						$pathInfo = PathUtility::pathinfo($icon);
-						$path = PathUtility::getRelativePathTo($pathInfo['dirname']);
-						$icon = $path . $pathInfo['basename'];
+					if (isset($wInfo['icon'])) {
+						GeneralUtility::deprecationLog('The PageTS-Config: mod.wizards.newContentElement.wizardItems.*.elements.*.icon'
+							. ' is deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8.'
+							. ' Register your icon in IconRegistry::registerIcon and use the new setting:'
+							. ' mod.wizards.newContentElement.wizardItems.*.elements.*.iconIdentifier'
+						);
+						$wInfo['iconIdentifier'] = 'content-' . $k;
+						$icon = $wInfo['icon'];
+						if (StringUtility::beginsWith($icon, '../typo3conf/ext/')) {
+							$icon = str_replace('../typo3conf/ext/', 'EXT:', $icon);
+						}
+						if (!StringUtility::beginsWith($icon, 'EXT:') && strpos($icon, '/') !== FALSE) {
+							$icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($wInfo['icon']);
+						}
+						$iconRegistry->registerIcon($wInfo['iconIdentifier'], BitmapIconProvider::class, array(
+							'source' => $icon
+						));
 					}
+					$icon = $this->iconFactory->getIcon($wInfo['iconIdentifier']);
 					$menuItems[$key]['content'] .= '
 						<div class="media">
 							<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
 								' . $content . '
 								<div class="media-left">
-									<img' . IconUtility::skinImg('', $icon) . ' alt="" />
+									' . $icon . '
 								</div>
 								<div class="media-body">
 									<strong>' . htmlspecialchars($wInfo['title']) . '</strong>' .
@@ -339,11 +362,10 @@ class NewContentElementController {
 			'csh' => '',
 			'back' => ''
 		);
-		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		if ($this->id && $this->access) {
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce');
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
 			}
 		}
 		return $buttons;

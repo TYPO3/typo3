@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Utility;
 
 /**
  * Interface for classes which hook into IconUtility::getSpriteIconForResource()
+ *
+ * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
  */
 interface IconUtilityOverrideResourceIconHookInterface {
 
@@ -29,6 +31,7 @@ interface IconUtilityOverrideResourceIconHookInterface {
 	 * @param string $iconName
 	 * @param array $options
 	 * @param array $overlays
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function overrideResourceIcon(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, &$iconName, array &$options, array &$overlays);
 

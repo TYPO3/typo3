@@ -420,16 +420,16 @@ class TcaMigration {
 					foreach ($fieldConfig['config']['items'] as &$itemConfig) {
 						// more then two values? then the third entry is the image path
 						if (!empty($itemConfig[2])) {
+							$tcaPath = implode('.', [$table, 'columns', $fieldName, 'config', 'items']);
+							$pathParts = GeneralUtility::trimExplode('/', $itemConfig[2]);
+							// remove first element (ext or sysext)
+							array_shift($pathParts);
+							$path = implode('/', $pathParts);
 							// If the path starts with ext/ or sysext/ migrate it
 							if (
 								StringUtility::beginsWith($itemConfig[2], 'ext/')
 								|| StringUtility::beginsWith($itemConfig[2], 'sysext/')
 							) {
-								$tcaPath = implode('.', [$table, 'columns', $fieldName, 'config', 'items']);
-								$pathParts = GeneralUtility::trimExplode('/', $itemConfig[2]);
-								// remove first element (ext or sysext)
-								array_shift($pathParts);
-								$path = implode('/', $pathParts);
 								$this->messages[] = '[' . $tcaPath . '] ext/ or sysext/ within the path (' . $path . ') in items array is deprecated, use EXT: reference';
 								$itemConfig[2] = 'EXT:' . $path;
 							} elseif (StringUtility::beginsWith($itemConfig[2], 'i/')) {

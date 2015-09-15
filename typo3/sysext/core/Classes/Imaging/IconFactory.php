@@ -209,9 +209,11 @@ class IconFactory {
 	 *
 	 * @param string $table The TCA table
 	 * @param array $row The selected record
+	 * @internal
+	 * @TODO: make this method protected, after FormEngine doesn't need it anymore.
 	 * @return string The icon identifier string for the icon of that DB record
 	 */
-	protected function mapRecordTypeToIconIdentifier($table, array $row) {
+	public function mapRecordTypeToIconIdentifier($table, array $row) {
 		$recordType = array();
 		$ref = NULL;
 

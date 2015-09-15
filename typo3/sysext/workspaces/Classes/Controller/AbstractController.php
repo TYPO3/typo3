@@ -50,11 +50,11 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$icons = array(
 			'language' => $iconFactory->getIcon('flags-multiple', Icon::SIZE_SMALL)->render(),
-			'integrity' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-information'),
-			'success' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-ok'),
-			'info' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-information'),
-			'warning' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-warning'),
-			'error' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-error')
+			'integrity' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
+			'success' => $iconFactory->getIcon('status-dialog-ok', Icon::SIZE_SMALL)->render(),
+			'info' => $iconFactory->getIcon('status-dialog-information', Icon::SIZE_SMALL)->render(),
+			'warning' => $iconFactory->getIcon('status-dialog-warning', Icon::SIZE_SMALL)->render(),
+			'error' => $iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render()
 		);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);

@@ -1732,7 +1732,7 @@ tt_content.' . $key . $suffix . ' {
 		$GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
 		$messages = $tcaMigration->getMessages();
 		if (!empty($messages)) {
-			$context = 'Automatic TCA migration done during boostrap. Please adapt TCA accordingly, these migrations'
+			$context = 'Automatic TCA migration done during bootstrap. Please adapt TCA accordingly, these migrations'
 				. ' will be removed with TYPO3 CMS 8. The backend module "Configuration -> TCA" shows the modified values.'
 				. ' Please adapt these areas:';
 			array_unshift($messages, $context);

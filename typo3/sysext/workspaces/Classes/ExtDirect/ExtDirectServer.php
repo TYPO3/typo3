@@ -116,8 +116,9 @@ class ExtDirectServer extends AbstractHandler {
 		$parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\RteHtmlParser::class);
 		$liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
 		$versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
-		$icon_Live = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
-		$icon_Workspace = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($parameter->table, $versionRecord);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$icon_Live = $iconFactory->getIconForRecord($parameter->table, $liveRecord, Icon::SIZE_SMALL)->render();
+		$icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, Icon::SIZE_SMALL)->render();
 		$stagePosition = $this->getStagesService()->getPositionOfCurrentStage($parameter->stage);
 		$fieldsOfRecords = array_keys($liveRecord);
 		if ($GLOBALS['TCA'][$parameter->table]) {

@@ -272,7 +272,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 			0 => [
 				0 => 'aTitle',
 				1 => 'aTable',
-				2 => 'status-status-icon-missing',
+				2 => 'default-not-found',
 				3 => [
 					'description' => 'aDescription',
 				],
@@ -333,7 +333,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 			0 => [
 				0 => 'aLabel',
 				1 => 'aValue',
-				2 => 'status-status-icon-missing',
+				2 => 'default-not-found',
 				3 => NULL,
 			]
 		];
@@ -369,7 +369,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 					0 => [
 						0 => 'fooTableTitle',
 						1 => '--div--',
-						2 => 'status-status-icon-missing',
+						2 => 'default-not-found',
 						3 => NULL,
 					],
 					1 => [
@@ -404,7 +404,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 					0 => [
 						0 => 'fooTableTitle',
 						1 => '--div--',
-						2 => 'status-status-icon-missing',
+						2 => 'default-not-found',
 						3 => NULL,
 					],
 					1 => [
@@ -560,7 +560,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 			0 => [
 				0 => 'fooTableTitle',
 				1 => '--div--',
-				2 => 'status-status-icon-missing',
+				2 => 'default-not-found',
 				3 => NULL,
 			],
 			1 => [
@@ -1514,13 +1514,13 @@ class TcaSelectItemsTest extends UnitTestCase {
 			0 => [
 				0 => 'aPrefix[LLL:EXT:lang/locallang_core.xlf:labels.no_title]',
 				1 => 1,
-				2 => 'status-status-icon-missing',
+				2 => 'default-not-found',
 				3 => NULL,
 			],
 			1 => [
 				0 => 'aPrefix[LLL:EXT:lang/locallang_core.xlf:labels.no_title]',
 				1 => 2,
-				2 => 'status-status-icon-missing',
+				2 => 'default-not-found',
 				3 => NULL,
 			],
 		];

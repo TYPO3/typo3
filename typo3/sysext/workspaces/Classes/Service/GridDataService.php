@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -117,6 +119,8 @@ class GridDataService {
 		$swapStage = $workspaceAccess['publish_access'] & 1 ? \TYPO3\CMS\Workspaces\Service\StagesService::STAGE_PUBLISH_ID : 0;
 		$swapAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace) && $GLOBALS['BE_USER']->workspaceSwapAccess();
 		$this->initializeWorkspacesCachingFramework();
+		/** @var IconFactory $iconFactory */
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		// check for dataArray in cache
 		if ($this->getDataArrayFromCache($versions, $filterTxt) === FALSE) {
 			/** @var $stagesObj \TYPO3\CMS\Workspaces\Service\StagesService */
@@ -168,13 +172,12 @@ class GridDataService {
 					$versionArray['t3ver_oid'] = $record['t3ver_oid'];
 					$versionArray['livepid'] = $record['livepid'];
 					$versionArray['stage'] = $versionRecord['t3ver_stage'];
-					$versionArray['icon_Live'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($table, $origRecord);
-					$versionArray['icon_Workspace'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($table, $versionRecord);
+					$versionArray['icon_Live'] = $iconFactory->getIconForRecord($table, $origRecord, Icon::SIZE_SMALL)->render();
+					$versionArray['icon_Workspace'] = $iconFactory->getIconForRecord($table, $versionRecord, Icon::SIZE_SMALL)->render();
 					$languageValue = $this->getLanguageValue($table, $versionRecord);
 					$versionArray['languageValue'] = $languageValue;
 					$versionArray['language'] = array(
-						'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($this->getSystemLanguageValue($languageValue, 'flagIcon')),
-						'title' => htmlspecialchars($this->getSystemLanguageValue($languageValue, 'title'))
+						'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, 'flagIcon'), Icon::SIZE_SMALL)->render()
 					);
 					$versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
 					$versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);

@@ -618,6 +618,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-filter.svg',
 			)
 		),
+		'actions-input-clear' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'times-circle',
+			)
+		),
 		'actions-insert-record' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
@@ -996,6 +1002,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
 				'source' => 'EXT:t3skin/images/icons/status/user-group-frontend.png'
+			)
+		),
+		'status-dialog-information' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'exclamation-circle'
 			)
 		),
 		'status-dialog-ok' => array(
@@ -1806,17 +1818,41 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function registerFlags() {
 		$iconFolder = 'EXT:core/Resources/Public/Icons/Flags/SVG/';
-		$files = scandir(GeneralUtility::getFileAbsFileName($iconFolder));
+		$files = array(
+			'AC', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
+			'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BM', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ',
+			'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
+			'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'EU',
+			'FI', 'FJ', 'FK', 'FM', 'FO', 'FR',
+			'GA', 'GB-ENG', 'GB-NIR', 'GB-SCT', 'GB-WLS', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY',
+			'HK', 'HN', 'HR', 'HT', 'HU',
+			'IC', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT',
+			'JE', 'JM', 'JO', 'JP',
+			'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ',
+			'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY',
+			'MA', 'MC', 'MD', 'ME', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
+			'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ',
+			'OM',
+			'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY',
+			'QA',
+			'RE', 'RO', 'RS', 'RU', 'RW',
+			'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
+			'TA', 'TC', 'TD', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
+			'UA', 'UG', 'US-AK', 'US-AL', 'US-AR', 'US-AZ', 'US-CA', 'US-CO', 'US-CT', 'US-DE', 'US-FL', 'US-GA', 'US-HI', 'US-IA', 'US-ID', 'US-IL', 'US-IN', 'US-KS', 'US-KY', 'US-LA', 'US-MA', 'US-MD', 'US-ME', 'US-MI', 'US-MN', 'US-MO', 'US-MS', 'US-MT', 'US-NC', 'US-ND', 'US-NE', 'US-NH', 'US-NJ', 'US-NM', 'US-NV', 'US-NY', 'US-OH', 'US-OK', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-SD', 'US-TN', 'US-TX', 'US-UT', 'US-VA', 'US-VT', 'US-WA', 'US-WI', 'US-WV', 'US-WY', 'US', 'UY', 'UZ',
+			'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU',
+			'WF', 'WS',
+			'XK',
+			'YE', 'YT',
+			'ZA', 'ZM', 'ZW'
+		);
 		foreach ($files as $file) {
-			if (!StringUtility::beginsWith($file, '.')) {
-				$identifier = strtolower(str_replace('.svg', '', $file));
-				$this->icons['flags-' . $identifier] = array(
-					'provider' => SvgIconProvider::class,
-					'options' => array(
-						'source' => $iconFolder . $file
-					)
-				);
-			}
+			$identifier = strtolower($file);
+			$this->icons['flags-' . $identifier] = array(
+				'provider' => SvgIconProvider::class,
+				'options' => array(
+					'source' => $iconFolder . $file . '.svg'
+				)
+			);
 		}
 		$this->flagsInitialized = TRUE;
 	}

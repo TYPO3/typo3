@@ -18,10 +18,10 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
@@ -141,14 +141,15 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 	 * @throws \UnexpectedValueException
 	 */
 	protected function addItemsFromSpecial(array $result, $fieldName, array $items) {
-		$languageService = $this->getLanguageService();
-
 		// Guard
 		if (empty($result['processedTca']['columns'][$fieldName]['config']['special'])
 			|| !is_string($result['processedTca']['columns'][$fieldName]['config']['special'])
 		) {
 			return $items;
 		}
+
+		$languageService = $this->getLanguageService();
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
 		$special = $result['processedTca']['columns'][$fieldName]['config']['special'];
 		if ($special === 'tables') {
@@ -158,7 +159,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 					continue;
 				}
 				$label = !empty($GLOBALS['TCA'][$currentTable]['ctrl']['title']) ? $GLOBALS['TCA'][$currentTable]['ctrl']['title'] : '';
-				$icon = IconUtility::mapRecordTypeToSpriteIconName($currentTable, array());
+				$icon = $iconFactory->mapRecordTypeToIconIdentifier($currentTable, array());
 				$helpText = array();
 				$languageService->loadSingleTableDescription($currentTable);
 				// @todo: check if this actually works, currently help texts are missing
@@ -180,7 +181,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 					}
 					$label = $specialItem[0];
 					$value = $specialItem[1];
-					$icon = IconUtility::mapRecordTypeToSpriteIconName('pages', array('doktype' => $specialItem[1]));
+					$icon = $iconFactory->mapRecordTypeToIconIdentifier('pages', array('doktype' => $specialItem[1]));
 					$items[] = array($label, $value, $icon);
 				}
 			}
@@ -193,7 +194,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 				$theField = array_pop($theFieldParts);
 				// Add header if not yet set for table:
 				if (!array_key_exists($theTable, $items)) {
-					$icon = IconUtility::mapRecordTypeToSpriteIconName($theTable, array());
+					$icon = $iconFactory->mapRecordTypeToIconIdentifier($theTable, array());
 					$items[$theTable] = array(
 						$GLOBALS['TCA'][$theTable]['ctrl']['title'],
 						'--div--',
@@ -422,6 +423,8 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 			$iconPath = $result['processedTca']['ctrl']['selicon_field_path'];
 		}
 
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
 		while ($foreignRow = $database->sql_fetch_assoc($queryResource)) {
 			BackendUtility::workspaceOL($foreignTable, $foreignRow);
 			if (is_array($foreignRow)) {
@@ -430,7 +433,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 					$iParts = GeneralUtility::trimExplode(',', $foreignRow[$iconFieldName], TRUE);
 					$icon = '../' . $iconPath . '/' . trim($iParts[0]);
 				} else {
-					$icon = IconUtility::mapRecordTypeToSpriteIconName($foreignTable, $foreignRow);
+					$icon = $iconFactory->mapRecordTypeToIconIdentifier($foreignTable, $foreignRow);
 				}
 				// Add the item
 				$items[] = array(

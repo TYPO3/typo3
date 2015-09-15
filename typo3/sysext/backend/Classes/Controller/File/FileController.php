@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller\File;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -267,11 +269,12 @@ class FileController {
 					$thumbUrl = $processedFile->getPublicUrl(TRUE);
 				}
 			}
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$result = array_merge(
 				$result->toArray(),
 				array (
 					'date' => BackendUtility::date($result->getModificationTime()),
-					'iconClasses' => \TYPO3\CMS\Backend\Utility\IconUtility::mapFileExtensionToSpriteIconClass($result->getExtension()),
+					'icon' => $iconFactory->getIconForFileExtension($result->getExtension(), Icon::SIZE_SMALL)->render(),
 					'thumbUrl' => $thumbUrl
 				)
 			);

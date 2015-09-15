@@ -49,14 +49,14 @@ TYPO3.Workspaces.Configuration.Integrity = new Ext.grid.Column({
 	width: 24,
 	hideable: true,
 	sortable: false,
-	header: '<span class="' + TYPO3.settings.Workspaces.icons.integrity + '">&nbsp;</span>',
+	header: TYPO3.settings.Workspaces.icons.integrity + '&nbsp;',
 	renderer: function(value, meta, record) {
 		if (record.json.integrity.status !== 'success') {
-			var cls = TYPO3.settings.Workspaces.icons[record.json.integrity.status] + ' t3-visible';
+			var icon = TYPO3.settings.Workspaces.icons[record.json.integrity.status];
 			var title = TYPO3.l10n.localize('status.' + record.json.integrity.status);
 			var message = record.json.integrity.messages;
 
-			return '<span class="' + cls + '" ext:qtitle="' + title + '" ext:qtip="' + message + '">&nbsp;</span>';
+			return '<span ext:qtitle="' + title + '" ext:qtip="' + message + '">' + icon + '&nbsp;</span>';
 		}
 	}
 });
@@ -108,7 +108,7 @@ TYPO3.Workspaces.Configuration.WsTitleWithIcon = {
 		value = "<span class=\"" + dekoClass + "\">" + value + "</span>";
 		// Prepend icon
 		if (record.json.icon_Live !== record.json.icon_Workspace) {
-			valud = "<span class=\"" + record.json.icon_Workspace + "\">&nbsp;</span>&nbsp;" + value;
+			value = record.json.icon_Workspace + "&nbsp;" + value;
 		}
 		// Prepend nested collection level
 		var levelStyle = 'margin-left: ' + record.json.Workspaces_CollectionLevel * this.levelWidth + 'px;';
@@ -133,7 +133,7 @@ TYPO3.Workspaces.Configuration.Language = {
 	header: TYPO3.settings.Workspaces.icons.language,
 	filter: { type: 'string '},
 	renderer: function(value, metaData, record) {
-		return '<span class="' + record.json.language.cls + '" title="' + record.json.language.title + '">&nbsp;</span>';
+		return record.json.language.icon;
 	}
 };
 
@@ -151,7 +151,7 @@ TYPO3.Workspaces.Configuration.TitleWithIcon = {
 		}
 
 		value = "<span class=\"" + dekoClass + "\">" + value + "</span>";
-		return "<span class=\"" + record.json.icon_Live + "\">&nbsp;</span>&nbsp;" + value;
+		return record.json.icon_Live + "&nbsp;" + value;
 	},
 	filter : {type: 'string'}
 };

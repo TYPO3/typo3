@@ -1200,7 +1200,6 @@ return array(
 	'tx_version_cm1' => \TYPO3\CMS\Version\Controller\VersionModuleController::class,
 	'tx_version_tcemain_CommandMap' => \TYPO3\CMS\Version\DataHandler\CommandMap::class,
 	'tx_version_tcemain' => \TYPO3\CMS\Version\Hook\DataHandlerHook::class,
-	'tx_version_iconworks' => \TYPO3\CMS\Version\Hook\IconUtilityHook::class,
 	'Tx_Version_Preview' => \TYPO3\CMS\Version\Hook\PreviewHook::class,
 	'tx_version_tasks_AutoPublish' => \TYPO3\CMS\Version\Task\AutoPublishTask::class,
 	't3lib_utility_Dependency_Factory' => \TYPO3\CMS\Version\Dependency\DependencyEntityFactory::class,

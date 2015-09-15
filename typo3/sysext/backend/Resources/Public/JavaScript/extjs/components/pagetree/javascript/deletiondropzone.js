@@ -120,9 +120,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 	 * @return {void}
 	 */
 	initComponent: function() {
-		this.html = '<p><span id="' + this.id + '-icon" class="' +
-			TYPO3.Components.PageTree.Sprites.TrashCan +
-			'">&nbsp;</span><span id="' + this.id + '-text">' +
+		this.html = '<p><span id="' + this.id + '-icon">' + TYPO3.Components.PageTree.Icons.TrashCan + '</span><span id="' + this.id + '-text">' +
 			TYPO3.Components.PageTree.LLL.dropToRemove + '</span></p>';
 
 		TYPO3.Components.PageTree.DeletionDropZone.superclass.initComponent.apply(this, arguments);
@@ -191,7 +189,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 
 		this.show();
 		this.setHeight(50);
-		this.updateIcon(TYPO3.Components.PageTree.Sprites.TrashCanRestore);
+		this.updateIcon(TYPO3.Components.PageTree.Icons.TrashCanRestore);
 		this.updateText(
 			node.text + '<br />' +
 			'<span class="' + this.id + '-restore">' +
@@ -243,15 +241,13 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 	},
 
 	/**
-	 * Updates the drop zone icon with another sprite icon
+	 * Updates the drop zone icon with another icon
 	 *
-	 * @param {String} classes
+	 * @param {String} icon
 	 * @return {void}
 	 */
-	updateIcon: function(classes) {
-		Ext.get(this.id + '-icon').set({
-			'class': classes
-		});
+	updateIcon: function(icon) {
+		Ext.get(this.id + '-icon').update(icon);
 	},
 
 	/**
@@ -275,7 +271,7 @@ TYPO3.Components.PageTree.DeletionDropZone = Ext.extend(Ext.Panel, {
 
 		this.setHeight(35);
 		this.updateText(TYPO3.Components.PageTree.LLL.dropToRemove, false);
-		this.updateIcon(TYPO3.Components.PageTree.Sprites.TrashCan);
+		this.updateIcon(TYPO3.Components.PageTree.Icons.TrashCan);
 		this.app.doLayout();
 	},
 

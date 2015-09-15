@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -248,7 +250,8 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 		$node->setId($basicNode->getId());
 		$node->setSelectable(!GeneralUtility::inList($this->getNonSelectableLevelList(), $level) && !in_array($basicNode->getId(), $this->getItemUnselectableList()));
 		$node->setSortValue($this->nodeSortValues[$basicNode->getId()]);
-		$node->setIcon(\TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($this->tableName, $row));
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$node->setIcon($iconFactory->getIconForRecord($this->tableName, $row, Icon::SIZE_SMALL));
 		$node->setParentNode($parent);
 		if ($basicNode->hasChildNodes()) {
 			$node->setHasChildren(TRUE);

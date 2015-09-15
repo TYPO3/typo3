@@ -14,7 +14,7 @@ return array(
 		'delete' => 'deleted',
 		'adminOnly' => 1,
 		// Only admin, if any
-		'iconfile' => 'template.gif',
+		'iconfile' => 'EXT:t3skin/icons/gfx/i/template.gif',
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',

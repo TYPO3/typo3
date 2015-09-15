@@ -69,15 +69,16 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->assertTrue($this->fileController->_call('flattenResultDataValue', TRUE));
 		$this->assertSame(array(), $this->fileController->_call('flattenResultDataValue', array()));
-
+		$result = $this->fileController->_call('flattenResultDataValue', $this->fileResourceMock);
+		$this->assertContains('<span class="icon icon-size-small icon-state-default icon-mimetypes-text-html">', $result['icon']);
+		unset($result['icon']);
 		$this->assertSame(
 			array(
 				'id' => 'foo',
 				'date' => '29-11-73',
-				'iconClasses' => 't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html',
-				'thumbUrl' => ''
+				'thumbUrl' => '',
 			),
-			$this->fileController->_call('flattenResultDataValue', $this->fileResourceMock)
+			$result
 		);
 
 		$this->assertSame(
@@ -138,31 +139,6 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 		$this->fileController->expects($this->once())->method('main');
 		$this->mockAjaxRequestHandler->expects($this->once())->method('addContent')->with('result', $fileData);
-		$this->mockAjaxRequestHandler->expects($this->once())->method('setContentFormat')->with('json');
-
-		$this->fileController->processAjaxRequest(array(), $this->mockAjaxRequestHandler);
-	}
-
-	/**
-	 * @test
-	 */
-	public function processAjaxRequestUploadProcess() {
-		$this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
-		$this->mockAjaxRequestHandler = $this->getMock(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, array('addContent', 'setContentFormat'), array(), '', FALSE);
-
-		$fileData = array('upload' => array(array($this->fileResourceMock)));
-		$result = array('upload' => array(array(
-			'id' => 'foo',
-			'date' => '29-11-73',
-			'iconClasses' => 't3-icon t3-icon-mimetypes t3-icon-mimetypes-text t3-icon-text-html',
-			'thumbUrl' => ''
-		)));
-		$this->fileController->_set('fileProcessor', $this->mockFileProcessor);
-		$this->fileController->_set('fileData', $fileData);
-		$this->fileController->_set('redirect', FALSE);
-
-		$this->fileController->expects($this->once())->method('main');
-		$this->mockAjaxRequestHandler->expects($this->once())->method('addContent')->with('result', $result);
 		$this->mockAjaxRequestHandler->expects($this->once())->method('setContentFormat')->with('json');
 
 		$this->fileController->processAjaxRequest(array(), $this->mockAjaxRequestHandler);

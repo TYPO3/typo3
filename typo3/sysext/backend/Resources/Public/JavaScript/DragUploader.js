@@ -261,7 +261,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 					$('<td />').append(
 						(askForOverride[i].original.thumbUrl !== ''
 							? $('<img />', {src: askForOverride[i].original.thumbUrl, height: 40})
-							: $('<span />', {class: askForOverride[i].original.iconClasses})
+							: $(askForOverride[i].original.icon)
 						)
 					),
 					$('<td />').html(
@@ -415,8 +415,8 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 				me.$progressBar.outerWidth('100%');
 
 				// replace file icon
-				if (data.result.upload[0].iconClasses) {
-					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.result.upload[0].id + '" data-listframe="1"><span class="' + data.result.upload[0].iconClasses + '">&nbsp;</span></a>');
+				if (data.result.upload[0].icon) {
+					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.result.upload[0].id + '" data-listframe="1">' + data.result.upload[0].icon + '&nbsp;</span></a>');
 				}
 
 				if (me.dragUploader.irreObjectUid) {

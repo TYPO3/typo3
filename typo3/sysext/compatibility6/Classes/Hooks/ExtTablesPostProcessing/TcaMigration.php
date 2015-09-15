@@ -36,7 +36,7 @@ class TcaMigration implements TableConfigurationPostProcessingHookInterface {
 		$GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
 		$messages = $tcaMigration->getMessages();
 		if (!empty($messages)) {
-			$context = 'ext:compatibility6 did an automatic migration of TCA during boostrap. This costs performance on every'
+			$context = 'ext:compatibility6 did an automatic migration of TCA during bootstrap. This costs performance on every'
 				. ' call. It also means some old extensions register TCA in ext_tables.php and not in Configuration/TCA.'
 				. ' Please adapt TCA accordingly until this message is not thrown anymore and unload extension compatibility6'
 				. ' as soon as possible';

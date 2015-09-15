@@ -14,7 +14,7 @@ namespace TYPO3\CMS\WizardCrpages\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -261,7 +261,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			foreach ($items as $item) {
 				$label = $this->getLanguageService()->sL($item[0], TRUE);
 				$value = $item[1];
-				$icon = (!empty($item[2]) ? '<img src="' . IconUtility::skinImg('', 'gfx/' . $item[2], '', 1) . '" />' : '');
+				$icon = !empty($item[2]) ? FormEngineUtility::getIconHtml($item[2], $label, $label) : '';
 				$groupContent .= '<option value="' . htmlspecialchars($value) . '" data-icon="' . htmlspecialchars($icon) . '">' . $label . '</option>';
 			}
 			$groupLabel = $this->getLanguageService()->sL($groupLabel, TRUE);

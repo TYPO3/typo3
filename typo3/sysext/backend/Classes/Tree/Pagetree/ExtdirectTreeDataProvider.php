@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
@@ -133,11 +132,11 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 				continue;
 			}
 			$label = $GLOBALS['LANG']->sL($doktypeLabelMap[$doktype], TRUE);
-			$spriteIcon = IconUtility::getSpriteIconClasses($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype]);
+			$icon = $this->iconFactory->getIcon($GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype], Icon::SIZE_SMALL)->render();
 			$output[] = array(
 				'nodeType' => $doktype,
 				'cls' => 'typo3-pagetree-topPanel-button',
-				'iconCls' => $spriteIcon,
+				'html' => $icon,
 				'title' => $label,
 				'tooltip' => $label
 			);
@@ -164,7 +163,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 	/**
 	 * Returns the language labels, sprites and configuration options for the pagetree
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function loadResources() {
 		$file = 'LLL:EXT:lang/locallang_core.xlf:';
@@ -194,16 +193,14 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 				'indicator' => $indicators['html'],
 				'temporaryMountPoint' => Commands::getMountPointPath()
 			),
-			'Sprites' => array(
-				'InputClear' => IconUtility::getSpriteIconClasses('actions-input-clear'),
-				'TrashCan' => IconUtility::getSpriteIconClasses('actions-edit-delete'),
-				'TrashCanRestore' => IconUtility::getSpriteIconClasses('actions-edit-restore'),
-				'Info' => IconUtility::getSpriteIconClasses('actions-document-info')
-			),
 			'Icons' => array(
-				'NewNode' => (string)$this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL),
-				'Filter' => (string)$this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL),
-				'Refresh' => (string)$this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)
+				'InputClear' => $this->iconFactory->getIcon('actions-input-clear', Icon::SIZE_SMALL)->render(),
+				'TrashCan' => $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(),
+				'TrashCanRestore' => $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render(),
+				'Info' => $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render(),
+				'NewNode' => $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render(),
+				'Filter' => $this->iconFactory->getIcon('actions-filter', Icon::SIZE_SMALL)->render(),
+				'Refresh' => $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render()
 			)
 		);
 		return $configuration;

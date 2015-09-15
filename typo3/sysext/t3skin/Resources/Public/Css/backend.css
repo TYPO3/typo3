@@ -7867,6 +7867,9 @@ button.close {
 .icon-status-status-sorting-desc {
   color: #737373;
 }
+.icon-status-dialog-information {
+  color: #6daae0;
+}
 .icon-status-dialog-ok,
 .icon-status-status-permission-granted {
   color: #79a548;
@@ -10058,7 +10061,9 @@ ul.typo3-messages {
   padding: 1px 0 1px 2px;
 }
 #typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
-  right: 2px;
+  position: absolute;
+  right: 6px;
+  top: 3px;
 }
 #typo3-pagetree-topPanel-defaultPanel {
   padding-left: 6px;

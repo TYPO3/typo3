@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Belog\Domain\Model\HistoryEntry;
 use TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository;
 use TYPO3\CMS\Core\Imaging\Icon;

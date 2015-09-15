@@ -5964,11 +5964,6 @@ class tx_version_tcemain extends \TYPO3\CMS\Version\Hook\DataHandlerHook {}
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_version_iconworks extends \TYPO3\CMS\Version\Hook\IconUtilityHook {}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tx_version_tasks_AutoPublish extends \TYPO3\CMS\Version\Task\AutoPublishTask {}
 
 /**

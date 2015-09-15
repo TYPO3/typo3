@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface;
@@ -1829,14 +1828,13 @@ class ElementBrowser {
 				$c++;
 				if ($renderFolders) {
 					$fileIdentifier = $fileOrFolderObject->getCombinedIdentifier();
-					$overlays = array();
+					$overlay = NULL;
 					if ($fileOrFolderObject instanceof InaccessibleFolder) {
-						$overlays = array('status-overlay-locked' => array());
+						$overlay = array('status-overlay-locked' => array());
 					}
-					$icon = IconUtility::getSpriteIcon(
-						IconUtility::mapFileExtensionToSpriteIconName('folder'),
-						array('title' => $fileOrFolderObject->getName()),
-						$overlays);
+					$icon = '<span title="' . htmlspecialchars($fileOrFolderObject->getName()) . '">'
+						. $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL, $overlay)->render()
+						. '</span>';
 					$itemUid = 'file:' . $fileIdentifier;
 				} else {
 					$fileIdentifier = $fileOrFolderObject->getUid();
@@ -2138,7 +2136,7 @@ class ElementBrowser {
 
 		$out .= $this->barheader(sprintf($lang->getLL('files') . ' (%s):', count($files)));
 		$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
-		$picon = IconUtility::getSpriteIcon('apps-filetree-folder-default');
+		$picon = $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render();
 		$picon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
 		$out .= $picon . '<br />';
 		// Init row-array:

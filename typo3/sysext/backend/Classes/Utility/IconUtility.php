@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -31,6 +33,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * Notes:
  * These functions are strongly related to the interface of TYPO3.
  * Static class, functions called without making a class instance.
+ * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory instead
  */
 class IconUtility {
 
@@ -151,14 +154,17 @@ class IconUtility {
 			}
 		}
 		// First, find the icon file name. This can depend on configuration in TCA, field values and more:
-		if ($table == 'pages') {
+		if ($table === 'pages') {
 			$iconfile = $GLOBALS['PAGES_TYPES'][$row['doktype']]['icon'];
-			if (!$iconfile) {
+			if (empty($iconfile)) {
 				$iconfile = $GLOBALS['PAGES_TYPES']['default']['icon'];
 			}
-		} else {
+		}
+
+		if (empty($iconfile)) {
 			$iconfile = $GLOBALS['TCA'][$table]['ctrl']['iconfile'] ?: $table . '.gif';
 		}
+
 		// Setting path of iconfile if not already set. Default is "gfx/i/"
 		if (!strstr($iconfile, '/')) {
 			$iconfile = 'gfx/i/' . $iconfile;
@@ -275,9 +281,11 @@ class IconUtility {
 	 * @param string $wHattribs Default width/height, defined like 'width="12" height="14"'
 	 * @param int $outputMode Mode: 0 (zero) is default and returns src/width/height. 1 returns value of src+backpath, 2 returns value of w/h.
 	 * @return string Returns ' src="[backPath][src]" [wHattribs]'
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 * @see skinImgFile()
 	 */
 	static public function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0) {
+		GeneralUtility::logDeprecatedFunction();
 		static $cachedSkinImages = array();
 		$imageId = md5($backPath . $src . $wHattribs . $outputMode);
 		if (isset($cachedSkinImages[$imageId])) {
@@ -566,9 +574,11 @@ class IconUtility {
 	 * @param array $options An associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
 	 * @param array $overlays An associative array with the icon-name as key, and the options for this overlay as an array again (see the parameter $options again)
 	 * @return string The full HTML tag (usually a <span>)
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8, use IconFactory->getIcon instead
 	 * @access public
 	 */
 	static public function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
+		GeneralUtility::logDeprecatedFunction();
 		// Check if icon can be cached and return cached version if present
 		if (empty($options) && empty($overlays)) {
 			if (isset(static::$spriteIconCache[$iconName])) {
@@ -617,18 +627,19 @@ class IconUtility {
 	 * the necessary icon.
 	 *
 	 * @param string $fileExtension The name of the icon to fetch, can be a file extension, full file path or one of the special keywords "folder" or "mount
-	 * @param array $options An associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
-	 * @return string The full HTML tag (usually a <span>)
+	 * @param array $options not used anymore
+	 * @return string The full HTML tag
 	 * @access public
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, use IconFactory::getIconForFile directly
 	 */
-	static public function getSpriteIconForFile($fileExtension, array $options = array()) {
-		$innerHtml = isset($options['html']) ? $options['html'] : NULL;
-		$tagName = isset($options['tagName']) ? $options['tagName'] : NULL;
-		// Create the CSS class
-		$options['class'] = self::mapFileExtensionToSpriteIconClass($fileExtension) . (isset($options['class']) ? ' ' . $options['class'] : '');
-		unset($options['html']);
-		unset($options['tagName']);
-		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+	static public function getSpriteIconForFile($fileExtension, array $options = NULL) {
+		GeneralUtility::logDeprecatedFunction();
+		if ($options !== NULL) {
+			GeneralUtility::deprecationLog('The parameter $options of IconUtility::getSpriteIconForFile is not used anymore');
+		}
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+		return $iconFactory->getIconForFileExtension($fileExtension)->render();
 	}
 
 	/**
@@ -687,27 +698,19 @@ class IconUtility {
 	 *
 	 * @param string $table The TCA table name
 	 * @param array $row The DB record of the TCA table
-	 * @param array $options An associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
+	 * @param array $options not used anymore
 	 * @return string The full HTML tag (usually a <span>)
 	 * @access public
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
-	static public function getSpriteIconForRecord($table, array $row, array $options = array()) {
-		$innerHtml = isset($options['html']) ? $options['html'] : NULL;
-		$tagName = isset($options['tagName']) ? $options['tagName'] : NULL;
-		// Overlay this record icon with the status of the row
-		$overlaySpriteIconName = self::mapRecordOverlayToSpriteIconName($table, $row);
-		if ($overlaySpriteIconName) {
-			$overlayOptions = array(
-				'html' => $innerHtml,
-				'class' => 't3-icon-overlay'
-			);
-			$innerHtml = self::getSpriteIcon($overlaySpriteIconName, $overlayOptions);
+	static public function getSpriteIconForRecord($table, array $row, array $options = NULL) {
+		GeneralUtility::logDeprecatedFunction();
+		if ($options !== NULL) {
+			GeneralUtility::deprecationLog('The parameter $options of IconUtility::getSpriteIconForRecord is not used anymore');
 		}
-		// Fetch the name for the CSS class, based on the $row
-		$options['class'] = self::mapRecordTypeToSpriteIconClass($table, $row) . (isset($options['class']) ? ' ' . $options['class'] : '');
-		unset($options['html']);
-		unset($options['tagName']);
-		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+		return $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
 	}
 
 	/**
@@ -724,84 +727,19 @@ class IconUtility {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
 	 * @param array $options An associative array with additional options and attributes for the tag. See self::getSpriteIcon()
-	 * @param array $overlays An associative array with the icon-name as key, and the options for this overlay as an array again (see the parameter $options again)
+	 * @param array $overlays not used anymore
 	 * @return string
 	 * @throws \UnexpectedValueException
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
-	static public function getSpriteIconForResource(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, array $options = array(), array $overlays = array()) {
-		// Folder
-		if ($resource instanceof \TYPO3\CMS\Core\Resource\FolderInterface) {
-			$iconName = NULL;
-			$role = $resource->getRole();
-			// non browsable storage
-			if ($resource->getStorage()->isBrowsable() === FALSE && !empty($options['mount-root'])) {
-				$iconName = 'apps-filetree-folder-locked';
-			} else {
-				// storage root
-				if ($resource->getStorage()->getRootLevelFolder()->getIdentifier() === $resource->getIdentifier()) {
-					$iconName = 'apps-filetree-root';
-				}
-
-
-				// user/group mount root
-				if (!empty($options['mount-root'])) {
-					$iconName = 'apps-filetree-mount';
-					if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_READONLY_MOUNT) {
-						$overlays['status-overlay-locked'] = array();
-					} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_USER_MOUNT) {
-						$overlays['status-overlay-access-restricted'] = array();
-					}
-				}
-
-				if ($iconName === NULL) {
-					// in folder tree view $options['folder-open'] can define an open folder icon
-					if (!empty($options['folder-open'])) {
-						$iconName = 'apps-filetree-folder-opened';
-					} else {
-						$iconName = 'apps-filetree-folder-default';
-					}
-
-					if ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_TEMPORARY) {
-						$iconName = 'apps-filetree-folder-temp';
-					} elseif ($role === \TYPO3\CMS\Core\Resource\FolderInterface::ROLE_RECYCLER) {
-						$iconName = 'apps-filetree-folder-recycler';
-					}
-				}
-
-				// if locked add overlay
-				if ($resource instanceof \TYPO3\CMS\Core\Resource\InaccessibleFolder ||
-					!$resource->getStorage()->isBrowsable() ||
-					!$resource->getStorage()->checkFolderActionPermission('add', $resource)
-				) {
-					$overlays['status-overlay-locked'] = array();
-				}
-			}
-
-
-
-			// File
-		} else {
-			$iconName = self::mapFileExtensionToSpriteIconName($resource->getExtension());
-
-			if ($resource instanceof \TYPO3\CMS\Core\Resource\File && $resource->isMissing()) {
-				$overlays['status-overlay-missing'] = array();
-			}
+	static public function getSpriteIconForResource(\TYPO3\CMS\Core\Resource\ResourceInterface $resource, array $options = array(), array $overlays = NULL) {
+		GeneralUtility::logDeprecatedFunction();
+		if ($overlays !== NULL) {
+			GeneralUtility::deprecationLog('The parameter $overlays of IconUtility::getSpriteIconForResource is not used anymore');
 		}
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
-		// Hook: allow some other process to influence the choice of icon and overlays
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideResourceIcon'] as $classRef) {
-				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (!$hookObject instanceof IconUtilityOverrideResourceIconHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface ' . \TYPO3\CMS\Backend\Utility\IconUtilityOverrideResourceIconHookInterface::class, 1393574895);
-				}
-				$hookObject->overrideResourceIcon($resource, $iconName, $options, $overlays);
-			}
-		}
-
-		unset($options['mount-root']);
-		unset($options['folder-open']);
-		return self::getSpriteIcon($iconName, $options, $overlays);
+		return $iconFactory->getIconForResource($resource, Icon::SIZE_SMALL, NULL, $options)->render();
 	}
 
 	/**
@@ -821,8 +759,10 @@ class IconUtility {
 	 * @param array $row The selected record
 	 * @return string The CSS class for the sprite icon of that DB record
 	 * @access private
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	static public function mapRecordTypeToSpriteIconClass($table, array $row) {
+		GeneralUtility::logDeprecatedFunction();
 		return self::getSpriteIconClasses(self::mapRecordTypeToSpriteIconName($table, $row));
 	}
 
@@ -914,102 +854,6 @@ class IconUtility {
 	}
 
 	/**
-	 * this helper functions checks if the DB record ($row) has any special status
-	 * based on the TCA settings like hidden, starttime etc, and then returns a specific
-	 * Sprite icon class for the overlay of this DB record
-	 * This method solely takes care of the overlay of this record, not any type
-	 *
-	 * Please note that this only returns one overlay, one status, that is prioritized
-	 * by $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayPriorities']
-	 * We wanted to not have these icons blown over by tons of overlays, so this is limited
-	 * to just one.
-	 *
-	 * see ext:core/Configuration/DefaultConfiguration.php for the default options, you will find
-	 * $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayNames'] that shows
-	 * the list of CSS classes that will be used for the sprites, mapped to the statuses here
-	 *
-	 * @param string $table The TCA table
-	 * @param array $row The selected record
-	 * @return string The CSS class for the sprite icon of that DB record
-	 * @access private
-	 */
-	static public function mapRecordOverlayToSpriteIconName($table, array $row) {
-		$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-		// Calculate for a given record the actual visibility at the moment
-		$status = array(
-			'hidden' => FALSE,
-			'starttime' => FALSE,
-			'endtime' => FALSE,
-			'futureendtime' => FALSE,
-			'fe_group' => FALSE,
-			'deleted' => FALSE,
-			'protectedSection' => FALSE,
-			'nav_hide' => (bool)$row['nav_hide'],
-			'noIconFound' => (bool)$row['_NO_ICON_FOUND']
-		);
-		// Icon state based on "enableFields":
-		if (is_array($tcaCtrl['enablecolumns'])) {
-			$enCols = $tcaCtrl['enablecolumns'];
-			// If "hidden" is enabled:
-			if ($tcaCtrl['enablecolumns']['disabled'] && $row[$tcaCtrl['enablecolumns']['disabled']]) {
-				$status['hidden'] = TRUE;
-			}
-			// If a "starttime" is set and higher than current time:
-			if ($tcaCtrl['enablecolumns']['starttime'] && $GLOBALS['EXEC_TIME'] < (int)$row[$tcaCtrl['enablecolumns']['starttime']]) {
-				$status['starttime'] = TRUE;
-			}
-			// If an "endtime" is set
-			if ($tcaCtrl['enablecolumns']['endtime']) {
-				if ((int)$row[$tcaCtrl['enablecolumns']['endtime']] > 0) {
-					if ((int)$row[$tcaCtrl['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
-						// End-timing applies at this point.
-						$status['endtime'] = TRUE;
-					} else {
-						// End-timing WILL apply in the future for this element.
-						$status['futureendtime'] = TRUE;
-					}
-				}
-			}
-			// If a user-group field is set
-			if ($tcaCtrl['enablecolumns']['fe_group'] && $row[$tcaCtrl['enablecolumns']['fe_group']]) {
-				$status['fe_group'] = TRUE;
-			}
-		}
-		// If "deleted" flag is set (only when listing records which are also deleted!)
-		if ($row[$tcaCtrl['delete']]) {
-			$status['deleted'] = TRUE;
-		}
-		// Detecting extendToSubpages (for pages only)
-		if ($table == 'pages' && $row['extendToSubpages']) {
-			$status['protectedSection'] = TRUE;
-		}
-		// Hook: allow some other process to influence the choice of icon overlay
-		// The method called receives the table name, the current row and the current status array as parameters
-		// The status array should be passed as a reference and in order to be modified within the hook
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'] as $classRef) {
-				$hookObject = GeneralUtility::getUserObj($classRef);
-				if (method_exists($hookObject, 'overrideIconOverlay')) {
-					$hookObject->overrideIconOverlay($table, $row, $status);
-				}
-			}
-		}
-		// Now only show the status with the highest priority
-		$priorities = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'];
-		$iconName = '';
-		if (is_array($priorities)) {
-			foreach ($priorities as $priority) {
-				if ($status[$priority]) {
-					$iconName = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'][$priority];
-					break;
-				}
-			}
-		}
-
-		return $iconName;
-	}
-
-	/**
 	 * generic method to create the final CSS classes based on the sprite icon name
 	 * with the base class and splits the name into parts
 	 * is usually called by the methods that are responsible for fetching the names
@@ -1017,8 +861,10 @@ class IconUtility {
 	 *
 	 * @param string $iconName Iconname like 'actions-document-new'
 	 * @return string A list of all CSS classes needed for the HTML tag
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	static public function getSpriteIconClasses($iconName) {
+		GeneralUtility::logDeprecatedFunction();
 		$cssClasses = ($baseCssClass = 't3-icon');
 		$parts = explode('-', $iconName);
 		if (count($parts) > 1) {
@@ -1029,7 +875,6 @@ class IconUtility {
 			// Will be something like "t3-icon-document-new"
 			$cssClasses .= ' ' . ($baseCssClass . '-' . substr($iconName, (strlen($parts[0]) + 1)));
 		}
-		static::emitBuildSpriteIconClassesSignal($iconName, $cssClasses);
 
 		return $cssClasses;
 	}
@@ -1042,10 +887,11 @@ class IconUtility {
 	 * @param array $tagAttributes An associative array of additional tagAttributes for the HTML tag
 	 * @param string $innerHtml The content within the tag, a "&nbsp;" by default
 	 * @param string $tagName The name of the HTML element that should be used (span by default)
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 * @return string The sprite html icon tag
 	 */
 	static protected function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml = NULL, $tagName = NULL) {
-		list($tagAttributes, $innerHtml, $tagName) = static::emitBuildSpriteHtmlIconTagSignal($tagAttributes, $innerHtml, $tagName);
+		GeneralUtility::logDeprecatedFunction();
 
 		$innerHtml = $innerHtml === NULL ? ' ' : $innerHtml;
 		$tagName = $tagName === NULL ? 'span' : $tagName;
@@ -1055,36 +901,6 @@ class IconUtility {
 		}
 
 		return '<' . $tagName . $attributes . '>' . $innerHtml . '</' . $tagName . '>';
-	}
-
-	/**
-	 * @param array $tagAttributes An associative array of additional tagAttributes for the HTML tag
-	 * @param string $innerHtml The content within the tag, NULL by default
-	 * @param string $tagName The name of the HTML element that should be used (span by default), NULL by default
-	 * @return array
-	 */
-	static protected function emitBuildSpriteHtmlIconTagSignal(array $tagAttributes, $innerHtml, $tagName) {
-		return static::getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Backend\Utility\IconUtility::class, 'buildSpriteHtmlIconTag', array($tagAttributes, $innerHtml, $tagName));
-	}
-
-	/**
-	 * Emits a signal right after the CSS classes are built. This is useful if somebody only
-	 * fetches the CSS classes via IconUtility and not the whole sprite span tag.
-	 *
-	 * @param string $iconName The name of the icon
-	 * @param string $cssClasses the CSS classes to be used as a string
-	 */
-	static protected function emitBuildSpriteIconClassesSignal($iconName, &$cssClasses) {
-		static::getSignalSlotDispatcher()->dispatch(\TYPO3\CMS\Backend\Utility\IconUtility::class, 'buildSpriteIconClasses', array($iconName, &$cssClasses));
-	}
-
-	/**
-	 * Get the SignalSlot dispatcher
-	 *
-	 * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	static protected function getSignalSlotDispatcher() {
-		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 	}
 
 }

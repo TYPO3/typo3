@@ -252,9 +252,8 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 			cls: this.app.id + '-indicatorBar-item',
 			html: '<p>' +
 					'<span id="' + this.app.id + '-indicatorBar-filter-info' + '" ' +
-						'class="' + this.app.id + '-indicatorBar-item-leftIcon ' +
-							TYPO3.Components.PageTree.Sprites.Info + '">&nbsp;' +
-					'</span>' +
+						'class="' + this.app.id + '-indicatorBar-item-leftIcon">' +
+							TYPO3.Components.PageTree.Icons.Info + '</span>' +
 					'<span id="' + this.app.id + '-indicatorBar-filter-clear' + '" ' +
 						'class="' + this.app.id + '-indicatorBar-item-rightIcon ' + '">X' +
 					'</span>' +
@@ -293,7 +292,11 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		var textField = new Ext.form.TriggerField({
 			id: this.id + '-filter',
 			enableKeyEvents: true,
-			triggerClass: TYPO3.Components.PageTree.Sprites.InputClear,
+			triggerConfig: {
+				tag: 'span',
+				html: TYPO3.Components.PageTree.Icons.InputClear,
+				cls: 't3-icon-input-clear'
+			},
 			value: TYPO3.Components.PageTree.LLL.searchTermInfo,
 
 			listeners: {
@@ -331,7 +334,7 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 			this.createFilterTree(textField);
 		}.createDelegate(this);
 
-		var topPanelWidget = new Ext.Panel({
+		var topPanelWidget = new Ext.Container({
 			border: false,
 			id: this.id + '-filterWrap',
 			cls: this.id + '-item',
@@ -379,11 +382,10 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 			onInitDrag: function() {
 				this.topPanel.app.activeTree.dontSetOverClass = true;
 				var clickedButton = this.dragData.item;
-				var cls = clickedButton.initialConfig.iconCls;
 
 				this.proxyElement.shadow = false;
 				this.proxyElement.innerHTML = '<div class="x-dd-drag-ghost-pagetree">' +
-					'<span class="x-dd-drag-ghost-pagetree-icon ' + cls + '">&nbsp;</span>' +
+					'<span class="x-dd-drag-ghost-pagetree-icon">' + clickedButton.initialConfig.html + '</span>' +
 					'<span class="x-dd-drag-ghost-pagetree-text">'  + clickedButton.title + '</span>' +
 				'</div>';
 

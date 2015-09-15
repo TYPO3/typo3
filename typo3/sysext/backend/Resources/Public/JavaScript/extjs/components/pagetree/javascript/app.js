@@ -222,9 +222,8 @@ TYPO3.Components.PageTree.App = Ext.extend(Ext.Panel, {
 
 			html: '<p>' +
 					'<span id="' + this.id + '-indicatorBar-temporaryMountPoint-info' + '" ' +
-						'class="' + this.id + '-indicatorBar-item-leftIcon ' +
-							TYPO3.Components.PageTree.Sprites.Info + '">&nbsp;' +
-					'</span>' +
+						'class="' + this.id + '-indicatorBar-item-leftIcon">' +
+							TYPO3.Components.PageTree.Icons.Info + '</span>' +
 					'<span id="' + this.id + '-indicatorBar-temporaryMountPoint-clear' + '" ' +
 						'class="' + this.id + '-indicatorBar-item-rightIcon ' + '">X' +
 					'</span>' +
