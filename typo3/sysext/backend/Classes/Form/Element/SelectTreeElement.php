@@ -133,7 +133,7 @@ class SelectTreeElement extends AbstractFormElement {
 			&& GeneralUtility::inList(str_replace(' ', '', $GLOBALS['TCA'][$table]['ctrl']['requestUpdate']), $field)
 		) {
 			if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-				$onChange .= 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && ' . 'TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
+				$onChange = 'top.TYPO3.Modal.confirm(TBE_EDITOR.labels.refreshRequired.title, TBE_EDITOR.labels.refreshRequired.content).on("button.clicked", function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); });';
 			} else {
 				$onChange .= 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 			}

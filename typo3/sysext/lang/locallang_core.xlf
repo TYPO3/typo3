@@ -728,9 +728,11 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.noSelItemForEdit">
 				<source>Please select one or more items in the list before you can edit.</source>
 			</trans-unit>
-			<trans-unit id="mess.onChangeAlert" xml:space="preserve">
-				<source>This change will affect which fields are available in the form.
-Would you like to save now in order to refresh the display?</source>
+			<trans-unit id="mess.refreshRequired.title">
+				<source>Refresh required</source>
+			</trans-unit>
+			<trans-unit id="mess.refreshRequired.content">
+				<source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
 			</trans-unit>
 			<trans-unit id="mess.move_into">
 				<source>Move "%s" into "%s"?</source>

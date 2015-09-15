@@ -272,7 +272,9 @@ class FormResultCompiler {
 		TBE_EDITOR.labels.fieldsMissing = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.fieldsMissing')) . ';
 		TBE_EDITOR.labels.maxItemsAllowed = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.maxItemsAllowed')) . ';
 		TBE_EDITOR.labels.refresh_login = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refresh_login')) . ';
-		TBE_EDITOR.labels.onChangeAlert = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.onChangeAlert')) . ';
+		TBE_EDITOR.labels.refreshRequired = {};
+		TBE_EDITOR.labels.refreshRequired.title = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refreshRequired.title')) . ';
+		TBE_EDITOR.labels.refreshRequired.content = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.refreshRequired.content')) . ';
 		TBE_EDITOR.labels.remainingCharacters = ' . GeneralUtility::quoteJSvalue($languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.remainingCharacters')) . ';
 		TBE_EDITOR.customEvalFunctions = {};
 		';
