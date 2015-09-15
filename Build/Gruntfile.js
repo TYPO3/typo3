@@ -141,6 +141,7 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-translation.svg': '<%= paths.icons %>Action/actions-document-save-translation.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save-view.svg': '<%= paths.icons %>Action/actions-document-save-view.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-document-save.svg': '<%= paths.icons %>Action/actions-document-save.svg',
+					'<%= paths.backend %>Public/Icons/Action/actions-edit-rename.svg': '<%= paths.icons %>Action/actions-edit-rename.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-filter.svg': '<%= paths.icons %>Action/actions-filter.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-new.svg': '<%= paths.icons %>Action/actions-page-new.svg',
 					'<%= paths.backend %>Public/Icons/Action/actions-page-move.svg': '<%= paths.icons %>Action/actions-page-move.svg',

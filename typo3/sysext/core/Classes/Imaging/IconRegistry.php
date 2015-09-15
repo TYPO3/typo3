@@ -350,9 +350,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 		'actions-edit-rename' => array(
-			'provider' => FontawesomeIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'name' => 'quote-right',
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-edit-rename.svg',
 			)
 		),
 		'actions-edit-hide' => array(
