@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -76,15 +75,6 @@ class SingleFieldContainer extends AbstractContainer {
 			|| $this->inlineFieldShouldBeSkipped()
 		) {
 			return $resultArray;
-		}
-		// Evaluate display condition
-		if ($parameterArray['fieldConf']['displayCond'] && is_array($row)) {
-			// @todo: isn't $row = array() safe somewhere above already?
-			/** @var $elementConditionMatcher ElementConditionMatcher */
-			$elementConditionMatcher = GeneralUtility::makeInstance(ElementConditionMatcher::class);
-			if (!$elementConditionMatcher->match($parameterArray['fieldConf']['displayCond'], $row)) {
-				return $resultArray;
-			}
 		}
 
 		$parameterArray['fieldTSConfig'] = [];

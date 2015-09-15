@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form;
+namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,24 +14,161 @@ namespace TYPO3\CMS\Backend\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class ElementConditionMatcher implements the TCA 'displayCond' option.
+ * Class EvaluateDisplayConditions implements the TCA 'displayCond' option.
  * The display condition is a colon separated string which describes
  * the condition to decide whether a form field should be displayed.
  */
-class ElementConditionMatcher {
+class EvaluateDisplayConditions implements FormDataProviderInterface {
 
 	/**
-	 * @var string
+	 * Remove fields from processedTca columns that should not be displayed.
+	 *
+	 * @param array $result
+	 * @return array
 	 */
-	protected $flexformValueKey = '';
+	public function addData(array $result) {
+		$result = $this->removeFlexformFields($result);
+		$result = $this->removeFlexformSheets($result);
+		$result = $this->removeTcaColumns($result);
+
+		return $result;
+	}
 
 	/**
-	 * @var array
+	 * Evaluate the TCA column display conditions and remove columns that are not displayed
+	 *
+	 * @param array $result
+	 * @return array
 	 */
-	protected $record = array();
+	protected function removeTcaColumns($result) {
+		foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
+			if (!isset($columnConfiguration['displayCond'])) {
+				continue;
+			}
+
+			if (!$this->evaluateDisplayCondition($columnConfiguration['displayCond'], $result['databaseRow'])) {
+				unset($result['processedTca']['columns'][$columnName]);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Remove flexform sheets from processed tca if hidden by display conditions
+	 *
+	 * @param array $result
+	 * @return array
+	 */
+	protected function removeFlexformSheets($result) {
+		foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
+			if (!isset($columnConfiguration['config']['type'])
+				|| $columnConfiguration['config']['type'] !== 'flex'
+				|| !isset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
+				|| !is_array($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
+			) {
+				continue;
+			}
+
+			$flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : array();
+			$flexFormRowData = $this->flattenFlexformRowData($flexFormRowData);
+			$flexFormRowData['parentRec'] = $result['databaseRow'];
+
+			$flexFormSheets = $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'];
+			foreach ($flexFormSheets as $sheetName => $sheetConfiguration) {
+				if (!isset($sheetConfiguration['ROOT']['displayCond'])) {
+					continue;
+				}
+				if (!$this->evaluateDisplayCondition($sheetConfiguration['ROOT']['displayCond'], $flexFormRowData, TRUE)) {
+					unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]);
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Remove fields from flexform sheets if hidden by display conditions
+	 *
+	 * @param array $result
+	 * @return array
+	 */
+	protected function removeFlexformFields($result) {
+		foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
+			if (!isset($columnConfiguration['config']['type'])
+				|| $columnConfiguration['config']['type'] !== 'flex'
+				|| !isset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
+				|| !is_array($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'])
+			) {
+				continue;
+			}
+
+			$flexFormRowData = is_array($result['databaseRow'][$columnName]['data']) ? $result['databaseRow'][$columnName]['data'] : array();
+			$flexFormRowData['parentRec'] = $result['databaseRow'];
+
+			foreach ($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
+				$flexFormSheetRowData = $flexFormRowData[$sheetName]['lDEF'];
+				$flexFormSheetRowData['parentRec'] = $result['databaseRow'];
+				$result['processedTca']['columns'][$columnName]['config']['ds']['sheets'] = $this->removeFlexformFieldsRecursive(
+					$result['processedTca']['columns'][$columnName]['config']['ds']['sheets'],
+					$flexFormSheetRowData
+				);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Remove fields from flexform data structure
+	 *
+	 * @param array $structure Given hierarchy
+	 * @param array $flexFormRowData
+	 * @return array Modified hierarchy
+	 */
+	protected function removeFlexformFieldsRecursive($structure, $flexFormRowData) {
+		$newStructure = [];
+		foreach ($structure as $key => $value) {
+			if ($key === 'el' && is_array($value)) {
+				$newSubStructure = [];
+				foreach ($value as $subKey => $subValue) {
+					if (!isset($subValue['displayCond']) || $this->evaluateDisplayCondition($subValue['displayCond'], $flexFormRowData, TRUE)) {
+						$newSubStructure[$subKey] = $subValue;
+					}
+				}
+				$value = $newSubStructure;
+			}
+			if (is_array($value)) {
+				$value = $this->removeFlexformFieldsRecursive($value, $flexFormRowData);
+			}
+			$newStructure[$key] = $value;
+		}
+
+		return $newStructure;
+	}
+
+	/**
+	 * Flatten the Flexform data row for sheet level display conditions that use SheetName.FieldName
+	 *
+	 * @param array $flexFormRowData
+	 * @return array
+	 */
+	protected function flattenFlexformRowData($flexFormRowData) {
+		$flatFlexFormRowData = [];
+		foreach ($flexFormRowData as $sheetName => $sheetConfiguration) {
+			foreach ($sheetConfiguration['lDEF'] as $fieldName => $fieldConfiguration) {
+				$flatFlexFormRowData[$sheetName . '.' . $fieldName] = $fieldConfiguration;
+			}
+		}
+
+		return $flatFlexFormRowData;
+	}
 
 	/**
 	 * Evaluates the provided condition and returns TRUE if the form
@@ -42,18 +179,18 @@ class ElementConditionMatcher {
 	 *
 	 * @param string $displayCondition
 	 * @param array $record
-	 * @param string $flexformValueKey
+	 * @param bool $flexformContext
 	 * @param int $recursionLevel Internal level of recursion
 	 * @return bool TRUE if condition evaluates successfully
 	 */
-	public function match($displayCondition, array $record = array(), $flexformValueKey = '', $recursionLevel = 0) {
+	protected function evaluateDisplayCondition($displayCondition, array $record = array(), $flexformContext = FALSE, $recursionLevel = 0) {
 		if ($recursionLevel > 99) {
 			// This should not happen, treat as misconfiguration
 			return TRUE;
 		}
 		if (!is_array($displayCondition)) {
 			// DisplayCondition is not an array - just get its value
-			$result = $this->matchSingle($displayCondition, $record, $flexformValueKey);
+			$result = $this->evaluateSingleDisplayCondition($displayCondition, $record, $flexformContext);
 		} else {
 			// Multiple conditions given as array ('AND|OR' => condition array)
 			$conditionEvaluations = array(
@@ -70,18 +207,18 @@ class ElementConditionMatcher {
 						$key = strtoupper($key);
 						if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
 							// Recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
-							$conditionEvaluations[$logicalOperator][] = $this->match(
+							$conditionEvaluations[$logicalOperator][] = $this->evaluateDisplayCondition(
 								array($key => $singleDisplayCondition),
 								$record,
-								$flexformValueKey,
+								$flexformContext,
 								$recursionLevel + 1
 							);
 						} else {
 							// Condition statement: collect evaluation of this single condition.
-							$conditionEvaluations[$logicalOperator][] = $this->matchSingle(
+							$conditionEvaluations[$logicalOperator][] = $this->evaluateSingleDisplayCondition(
 								$singleDisplayCondition,
 								$record,
-								$flexformValueKey
+								$flexformContext
 							);
 						}
 					}
@@ -113,13 +250,11 @@ class ElementConditionMatcher {
 	 *
 	 * @param string $displayCondition
 	 * @param array $record
-	 * @param string $flexformValueKey
+	 * @param bool $flexformContext
 	 * @return bool
-	 * @see match()
+	 * @see evaluateDisplayCondition()
 	 */
-	protected function matchSingle($displayCondition, array $record = array(), $flexformValueKey = '') {
-		$this->record = $record;
-		$this->flexformValueKey = $flexformValueKey;
+	protected function evaluateSingleDisplayCondition($displayCondition, array $record = array(), $flexformContext = FALSE) {
 		$result = FALSE;
 		list($matchType, $condition) = explode(':', $displayCondition, 2);
 		switch ($matchType) {
@@ -127,22 +262,22 @@ class ElementConditionMatcher {
 				$result = $this->matchExtensionCondition($condition);
 				break;
 			case 'FIELD':
-				$result = $this->matchFieldCondition($condition);
+				$result = $this->matchFieldCondition($condition, $record, $flexformContext);
 				break;
 			case 'HIDE_FOR_NON_ADMINS':
 				$result = $this->matchHideForNonAdminsCondition();
 				break;
 			case 'HIDE_L10N_SIBLINGS':
-				$result = $this->matchHideL10nSiblingsCondition($condition);
+				$result = $this->matchHideL10nSiblingsCondition();
 				break;
 			case 'REC':
-				$result = $this->matchRecordCondition($condition);
+				$result = $this->matchRecordCondition($condition, $record);
 				break;
 			case 'VERSION':
-				$result = $this->matchVersionCondition($condition);
+				$result = $this->matchVersionCondition($condition, $record);
 				break;
 			case 'USER':
-				$result = $this->matchUserCondition($condition);
+				$result = $this->matchUserCondition($condition, $record);
 				break;
 		}
 		return $result;
@@ -178,21 +313,22 @@ class ElementConditionMatcher {
 	 * "FIELD:sys_language_uid:>:0" => TRUE, if the field 'sys_language_uid' is greater than 0
 	 *
 	 * @param string $condition
+	 * @param array $record
+	 * @param bool $flexformContext
 	 * @return bool
 	 */
-	protected function matchFieldCondition($condition) {
+	protected function matchFieldCondition($condition, $record, $flexformContext = FALSE) {
 		list($fieldName, $operator, $operand) = explode(':', $condition, 3);
-		if ($this->flexformValueKey) {
+		if ($flexformContext) {
 			if (strpos($fieldName, 'parentRec.') !== FALSE) {
 				$fieldNameParts = explode('.', $fieldName, 2);
-				$fieldValue = $this->record['parentRec'][$fieldNameParts[1]];
+				$fieldValue = $record['parentRec'][$fieldNameParts[1]];
 			} else {
-				$fieldValue = $this->record[$fieldName][$this->flexformValueKey];
+				$fieldValue = $record[$fieldName]['vDEF'];
 			}
 		} else {
-			$fieldValue = $this->record[$fieldName];
+			$fieldValue = $record[$fieldName];
 		}
-
 		$result = FALSE;
 		switch ($operator) {
 			case 'REQ':
@@ -226,7 +362,9 @@ class ElementConditionMatcher {
 			case '!IN':
 			case '=':
 			case '!=':
-				$result = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($operand, $fieldValue);
+				$result = is_array($fieldValue)
+					? in_array($operand, $fieldValue)
+					: GeneralUtility::inList($operand, $fieldValue);
 				if ($operator[0] === '!') {
 					$result = !$result;
 				}
@@ -255,17 +393,12 @@ class ElementConditionMatcher {
 	 * Evaluates whether the field is a value for the default language.
 	 * Works only for <langChildren>=1, otherwise it has no effect.
 	 *
-	 * @param string $condition
 	 * @return bool
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
-	protected function matchHideL10nSiblingsCondition($condition) {
-		$result = FALSE;
-		if ($this->flexformValueKey === 'vDEF') {
-			$result = TRUE;
-		} elseif ($condition === 'except_admin' && $this->getBackendUser()->isAdmin()) {
-			$result = TRUE;
-		}
-		return $result;
+	protected function matchHideL10nSiblingsCondition() {
+		GeneralUtility::deprecationLog('HIDE_L10N_SIBLINGS in Flexform display conditions has been deprecated with TYPO3 CMS 7 and will be removed with TYPO3 CMS 8.');
+		return TRUE;
 	}
 
 	/**
@@ -276,16 +409,17 @@ class ElementConditionMatcher {
 	 * "REC:NEW:FALSE" => TRUE, if the record is already persisted (has a uid > 0)
 	 *
 	 * @param string $condition
+	 * @param array $record
 	 * @return bool
 	 */
-	protected function matchRecordCondition($condition) {
+	protected function matchRecordCondition($condition, $record) {
 		$result = FALSE;
 		list($operator, $operand) = explode(':', $condition, 2);
 		if ($operator === 'NEW') {
 			if (strtoupper($operand) === 'TRUE') {
-				$result = !((int)$this->record['uid'] > 0);
+				$result = !((int)$record['uid'] > 0);
 			} elseif (strtoupper($operand) === 'FALSE') {
-				$result = ((int)$this->record['uid'] > 0);
+				$result = ((int)$record['uid'] > 0);
 			}
 		}
 		return $result;
@@ -296,16 +430,17 @@ class ElementConditionMatcher {
 	 * Requires a record set via ->setRecord()
 	 *
 	 * @param string $condition
+	 * @param array $record
 	 * @return bool
 	 */
-	protected function matchVersionCondition($condition) {
+	protected function matchVersionCondition($condition, $record) {
 		$result = FALSE;
 		list($operator, $operand) = explode(':', $condition, 2);
 		if ($operator === 'IS') {
-			$isNewRecord = !((int)$this->record['uid'] > 0);
+			$isNewRecord = !((int)$record['uid'] > 0);
 			// Detection of version can be done be detecting the workspace of the user
 			$isUserInWorkspace = $this->getBackendUser()->workspace > 0;
-			if ((int)$this->record['pid'] === -1 || (int)$this->record['_ORIG_pid'] === -1) {
+			if ((int)$record['pid'] === -1 || (int)$record['_ORIG_pid'] === -1) {
 				$isRecordDetectedAsVersion = TRUE;
 			} else {
 				$isRecordDetectedAsVersion = FALSE;
@@ -325,6 +460,26 @@ class ElementConditionMatcher {
 	}
 
 	/**
+	 * Evaluates via the referenced user-defined method
+	 *
+	 * @param string $condition
+	 * @param array $record
+	 * @return bool
+	 */
+	protected function matchUserCondition($condition, $record) {
+		$conditionParameters = explode(':', $condition);
+		$userFunction = array_shift($conditionParameters);
+
+		$parameter = array(
+			'record' => $record,
+			'flexformValueKey' => 'vDEF',
+			'conditionParameters' => $conditionParameters
+		);
+
+		return (bool)GeneralUtility::callUserFunction($userFunction, $parameter, $this);
+	}
+
+	/**
 	 * Get current backend user
 	 *
 	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -333,22 +488,4 @@ class ElementConditionMatcher {
 		return $GLOBALS['BE_USER'];
 	}
 
-	/**
-	 * Evaluates via the referenced user-defined method
-	 *
-	 * @param string $condition
-	 * @return bool
-	 */
-	protected function matchUserCondition($condition) {
-		$conditionParameters = explode(':', $condition);
-		$userFunction = array_shift($conditionParameters);
-
-		$parameter = array(
-			'record' => $this->record,
-			'flexformValueKey' => $this->flexformValueKey,
-			'conditionParameters' => $conditionParameters
-		);
-
-		return (bool)\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($userFunction, $parameter, $this);
-	}
 }

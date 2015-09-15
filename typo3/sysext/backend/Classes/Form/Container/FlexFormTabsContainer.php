@@ -52,20 +52,6 @@ class FlexFormTabsContainer extends AbstractContainer {
 		foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
 			$flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
-			// Evaluate display condition for this sheet if there is one
-			$displayConditionResult = TRUE;
-			if (!empty($sheetDataStructure['ROOT']['displayCond'])) {
-				$displayConditionDefinition = $sheetDataStructure['ROOT']['displayCond'];
-				$displayConditionResult = $this->evaluateFlexFormDisplayCondition(
-					$displayConditionDefinition,
-					$flexFormRowData['data'],
-					$flexFormCurrentLanguage
-				);
-			}
-			if (!$displayConditionResult) {
-				continue;
-			}
-
 			if (!is_array($sheetDataStructure['ROOT']['el'])) {
 				$resultArray['html'] .= LF . 'No Data Structure ERROR: No [\'ROOT\'][\'el\'] found for sheet "' . $sheetName . '".';
 				continue;

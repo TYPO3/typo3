@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -93,18 +92,6 @@ class FlexFormElementContainer extends AbstractContainer {
 				}
 				$html = array();
 				foreach ($lkeys as $lkey) {
-					$displayConditionResult = TRUE;
-					if (!empty($flexFormFieldArray['displayCond'])) {
-						$conditionData = is_array($flexFormRowData) ? $flexFormRowData : array();
-						$conditionData['parentRec'] = $row;
-						/** @var $elementConditionMatcher ElementConditionMatcher */
-						$elementConditionMatcher = GeneralUtility::makeInstance(ElementConditionMatcher::class);
-						$displayConditionResult = $elementConditionMatcher->match($flexFormFieldArray['displayCond'], $conditionData, $lkey);
-					}
-					if (!$displayConditionResult) {
-						continue;
-					}
-
 					// Set up options for single element
 					$fakeParameterArray = array(
 						'fieldConf' => array(

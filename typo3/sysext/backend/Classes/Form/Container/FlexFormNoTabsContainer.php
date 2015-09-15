@@ -45,24 +45,8 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 		$sheetName = array_pop(array_keys($flexFormDataStructureArray['sheets']));
 		$flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
-
 		// That was taken from GeneralUtility::resolveSheetDefInDS - no idea if it is important
 		unset($flexFormDataStructureArray['meta']);
-
-
-		// Evaluate display condition for this "sheet" if there is one
-		$displayConditionResult = TRUE;
-		if (!empty($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['displayCond'])) {
-			$displayConditionDefinition = $flexFormDataStructureArray['ROOT']['displayCond'];
-			$displayConditionResult = $this->evaluateFlexFormDisplayCondition(
-				$displayConditionDefinition,
-				$flexFormRowDataSubPart,
-				$flexFormCurrentLanguage
-			);
-		}
-		if (!$displayConditionResult) {
-			return $resultArray;
-		}
 
 		if (!is_array($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'])) {
 			$resultArray['html'] = 'Data Structure ERROR: No [\'ROOT\'][\'el\'] element found in flex form definition.';

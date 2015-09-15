@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Backend\Form\ElementConditionMatcher;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 
@@ -67,49 +66,6 @@ abstract class AbstractContainer extends AbstractNode {
 			'fieldLabel' => $fieldArray[1] ?: NULL,
 			'paletteName' => $fieldArray[2] ?: NULL,
 		);
-	}
-
-	/**
-	 * Evaluate condition of flex forms
-	 *
-	 * @param string $displayCondition The condition to evaluate
-	 * @param array $flexFormData Given data the condition is based on
-	 * @param string $flexFormLanguage Flex form language key
-	 * @return bool TRUE if condition matched
-	 */
-	protected function evaluateFlexFormDisplayCondition($displayCondition, $flexFormData, $flexFormLanguage) {
-		$elementConditionMatcher = GeneralUtility::makeInstance(ElementConditionMatcher::class);
-
-		$splitCondition = GeneralUtility::trimExplode(':', $displayCondition);
-		$skipCondition = FALSE;
-		$fakeRow = array();
-		switch ($splitCondition[0]) {
-			case 'FIELD':
-				list($sheetName, $fieldName) = GeneralUtility::trimExplode('.', $splitCondition[1], FALSE, 2);
-				$fieldValue = $flexFormData[$sheetName][$flexFormLanguage][$fieldName];
-				$splitCondition[1] = $fieldName;
-				$displayCondition = join(':', $splitCondition);
-				$fakeRow = array($fieldName => $fieldValue);
-				break;
-			case 'HIDE_FOR_NON_ADMINS':
-
-			case 'VERSION':
-
-			case 'HIDE_L10N_SIBLINGS':
-
-			case 'EXT':
-				break;
-			case 'REC':
-				$fakeRow = array('uid' => $this->data['databaseRow']['uid']);
-				break;
-			default:
-				$skipCondition = TRUE;
-		}
-		if ($skipCondition) {
-			return TRUE;
-		} else {
-			return $elementConditionMatcher->match($displayCondition, $fakeRow, 'vDEF');
-		}
 	}
 
 	/**

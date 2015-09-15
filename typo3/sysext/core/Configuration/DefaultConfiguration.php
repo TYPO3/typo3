@@ -435,7 +435,7 @@ return array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
@@ -459,6 +459,11 @@ return array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
 						),
 					),
 				),
