@@ -65,7 +65,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		$itemsArray = $parameterArray['itemFormElValue'];
 
 		// Perform modification of the selected items array:
-		// @todo: this part should probably be moved to TcaSelectValues provider?!
+		// @todo: this part should probably be moved to TcaSelectItems provider?!
 		foreach ($itemsArray as $itemNumber => $itemValue) {
 			$itemArray = array(
 				0 => $itemValue,

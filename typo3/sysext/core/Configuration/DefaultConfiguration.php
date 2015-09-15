@@ -463,14 +463,9 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class => array(
-						'depends' => array(
-							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
-						),
-					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
 						'depends' => array(
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectValues::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
 				),
