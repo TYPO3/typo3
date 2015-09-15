@@ -54,9 +54,8 @@ class FlexFormTabsContainer extends AbstractContainer {
 
 			// Evaluate display condition for this sheet if there is one
 			$displayConditionResult = TRUE;
-			// @todo: flex provider should remove the TCEforms sub array for display conditions here as well
-			if (!empty($sheetDataStructure['ROOT']['TCEforms']['displayCond'])) {
-				$displayConditionDefinition = $sheetDataStructure['ROOT']['TCEforms']['displayCond'];
+			if (!empty($sheetDataStructure['ROOT']['displayCond'])) {
+				$displayConditionDefinition = $sheetDataStructure['ROOT']['displayCond'];
 				$displayConditionResult = $this->evaluateFlexFormDisplayCondition(
 					$displayConditionDefinition,
 					$flexFormRowData['data'],
@@ -99,10 +98,10 @@ class FlexFormTabsContainer extends AbstractContainer {
 			$childReturn = $this->nodeFactory->create($options)->render();
 
 			$tabsContent[] = array(
-				'label' => !empty($sheetDataStructure['ROOT']['TCEforms']['sheetTitle']) ? $languageService->sL($sheetDataStructure['ROOT']['TCEforms']['sheetTitle']) : $sheetName,
+				'label' => !empty($sheetDataStructure['ROOT']['sheetTitle']) ? $languageService->sL($sheetDataStructure['ROOT']['sheetTitle']) : $sheetName,
 				'content' => $childReturn['html'],
-				'description' => $sheetDataStructure['ROOT']['TCEforms']['sheetDescription'] ? $languageService->sL($sheetDataStructure['ROOT']['TCEforms']['sheetDescription']) : '',
-				'linkTitle' => $sheetDataStructure['ROOT']['TCEforms']['sheetShortDescr'] ? $languageService->sL($sheetDataStructure['ROOT']['TCEforms']['sheetShortDescr']) : '',
+				'description' => $sheetDataStructure['ROOT']['sheetDescription'] ? $languageService->sL($sheetDataStructure['ROOT']['sheetDescription']) : '',
+				'linkTitle' => $sheetDataStructure['ROOT']['sheetShortDescr'] ? $languageService->sL($sheetDataStructure['ROOT']['sheetShortDescr']) : '',
 			);
 
 			$childReturn['html'] = '';

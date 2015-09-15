@@ -245,9 +245,7 @@ class TcaFlexTest extends UnitTestCase {
 								],
 							],
 						],
-						'TCEforms' => [
-							'sheetTitle' => 'aTitle',
-						],
+						'sheetTitle' => 'aTitle',
 					],
 				],
 			],
@@ -696,9 +694,7 @@ class TcaFlexTest extends UnitTestCase {
 								],
 							],
 						],
-						'TCEforms' => [
-							'sheetTitle' => 'aTitle',
-						],
+						'sheetTitle' => 'aTitle',
 					],
 				],
 			],
@@ -792,9 +788,7 @@ class TcaFlexTest extends UnitTestCase {
 								],
 							],
 						],
-						'TCEforms' => [
-							'sheetDescription' => 'aDescription',
-						],
+						'sheetDescription' => 'aDescription',
 					],
 				],
 			],
@@ -888,9 +882,7 @@ class TcaFlexTest extends UnitTestCase {
 								],
 							],
 						],
-						'TCEforms' => [
-							'sheetDescription' => 'sheetShortDescr',
-						],
+						'sheetDescription' => 'sheetShortDescr',
 					],
 				],
 			],
@@ -980,9 +972,7 @@ class TcaFlexTest extends UnitTestCase {
 								],
 							],
 						],
-						'TCEforms' => [
-							'sheetDescription' => 'sheetShortDescr',
-						],
+						'sheetDescription' => 'sheetShortDescr',
 					],
 				],
 			],
@@ -3214,4 +3204,124 @@ class TcaFlexTest extends UnitTestCase {
 		$this->assertEquals($expectedLanguagesOnElement, $result['processedTca']['columns']['aField']['config']['ds']['meta']['languagesOnElement']);
 	}
 
+	/**
+	 * @test
+	 */
+	public function addDataRemovesTceFormsFromRootArray() {
+		$input = [
+			'systemLanguageRows' => [],
+			'databaseRow' => [
+				'aField' => [
+					'data' => [],
+					'meta' => [],
+				],
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'flex',
+							'ds' => [
+								'default' => '
+                  <T3DataStructure>
+                    <sheets>
+                      <sDEF>
+                        <ROOT>
+                          <TCEforms>
+                            <sheetTitle>aTitle</sheetTitle>
+                            <sheetDescription>aDescription</sheetDescription>
+                            <sheetShortDescr>aShortDescr</sheetShortDescr>
+                            <displayCond>aDisplayCond</displayCond>
+                          </TCEforms>
+                          <type>array</type>
+                          <el>
+                            <aFlexField>
+                              <TCEforms>
+                                <label>aFlexFieldLabel</label>
+                                <config>
+                                  <type>input</type>
+                                </config>
+                              </TCEforms>
+                            </aFlexField>
+                          </el>
+                        </ROOT>
+                      </sDEF>
+                      <sOther>
+                        <ROOT>
+                          <TCEforms>
+                            <sheetTitle>anotherTitle</sheetTitle>
+                            <displayCond>anotherDisplayCond</displayCond>
+                          </TCEforms>
+                          <type>array</type>
+                          <el>
+                            <bFlexField>
+                              <TCEforms>
+                                <label>bFlexFieldLabel</label>
+                                <config>
+                                  <type>input</type>
+                                </config>
+                              </TCEforms>
+                            </bFlexField>
+                          </el>
+                        </ROOT>
+                      </sOther>
+                    </sheets>
+                  </T3DataStructure>
+                ',
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['processedTca']['columns']['aField']['config']['ds'] = [
+			'sheets' => [
+				'sDEF' => [
+					'ROOT' => [
+						'type' => 'array',
+						'el' => [
+							'aFlexField' => [
+								'label' => 'aFlexFieldLabel',
+								'config' => [
+									'type' => 'input',
+								],
+							],
+						],
+						'sheetTitle' => 'aTitle',
+						'sheetDescription' => 'aDescription',
+						'sheetShortDescr' => 'aShortDescr',
+						'displayCond' => 'aDisplayCond',
+					],
+				],
+				'sOther' => [
+					'ROOT' => [
+						'type' => 'array',
+						'el' => [
+							'bFlexField' => [
+								'label' => 'bFlexFieldLabel',
+								'config' => [
+									'type' => 'input',
+								],
+							],
+						],
+						'sheetTitle' => 'anotherTitle',
+						'displayCond' => 'anotherDisplayCond',
+					],
+				],
+			],
+			'meta' => [
+				'availableLanguageCodes' => [],
+				'langDisable' => FALSE,
+				'langChildren' => FALSE,
+				'languagesOnSheetLevel' => [],
+				'languagesOnElement' => [
+					0 => 'DEF',
+				],
+			],
+		];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
 }

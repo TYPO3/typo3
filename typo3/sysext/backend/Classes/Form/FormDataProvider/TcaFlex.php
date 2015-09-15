@@ -179,7 +179,7 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 	}
 
 	/**
-	 * Move ['el']['something']['TCEforms'] to ['el']['something'] recursive
+	 * Moves ['el']['something']['TCEforms'] to ['el']['something'] and ['ROOT']['TCEforms'] to ['ROOT'] recursive
 	 *
 	 * @param array $structure Given hierarchy
 	 * @return array Modified hierarchy
@@ -187,6 +187,10 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 	protected function removeElementTceFormsRecursive(array $structure) {
 		$newStructure = [];
 		foreach ($structure as $key => $value) {
+			if ($key === 'ROOT' && is_array($value) && isset($value['TCEforms'])) {
+				$value = array_merge($value, $value['TCEforms']);
+				unset($value['TCEforms']);
+			}
 			if ($key === 'el' && is_array($value)) {
 				$newSubStructure = [];
 				foreach ($value as $subKey => $subValue) {
@@ -749,15 +753,15 @@ class TcaFlex extends AbstractItemProvider implements FormDataProviderInterface 
 
 		// Rename sheet (tab)
 		if (!empty($pageTsOfSheet['sheetTitle'])) {
-			$dataStructure['ROOT']['TCEforms']['sheetTitle'] = $pageTsOfSheet['sheetTitle'];
+			$dataStructure['ROOT']['sheetTitle'] = $pageTsOfSheet['sheetTitle'];
 		}
 		// Set sheet description (tab)
 		if (!empty($pageTsOfSheet['sheetDescription'])) {
-			$dataStructure['ROOT']['TCEforms']['sheetDescription'] = $pageTsOfSheet['sheetDescription'];
+			$dataStructure['ROOT']['sheetDescription'] = $pageTsOfSheet['sheetDescription'];
 		}
 		// Set sheet short description (tab)
 		if (!empty($pageTsOfSheet['sheetShortDescr'])) {
-			$dataStructure['ROOT']['TCEforms']['sheetShortDescr'] = $pageTsOfSheet['sheetShortDescr'];
+			$dataStructure['ROOT']['sheetShortDescr'] = $pageTsOfSheet['sheetShortDescr'];
 		}
 
 		return $dataStructure;

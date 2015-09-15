@@ -52,9 +52,8 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 
 		// Evaluate display condition for this "sheet" if there is one
 		$displayConditionResult = TRUE;
-		// @todo: flex provider should remove the TCEforms sub array for display conditions here as well
-		if (!empty($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['TCEforms']['displayCond'])) {
-			$displayConditionDefinition = $flexFormDataStructureArray['ROOT']['TCEforms']['displayCond'];
+		if (!empty($flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['displayCond'])) {
+			$displayConditionDefinition = $flexFormDataStructureArray['ROOT']['displayCond'];
 			$displayConditionResult = $this->evaluateFlexFormDisplayCondition(
 				$displayConditionDefinition,
 				$flexFormRowDataSubPart,
