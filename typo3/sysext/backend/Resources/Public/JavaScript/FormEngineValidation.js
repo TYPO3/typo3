@@ -490,7 +490,7 @@ define('TYPO3/CMS/Backend/FormEngineValidation', ['jquery', 'TYPO3/CMS/Backend/F
 			var $field = $(this);
 			var newValue = FormEngineValidation.validateField($field);
 			if (newValue.length && $field.val() !== newValue) {
-				$field.val(newValue);
+				$field.attr('value', newValue);
 				FormEngineValidation.setCaretPosition($field, 0);
 			}
 		});
