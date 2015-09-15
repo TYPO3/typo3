@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Frontend\Http;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Http\ControllerInterface;
+use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -108,21 +108,25 @@ class EidRequestHandler implements RequestHandlerInterface {
 	 * @throws Exception
 	 */
 	protected function dispatch($request) {
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+
 		$eID = isset($request->getParsedBody()['eID'])
 			? $request->getParsedBody()['eID']
 			: (isset($request->getQueryParams()['eID']) ? $request->getQueryParams()['eID'] : '');
 
 		if (empty($eID) || !isset($GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID])) {
-			return GeneralUtility::makeInstance(Response::class)->withStatus(404, 'eID not registered');
+			return $response->withStatus(404, 'eID not registered');
 		}
 
 		$configuration = $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include'][$eID];
-		if (class_exists($configuration)) {
-			$controller = GeneralUtility::makeInstance($configuration);
-			if (!$controller instanceof ControllerInterface) {
-				throw new Exception('The provided eID class "' . $configuration . '" does not implement "ControllerInterface".', 1436909478);
-			}
-			return $controller->processRequest($request);
+
+		// Simple check to make sure that it's not an absolute file (to use the fallback)
+		if (strpos($configuration, '::') !== FALSE || is_callable($configuration)) {
+			/** @var Dispatcher $dispatcher */
+			$dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+			$request = $request->withAttribute('target', $configuration);
+			return $dispatcher->dispatch($request, $response);
 		}
 
 		$scriptPath = GeneralUtility::getFileAbsFileName($configuration);

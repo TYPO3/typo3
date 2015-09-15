@@ -15,9 +15,8 @@ namespace TYPO3\CMS\Frontend\Controller;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Http\ControllerInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -35,7 +34,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *  - bodyTag
  *  - title
  */
-class ShowImageController implements ControllerInterface {
+class ShowImageController {
 
 	/**
 	 * @var \Psr\Http\Message\ServerRequestInterface
@@ -184,14 +183,12 @@ EOF;
 	/**
 	 * Fetches the content and builds a content file out of it
 	 *
-	 * @param \Psr\Http\Message\ServerRequestInterface $request
-	 * @return \Psr\Http\Message\ResponseInterface
+	 * @param ServerRequestInterface $request the current request object
+	 * @param ResponseInterface $response the available response
+	 * @return ResponseInterface the modified response
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function processRequest(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->request = $request;
-
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
 
 		try {
 			$this->initialize();

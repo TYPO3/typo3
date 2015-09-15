@@ -14,25 +14,22 @@ namespace TYPO3\CMS\Rsaauth\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ControllerInterface;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Rsaauth\Backend\BackendFactory;
 use TYPO3\CMS\Rsaauth\Storage\StorageFactory;
 
 /**
  * eID script "RsaPublicKeyGenerationController" to generate an rsa key
  */
-class RsaPublicKeyGenerationController implements ControllerInterface {
+class RsaPublicKeyGenerationController {
 
 	/**
 	 * @param ServerRequestInterface $request
-	 * @return Response
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processRequest(ServerRequestInterface $request) {
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
+	public function processRequest(ServerRequestInterface $request, ResponseInterface $response) {
 		/** @var \TYPO3\CMS\Rsaauth\Backend\AbstractBackend $backend */
 		$backend = BackendFactory::getBackend();
 		if ($backend === NULL) {
@@ -46,7 +43,6 @@ class RsaPublicKeyGenerationController implements ControllerInterface {
 		session_commit();
 		$content = $keyPair->getPublicKeyModulus() . ':' . sprintf('%x', $keyPair->getExponent()) . ':';
 		$response->getBody()->write($content);
-
 		return $response;
 	}
 

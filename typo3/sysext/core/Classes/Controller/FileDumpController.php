@@ -14,9 +14,8 @@ namespace TYPO3\CMS\Core\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ControllerInterface;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Resource\Hook\FileDumpEIDHookInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -26,18 +25,21 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 /**
  * Class FileDumpController
  */
-class FileDumpController implements ControllerInterface {
+class FileDumpController {
 
 	/**
+	 * Main method to dump a file
+	 *
 	 * @param ServerRequestInterface $request
-	 * @return NULL|Response
+	 * @param ResponseInterface $response
+	 * @return NULL|ResponseInterface
 	 *
 	 * @throws \InvalidArgumentException
 	 * @throws \RuntimeException
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
 	 * @throws \UnexpectedValueException
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function dumpAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$parameters = array('eID' => 'dumpFile');
 		$t = $this->getGetOrPost($request, 't');
 		if ($t) {
@@ -83,7 +85,6 @@ class FileDumpController implements ControllerInterface {
 			// @todo Refactor FAL to not echo directly, but to implement a stream for output here and use response
 			return NULL;
 		} else {
-			$response = GeneralUtility::makeInstance(Response::class);
 			return $response->withStatus(403);
 		}
 	}

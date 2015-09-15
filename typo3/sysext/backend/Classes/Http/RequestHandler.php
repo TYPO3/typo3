@@ -150,8 +150,8 @@ class RequestHandler implements RequestHandlerInterface {
 	protected function dispatch($request) {
 		/** @var Response $response */
 		$response = GeneralUtility::makeInstance(Response::class);
-		/** @var Dispatcher $dispatcher */
-		$dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+		/** @var RouteDispatcher $dispatcher */
+		$dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
 		return $dispatcher->dispatch($request, $response);
 	}
 }

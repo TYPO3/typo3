@@ -16,13 +16,13 @@ namespace TYPO3\CMS\Rtehtmlarea\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ControllerInterface;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Spell checking plugin 'tx_rtehtmlarea_pi1' for the htmlArea RTE extension.
  */
-class SpellCheckingController implements ControllerInterface {
+class SpellCheckingController {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter
@@ -153,20 +153,23 @@ class SpellCheckingController implements ControllerInterface {
 	 * @throws \UnexpectedValueException
 	 */
 	public function main(array $ajaxParams) {
-		$this->processRequest($ajaxParams['request']);
+		/** @var Response $response */
+		$response = GeneralUtility::makeInstance(Response::class);
+		$this->processRequest($ajaxParams['request'], $response);
 		header('Content-Type: text/html; charset=' . strtoupper($this->parserCharset));
 		echo $this->result;
 	}
 
 	/**
-	 * Main class of Spell Checker plugin for Typo3 CMS
+	 * Main class of Spell Checker plugin
 	 *
 	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
 	 * @return ResponseInterface
 	 * @throws \InvalidArgumentException
 	 * @throws \UnexpectedValueException
 	 */
-	public function processRequest(ServerRequestInterface $request) {
+	public function processRequest(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
 		// Setting start time
 		$time_start = microtime(TRUE);
@@ -357,7 +360,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 			$this->result .= '
 </body></html>';
 			// Outputting
-			$response = GeneralUtility::makeInstance(Response::class);
 			$response = $response->withHeader('Content-Type', 'text/html; charset=' . strtoupper($this->parserCharset));
 			$response->getBody()->write($this->result);
 			return $response;
