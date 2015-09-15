@@ -42,7 +42,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	protected $configurationManager;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $respectSubmittedDataValue = FALSE;
 
@@ -65,7 +65,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	/**
 	 * Getting the current configuration for respectSubmittedDataValue.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getRespectSubmittedDataValue() {
 		return $this->respectSubmittedDataValue;
@@ -74,7 +74,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper {
 	/**
 	 * Define respectSubmittedDataValue to enable or disable the usage of the submitted values in the viewhelper.
 	 *
-	 * @param boolean $respectSubmittedDataValue
+	 * @param bool $respectSubmittedDataValue
 	 * @return void
 	 */
 	public function setRespectSubmittedDataValue($respectSubmittedDataValue) {

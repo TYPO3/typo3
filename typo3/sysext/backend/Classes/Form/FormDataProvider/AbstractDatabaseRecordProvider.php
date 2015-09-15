@@ -31,7 +31,7 @@ abstract class AbstractDatabaseRecordProvider {
 	 * about input and result.
 	 *
 	 * @param string $tableName The table name to fetch record from
-	 * @param integer $uid Uid of record to fetch
+	 * @param int $uid Uid of record to fetch
 	 * @return array Fetched record row
 	 * @throws DatabaseRecordException|\InvalidArgumentException|\UnexpectedValueException|\RuntimeException
 	 */

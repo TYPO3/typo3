@@ -48,7 +48,7 @@ class ActionHandler extends AbstractHandler {
 	/**
 	 * Generates workspace preview links for all available languages of a page.
 	 *
-	 * @param integer $uid
+	 * @param int $uid
 	 * @return array
 	 */
 	public function generateWorkspacePreviewLinksForAllLanguages($uid) {

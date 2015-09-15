@@ -72,7 +72,7 @@ class FormDataTraverser {
 	/**
 	 * Inline first pid
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $inlineFirstPid;
 
