@@ -164,7 +164,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			$filterTextfield = '<div class="form-multigroup-item form-multigroup-element">' . implode(LF, $filterTextfield) . '</div>';
 			$selectBoxFilterContents = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">' . $filterSelectbox . $filterTextfield . '</div>';
 		} else {
-			$selectBoxFilterContents = trim($filterSelectbox . ' ' . $filterTextfield);
+			$selectBoxFilterContents = trim($filterSelectbox . ' ' . implode(LF, $filterTextfield));
 		}
 
 		// Pass to "dbFileIcons" function:
