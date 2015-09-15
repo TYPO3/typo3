@@ -153,7 +153,7 @@ return array(
 				'type' => 'input',
 				'size' => '13',
 				'eval' => 'datetime',
-				'default' => '0'
+				'default' => 0
 			),
 			'l10n_mode' => 'exclude',
 			'l10n_display' => 'defaultAsReadonly'
@@ -165,9 +165,9 @@ return array(
 				'type' => 'input',
 				'size' => '13',
 				'eval' => 'datetime',
-				'default' => '0',
+				'default' => 0,
 				'range' => array(
-					'upper' => mktime(0, 0, 0, 12, 31, 2020)
+					'upper' => mktime(0, 0, 0, 1, 1, 2038)
 				)
 			),
 			'l10n_mode' => 'exclude',
@@ -259,7 +259,7 @@ return array(
 						'3'
 					)
 				),
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'colPos' => array(
@@ -286,7 +286,7 @@ return array(
 						'3'
 					)
 				),
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'date' => array(
@@ -297,7 +297,7 @@ return array(
 				'size' => '13',
 				'max' => '20',
 				'eval' => 'date',
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'header' => array(
@@ -379,7 +379,7 @@ return array(
 						'100'
 					)
 				),
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'subheader' => array(
@@ -565,7 +565,7 @@ return array(
 					)
 				),
 				'selicon_cols' => 6,
-				'default' => '0',
+				'default' => 0,
 			)
 		),
 		'imageborder' => array(
@@ -680,7 +680,7 @@ return array(
 						'9'
 					)
 				),
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'pages' => array(
@@ -731,7 +731,7 @@ return array(
 						'250'
 					)
 				),
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'menu_type' => array(
@@ -784,7 +784,7 @@ return array(
 						'categorized_content'
 					)
 				),
-				'default' => '0'
+				'default' => 0
 			)
 		),
 		'list_type' => array(
@@ -1124,20 +1124,19 @@ return array(
 		),
 		'table' => array(
 			'showitem' => '
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.general;general,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.header;header,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general;general,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.header;header,
 					bodytext;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:field.table.bodytext,
 					--palette--;;tableconfiguration,
 					table_caption,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.appearance,
-					layout;LLL:EXT:cms/locallang_ttc.xlf:layout_formlabel,
-					behaviour,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.table_layout;tablelayout,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance,
+					layout;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:layout_formlabel,
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.table_layout;tablelayout,
 					--palette--;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:palette.appearanceLinks;appearanceLinks,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access,
 					hidden;LLL:EXT:frontend/Resources/Private/Language/TCA.xlf:field.default.hidden,
-					--palette--;LLL:EXT:cms/locallang_ttc.xlf:palette.access;access,
-				--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.extended
+					--palette--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.access;access,
+				--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.extended
 			'
 		),
 	),
@@ -1209,17 +1208,26 @@ return array(
 				endtime;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel,
 				--linebreak--,
 				fe_group;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:fe_group_formlabel,
-				--linebreak--,editlock,
+				--linebreak--,editlock
 			',
 		),
 		'uploadslayout' => array(
-			'showitem' => 'filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel',
+			'showitem' => '
+				filelink_size;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_size_formlabel
+			',
 		),
 		'tableconfiguration' => array(
-			'showitem' => 'table_delimiter,table_enclosure'
+			'showitem' => '
+				table_delimiter,
+				table_enclosure
+			'
 		),
 		'tablelayout' => array(
-			'showitem' => 'cols,table_header_position,table_tfoot'
+			'showitem' => '
+				cols,
+				table_header_position,
+				table_tfoot
+			'
 		)
 	)
 );
