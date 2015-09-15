@@ -15,11 +15,14 @@ namespace TYPO3\CMS\Belog\Controller;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Abstract class to show log entries from sys_log
  */
-abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+abstract class AbstractController extends ActionController {
 
 	/**
 	 * @var int
@@ -76,9 +79,16 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	protected $logEntryRepository = NULL;
 
 	/**
-	 * @var PageRenderer
+	 * @var BackendTemplateView
 	 */
-	protected $pageRenderer;
+	protected $view;
+
+	/**
+	 * BackendTemplateView Container
+	 *
+	 * @var BackendTemplateView
+	 */
+	protected $defaultViewObjectName = BackendTemplateView::class;
 
 	/**
 	 * @param \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository $logEntryRepository
@@ -88,12 +98,23 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	}
 
 	/**
+	 * Initialize the view
+	 *
+	 * @param ViewInterface $view The view
+	 * @return void
+	 */
+	protected function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		$view->getModuleTemplate()->getPageRenderer()->loadExtJS();
+		$view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+	}
+
+	/**
 	 * init all actions
 	 * @return void
 	 */
 	public function initializeAction() {
-		$this->pageRenderer = $this->objectManager->get(PageRenderer::class);
-		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
 	}
 
 	/**
@@ -344,5 +365,4 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		$constraint->setStartTimestamp($startTime);
 		$constraint->setEndTimestamp($endTime);
 	}
-
 }
