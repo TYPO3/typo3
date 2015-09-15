@@ -10,6 +10,7 @@ Ext.ux.grid.ItemDeleter = Ext.extend(Ext.grid.RowSelectionModel, {
 	menuDisabled: true,
 	fixed: true,
 	id: 'deleter',
+	header: TYPO3.l10n.localize('fieldoptions_delete'),
 
 	initEvents: function(){
 		Ext.ux.grid.ItemDeleter.superclass.initEvents.call(this);

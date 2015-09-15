@@ -91,11 +91,14 @@ TYPO3.Form.Wizard.Elements.Basic.Select = Ext.extend(TYPO3.Form.Wizard.Elements,
 				},
 				options: [
 					{
-						data: TYPO3.l10n.localize('elements_option_1')
+						data: TYPO3.l10n.localize('elements_option_1'),
+						value: TYPO3.l10n.localize('elements_value_1')
 					}, {
-						data: TYPO3.l10n.localize('elements_option_2')
+						data: TYPO3.l10n.localize('elements_option_2'),
+						value: TYPO3.l10n.localize('elements_value_2')
 					}, {
-						data: TYPO3.l10n.localize('elements_option_3')
+						data: TYPO3.l10n.localize('elements_option_3'),
+						value: TYPO3.l10n.localize('elements_value_3')
 					}
 				],
 				layout: 'front',

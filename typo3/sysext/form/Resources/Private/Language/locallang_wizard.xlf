@@ -498,6 +498,12 @@
 			<trans-unit id="fieldoptions_data">
 				<source>Data</source>
 			</trans-unit>
+			<trans-unit id="fieldoptions_value">
+				<source>Value</source>
+			</trans-unit>
+			<trans-unit id="fieldoptions_delete">
+				<source>Delete</source>
+			</trans-unit>
 			<trans-unit id="fieldoptions_selected">
 				<source>Selected</source>
 			</trans-unit>
@@ -638,6 +644,15 @@
 			</trans-unit>
 			<trans-unit id="elements_option_3">
 				<source>Option 3</source>
+			</trans-unit>
+			<trans-unit id="elements_value_1">
+				<source>Value 1</source>
+			</trans-unit>
+			<trans-unit id="elements_value_2">
+				<source>Value 2</source>
+			</trans-unit>
+			<trans-unit id="elements_value_3">
+				<source>Value 3</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -42,7 +42,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 * the config options available for Ext.grid.GridView can be specified here. This option
 	 * is ignored if view is specified.
 	 */
-	viewConfig:{
+	viewConfig: {
 		forceFit: true,
 		emptyText: TYPO3.l10n.localize('fieldoptions_emptytext'),
 		scrollOffset: 0
@@ -53,16 +53,20 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 *
 	 * Configure store and columns for the grid
 	 */
-	initComponent: function() {
+	initComponent: function () {
 		var optionRecord = Ext.data.Record.create([
 			{
 				name: 'data',
-				mapping:'data',
+				mapping: 'data',
 				type: 'string'
 			}, {
 				name: 'selected',
 				convert: this.convertSelected,
 				type: 'bool'
+			}, {
+				name: 'value',
+				mapping: 'value',
+				type: 'string'
 			}
 		]);
 
@@ -92,7 +96,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 			id: 'selected',
 			header: TYPO3.l10n.localize('fieldoptions_selected'),
 			dataIndex: 'selected',
-			width: 30
+			width: 20
 		});
 
 		var itemDeleter = new Ext.ux.grid.ItemDeleter();
@@ -105,19 +109,34 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 				},
 				columns: [
 					{
+						width: 40,
 						id: 'data',
 						header: TYPO3.l10n.localize('fieldoptions_data'),
 						dataIndex: 'data',
 						editor: new Ext.ux.form.TextFieldSubmit({
 							allowBlank: false,
 							listeners: {
-								'triggerclick': function(field) {
+								'triggerclick': function (field) {
 									field.gridEditor.record.set('data', field.getValue());
 								}
 							}
 						})
 					},
 					checkColumn,
+					{
+						width: 40,
+						id: 'value',
+						header: TYPO3.l10n.localize('fieldoptions_value'),
+						dataIndex: 'value',
+						editor: new Ext.ux.form.TextFieldSubmit({
+							allowBlank: true,
+							listeners: {
+								'triggerclick': function (field) {
+									field.gridEditor.record.set('value', field.getValue());
+								}
+							}
+						})
+					},
 					itemDeleter
 				]
 			}),
@@ -130,10 +149,10 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 			}]
 		};
 
-			// apply config
+		// apply config
 		Ext.apply(this, Ext.apply(this.initialConfig, config));
 
-			// call parent
+		// call parent
 		TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options.superclass.initComponent.apply(this, arguments);
 	},
 
@@ -142,11 +161,12 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 *
 	 * Called when the button to add option in the top bar has been clicked
 	 */
-	addOption: function() {
+	addOption: function () {
 		var option = this.store.recordType;
 		var newOption = new option({
 			data: TYPO3.l10n.localize('fieldoptions_new'),
-			selected: false
+			selected: false,
+			value: TYPO3.l10n.localize('fieldoptions_value')
 		});
 		this.stopEditing();
 		this.store.add(newOption);
@@ -160,20 +180,27 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 * @param store
 	 * @param record
 	 */
-	storeOptions: function(store, record) {
+	storeOptions: function (store, record) {
 		if (record && record.dirty) {
 			record.commit();
 		} else {
 			var option = {};
 			var options = [];
-			this.store.each(function(record) {
+			this.store.each(function (record) {
 				var option = {
 					data: record.get('data')
 				};
 				if (record.get('selected')) {
-					option.attributes = {
-						selected: 'selected'
-					};
+					if (!option.attributes) {
+						option.attributes = {};
+					}
+					option.attributes['selected'] = 'selected';
+				}
+				if (record.get('value')) {
+					if (!option.attributes) {
+						option.attributes = {};
+					}
+					option.attributes['value'] = record.get('value');
 				}
 				options.push(option);
 			});
@@ -193,7 +220,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Options = Ext.extend(Ext.grid.Edit
 	 * @param record
 	 * @returns {Boolean}
 	 */
-	convertSelected: function(v, record) {
+	convertSelected: function (v, record) {
 		if (record.attributes && record.attributes.selected) {
 			if (record.attributes.selected == 'selected') {
 				return true;
