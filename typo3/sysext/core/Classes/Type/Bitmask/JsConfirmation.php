@@ -22,25 +22,25 @@ class JsConfirmation extends \TYPO3\CMS\Core\Type\Enumeration {
 	/**
 	 * @var int
 	 */
-	const TYPE_CHANGE = 1;
+	const TYPE_CHANGE = 0b00000001;
 
 	/**
 	 * @var int
 	 */
-	const COPY_MOVE_PASTE = 2;
+	const COPY_MOVE_PASTE = 0b00000010;
 
 	/**
 	 * @var int
 	 */
-	const DELETE = 4;
+	const DELETE = 0b00000100;
 
 	/**
 	 * @var int
 	 */
-	const FE_EDIT = 8;
+	const FE_EDIT = 0b00001000;
 
 	/**
 	 * @var int
 	 */
-	const OTHER = 128;
+	const OTHER = 0b10000000;
 }
