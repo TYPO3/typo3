@@ -57,6 +57,17 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 			if (!is_array($fieldConfig['config']['items'])) {
 				$fieldConfig['config']['items'] = [];
 			}
+
+			// Make sure maxitems is always filled with a valid integer value.
+			if (
+				!empty($fieldConfig['config']['maxitems'])
+				&& (int)$fieldConfig['config']['maxitems'] > 1
+			) {
+				$fieldConfig['config']['maxitems'] = (int)$fieldConfig['config']['maxitems'];
+			} else {
+				$fieldConfig['config']['maxitems'] = 1;
+			}
+
 			foreach ($fieldConfig['config']['items'] as $item) {
 				if (!is_array($item)) {
 					throw new \UnexpectedValueException(
@@ -984,13 +995,17 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
 		// For single select fields we just keep the current value because the renderer
 		// will take care of showing the "Invalid value" text.
+		// For maxitems=1 select fields is is also possible to select empty values.
 		// @todo: move handling of invalid values to this data provider.
-		if (!isset($fieldConfig['config']['maxitems']) || (int)$fieldConfig['config']['maxitems'] <= 1) {
+		if ($fieldConfig['config']['maxitems'] === 1) {
 			return array($result['databaseRow'][$fieldName]);
 		}
 
 		$currentDatabaseValues = array_key_exists($fieldName, $result['databaseRow']) ? $result['databaseRow'][$fieldName] : '';
-		$currentDatabaseValuesArray = GeneralUtility::trimExplode(',', $currentDatabaseValues);
+		// Selecting empty values does not make sense for fields that can contain more than one item
+		// because it is impossible to determine if the empty value or nothing is selected.
+		// This is why empty values will be removed for multi value fields.
+		$currentDatabaseValuesArray = GeneralUtility::trimExplode(',', $currentDatabaseValues, TRUE);
 		$newDatabaseValueArray = [];
 
 		// Add all values that were defined by static methods and do not come from the relation

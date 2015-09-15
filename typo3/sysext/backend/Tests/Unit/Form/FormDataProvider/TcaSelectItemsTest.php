@@ -139,6 +139,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									1 => 'aValue',
 								],
 							],
+							'maxitems' => 1
 						],
 					],
 				],
@@ -182,6 +183,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									3 => NULL,
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				],
@@ -237,6 +239,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 						'config' => [
 							'type' => 'select',
 							'special' => 'tables',
+							'maxitems' => 1,
 						],
 					],
 				],
@@ -295,6 +298,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 							'type' => 'select',
 							'special' => 'pagetypes',
 							'items' => [],
+							'maxitems' => 1,
 						],
 					],
 				],
@@ -1392,6 +1396,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									3 => NULL,
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				]
@@ -1454,6 +1459,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 							'foreign_table' => 'fTable',
 							'foreign_table_prefix' => 'aPrefix',
 							'items' => [],
+							'maxitems' => 1,
 						],
 					],
 				]
@@ -1539,6 +1545,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									1 => 'remove',
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				]
@@ -1592,6 +1599,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									1 => 'remove',
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				]
@@ -1648,6 +1656,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									1 => 'remove',
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				]
@@ -1699,6 +1708,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									1 => 'remove',
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				]
@@ -1745,6 +1755,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									NULL,
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				],
@@ -1793,6 +1804,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									1 => 'remove',
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				],
@@ -1867,6 +1879,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 					3 => NULL,
 				],
 			],
+			'maxitems' => 1,
 		];
 
 		$this->assertSame($expected, $this->subject->addData($input));
@@ -2020,6 +2033,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 									NULL,
 								],
 							],
+							'maxitems' => 1,
 						],
 					],
 				],
@@ -2242,6 +2256,79 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$expected['databaseRow']['aField'] = [
 			'foo',
 			'bar'
+		];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueReturnsEmptyValueForSingleSelect() {
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => '',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 1,
+							'items' => [],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = [
+			'',
+		];
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function processSelectFieldValueTrimsEmptyValueForMultiValueSelect() {
+		$languageService = $this->prophesize(LanguageService::class);
+		$GLOBALS['LANG'] = $languageService->reveal();
+		$languageService->sL(Argument::cetera())->willReturnArgument(0);
+
+		$input = [
+			'tableName' => 'aTable',
+			'databaseRow' => [
+				'aField' => 'b,,c',
+			],
+			'processedTca' => [
+				'columns' => [
+					'aField' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => 999,
+							'items' => [
+								['a', '', NULL, NULL],
+								['b', 'b', NULL, NULL],
+								['c', 'c', NULL, NULL],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = [
+			'b',
+			'c',
 		];
 
 		$this->assertEquals($expected, $this->subject->addData($input));
