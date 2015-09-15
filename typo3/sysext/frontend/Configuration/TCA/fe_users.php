@@ -46,6 +46,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:fe_users.usergroup',
 			'config' => array(
 				'type' => 'select',
+				'renterType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'fe_groups',
 				'foreign_table_where' => 'ORDER BY fe_groups.title',
 				'enableMultiSelectFilterTextfield' => TRUE,

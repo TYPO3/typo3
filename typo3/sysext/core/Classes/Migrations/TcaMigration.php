@@ -48,6 +48,7 @@ class TcaMigration {
 		$tca = $this->migrateExtAndSysextPathToEXTPath($tca);
 		$tca = $this->migrateIconsInOptionTags($tca);
 		$tca = $this->migrateIconfileRelativePathOrFilenameOnlyToExtReference($tca);
+		$tca = $this->migrateSelectFieldRenderType($tca);
 		// @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
 		return $tca;
 	}
@@ -495,4 +496,64 @@ class TcaMigration {
 		return $tca;
 	}
 
+	/**
+	 * Migrate "type=select" with "renderMode=[tree|singlebox|checkbox]" to "renderType=[selectTree|selectSingleBox|selectCheckBox]".
+	 * This migration also take care of "maxitems" settings and set "renderType=[selectSingle|selectMultipleSideBySide]" if no other
+	 * renderType is already set.
+	 *
+	 * @param array $tca
+	 * @return array
+	 */
+	public function migrateSelectFieldRenderType(array $tca) {
+		$newTca = $tca;
+
+		foreach ($newTca as $table => &$tableDefinition) {
+
+			if (empty($tableDefinition['columns'])) {
+				continue;
+			}
+
+			foreach ($tableDefinition['columns'] as $columnName => &$columnDefinition) {
+				// Only handle select fields.
+				if (empty($columnDefinition['config']['type']) || $columnDefinition['config']['type'] !== 'select') {
+					continue;
+				}
+				// Do not handle field where the render type is set.
+				if (!empty($columnDefinition['config']['renderType'])) {
+					continue;
+				}
+
+				$tableColumnInfo = 'table "' . $table . '" and column "' . $columnName . '"';
+				$this->messages[] = 'Using select fields without the "renderType" setting is deprecated in ' . $tableColumnInfo;
+
+				$columnConfig = &$columnDefinition['config'];
+				if (!empty($columnConfig['renderMode'])) {
+					$this->messages[] = 'The "renderMode" setting for select fields is deprecated. Please use "renderType" instead in ' . $tableColumnInfo;
+					switch ($columnConfig['renderMode']) {
+						case 'tree':
+							$columnConfig['renderType'] = 'selectTree';
+							break;
+						case 'singlebox':
+							$columnConfig['renderType'] = 'selectSingleBox';
+							break;
+						case 'checkbox':
+							$columnConfig['renderType'] = 'selectCheckBox';
+							break;
+						default:
+							$this->messages[] = 'The render mode ' . $columnConfig['renderMode'] . ' is invalid for the select field in ' . $tableColumnInfo;
+					}
+					continue;
+				}
+
+				$maxItems = !empty($columnConfig['maxitems']) ? (int)$columnConfig['maxitems'] : 1;
+				if ($maxItems <= 1) {
+					$columnConfig['renderType'] = 'selectSingle';
+				} else {
+					$columnConfig['renderType'] = 'selectMultipleSideBySide';
+				}
+			}
+		}
+
+		return $newTca;
+	}
 }

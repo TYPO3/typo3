@@ -43,6 +43,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.language_isocode',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'size' => 1,
 				'minitems' => 0,
 				'maxitems' => 1,
@@ -56,6 +57,7 @@ return array(
 			'displayCond' => 'EXT:static_info_tables:LOADED:true',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0)
 				),
@@ -70,6 +72,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_language.flag',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0, ''),
 					array('multiple', 'multiple', 'flags-multiple'),

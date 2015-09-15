@@ -169,6 +169,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => $GLOBALS['TCA']['pages']['columns']['urltype']['config']['items'],
 				'default' => '1'
 			)
@@ -195,6 +196,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.shortcut_mode',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => $GLOBALS['TCA']['pages']['columns']['shortcut_mode']['config']['items'],
 				'default' => '0'
 			)
@@ -203,6 +205,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(), // no default language here, as the pages table is always the default language

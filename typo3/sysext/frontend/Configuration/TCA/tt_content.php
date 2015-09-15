@@ -57,6 +57,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.standard',
@@ -178,6 +179,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.fe_group',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectMultipleSideBySide',
 				'size' => 5,
 				'maxitems' => 20,
 				'items' => array(
@@ -204,6 +206,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
@@ -225,6 +228,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'',
@@ -241,6 +245,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.layout',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
@@ -267,6 +272,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:colPos',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'itemsProcFunc' => \TYPO3\CMS\Backend\View\BackendLayoutView::class . '->colPosListItemProcFunc',
 				'items' => array(
 					array(
@@ -349,6 +355,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.type',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
@@ -508,6 +515,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imageorient.I.0',
@@ -597,6 +605,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecols',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'1',
@@ -638,6 +647,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:cols',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:cols.I.0',
@@ -705,6 +715,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.recursive',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:recursive.I.0',
@@ -738,6 +749,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:menu_type',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:menu_type.I.0',
@@ -791,6 +803,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:list_type',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array(
 						'',
@@ -850,6 +863,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting.none', ''),
 					array('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:filelink_sorting.extension', 'extension'),
@@ -868,6 +882,7 @@ return array(
 				'wizards' => array(
 					'target_picker' => array(
 						'type' => 'select',
+						'renderType' => 'selectSingle',
 						'mode' => '',
 						'items' => array(
 							array('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', '_blank')
@@ -1003,12 +1018,12 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:selected_categories',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectTree',
 				'foreign_table' => 'sys_category',
 				'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) ORDER BY sys_category.title ASC',
 				'size' => 10,
 				'autoSizeMax' => 50,
 				'maxitems' => 9999,
-				'renderMode' => 'tree',
 				'treeConfig' => array(
 					'parentField' => 'parent',
 					'appearance' => array(
@@ -1022,6 +1037,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:category_field',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'size' => 1,
 				'minitems' => 0,
 				'maxitems' => 1,
@@ -1041,6 +1057,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.124', 124),
 					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_delimiter.59', 59),
@@ -1056,6 +1073,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure.0', 0),
 					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_enclosure.39', 39),
@@ -1069,6 +1087,7 @@ return array(
 			'label' => 'LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position.0', 0),
 					array('LLL:EXT:frontend/Resources/Private/Language/Database.xlf:tt_content.table_header_position.1', 1),

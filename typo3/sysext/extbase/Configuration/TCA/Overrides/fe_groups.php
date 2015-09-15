@@ -12,6 +12,7 @@ if (!isset($GLOBALS['TCA']['fe_groups']['ctrl']['type'])) {
 				'label' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_groups.tx_extbase_type',
 				'config' => array(
 					'type' => 'select',
+					'renderType' => 'selectSingle',
 					'items' => array(
 						array('LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_groups.tx_extbase_type.0', '0'),
 						array('LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:fe_groups.tx_extbase_type.Tx_Extbase_Domain_Model_FrontendUserGroup', 'Tx_Extbase_Domain_Model_FrontendUserGroup')

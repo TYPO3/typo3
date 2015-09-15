@@ -39,6 +39,7 @@ return array(
 			'config' => array(
 				'readOnly' => 1,
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0)
 				),
@@ -74,6 +75,7 @@ return array(
 			'config' => array(
 				'readOnly' => 1,
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'size' => '1',
 				'items' => array(
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.unknown', 0),

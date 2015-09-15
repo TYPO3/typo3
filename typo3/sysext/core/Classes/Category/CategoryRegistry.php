@@ -386,6 +386,7 @@ class CategoryRegistry implements SingletonInterface {
 		// Forges a new field, default name is "categories"
 		$fieldConfiguration = array(
 			'type' => 'select',
+			'renderType' => 'selectTree',
 			'foreign_table' => 'sys_category',
 			'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.sorting ASC',
 			'MM' => 'sys_category_record_mm',
@@ -397,7 +398,6 @@ class CategoryRegistry implements SingletonInterface {
 			'size' => 10,
 			'autoSizeMax' => 50,
 			'maxitems' => 9999,
-			'renderMode' => 'tree',
 			'treeConfig' => array(
 				'parentField' => 'parent',
 				'appearance' => array(

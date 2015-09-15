@@ -62,6 +62,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.usergroup',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'be_groups',
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
@@ -146,6 +147,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.options_file_mounts',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectMultipleSideBySide',
 				'foreign_table' => 'sys_filemounts',
 				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 				'size' => '3',
@@ -244,6 +246,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_groups.fileoper_perms',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectCheckBox',
 				'items' => array(
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder', '--div--', 'apps-filetree-folder-default'),
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.folder_read', 'readFolder', 'apps-filetree-folder-default'),
@@ -265,7 +268,6 @@ return array(
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.fileoper_perms_unzip', 'unzipFile', 'mimetypes-other-other'),
 					array('LLL:EXT:lang/locallang_tca.xlf:be_groups.file_permissions.files_delete', 'deleteFile', 'mimetypes-other-other')
 				),
-				'renderMode' => 'checkbox',
 				'size' => 17,
 				'maxitems' => 17,
 				'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,files_copy,deleteFile'
@@ -306,6 +308,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:be_users.lang',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('English', '')
 				)
@@ -315,20 +318,20 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:userMods',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectCheckBox',
 				'special' => 'modListUser',
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => '100',
-				'renderMode' => 'checkbox',
 			)
 		),
 		'allowed_languages' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:allowed_languages',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectCheckBox',
 				'special' => 'languages',
 				'maxitems' => '1000',
-				'renderMode' => 'checkbox'
 			)
 		),
 		'TSconfig' => array(
@@ -360,9 +363,9 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:category_perms',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectTree',
 				'foreign_table' => 'sys_category',
 				'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
-				'renderMode' => 'tree',
 				'treeConfig' => array(
 					'parentField' => 'parent',
 					'appearance' => array(

@@ -26,6 +26,7 @@ $extraContentColumns = array(
 		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:imagecaption_position',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
@@ -76,6 +77,7 @@ $extraContentColumns = array(
 		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_frames.I.0',

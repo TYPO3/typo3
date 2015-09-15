@@ -279,14 +279,8 @@ class NodeFactoryTest extends UnitTestCase {
 	 */
 	public function createReturnsInstanceOfSelectTreeElementIfNeeded() {
 		$data = array(
-			'renderType' => 'select',
-			'parameterArray' => array(
-				'fieldConf' => array(
-					'config' => array(
-						'renderMode' => 'tree',
-					),
-				),
-			),
+			'type' => 'select',
+			'renderType' => 'selectTree',
 		);
 		$subject = new NodeFactory();
 		$this->assertInstanceOf(Element\SelectTreeElement::class, $subject->create($data));
@@ -297,7 +291,8 @@ class NodeFactoryTest extends UnitTestCase {
 	 */
 	public function createReturnsInstanceOfSelectSingleElementIfNeeded() {
 		$data = array(
-			'renderType' => 'select',
+			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'parameterArray' => array(
 				'fieldConf' => array(
 					'config' => array(
@@ -308,100 +303,6 @@ class NodeFactoryTest extends UnitTestCase {
 		);
 		$subject = new NodeFactory();
 		$this->assertInstanceOf(Element\SelectSingleElement::class, $subject->create($data));
-	}
-
-	/**
-	 * @test
-	 */
-	public function createReturnsInstanceOfSelectSingleElementIfSelectboxIsConfiguredButMaxitemsIsOne() {
-		$data = array(
-			'renderType' => 'select',
-			'parameterArray' => array(
-				'fieldConf' => array(
-					'config' => array(
-						'renderMode' => 'singlebox',
-						'maxitems' => 1,
-					),
-				),
-			),
-		);
-		$subject = new NodeFactory();
-		$this->assertInstanceOf(Element\SelectSingleElement::class, $subject->create($data));
-	}
-
-	/**
-	 * @test
-	 */
-	public function createReturnsInstanceOfSelectSingleElementIfCheckboxIsConfiguredButMaxitemsIsOne() {
-		$data = array(
-			'renderType' => 'select',
-			'parameterArray' => array(
-				'fieldConf' => array(
-					'config' => array(
-						'renderMode' => 'checkbox',
-						'maxitems' => 1,
-					),
-				),
-			),
-		);
-		$subject = new NodeFactory();
-		$this->assertInstanceOf(Element\SelectSingleElement::class, $subject->create($data));
-	}
-
-	/**
-	 * @test
-	 */
-	public function createReturnsInstanceOfSelectSingleBoxElementIfNeeded() {
-		$data = array(
-			'renderType' => 'select',
-			'parameterArray' => array(
-				'fieldConf' => array(
-					'config' => array(
-						'renderMode' => 'singlebox',
-						'maxitems' => 2,
-					),
-				),
-			),
-		);
-		$subject = new NodeFactory();
-		$this->assertInstanceOf(Element\SelectSingleBoxElement::class, $subject->create($data));
-	}
-
-	/**
-	 * @test
-	 */
-	public function createReturnsInstanceOfSelectCheckBoxElementIfNeeded() {
-		$data = array(
-			'renderType' => 'select',
-			'parameterArray' => array(
-				'fieldConf' => array(
-					'config' => array(
-						'renderMode' => 'checkbox',
-						'maxitems' => 2,
-					),
-				),
-			),
-		);
-		$subject = new NodeFactory();
-		$this->assertInstanceOf(Element\SelectCheckBoxElement::class, $subject->create($data));
-	}
-
-	/**
-	 * @test
-	 */
-	public function createReturnsInstanceOfSelectMultipleSideBySideElementIfNeeded() {
-		$data = array(
-			'renderType' => 'select',
-			'parameterArray' => array(
-				'fieldConf' => array(
-					'config' => array(
-						'maxitems' => 2,
-					),
-				),
-			),
-		);
-		$subject = new NodeFactory();
-		$this->assertInstanceOf(Element\SelectMultipleSideBySideElement::class, $subject->create($data));
 	}
 
 	/**

@@ -49,6 +49,7 @@ if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::i
 		),
 		'rteCleanPasteBehaviour' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_js.xlf:rteCleanPasteBehaviour',
 			'items' => array(
 				'plainText' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/Plugins/PlainText/locallang_js.xlf:plainText',

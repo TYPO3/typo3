@@ -88,12 +88,12 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:file_mountpoints',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectCheckBox',
 				'foreign_table' => 'sys_filemounts',
 				'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
 				'size' => '3',
 				'maxitems' => 25,
 				'autoSizeMax' => 10,
-				'renderMode' => 'checkbox',
 			)
 		),
 		'publish_time' => array(
@@ -138,6 +138,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.swap_modes',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0),
 					array('Swap-Into-Workspace on Auto-publish', 1),
@@ -159,6 +160,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_workspace.stagechg_notification',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0),
 					array('Notify users on next stage only', 1),
@@ -184,6 +186,7 @@ return array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.edit_notification_mode',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),
@@ -240,6 +243,7 @@ return array(
 			'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.publish_notification_mode',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.0', 0),
 					array('LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace.notification_mode.1', 1),

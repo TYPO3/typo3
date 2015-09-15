@@ -106,6 +106,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.driver',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(),
 				'default' => 'Local',
 				'onChange' => 'reload'

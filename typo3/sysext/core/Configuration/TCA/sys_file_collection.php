@@ -45,6 +45,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
@@ -60,6 +61,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0)
 				),
@@ -113,6 +115,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.0', 'static'),
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.type.1', 'folder'),
@@ -139,6 +142,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.storage',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(
 					array('', 0)
 				),
@@ -154,6 +158,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_collection.folder',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => array(),
 				'itemsProcFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php:TYPO3\CMS\Core\Resource\Service\UserFileMountService->renderTceformsSelectDropdown',
 			)
@@ -173,7 +178,7 @@ return array(
 				'minitems' => 0,
 				'maxitems' => 1,
 				'type' => 'select',
-				'renderMode' => 'tree',
+				'renderType' => 'selectTree',
 				'foreign_table' => 'sys_category',
 				'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
 				'treeConfig' => array(

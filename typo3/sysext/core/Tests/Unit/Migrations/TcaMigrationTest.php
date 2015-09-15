@@ -474,6 +474,7 @@ class TcaMigrationTest extends UnitTestCase {
 					'foo' => array(
 						'config' => array(
 							'type' => 'select',
+							'renderType' => 'selectSingle',
 							'items' => array(
 								array('foo', 0, 'EXT:myext/foo/bar.gif'),
 								array('bar', 1, 'EXT:myext/foo/bar.gif'),
@@ -513,6 +514,7 @@ class TcaMigrationTest extends UnitTestCase {
 					'foo' => array(
 						'config' => array(
 							'type' => 'select',
+							'renderType' => 'selectSingle',
 							'items' => array(
 								array('foo', 0, 'EXT:t3skin/icons/gfx/i/tt_content.gif'),
 							),
@@ -548,6 +550,7 @@ class TcaMigrationTest extends UnitTestCase {
 					'foo' => array(
 						'config' => array(
 							'type' => 'select',
+							'renderType' => 'selectSingle',
 						),
 					),
 				),
@@ -619,6 +622,192 @@ class TcaMigrationTest extends UnitTestCase {
 								'iconfile' => 'EXT:myExt/iconfile.gif',
 						],
 				],
+		];
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function migrateSelectFieldRenderType() {
+		$input = [
+			'aTable-do-not-migrate-because-renderType-is-set' => [
+				'columns' => [
+					'a-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderType' => 'fooBar'
+						]
+					]
+				],
+			],
+			'aTable-do-migrate-because-renderType-is-not-set' => [
+				'columns' => [
+					'a-tree-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'tree'
+						]
+					],
+					'a-singlebox-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'singlebox'
+						]
+					],
+					'a-checkbox-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'checkbox'
+						]
+					],
+					'an-unknown-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'unknown'
+						]
+					],
+					'a-maxitems-column-not-set' => [
+						'config' => [
+							'type' => 'select',
+						]
+					],
+					'a-maxitems-column-0' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => '0'
+						]
+					],
+					'a-maxitems-column-1' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => '1'
+						]
+					],
+					'a-maxitems-column-2' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => '2'
+						]
+					],
+					'a-tree-column-with-maxitems' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'tree',
+							'maxitems' => '1'
+						]
+					],
+					'a-singlebox-column-with-maxitems' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'singlebox',
+							'maxitems' => '1'
+						]
+					],
+					'a-checkbox-column-with-maxitems' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'checkbox',
+							'maxitems' => '1'
+						]
+					],
+				],
+			],
+		];
+		$expected = [
+			'aTable-do-not-migrate-because-renderType-is-set' => [
+				'columns' => [
+					'a-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderType' => 'fooBar'
+						]
+					]
+				],
+			],
+			'aTable-do-migrate-because-renderType-is-not-set' => [
+				'columns' => [
+					'a-tree-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'tree',
+							'renderType' => 'selectTree'
+						]
+					],
+					'a-singlebox-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'singlebox',
+							'renderType' => 'selectSingleBox'
+						]
+					],
+					'a-checkbox-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'checkbox',
+							'renderType' => 'selectCheckBox'
+						]
+					],
+					'an-unknown-column' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'unknown'
+						]
+					],
+					'a-maxitems-column-not-set' => [
+						'config' => [
+							'type' => 'select',
+							'renderType' => 'selectSingle'
+						]
+					],
+					'a-maxitems-column-0' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => '0',
+							'renderType' => 'selectSingle'
+						]
+					],
+					'a-maxitems-column-1' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => '1',
+							'renderType' => 'selectSingle'
+						]
+					],
+					'a-maxitems-column-2' => [
+						'config' => [
+							'type' => 'select',
+							'maxitems' => '2',
+							'renderType' => 'selectMultipleSideBySide'
+						]
+					],
+					'a-tree-column-with-maxitems' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'tree',
+							'renderType' => 'selectTree',
+							'maxitems' => '1'
+						]
+					],
+					'a-singlebox-column-with-maxitems' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'singlebox',
+							'renderType' => 'selectSingleBox',
+							'maxitems' => '1'
+						]
+					],
+					'a-checkbox-column-with-maxitems' => [
+						'config' => [
+							'type' => 'select',
+							'renderMode' => 'checkbox',
+							'renderType' => 'selectCheckBox',
+							'maxitems' => '1'
+						]
+					],
+				],
+			],
 		];
 		$subject = new TcaMigration();
 		$this->assertEquals($expected, $subject->migrate($input));

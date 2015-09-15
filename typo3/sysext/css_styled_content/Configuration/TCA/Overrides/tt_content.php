@@ -8,6 +8,7 @@ $extraContentColumns = array(
 		'exclude' => TRUE,
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
@@ -34,6 +35,7 @@ $extraContentColumns = array(
 		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_compression',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',
@@ -123,6 +125,7 @@ $extraContentColumns = array(
 		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_effects',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_effects.I.0',
@@ -184,6 +187,7 @@ $extraContentColumns = array(
 		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:section_frame',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'',
@@ -258,6 +262,7 @@ $extraContentColumns = array(
 		'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:table_bgColor',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array(
 					'LLL:EXT:lang/locallang_general.xlf:LGL.default_value',

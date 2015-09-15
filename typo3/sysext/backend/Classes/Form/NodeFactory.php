@@ -96,23 +96,6 @@ class NodeFactory {
 		}
 		$type = $data['renderType'];
 
-		if ($type === 'select') {
-			$config = $data['parameterArray']['fieldConf']['config'];
-			$maxItems = (int)$config['maxitems'];
-			if (isset($config['renderMode']) && $config['renderMode'] === 'tree') {
-				$type = 'selectTree';
-			} elseif ($maxItems <= 1) {
-				$type = 'selectSingle';
-			} elseif (isset($config['renderMode']) && $config['renderMode'] === 'singlebox') {
-				$type = 'selectSingleBox';
-			} elseif (isset($config['renderMode']) && $config['renderMode'] === 'checkbox') {
-				$type = 'selectCheckBox';
-			} else {
-				// @todo: This "catch all" else should be removed to allow registration of own renderTypes for type=select
-				$type = 'selectMultipleSideBySide';
-			}
-		}
-
 		$className = isset($this->nodeTypes[$type]) ? $this->nodeTypes[$type] : $this->nodeTypes['unknown'];
 
 		if (!empty($this->nodeResolver[$type])) {

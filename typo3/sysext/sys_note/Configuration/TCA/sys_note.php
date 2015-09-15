@@ -22,6 +22,7 @@ return array(
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.category',
 			'config' => array(
 				'type' => 'select',
+					'renderType' => 'selectSingle',
 				'items' => array(
 					array('', '0', 'sysnote-type-0'),
 					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', '1', 'sysnote-type-1'),

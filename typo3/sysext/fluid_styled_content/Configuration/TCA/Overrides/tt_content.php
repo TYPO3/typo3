@@ -84,6 +84,7 @@ call_user_func(function() {
 			'label' => $languageFilePrefix . 'tt_content.bullets_type',
 			'config' => [
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => [
 					[$languageFilePrefix . 'tt_content.bullets_type.0', 0],
 					[$languageFilePrefix . 'tt_content.bullets_type.1', 1],
@@ -108,6 +109,7 @@ call_user_func(function() {
 			'label' => $languageFilePrefix . 'tt_content.uploads_type',
 			'config' => [
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'items' => [
 					[$languageFilePrefix . 'tt_content.uploads_type.0', 0],
 					[$languageFilePrefix . 'tt_content.uploads_type.1', 1],
