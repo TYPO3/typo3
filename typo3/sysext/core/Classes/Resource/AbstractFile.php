@@ -490,9 +490,8 @@ abstract class AbstractFile implements FileInterface {
 	 * WARNING: Access to the file may be restricted by further means, e.g. some
 	 * web-based authentication. You have to take care of this yourself.
 	 *
-	 * @param bool  $relativeToCurrentScript   Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
-	 *
-	 * @return null|string
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all (only for the LocalDriver)
+	 * @return NULL|string NULL if file is deleted, the generated URL otherwise
 	 */
 	public function getPublicUrl($relativeToCurrentScript = FALSE) {
 		if ($this->deleted) {

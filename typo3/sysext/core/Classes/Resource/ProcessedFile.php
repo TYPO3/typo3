@@ -520,4 +520,19 @@ class ProcessedFile extends AbstractFile {
 		return $name;
 	}
 
+	/**
+	 * Returns a publicly accessible URL for this file
+	 *
+	 * @param bool $relativeToCurrentScript Determines whether the URL returned should be relative to the current script, in case it is relative at all
+	 * @return NULL|string NULL if file is deleted, the generated URL otherwise
+	 */
+	public function getPublicUrl($relativeToCurrentScript = FALSE) {
+		if ($this->deleted) {
+			return NULL;
+		} elseif ($this->usesOriginalFile()) {
+			return $this->getOriginalFile()->getPublicUrl($relativeToCurrentScript);
+		} else {
+			return $this->getStorage()->getPublicUrl($this, $relativeToCurrentScript);
+		}
+	}
 }
