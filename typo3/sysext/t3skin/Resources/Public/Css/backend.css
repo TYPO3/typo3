@@ -13870,6 +13870,10 @@ div.typo3-module-lang div.progress-bar {
   margin-left: 6px;
   display: block;
 }
+.col-icon img {
+  max-width: 28px;
+  max-height: 28px;
+}
 .workspace-info {
   padding: 7px;
 }
