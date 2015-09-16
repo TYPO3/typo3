@@ -153,41 +153,6 @@ class FormEngineUtility {
 	}
 
 	/**
-	 * Get icon (for example for selector boxes)
-	 *
-	 * @param string $icon Icon reference
-	 * @return array Array with two values; the icon file reference, the icon file information array (getimagesize())
-	 * @internal
-	 */
-	static public function getIcon($icon) {
-		$selIconFile = '';
-		$selIconInfo = FALSE;
-		$icon = (string)$icon;
-		if (StringUtility::beginsWith($icon, 'EXT:')) {
-			$absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
-			if (!empty($absoluteFilePath)) {
-				$selIconFile = '../' . PathUtility::stripPathSitePrefix($absoluteFilePath);
-				$selIconInfo = (StringUtility::endsWith($absoluteFilePath, '.svg'))
-					? TRUE
-					: getimagesize($absoluteFilePath);
-			}
-		} elseif (StringUtility::beginsWith($icon, '../')) {
-			// @TODO: this is special modList, files from folders and selicon
-			$selIconFile = GeneralUtility::resolveBackPath($icon);
-			if (is_file(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
-				$selIconInfo = (StringUtility::endsWith($icon, '.svg'))
-					? TRUE
-					: getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
-			}
-		}
-		if ($selIconInfo === FALSE) {
-			// Unset to empty string if icon is not available
-			$selIconFile = '';
-		}
-		return array($selIconFile, $selIconInfo);
-	}
-
-	/**
 	 * Renders the $icon, supports a filename for skinImg or sprite-icon-name
 	 *
 	 * @param string $icon The icon passed, could be a file-reference or a sprite Icon name
@@ -197,12 +162,37 @@ class FormEngineUtility {
 	 * @internal
 	 */
 	static public function getIconHtml($icon, $alt = '', $title = '') {
-		$iconArray = static::getIcon($icon);
-		if (!empty($iconArray[0]) && is_file(GeneralUtility::resolveBackPath(PATH_typo3 . $iconArray[0]))) {
-			return '<img src="' . $iconArray[0] . '" alt="' . $alt . '" ' . ($title ? 'title="' . $title . '"' : '') . ' />';
-		} else {
-			return IconUtility::getSpriteIcon($icon, array('alt' => $alt, 'title' => $title));
+		$icon = (string)$icon;
+		$iconFile = '';
+		$iconInfo = FALSE;
+
+		if (StringUtility::beginsWith($icon, 'EXT:')) {
+			$absoluteFilePath = GeneralUtility::getFileAbsFileName($icon);
+			if (!empty($absoluteFilePath)) {
+				$iconFile = '../' . PathUtility::stripPathSitePrefix($absoluteFilePath);
+				$iconInfo = (StringUtility::endsWith($absoluteFilePath, '.svg'))
+					? TRUE
+					: getimagesize($absoluteFilePath);
+			}
+		} elseif (StringUtility::beginsWith($icon, '../')) {
+			// @TODO: this is special modList, files from folders and selicon
+			$iconFile = GeneralUtility::resolveBackPath($icon);
+			if (is_file(PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3)))) {
+				$iconInfo = (StringUtility::endsWith($icon, '.svg'))
+					? TRUE
+					: getimagesize((PATH_site . GeneralUtility::resolveBackPath(substr($icon, 3))));
+			}
 		}
+
+		if ($iconInfo !== FALSE && is_file(GeneralUtility::resolveBackPath(PATH_typo3 . $iconFile))) {
+			return '<img'
+				. ' src="' . htmlspecialchars($iconFile) . '"'
+				. ' alt="' . htmlspecialchars($alt) . '" '
+				. ($title ? 'title="' . htmlspecialchars($title) . '"' : '')
+			. ' />';
+		}
+
+		return IconUtility::getSpriteIcon($icon, array('alt' => $alt, 'title' => $title));
 	}
 
 	/**
