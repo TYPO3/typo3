@@ -94,6 +94,8 @@ class SilentConfigurationUpgradeService {
 		'SYS/caching/cacheConfigurations/cache_classes',
 		// #68178
 		'SYS/form_enctype',
+		// #69904
+		'BE/diff_path',
 	);
 
 	/**

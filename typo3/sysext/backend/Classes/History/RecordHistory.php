@@ -528,7 +528,7 @@ class RecordHistory {
 				History (list):
 			-->
 
-			<table class="table table-striped table-hover" id="typo3-history">
+			<table class="table table-striped table-hover table-vertical-top" id="typo3-history">
 				' . implode('', $lines) . '
 			</table>';
 		if ($this->lastSyslogId) {
@@ -612,19 +612,18 @@ class RecordHistory {
 						BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, TRUE)
 					);
 					$lines[] = '
-						<tr class="bgColor4">
-						' . ($rollbackUid ? '<td style="width:33px">' . $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $languageService->getLL('revertField', TRUE), 2) . '</td>' : '') . '
-							<td style="width:90px"><em>' . $languageService->sl(BackendUtility::getItemLabel($table, $fN), TRUE) . '</em></td>
-							<td style="width:300px">' . nl2br($diffres) . '</td>
-						</tr>';
+						<div class="diff-item">
+							<div class="diff-item-title">
+								' . ($rollbackUid ? $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $languageService->getLL('revertField', TRUE), 2) : '') . '
+								' . $languageService->sl(BackendUtility::getItemLabel($table, $fN), TRUE) . '
+							</div>
+							<div class="diff-item-result">' . str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffres)) . '</div>
+						</div>';
 				}
 			}
 		}
 		if ($lines) {
-			$content = '<table border="0" cellpadding="2" cellspacing="2" id="typo3-history-item">
-					' . implode('', $lines) . '
-				</table>';
-			return $content;
+			return '<div class="diff">' . implode('', $lines) . '</div>';
 		}
 		// error fallback
 		return NULL;

@@ -7877,6 +7877,45 @@ button.close {
 .icon-status-dialog-warning {
   color: #e8a33d;
 }
+.diff {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+}
+.diff-item {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+.diff-item + .diff-item {
+  border-top: 1px solid #cccccc;
+}
+.diff-item-title,
+.diff-item-result {
+  padding: 10px;
+  display: table-cell;
+}
+.diff-item-title {
+  background-color: #fafafa;
+  width: 120px;
+  padding-right: 10px;
+  font-style: italic;
+}
+.diff-item-result {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  white-space: pre;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.diff-item-result del {
+  color: #c83c3c;
+  background-color: #faefef;
+  text-decoration: none;
+}
+.diff-item-result ins {
+  color: #79a548;
+  background-color: #eaf2e1;
+  text-decoration: none;
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,
@@ -9558,18 +9597,6 @@ div#contentMenu1 {
 }
 #typo3-pagetree-topPanelItems #typo3-pagetree-topPanel .x-panel-body a:hover {
   color: #000;
-}
-table#typo3-history tr.c-head td,
-table#typo3-history-item tr.c-head td {
-  font-weight: bold;
-}
-table#typo3-history tr td,
-table#typo3-history-item tr td {
-  vertical-align: top;
-}
-table#typo3-history img,
-table#typo3-history-item img {
-  margin: 1px;
 }
 ul.typo3-messages {
   padding: 0;

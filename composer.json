@@ -41,7 +41,8 @@
 		"doctrine/instantiator": "~1.0.4",
 		"helhum/class-alias-loader": "^2.0.0",
 		"typo3/cms-composer-installers": "^1.2.2",
-		"psr/http-message": "~1.0"
+		"psr/http-message": "~1.0",
+		"cogpowered/finediff": "*"
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.4.*@dev",
