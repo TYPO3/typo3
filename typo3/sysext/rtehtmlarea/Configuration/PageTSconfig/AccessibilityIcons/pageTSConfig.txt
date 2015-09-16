@@ -31,4 +31,3 @@ RTE.classesAnchor {
 		altText = LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_accessibilityicons.xlf:mail_altText
 	}
 }
-
