@@ -407,7 +407,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 *
 	 * $defOp is the default operator. 1=OR, 0=AND
 	 *
-	 * @param bool If TRUE, the default operator will be OR, not AND
+	 * @param bool $defOp If TRUE, the default operator will be OR, not AND
 	 * @return array Returns array with search words if any found
 	 */
 	public function getSearchWords($defOp) {
@@ -435,9 +435,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	/**
 	 * Post-process the search word array so it will match the words that was indexed (including case-folding if any)
-	 * If any words are splitted into multiple words (eg. CJK will be!) the operator of the main word will remain.
+	 * If any words are split into multiple words (eg. CJK will be!) the operator of the main word will remain.
 	 *
-	 * @param array Search word array
+	 * @param array $SWArr Search word array
 	 * @return array Search word array, processed through lexer
 	 */
 	public function procSearchWordsByLexer($SWArr) {
@@ -469,7 +469,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Performs the search, the display and writing stats
 	 *
-	 * @param array Search words in array, see ->getSearchWords() for details
+	 * @param array $sWArr Search words in array, see ->getSearchWords() for details
 	 * @return string HTML for result display.
 	 */
 	public function doSearch($sWArr) {
@@ -518,7 +518,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Get search result rows / data from database. Returned as data in array.
 	 *
 	 * @param array $searchWordArray Search word array
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return array False if no result, otherwise an array with keys for first row, result rows and total number of results found.
 	 */
 	public function getResultRows($searchWordArray, $freeIndexUid = -1) {
@@ -623,9 +623,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Gets a SQL result pointer to traverse for the search records.
 	 *
-	 * @param array Search words
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
-	 * @return 	pointer
+	 * @param array $sWArr Search words
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @return bool|\mysqli_result Query result pointer
 	 */
 	public function getResultRows_SQLpointer($sWArr, $freeIndexUid = -1) {
 		// This SEARCHES for the searchwords in $sWArr AND returns a COMPLETE list of phash-integers of the matches.
@@ -645,12 +645,13 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Compiles the HTML display of the incoming array of result rows.
 	 *
-	 * @param array Search words array (for display of text describing what was searched for)
-	 * @param array Array with result rows, count, first row.
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param array $sWArr Search words array (for display of text describing what was searched for)
+	 * @param array $resData Array with result rows, count, first row.
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return string HTML content to display result.
 	 */
 	public function getDisplayResults($sWArr, $resData, $freeIndexUid = -1) {
+		$content = '';
 		// Perform display of result rows array:
 		if ($resData) {
 			$GLOBALS['TT']->push('Display Final result');
@@ -668,9 +669,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$addString = $resData['count'] && $this->piVars['group'] == 'sections' && $freeIndexUid <= 0 ? ' ' . sprintf($this->pi_getLL(($resultSectionsCount > 1 ? 'inNsections' : 'inNsection')), $resultSectionsCount) : '';
 				$browseBox1 = $this->pi_list_browseresults(1, $addString, $this->printResultSectionLinks(), $freeIndexUid);
 				$browseBox2 = $this->pi_list_browseresults(0, '', '', $freeIndexUid);
-			}
-			// Browsing nav, bottom.
-			if ($resData['count']) {
+				// Browsing nav, bottom.
 				$content = $browseBox1 . $rowcontent . $browseBox2;
 			} else {
 				$content = '<p' . $this->pi_classParam('noresults') . '>' . $this->pi_getLL('noResults', '', TRUE) . '</p>';
@@ -691,8 +690,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Takes the array with resultrows as input and returns the result-HTML-code
 	 * Takes the "group" var into account: Makes a "section" or "flat" display.
 	 *
-	 * @param array Result rows
-	 * @param int Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
+	 * @param array $resultRows Result rows
+	 * @param int $freeIndexUid Pointer to which indexing configuration you want to search in. -1 means no filtering. 0 means only regular indexed content.
 	 * @return string HTML
 	 */
 	public function compileResult($resultRows, $freeIndexUid = -1) {
@@ -786,7 +785,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns a COMPLETE list of phash-integers matching the search-result composed of the search-words in the sWArr array.
 	 * The list of phash integers are unsorted and should be used for subsequent selection of index_phash records for display of the result.
 	 *
-	 * @param array Search word array
+	 * @param array $sWArr Search word array
 	 * @return string List of integers
 	 */
 	public function getPhashList($sWArr) {
@@ -1022,49 +1021,52 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string AND statement for selection of language
 	 */
 	public function languageWhere() {
+		$languageWhere = '';
 		if ($this->piVars['lang'] >= 0) {
 			// -1 is the same as ALL language.
-			return 'AND IP.sys_language_uid=' . (int)$this->piVars['lang'];
+			$languageWhere = 'AND IP.sys_language_uid=' . (int)$this->piVars['lang'];
 		}
+		return $languageWhere;
 	}
 
 	/**
 	 * Where-clause for free index-uid value.
 	 *
-	 * @param int Free Index UID value to limit search to.
+	 * @param int $freeIndexUid Free Index UID value to limit search to.
 	 * @return string WHERE SQL clause part.
 	 */
 	public function freeIndexUidWhere($freeIndexUid) {
-		if ($freeIndexUid >= 0) {
-			// First, look if the freeIndexUid is a meta configuration:
-			$indexCfgRec = $this->databaseConnection->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . (int)$freeIndexUid . $this->cObj->enableFields('index_config'));
-			if (is_array($indexCfgRec)) {
-				$refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
-				$list = array(-99);
-				// Default value to protect against empty array.
-				foreach ($refs as $ref) {
-					list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
-					switch ($table) {
-						case 'index_config':
-							$idxRec = $this->databaseConnection->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . (int)$uid . $this->cObj->enableFields('index_config'));
-							if ($idxRec) {
-								$list[] = $uid;
-							}
-							break;
-						case 'pages':
-							$indexCfgRecordsFromPid = $this->databaseConnection->exec_SELECTgetRows('uid', 'index_config', 'pid=' . (int)$uid . $this->cObj->enableFields('index_config'));
-							foreach ($indexCfgRecordsFromPid as $idxRec) {
-								$list[] = $idxRec['uid'];
-							}
-							break;
-					}
-				}
-				$list = array_unique($list);
-			} else {
-				$list = array((int)$freeIndexUid);
-			}
-			return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
+		if ($freeIndexUid < 0) {
+			return '';
 		}
+		// First, look if the freeIndexUid is a meta configuration:
+		$indexCfgRec = $this->databaseConnection->exec_SELECTgetSingleRow('indexcfgs', 'index_config', 'type=5 AND uid=' . (int)$freeIndexUid . $this->cObj->enableFields('index_config'));
+		if (is_array($indexCfgRec)) {
+			$refs = GeneralUtility::trimExplode(',', $indexCfgRec['indexcfgs']);
+			$list = array(-99);
+			// Default value to protect against empty array.
+			foreach ($refs as $ref) {
+				list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
+				switch ($table) {
+					case 'index_config':
+						$idxRec = $this->databaseConnection->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . (int)$uid . $this->cObj->enableFields('index_config'));
+						if ($idxRec) {
+							$list[] = $uid;
+						}
+						break;
+					case 'pages':
+						$indexCfgRecordsFromPid = $this->databaseConnection->exec_SELECTgetRows('uid', 'index_config', 'pid=' . (int)$uid . $this->cObj->enableFields('index_config'));
+						foreach ($indexCfgRecordsFromPid as $idxRec) {
+							$list[] = $idxRec['uid'];
+						}
+						break;
+				}
+			}
+			$list = array_unique($list);
+		} else {
+			$list = array((int)$freeIndexUid);
+		}
+		return ' AND IP.freeIndexUid IN (' . implode(',', $list) . ')';
 	}
 
 	/**
@@ -1173,7 +1175,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Checking if the resume can be shown for the search result (depending on whether the rights are OK)
 	 * ? Should it also check for gr_list "0,-1"?
 	 *
-	 * @param array Result row array.
+	 * @param array $row Result row array.
 	 * @return bool Returns TRUE if resume can safely be shown
 	 */
 	public function checkResume($row) {
@@ -1224,7 +1226,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Check if the record is still available or if it has been deleted meanwhile.
 	 * Currently this works for files only, since extending it to page content would cause a lot of overhead.
 	 *
-	 * @param array Result row array
+	 * @param array $row Result row array
 	 * @return bool Returns TRUE if record is still available
 	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
@@ -1237,7 +1239,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Check if the record is still available or if it has been deleted meanwhile.
 	 * Currently this works for files only, since extending it to page content would cause a lot of overhead.
 	 *
-	 * @param array Result row array
+	 * @param array $row Result row array
 	 * @return bool Returns TRUE if record is still available
 	 */
 	protected function checkExistence($row) {
@@ -1255,7 +1257,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns "DESC" or "" depending on the settings of the incoming highest/lowest result order (piVars['desc']
 	 *
-	 * @param bool If TRUE, inverse the order which is defined by piVars['desc']
+	 * @param bool $inverse If TRUE, inverse the order which is defined by piVars['desc']
 	 * @return string " DESC" or
 	 */
 	public function isDescending($inverse = FALSE) {
@@ -1269,18 +1271,18 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Write statistics information to database for the search operation
 	 *
-	 * @param array Search Word array
-	 * @param int Number of hits
-	 * @param int Milliseconds the search took
+	 * @param array $sWArr Search Word array
+	 * @param int $count Number of hits
+	 * @param int $pt Milliseconds the search took
 	 * @return void
 	 */
 	public function writeSearchStat($sWArr, $count, $pt) {
 		$insertFields = array(
 			'searchstring' => $this->piVars['sword'],
 			'searchoptions' => serialize(array($this->piVars, $sWArr, $pt)),
-			'feuser_id' => (int)$this->fe_user->user['uid'],
+			'feuser_id' => (int)$GLOBALS['TSFE']->user['uid'],
 			// fe_user id, integer
-			'cookie' => (string)$this->fe_user->id,
+			'cookie' => (string)$GLOBALS['TSFE']->id,
 			// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
 			'IP' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
 			// Remote IP address
@@ -1312,7 +1314,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Make search form HTML
 	 *
-	 * @param array Value/Labels pairs for search form selector boxes.
+	 * @param array $optValues Value/Labels pairs for search form selector boxes.
 	 * @return string Search form HTML
 	 */
 	public function makeSearchForm($optValues) {
@@ -1439,23 +1441,24 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Function, rendering selector box values.
 	 *
-	 * @param string Current value
-	 * @param array Array with the options as key=>value pairs
+	 * @param string $value Current value
+	 * @param array $optValues Array with the options as key=>value pairs
 	 * @return string <options> imploded.
 	 */
 	public function renderSelectBoxValues($value, $optValues) {
-		if (is_array($optValues)) {
-			$opt = array();
-			$isSelFlag = 0;
-			foreach ($optValues as $k => $v) {
-				$sel = (string)$k === (string)$value ? ' selected="selected"' : '';
-				if ($sel) {
-					$isSelFlag++;
-				}
-				$opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
-			}
-			return implode('', $opt);
+		if (!is_array($optValues)) {
+			return '';
 		}
+		$opt = array();
+		$isSelFlag = 0;
+		foreach ($optValues as $k => $v) {
+			$sel = (string)$k === (string)$value ? ' selected="selected"' : '';
+			if ($sel) {
+				$isSelFlag++;
+			}
+			$opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
+		}
+		return implode('', $opt);
 	}
 
 	/**
@@ -1464,45 +1467,47 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return string Rules for the search
 	 */
 	public function printRules() {
-		if ($this->conf['show.']['rules']) {
-			$html = $this->cObj->getSubpart($this->templateCode, '###RULES###');
-			$markerArray['###RULES_HEADER###'] = $this->pi_getLL('rules_header', '', TRUE);
-			$markerArray['###RULES_TEXT###'] = nl2br(trim($this->pi_getLL('rules_text', '', TRUE)));
-			$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
-			return $this->cObj->stdWrap($substitutedContent, $this->conf['rules_stdWrap.']);
+		if (!$this->conf['show.']['rules']) {
+			return '';
 		}
+		$html = $this->cObj->getSubpart($this->templateCode, '###RULES###');
+		$markerArray['###RULES_HEADER###'] = $this->pi_getLL('rules_header', '', TRUE);
+		$markerArray['###RULES_TEXT###'] = nl2br(trim($this->pi_getLL('rules_text', '', TRUE)));
+		$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
+		return $this->cObj->stdWrap($substitutedContent, $this->conf['rules_stdWrap.']);
 	}
 
 	/**
 	 * Returns the anchor-links to the sections inside the displayed result rows.
 	 *
-	 * @return 	string
+	 * @return string
 	 */
 	public function printResultSectionLinks() {
-		if (!empty($this->resultSections)) {
-			$lines = array();
-			$html = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS###');
-			$item = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS_LINK###');
-			$anchorPrefix = $GLOBALS['TSFE']->baseUrl ? substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) : '';
-			foreach ($this->resultSections as $id => $dat) {
-				$markerArray = array();
-				$aBegin = '<a href="' . htmlspecialchars($anchorPrefix . '#anchor_' . md5($id)) . '">';
-				$aContent = htmlspecialchars((trim($dat[0]) ? trim($dat[0]) : $this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', TRUE) . ')';
-				$aEnd = '</a>';
-				$markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;
-				$links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
-			}
-			$html = $this->cObj->substituteMarkerArrayCached($html, array('###LINKS###' => implode('', $links)), array(), array());
-			return '<div' . $this->pi_classParam('sectionlinks') . '>' . $this->cObj->stdWrap($html, $this->conf['sectionlinks_stdWrap.']) . '</div>';
+		if (empty($this->resultSections)) {
+			return '';
 		}
+		$links = array();
+		$html = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS###');
+		$item = $this->cObj->getSubpart($this->templateCode, '###RESULT_SECTION_LINKS_LINK###');
+		$anchorPrefix = $GLOBALS['TSFE']->baseUrl ? substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) : '';
+		foreach ($this->resultSections as $id => $dat) {
+			$markerArray = array();
+			$aBegin = '<a href="' . htmlspecialchars($anchorPrefix . '#anchor_' . md5($id)) . '">';
+			$aContent = htmlspecialchars((trim($dat[0]) ? trim($dat[0]) : $this->pi_getLL('unnamedSection'))) . ' (' . $dat[1] . ' ' . $this->pi_getLL(($dat[1] > 1 ? 'word_pages' : 'word_page'), '', TRUE) . ')';
+			$aEnd = '</a>';
+			$markerArray['###LINK###'] = $aBegin . $aContent . $aEnd;
+			$links[] = $this->cObj->substituteMarkerArrayCached($item, $markerArray, array(), array());
+		}
+		$html = $this->cObj->substituteMarkerArrayCached($html, array('###LINKS###' => implode('', $links)), array(), array());
+		return '<div' . $this->pi_classParam('sectionlinks') . '>' . $this->cObj->stdWrap($html, $this->conf['sectionlinks_stdWrap.']) . '</div>';
 	}
 
 	/**
 	 * Returns the section header of the search result.
 	 *
-	 * @param string ID for the section (used for anchor link)
-	 * @param string Section title with linked wrapped around
-	 * @param int Number of results in section
+	 * @param string $id ID for the section (used for anchor link)
+	 * @param string $sectionTitleLinked Section title with linked wrapped around
+	 * @param int $countResultRows Number of results in section
 	 * @return string HTML output
 	 */
 	public function makeSectionHeader($id, $sectionTitleLinked, $countResultRows) {
@@ -1518,8 +1523,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * This prints a single result row, including a recursive call for subrows.
 	 *
-	 * @param array Search result row
-	 * @param int 1=Display only header (for sub-rows!), 2=nothing at all
+	 * @param array $row Search result row
+	 * @param int $headerOnly 1=Display only header (for sub-rows!), 2=nothing at all
 	 * @return string HTML code
 	 */
 	public function printResultRow($row, $headerOnly = 0) {
@@ -1648,8 +1653,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Preparing template data for the result row output
 	 *
-	 * @param array Result row
-	 * @param bool If set, display only header of result (for sub-results)
+	 * @param array $row Result row
+	 * @param bool $headerOnly If set, display only header of result (for sub-results)
 	 * @return array Array with data to insert in result row template
 	 */
 	public function prepareResultRowTemplateData($row, $headerOnly) {
@@ -1737,7 +1742,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Wraps the search words in the search-word list display (from ->tellUsWhatIsSeachedFor())
 	 *
-	 * @param string search word to wrap (in local charset!)
+	 * @param string $str search word to wrap (in local charset!)
 	 * @return string Search word wrapped in <span> tag.
 	 */
 	public function wrapSW($str) {
@@ -1747,9 +1752,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Makes a selector box
 	 *
-	 * @param string Name of selector box
-	 * @param string Current value
-	 * @param array Array of options in the selector box (value => label pairs)
+	 * @param string $name Name of selector box
+	 * @param string $value Current value
+	 * @param array $optValues Array of options in the selector box (value => label pairs)
 	 * @return string HTML of selector box
 	 */
 	public function renderSelectBox($name, $value, $optValues) {
@@ -1771,9 +1776,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Used to make the link for the result-browser.
 	 * Notice how the links must resubmit the form after setting the new pointer-value in a hidden formfield.
 	 *
-	 * @param string String to wrap in <a> tag
-	 * @param int Pointer value
-	 * @param string List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
+	 * @param string $str String to wrap in <a> tag
+	 * @param int $p Pointer value
+	 * @param string $freeIndexUid List of integers pointing to free indexing configurations to search. -1 represents no filtering, 0 represents TYPO3 pages only, any number above zero is a uid of an indexing configuration!
 	 * @return string Input string wrapped in <a> tag with onclick event attribute set.
 	 */
 	public function makePointerSelector_link($str, $p, $freeIndexUid) {
@@ -1784,9 +1789,9 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Return icon for file extension
 	 *
-	 * @param string File extension / item type
-	 * @param string Title attribute value in icon.
-	 * @param array TypoScript configuration specifically for search result.
+	 * @param string $it File extension / item type
+	 * @param string $alt Title attribute value in icon.
+	 * @param array $specRowConf TypoScript configuration specifically for search result.
 	 * @return string <img> tag for icon
 	 */
 	public function makeItemTypeIcon($it, $alt = '', $specRowConf) {
@@ -1829,7 +1834,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Return the rating-HTML code for the result row. This makes use of the $this->firstRow
 	 *
-	 * @param array Result row array
+	 * @param array $row Result row array
 	 * @return string String showing ranking value
 	 */
 	public function makeRating($row) {
@@ -1876,10 +1881,10 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the resume for the search-result.
 	 *
-	 * @param array Search result row
-	 * @param bool If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
-	 * @param int String length
-	 * @return string HTML string		...
+	 * @param array $row Search result row
+	 * @param bool $noMarkup If noMarkup is FALSE, then the index_fulltext table is used to select the content of the page, split it with regex to display the search words in the text.
+	 * @param int $lgd String length
+	 * @return string HTML string
 	 */
 	public function makeDescription($row, $noMarkup = 0, $lgd = 180) {
 		if ($row['show_resume']) {
@@ -1913,7 +1918,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Marks up the search words from $this->sWarr in the $str with a color.
 	 *
-	 * @param string Text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
+	 * @param string $str Text in which to find and mark up search words. This text is assumed to be UTF-8 like the search words internally is.
 	 * @return string Processed content.
 	 */
 	public function markupSWpartsOfString($str) {
@@ -1983,7 +1988,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the title of the search result row
 	 *
-	 * @param array Result row
+	 * @param array $row Result row
 	 * @return string Title from row
 	 */
 	public function makeTitle($row) {
@@ -2004,8 +2009,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the info-string in the bottom of the result-row display (size, dates, path)
 	 *
-	 * @param array Result row
-	 * @param array Template array to modify
+	 * @param array $row Result row
+	 * @param array $tmplArray Template array to modify
 	 * @return array Modified template array
 	 */
 	public function makeInfo($row, $tmplArray) {
@@ -2036,7 +2041,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns configuration from TypoScript for result row based on ID / location in page tree!
 	 *
-	 * @param array Result row
+	 * @param array $row Result row
 	 * @return array Configuration array
 	 */
 	public function getSpecialConfigForRow($row) {
@@ -2059,7 +2064,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the HTML code for language indication.
 	 *
-	 * @param array Result row
+	 * @param array $row Result row
 	 * @return string HTML code for result row.
 	 */
 	public function makeLanguageIndication($row) {
@@ -2078,22 +2083,24 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * Returns the HTML code for the locking symbol.
 	 * NOTICE: Requires a call to ->getPathFromPageId() first in order to work (done in ->makeInfo() by calling that first)
 	 *
-	 * @param int Page id for which to find answer
+	 * @param int $id Page id for which to find answer
 	 * @return string <img> tag if access is limited.
 	 */
 	public function makeAccessIndication($id) {
 		if (is_array($this->fe_groups_required[$id]) && !empty($this->fe_groups_required[$id])) {
 			return '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'Resources/Public/Icons/FileTypes/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', TRUE), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
 		}
+
+		return '';
 	}
 
 	/**
 	 * Links the $str to page $id
 	 *
-	 * @param int Page id
-	 * @param string Title String to link
-	 * @param array Result row
-	 * @param array Additional parameters for marking up seach words
+	 * @param int $id Page id
+	 * @param string $str Title String to link
+	 * @param array $row Result row
+	 * @param array $markUpSwParams Additional parameters for marking up seach words
 	 * @return string <A> tag wrapped title string.
 	 */
 	public function linkPage($id, $str, $row = array(), $markUpSwParams = array()) {
@@ -2136,8 +2143,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the path to the page $id
 	 *
-	 * @param int Page ID
-	 * @param string MP variable content.
+	 * @param int $id Page ID
+	 * @param string $pathMP MP variable content.
 	 * @return string Root line for result.
 	 */
 	public function getRootLine($id, $pathMP = '') {
@@ -2151,7 +2158,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Gets the first sys_domain record for the page, $id
 	 *
-	 * @param int Page id
+	 * @param int $id Page id
 	 * @return string Domain name
 	 */
 	public function getFirstSysDomainRecordForPage($id) {
@@ -2163,8 +2170,8 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns the path to the page $id
 	 *
-	 * @param int Page ID
-	 * @param string MP variable content
+	 * @param int $id Page ID
+	 * @param string $pathMP MP variable content
 	 * @return string Path
 	 */
 	public function getPathFromPageId($id, $pathMP = '') {
@@ -2209,7 +2216,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Return the menu of pages used for the selector.
 	 *
-	 * @param int Page ID for which to return menu
+	 * @param int $id Page ID for which to return menu
 	 * @return array Menu items (for making the section selector box)
 	 */
 	public function getMenu($id) {
@@ -2229,7 +2236,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/**
 	 * Returns if an item type is a multipage item type
 	 *
-	 * @param string Item type
+	 * @param string $item_type Item type
 	 * @return bool TRUE if multipage capable
 	 */
 	public function multiplePagesType($item_type) {
