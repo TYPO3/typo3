@@ -59,10 +59,11 @@ class Dispatcher implements DispatcherInterface {
 
 		// Only a class name is given
 		if (is_string($target) && strpos($target, ':') === FALSE) {
-			$target = GeneralUtility::makeInstance($target);
-			if (method_exists($target, '__invoke')) {
-				return $target;
+			$targetObject = GeneralUtility::makeInstance($target);
+			if (!method_exists($targetObject, '__invoke')) {
+				throw new \InvalidArgumentException('Object "' . $target . '" doesn\'t implement an __invoke() method and cannot be used as target.', 1442431631);
 			}
+			return $targetObject;
 		}
 
 		// Check if the target is a concatenated string of "className::actionMethod"
