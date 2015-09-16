@@ -70,10 +70,11 @@ define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/
 		// Bind key press enter event
 		me.$btn.on('click', function(evt) {
 			evt.preventDefault();
+
 			var $modal = top.TYPO3.Modal.show(
 				me.$btn.attr('title'),
 				'<div class="form-control-wrap">' +
-				'<input type="text" class="form-control online-media-url" placeholder="' + me.placeholder + '" />' +
+					'<input type="text" class="form-control online-media-url" placeholder="' + me.placeholder + '" />' +
 				'</div>',
 				top.TYPO3.Severity.notice,
 				[{
@@ -84,7 +85,11 @@ define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/
 						var url = $modal.find('input.online-media-url').val();
 						if (url) {
 							$modal.trigger('modal-dismiss');
-							me.addOnlineMedia(url);
+
+							// Avoid a race condition between dismissing the current modal and creating a new one
+							window.setTimeout(function() {
+								me.addOnlineMedia(url);
+							}, 200);
 						}
 					}
 				}]
