@@ -203,7 +203,7 @@ TYPO3.ModuleMenu.App = {
 
 		// refresh the HTML by fetching the menu again
 	refreshMenu: function() {
-		TYPO3.jQuery.ajax(TYPO3.settings.ajaxUrls['ModuleMenu::reload']).done(function(result) {
+		TYPO3.jQuery.ajax(TYPO3.settings.ajaxUrls['modulemenu']).done(function(result) {
 			TYPO3.jQuery('#typo3-menu').replaceWith(result.menu);
 			if (top.currentModuleLoaded) {
 				TYPO3.ModuleMenu.App.highlightModuleMenuItem(top.currentModuleLoaded);

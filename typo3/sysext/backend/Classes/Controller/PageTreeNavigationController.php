@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\PageTreeView;
@@ -314,18 +316,20 @@ class PageTreeNavigationController {
 	 * Makes the AJAX call to expand or collapse the pagetree.
 	 * Called by typo3/ajax.php
 	 *
-	 * @param array $params Additional parameters (not used here)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object of this request
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function ajaxExpandCollapse($params, $ajaxObj) {
+	public function ajaxExpandCollapse(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->init();
 		$tree = $this->pagetree->getBrowsableTree();
 		if (!$this->pagetree->ajaxStatus) {
-			$ajaxObj->setError($tree);
+			$response->withStatus(500);
 		} else {
-			$ajaxObj->addContent('tree', $tree);
+			$response->getBody()->write(json_encode($tree));
 		}
+
+		return $response;
 	}
 
 	/**

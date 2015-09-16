@@ -92,7 +92,7 @@ class Spellchecker extends RteHtmlAreaApi {
 			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.contentISOLanguage = "' . $this->configuration['contentISOLanguage'] . '";';
 			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.spellCheckerMode = "' . $spellCheckerMode . '";';
 			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') . ';';
-			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.path = "' . ($this->isFrontend() || $this->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : BackendUtility::getAjaxUrl('rtehtmlarea::spellchecker')) . '";';
+			$jsArray[] = 'RTEarea[editornumber].buttons.' . $button . '.path = "' . ($this->isFrontend() || $this->isFrontendEditActive() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : BackendUtility::getAjaxUrl('rtehtmlarea_spellchecker')) . '";';
 		}
 		return implode(LF, $jsArray);
 	}

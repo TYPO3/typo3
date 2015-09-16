@@ -52,7 +52,7 @@ define('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu', ['jquery', 'TYPO3/CMS/
 		}
 
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['SystemInformationMenu::load'],
+			url: TYPO3.settings.ajaxUrls['systeminformation_render'],
 			type: 'post',
 			cache: false,
 			success: function(data) {

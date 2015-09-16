@@ -1031,6 +1031,18 @@ class Bootstrap {
 						$routesFromPackages += $definedRoutesInPackage;
 					}
 				}
+				$routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/AjaxRoutes.php';
+				if (file_exists($routesFileNameForPackage)) {
+					$definedRoutesInPackage = require $routesFileNameForPackage;
+					if (is_array($definedRoutesInPackage)) {
+						foreach ($definedRoutesInPackage as $routeIdentifier => $routeOptions) {
+							// prefix the route with "ajax_" as "namespace"
+							$routeOptions['path'] = '/ajax' . $routeOptions['path'];
+							$routesFromPackages['ajax_' . $routeIdentifier] = $routeOptions;
+							$routesFromPackages['ajax_' . $routeIdentifier]['ajax'] = TRUE;
+						}
+					}
+				}
 			}
 			// Store the data from all packages in the cache
 			$codeCache->set($cacheIdentifier, serialize($routesFromPackages));

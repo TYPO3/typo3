@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -123,20 +125,23 @@ class SuggestWizard {
 	}
 
 	/**
-	 * Ajax handler for the "suggest" feature in TCEforms.
+	 * Ajax handler for the "suggest" feature in FormEngine.
 	 *
-	 * @param array $params The parameters from the AJAX call
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AJAX object representing the AJAX call
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processAjaxRequest($params, &$ajaxObj) {
+	public function searchAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
+
 		// Get parameters from $_GET/$_POST
-		$search = GeneralUtility::_GP('value');
-		$table = GeneralUtility::_GP('table');
-		$field = GeneralUtility::_GP('field');
-		$uid = GeneralUtility::_GP('uid');
-		$pageId = GeneralUtility::_GP('pid');
-		$newRecordRow = GeneralUtility::_GP('newRecordRow');
+		$search = isset($parsedBody['value']) ? $parsedBody['value'] : $queryParams['value'];
+		$table = isset($parsedBody['table']) ? $parsedBody['table'] : $queryParams['table'];
+		$field = isset($parsedBody['field']) ? $parsedBody['field'] : $queryParams['field'];
+		$uid = (int)(isset($parsedBody['uid']) ? $parsedBody['uid'] : $queryParams['uid']);
+		$pageId = (int)(isset($parsedBody['pid']) ? $parsedBody['pid'] : $queryParams['pid']);
+		$newRecordRow = isset($parsedBody['newRecordRow']) ? $parsedBody['newRecordRow'] : $queryParams['newRecordRow'];
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
@@ -216,8 +221,8 @@ class SuggestWizard {
 
 		$listItems = $this->createListItemsFromResultRow($resultRows, $maxItems);
 
-		$ajaxObj->setContent($listItems);
-		$ajaxObj->setContentFormat('json');
+		$response->getBody()->write(json_encode($listItems));
+		return $response;
 	}
 
 	/**

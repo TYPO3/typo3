@@ -106,7 +106,7 @@ class ImageManipulationElement extends AbstractFormElement {
 			$wizardData['token'] = GeneralUtility::hmac(implode('|', $wizardData), 'ImageManipulationWizard');
 
 			$buttonAttributes = array(
-				'data-url' => BackendUtility::getAjaxUrl('ImageManipulationWizard::getHtmlForImageManipulationWizard', $wizardData),
+				'data-url' => BackendUtility::getAjaxUrl('wizard_image_manipulation', $wizardData),
 				'data-severity' => 'notice',
 				'data-image-name' => $file->getNameWithoutExtension(),
 				'data-image-uid' => $file->getUid(),

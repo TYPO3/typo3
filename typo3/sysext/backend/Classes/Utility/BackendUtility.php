@@ -3381,7 +3381,14 @@ class BackendUtility {
 	static public function getAjaxUrl($ajaxIdentifier, array $urlParameters = array(), $backPathOverride = FALSE, $returnAbsoluteUrl = FALSE) {
 		/** @var UriBuilder $uriBuilder */
 		$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-		return (string)$uriBuilder->buildUriFromAjaxId($ajaxIdentifier, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+		try {
+			$routeIdentifier = 'ajax_' . $ajaxIdentifier;
+			$uri = $uriBuilder->buildUriFromRoute($routeIdentifier, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+		} catch (\TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException $e) {
+			// no route registered, use the fallback logic to check for a module
+			$uri = $uriBuilder->buildUriFromAjaxId($ajaxIdentifier, $urlParameters, $returnAbsoluteUrl ? UriBuilder::ABSOLUTE_URL : UriBuilder::ABSOLUTE_PATH);
+		}
+		return (string)$uri;
 	}
 
 	/**

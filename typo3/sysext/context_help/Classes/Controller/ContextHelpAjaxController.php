@@ -14,7 +14,8 @@ namespace TYPO3\CMS\ContextHelp\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,19 +29,21 @@ class ContextHelpAjaxController {
 	/**
 	 * The main dispatcher function. Collect data and prepare HTML output.
 	 *
-	 * @param array $params array of parameters, currently unused
-	 * @param AjaxRequestHandler $ajaxObj object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function dispatch($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
-		$params = GeneralUtility::_GP('params');
+	public function getHelpAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$params = isset($request->getParsedBody()['params']) ? $request->getParsedBody()['params'] : $request->getQueryParams()['params'];
 		if ($params['action'] === 'getContextHelp') {
 			$result = $this->getContextHelp($params['table'], $params['field']);
-			$ajaxObj->addContent('title', $result['title']);
-			$ajaxObj->addContent('content', $result['description']);
-			$ajaxObj->addContent('link', $result['moreInfo']);
-			$ajaxObj->setContentFormat('json');
+			$response->getBody()->write(json_encode([
+				'title' => $result['title'],
+				'content' => $result['description'],
+				'link' => $result['moreInfo']
+			]));
 		}
+		return $response;
 	}
 
 	/**

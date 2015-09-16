@@ -61,7 +61,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 			return;
 		}
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['CodeCompletion::loadTemplates'],
+			url: TYPO3.settings.ajaxUrls['t3editor_codecompletion_loadtemplates'],
 			data: {
 				pageId: id
 			},
@@ -77,7 +77,7 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsCodeCompletion', [
 	 */
 	TsCodeCompletion.loadPluginArray = function() {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['T3Editor::getPlugins'],
+			url: TYPO3.settings.ajaxUrls['t3editor_get_plugins'],
 			success: function(response) {
 				TsCodeCompletion.plugins = $.merge(TsCodeCompletion.plugins, response);
 				// register an internal plugin

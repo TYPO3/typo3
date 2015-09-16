@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\File;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Response;
+
 /**
  * Tests for \TYPO3\CMS\Backend\Tests\Unit\Controller\File\FileController
  */
@@ -40,9 +43,14 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $mockFileProcessor;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler|\PHPUnit_Framework_MockObject_MockObject
+	 * @var ServerRequest|\PHPUnit_Framework_MockObject_MockObject
 	 */
-	protected $mockAjaxRequestHandler;
+	protected $request;
+
+	/**
+	 * @var Response|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $response;
 
 	/**
 	 * Sets up this test case.
@@ -55,6 +63,9 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fileResourceMock->expects($this->any())->method('toArray')->will($this->returnValue(array('id' => 'foo')));
 		$this->fileResourceMock->expects($this->any())->method('getModificationTime')->will($this->returnValue(123456789));
 		$this->fileResourceMock->expects($this->any())->method('getExtension')->will($this->returnValue('html'));
+
+		$this->request = new ServerRequest();
+		$this->response = new Response();
 	}
 
 	/**
@@ -92,7 +103,6 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function processAjaxRequestDeleteProcessActuallyDoesNotChangeFileData() {
 		$this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
-		$this->mockAjaxRequestHandler = $this->getMock(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, array('addContent', 'setContentFormat'), array(), '', FALSE);
 
 		$fileData = array('delete' => array(TRUE));
 		$this->fileController->_set('fileProcessor', $this->mockFileProcessor);
@@ -100,10 +110,8 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fileController->_set('redirect', FALSE);
 
 		$this->fileController->expects($this->once())->method('main');
-		$this->mockAjaxRequestHandler->expects($this->once())->method('addContent')->with('result', $fileData);
-		$this->mockAjaxRequestHandler->expects($this->once())->method('setContentFormat')->with('json');
 
-		$this->fileController->processAjaxRequest(array(), $this->mockAjaxRequestHandler);
+		$this->fileController->processAjaxRequest($this->request, $this->response);
 	}
 
 	/**
@@ -111,7 +119,6 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function processAjaxRequestEditFileProcessActuallyDoesNotChangeFileData() {
 		$this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
-		$this->mockAjaxRequestHandler = $this->getMock(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, array('addContent', 'setContentFormat'), array(), '', FALSE);
 
 		$fileData = array('editfile' => array(TRUE));
 		$this->fileController->_set('fileProcessor', $this->mockFileProcessor);
@@ -119,10 +126,8 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fileController->_set('redirect', FALSE);
 
 		$this->fileController->expects($this->once())->method('main');
-		$this->mockAjaxRequestHandler->expects($this->once())->method('addContent')->with('result', $fileData);
-		$this->mockAjaxRequestHandler->expects($this->once())->method('setContentFormat')->with('json');
 
-		$this->fileController->processAjaxRequest(array(), $this->mockAjaxRequestHandler);
+		$this->fileController->processAjaxRequest($this->request, $this->response);
 	}
 
 	/**
@@ -130,7 +135,6 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function processAjaxRequestUnzipProcessActuallyDoesNotChangeFileData() {
 		$this->fileController = $this->getAccessibleMock(\TYPO3\CMS\Backend\Controller\File\FileController::class, array('init', 'main'));
-		$this->mockAjaxRequestHandler = $this->getMock(\TYPO3\CMS\Core\Http\AjaxRequestHandler::class, array('addContent', 'setContentFormat'), array(), '', FALSE);
 
 		$fileData = array('unzip' => array(TRUE));
 		$this->fileController->_set('fileProcessor', $this->mockFileProcessor);
@@ -138,10 +142,8 @@ class FileControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fileController->_set('redirect', FALSE);
 
 		$this->fileController->expects($this->once())->method('main');
-		$this->mockAjaxRequestHandler->expects($this->once())->method('addContent')->with('result', $fileData);
-		$this->mockAjaxRequestHandler->expects($this->once())->method('setContentFormat')->with('json');
 
-		$this->fileController->processAjaxRequest(array(), $this->mockAjaxRequestHandler);
+		$this->fileController->processAjaxRequest($this->request, $this->response);
 	}
 
 }

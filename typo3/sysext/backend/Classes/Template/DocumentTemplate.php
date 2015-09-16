@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Template;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -1759,13 +1761,13 @@ function jumpToUrl(URL) {
 	/**
 	 * Renders the FlashMessages from queue and returns them as AJAX.
 	 *
-	 * @param array $params Always empty.
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function renderFlashMessages(array $params, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
-		$ajaxObj->addContent('result', $this->getFlashMessages());
-		$ajaxObj->setContentFormat('html');
+	public function renderQueuedFlashMessages(ServerRequestInterface $request, ResponseInterface $response) {
+		$response->getBody()->write($this->getFlashMessages());
+		return $response;
 	}
 
 	/**

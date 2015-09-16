@@ -15,9 +15,10 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * A wrapper class to call BE_USER->uc
@@ -28,19 +29,20 @@ class UserSettingsController {
 	/**
 	 * Processes all AJAX calls and returns a JSON for the data
 	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processAjaxRequest($parameters, AjaxRequestHandler $ajaxRequestHandler) {
+	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
 		// do the regular / main logic, depending on the action parameter
-		$action = GeneralUtility::_GP('action');
-		$key = GeneralUtility::_GP('key');
-		$value = GeneralUtility::_GP('value');
+		$action = isset($request->getParsedBody()['action']) ? $request->getParsedBody()['action'] : $request->getQueryParams()['action'];
+		$key = isset($request->getParsedBody()['key']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['key'];
+		$value = isset($request->getParsedBody()['value']) ? $request->getParsedBody()['value'] : $request->getQueryParams()['value'];
 
 		$content = $this->process($action, $key, $value);
 
-		$ajaxRequestHandler->setContentFormat('json');
-		$ajaxRequestHandler->setContent($content);
+		$response->getBody()->write(json_encode($content));
+		return $response;
 	}
 
 	/**

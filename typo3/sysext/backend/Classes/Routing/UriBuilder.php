@@ -41,7 +41,7 @@ class UriBuilder {
 	const ABSOLUTE_PATH = 'absolute';
 
 	/**
-	 * @var array
+	 * @var Route[]
 	 */
 	protected $routes;
 
@@ -73,17 +73,36 @@ class UriBuilder {
 
 		$route = $this->routes[$name];
 
-		// If the route has the "public" option set, no token is generated.
-		if ($route->getOption('access') !== 'public') {
+		// The Route is an AJAX route, so the parameters are different in order
+		// for the AjaxRequestHandler to be triggered
+		if ($route->getOption('ajax')) {
+			// If the route has the "public" option set, no token is generated.
+			if ($route->getOption('access') !== 'public') {
+				$parameters = array(
+					'ajaxToken' => FormProtectionFactory::get()->generateToken('ajaxCall', $name)
+				) + $parameters;
+			}
+
+			// Add the Route path as &ajaxID=XYZ
 			$parameters = array(
-				'token' => FormProtectionFactory::get()->generateToken('route', $name)
+				'ajaxID' => $route->getPath()
 			) + $parameters;
+
+		} else {
+			// If the route has the "public" option set, no token is generated.
+			if ($route->getOption('access') !== 'public') {
+				$parameters = array(
+					'token' => FormProtectionFactory::get()->generateToken('route', $name)
+				) + $parameters;
+			}
+
+			// Add the Route path as &route=XYZ
+			$parameters = array(
+				'route' => $route->getPath()
+			) + $parameters;
+
 		}
 
-		// Add the Route path as &route=XYZ
-		$parameters = array(
-			'route' => $route->getPath()
-		) + $parameters;
 
 		return $this->buildUri($parameters, $referenceType);
 	}

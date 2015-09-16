@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
@@ -31,25 +30,28 @@ use Psr\Http\Message\ServerRequestInterface;
 class OnlineMediaController {
 
 	/**
-	 * @param array $_
-	 * @param AjaxRequestHandler $ajaxObj
-	 * @return void
+	 * AJAX endpoint for storing the URL as a sys_file record
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function addAjaxAction($_, AjaxRequestHandler $ajaxObj = NULL) {
-		$ajaxObj->setContentFormat('json');
-
-		$url = GeneralUtility::_POST('url');
-		$targetFolderIdentifier = GeneralUtility::_POST('targetFolder');
-		$allowedExtensions = GeneralUtility::trimExplode(',', GeneralUtility::_POST('allowed') ?: '');
+	public function createAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$url = $request->getParsedBody()['url'];
+		$targetFolderIdentifier = $request->getParsedBody()['targetFolder'];
+		$allowedExtensions = GeneralUtility::trimExplode(',', $request->getParsedBody()['allowed'] ?: '');
 
 		if (!empty($url)) {
+			$data = [];
 			$file = $this->addMediaFromUrl($url, $targetFolderIdentifier, $allowedExtensions);
 			if ($file !== NULL) {
-				$ajaxObj->addContent('file', $file->getUid());
+				$data['file'] = $file->getUid();
 			} else {
-				$ajaxObj->addContent('error', $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:online_media.error.invalid_url'));
+				$data['error'] = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:online_media.error.invalid_url');
 			}
+			$response->getBody()->write(json_encode($data));
 		}
+		return $response;
 	}
 
 	/**
@@ -92,6 +94,7 @@ class OnlineMediaController {
 		}
 
 		$redirect = isset($request->getParsedBody()['redirect']) ? $request->getParsedBody()['redirect'] : $request->getQueryParams()['redirect'];
+		$redirect = GeneralUtility::sanitizeLocalUrl($redirect);
 		if ($redirect) {
 			$response = $response
 				->withHeader('Location', GeneralUtility::locationHeaderUrl($redirect))

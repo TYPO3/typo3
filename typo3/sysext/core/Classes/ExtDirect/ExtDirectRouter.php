@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\ExtDirect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -24,48 +26,48 @@ class ExtDirectRouter {
 	/**
 	 * Dispatches the incoming calls to methods about the ExtDirect API.
 	 *
-	 * @param aray $ajaxParams Ajax parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Ajax object
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function route($ajaxParams, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
+	public function routeAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$GLOBALS['error'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\ExtDirect\ExtDirectDebug::class);
 		$isForm = FALSE;
 		$isUpload = FALSE;
 		$rawPostData = file_get_contents('php://input');
-		$postParameters = GeneralUtility::_POST();
-		$namespace = GeneralUtility::_GET('namespace');
-		$response = array();
-		$request = NULL;
+		$postParameters = $request->getParsedBody();
+		$namespace = isset($request->getParsedBody()['namespace']) ? $request->getParsedBody()['namespace'] : $request->getQueryParams()['namespace'];
+		$extResponse = array();
+		$extRequest = NULL;
 		$isValidRequest = TRUE;
 		if (!empty($postParameters['extAction'])) {
 			$isForm = TRUE;
 			$isUpload = $postParameters['extUpload'] === 'true';
-			$request = new \stdClass();
-			$request->action = $postParameters['extAction'];
-			$request->method = $postParameters['extMethod'];
-			$request->tid = $postParameters['extTID'];
+			$extRequest = new \stdClass();
+			$extRequest->action = $postParameters['extAction'];
+			$extRequest->method = $postParameters['extMethod'];
+			$extRequest->tid = $postParameters['extTID'];
 			unset($_POST['securityToken']);
-			$request->data = array($_POST + $_FILES);
-			$request->data[] = $postParameters['securityToken'];
+			$extRequest->data = array($_POST + $_FILES);
+			$extRequest->data[] = $postParameters['securityToken'];
 		} elseif (!empty($rawPostData)) {
-			$request = json_decode($rawPostData);
+			$extRequest = json_decode($rawPostData);
 		} else {
-			$response[] = array(
+			$extResponse[] = array(
 				'type' => 'exception',
 				'message' => 'Something went wrong with an ExtDirect call!',
 				'code' => 'router'
 			);
 			$isValidRequest = FALSE;
 		}
-		if (!is_array($request)) {
-			$request = array($request);
+		if (!is_array($extRequest)) {
+			$extRequest = array($extRequest);
 		}
 		if ($isValidRequest) {
 			$validToken = FALSE;
 			$firstCall = TRUE;
-			foreach ($request as $index => $singleRequest) {
-				$response[$index] = array(
+			foreach ($extRequest as $index => $singleRequest) {
+				$extResponse[$index] = array(
 					'tid' => $singleRequest->tid,
 					'action' => $singleRequest->action,
 					'method' => $singleRequest->method
@@ -80,27 +82,27 @@ class ExtDirectRouter {
 					if (!$validToken) {
 						throw new \TYPO3\CMS\Core\FormProtection\Exception('ExtDirect: Invalid Security Token!');
 					}
-					$response[$index]['type'] = 'rpc';
-					$response[$index]['result'] = $this->processRpc($singleRequest, $namespace);
-					$response[$index]['debug'] = $GLOBALS['error']->toString();
+					$extResponse[$index]['type'] = 'rpc';
+					$extResponse[$index]['result'] = $this->processRpc($singleRequest, $namespace);
+					$extResponse[$index]['debug'] = $GLOBALS['error']->toString();
 				} catch (\Exception $exception) {
-					$response[$index]['type'] = 'exception';
-					$response[$index]['message'] = $exception->getMessage();
-					$response[$index]['code'] = 'router';
+					$extResponse[$index]['type'] = 'exception';
+					$extResponse[$index]['message'] = $exception->getMessage();
+					$extResponse[$index]['code'] = 'router';
 				}
 			}
 		}
 		if ($isForm && $isUpload) {
-			$ajaxObj->setContentFormat('plain');
-			$response = json_encode($response);
-			$response = preg_replace('/&quot;/', '\\&quot;', $response);
-			$response = array(
-				'<html><body><textarea>' . $response . '</textarea></body></html>'
+			$extResponse = json_encode($extResponse);
+			$extResponse = preg_replace('/&quot;/', '\\&quot;', $extResponse);
+			$extResponse = array(
+				'<html><body><textarea>' . $extResponse . '</textarea></body></html>'
 			);
 		} else {
-			$ajaxObj->setContentFormat('jsonbody');
+			$extResponse = json_encode($extResponse);
 		}
-		$ajaxObj->setContent($response);
+		$response->getBody()->write($extResponse);
+		return $response;
 	}
 
 	/**

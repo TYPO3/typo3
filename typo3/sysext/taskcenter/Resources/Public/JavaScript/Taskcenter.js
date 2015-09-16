@@ -45,7 +45,7 @@ define('TYPO3/CMS/Taskcenter/Taskcenter', ['jquery', 'jquery-ui/sortable'], func
 		}
 
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['Taskcenter::saveCollapseState'],
+			url: TYPO3.settings.ajaxUrls['taskcenter_collapse'],
 			type: 'post',
 			cache: false,
 			data: {
@@ -59,7 +59,7 @@ define('TYPO3/CMS/Taskcenter/Taskcenter', ['jquery', 'jquery-ui/sortable'], func
 		$('#task-list').sortable({
 			update: function(event, ui) {
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['Taskcenter::saveSortingState'],
+					url: TYPO3.settings.ajaxUrls['taskcenter_sort'],
 					type: 'post',
 					cache: false,
 					data: {

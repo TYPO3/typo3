@@ -177,7 +177,7 @@ class SelectImage extends ElementBrowser {
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+			Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";
 		}');
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/Modules/SelectImage', 'function(SelectImage) {
 			SelectImage.editorNo = ' . GeneralUtility::quoteJSvalue($this->editorNo) . ';

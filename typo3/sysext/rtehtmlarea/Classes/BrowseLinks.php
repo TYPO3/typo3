@@ -146,7 +146,7 @@ class BrowseLinks extends ElementBrowser {
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
 		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
-			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
+			Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";
 		}');
 	}
 

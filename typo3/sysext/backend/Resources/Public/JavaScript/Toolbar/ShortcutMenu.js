@@ -41,7 +41,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 	ShortcutMenu.editShortcut = function($shortcutRecord) {
 		// load the form
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['ShortcutMenu::getShortcutEditForm'],
+			url: TYPO3.settings.ajaxUrls['shortcut_editform'],
 			data: {
 				shortcutId: $shortcutRecord.data('shortcutid'),
 				shortcutGroup: $shortcutRecord.data('shortcutgroup')
@@ -57,7 +57,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 	 */
 	ShortcutMenu.saveShortcutForm = function($shortcutRecord) {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['ShortcutMenu::saveShortcut'],
+			url: TYPO3.settings.ajaxUrls['shortcut_saveform'],
 			data: {
 				shortcutId: $shortcutRecord.data('shortcutid'),
 				shortcutTitle: $shortcutRecord.find(ShortcutMenu.options.shortcutFormTitleSelector).val(),
@@ -79,7 +79,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 		top.TYPO3.Modal.confirm('Delete bookmark', 'Do you really want to remove this bookmark?')
 			.on('confirm.button.ok', function() {
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['ShortcutMenu::delete'],
+					url: TYPO3.settings.ajaxUrls['shortcut_list'],
 					data: {
 						shortcutId: $shortcutRecord.data('shortcutid')
 					},
@@ -112,7 +112,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 					var $existingItem = $toolbarItemIcon.replaceWith($spinner);
 
 					$.ajax({
-						url: TYPO3.settings.ajaxUrls['ShortcutMenu::create'],
+						url: TYPO3.settings.ajaxUrls['shortcut_create'],
 						type: 'post',
 						data: {
 							module: moduleName,
@@ -143,7 +143,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 	 */
 	ShortcutMenu.refreshMenu = function() {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['ShortcutMenu::render'],
+			url: TYPO3.settings.ajaxUrls['shortcut_list'],
 			type: 'get',
 			cache: false
 		}).done(function(data) {

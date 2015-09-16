@@ -22,7 +22,7 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover', 
 	 * @type {{ajaxUrl: *, localCache: {}, openContext: null}}
 	 */
 	var ContextHelp = {
-		ajaxUrl: TYPO3.settings.ajaxUrls['ContextHelpAjaxController::dispatch'],
+		ajaxUrl: TYPO3.settings.ajaxUrls['context_help'],
 		localCache: {},
 		helpModuleUrl: '',
 		trigger: 'click',

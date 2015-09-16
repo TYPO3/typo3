@@ -109,7 +109,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 			}),
 			$('<button />', {class: 'btn btn-primary t3js-active', 'data-action': 'refreshSession'}).text(TYPO3.LLL.core.refresh_login_refresh_button).on('click', function() {
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
+					url: TYPO3.settings.ajaxUrls['login_timedout'],
 					method: 'GET',
 					success: function() {
 						LoginRefresh.hideTimeoutModal();
@@ -196,7 +196,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 		LoginRefresh.$loginForm.find('.modal-header h4').text(TYPO3.LLL.core.refresh_login_title);
 		LoginRefresh.$loginForm.find('.modal-body').append(
 			$('<p />').text(TYPO3.LLL.core.login_expired),
-			$('<form />', {id: 'beLoginRefresh', method: 'POST', action: TYPO3.settings.ajaxUrls['BackendLogin::login']}).append(
+			$('<form />', {id: 'beLoginRefresh', method: 'POST', action: TYPO3.settings.ajaxUrls['login']}).append(
 				$('<div />', {class: 'form-group'}).append(
 					$('<input />', {type: 'password', name: 'p_field', autofocus: 'autofocus', class: 'form-control', placeholder: TYPO3.LLL.core.refresh_login_password, 'data-rsa-encryption': 't3-loginrefres-userident'})
 				),
@@ -219,7 +219,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 	LoginRefresh.showLoginForm = function() {
 		// log off for sure
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['BackendLogin::logout'],
+			url: TYPO3.settings.ajaxUrls['logout'],
 			method: 'GET',
 			success: function() {
 				if (TYPO3.configuration.showRefreshLoginPopup) {
@@ -395,7 +395,7 @@ define('TYPO3/CMS/Backend/LoginRefresh', ['jquery', 'bootstrap'], function($) {
 	 */
 	LoginRefresh.checkActiveSession = function() {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['BackendLogin::isTimedOut'],
+			url: TYPO3.settings.ajaxUrls['login_timedout'],
 			data: {
 				skipSessionUpdate: 1
 			},

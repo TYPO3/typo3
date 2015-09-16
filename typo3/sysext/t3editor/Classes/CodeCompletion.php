@@ -13,6 +13,9 @@ namespace TYPO3\CMS\T3editor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Code completion for t3editor
@@ -35,20 +38,13 @@ class CodeCompletion {
 	 * General processor for AJAX requests.
 	 * (called by typo3/ajax.php)
 	 *
-	 * @param array $params Additional parameters (not used here)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processAjaxRequest($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
-		$this->ajaxObj = $ajaxObj;
-		$ajaxIdParts = explode('::', $ajaxObj->getAjaxID(), 2);
-		$ajaxMethod = $ajaxIdParts[1];
-		$response = array();
-		// Process the AJAX requests:
-		if ($ajaxMethod == 'loadTemplates') {
-			$ajaxObj->setContent($this->loadTemplates((int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pageId')));
-			$ajaxObj->setContentFormat('jsonbody');
-		}
+	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
+		$pageId = (int)(isset($request->getParsedBody()['pageId']) ? $request->getParsedBody()['pageId'] : $request->getQueryParams()['pageId']);
+		return $this->loadTemplates($pageId);
 	}
 
 	/**
@@ -56,23 +52,26 @@ class CodeCompletion {
 	 * cleans parts that are not required for the t3editor codecompletion.
 	 *
 	 * @param int $pageId ID of the page
-	 * @param int $templateId Currently unused (default: 0)
-	 * @return array Cleaned array of TypoScript information
+	 * @return ResponseInterface
 	 */
-	protected function loadTemplates($pageId, $templateId = 0) {
-		$templates = array();
+	protected function loadTemplates($pageId) {
+		/** @var \TYPO3\CMS\Core\Http\Response $response */
+		$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+
 		// Check whether access is granted (only admin have access to sys_template records):
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			// Check whether there is a pageId given:
 			if ($pageId) {
-				$templates = $this->getMergedTemplates($pageId);
+				$response->getBody()->write(json_encode($this->getMergedTemplates($pageId)));
 			} else {
-				$this->ajaxObj->setError($GLOBALS['LANG']->getLL('pageIDInteger'));
+				$response->getBody()->write($GLOBALS['LANG']->getLL('pageIDInteger'));
+				$response = $response->withStatus(500);
 			}
 		} else {
-			$this->ajaxObj->setError($GLOBALS['LANG']->getLL('noPermission'));
+			$response->getBody()->write($GLOBALS['LANG']->getLL('noPermission'));
+			$response = $response->withStatus(500);
 		}
-		return $templates;
+		return $response;
 	}
 
 	/**

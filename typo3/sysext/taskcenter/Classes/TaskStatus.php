@@ -14,8 +14,8 @@ namespace TYPO3\CMS\Taskcenter;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Status of tasks
@@ -25,33 +25,41 @@ class TaskStatus {
 	/**
 	 * Saves the section toggle state of tasks in the backend user's uc
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function saveCollapseState(array $params, AjaxRequestHandler $ajaxObj) {
+	public function saveCollapseState(ServerRequestInterface $request, ResponseInterface $response) {
 		// Remove 'el_' in the beginning which is needed for the saveSortingState()
-		$item = substr(htmlspecialchars(GeneralUtility::_POST('item')), 3);
-		$state = (bool)GeneralUtility::_POST('state');
+		$item = isset($request->getParsedBody()['item']) ? $request->getParsedBody()['item'] : $request->getQueryParams()['item'];
+		$item = substr(htmlspecialchars($item), 3);
+		$state = (bool)(isset($request->getParsedBody()['state']) ? $request->getParsedBody()['state'] : $request->getQueryParams()['state']);
+
 		$this->getBackendUserAuthentication()->uc['taskcenter']['states'][$item] = $state;
 		$this->getBackendUserAuthentication()->writeUC();
+
+		return $response;
 	}
 
 	/**
 	 * Saves the sorting order of tasks in the backend user's uc
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function saveSortingState(array $params, AjaxRequestHandler $ajaxObj) {
+	public function saveSortingState(ServerRequestInterface $request, ResponseInterface $response) {
 		$sort = array();
-		$items = explode('&', GeneralUtility::_POST('data'));
+		$data = isset($request->getParsedBody()['data']) ? $request->getParsedBody()['data'] : $request->getQueryParams()['data'];
+
+		$items = explode('&', $data);
 		foreach ($items as $item) {
 			$sort[] = substr($item, 12);
 		}
 		$this->getBackendUserAuthentication()->uc['taskcenter']['sorting'] = serialize($sort);
 		$this->getBackendUserAuthentication()->writeUC();
+
+		return $response;
 	}
 
 	/**

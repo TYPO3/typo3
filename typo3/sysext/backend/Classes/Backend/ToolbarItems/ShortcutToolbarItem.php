@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\PreparedStatement;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -193,13 +194,16 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	/**
 	 * Renders the menu so that it can be returned as response to an AJAX call
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function renderAjaxMenu($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
+	public function menuAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$menuContent = $this->getDropDown();
-		$ajaxObj->addContent('shortcutMenu', $menuContent);
+
+		$response->getBody()->write($menuContent);
+		$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+		return $response;
 	}
 
 	/**
@@ -417,15 +421,18 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	}
 
 	/**
-	 * gets the available shortcut groups, renders a form so it can be saved lateron
+	 * Fetches the available shortcut groups, renders a form so it can be saved later on, usually called via AJAX
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the full HTML for the form
 	 */
-	public function getAjaxShortcutEditForm($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
-		$selectedShortcutId = (int)GeneralUtility::_GP('shortcutId');
-		$selectedShortcutGroupId = (int)GeneralUtility::_GP('shortcutGroup');
+	public function editFormAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
+
+		$selectedShortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
+		$selectedShortcutGroupId = (int)(isset($parsedBody['shortcutGroup']) ? $parsedBody['shortcutGroup'] : $queryParams['shortcutGroup']);
 		$selectedShortcut = $this->getShortcutById($selectedShortcutId);
 
 		$shortcutGroups = $this->shortcutGroups;
@@ -457,45 +464,52 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				<input type="button" class="btn btn-success shortcut-form-save" value="Save">
 			</form>';
 
-		$ajaxObj->addContent('data', $content);
+		$response->getBody()->write($content);
+		$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+		return $response;
 	}
 
 	/**
 	 * Deletes a shortcut through an AJAX call
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function deleteAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
+	public function removeShortcutAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
+
 		$databaseConnection = $this->getDatabaseConnection();
-		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
+		$shortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
 		$fullShortcut = $this->getShortcutById($shortcutId);
-		$ajaxReturn = 'failed';
+		$success = FALSE;
 		if ($fullShortcut['raw']['userid'] == $this->getBackendUser()->user['uid']) {
 			$databaseConnection->exec_DELETEquery('sys_be_shortcuts', 'uid = ' . $shortcutId);
-			if ($databaseConnection->sql_affected_rows() == 1) {
-				$ajaxReturn = 'deleted';
+			if ($databaseConnection->sql_affected_rows() === 1) {
+				$success = TRUE;
 			}
 		}
-		$ajaxObj->addContent('delete', $ajaxReturn);
+		$response->getBody()->write(json_encode(['success' => $success]));
+		return $response;
 	}
 
 	/**
 	 * Creates a shortcut through an AJAX call
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param AjaxRequestHandler $ajaxObj Oject of type AjaxRequestHandler
-	 *
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function createAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
+	public function createShortcutAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$languageService = $this->getLanguageService();
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
 
 		// Default name
 		$shortcutName = 'Shortcut';
 		$shortcutNamePrepend = '';
-		$url = GeneralUtility::_POST('url');
+		$url = isset($parsedBody['url']) ? $parsedBody['url'] : $queryParams['url'];
 
 		// Determine shortcut type
 		$url = rawurldecode($url);
@@ -545,20 +559,19 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 				}
 			}
 
-			$this->tryAddingTheShortcut($ajaxObj, $url, $shortcutName);
+			return $this->tryAddingTheShortcut($response, $url, $shortcutName);
 		}
 	}
 
 	/**
 	 * Try to adding a shortcut
 	 *
-	 * @param AjaxRequestHandler $ajaxObj Oject of type AjaxRequestHandler
+	 * @param ResponseInterface $response
 	 * @param string $url
 	 * @param string $shortcutName
-	 *
-	 * @return void
+	 * @return ResponseInterface
 	 */
-	protected function tryAddingTheShortcut(AjaxRequestHandler $ajaxObj, $url, $shortcutName) {
+	protected function tryAddingTheShortcut(ResponseInterface $response, $url, $shortcutName) {
 		$module = GeneralUtility::_POST('module');
 		$shortcutCreated = 'failed';
 
@@ -570,7 +583,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 			}
 		}
 
-		$ajaxObj->addContent('create', $shortcutCreated);
+		$response->getBody()->write($shortcutCreated);
+		$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+		return $response;
 	}
 
 	/**
@@ -640,16 +655,19 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 	 * Gets called when a shortcut is changed, checks whether the user has
 	 * permissions to do so and saves the changes if everything is ok
 	 *
-	 * @param array $params Array of parameters from the AJAX interface, currently unused
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function setAjaxShortcut($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
+	public function saveFormAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
+
 		$databaseConnection = $this->getDatabaseConnection();
 		$backendUser = $this->getBackendUser();
-		$shortcutId = (int)GeneralUtility::_POST('shortcutId');
-		$shortcutName = strip_tags(GeneralUtility::_POST('shortcutTitle'));
-		$shortcutGroupId = (int)GeneralUtility::_POST('shortcutGroup');
+		$shortcutId = (int)(isset($parsedBody['shortcutId']) ? $parsedBody['shortcutId'] : $queryParams['shortcutId']);
+		$shortcutName = strip_tags(isset($parsedBody['shortcutTitle']) ? $parsedBody['shortcutTitle'] : $queryParams['shortcutTitle']);
+		$shortcutGroupId = (int)(isset($parsedBody['shortcutGroup']) ? $parsedBody['shortcutGroup'] : $queryParams['shortcutGroup']);
 		// Users can only modify their own shortcuts (except admins)
 		$addUserWhere = !$backendUser->isAdmin() ? ' AND userid=' . (int)$backendUser->user['uid'] : '';
 		$fieldValues = array(
@@ -662,11 +680,11 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$databaseConnection->exec_UPDATEquery('sys_be_shortcuts', 'uid=' . $shortcutId . $addUserWhere, $fieldValues);
 		$affectedRows = $databaseConnection->sql_affected_rows();
 		if ($affectedRows == 1) {
-			$ajaxObj->addContent('shortcut', $shortcutName);
+			$response->getBody()->write($shortcutName);
 		} else {
-			$ajaxObj->addContent('shortcut', 'failed');
+			$response->getBody()->write('failed');
 		}
-		$ajaxObj->setContentFormat('plain');
+		return $response->withHeader('Content-Type', 'html');
 	}
 
 	/**

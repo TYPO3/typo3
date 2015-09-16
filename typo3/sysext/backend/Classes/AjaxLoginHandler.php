@@ -14,8 +14,9 @@ namespace TYPO3\CMS\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * This is the ajax handler for backend login after timeout.
@@ -29,23 +30,91 @@ class AjaxLoginHandler {
 	 * a BE user and reset the timer and hide the login window.
 	 * If it was unsuccessful, we display that and show the login box again.
 	 *
-	 * @param array $parameters Parameters (not used)
-	 * @param AjaxRequestHandler $ajaxObj The calling parent AJAX object
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function login(array $parameters, AjaxRequestHandler $ajaxObj) {
+	public function loginAction(ServerRequestInterface $request, ResponseInterface $response) {
 		if ($this->isAuthorizedBackendSession()) {
-			$json = array('success' => TRUE);
+			$result = ['success' => TRUE];
 			if ($this->hasLoginBeenProcessed()) {
 				$formProtection = \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get();
 				$formProtection->setSessionTokenFromRegistry();
 				$formProtection->persistSessionToken();
 			}
 		} else {
-			$json = array('success' => FALSE);
+			$result = ['success' => FALSE];
 		}
-		$ajaxObj->addContent('login', $json);
-		$ajaxObj->setContentFormat('json');
+
+		$response->getBody()->write(json_encode(['login' => $result]));
+		return $response;
+	}
+
+	/**
+	 * Logs out the current BE user
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
+	 */
+	public function logoutAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$backendUser = $this->getBackendUser();
+		$backendUser->logoff();
+
+		$response->getBody()->write(json_encode([
+			'logout' => [
+				'success' => !isset($backendUser->user['uid'])
+			]
+		]));
+		return $response;
+	}
+
+	/**
+	 * Refreshes the login without needing login information. We just refresh the session.
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
+	 */
+	public function refreshAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$this->getBackendUser()->checkAuthentication();
+
+		$response->getBody()->write(json_encode([
+			'refresh' => [
+				'success' => TRUE
+			]
+		]));
+		return $response;
+	}
+
+	/**
+	 * Checks if the user session is expired yet
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
+	 */
+	public function isTimedOutAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$session = [
+			'timed_out' => FALSE,
+			'will_time_out' => FALSE,
+			'locked' => FALSE
+		];
+		$backendUser = $this->getBackendUser();
+		if (@is_file(PATH_typo3conf . 'LOCK_BACKEND')) {
+			$session['locked'] = TRUE;
+		} elseif (!isset($backendUser->user['uid'])) {
+			$session['timed_out'] = TRUE;
+		} else {
+			$backendUser->fetchUserSession(TRUE);
+			$ses_tstamp = $backendUser->user['ses_tstamp'];
+			$timeout = $backendUser->auth_timeout_field;
+			// If 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
+			// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
+			$session['will_time_out'] = $GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120;
+		}
+		$response->getBody()->write(json_encode(['login' => $session]));
+		return $response;
 	}
 
 	/**
@@ -66,65 +135,6 @@ class AjaxLoginHandler {
 	protected function hasLoginBeenProcessed() {
 		$loginFormData = $this->getBackendUser()->getLoginFormData();
 		return $loginFormData['status'] === 'login' && !empty($loginFormData['uname']) && !empty($loginFormData['uident']);
-	}
-
-	/**
-	 * Logs out the current BE user
-	 *
-	 * @param array $parameters Parameters (not used)
-	 * @param AjaxRequestHandler $ajaxObj The calling parent AJAX object
-	 * @return void
-	 */
-	public function logout(array $parameters, AjaxRequestHandler $ajaxObj) {
-		$backendUser = $this->getBackendUser();
-		$backendUser->logoff();
-		$ajaxObj->addContent('logout', array(
-			'success' => !isset($backendUser->user['uid']))
-		);
-		$ajaxObj->setContentFormat('json');
-	}
-
-	/**
-	 * Refreshes the login without needing login information. We just refresh the session.
-	 *
-	 * @param array $parameters Parameters (not used)
-	 * @param AjaxRequestHandler $ajaxObj The calling parent AJAX object
-	 * @return void
-	 */
-	public function refreshLogin(array $parameters, AjaxRequestHandler $ajaxObj) {
-		$this->getBackendUser()->checkAuthentication();
-		$ajaxObj->addContent('refresh', array('success' => TRUE));
-		$ajaxObj->setContentFormat('json');
-	}
-
-	/**
-	 * Checks if the user session is expired yet
-	 *
-	 * @param array $parameters Parameters (not used)
-	 * @param AjaxRequestHandler $ajaxObj The calling parent AJAX object
-	 * @return void
-	 */
-	public function isTimedOut(array $parameters, AjaxRequestHandler $ajaxObj) {
-		$ajaxObj->setContentFormat('json');
-		$response = array(
-			'timed_out' => FALSE,
-			'will_time_out' => FALSE,
-			'locked' => FALSE
-		);
-		$backendUser = $this->getBackendUser();
-		if (@is_file(PATH_typo3conf . 'LOCK_BACKEND')) {
-			$response['locked'] = TRUE;
-		} elseif (!isset($backendUser->user['uid'])) {
-			$response['timed_out'] = TRUE;
-		} else {
-			$backendUser->fetchUserSession(TRUE);
-			$ses_tstamp = $backendUser->user['ses_tstamp'];
-			$timeout = $backendUser->auth_timeout_field;
-			// If 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
-			// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
-			$response['will_time_out'] = $GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120;
-		}
-		$ajaxObj->addContent('login', $response);
 	}
 
 	/**

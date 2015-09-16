@@ -34,7 +34,7 @@ define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/
 
 		me.addOnlineMedia = function(url) {
 			NProgress.start();
-			$.post(TYPO3.settings.ajaxUrls['OnlineMedia::add'],
+			$.post(TYPO3.settings.ajaxUrls['online_media_create'],
 				{
 					url: url,
 					targetFolder: me.target,

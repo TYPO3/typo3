@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Workspaces\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -26,13 +28,15 @@ class AjaxController {
 	 * Sets the TYPO3 Backend context to a certain workspace,
 	 * called by the Backend toolbar menu
 	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function setWorkspace($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
-		$workspaceId = (int)GeneralUtility::_GP('workspaceId');
-		$pageId = (int)GeneralUtility::_GP('pageId');
+	public function switchWorkspaceAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
+		$workspaceId = (int)(isset($parsedBody['workspaceId']) ? $parsedBody['workspaceId'] : $queryParams['workspaceId']);
+		$pageId = (int)(isset($parsedBody['pageId']) ? $parsedBody['pageId'] : $queryParams['pageId']);
 		$finalPageUid = 0;
 		$originalPageId = $pageId;
 
@@ -55,13 +59,13 @@ class AjaxController {
 			$finalPageUid = (int)$page['uid'];
 		}
 
-		$response = array(
+		$ajaxResponse = array(
 			'title'       => \TYPO3\CMS\Workspaces\Service\WorkspaceService::getWorkspaceTitle($workspaceId),
 			'workspaceId' => $workspaceId,
 			'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? NULL : $finalPageUid
 		);
-		$ajaxRequestHandler->setContent($response);
-		$ajaxRequestHandler->setContentFormat('json');
+		$response->getBody()->write(json_encode($ajaxResponse));
+		return $response;
 	}
 
 	/**

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
@@ -23,7 +25,6 @@ use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -38,61 +39,83 @@ class FormInlineAjaxController {
 	protected $inlineStackProcessor;
 
 	/**
-	 * General processor for AJAX requests concerning IRRE.
-	 *
-	 * @param array $_ Additional parameters (not used here)
-	 * @param AjaxRequestHandler $ajaxObj The AjaxRequestHandler object of this request
-	 * @throws \RuntimeException
-	 * @return void
+	 * Create the inline stack processor
 	 */
-	public function processInlineAjaxRequest($_, AjaxRequestHandler $ajaxObj) {
+	public function __construct() {
 		$this->inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-		$ajaxArguments = GeneralUtility::_GP('ajax');
-		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
-		if (isset($ajaxArguments) && is_array($ajaxArguments) && !empty($ajaxArguments)) {
-			$ajaxMethod = $ajaxIdParts[1];
-			$ajaxObj->setContentFormat('jsonbody');
-			// @todo: ajaxArguments[2] is "returnUrl" in the first 3 calls - still needed?
-			switch ($ajaxMethod) {
-				case 'synchronizeLocalizeRecords':
-					$domObjectId = $ajaxArguments[0];
-					$type = $ajaxArguments[1];
-					// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-					$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
-					$inlineFirstPid = FormEngineUtility::getInlineFirstPidFromDomObjectId($domObjectId);
-					$ajaxObj->setContent($this->renderInlineSynchronizeLocalizeRecords($type, $inlineFirstPid));
-					break;
-				case 'createNewRecord':
-					$domObjectId = $ajaxArguments[0];
-					$createAfterUid = 0;
-					if (isset($ajaxArguments[1])) {
-						$createAfterUid = $ajaxArguments[1];
-					}
-					// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-					$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
-					$ajaxObj->setContent($this->renderInlineNewChildRecord($domObjectId, $createAfterUid));
-					break;
-				case 'getRecordDetails':
-					$domObjectId = $ajaxArguments[0];
-					// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-					$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
-					$ajaxObj->setContent($this->renderInlineChildRecord($domObjectId));
-					break;
-				case 'setExpandedCollapsedState':
-					$domObjectId = $ajaxArguments[0];
-					// Parse the DOM identifier (string), add the levels to the structure stack (array), don't load TCA config
-					$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId, FALSE);
-					$expand = $ajaxArguments[1];
-					$collapse = $ajaxArguments[2];
-					$this->setInlineExpandedCollapsedState($expand, $collapse);
-					break;
-				default:
-					throw new \RuntimeException('Not a valid ajax identifier', 1428227862);
-			}
-		}
+	}
+
+	/**
+	 * Create a new inline child via AJAX.
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
+	 */
+	public function createAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+		$domObjectId = $ajaxArguments[0];
+		$createAfterUid = isset($ajaxArguments[1]) ? $ajaxArguments[1] : 0;
+		// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
+		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+		$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+		$response->getBody()->write(json_encode($this->renderInlineNewChildRecord($domObjectId, $createAfterUid)));
+		return $response;
+	}
+
+	/**
+	 * Show the details of a child record.
+	 *
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
+	 */
+	public function detailsAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+		$domObjectId = $ajaxArguments[0];
+		// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
+		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+		$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+		$response->getBody()->write(json_encode($this->renderInlineChildRecord($domObjectId)));
+		return $response;
+	}
+
+	/**
+	 * Adds localizations or synchronizes the locations of all child records.
+	 *
+	 * @param ServerRequestInterface $request the incoming request
+	 * @param ResponseInterface $response the empty response
+	 * @return ResponseInterface the filled response
+	 */
+	public function synchronizeLocalizeAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+		$domObjectId = $ajaxArguments[0];
+		$type = $ajaxArguments[1];
+		// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
+		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+		$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+		$inlineFirstPid = FormEngineUtility::getInlineFirstPidFromDomObjectId($domObjectId);
+		$response->getBody()->write(json_encode($this->renderInlineSynchronizeLocalizeRecords($type, $inlineFirstPid)));
+		return $response;
+	}
+
+	/**
+	 * Adds localizations or synchronizes the locations of all child records.
+	 *
+	 * @param ServerRequestInterface $request the incoming request
+	 * @param ResponseInterface $response the empty response
+	 * @return ResponseInterface the filled response
+	 */
+	public function expandOrCollapseAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+		$domObjectId = $ajaxArguments[0];
+		// Parse the DOM identifier (string), add the levels to the structure stack (array), don't load TCA config
+		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId, FALSE);
+		$expand = $ajaxArguments[1];
+		$collapse = $ajaxArguments[2];
+		$this->setInlineExpandedCollapsedState($expand, $collapse);
+		$response->getBody()->write(json_encode(array()));
+		return $response;
 	}
 
 	/**

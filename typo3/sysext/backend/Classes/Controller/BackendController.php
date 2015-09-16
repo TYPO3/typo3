@@ -866,16 +866,17 @@ class BackendController {
 	}
 
 	/**
-	 * Returns the Module menu for the AJAX API
+	 * Returns the Module menu for the AJAX request
 	 *
-	 * @param array $params
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function getModuleMenuForReload($params, $ajaxRequestHandler) {
+	public function getModuleMenu(ServerRequestInterface $request, ResponseInterface $response) {
 		$content = $this->generateModuleMenu();
-		$ajaxRequestHandler->addContent('menu', $content);
-		$ajaxRequestHandler->setContentFormat('json');
+
+		$response->getBody()->write(json_encode(['menu' => $content]));
+		return $response;
 	}
 
 	/**

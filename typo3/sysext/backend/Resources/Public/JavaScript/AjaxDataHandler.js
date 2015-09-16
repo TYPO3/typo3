@@ -222,7 +222,7 @@ define('TYPO3/CMS/Backend/AjaxDataHandler', ['jquery', 'TYPO3/CMS/Backend/Notifi
 	 * @private
 	 */
 	AjaxDataHandler._call = function(params) {
-		return $.getJSON(TYPO3.settings.ajaxUrls['DataHandler::process'], params);
+		return $.getJSON(TYPO3.settings.ajaxUrls['record_process'], params);
 	};
 
 	/**

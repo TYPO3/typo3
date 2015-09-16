@@ -58,7 +58,7 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 		var $existingIcon = $toolbarItemIcon.replaceWith($spinnerIcon);
 
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['TxOpendocs::renderMenu'],
+			url: TYPO3.settings.ajaxUrls['opendocs_menu'],
 			type: 'post',
 			cache: false,
 			success: function(data) {
@@ -85,7 +85,7 @@ define('TYPO3/CMS/Opendocs/Toolbar/OpendocsMenu', ['jquery'], function($) {
 	 */
 	OpendocsMenu.closeDocument = function(md5sum) {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['TxOpendocs::closeDocument'],
+			url: TYPO3.settings.ajaxUrls['opendocs_close'],
 			type: 'post',
 			cache: false,
 			data: {

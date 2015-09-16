@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
 /**
@@ -267,10 +266,11 @@ class SimpleDataHandlerController {
 	/**
 	 * Processes all AJAX calls and returns a JSON formatted string
 	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processAjaxRequest($parameters, AjaxRequestHandler $ajaxRequestHandler) {
+	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
 		// do the regular / main logic
 		$this->initClipboard();
 		$this->main();
@@ -303,8 +303,9 @@ class SimpleDataHandlerController {
 				}
 			}
 		}
-		$ajaxRequestHandler->setContentFormat('json');
-		$ajaxRequestHandler->setContent($content);
+
+		$response->getBody()->write(json_encode($content));
+		return $response;
 	}
 
 	/**

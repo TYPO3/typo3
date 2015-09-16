@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Controller\File;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
@@ -183,8 +182,9 @@ class FileController {
 		BackendUtility::setUpdateSignal('updateFolderTree');
 
 		if ($this->redirect) {
-			$response = $response->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect));
-			return $response->withStatus(303);
+			return $response
+					->withHeader('Location', GeneralUtility::locationHeaderUrl($this->redirect))
+					->withStatus(303);
 		} else {
 			// empty response
 			return $response;
@@ -197,15 +197,16 @@ class FileController {
 	 * but without calling the "finish" method, thus makes it simpler to deal with the
 	 * actual return value
 	 *
-	 * @param array $params Always empty.
-	 * @param AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processAjaxRequest(array $params, AjaxRequestHandler $ajaxObj) {
+	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->main();
 		$errors = $this->fileProcessor->getErrorMessages();
 		if (!empty($errors)) {
-			$ajaxObj->setError(implode(',', $errors));
+			$response->getBody()->write(implode(',', $errors));
+			$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
 		} else {
 			$flatResult = array();
 			foreach ($this->fileData as $action => $results) {
@@ -219,24 +220,25 @@ class FileController {
 					}
 				}
 			}
-			$ajaxObj->addContent('result', $flatResult);
+			$content = ['result' => $flatResult];
 			if ($this->redirect) {
-				$ajaxObj->addContent('redirect', $this->redirect);
+				$content['redirect'] = $this->redirect;
 			}
-			$ajaxObj->setContentFormat('json');
+			$response->getBody()->write(json_encode($content));
 		}
+		return $response;
 	}
 
 	/**
 	 * Ajax entry point to check if a file exists in a folder
 	 *
-	 * @param array $params Always empty.
-	 * @param AjaxRequestHandler $ajaxObj The AjaxRequestHandler object used to return content and set content types
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function fileExistsAjaxRequest(array $params, AjaxRequestHandler $ajaxObj) {
-		$fileName = GeneralUtility::_GP('fileName');
-		$fileTarget = GeneralUtility::_GP('fileTarget');
+	public function fileExistsInFolderAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$fileName = isset($request->getParsedBody()['fileName']) ? $request->getParsedBody()['fileName'] : $request->getQueryParams()['fileName'];
+		$fileTarget = isset($request->getParsedBody()['fileTarget']) ? $request->getParsedBody()['fileTarget'] : $request->getQueryParams()['fileTarget'];
 
 		/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
 		$fileFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
@@ -248,8 +250,8 @@ class FileController {
 		if ($fileTargetObject->hasFile($processedFileName)) {
 			$result = $this->flattenResultDataValue($fileTargetObject->getStorage()->getFileInFolder($processedFileName, $fileTargetObject));
 		}
-		$ajaxObj->addContent('result', $result);
-		$ajaxObj->setContentFormat('json');
+		$response->getBody()->write(json_encode($result));
+		return $response;
 	}
 
 	/**

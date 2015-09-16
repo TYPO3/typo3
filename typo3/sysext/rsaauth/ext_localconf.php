@@ -25,18 +25,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs']['rsa
 // Add a hook to show Backend warnings
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages']['rsaauth'] = \TYPO3\CMS\Rsaauth\BackendWarnings::class;
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-	'BackendLogin::getRsaPublicKey',
-	\TYPO3\CMS\Rsaauth\Backend\AjaxLoginHandler::class . '->getRsaPublicKey',
-	FALSE
-);
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-	'RsaEncryption::getRsaPublicKey',
-	\TYPO3\CMS\Rsaauth\RsaEncryptionEncoder::class . '->getRsaPublicKeyAjaxHandler',
-	FALSE
-);
-
 // eID for FrontendLoginRsaPublicKey
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['RsaPublicKeyGenerationController'] = \TYPO3\CMS\Rsaauth\Controller\RsaPublicKeyGenerationController::class . '::processRequest';
 

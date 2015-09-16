@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -67,11 +68,11 @@ class PermissionAjaxController {
 	/**
 	 * The main dispatcher function. Collect data and prepare HTML output.
 	 *
-	 * @param array $params array of parameters from the AJAX interface, currently unused
-	 * @param AjaxRequestHandler $ajaxObj object of type AjaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function dispatch($params = array(), AjaxRequestHandler $ajaxObj = NULL) {
+	public function dispatch(ServerRequestInterface $request, ResponseInterface $response) {
 		$extPath = ExtensionManagementUtility::extPath('beuser');
 
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -106,7 +107,8 @@ class PermissionAjaxController {
 						$view->assign('username', $usernameArray[$userId]['username']);
 						$content = $view->render();
 					} else {
-						$ajaxObj->setError('An error occurred: No page owner uid specified.');
+						$response->getBody()->write('An error occurred: No page owner uid specified');
+						$response = $response->withStatus(500);
 					}
 					break;
 				case 'show_change_group_selector':
@@ -128,7 +130,8 @@ class PermissionAjaxController {
 						$view->assign('groupname', $groupnameArray[$groupId]['title']);
 						$content = $view->render();
 					} else {
-						$ajaxObj->setError('An error occurred: No page group uid specified.');
+						$response->getBody()->write('An error occurred: No page group uid specified');
+						$response = $response->withStatus(500);
 					}
 					break;
 				case 'toggle_edit_lock':
@@ -159,9 +162,12 @@ class PermissionAjaxController {
 					$content = $view->render();
 			}
 		} else {
-			$ajaxObj->setError('This script cannot be called directly.');
+			$response->getBody()->write('This script cannot be called directly');
+			$response = $response->withStatus(500);
 		}
-		$ajaxObj->addContent($this->conf['page'] . '_' . $this->conf['who'], $content);
+		$response->getBody()->write($content);
+		$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+		return $response;
 	}
 
 	/**

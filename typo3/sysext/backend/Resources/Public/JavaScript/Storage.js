@@ -69,25 +69,25 @@ define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
 	};
 
 	Storage.Persistent.addToList = function(key, value) {
-		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'addToList', key: key, value: value}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'addToList', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
 
 	Storage.Persistent.removeFromList = function(key, value) {
-		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'removeFromList', key: key, value: value}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'removeFromList', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
 
 	Storage.Persistent.unset = function(key) {
-		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'unset', key: key}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'unset', key: key}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
 
 	Storage.Persistent.clear = function() {
-		$.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'clear'}});
+		$.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'clear'}});
 		this._data = false;
 	};
 
@@ -113,7 +113,7 @@ define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
 	 * @private
 	 */
 	Storage.Persistent._loadFromServer = function() {
-		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'getAll'}, async: false}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'getAll'}, async: false}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};
@@ -125,7 +125,7 @@ define('TYPO3/CMS/Backend/Storage', ['jquery'], function ($) {
 	 * @private
 	 */
 	Storage.Persistent._storeOnServer = function(key, value) {
-		return $.ajax(TYPO3.settings.ajaxUrls['UserSettings::process'], {data: {'action': 'set', key: key, value: value}}).done(function(data) {
+		return $.ajax(TYPO3.settings.ajaxUrls['usersettings_process'], {data: {'action': 'set', key: key, value: value}}).done(function(data) {
 			Storage.Persistent._data = data;
 		});
 	};

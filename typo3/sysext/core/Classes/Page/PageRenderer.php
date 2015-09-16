@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -2064,6 +2066,22 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX'] as $ajaxHandler => $_) {
 			$ajaxUrls[$ajaxHandler] = BackendUtility::getAjaxUrl($ajaxHandler);
 		}
+
+		// also add the ajax-based routes
+		/** @var UriBuilder $uriBuilder */
+		$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+		/** @var Router $router */
+		$router = GeneralUtility::makeInstance(Router::class);
+		$routes = $router->getRoutes();
+		foreach ($routes as $routeIdentifier => $route) {
+			if ($route->getOption('ajax')) {
+				$uri = (string)$uriBuilder->buildUriFromRoute($routeIdentifier);
+				// use the shortened value in order to use this in JavaScript
+				$routeIdentifier = str_replace('ajax_', '', $routeIdentifier);
+				$ajaxUrls[$routeIdentifier] = $uri;
+			}
+		}
+
 		$this->inlineSettings['ajaxUrls'] = $ajaxUrls;
 	}
 

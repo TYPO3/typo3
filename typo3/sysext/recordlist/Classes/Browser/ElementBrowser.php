@@ -910,7 +910,7 @@ class ElementBrowser {
 	protected function main_rte($wiz = FALSE) {
 		// needs to be executed before doc->startPage()
 		if (in_array($this->act, array('file', 'folder'))) {
-			$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
+			$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "sc_alt_file_navframe_expandtoggle"');
 		} elseif ($this->act === 'page') {
 			$this->doc->getDragDropCode('pages');
 		}
@@ -1406,7 +1406,7 @@ class ElementBrowser {
 	 */
 	protected function main_file() {
 		// include JS files and set prefs for foldertree
-		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse"');
+		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "sc_alt_file_navframe_expandtoggle"');
 		// Starting content:
 		$content = $this->doc->startPage('TBE file selector');
 		// Add the FlashMessages if any
@@ -1541,7 +1541,7 @@ class ElementBrowser {
 	protected function main_folder() {
 		// include JS files
 		// Setting prefs for foldertree
-		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";');
+		$this->doc->getDragDropCode('folders', 'Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";');
 		// Starting content:
 		$content = $this->doc->startPage('TBE folder selector');
 		// Add the FlashMessages if any

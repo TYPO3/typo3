@@ -91,16 +91,17 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 				}, data.parameters);
 
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['T3Editor::saveCode'],
+					url: TYPO3.settings.ajaxUrls['t3editor_save'],
 					data: params,
 					method: 'POST',
 					beforeSend: function() {
 						codemirror.options.originalTextarea.parent().find('.t3e_modalOverlay').fadeIn();
 					},
 					complete: function(jqXHR) {
-						var wasSuccessful = jqXHR.status === 200 && jqXHR.responseJSON.result === true;
+						var response = JSON.parse(jqXHR.responseText);
+						var wasSuccessful = jqXHR.status === 200 && response.result === true;
 						codemirror.options.originalTextarea.parent().find('.t3e_modalOverlay').fadeOut();
-						T3editor.saveFunctionComplete(codemirror, wasSuccessful, jqXHR.responseJSON);
+						T3editor.saveFunctionComplete(codemirror, wasSuccessful, response);
 					}
 				});
 			});

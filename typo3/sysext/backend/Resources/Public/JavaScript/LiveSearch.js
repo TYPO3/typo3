@@ -18,7 +18,7 @@ define('TYPO3/CMS/Backend/LiveSearch', ['jquery', 'jquery/autocomplete'], functi
 
 	var containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem';
 	var searchFieldSelector = '.t3js-topbar-navigation-search-field';
-	var url = TYPO3.settings.ajaxUrls['LiveSearch'];
+	var url = TYPO3.settings.ajaxUrls['livesearch'];
 	var category = '';
 
 	var initialize = function() {

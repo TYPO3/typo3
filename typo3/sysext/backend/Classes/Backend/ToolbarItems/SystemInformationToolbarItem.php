@@ -14,13 +14,14 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
-use \TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -122,12 +123,16 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	/**
 	 * Renders the menu for AJAX calls
 	 *
-	 * @param array $params
-	 * @param AjaxRequestHandler $ajaxObj
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function renderAjax($params = array(), $ajaxObj) {
+	public function renderMenuAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$this->collectInformation();
-		$ajaxObj->addContent('systemInformationMenu', $this->getDropDown());
+
+		$response->getBody()->write($this->getDropDown());
+		$response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+		return $response;
 	}
 
 	/**

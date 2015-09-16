@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch;
+use TYPO3\CMS\Backend\Search\LiveSearch\QueryParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,19 +33,20 @@ class LiveSearchController {
 	/**
 	 * Processes all AJAX calls and sends back a JSON object
 	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function liveSearchAction($parameters, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler) {
-		$queryString = GeneralUtility::_GET('q');
-		$liveSearch = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch::class);
-		$queryParser = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Search\LiveSearch\QueryParser::class);
+	public function liveSearchAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$queryString = $request->getQueryParams()['q'];
+		$liveSearch = GeneralUtility::makeInstance(LiveSearch::class);
+		$queryParser = GeneralUtility::makeInstance(QueryParser::class);
 
 		$searchResults = array();
 		$liveSearch->setQueryString($queryString);
 		// Jump & edit - find page and retrieve an edit link (this is only for pages
 		if ($queryParser->isValidPageJump($queryString)) {
-			$searchResults[] = array_merge($liveSearch->findPage($queryString), array('type' => 'pageJump'));
+			$searchResults[] = array_merge($liveSearch->findPage($queryString), ['type' => 'pageJump']);
 			$commandQuery = $queryParser->getCommandForPageJump($queryString);
 			if ($commandQuery) {
 				$queryString = $commandQuery;
@@ -54,7 +59,7 @@ class LiveSearchController {
 				$searchResults[] = $item;
 			}
 		}
-		$ajaxRequestHandler->setContent($searchResults);
-		$ajaxRequestHandler->setContentFormat('json');
+		$response->getBody()->write(json_encode($searchResults));
+		return $response;
 	}
 }

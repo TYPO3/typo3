@@ -53,7 +53,7 @@ define('TYPO3/CMS/Workspaces/Toolbar/WorkspacesMenu', ['jquery'], function($) {
 	 */
 	WorkspacesMenu.switchWorkspace = function(workspaceId) {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['Workspaces::setWorkspace'],
+			url: TYPO3.settings.ajaxUrls['workspace_switch'],
 			type: 'post',
 			data: {
 				workspaceId: workspaceId,

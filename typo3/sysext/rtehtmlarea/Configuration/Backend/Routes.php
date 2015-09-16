@@ -24,4 +24,9 @@ return [
 		'path' => '/rte/wizard/parsehtml',
 		'target' => \TYPO3\CMS\Rtehtmlarea\Controller\ParseHtmlController::class . '::mainAction'
 	],
+	// Spellchecker
+	'rtehtmlarea_spellchecker' => [
+		'path' => '/rte/spellchecker',
+		'target' => \TYPO3\CMS\Rtehtmlarea\Controller\SpellCheckingController::class . '::main'
+	],
 ];

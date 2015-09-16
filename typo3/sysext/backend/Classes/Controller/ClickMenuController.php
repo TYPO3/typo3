@@ -14,11 +14,12 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\ClickMenu\ClickMenu;
-use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 
 /**
  * Script Class for the Context Sensitive Menu in TYPO3 (rendered in top frame, normally writing content dynamically to list frames).
@@ -125,10 +126,11 @@ class ClickMenuController {
 	/**
 	 * this is an intermediate clickmenu handler
 	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function printContentForAjaxRequest($parameters, AjaxRequestHandler $ajaxRequestHandler) {
+	public function getContextMenuAction(ServerRequestInterface $request, ResponseInterface $response) {
 
 		// XML has to be parsed, no parse errors allowed
 		@ini_set('display_errors', 0);
@@ -154,8 +156,9 @@ class ClickMenuController {
 
 		// send the data
 		$ajaxContent = '<?xml version="1.0"?><t3ajax>' . $ajaxContent . '</t3ajax>';
-		$ajaxRequestHandler->addContent('ClickMenu', $ajaxContent);
-		$ajaxRequestHandler->setContentFormat('xml');
+		$response->getBody()->write($ajaxContent);
+		$response = $response->withHeader('Content-Type', 'text/xml; charset=utf-8');
+		return $response;
 	}
 
 	/**

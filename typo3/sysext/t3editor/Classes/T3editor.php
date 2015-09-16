@@ -14,6 +14,8 @@ namespace TYPO3\CMS\T3editor;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -342,50 +344,59 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Save the content from t3editor retrieved via Ajax
 	 *
-	 * @param array $params Parameters (not used yet)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj AjaxRequestHandler to handle response
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function ajaxSaveCode($params, $ajaxObj) {
+	public function ajaxSaveCode(ServerRequestInterface $request, ResponseInterface $response) {
 		// cancel if its not an Ajax request
 		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-			$ajaxObj->setContentFormat('json');
-			$codeType = GeneralUtility::_GP('t3editor_savetype');
+			$codeType = isset($request->getParsedBody()['t3editor_savetype']) ? $request->getParsedBody()['t3editor_savetype'] : $request->getQueryParams()['t3editor_savetype'];
 			$savingsuccess = FALSE;
 			try {
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'])) {
 					$_params = array(
 						'pObj' => &$this,
 						'type' => $codeType,
-						'ajaxObj' => &$ajaxObj
+						'request' => $request,
+						'response' => $response
 					);
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/t3editor/classes/class.tx_t3editor.php']['ajaxSaveCode'] as $key => $_funcRef) {
 						$savingsuccess = GeneralUtility::callUserFunction($_funcRef, $_params, $this) || $savingsuccess;
 					}
 				}
+				$responseContent = array('result' => $savingsuccess);
 			} catch (\Exception $e) {
-				$ajaxObj->setContent(array('result' => FALSE, 'exceptionMessage' => htmlspecialchars($e->getMessage()), 'exceptionCode' => $e->getCode()));
-				return;
+				$responseContent = array(
+					'result' => FALSE,
+					'exceptionMessage' => htmlspecialchars($e->getMessage()),
+					'exceptionCode' => $e->getCode()
+				);
 			}
-			$ajaxObj->setContent(array('result' => $savingsuccess));
+			/** @var \TYPO3\CMS\Core\Http\Response $response */
+			$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
+			$response->getBody()->write(json_encode($responseContent));
 		}
+
+		return $response;
 	}
 
 	/**
 	 * Gets plugins that are defined at $TYPO3_CONF_VARS['EXTCONF']['t3editor']['plugins']
 	 * (called by typo3/ajax.php)
 	 *
-	 * @param array $params additional parameters (not used here)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function getPlugins($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
+	public function getPlugins(ServerRequestInterface $request, ResponseInterface $response) {
 		$result = array();
 		$plugins = &$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins'];
 		if (is_array($plugins)) {
 			$result = array_values($plugins);
 		}
-		$ajaxObj->setContent($result);
-		$ajaxObj->setContentFormat('jsonbody');
+		$request->getBody()->write(json_encode($result));
+		return $request;
 	}
 
 	/**

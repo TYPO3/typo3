@@ -11,7 +11,7 @@ A Backend AJAX call to check whether a file exists has been added. The call need
 Impact
 ======
 
-The method can be called with ``TYPO3.settings.ajaxUrls['TYPO3_tcefile::fileExists']``.
+The method can be called with ``TYPO3.settings.ajaxUrls['file_exists']``.
 The parameters ``fileName`` and ``fileTarget`` are required:
 
 * fileName: Name of the file

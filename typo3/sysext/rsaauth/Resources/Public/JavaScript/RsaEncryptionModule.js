@@ -63,7 +63,7 @@ define('TYPO3/CMS/Rsaauth/RsaEncryptionModule', ['jquery', './RsaLibrary'], func
 				RsaEncryption.$currentForm = $(this);
 
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['RsaEncryption::getRsaPublicKey'],
+					url: TYPO3.settings.ajaxUrls['rsa_publickey'],
 					data: {'skipSessionUpdate': 1},
 					success: RsaEncryption.handlePublicKeyResponse
 				});

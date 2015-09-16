@@ -103,10 +103,11 @@ class FileEditHook {
 	 */
 	public function save($parameters, $pObj) {
 		$savingsuccess = FALSE;
-		if ($parameters['type'] == $this->ajaxSaveType) {
+		if ($parameters['type'] === $this->ajaxSaveType) {
+			/** @var \TYPO3\CMS\Backend\Controller\File\FileController $tceFile */
 			$tceFile = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Controller\File\FileController::class);
-			$tceFile->processAjaxRequest(array(), $parameters['ajaxObj']);
-			$result = $parameters['ajaxObj']->getContent('result');
+			$response = $tceFile->processAjaxRequest($parameters['request'], $parameters['response']);
+			$result = json_decode((string)$response->getBody(), TRUE)['result'];
 			$savingsuccess = is_array($result) && $result['editfile'][0];
 		}
 		return $savingsuccess;

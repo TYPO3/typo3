@@ -41,8 +41,6 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		'web_WorkspacesWorkspaces',
 		'user,group'
 	);
-
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler('Workspaces::setWorkspace', \TYPO3\CMS\Workspaces\Controller\AjaxController::class . '->setWorkspace');
 }
 
 // @todo move icons to Core sprite or keep them here and remove the todo note ;)

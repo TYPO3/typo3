@@ -21,7 +21,7 @@ define('TYPO3/CMS/Beuser/Permissions', ['jquery'], function($) {
 			containerSelector: '#typo3-permissionList'
 		}
 	};
-	var ajaxUrl = TYPO3.settings.ajaxUrls['PermissionAjaxController::dispatch'];
+	var ajaxUrl = TYPO3.settings.ajaxUrls['user_access_permissions'];
 
 	/**
 	 * changes the value of the permissions in the form

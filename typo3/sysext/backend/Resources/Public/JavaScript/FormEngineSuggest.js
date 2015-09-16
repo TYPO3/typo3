@@ -23,7 +23,7 @@ define('TYPO3/CMS/Backend/FormEngineSuggest', ['jquery', 'jquery/autocomplete'],
 			pid = $searchField.data('pid'),
 			newRecordRow = $searchField.data('recorddata'),
 			minimumCharacters = $searchField.data('minchars'),
-			url = TYPO3.settings.ajaxUrls['t3lib_TCEforms_suggest::searchRecord'],
+			url = TYPO3.settings.ajaxUrls['record_suggest'],
 			params = {
 				'table': table,
 				'field': field,

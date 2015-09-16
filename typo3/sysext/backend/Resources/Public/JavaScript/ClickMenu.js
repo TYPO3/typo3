@@ -84,7 +84,7 @@ define('TYPO3/CMS/Backend/ClickMenu', ['jquery'], function($) {
 	 * @return void
 	 */
 	ClickMenu.fetch = function(parameters) {
-		var url = TYPO3.settings.ajaxUrls['ContextMenu::load'];
+		var url = TYPO3.settings.ajaxUrls['contextmenu'];
 		if (parameters) {
 			url += ((url.indexOf('?') == -1) ? '?' : '&') + parameters;
 		}

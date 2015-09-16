@@ -124,17 +124,17 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			$.each(files, function(i, file) {
 
 				ajaxCalls[i] = $.ajax({
-					url: TYPO3.settings.ajaxUrls['TYPO3_tcefile::fileExists'],
+					url: TYPO3.settings.ajaxUrls['file_exists'],
 					data: {
 						fileName: file.name,
 						fileTarget: me.target
 					},
 					cache: false,
 					success: function(response) {
-						var fileExists = typeof response.result !== 'undefined';
+						var fileExists = response !== false;
 						if (fileExists) {
 							askForOverride.push({
-								original: response.result,
+								original: response,
 								uploaded: file,
 								action: me.irreObjectUid ? actions.USE_EXISTING : actions.SKIP
 							});
@@ -224,7 +224,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 				me.queueLength--;
 				if (me.queueLength === 0) {
 					$.ajax({
-						url: TYPO3.settings.ajaxUrls['DocumentTemplate::getFlashMessages'],
+						url: TYPO3.settings.ajaxUrls['flashmessages_render'],
 						cache: false,
 						success: function(data) {
 							var messages = $('#typo3-messages');
@@ -406,23 +406,23 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 		};
 
 		me.uploadSuccess = function(data) {
-			if (data.result.upload) {
+			if (data.upload) {
 				me.dragUploader.decrementQueueLength();
 				me.$row.removeClass('uploading');
-				me.$fileName.text(data.result.upload[0].name);
+				me.$fileName.text(data.upload[0].name);
 				me.$progressPercentage.text('');
 				me.$progressMessage.text('100%');
 				me.$progressBar.outerWidth('100%');
 
 				// replace file icon
 				if (data.result.upload[0].icon) {
-					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.result.upload[0].id + '" data-listframe="1">' + data.result.upload[0].icon + '&nbsp;</span></a>');
+					me.$iconCol.html('<a href="#" class="t3-js-clickmenutrigger" data-table="' + data.upload[0].id + '" data-listframe="1">' + data.upload[0].icon + '&nbsp;</span></a>');
 				}
 
 				if (me.dragUploader.irreObjectUid) {
 					DragUploader.addFileToIrre(
 						me.dragUploader.irreObjectUid,
-						data.result.upload[0]
+						data.upload[0]
 					);
 					setTimeout(function() {
 						me.$row.remove();
@@ -433,7 +433,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 					}, 3000);
 				} else {
 					setTimeout(function() {
-						me.showFileInfo(data.result.upload[0]);
+						me.showFileInfo(data.upload[0]);
 						me.dragUploader.$trigger.trigger('uploadSuccess', [me, data]);
 					}, 3000);
 				}
@@ -511,7 +511,7 @@ define('TYPO3/CMS/Backend/DragUploader', ['jquery', 'moment', 'nprogress', 'TYPO
 			formData.append('upload_1', me.file);
 
 			var s = $.extend(true, {}, $.ajaxSettings, {
-				url: TYPO3.settings.ajaxUrls['TYPO3_tcefile::process'],
+				url: TYPO3.settings.ajaxUrls['file_process'],
 				contentType: false,
 				processData: false,
 				data: formData,

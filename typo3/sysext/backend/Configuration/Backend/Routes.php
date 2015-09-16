@@ -200,5 +200,5 @@ return [
 	'record_edit' => [
 		'path' => '/record/edit',
 		'target' => Controller\EditDocumentController::class . '::mainAction'
-	],
+	]
 ];

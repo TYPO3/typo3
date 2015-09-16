@@ -51,8 +51,9 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef', ['jquery'], function (
 		this.getDescription = function(callBack) {
 			var urlParameters = '&typeId=' + this.parentType + '&parameterName=' + this.name;
 			$.ajax({
-				url: TYPO3.settings.ajaxUrls['T3Editor_TSrefLoader::getDescription'],
+				url: TYPO3.settings.ajaxUrls['t3editor_tsref'],
 				data: {
+					fetch: 'description',
 					typeId: this.parentType,
 					parameterName: this.name
 				},
@@ -68,7 +69,10 @@ define('TYPO3/CMS/T3editor/Plugins/CodeCompletion/TsRef', ['jquery'], function (
 	 */
 	TsRef.loadTsrefAsync = function() {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['T3Editor_TSrefLoader::getTypes'],
+			url: TYPO3.settings.ajaxUrls['t3editor_tsref'],
+			data: {
+				fetch: 'types'
+			},
 			success: function(response) {
 				TsRef.doc = response;
 				TsRef.buildTree();

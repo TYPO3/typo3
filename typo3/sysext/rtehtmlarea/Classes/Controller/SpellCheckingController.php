@@ -148,16 +148,13 @@ class SpellCheckingController {
 	/**
 	 * AJAX entry point
 	 *
-	 * @param array $ajaxParams
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 * @throws \UnexpectedValueException
 	 */
-	public function main(array $ajaxParams) {
-		/** @var Response $response */
-		$response = GeneralUtility::makeInstance(Response::class);
-		$this->processRequest($ajaxParams['request'], $response);
-		header('Content-Type: text/html; charset=' . strtoupper($this->parserCharset));
-		echo $this->result;
+	public function main(ServerRequestInterface $request, ResponseInterface $response) {
+		return $this->processRequest($request, $response);
 	}
 
 	/**

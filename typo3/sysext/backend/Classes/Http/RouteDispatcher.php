@@ -39,8 +39,9 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface {
 	 * @throws \InvalidArgumentException if the defined target for the route is invalid
 	 */
 	public function dispatch(ServerRequestInterface $request, ResponseInterface $response) {
-		/** @var Route $route */
+		/** @var Router $router */
 		$router = GeneralUtility::makeInstance(Router::class);
+		/** @var Route $route */
 		$route = $router->matchRequest($request);
 		$request = $request->withAttribute('route', $route);
 		if (!$this->isValidRequest($request)) {
@@ -71,8 +72,15 @@ class RouteDispatcher extends Dispatcher implements DispatcherInterface {
 	 * @see \TYPO3\CMS\Backend\Routing\UriBuilder where the token is generated.
 	 */
 	protected function isValidRequest($request) {
-		$token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
 		$route = $request->getAttribute('route');
-		return ($route->getOption('access') === 'public' || $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier')));
+		if ($route->getOption('access') === 'public') {
+			return TRUE;
+		} elseif ($route->getOption('ajax')) {
+			$token = (string)(isset($request->getParsedBody()['ajaxToken']) ? $request->getParsedBody()['ajaxToken'] : $request->getQueryParams()['ajaxToken']);
+			return $this->getFormProtection()->validateToken($token, 'ajaxCall', $route->getOption('_identifier'));
+		} else {
+			$token = (string)(isset($request->getParsedBody()['token']) ? $request->getParsedBody()['token'] : $request->getQueryParams()['token']);
+			return $this->getFormProtection()->validateToken($token, 'route', $route->getOption('_identifier'));
+		}
 	}
 }

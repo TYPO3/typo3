@@ -97,7 +97,7 @@ define(['jquery'], function($) {
 	};
 
 	Tree = {
-		ajaxID: 'SC_alt_db_navframe::expandCollapse',	// has to be either "SC_alt_db_navframe::expandCollapse" or "SC_alt_file_navframe::expandCollapse"
+		ajaxID: 'sc_alt_db_navframe_expandtoggle',	// has to be either "sc_alt_db_navframe_expandtoggle" or "sc_alt_file_navframe_expandtoggle"
 		frameSetModule: null,
 		activateDragDrop: true,
 		highlightClass: 'active',

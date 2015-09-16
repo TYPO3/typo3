@@ -13,6 +13,9 @@ namespace TYPO3\CMS\T3editor;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
@@ -25,11 +28,6 @@ class TypoScriptReferenceLoader {
 	protected $xmlDoc;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Http\AjaxRequestHandler
-	 */
-	protected $ajaxObj;
-
-	/**
 	 * Default constructor
 	 */
 	public function __construct() {
@@ -40,25 +38,31 @@ class TypoScriptReferenceLoader {
 	 * General processor for AJAX requests.
 	 * (called by typo3/ajax.php)
 	 *
-	 * @param array $params Additional parameters (not used here)
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj The AjaxRequestHandler object of this request
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function processAjaxRequest($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
-		$this->ajaxObj = $ajaxObj;
+	public function processAjaxRequest(ServerRequestInterface $request, ResponseInterface $response) {
+		$parsedBody = $request->getParsedBody();
+		$queryParams = $request->getQueryParams();
+
 		// Load the TSref XML information:
 		$this->loadFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3editor') . 'Resources/Private/tsref.xml');
-		$ajaxIdParts = explode('::', $ajaxObj->getAjaxID(), 2);
-		$ajaxMethod = $ajaxIdParts[1];
-		$response = array();
-		// Process the AJAX requests:
-		if ($ajaxMethod == 'getTypes') {
-			$ajaxObj->setContent($this->getTypes());
-			$ajaxObj->setContentFormat('jsonbody');
-		} elseif ($ajaxMethod == 'getDescription') {
-			$ajaxObj->addContent('', $this->getDescription(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('typeId'), \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('parameterName')));
-			$ajaxObj->setContentFormat('plain');
+		$fetch = isset($parsedBody['fetch']) ? $parsedBody['fetch'] : $queryParams['fetch'];
+		$content = null;
+
+		switch ($fetch) {
+			case 'types':
+				$response->getBody()->write(json_encode($this->getTypes()));
+				break;
+			case 'description':
+				$typeId = isset($parsedBody['typeId']) ? $parsedBody['typeId'] : $queryParams['typeId'];
+				$parameterName = isset($parsedBody['parameterName']) ? $parsedBody['parameterName'] : $queryParams['parameterName'];
+				$response = $this->getDescription($typeId, $parameterName);
+				$response->withHeader('Content-Type', 'text/html; charset=utf8');
+				break;
 		}
+		return $response;
 	}
 
 	/**
@@ -111,12 +115,15 @@ class TypoScriptReferenceLoader {
 	 *
 	 * @param string $typeId
 	 * @param string $parameterName
-	 * @return string
+	 * @return ResponseInterface
 	 */
 	protected function getDescription($typeId, $parameterName = '') {
+		/** @var \TYPO3\CMS\Core\Http\Response $response */
+		$response = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\Response::class);
 		if (!$typeId) {
-			$this->ajaxObj->setError($GLOBALS['LANG']->getLL('typeIDMissing'));
-			return '';
+			$response->getBody()->write($GLOBALS['LANG']->getLL('typeIDMissing'));
+			$response = $response->withStatus(500);
+			return $response;
 		}
 		// getElementById does only work with schema
 		$type = $this->getType($typeId);
@@ -131,12 +138,13 @@ class TypoScriptReferenceLoader {
 						$description = $descriptions->item(0)->textContent;
 						$description = htmlspecialchars($description);
 						$description = nl2br($description);
-						return $description;
+						$response->getBody()->write($description);
+						break;
 					}
 				}
 			}
 		}
-		return '';
+		return $response;
 	}
 
 	/**

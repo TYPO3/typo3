@@ -151,7 +151,7 @@ var inline = {
 
 	getRecordDetails: function (objectId, returnURL) {
 		var context = this.getContext(this.parseObjectId('full', objectId, 0, 1));
-		inline.makeAjaxCall('getRecordDetails', [objectId, returnURL], true, context);
+		inline.makeAjaxCall('details', [objectId, returnURL], true, context);
 		return false;
 	},
 
@@ -161,7 +161,7 @@ var inline = {
 			if (recordUid) {
 				objectId += this.structureSeparator + recordUid;
 			}
-			this.makeAjaxCall('createNewRecord', [objectId], true, context);
+			this.makeAjaxCall('create', [objectId], true, context);
 		} else {
 			var message = TBE_EDITOR.labels.maxItemsAllowed.replace('{0}', this.data.config[objectId].max);
 			var matches = objectId.match(/^(data-\d+-.*?-\d+-.*?)-(.*?)$/);
@@ -177,18 +177,18 @@ var inline = {
 	synchronizeLocalizeRecords: function (objectId, type) {
 		var context = this.getContext(objectId);
 		var parameters = [objectId, type];
-		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true, context);
+		this.makeAjaxCall('synchronizelocalize', parameters, true, context);
 	},
 
 	setExpandedCollapsedState: function (objectId, expand, collapse) {
 		var context = this.getContext(objectId);
-		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse], false, context);
+		this.makeAjaxCall('expandcollapse', [objectId, expand, collapse], false, context);
 	},
 
 	makeAjaxCall: function (method, params, lock, context) {
 		var url = '', urlParams = '', options = {};
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
-			url = TYPO3.settings.ajaxUrls['t3lib_TCEforms_inline::' + method];
+			url = TYPO3.settings.ajaxUrls['record_inline_' + method];
 			urlParams = '';
 			for (var i = 0, max = params.length; i < max; i++) {
 				urlParams += '&ajax[' + i + ']=' + encodeURIComponent(params[i]);
@@ -319,7 +319,7 @@ var inline = {
 			if (!this.data.unique || !this.data.unique[objectId]) {
 				$selector.find('option').eq(selectedIndex).prop('selected', false);
 			}
-			this.makeAjaxCall('createNewRecord', [objectId, selectedValue], true, context);
+			this.makeAjaxCall('create', [objectId, selectedValue], true, context);
 		}
 		return false;
 	},
@@ -327,7 +327,7 @@ var inline = {
 	// foreign_selector: used by element browser (type='group/db')
 	importElement: function (objectId, table, uid, type) {
 		var context = this.getContext(objectId);
-		inline.makeAjaxCall('createNewRecord', [objectId, uid], true, context);
+		inline.makeAjaxCall('create', [objectId, uid], true, context);
 	},
 
 	importElementMultiple: function (objectId, table, uidArray, type) {
@@ -336,7 +336,7 @@ var inline = {
 		});
 	},
 	delayedImportElement: function (objectId, table, uid, type) {
-		if (inline.lockedAjaxMethod['createNewRecord'] == true) {
+		if (inline.lockedAjaxMethod['create'] == true) {
 			window.setTimeout("inline.delayedImportElement('" + objectId + "','" + table + "'," + uid + ", null );",
 				300);
 		} else {

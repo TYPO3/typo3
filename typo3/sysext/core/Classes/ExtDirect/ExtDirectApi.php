@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\ExtDirect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -46,12 +48,13 @@ class ExtDirectApi {
 	 * the API and are required by ExtDirect. The result is cached to improve the overall
 	 * performance.
 	 *
-	 * @param array $ajaxParams Ajax parameters
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj Ajax object
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface
 	 */
-	public function getAPI($ajaxParams, \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxObj) {
-		$ajaxObj->setContent(array());
+	public function getAPI(ServerRequestInterface $request, ResponseInterface $response) {
+		$response->getBody()->write(json_encode([]));
+		return $response;
 	}
 
 	/**
@@ -134,7 +137,7 @@ class ExtDirectApi {
 		if (TYPO3_MODE === 'FE') {
 			$url = GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=' . rawurlencode($namespace));
 		} else {
-			$url = BackendUtility::getAjaxUrl('ExtDirect::route', array('namespace' => $namespace));
+			$url = BackendUtility::getAjaxUrl('ext_direct_route', array('namespace' => $namespace));
 		}
 		return $url;
 	}

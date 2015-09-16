@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Form\Wizard;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,59 +34,63 @@ class ImageManipulationWizard {
 	protected $templatePath = 'EXT:backend/Resources/Private/Templates/';
 
 	/**
-	 * Returns the html for the AJAX API
+	 * Returns the HTML for the wizard inside the modal
 	 *
-	 * @param array $params
-	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler $ajaxRequestHandler
-	 * @return void
+	 * @param ServerRequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface $response
 	 */
-	public function getHtmlForImageManipulationWizard($params, $ajaxRequestHandler) {
-		if (!$this->checkHmacToken()) {
-			HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_403);
+	public function getWizardAction(ServerRequestInterface $request, ResponseInterface $response) {
+		if ($this->isValidToken($request)) {
+			$queryParams = $request->getQueryParams();
+			$fileUid = isset($request->getParsedBody()['file']) ? $request->getParsedBody()['file'] : $queryParams['file'];
+			$image = NULL;
+			if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
+				try {
+					$image = ResourceFactory::getInstance()->getFileObject($fileUid);
+				} catch (FileDoesNotExistException $e) {}
+			}
+
+			$view = $this->getFluidTemplateObject($this->templatePath . 'Wizards/ImageManipulationWizard.html');
+			$view->assign('image', $image);
+			$view->assign('zoom', (bool)$queryParams['bool']);
+			$view->assign('ratios', $this->getAvailableRatios($request));
+			$content = $view->render();
+
+			$response->getBody()->write($content);
+			return $response;
+		} else {
+			return $response->withStatus(403);
 		}
-
-		$fileUid = GeneralUtility::_GET('file');
-		$image = NULL;
-		if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
-			try {
-				$image = ResourceFactory::getInstance()->getFileObject($fileUid);
-			} catch (FileDoesNotExistException $e) {}
-		}
-
-		$view = $this->getFluidTemplateObject($this->templatePath . 'Wizards/ImageManipulationWizard.html');
-		$view->assign('image', $image);
-		$view->assign('zoom', (bool)GeneralUtility::_GET('zoom'));
-		$view->assign('ratios', $this->getRatiosArray());
-		$content = $view->render();
-
-		$ajaxRequestHandler->addContent('content', $content);
-		$ajaxRequestHandler->setContentFormat('html');
 	}
 
 	/**
 	 * Check if hmac token is correct
 	 *
+	 * @param ServerRequestInterface $request the request with the GET parameters
 	 * @return bool
 	 */
-	protected function checkHmacToken() {
-		$parameters = array();
-		if (GeneralUtility::_GET('file')) {
-			$parameters['file'] = GeneralUtility::_GET('file');
+	protected function isValidToken(ServerRequestInterface $request) {
+		$parameters = [
+			'zoom'   => $request->getQueryParams()['zoom'] ? '1' : '0',
+			'ratios' => $request->getQueryParams()['ratios'] ?: ''
+		];
+		if ($request->getQueryParams()['file']) {
+			$parameters['file'] = $request->getQueryParams()['file'];
 		}
-		$parameters['zoom'] = GeneralUtility::_GET('zoom') ? '1' : '0';
-		$parameters['ratios'] = GeneralUtility::_GET('ratios') ?: '';
 
 		$token = GeneralUtility::hmac(implode('|', $parameters), 'ImageManipulationWizard');
-		return $token === GeneralUtility::_GET('token');
+		return $token === $request->getQueryParams()['token'];
 	}
 
 	/**
 	 * Get available ratios
 	 *
+	 * @param ServerRequestInterface $request
 	 * @return array
 	 */
-	protected function getRatiosArray() {
-		$ratios = json_decode(GeneralUtility::_GET('ratios'));
+	protected function getAvailableRatios(ServerRequestInterface $request) {
+		$ratios = json_decode($request->getQueryParams()['ratios']);
 		// Json transforms an array with string keys to an array,
 		// we need to transform this to an array for the fluid ForViewHelper
 		if (is_object($ratios)) {
