@@ -40,11 +40,23 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase {
 	 */
 	protected $dbProphecy;
 
-	public function setUp() {
+	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = [];
+
+	protected function setUp() {
+		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 
 		$this->subject = new DatabaseSystemLanguageRows();
+	}
+
+	protected function tearDown() {
+		GeneralUtility::purgeInstances();
+		GeneralUtility::resetSingletonInstances($this->singletonInstances);
+		parent::tearDown();
 	}
 
 	/**
