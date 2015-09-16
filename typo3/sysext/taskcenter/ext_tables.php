@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'user',
 		'task',
 		'top',
-		'EXT:taskcenter/Modules/Taskcenter/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Taskcenter\Controller\TaskModuleController::class . '::mainAction',
 			'access' => 'group,user',
 			'name' => 'user_task',
 			'labels' => array(

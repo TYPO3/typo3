@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Info\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -131,10 +133,36 @@ class InfoModuleController extends BaseScriptClass {
 	 * Print module content (from $this->content)
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * Then checks for module functions that have hooked in, and renders menu etc.
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+
+		// Checking for first level external objects
+		$this->checkExtObj();
+
+		// Checking second level external objects
+		$this->checkSubExtObj();
+		$this->main();
+
+		$this->content = $this->doc->insertStylesAndJS($this->content);
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**

@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'list',
 		'',
-		'EXT:recordlist/Modules/Recordlist/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Recordlist\RecordList::class . '::mainAction',
 			'access' => 'user,group',
 			'name' => 'web_list',
 			'labels' => array(

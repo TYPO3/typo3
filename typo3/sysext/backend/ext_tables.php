@@ -7,9 +7,9 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'layout',
 		'top',
-		'EXT:backend/Modules/Layout/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Backend\Controller\PageLayoutController::class . '::mainAction',
 			'access' => 'user,group',
 			'name' => 'web_layout',
 			'labels' => array(

@@ -306,10 +306,11 @@ class ModuleLoader {
 		}
 
 		// Default script setup
-		if ($setupInformation['configuration']['script'] === '_DISPATCH') {
+		if ($setupInformation['configuration']['script'] === '_DISPATCH' || isset($setupInformation['configuration']['routeTarget'])) {
 			if ($setupInformation['configuration']['extbase']) {
 				$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('Tx_' . $name);
 			} else {
+				// just go through BackendModuleRequestHandler where the routeTarget is resolved
 				$finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
 			}
 		} elseif ($setupInformation['configuration']['script'] && file_exists($setupInformation['path'] . '/' . $setupInformation['configuration']['script'])) {

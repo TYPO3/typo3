@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'tools',
 		'txdbalM1',
 		'',
-		'EXT:dbal/Modules/Dbal/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Dbal\Controller\ModuleController::class . '::mainAction',
 			'access' => 'admin',
 			'name' => 'tools_txdbalM1',
 			'labels' => array(

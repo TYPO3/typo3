@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Lowlevel\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -59,6 +61,7 @@ class ConfigurationView extends BaseScriptClass {
 		$this->doc->setModuleTemplate('EXT:lowlevel/Resources/Private/Templates/config.html');
 		$this->doc->form = '<form action="" method="post">';
 		$this->doc->addStyleSheet('module', 'sysext/lowlevel/Resources/Public/Css/styles.css');
+		$this->doc->bodyTagId = 'ext-lowlevel-Modules-Configuration-index-php';
 	}
 
 	/**
@@ -203,12 +206,32 @@ class ConfigurationView extends BaseScriptClass {
 		$this->content = $this->doc->render('Configuration', $this->content);
 	}
 
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * Simply calls main() and init() and outputs the content
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+		$this->main();
+
+		$response->getBody()->write($this->content);
+		return $response;
+	}
+
 	/**
 	 * Print output to browser
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

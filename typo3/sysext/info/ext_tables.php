@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'info',
 		'',
-		'EXT:info/Modules/Info/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Info\Controller\InfoModuleController::class . '::mainAction',
 			'access' => 'user,group',
 			'name' => 'web_info',
 			'labels' => array(

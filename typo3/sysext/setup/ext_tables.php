@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'user',
 		'setup',
 		'after:task',
-		'EXT:setup/Modules/Setup/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Setup\Controller\SetupModuleController::class . '::mainAction',
 			'access' => 'group,user',
 			'name' => 'user_setup',
 			'labels' => array(

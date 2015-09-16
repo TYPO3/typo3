@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Scheduler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -264,11 +266,30 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	}
 
 	/**
+	 * Injects the request object for the current request or subrequest
+	 * Simply calls main() and init() and outputs the content
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+		$this->main();
+
+		$response->getBody()->write($this->content);
+		return $response;
+	}
+
+	/**
 	 * This method actually prints out the module's HTML content
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function render() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

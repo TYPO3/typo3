@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Setup\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -439,12 +441,34 @@ class SetupModuleController {
 		$this->content = $this->doc->render($this->getLanguageService()->getLL('UserSettings'), $this->content);
 	}
 
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * Simply calls main() and init() and writes the content to the response
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->simulateUser();
+		$this->storeIncomingData();
+		$this->init();
+		$this->main();
+
+		$response->getBody()->write($this->content);
+		return $response;
+	}
+
 	/**
 	 * Prints the content / ends page
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
 	}
 

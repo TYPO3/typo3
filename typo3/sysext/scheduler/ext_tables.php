@@ -7,9 +7,9 @@ if (TYPO3_MODE === 'BE') {
 		'system',
 		'txschedulerM1',
 		'',
-		'EXT:scheduler/Modules/Scheduler/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController::class . '::mainAction',
 			'access' => 'admin',
 			'name' => 'system_txschedulerM1',
 			'labels' => array(

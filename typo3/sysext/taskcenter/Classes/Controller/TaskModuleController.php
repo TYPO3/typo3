@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Taskcenter\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -74,6 +76,23 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->MOD_MENU['mode'] = $this->mergeExternalItems($this->MCONF['name'], 'mode', $this->MOD_MENU['mode']);
 		$this->MOD_MENU['mode'] = BackendUtility::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['mode'], 'menu.mode');
 		parent::menuConfig();
+	}
+
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * Simply calls main() and writes the content to the response
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->main();
+
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**

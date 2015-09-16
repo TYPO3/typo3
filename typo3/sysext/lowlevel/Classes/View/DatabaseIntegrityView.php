@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Lowlevel\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\IconUtility;
@@ -211,9 +213,28 @@ class DatabaseIntegrityView extends BaseScriptClass {
 	 * Print content
 	 *
 	 * @return void
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		echo $this->content;
+	}
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * Simply calls main() and init() and outputs the content
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+		$this->main();
+
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**

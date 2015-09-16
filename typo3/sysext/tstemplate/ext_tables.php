@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'ts',
 		'',
-		'EXT:tstemplate/Modules/TsTemplate/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateModuleController::class . '::mainAction',
 			'access' => 'admin',
 			'name' => 'web_ts',
 			'labels' => array(

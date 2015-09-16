@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\Dispatcher;
 use TYPO3\CMS\Core\Http\RequestHandlerInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -177,21 +178,31 @@ class BackendModuleRequestHandler implements RequestHandlerInterface {
 			}
 		}
 
-		$configuration = array(
-			'extensionName' => $moduleConfiguration['extensionName'],
-			'pluginName' => $moduleName
-		);
-		if (isset($moduleConfiguration['vendorName'])) {
-			$configuration['vendorName'] = $moduleConfiguration['vendorName'];
-		}
-
-		// Run Extbase
-		$bootstrap = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
-		$content = $bootstrap->run('', $configuration);
-
 		/** @var Response $response */
 		$response = GeneralUtility::makeInstance(Response::class);
-		$response->getBody()->write($content);
+
+		// Use Core Dispatching
+		if (isset($moduleConfiguration['routeTarget'])) {
+			$dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
+			$this->request = $this->request->withAttribute('target', $moduleConfiguration['routeTarget']);
+			$response = $dispatcher->dispatch($this->request, $response);
+		} else {
+			// extbase module
+			$configuration = array(
+				'extensionName' => $moduleConfiguration['extensionName'],
+				'pluginName' => $moduleName
+			);
+			if (isset($moduleConfiguration['vendorName'])) {
+				$configuration['vendorName'] = $moduleConfiguration['vendorName'];
+			}
+
+			// Run Extbase
+			$bootstrap = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+			$content = $bootstrap->run('', $configuration);
+
+			$response->getBody()->write($content);
+		}
+
 		return $response;
 	}
 

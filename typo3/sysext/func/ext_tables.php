@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'web',
 		'func',
 		'',
-		'EXT:func/Modules/AdvancedFunctions/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Func\Controller\PageFunctionsController::class . '::mainAction',
 			'access' => 'user,group',
 			'name' => 'web_func',
 			'labels' => array(

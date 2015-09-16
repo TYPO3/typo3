@@ -6,9 +6,9 @@ if (TYPO3_MODE === 'BE') {
 		'system',
 		'dbint',
 		'',
-		'EXT:lowlevel/Modules/DatabaseIntegrity/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView::class . '::mainAction',
 			'access' => 'admin',
 			'name' => 'system_dbint',
 			'workspaces' => 'online',
@@ -24,9 +24,9 @@ if (TYPO3_MODE === 'BE') {
 		'system',
 		'config',
 		'',
-		'EXT:lowlevel/Modules/Configuration/',
+		'',
 		array(
-			'script' => '_DISPATCH',
+			'routeTarget' => \TYPO3\CMS\Lowlevel\View\ConfigurationView::class . '::mainAction',
 			'access' => 'admin',
 			'name' => 'system_config',
 			'workspaces' => 'online',

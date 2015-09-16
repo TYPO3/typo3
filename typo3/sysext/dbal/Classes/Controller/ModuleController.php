@@ -14,7 +14,10 @@ namespace TYPO3\CMS\Dbal\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Script class; Backend module for DBAL extension
@@ -72,9 +75,9 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$languageService = $this->getLanguageService();
 		$this->thisScript = BackendUtility::getModuleUrl($this->MCONF['name']);
 		// Clean up settings:
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->MCONF['name']);
 		// Draw the header
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->form = '<form action="" method="post">';
 		// DBAL page title:
 		$this->content .= $this->doc->startPage($languageService->getLL('title'));
@@ -104,10 +107,29 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Prints out the module HTML
 	 *
 	 * @return string HTML output
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function printContent() {
+		GeneralUtility::logDeprecatedFunction();
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
+	}
+
+
+	/**
+	 * Injects the request object for the current request or subrequest
+	 * As this controller goes only through the main() method, it is rather simple for now
+	 *
+	 * @param ServerRequestInterface $request the current request
+	 * @param ResponseInterface $response
+	 * @return ResponseInterface the response with the content
+	 */
+	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		$GLOBALS['SOBE'] = $this;
+		$this->init();
+		$this->main();
+		$response->getBody()->write($this->content);
+		return $response;
 	}
 
 	/**
@@ -116,7 +138,7 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string HTML output
 	 */
 	protected function printSqlCheck() {
-		$input = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_dbal');
+		$input = GeneralUtility::_GP('tx_dbal');
 		$out = '
 			<form name="sql_check" action="' . $this->thisScript . '" method="post" enctype="multipart/form-data">
 			<script type="text/javascript">
@@ -287,7 +309,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 	 */
 	protected function printCachedInfo() {
 		// Get cmd:
-		if ((string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd') === 'clear') {
+		if ((string)GeneralUtility::_GP('cmd') === 'clear') {
 			$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 			$GLOBALS['TYPO3_DB']->cacheFieldInfo();
 		}
@@ -367,7 +389,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		// Disable debugging in any case...
 		$GLOBALS['TYPO3_DB']->debug = FALSE;
 		// Get cmd:
-		$cmd = (string)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
+		$cmd = (string)GeneralUtility::_GP('cmd');
 		switch ($cmd) {
 			case 'flush':
 				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');
@@ -489,7 +511,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				break;
 			default:
 				// Look for request to view specific script exec:
-				$specTime = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('specTime');
+				$specTime = GeneralUtility::_GP('specTime');
 				if ($specTime) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int)$specTime);
 					$tRows = array();
@@ -545,7 +567,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 					<a href="' . $this->thisScript . '">LOG</a> -
 					<a href="' . $this->thisScript . '&amp;cmd=where">WHERE</a> -
 
-					<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()) . '" target="tx_debuglog">[New window]</a>
+					<a href="' . htmlspecialchars(GeneralUtility::linkThisScript()) . '" target="tx_debuglog">[New window]</a>
 					<hr />
 		';
 		return $menu . $outStr;
