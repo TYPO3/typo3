@@ -79,8 +79,11 @@ class DatabaseLanguageRows implements FormDataProviderInterface {
 					/** @var TranslationConfigurationProvider $translationProvider */
 					$translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
 					foreach ($additionalLanguageUids as $additionalLanguageUid) {
-						// Continue if this system language record does not exist or if 0 is requested
-						if ($additionalLanguageUid === 0 || !isset($result['systemLanguageRows'][$additionalLanguageUid])) {
+						// Continue if this system language record does not exist or if 0 is requested or if row is the same as the to-be-displayed row
+						if ($additionalLanguageUid === 0
+							|| !isset($result['systemLanguageRows'][$additionalLanguageUid])
+							|| $additionalLanguageUid === (int)$result['databaseRow'][$languageField]
+						) {
 							continue;
 						}
 						$translationInfo = $translationProvider->translationInfo(

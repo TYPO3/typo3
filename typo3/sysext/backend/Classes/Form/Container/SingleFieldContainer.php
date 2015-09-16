@@ -318,15 +318,15 @@ class SingleFieldContainer extends AbstractContainer {
 	 * @return string Item string returned again, possibly with the original value added to.
 	 */
 	protected function renderDefaultLanguageContent($table, $field, $row, $item) {
-		if (is_array($this->data['defaultLanguageData'][$table . ':' . $row['uid']])) {
+		if (is_array($this->data['defaultLanguageRow'])) {
 			$defaultLanguageValue = BackendUtility::getProcessedValue(
 				$table,
 				$field,
-				$this->data['defaultLanguageData'][$table . ':' . $row['uid']][$field],
+				$this->data['defaultLanguageRow'][$field],
 				0,
 				1,
 				FALSE,
-				$this->data['defaultLanguageData'][$table . ':' . $row['uid']]['uid']
+				$this->data['defaultLanguageRow']['uid']
 			);
 			$fieldConfig = $this->data['processedTca']['columns'][$field];
 			// Don't show content if it's for IRRE child records:
@@ -337,18 +337,18 @@ class SingleFieldContainer extends AbstractContainer {
 						. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
 						. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 				}
-				$additionalPreviewLanguages = $this->data['additionalPreviewLanguages'];
+				$additionalPreviewLanguages = $this->data['additionalLanguageRows'];
 				foreach ($additionalPreviewLanguages as $previewLanguage) {
 					$defaultLanguageValue = BackendUtility::getProcessedValue(
 						$table,
 						$field,
-						$this->data['additionalPreviewLanguageData'][$table . ':' . $row['uid']][$previewLanguage['uid']][$field],
+						$previewLanguage[$field],
 						0,
-						1
+						TRUE
 					);
 					if ($defaultLanguageValue !== '') {
 						$item .= '<div class="t3-form-original-language" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_misc.xlf:localizeMergeIfNotBlank', TRUE) . '">'
-							. FormEngineUtility::getLanguageIcon($table, $row, ('v' . $previewLanguage['ISOcode']))
+							. FormEngineUtility::getLanguageIcon($table, $row, $previewLanguage['sys_language_uid'])
 							. $this->getMergeBehaviourIcon($fieldConfig['l10n_mode'])
 							. $this->previewFieldValue($defaultLanguageValue, $fieldConfig, $field) . '</div>';
 					}
