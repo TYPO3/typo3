@@ -13,6 +13,6 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['indexed_
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	'TYPO3.CMS.IndexedSearch',
 	'Pi2',
-	'Indexed Search (experimental)'
+	'Indexed Search (Extbase & Fluid based)'
 );
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['indexedsearch_pi2'] = 'layout,select_key,pages,recursive';
