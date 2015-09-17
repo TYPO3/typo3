@@ -85,11 +85,26 @@ class LocalCropScaleMaskHelper {
 				$crop = $configuration['crop'];
 			}
 
-			$im = $gifBuilder->imageCreateFromFile($originalFileName);
-			$croppedImage = GeneralUtility::tempnam('crop_', '.' . $sourceFile->getExtension());
-			$gifBuilder->crop($im, ['crop' => $crop]);
-			if ($gifBuilder->ImageWrite($im, $croppedImage)) {
-				$originalFileName = $croppedImage;
+			list($offsetLeft, $offsetTop, $newWidth, $newHeight) = explode(',', $crop, 4);
+
+			$backupPrefix = $gifBuilder->filenamePrefix;
+			$gifBuilder->filenamePrefix = 'crop_';
+
+			// the result info is an array with 0=width,1=height,2=extension,3=filename
+			$result = $gifBuilder->imageMagickConvert(
+				$originalFileName,
+				'',
+				'',
+				'',
+				sprintf('-crop %dx%d+%d+%d', $newWidth, $newHeight, $offsetLeft, $offsetTop),
+				'',
+				['noScale' => true],
+				true
+			);
+			$gifBuilder->filenamePrefix = $backupPrefix;
+
+			if ($result !== null) {
+				$originalFileName = $croppedImage = $result[3];
 			}
 		}
 
