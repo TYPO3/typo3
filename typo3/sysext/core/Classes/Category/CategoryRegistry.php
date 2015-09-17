@@ -139,10 +139,11 @@ class CategoryRegistry implements SingletonInterface {
 	 */
 	public function getCategoryFieldsForTable(array &$configuration) {
 		$table = '';
+		$menuType = isset($configuration['row']['menu_type'][0]) ? $configuration['row']['menu_type'][0] : '';
 		// Define the table being looked up from the type of menu
-		if ($configuration['row']['menu_type'] == 'categorized_pages') {
+		if ($menuType === 'categorized_pages') {
 			$table = 'pages';
-		} elseif ($configuration['row']['menu_type'] == 'categorized_content') {
+		} elseif ($menuType === 'categorized_content') {
 			$table = 'tt_content';
 		}
 		// Return early if no table is defined
