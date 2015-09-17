@@ -104,28 +104,40 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return void
 	 */
 	public function updateLanguageAction(array $data) {
+		$numberOfExtensionsToUpdate = 10;
 		$response = array(
 			'success'  => FALSE,
 			'progress' => 0,
 		);
 		if (!empty($data['locale'])) {
-			$extension = $this->extensionRepository->findOneByOffset((int)$data['count']);
-			if (!empty($extension)) {
-				$allCount = (int)$this->extensionRepository->countAll();
-				$offset = (int)$data['count'];
+			$allCount = 0;
+			for ($i = 0; $i < $numberOfExtensionsToUpdate; $i++) {
+				$offset = (int)$data['count'] * $numberOfExtensionsToUpdate + $i;
+				$extension = $this->extensionRepository->findOneByOffset($offset);
+				if (empty($extension)) {
+					// No more extensions to update
+					break;
+				}
+				if ($allCount === 0) {
+					$allCount = (int)$this->extensionRepository->countAll();
+				}
 				$extensionKey = $extension->getKey();
 				$result = $this->translationService->updateTranslation($extensionKey, $data['locale']);
 				$progress = round((($offset + 1) * 100) / $allCount, 2);
+				$response['result'][$data['locale']][$extensionKey] = $result[$data['locale']];
 				if (empty($result[$extensionKey][$data['locale']]['error'])) {
-					$this->registryService->set($data['locale'], $GLOBALS['EXEC_TIME']);
-					$response = array(
-						'success'   => TRUE,
-						'result'    => $result,
-						'timestamp' => $GLOBALS['EXEC_TIME'],
-						'progress'  => $progress > 100 ? 100 : $progress,
-					);
+					$response['success'] = TRUE;
+				} else {
+					// Could not update an extension, stop here!
+					$response['success'] = FALSE;
+					break;
 				}
 			}
+		}
+		if ($response['success']) {
+			$this->registryService->set($data['locale'], $GLOBALS['EXEC_TIME']);
+			$response['timestamp'] = $GLOBALS['EXEC_TIME'];
+			$response['progress'] = $progress > 100 ? 100 : $progress;
 		}
 		$this->view->assign('response', $response);
 	}
