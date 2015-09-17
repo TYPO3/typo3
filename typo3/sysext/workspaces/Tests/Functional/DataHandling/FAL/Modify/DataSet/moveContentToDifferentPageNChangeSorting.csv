@@ -13,6 +13,6 @@ tt_content
 ,330,89,256,0,0,0,0,0,0,0,0,"Regular Element #1",2
 ,331,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",2
 ,332,-1,512,0,0,0,1,4,0,331,0,"Regular Element #2",2
-,333,90,256,0,0,0,1,3,0,0,331,"[MOVE-TO PLACEHOLDER for #331, WS#1]",
+,333,90,256,0,0,0,1,3,0,0,331,"[MOVE-TO PLACEHOLDER for #331, WS#1]",0
 ,334,-1,256,0,0,0,1,4,0,330,0,"Regular Element #1",2
-,335,90,512,0,0,0,1,3,0,0,330,"[MOVE-TO PLACEHOLDER for #330, WS#1]",
+,335,90,512,0,0,0,1,3,0,0,330,"[MOVE-TO PLACEHOLDER for #330, WS#1]",0
