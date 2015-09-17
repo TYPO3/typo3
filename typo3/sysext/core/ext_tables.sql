@@ -138,7 +138,7 @@ CREATE TABLE pages (
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	url_scheme tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	target varchar(80) DEFAULT '' NOT NULL,
-	media text,
+	media int(11) unsigned DEFAULT '0' NOT NULL,
 	lastUpdated int(10) unsigned DEFAULT '0' NOT NULL,
 	keywords text,
 	cache_timeout int(10) unsigned DEFAULT '0' NOT NULL,

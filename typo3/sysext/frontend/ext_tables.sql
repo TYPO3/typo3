@@ -144,7 +144,7 @@ CREATE TABLE pages_language_overlay (
 	deleted tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	subtitle varchar(255) DEFAULT '' NOT NULL,
 	nav_title varchar(255) DEFAULT '' NOT NULL,
-	media text,
+	media int(11) unsigned DEFAULT '0' NOT NULL,
 	keywords text,
 	description text,
 	abstract text,
@@ -254,15 +254,13 @@ CREATE TABLE tt_content (
 	rowDescription text,
 	bodytext mediumtext,
 
-	# Even though we're using FAL and an IRRE field for images
-	# now, it needs to stay "text" for the migration to work
-	image text,
+	image int(11) unsigned DEFAULT '0' NOT NULL,
 
 	imagewidth mediumint(11) unsigned DEFAULT '0' NOT NULL,
 	imageorient tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	imagecols tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	imageborder tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	media text,
+	media int(11) unsigned DEFAULT '0' NOT NULL,
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	cols int(11) unsigned DEFAULT '0' NOT NULL,
