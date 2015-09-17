@@ -1,14 +1,16 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// add plugin controller
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('TYPO3.CMS.Felogin', 'setup', '
-# Setting "felogin" plugin TypoScript
-plugin.tx_felogin_pi1 = USER_INT
-plugin.tx_felogin_pi1.userFunc = TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController->main
-');
-
 // Add a default TypoScript for the CType "login" (also replaces history login functionality)
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('TYPO3.CMS.Felogin', 'constants', '
+styles.content.loginform {
+    # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the folder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
+  pid =
+    # cat=content/cLogin; type=; label= Login template: Enter the path for the HTML template to be used
+  templateFile = EXT:felogin/template.html
+}
+', 'defaultContentRendering');
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('TYPO3.CMS.Felogin', 'setup', '
 # Setting "felogin" plugin TypoScript
 tt_content.login = COA
