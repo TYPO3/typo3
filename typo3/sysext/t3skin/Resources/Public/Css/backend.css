@@ -7907,13 +7907,13 @@ button.close {
   word-wrap: break-word;
 }
 .diff-item-result del {
-  color: #c83c3c;
-  background-color: #faefef;
+  color: #c80c05;
+  background-color: #fff6f6;
   text-decoration: none;
 }
 .diff-item-result ins {
-  color: #79a548;
-  background-color: #eaf2e1;
+  color: #44a512;
+  background-color: #ebfce3;
   text-decoration: none;
 }
 .clearfix:before,
