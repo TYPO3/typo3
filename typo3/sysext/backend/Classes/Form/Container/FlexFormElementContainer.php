@@ -92,7 +92,6 @@ class FlexFormElementContainer extends AbstractContainer {
 					$lkeys = array($vDEFkey);
 				}
 				$html = array();
-				$html[] = '<div class="form-section">';
 				foreach ($lkeys as $lkey) {
 					$displayConditionResult = TRUE;
 					if (!empty($flexFormFieldArray['displayCond'])) {
@@ -180,9 +179,10 @@ class FlexFormElementContainer extends AbstractContainer {
 					$html[] = '</div>';
 					$html[] = '</div>';
 				}
-				$html[] = '</div>';
 
-				$resultArray['html'] .= implode(LF, $html);
+				if (!empty($html)) {
+					$resultArray['html'] .= '<div class="form-section">' . implode(LF, $html) . '</div>';
+				}
 				$childResult['html'] = '';
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
 			}
