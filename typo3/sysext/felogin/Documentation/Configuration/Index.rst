@@ -78,7 +78,7 @@ templateFile
          The Template File
 
    Default
-         EXT:felogin/template.html
+         EXT:felogin/Resources/Private/Templates/FrontendLogin.html
 
 
 

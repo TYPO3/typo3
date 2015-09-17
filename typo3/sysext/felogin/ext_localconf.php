@@ -7,7 +7,7 @@ styles.content.loginform {
     # cat=content/cLogin; type=int+; label= PID of user archive: Enter the page-uid number (PID) of the folder where you keep your fe_users that are supposed to login on this site. This setting is necessary, if login is going to work!
   pid =
     # cat=content/cLogin; type=; label= Login template: Enter the path for the HTML template to be used
-  templateFile = EXT:felogin/template.html
+  templateFile = EXT:felogin/Resources/Private/Templates/FrontendLogin.html
 }
 ', 'defaultContentRendering');
 

@@ -7,7 +7,7 @@ plugin.tx_felogin_pi1 {
 	storagePid = {$styles.content.loginform.pid}
 	recursive =
 
-	# Location of the template file, it is EXT:felogin/template.html by default
+	# Location of the template file, it is EXT:felogin/Resources/Private/Templates/FrontendLogin.html by default
 	templateFile = {$styles.content.loginform.templateFile}
 
 	# baseURL for the link generation

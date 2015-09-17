@@ -30,14 +30,6 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 	public $prefixId = 'tx_felogin_pi1';
 
 	/**
-	 * Path to this script relative to the extension dir.
-	 *
-	 * @var string
-	 * @TODO This is still set to the "old" class location since the locallang.xlf file in the same dir is loaded by pi_loadLL
-	 */
-	public $scriptRelPath = 'pi1/class.tx_felogin_pi1.php';
-
-	/**
 	 * The extension key.
 	 *
 	 * @var string
@@ -124,7 +116,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		// Loading default pivars
 		$this->pi_setPiVarDefaults();
 		// Loading language-labels
-		$this->pi_loadLL();
+		$this->pi_loadLL('EXT:felogin/Resources/Private/Language/locallang.xlf');
 		// Init FlexForm configuration for plugin:
 		$this->pi_initPIflexForm();
 		$this->mergeflexFormValuesIntoConf();
@@ -153,7 +145,7 @@ class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin 
 		}
 		$this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
 		// Get Template
-		$templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/template.html';
+		$templateFile = $this->conf['templateFile'] ?: 'EXT:felogin/Resources/Private/Templates/FrontendLogin.html';
 		$this->template = $this->cObj->fileResource($templateFile);
 		// Is user logged in?
 		$this->userIsLoggedIn = $this->frontendController->loginUser;

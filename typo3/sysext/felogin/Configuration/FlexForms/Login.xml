@@ -6,13 +6,13 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.sheet_general</sheetTitle>
+					<sheetTitle>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.sheet_general</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<showForgotPassword>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_forgot_password</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.show_forgot_password</label>
 							<config>
 								<type>check</type>
 								<items type="array">
@@ -26,7 +26,7 @@
 					</showForgotPassword>
 					<showPermaLogin>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_permalogin</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.show_permalogin</label>
 							<config>
 								<default>1</default>
 								<type>check</type>
@@ -41,7 +41,7 @@
 					</showPermaLogin>
 					<showLogoutFormAfterLogin>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_logoutFormAfterLogin</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.show_logoutFormAfterLogin</label>
 							<config>
 								<default></default>
 								<type>check</type>
@@ -57,7 +57,7 @@
 					<pages>
 						<TCEforms>
 							<exclude>1</exclude>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.user_storage</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.user_storage</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -114,7 +114,7 @@
 					</recursive>
 					<templateFile>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.template_file</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.template_file</label>
 							<config>
 								<type>group</type>
 								<internal_type>file</internal_type>
@@ -133,47 +133,47 @@
 		<s_redirect>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.sheet_redirect</sheetTitle>
+					<sheetTitle>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.sheet_redirect</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<redirectMode>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.0</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.0</numIndex>
 										<numIndex index="1">groupLogin</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.1</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.1</numIndex>
 										<numIndex index="1">userLogin</numIndex>
 									</numIndex>
 
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.2</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.2</numIndex>
 										<numIndex index="1">login</numIndex>
 									</numIndex>
 									<numIndex index="3" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.3</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.3</numIndex>
 										<numIndex index="1">logout</numIndex>
 									</numIndex>
 									<numIndex index="4" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.4</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.4</numIndex>
 										<numIndex index="1">loginError</numIndex>
 									</numIndex>
 									<numIndex index="5" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.5</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.5</numIndex>
 										<numIndex index="1">getpost</numIndex>
 									</numIndex>
 									<numIndex index="6" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.6</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.6</numIndex>
 										<numIndex index="1">referer</numIndex>
 									</numIndex>
 									<numIndex index="7" type="array">
-										<numIndex index="0">LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectMode.I.7</numIndex>
+										<numIndex index="0">LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectMode.I.7</numIndex>
 										<numIndex index="1">refererDomains</numIndex>
 									</numIndex>
 								</items>
@@ -185,7 +185,7 @@
 					</redirectMode>
 					<redirectFirstMethod>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectFirstMethod</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectFirstMethod</label>
 							<config>
 								<type>check</type>
 								<items type="array">
@@ -199,7 +199,7 @@
 					</redirectFirstMethod>
 					<redirectPageLogin>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLogin</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectPageLogin</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -218,7 +218,7 @@
 					</redirectPageLogin>
 					<redirectPageLoginError>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLoginError</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectPageLoginError</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -237,7 +237,7 @@
 					</redirectPageLoginError>
 					<redirectPageLogout>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectPageLogout</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectPageLogout</label>
 							<config>
 								<type>group</type>
 								<internal_type>db</internal_type>
@@ -256,7 +256,7 @@
 					</redirectPageLogout>
 					<redirectDisable>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.redirectDisable</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.redirectDisable</label>
 							<config>
 								<type>check</type>
 								<items type="array">
@@ -274,13 +274,13 @@
 		<s_messages>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.sheet_messages</sheetTitle>
+					<sheetTitle>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.sheet_messages</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<welcome_header>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.welcome_header</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.welcome_header</label>
 							<config>
 								<type>input</type>
 								<size>30</size>
@@ -289,7 +289,7 @@
 					</welcome_header>
 					<welcome_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.welcome_message</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.welcome_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -299,7 +299,7 @@
 					</welcome_message>
 					<success_header>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.success_header</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.success_header</label>
 							<config>
 								<type>input</type>
 								<size>30</size>
@@ -308,7 +308,7 @@
 					</success_header>
 					<success_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.success_message</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.success_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -318,7 +318,7 @@
 					</success_message>
 					<error_header>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.error_header</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.error_header</label>
 							<config>
 								<type>input</type>
 								<size>30</size>
@@ -327,7 +327,7 @@
 					</error_header>
 					<error_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.error_message</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.error_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -337,7 +337,7 @@
 					</error_message>
 					<status_header>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.status_header</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.status_header</label>
 							<config>
 								<type>input</type>
 								<size>30</size>
@@ -346,7 +346,7 @@
 					</status_header>
 					<status_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.status_message</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.status_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -356,7 +356,7 @@
 					</status_message>
 					<logout_header>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.logout_header</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.logout_header</label>
 							<config>
 								<type>input</type>
 								<size>30</size>
@@ -365,7 +365,7 @@
 					</logout_header>
 					<logout_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.logout_message</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.logout_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
@@ -375,7 +375,7 @@
 					</logout_message>
 					<forgot_header>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.forgot_header</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.forgot_header</label>
 							<config>
 								<type>input</type>
 								<size>30</size>
@@ -384,7 +384,7 @@
 					</forgot_header>
 					<forgot_reset_message>
 						<TCEforms>
-							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.forgot_message</label>
+							<label>LLL:EXT:felogin/Resources/Private/Language/Database.xlf:tt_content.pi_flexform.forgot_message</label>
 							<config>
 								<type>text</type>
 								<cols>30</cols>
