@@ -1696,8 +1696,8 @@ class BackendUtility {
 					continue;
 				}
 
-				// Web image
-				if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
+				// Preview web image or media elements
+				if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'], $fileReferenceObject->getExtension())) {
 					$processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, array(
 										'width' => $sizeParts[0],
 										'height' => $sizeParts[1] . 'c',
