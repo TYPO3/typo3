@@ -21,14 +21,12 @@ namespace TYPO3\CMS\Core\FormProtection;
 class DisabledFormProtection extends AbstractFormProtection
 {
     /**
-     * Disable parent constructor
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Disable parent method
+     *
+     * @param string $formName
+     * @param string $action
+     * @param string $formInstanceName
+     * @return string
      */
     public function generateToken($formName, $action = '', $formInstanceName = '')
     {
@@ -48,13 +46,6 @@ class DisabledFormProtection extends AbstractFormProtection
     public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '')
     {
         return true;
-    }
-
-    /**
-     * Dummy implementation
-     */
-    protected function createValidationErrorMessage()
-    {
     }
 
     /**

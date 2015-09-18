@@ -26,6 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractFormProtection
 {
     /**
+     * @var \Closure
+     */
+    protected $validationFailedCallback;
+
+    /**
      * The session token which is used to be hashed during token generation.
      *
      * @var string
@@ -124,12 +129,14 @@ abstract class AbstractFormProtection
      * Creates or displays an error message telling the user that the submitted
      * form token is invalid.
      *
-     * This function may also be empty if the validation error should be handled
-     * silently.
-     *
      * @return void
      */
-    abstract protected function createValidationErrorMessage();
+    protected function createValidationErrorMessage()
+    {
+        if ($this->validationFailedCallback !== null) {
+            $this->validationFailedCallback->__invoke();
+        }
+    }
 
     /**
      * Retrieves the session token.

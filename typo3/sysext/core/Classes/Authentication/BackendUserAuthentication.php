@@ -2547,7 +2547,7 @@ This is a dump of the failures:
      */
     public function logoff()
     {
-        if (isset($GLOBALS['BE_USER'])) {
+        if (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid'])) {
             \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->clean();
         }
         parent::logoff();

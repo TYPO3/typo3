@@ -23,16 +23,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures;
 class FormProtectionTesting extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
 {
     /**
-     * Creates or displayes an error message telling the user that the submitted
-     * form token is invalid.
-     *
-     * @return void
-     */
-    protected function createValidationErrorMessage()
-    {
-    }
-
-    /**
      * Retrieves all saved tokens.
      *
      * @return string The saved token

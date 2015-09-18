@@ -59,16 +59,6 @@ namespace TYPO3\CMS\Core\FormProtection;
 class InstallToolFormProtection extends AbstractFormProtection
 {
     /**
-     * Creates or displays an error message telling the user that the submitted
-     * form token is invalid.
-     *
-     * @return void
-     */
-    protected function createValidationErrorMessage()
-    {
-    }
-
-    /**
      * Retrieves or generates the session token.
      *
      * @return void

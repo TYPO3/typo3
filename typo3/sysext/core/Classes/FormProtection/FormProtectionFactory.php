@@ -14,6 +14,12 @@ namespace TYPO3\CMS\Core\FormProtection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
+
 /**
  * This class creates and manages instances of the various form protection
  * classes.
@@ -58,14 +64,17 @@ class FormProtectionFactory
      * @param string $className
      * @return \TYPO3\CMS\Core\FormProtection\AbstractFormProtection the requested instance
      */
-    public static function get($className = null)
+    public static function get($className = 'default')
     {
-        if ($className === null) {
-            $className = self::getClassNameByState();
+        if (isset(self::$instances[$className])) {
+            return self::$instances[$className];
         }
-        if (!isset(self::$instances[$className])) {
-            self::createAndStoreInstance($className);
+        if ($className === 'default') {
+            $classNameAndConstructorArguments = self::getClassNameAndConstructorArgumentsByState();
+        } else {
+            $classNameAndConstructorArguments = func_get_args();
         }
+        self::$instances[$className] = self::createInstance($classNameAndConstructorArguments);
         return self::$instances[$className];
     }
 
@@ -73,22 +82,40 @@ class FormProtectionFactory
      * Returns the class name depending on TYPO3_MODE and
      * active backend session.
      *
-     * @return string
+     * @return array
      */
-    protected static function getClassNameByState()
+    protected static function getClassNameAndConstructorArgumentsByState()
     {
         switch (true) {
             case self::isInstallToolSession():
-                $className = \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection::class;
-                break;
-            case self::isBackendSession():
-                $className = \TYPO3\CMS\Core\FormProtection\BackendFormProtection::class;
+                $classNameAndConstructorArguments = [
+                    InstallToolFormProtection::class
+                ];
                 break;
             case self::isFrontendSession():
+                $classNameAndConstructorArguments = [
+                    FrontendFormProtection::class,
+                    $GLOBALS['TSFE']->fe_user
+                ];
+                break;
+            case self::isBackendSession():
+                $classNameAndConstructorArguments = [
+                    BackendFormProtection::class,
+                    $GLOBALS['BE_USER'],
+                    GeneralUtility::makeInstance(Registry::class),
+                    self::getMessageClosure(
+                        $GLOBALS['LANG'],
+                        GeneralUtility::makeInstance(FlashMessageService::class)->getMessageQueueByIdentifier(),
+                        (bool)(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)
+                    )
+                ];
+                break;
             default:
-                $className = \TYPO3\CMS\Core\FormProtection\DisabledFormProtection::class;
+                $classNameAndConstructorArguments = [
+                    DisabledFormProtection::class
+                ];
         }
-        return $className;
+        return $classNameAndConstructorArguments;
     }
 
     /**
@@ -118,26 +145,50 @@ class FormProtectionFactory
      */
     protected static function isFrontendSession()
     {
-        return is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication && isset($GLOBALS['TSFE']->fe_user->user['uid']) && TYPO3_MODE === 'FE';
+        return TYPO3_MODE === 'FE' && is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication && isset($GLOBALS['TSFE']->fe_user->user['uid']);
+    }
+
+    /**
+     * @param LanguageService $languageService
+     * @param FlashMessageQueue $messageQueue
+     * @param bool $isAjaxCall
+     * @internal Only public to be used in tests
+     * @return \Closure
+     */
+    public static function getMessageClosure(LanguageService $languageService, FlashMessageQueue $messageQueue, $isAjaxCall)
+    {
+        return function () use ($languageService, $messageQueue, $isAjaxCall) {
+            /** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                $languageService->sL('LLL:EXT:lang/locallang_core.xlf:error.formProtection.tokenInvalid'),
+                '',
+                \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR,
+                !$isAjaxCall
+            );
+            $messageQueue->enqueue($flashMessage);
+        };
     }
 
     /**
      * Creates an instance for the requested class $className
      * and stores it internally.
      *
-     * @param string $className
+     * @param array $classNameAndConstructorArguments
      * @throws \InvalidArgumentException
+     * @return AbstractFormProtection
      */
-    protected static function createAndStoreInstance($className)
+    protected static function createInstance(array $classNameAndConstructorArguments)
     {
-        if (!class_exists($className, true)) {
+        $className = $classNameAndConstructorArguments[0];
+        if (!class_exists($className)) {
             throw new \InvalidArgumentException('$className must be the name of an existing class, but ' . 'actually was "' . $className . '".', 1285352962);
         }
-        $instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
+        $instance = call_user_func_array([\TYPO3\CMS\Core\Utility\GeneralUtility::class, 'makeInstance'], $classNameAndConstructorArguments);
         if (!$instance instanceof AbstractFormProtection) {
-            throw new \InvalidArgumentException('$className must be a subclass of ' . \TYPO3\CMS\Core\FormProtection\AbstractFormProtection::class . ', but actually was "' . $className . '".', 1285353026);
+            throw new \InvalidArgumentException('$className must be a subclass of ' . AbstractFormProtection::class . ', but actually was "' . $className . '".', 1285353026);
         }
-        self::$instances[$className] = $instance;
+        return $instance;
     }
 
     /**
@@ -166,7 +217,6 @@ class FormProtectionFactory
     public static function purgeInstances()
     {
         foreach (self::$instances as $key => $instance) {
-            $instance->__destruct();
             unset(self::$instances[$key]);
         }
     }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Lang\LanguageService;
+
 /**
  * Testcase for \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
  */
@@ -73,7 +75,7 @@ class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $formProtection->expects($this->once())->method('clean');
 
         \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(
-            \TYPO3\CMS\Core\FormProtection\BackendFormProtection::class,
+            'default',
             $formProtection
         );
 
