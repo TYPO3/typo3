@@ -22,7 +22,7 @@ class LessThanValidatorTest extends AbstractValidatorTest {
 	/**
 	 * @var string
 	 */
-	protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\LessthanValidator::class;
+	protected $subjectClassName = \TYPO3\CMS\Form\Domain\Validator\LessThanValidator::class;
 
 	/**
 	 * @return array
