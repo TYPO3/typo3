@@ -1000,6 +1000,38 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 
+		// Modules
+		'module-web' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'file-o'
+			)
+		),
+		'module-file' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'image'
+			)
+		),
+		'module-tools' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'rocket'
+			)
+		),
+		'module-system' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'plug'
+			)
+		),
+		'module-help' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'question-circle'
+			)
+		),
+
 		// Overlays
 		'overlay-deleted' => array(
 			'provider' => SvgIconProvider::class,

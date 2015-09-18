@@ -13058,6 +13058,11 @@ iframe {
   width: auto;
   height: auto;
 }
+.typo3-topbar-navigation-items .dropdown > a .icon-size-default .icon-unify,
+.typo3-topbar-navigation-items .dropdown > a .icon-size-small .icon-unify {
+  line-height: 16px;
+  font-size: 16px;
+}
 .typo3-topbar-navigation-items .dropdown-toggle {
   position: relative;
 }

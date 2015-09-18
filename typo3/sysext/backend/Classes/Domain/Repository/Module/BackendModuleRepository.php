@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Domain\Repository\Module;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -337,7 +339,8 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
 		// add as a sprite icon
 		if (!empty($moduleData['iconIdentifier'])) {
-			$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($moduleData['iconIdentifier'], array('tagName' => 'i'));
+			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$icon = $iconFactory->getIcon($moduleData['iconIdentifier'])->render();
 		} elseif (!empty($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey])) {
 			$imageReference = $GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey];
 			$iconFileRelative = $this->getModuleIconRelative($imageReference);
