@@ -96,6 +96,8 @@ class SilentConfigurationUpgradeService {
 		'SYS/form_enctype',
 		// #69904
 		'BE/diff_path',
+		// #69930
+		'SYS/serverTimeZone',
 	);
 
 	/**
