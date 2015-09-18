@@ -8216,7 +8216,7 @@ button.close {
 }
 /*!
  * Datetimepicker for Bootstrap 3
- * ! version : 4.7.14
+ * version : 4.17.37
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 .bootstrap-datetimepicker-widget {
@@ -8515,7 +8515,8 @@ button.close {
 .bootstrap-datetimepicker-widget table td.today:before {
   content: '';
   display: inline-block;
-  border: 0 0 7px 7px solid transparent;
+  border: solid transparent;
+  border-width: 0 0 7px 7px;
   border-bottom-color: #0078e6;
   border-top-color: rgba(0, 0, 0, 0.2);
   position: absolute;
@@ -8566,6 +8567,12 @@ button.close {
 .bootstrap-datetimepicker-widget.usetwentyfour td.hour {
   height: 27px;
   line-height: 27px;
+}
+.bootstrap-datetimepicker-widget.wider {
+  width: 21em;
+}
+.bootstrap-datetimepicker-widget .datepicker-decades .decade {
+  line-height: 1.8em !important;
 }
 .input-group.date .input-group-addon {
   cursor: pointer;

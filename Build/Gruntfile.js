@@ -71,6 +71,7 @@ module.exports = function(grunt) {
 					'jquery.dataTables.js': 'datatables/media/js/jquery.dataTables.min.js',
 					'require.js': 'requirejs/require.js',
 					'moment.js': 'moment/moment.js',
+					'moment-timezone.js': 'moment-timezone/builds/moment-timezone-with-data.min.js',
 					'cropper.min.js': 'cropper/dist/cropper.min.js',
 					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
 					'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
