@@ -76,7 +76,7 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function addObjectSetsDefaultLanguageTest() {
 		$newBlogTitle = 'aDi1oogh';
-		$newBlog = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Blog::class);
+		$newBlog = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog');
 		$newBlog->setTitle($newBlogTitle);
 
 		/** @var \ExtbaseTeam\BlogExample\Domain\Repository\BlogRepository $blogRepository */
@@ -92,7 +92,7 @@ class AddTest extends \TYPO3\CMS\Core\Tests\FunctionalTestCase {
 	 */
 	public function addObjectSetsDefinedLanguageTest() {
 		$newBlogTitle = 'aDi1oogh';
-		$newBlog = $this->objectManager->get(\ExtbaseTeam\BlogExample\Domain\Model\Blog::class);
+		$newBlog = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog');
 		$newBlog->setTitle($newBlogTitle);
 		$newBlog->_setProperty('_languageUid', -1);
 
