@@ -1637,7 +1637,7 @@ class DataHandler {
 			// Get current value:
 			$curValueRec = $this->recordInfo($table, $id, $field);
 			// isset() won't work here, since values can be NULL
-			if (array_key_exists($field, $curValueRec)) {
+			if ($curValueRec !== NULL && array_key_exists($field, $curValueRec)) {
 				$curValue = $curValueRec[$field];
 			}
 		}
