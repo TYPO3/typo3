@@ -65,17 +65,19 @@
 					<th><f:translate key="disable_compare" /></th>
 					<f:for each="{compareUserList}" as="compareUser">
 						<td>
-							<f:if condition="{compareUser.isDisabled} == 1">
-								<f:then>
-									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}" title="{f:translate(key: 'visibility.unhide')}">
-										<core:icon identifier="actions-edit-unhide" />
-									</a>
-								</f:then>
-								<f:else>
-									<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}" title="{f:translate(key: 'visibility.hide')}">
-										<core:icon identifier="actions-edit-hide" />
-									</a>
-								</f:else>
+							<f:if condition="{compareUser.currentlyLoggedIn} == 0">
+								<f:if condition="{compareUser.isDisabled} == 1">
+									<f:then>
+										<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=0', redirectUrl: redirectUrl)}" title="{f:translate(key: 'visibility.unhide')}">
+											<core:icon identifier="actions-edit-unhide" />
+										</a>
+									</f:then>
+									<f:else>
+										<a class="btn btn-default" href="{bu:issueCommand(parameters: 'data[be_users][{compareUser.uid}][disable]=1', redirectUrl: redirectUrl)}" title="{f:translate(key: 'visibility.hide')}">
+											<core:icon identifier="actions-edit-hide" />
+										</a>
+									</f:else>
+								</f:if>
 							</f:if>
 						</td>
 					</f:for>
