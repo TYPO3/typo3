@@ -178,9 +178,6 @@ class InputTextElement extends AbstractFormElement {
 		if (!empty($classes)) {
 			$attributes['class'] = implode(' ', $classes);
 		}
-		if (isset($config['max']) && (int)$config['max'] > 0) {
-			$attributes['maxlength'] = (int)$config['max'];
-		}
 
 		// This is the EDITABLE form field.
 		$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
