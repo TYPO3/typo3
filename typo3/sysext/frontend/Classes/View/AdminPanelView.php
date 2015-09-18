@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -633,10 +632,10 @@ class AdminPanelView
     public function ext_makeToolBar()
     {
         $tsfe = $this->getTypoScriptFrontendController();
-        //  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-        $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod.web_list');
-        $tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
-        $newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tsConfig) ? ExtensionManagementUtility::extRelPath($tsConfig) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
+        //  If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
+        $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod');
+        $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+        $newContentWizScriptPath = BackendUtility::getModuleUrl($moduleName);
         $perms = $this->getBackendUser()->calcPerms($tsfe->page);
         $langAllowed = $this->getBackendUser()->checkLanguageAccess($tsfe->sys_language_uid);
         $id = $tsfe->id;

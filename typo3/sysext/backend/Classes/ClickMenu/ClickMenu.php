@@ -685,12 +685,14 @@ class ClickMenu
      */
     public function DB_newWizard($table, $uid, $rec)
     {
-        //  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-        $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
-        $tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-
-        $newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc) ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
-        $url = $table === 'pages' ? BackendUtility::getModuleUrl('db_new', ['id' => $uid, 'pagesOnly' => 1]) : $newContentWizScriptPath . 'id=' . $rec['pid'] . '&sys_language_uid=' . (int)$rec['sys_language_uid'];
+        if ($table === 'pages') {
+            $url = BackendUtility::getModuleUrl('db_new', ['id' => $uid, 'pagesOnly' => 1]);
+        } else {
+            //  If mod.newContentElementWizard.override is set, use a custom module instead
+            $tsConfig = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
+            $newContentWizardModuleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+            $url = BackendUtility::getModuleUrl($newContentWizardModuleName, ['id' => $rec['pid'], 'sys_language_uid' => (int)$rec['sys_language_uid']]);
+        }
         return $this->linkItem(
             $this->languageService->makeEntities($this->languageService->getLL('CM_newWizard')),
             $this->iconFactory->getIcon(($table === 'pages' ? 'actions-page-new' : 'actions-document-new'), Icon::SIZE_SMALL)->render(),

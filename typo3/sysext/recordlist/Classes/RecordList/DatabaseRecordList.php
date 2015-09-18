@@ -1128,12 +1128,10 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                                 ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
                                 : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL);
                             if ($table === 'tt_content' && $this->newWizards) {
-                                // If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-                                $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
-                                $tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
-                                $newContentWizScriptPath = ExtensionManagementUtility::isLoaded($tmpTSc)
-                                    ? ExtensionManagementUtility::extRelPath($tmpTSc) . 'mod1/db_new_content_el.php?id=' . $this->id
-                                    : BackendUtility::getModuleUrl('new_content_element', array('id' => $this->id));
+                                // If mod.newContentElementWizard.override is set, use that extension's create new content wizard instead:
+                                $tmpTSc = BackendUtility::getModTSconfig($this->pageinfo['uid'], 'mod');
+                                $newContentElementWizard = $tmpTSc['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+                                $newContentWizScriptPath = BackendUtility::getModuleUrl($newContentElementWizard, array('id' => $this->id));
 
                                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($newContentWizScriptPath) . ');';
                                 $icon = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'

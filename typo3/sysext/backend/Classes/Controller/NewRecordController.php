@@ -503,11 +503,11 @@ class NewRecordController extends AbstractModule
                         if ($table == 'tt_content') {
                             $groupName = $lang->getLL('createNewContent');
                             $rowContent = $newContentIcon . '<strong>' . $lang->getLL('createNewContent') . '</strong><ul>';
-                            // If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's wizard instead:
-                            $overrideExt = $this->web_list_modTSconfig['properties']['newContentWiz.']['overrideWithExtension'];
-                            $pathToWizard = ExtensionManagementUtility::isLoaded($overrideExt) ? ExtensionManagementUtility::extRelPath($overrideExt) . 'mod1/db_new_content_el.php?' : BackendUtility::getModuleUrl('new_content_element') . '&';
-                            $href = $pathToWizard . 'id=' . $this->id . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-                            $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($href) . '">' . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard')) . '</a></li></ul>';
+                            // If mod.newContentElementWizard.override is set, use that extension's wizard instead:
+                            $tsConfig = BackendUtility::getModTSconfig($this->id, 'mod');
+                            $moduleName = $tsConfig['properties']['newContentElementWizard.']['override'] ?: 'new_content_element';
+                            $url = BackendUtility::getModuleUrl($moduleName, ['id' => $this->id, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]);
+                            $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li><li><a href="' . htmlspecialchars($url) . '">' . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard')) . '</a></li></ul>';
                         } else {
                             // Get the title
                             if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
