@@ -1,0 +1,42 @@
+{namespace form=TYPO3\CMS\Form\ViewHelpers}
+
+<f:if condition="{model.showElement}">
+	<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
+		<f:if condition="{model.layout.labelPosition} == 'before'">
+			<f:format.raw>{model.layout.label}</f:format.raw>
+		</f:if>
+
+		<form:select
+			class="{model.additionalArguments.class}"
+			dir="{model.additionalArguments.dir}"
+			id="{model.additionalArguments.id}"
+			lang="{model.additionalArguments.lang}"
+			style="{model.additionalArguments.style}"
+			title="{model.additionalArguments.title}"
+			accesskey="{model.additionalArguments.accesskey}"
+			tabindex="{model.additionalArguments.tabindex}"
+			onclick="{model.additionalArguments.onclick}"
+
+			name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
+			value="{model.additionalArguments.value}"
+
+			multiple="{model.additionalArguments.multiple}"
+			size="{model.additionalArguments.size}"
+
+			optionLabelField="label"
+			optionValueField="value"
+			options='<form:aggregateSelectOptions model="{model}" />'
+			prependOptionLabel="{model.additionalArguments.prependOptionLabel}"
+			prependOptionValue="{model.additionalArguments.prependOptionValue}"
+			selectAllByDefault="{model.additionalArguments.selectAllByDefault}"
+			sortByOptionLabel="{model.additionalArguments.sortByOptionLabel}"
+
+			errorClass="{model.additionalArguments.errorClass}"
+			additionalAttributes="{model.htmlAttributes}"
+		/>
+
+		<f:if condition="{model.layout.labelPosition} == 'after'">
+			<f:format.raw>{model.layout.label}</f:format.raw>
+		</f:if>
+	<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
+</f:if>

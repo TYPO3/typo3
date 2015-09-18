@@ -15,15 +15,35 @@ namespace TYPO3\CMS\Form\PostProcess;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\Domain\Model\Form;
+use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Mail\Rfc822AddressesParser;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * The mail post processor
  */
-class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInterface {
+class MailPostProcessor extends AbstractPostProcessor implements PostProcessorInterface {
 
 	/**
-	 * @var Form
+	 * Constant for localization
+	 *
+	 * @var string
+	 */
+	const LOCALISATION_OBJECT_NAME = 'tx_form_view_mail';
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected $objectManager;
+
+	/**
+	 * @var \TYPO3\CMS\Form\Utility\SessionUtility
+	 */
+	protected $sessionUtility;
+
+	/**
+	 * @var \TYPO3\CMS\Form\Domain\Model\Element
 	 */
 	protected $form;
 
@@ -38,9 +58,14 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	protected $mailMessage;
 
 	/**
-	 * @var \TYPO3\CMS\Form\Request
+	 * @var string
 	 */
-	protected $requestHandler;
+	protected $htmlMailTemplatePath = 'Html';
+
+	/**
+	 * @var string
+	 */
+	protected $plaintextMailTemplatePath = 'Plain';
 
 	/**
 	 * @var array
@@ -48,16 +73,32 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	protected $dirtyHeaders = array();
 
 	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Form\Utility\SessionUtility $sessionUtility
+	 * @return void
+	 */
+	public function injectSessionUtility(\TYPO3\CMS\Form\Utility\SessionUtility $sessionUtility) {
+		$this->sessionUtility = $sessionUtility;
+	}
+
+	/**
 	 * Constructor
 	 *
-	 * @param Form $form Form domain model
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form Form domain model
 	 * @param array $typoScript Post processor TypoScript settings
 	 */
-	public function __construct(Form $form, array $typoScript) {
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
 		$this->mailMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-		$this->requestHandler = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
+		$this->setTemplatePaths();
 	}
 
 	/**
@@ -74,10 +115,9 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		$this->setCc();
 		$this->setPriority();
 		$this->setOrganization();
-		// @todo The whole content rendering seems to be missing here!
 		$this->setHtmlContent();
 		$this->setPlainContent();
-		$this->addAttachmentsFromForm();
+		$this->addAttachmentsFromSession();
 		$this->send();
 		return $this->render();
 	}
@@ -92,11 +132,12 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	protected function setSubject() {
 		if (isset($this->typoScript['subject'])) {
 			$subject = $this->typoScript['subject'];
-		} elseif ($this->requestHandler->has($this->typoScript['subjectField'])) {
-			$subject = $this->requestHandler->get($this->typoScript['subjectField']);
+		} elseif ($this->getTypoScriptValueFromIncomingData('subject') !== NULL) {
+			$subject = $this->getTypoScriptValueFromIncomingData('subject');
 		} else {
 			$subject = 'Formmail on ' . GeneralUtility::getIndpEnv('HTTP_HOST');
 		}
+
 		$subject = $this->sanitizeHeaderString($subject);
 		$this->mailMessage->setSubject($subject);
 	}
@@ -111,18 +152,18 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	protected function setFrom() {
 		if ($this->typoScript['senderEmail']) {
 			$fromEmail = $this->typoScript['senderEmail'];
-		} elseif ($this->requestHandler->has($this->typoScript['senderEmailField'])) {
-			$fromEmail = $this->requestHandler->get($this->typoScript['senderEmailField']);
+		} elseif ($this->getTypoScriptValueFromIncomingData('senderEmailField') !== NULL) {
+			$fromEmail = $this->getTypoScriptValueFromIncomingData('senderEmailField');
 		} else {
 			$fromEmail = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
 		}
 		if (!GeneralUtility::validEmail($fromEmail)) {
-			$fromEmail = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+			$fromEmail = MailUtility::getSystemFromAddress();
 		}
 		if ($this->typoScript['senderName']) {
 			$fromName = $this->typoScript['senderName'];
-		} elseif ($this->requestHandler->has($this->typoScript['senderNameField'])) {
-			$fromName = $this->requestHandler->get($this->typoScript['senderNameField']);
+		} elseif ($this->getTypoScriptValueFromIncomingData('senderNameField') !== NULL) {
+			$fromName = $this->getTypoScriptValueFromIncomingData('senderNameField');
 		} else {
 			$fromName = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'];
 		}
@@ -147,8 +188,8 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 			return array();
 		}
 
-		/** @var $addressParser \TYPO3\CMS\Core\Mail\Rfc822AddressesParser */
-		$addressParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Rfc822AddressesParser::class, $emails);
+		/** @var $addressParser Rfc822AddressesParser */
+		$addressParser = GeneralUtility::makeInstance(Rfc822AddressesParser::class, $emails);
 		$addresses = $addressParser->parseAddressList();
 
 		$validEmails = array();
@@ -204,7 +245,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	protected function setPriority() {
 		$priority = 3;
 		if ($this->typoScript['priority']) {
-			$priority = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->typoScript['priority'], 1, 5);
+			$priority = MathUtility::forceIntegerInRange($this->typoScript['priority'], 1, 5);
 		}
 		$this->mailMessage->setPriority($priority);
 	}
@@ -252,9 +293,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 * @return void
 	 */
 	protected function setHtmlContent() {
-		/** @var $view \TYPO3\CMS\Form\View\Mail\Html\HtmlView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Html\HtmlView::class, $this->form, $this->typoScript);
-		$htmlContent = $view->get();
+		$htmlContent = $this->getView($this->htmlMailTemplatePath)->render();
 		$this->mailMessage->setBody($htmlContent, 'text/html');
 	}
 
@@ -266,9 +305,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 * @return void
 	 */
 	protected function setPlainContent() {
-		/** @var $view \TYPO3\CMS\Form\View\Mail\Plain\PlainView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\Plain\PlainView::class, $this->form);
-		$plainContent = $view->render();
+		$plainContent = $this->getView($this->plaintextMailTemplatePath, 'Plain')->render();
 		$this->mailMessage->addPart($plainContent, 'text/plain');
 	}
 
@@ -290,9 +327,12 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 * @return string HTML message from the mail view
 	 */
 	protected function render() {
-		/** @var $view \TYPO3\CMS\Form\View\Mail\MailView */
-		$view = GeneralUtility::makeInstance(\TYPO3\CMS\Form\View\Mail\MailView::class, $this->mailMessage, $this->typoScript);
-		return $view->render();
+		if ($this->mailMessage->isSent()) {
+			$output = $this->renderMessage('success');
+		} else {
+			$output = $this->renderMessage('error');
+		}
+		return $output;
 	}
 
 	/**
@@ -311,41 +351,173 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	}
 
 	/**
-	 * Add attachments when uploaded
+	 * Loop through all elements of the session and attach the file
+	 * if its a uploaded file
 	 *
 	 * @return void
 	 */
-	protected function addAttachmentsFromForm() {
-		$formElements = $this->form->getElements();
-		$values = $this->requestHandler->getByMethod();
-		$this->addAttachmentsFromElements($formElements, $values);
-	}
-
-	/**
-	 * Loop through all elements and attach the file when the element
-	 * is a fileupload
-	 *
-	 * @param array $elements
-	 * @param array $submittedValues
-	 * @return void
-	 */
-	protected function addAttachmentsFromElements($elements, $submittedValues) {
-		/** @var $element \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement */
-		foreach ($elements as $element) {
-			if (is_a($element, \TYPO3\CMS\Form\Domain\Model\Element\ContainerElement::class)) {
-				$this->addAttachmentsFromElements($element->getElements(), $submittedValues);
-				continue;
-			}
-			if (is_a($element, \TYPO3\CMS\Form\Domain\Model\Element\FileuploadElement::class)) {
-				$elementName = $element->getName();
-				if (is_array($submittedValues[$elementName]) && isset($submittedValues[$elementName]['tempFilename'])) {
-					$filename = $submittedValues[$elementName]['tempFilename'];
-					if (is_file($filename) && GeneralUtility::isAllowedAbsPath($filename)) {
-						$this->mailMessage->attach(\Swift_Attachment::fromPath($filename)->setFilename($submittedValues[$elementName]['originalFilename']));
+	protected function addAttachmentsFromSession() {
+		$sessionData = $this->sessionUtility->getSessionData();
+		if (is_array($sessionData)) {
+			foreach ($sessionData as $fieldName => $values) {
+				if (is_array($values)) {
+					foreach ($values as $file) {
+						if (isset($file['tempFilename'])) {
+							if (
+								is_file($file['tempFilename'])
+								&& GeneralUtility::isAllowedAbsPath($file['tempFilename'])
+							) {
+								$this->mailMessage->attach(\Swift_Attachment::fromPath($file['tempFilename'])->setFilename($file['originalFilename']));
+							}
+						}
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Set the html and plaintext templates
+	 *
+	 * @return void
+	 */
+	protected function setTemplatePaths() {
+		if (
+			isset($this->typoScript['htmlMailTemplatePath'])
+			&& $this->typoScript['htmlMailTemplatePath'] !== ''
+		) {
+			$this->htmlMailTemplatePath = $this->typoScript['htmlMailTemplatePath'];
+		}
+
+		if (
+			isset($this->typoScript['plaintextMailTemplatePath'])
+			&& $this->typoScript['plaintextMailTemplatePath'] !== ''
+		) {
+			$this->plaintextMailTemplatePath = $this->typoScript['plaintextMailTemplatePath'];
+		}
+	}
+
+	/**
+	 * Make fluid view instance
+	 *
+	 * @param string $templateName
+	 * @param string $scope
+	 * @return \TYPO3\CMS\Fluid\View\StandaloneView
+	 */
+	protected function getView($templateName, $scope = 'Html') {
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
+		$typoScript = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
+		$view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+
+		$viewParts = array(
+			'templateRootPaths' => $typoScript['view']['templateRootPaths'],
+			'partialRootPaths' => $typoScript['view']['partialRootPaths'],
+		);
+		/* Extend all template root paths to $templateRootPaths/PostProcessor/Mail/$themeName  */
+		foreach ($typoScript['view']['templateRootPaths'] as &$path) {
+			if (substr($path, -1) !== '/') {
+				$path .= '/';
+			}
+			$path .= 'PostProcessor/Mail/' . $this->controllerContext->getConfiguration()->getThemeName();
+		}
+		/* Extend all partial root paths to $partialRootPaths/$themeName/PostProcessor/Mail/$scope/  */
+		foreach ($typoScript['view']['partialRootPaths'] as &$path) {
+			if (substr($path, -1) !== '/') {
+				$path .= '/';
+			}
+			$path .=  $this->controllerContext->getConfiguration()->getThemeName() . '/PostProcessor/Mail/' . $scope . '/';
+		}
+		$view->setLayoutRootPaths($typoScript['view']['layoutRootPaths']);
+		$view->setTemplateRootPaths($typoScript['view']['templateRootPaths']);
+		$view->setPartialRootPaths($typoScript['view']['partialRootPaths']);
+		$view->setTemplate($templateName);
+		$view->assignMultiple(array(
+			'model' => $this->form
+		));
+		return $view;
+	}
+
+	/**
+	 * Render the processor message
+	 *
+	 * @param string $messageType
+	 * @return string
+	 */
+	protected function renderMessage($messageType) {
+		$message = NULL;
+		$type = NULL;
+		if ($this->typoScript['messages.'][$messageType]) {
+			$type = $this->typoScript['messages.'][$messageType];
+		}
+		if ($this->typoScript['messages.'][$messageType . '.']) {
+			$message = $this->typoScript['messages.'][$messageType . '.'];
+		}
+		if ($this->controllerContext->getConfiguration()->getContentElementRendering()) {
+			if (empty($message)) {
+				if (!empty($type)) {
+					$message = $type;
+					$type = 'TEXT';
+				} else {
+					$type = 'TEXT';
+					$message = $this->getLocalLanguageLabel($messageType);
+				}
+				$value['value'] = $message;
+				$value['wrap'] = '<p>|</p>';
+			} elseif (!is_array($message)) {
+				$value['value'] = $message;
+				$value['wrap'] = '<p>|</p>';
+			} else {
+				$value = $message;
+			}
+			$message = $GLOBALS['TSFE']->cObj->cObjGetSingle(
+				$type,
+				$value
+			);
+		} else {
+			if (isset($message['value'])) {
+				$message = $message['value'];
+			} elseif (isset($message['data'])) {
+				$message = LocalizationUtility::translate($message['data'], 'form');
+			} elseif ($type !== '') {
+				$message = $this->getLocalLanguageLabel($messageType);
+			}
+		}
+		return $message;
+	}
+
+	/**
+	 * Get the local language label(s) for the message
+	 * In some cases this method will be override by rule class
+	 *
+	 * @param string $type The type
+	 * @return string The local language message label
+	 */
+	protected function getLocalLanguageLabel($type = '') {
+		$label = static::LOCALISATION_OBJECT_NAME . '.' . $type;
+		$message = LocalizationUtility::translate($label, 'form');
+		return $message;
+	}
+
+	/**
+	 * Determines user submitted data from a field
+	 * that has been defined as TypoScript property.
+	 *
+	 * @param string $propertyName
+	 * @return NULL|mixed
+	 */
+	protected function getTypoScriptValueFromIncomingData($propertyName) {
+		if (empty($this->typoScript[$propertyName])) {
+			return NULL;
+		}
+
+		$propertyValue = $this->typoScript[$propertyName];
+		$incomingData = $this->controllerContext->getValidationElement();
+		if (!$incomingData->hasIncomingField($propertyValue)) {
+			return NULL;
+		}
+
+		return $incomingData->getIncomingField($propertyValue);
 	}
 
 }

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
  */
 
 use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Form\Filter\TitleCaseFilter;
+use TYPO3\CMS\Form\Domain\Filter\TitleCaseFilter;
 
 /**
  * Test case

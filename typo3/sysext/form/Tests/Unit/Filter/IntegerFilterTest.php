@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class IntegerFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\IntegerFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\IntegerFilter
 	 */
 	protected $subject;
 
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\IntegerFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\IntegerFilter();
 	}
 
 	public function dataProvider() {

@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Form\PostProcess;
  */
 
 /**
- * The redirect post processor
+ * The redirect post-processor
  */
-class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInterface {
+class RedirectPostProcessor extends AbstractPostProcessor implements PostProcessorInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Domain\Model\Form
+	 * @var \TYPO3\CMS\Form\Domain\Model\Element
 	 */
 	protected $form;
 
@@ -30,30 +30,19 @@ class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessor
 	protected $typoScript;
 
 	/**
-	 * @var \TYPO3\CMS\Form\Request
-	 */
-	protected $requestHandler;
-
-	/**
 	 * @var string
 	 */
 	protected $destination;
 
 	/**
-	 * @var array
-	 */
-	protected $dirtyHeaders = array();
-
-	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form Form domain model
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form Form domain model
 	 * @param array $typoScript Post processor TypoScript settings
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
 		$this->form = $form;
 		$this->typoScript = $typoScript;
-		$this->requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Form\Request::class);
 	}
 
 	/**
@@ -63,7 +52,7 @@ class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessor
 	 */
 	public function process() {
 		$this->setDestination();
-		return $this->render();
+		$this->render();
 	}
 
 	/**
@@ -80,13 +69,13 @@ class RedirectPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessor
 	}
 
 	/**
-	 * Render the message after trying to send the mail
+	 * Redirect to a destination
 	 *
-	 * @return string HTML message from the mail view
+	 * @return void
 	 */
 	protected function render() {
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->destination);
-		return '';
+		return;
 	}
 
 }

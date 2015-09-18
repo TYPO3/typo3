@@ -20,10 +20,10 @@ namespace TYPO3\CMS\Form\Tests\Unit\Fixtures;
 class PostProcessorWithoutInterfaceFixture {
 
 	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
 	 * @param array $typoScript
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
 
 	}
 

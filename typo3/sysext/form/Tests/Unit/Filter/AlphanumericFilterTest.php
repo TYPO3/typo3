@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter
 	 */
 	protected $subject = NULL;
 
@@ -28,7 +28,7 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter();
 	}
 
 	/**

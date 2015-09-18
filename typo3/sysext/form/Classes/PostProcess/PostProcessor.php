@@ -14,34 +14,45 @@ namespace TYPO3\CMS\Form\PostProcess;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\ObjectFactory;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 
 /**
  * The post processor
  */
-class PostProcessor {
+class PostProcessor extends AbstractPostProcessor {
 
 	/**
-	 * @var \TYPO3\CMS\Form\View\Form\FormView
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected $objectManager;
+
+	/**
+	 * @var array
+	 */
+	protected $postProcessorTypoScript;
+
+	/**
+	 * @var \TYPO3\CMS\Form\Domain\Model\Element $form
 	 */
 	protected $form;
 
 	/**
-	 * @var \TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+	 * @return void
 	 */
-	protected $typoscriptFactory;
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form Form domain model
-	 * @param array $typoScript Post processor TypoScript settings
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
+	 * @param array $postProcessorTypoScript Post processor TypoScript settings
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $postProcessorTypoScript) {
 		$this->form = $form;
-		$this->typoscriptFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory::class);
-		$this->typoScript = $typoScript;
+		$this->postProcessorTypoScript = $postProcessorTypoScript;
 	}
 
 	/**
@@ -54,24 +65,19 @@ class PostProcessor {
 	 */
 	public function process() {
 		$html = '';
-		if (is_array($this->typoScript)) {
-			$keys = \TYPO3\CMS\Core\TypoScript\TemplateService::sortedKeyList($this->typoScript);
+
+		if (is_array($this->postProcessorTypoScript)) {
+			$keys = TemplateService::sortedKeyList($this->postProcessorTypoScript);
 
 			foreach ($keys as $key) {
 				if (!(int)$key || strpos($key, '.') !== FALSE) {
 					continue;
 				}
 				$className = FALSE;
-				$processorName = $this->typoScript[$key];
+				$processorName = $this->postProcessorTypoScript[$key];
 				$processorArguments = array();
-				if (isset($this->typoScript[$key . '.'])) {
-					$processorArguments = $this->typoScript[$key . '.'];
-				}
-
-				if (isset($processorArguments['layout.'])) {
-					$layoutHandler = $this->typoscriptFactory->setLayoutHandler($processorArguments);
-				} else {
-					$layoutHandler = $this->typoscriptFactory->setLayoutHandler($this->typoScript);
+				if (isset($this->postProcessorTypoScript[$key . '.'])) {
+					$processorArguments = $this->postProcessorTypoScript[$key . '.'];
 				}
 
 				if (class_exists($processorName, TRUE)) {
@@ -83,16 +89,15 @@ class PostProcessor {
 					}
 				}
 				if ($className !== FALSE) {
-					$layout = $this->typoscriptFactory->getLayoutFromTypoScript($this->typoScript[$processorName . '.']);
-					$layoutHandler->setLayout($layout);
-
-					$processor = ObjectFactory::createFormObject($className, $this->form, $processorArguments);
+					$processor = $this->objectManager->get($className, $this->form, $processorArguments);
 					if ($processor instanceof PostProcessorInterface) {
+						$processor->setControllerContext($this->controllerContext);
 						$html .= $processor->process();
 					}
 				}
 			}
 		}
+
 		return $html;
 	}
 

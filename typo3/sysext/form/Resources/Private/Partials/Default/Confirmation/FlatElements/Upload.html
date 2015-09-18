@@ -1,0 +1,8 @@
+<f:if condition="{model.showElement}">
+	<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
+		<label>{model.additionalArguments.label}</label>
+		<f:for each="{model.additionalArguments.uploadedFiles}" as="uploadedFile">
+			{uploadedFile.originalFilename}<br />
+		</f:for>
+	</li>
+</f:if>

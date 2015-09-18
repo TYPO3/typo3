@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\CurrencyFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter
 	 */
 	protected $subject;
 
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\CurrencyFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\CurrencyFilter();
 	}
 
 	public function validDataProvider() {

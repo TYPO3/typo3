@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class RemoveXssFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\RemoveXssFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\RemoveXssFilter
 	 */
 	protected $subject;
 
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\RemoveXssFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\RemoveXssFilter();
 	}
 
 	public function maliciousStringProvider() {

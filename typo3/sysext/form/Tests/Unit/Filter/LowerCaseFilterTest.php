@@ -20,12 +20,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class LowerCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\LowerCaseFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\LowerCaseFilter
 	 */
 	protected $subject;
 
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\LowerCaseFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\LowerCaseFilter();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';

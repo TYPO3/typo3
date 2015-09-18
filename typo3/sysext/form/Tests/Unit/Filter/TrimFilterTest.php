@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\TrimFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\TrimFilter
 	 */
 	protected $subject = NULL;
 
@@ -28,7 +28,7 @@ class TrimFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\TrimFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\TrimFilter();
 	}
 
 	public function stringProvider() {

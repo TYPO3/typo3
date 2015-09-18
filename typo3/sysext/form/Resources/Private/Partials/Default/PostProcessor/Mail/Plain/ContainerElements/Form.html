@@ -1,0 +1,2 @@
+{namespace form=TYPO3\CMS\Form\ViewHelpers}
+<form:plainMail content="{model}" /><f:for each="{model.childElements}" as="element"><f:render partial="{element.partialPath}" arguments="{model: element}" /></f:for>

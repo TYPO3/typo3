@@ -30,9 +30,10 @@ class MailPostProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @return void
 	 */
 	protected function setUp() {
+		parent::setUp();
 		$this->mailPostProcessor = $this->getAccessibleMock(
 			\TYPO3\CMS\Form\PostProcess\MailPostProcessor::class,
-			array('dummy'),
+			array('__none'),
 			array(),
 			'',
 			FALSE

@@ -13,13 +13,12 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\Domain\Factory\TypoScriptFactory;
-use TYPO3\CMS\Form\Domain\Model\Form;
-use TYPO3\CMS\Form\Layout;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Form\Domain\Model\Element;
+use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\PostProcess\PostProcessor;
 use TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithFormPrefixFixture;
 use TYPO3\CMS\Form\Tests\Unit\Fixtures\PostProcessorWithoutFormPrefixFixture;
@@ -36,60 +35,56 @@ class PostProcessorTest extends UnitTestCase {
 	protected $singletonInstances = array();
 
 	/**
-	 * @var Form
+	 * @var Element|\Prophecy\Prophecy\ObjectProphecy
 	 */
-	protected $formProphecy;
+	protected $elementProphecy;
 
 	/**
-	 * @var Layout
+	 * @var ObjectManager|\Prophecy\Prophecy\ObjectProphecy
 	 */
-	protected $typoScriptLayoutProphecy;
+	protected $objectManagerProphecy;
 
 	/**
-	 * @var TypoScriptFactory
+	 * @var ControllerContext|\Prophecy\Prophecy\ObjectProphecy
 	 */
-	protected $typoScriptFactoryProphecy;
+	protected $controllerContextProphecy;
 
 	/**
-	 * Set up
+	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->singletonInstances = GeneralUtility::getSingletonInstances();
-
-		$this->formProphecy = $this->prophesize(Form::class);
-
-		$this->typoScriptFactoryProphecy = $this->prophesize(TypoScriptFactory::class);
-		$this->typoScriptFactoryProphecy->getLayoutFromTypoScript(Argument::any())->willReturn(array());
-		GeneralUtility::setSingletonInstance(TypoScriptFactory::class, $this->typoScriptFactoryProphecy->reveal());
-
-		$this->typoScriptLayoutProphecy = $this->prophesize(Layout::class);
-
-		$templateServiceProphecy = $this->prophesize(TemplateService::class);
-		$templateServiceProphecy->sortedKeyList(Argument::any())->willReturn(array(10, 20));
-		GeneralUtility::addInstance(TemplateService::class, $templateServiceProphecy->reveal());
+		parent::setUp();
+		$this->elementProphecy = $this->prophesize(Element::class);
+		$this->objectManagerProphecy = $this->prophesize(ObjectManager::class);
+		$this->controllerContextProphecy = $this->prophesize(ControllerContext::class);
 	}
 
 	/**
-	 * Tear down the tests
+	 * Tears down this test case.
 	 */
 	protected function tearDown() {
-		GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		parent::tearDown();
+		unset($this->elementProphecy);
+		unset($this->objectManagerProphecy);
+		unset($this->controllerContextProphecy);
 	}
 
 	/**
 	 * @test
 	 */
 	public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix() {
-
 		$typoScript = array(
 			10 => $this->getUniqueId('postprocess'),
 			20 => PostProcessorWithoutFormPrefixFixture::class
 		);
 
-		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
-		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+		$this->objectManagerProphecy
+			->get(Argument::cetera())
+			->will(function($arguments) {
+				return new $arguments[0]($arguments[1], $arguments[2]);
+			});
 
+		$subject = $this->createSubject($typoScript);
 		$this->assertEquals('processedWithoutPrefix', $subject->process());
 	}
 
@@ -102,9 +97,13 @@ class PostProcessorTest extends UnitTestCase {
 			20 => PostProcessorWithFormPrefixFixture::class
 		);
 
-		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
-		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+		$this->objectManagerProphecy
+			->get(Argument::cetera())
+			->will(function($arguments) {
+				return new $arguments[0]($arguments[1], $arguments[2]);
+			});
 
+		$subject = $this->createSubject($typoScript);
 		$this->assertEquals('processedWithPrefix', $subject->process());
 	}
 
@@ -117,56 +116,29 @@ class PostProcessorTest extends UnitTestCase {
 			20 => PostProcessorWithoutInterfaceFixture::class
 		);
 
-		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
-		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
+		$this->objectManagerProphecy
+			->get(Argument::cetera())
+			->will(function($arguments) {
+				return new $arguments[0]($arguments[1], $arguments[2]);
+			});
 
+		$subject = $this->createSubject($typoScript);
 		$this->assertEquals('', $subject->process());
 	}
 
 	/**
-	 * @test
+	 * @param array $typoScript
+	 * @return PostProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
-	public function processUsesGlobalLayoutIfNoneIsSet() {
-		$processorConfig = array(
-			'recipientEmail' => 'your@email.com',
-			'senderEmail' => 'your@email.com',
+	protected function createSubject(array $typoScript) {
+		$subject = $this->getAccessibleMock(
+			PostProcessor::class,
+			array('__none'),
+			array($this->elementProphecy->reveal(), $typoScript)
 		);
-		$typoScript = array(
-			'layout.' => array(
-					'label' => '<div class="global"><labelvalue /></div>',
-			),
-			'1' => 'foo', // something senseless on purpose, otherwise dependencies need to be resolved, that come in by static call -> ugly
-			'1.' => $processorConfig
-		);
-
-		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
-		$this->typoScriptFactoryProphecy->setLayoutHandler($typoScript)->willReturn($this->typoScriptLayoutProphecy->reveal());
-
-		$this->assertEquals('', $subject->process());
+		$subject->_set('controllerContext', $this->controllerContextProphecy->reveal());
+		$subject->_set('objectManager', $this->objectManagerProphecy->reveal());
+		return $subject;
 	}
 
-	/**
-	 * @test
-	 */
-	public function processUsesLocalLayoutIfSet() {
-		$processorConfig = array(
-			'layout.' => array(
-					'label' => '<div class="local"><labelvalue /></div>',
-			),
-			'recipientEmail' => 'your@email.com',
-			'senderEmail' => 'your@email.com',
-		);
-		$typoScript = array(
-			'layout.' => array(
-					'label' => '<div class="global"><labelvalue /></div>',
-			),
-			'1' => 'foo',
-			'1.' => $processorConfig
-		);
-
-		$subject = new PostProcessor($this->formProphecy->reveal(), $typoScript);
-		$this->typoScriptFactoryProphecy->setLayoutHandler($processorConfig)->willReturn($this->typoScriptLayoutProphecy->reveal());
-
-		$this->assertEquals('', $subject->process());
-	}
 }

@@ -1,0 +1,33 @@
+<f:if condition="{model.showElement}">
+	<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
+		<label for="{model.additionalArguments.id}">
+			{model.additionalArguments.label}
+			<f:if condition="{model.mandatoryValidationMessages}">
+				<em><f:for each="{model.mandatoryValidationMessages}" as="mandatoryValidationMessage" iteration="iterator">{mandatoryValidationMessage}<f:if condition="{iterator.isLast}"><f:else> - </f:else></f:if></f:for></em>
+			</f:if>
+			<f:if condition="{model.validationErrorMessages}">
+				<strong><f:for each="{model.validationErrorMessages}" as="errorValidationMessage" iteration="iterator">{errorValidationMessage}<f:if condition="{iterator.isLast}"><f:else> - </f:else></f:if></f:for></strong>
+			</f:if>
+		</label>
+
+		<f:form.upload
+			class="{model.additionalArguments.class}"
+			dir="{model.additionalArguments.dir}"
+			id="{model.additionalArguments.id}"
+			lang="{model.additionalArguments.lang}"
+			style="{model.additionalArguments.style}"
+			title="{model.additionalArguments.title}"
+			accesskey="{model.additionalArguments.accesskey}"
+			tabindex="{model.additionalArguments.tabindex}"
+			onclick="{model.additionalArguments.onclick}"
+
+			name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
+			value="{model.additionalArguments.value}"
+
+			multiple="{model.additionalArguments.multiple}"
+
+			errorClass="{model.additionalArguments.errorClass}"
+			additionalAttributes="{model.htmlAttributes}"
+		/>
+	</li>
+</f:if>

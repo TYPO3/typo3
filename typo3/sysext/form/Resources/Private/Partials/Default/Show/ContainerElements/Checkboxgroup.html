@@ -1,0 +1,25 @@
+<f:if condition="{model.showElement}">
+	<f:then>
+		<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
+			<fieldset
+			<f:for each="{model.htmlAttributes}" as="htmAttributeValue" key="htmAttributeKey">
+				{htmAttributeKey}="{htmAttributeValue}"
+			</f:for>
+			>
+				<f:if condition="{model.additionalArguments.legend}">
+					<legend>{model.additionalArguments.legend}</legend>
+				</f:if>
+				<ol>
+					<f:for each="{model.childElements}" as="element">
+						<f:render partial="{themeName}/Show/{element.partialPath}" arguments="{model: element, themeName: themeName}" />
+					</f:for>
+				</ol>
+			</fieldset>
+		</li>
+	</f:then>
+	<f:else>
+		<f:for each="{model.childElements}" as="element">
+			<f:render partial="{themeName}/Show/{element.partialPath}" arguments="{model: element, themeName: themeName}" />
+		</f:for>
+	</f:else>
+</f:if>

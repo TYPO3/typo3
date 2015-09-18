@@ -15,17 +15,25 @@ namespace TYPO3\CMS\Form\PostProcess;
  */
 
 /**
- * Interface for postprocessors
+ * Interface for post-processors
  */
 interface PostProcessorInterface {
 
 	/**
 	 * Constructor
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form Form domain model
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form Form domain model
 	 * @param array $typoScript Post processor TypoScript settings
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript);
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript);
+
+	/**
+	 * Set the current controller context
+	 *
+	 * @param \TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext
+	 * @return void
+	 */
+	public function setControllerContext(\TYPO3\CMS\Form\Mvc\Controller\ControllerContext $controllerContext);
 
 	/**
 	 * The main method called by the post processor

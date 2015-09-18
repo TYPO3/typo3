@@ -14,13 +14,13 @@ namespace TYPO3\CMS\Form\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement;
-use TYPO3\CMS\Form\ObjectFactory;
 
 /**
  * Typoscript to JSON converter
  *
- * Takes the incoming Typoscript and converts it to Json
+ * Takes the incoming TypoScript and converts it to JSON.
  */
 class TypoScriptToJsonConverter {
 
@@ -48,13 +48,19 @@ class TypoScriptToJsonConverter {
 	 * @param string $class Type of element
 	 * @param array $arguments Configuration array
 	 * @return AbstractJsonElement
+	 * @throws \RuntimeException
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string)$class);
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\Json\\' . ucfirst($class) . 'JsonElement';
 		$this->addValidationRules($arguments);
+
+		if (!class_exists($className)) {
+			throw new \RuntimeException('Class "' . $className . '" does not exist', 1440779351);
+		}
+
 		/** @var $object AbstractJsonElement */
-		$object = ObjectFactory::createFormObject($className);
+		$object = GeneralUtility::makeInstance($className);
 		$object->setParameters($arguments);
 		if ($object->childElementsAllowed()) {
 			$this->getChildElementsByIntegerKey($object, $arguments);
@@ -99,7 +105,7 @@ class TypoScriptToJsonConverter {
 	 * @return void
 	 */
 	private function setElementType(AbstractJsonElement $parentElement, $class, array $arguments) {
-		if (in_array($class, \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getFormObjects())) {
+		if (in_array($class, \TYPO3\CMS\Form\Bootstrap::getRegisteredElementNames())) {
 			if (strstr($arguments['class'], 'predefined-name')) {
 				$class = 'NAME';
 			}

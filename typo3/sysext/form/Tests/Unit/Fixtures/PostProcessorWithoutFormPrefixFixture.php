@@ -14,16 +14,19 @@ namespace TYPO3\CMS\Form\Tests\Unit\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Form\PostProcess\AbstractPostProcessor;
+use TYPO3\CMS\Form\PostProcess\PostProcessorInterface;
+
 /**
  * Post processor without form prefix fixture
  */
-class PostProcessorWithoutFormPrefixFixture implements \TYPO3\CMS\Form\PostProcess\PostProcessorInterface {
+class PostProcessorWithoutFormPrefixFixture extends AbstractPostProcessor implements PostProcessorInterface {
 
 	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Form $form
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element $form
 	 * @param array $typoScript
 	 */
-	public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
+	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element $form, array $typoScript) {
 
 	}
 

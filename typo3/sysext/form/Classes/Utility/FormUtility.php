@@ -15,112 +15,69 @@ namespace TYPO3\CMS\Form\Utility;
  */
 
 /**
- * Common helper methods.
+ * A session utility
  */
 class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var array
-	 */
-	protected $formObjects = array();
-
-	/**
-	 * Gets a singleton instance of this object.
+	 * Render a content object if allowed
 	 *
-	 * @return \TYPO3\CMS\Form\Utility\FormUtility
-	 */
-	static public function getInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(__CLASS__);
-	}
-
-	/**
-	 * Initializes this object.
-	 */
-	public function __construct() {
-		$this->setFormObjects(array(
-			'BUTTON',
-			'CHECKBOX',
-			'CHECKBOXGROUP',
-			'FIELDSET',
-			'FILEUPLOAD',
-			'FORM',
-			'FORM_INT',
-			'HEADER',
-			'HIDDEN',
-			'IMAGEBUTTON',
-			'OPTGROUP',
-			'OPTION',
-			'PASSWORD',
-			'RADIO',
-			'RADIOGROUP',
-			'RESET',
-			'SELECT',
-			'SUBMIT',
-			'TEXTAREA',
-			'TEXTBLOCK',
-			'TEXTLINE'
-		));
-	}
-
-	/**
-	 * Gets the available form objects.
-	 *
-	 * @return array
-	 */
-	public function getFormObjects() {
-		return $this->formObjects;
-	}
-
-	/**
-	 * Sets the available form objects.
-	 *
-	 * @param array $formObjects
-	 * @return void
-	 */
-	public function setFormObjects(array $formObjects) {
-		$this->formObjects = $formObjects;
-	}
-
-	/**
-	 * Initializes the available form objects.
-	 *
-	 * @return \TYPO3\CMS\Form\Utility\FormUtility
-	 */
-	public function initializeFormObjects() {
-		// Assign new FORM objects
-		foreach ($this->getFormObjects() as $formObject) {
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'][] = array(
-				$formObject,
-				\TYPO3\CMS\Form\Controller\FormController::class
-			);
-		}
-		return $this;
-	}
-
-	/**
-	 * Initializes the Page TSconfig properties.
-	 *
-	 * @return \TYPO3\CMS\Form\Utility\FormUtility
-	 */
-	public function initializePageTsConfig() {
-		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:form/Configuration/PageTSconfig/modWizards.ts">');
-		return $this;
-	}
-
-	/**
-	 * Gets the last part of the current object's class name.
-	 * e.g. for '\TYPO3\CMS\Form\View\Confirmation\Additional\AdditionalElementView' it will be 'Additional'
-	 *
-	 * @param object $object The object to be used
-	 * @param bool $lowercase Whether to convert to lowercase
+	 * @param string $key
+	 * @param array $configuration
 	 * @return string
 	 */
-	public function getLastPartOfClassName($object, $lowercase = FALSE) {
-		$lastPart = preg_replace('/^.*\\\\([^\\\\]+?)(Additional|Attribute|Json|Element|View)+$/', '${1}', get_class($object), 1);
-		if ($lowercase) {
-			$lastPart = strtolower($lastPart);
+	public function renderContentObject($key, array $configuration) {
+		return $GLOBALS['TSFE']->cObj->cObjGetSingle(
+			$key,
+			$configuration
+		);
+	}
+
+	/**
+	 * If the name is not defined it is automatically generated
+	 * using the following syntax: id-{element_counter}
+	 * The name attribute will be transformed if it contains some
+	 * non allowed characters:
+	 * - spaces are changed into hyphens
+	 * - remove all characters except a-z A-Z 0-9 _ -
+	 *
+	 * @param string $name
+	 * @return string
+	 */
+	public function sanitizeNameAttribute($name) {
+		if (!empty($name)) {
+				// Change spaces into hyphens
+			$name = preg_replace('/\\s/', '-', $name);
+				// Remove non-word characters
+			$name = preg_replace('/[^a-zA-Z0-9_\\-]+/', '', $name);
 		}
-		return $lastPart;
+		return $name;
+	}
+
+	/**
+	 * If the id is not defined it is automatically generated
+	 * using the following syntax: field-{element_counter}
+	 * The id attribute will be transformed if it contains some
+	 * non allowed characters:
+	 * - spaces are changed into hyphens
+	 * - if the id start with a integer then transform it to field-{integer}
+	 * - remove all characters expect a-z A-Z 0-9 _ - : .
+	 *
+	 * @param string $id
+	 * @return string
+	 */
+	public function sanitizeIdAttribute($id) {
+		if (!empty($id)) {
+			// Change spaces into hyphens
+			$attribute = preg_replace('/\\s/', '-', $id);
+			// Change first non-letter to field-
+			if (preg_match('/^([^a-zA-Z]{1})/', $attribute)) {
+				$id = 'field-' . $attribute;
+			}
+			// Remove non-word characters
+			$id = preg_replace('/([^a-zA-Z0-9_:\\-\\.]*)/', '', $id);
+		}
+		return $id;
 	}
 
 }

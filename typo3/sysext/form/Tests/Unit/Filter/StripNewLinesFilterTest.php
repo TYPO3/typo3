@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class StripNewLinesFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\StripNewLinesFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\StripNewLinesFilter
 	 */
 	protected $subject = NULL;
 
@@ -28,7 +28,7 @@ class StripNewLinesFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\StripNewLinesFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\StripNewLinesFilter();
 	}
 
 	public function dataProviderWithNewlines() {

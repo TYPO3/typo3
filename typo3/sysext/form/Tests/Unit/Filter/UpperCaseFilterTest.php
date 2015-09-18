@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
 class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Form\Filter\UpperCaseFilter
+	 * @var \TYPO3\CMS\Form\Domain\Filter\UpperCaseFilter
 	 */
 	protected $subject = NULL;
 
@@ -28,7 +28,7 @@ class UpperCaseFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Set up
 	 */
 	protected function setUp() {
-		$this->subject = new \TYPO3\CMS\Form\Filter\UpperCaseFilter();
+		$this->subject = new \TYPO3\CMS\Form\Domain\Filter\UpperCaseFilter();
 		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
