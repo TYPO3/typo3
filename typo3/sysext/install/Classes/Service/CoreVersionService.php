@@ -75,14 +75,14 @@ class CoreVersionService {
 	 */
 	public function updateVersionMatrix() {
 		$versionArray = $this->fetchVersionMatrixFromRemote();
-		// This is a 'hack' to keep the string stored in the registry small. We are usually only
-		// interested in information from 7 and up and older releases do not matter in current
-		// use cases. If this unset() is removed and everything is stored for some reason, the
-		// table sys_file field entry_value needs to be extended from blob to longblob.
-		unset($versionArray['6.2'], $versionArray['6.1'], $versionArray['6.0'], $versionArray['4.7'], $versionArray['4.6'],
-			$versionArray['4.5'], $versionArray['4.4'], $versionArray['4.3'], $versionArray['4.2'],
-			$versionArray['4.1'], $versionArray['4.0'], $versionArray['3.8'], $versionArray['3.7'],
-			$versionArray['3.6'], $versionArray['3.5'], $versionArray['3.3']);
+		$installedMajorVersion = (int)$this->getInstalledMajorVersion();
+
+		foreach ($versionArray as $versionNumber => $versionDetails) {
+			if (is_array($versionDetails) && (int)$this->getMajorVersion($versionNumber) < $installedMajorVersion) {
+				unset($versionArray[$versionNumber]);
+			}
+		}
+
 		$this->registry->set('TYPO3.CMS.Install', 'coreVersionMatrix', $versionArray);
 	}
 
