@@ -151,6 +151,34 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
 	/**
 	 * @test
+	 * @see DataSet/changeContentSortingNDeleteMovedRecord.csv
+	 */
+	public function changeContentSortingAndDeleteMovedRecord() {
+		parent::changeContentSortingAndDeleteMovedRecord();
+		$this->assertAssertionDataSet('changeContentSortingNDeleteMovedRecord');
+
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
+	}
+
+	/**
+	 * @test
+	 * @see DataSet/changeContentSortingNDeleteLiveRecord.csv
+	 */
+	public function changeContentSortingAndDeleteLiveRecord() {
+		parent::changeContentSortingAndDeleteLiveRecord();
+		$this->assertAssertionDataSet('changeContentSortingNDeleteLiveRecord');
+
+		$responseSections = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+		$this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+		$this->assertThat($responseSections, $this->getRequestSectionDoesNotHaveRecordConstraint()
+			->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+	}
+
+	/**
+	 * @test
 	 * @see DataSet/Assertion/moveContentRecordToDifferentPage.csv
 	 */
 	public function moveContentToDifferentPage() {
