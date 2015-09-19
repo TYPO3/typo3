@@ -5,9 +5,10 @@ Feature: #69602 - Simplify handling of backend layouts in frontend
 Description
 ===========
 
-To avoid complex TypoScript for integrators, the handling of backend layouts is simplified for the frontend.
+To avoid complex TypoScript for integrators, the handling of backend layouts has
+been simplified for the frontend.
 
- To get the correct backend layout, the following TypoScript code can be used:
+To get the correct backend layout, the following TypoScript code can be used:
 
 .. code-block:: typoscript
 
@@ -18,13 +19,13 @@ To avoid complex TypoScript for integrators, the handling of backend layouts is 
 		key.data = pagelayout
 
 		default = TEXT
-		default.value = fileadmin/template/home.html
+		default.value = EXT:sitepackage/Resources/Private/Templates/Home.html
 
 		3 = TEXT
-		3.value = fileadmin/template/1-col.html
+		3.value = EXT:sitepackage/Resources/Private/Templates/1-col.html
 
 		4 = TEXT
-		4.value = fileadmin/template/2-col.html
+		4.value = EXT:sitepackage/Resources/Private/Templates/2-col.html
 	  }
 	}
 
