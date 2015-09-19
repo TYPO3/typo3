@@ -888,6 +888,11 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 						$whereClauseSubParts = explode('###', $value, 2);
 						// @todo: Throw exception if there is no value? What happens for NEW records?
 						$rowFieldValue = $result['databaseRow'][$whereClauseSubParts[0]];
+						if (is_array($rowFieldValue)) {
+							// If a select or group field is used here, it may have been processed already and
+							// is now an array. Use first selected value in this case.
+							$rowFieldValue = $rowFieldValue[0];
+						}
 						if (substr($whereClauseParts[0], -1) === '\'' && $whereClauseSubParts[1][0] === '\'') {
 							$whereClauseParts[$key] = $database->quoteStr($rowFieldValue, $foreignTableName) . $whereClauseSubParts[1];
 						} else {

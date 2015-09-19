@@ -1119,6 +1119,17 @@ class TcaSelectItemsTest extends UnitTestCase {
 				'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.title=\'rowFieldValue\'',
 				[],
 			],
+			'replace REC_FIELD fullQuoteWithArray' => [
+				'AND fTable.title=###REC_FIELD_rowFieldThree###',
+				'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.title=\'rowFieldThreeValue\'',
+				[
+					'databaseRow' => [
+						'rowFieldThree' => [
+							0 => 'rowFieldThreeValue'
+						]
+					],
+				],
+			],
 			'replace REC_FIELD multiple markers' => [
 				'AND fTable.title=\'###REC_FIELD_rowField###\' AND fTable.pid=###REC_FIELD_rowFieldTwo###',
 				'pages.uid=fTable.pid AND pages.deleted=0 AND 1=1 AND fTable.title=\'rowFieldValue\' AND fTable.pid=\'rowFieldTwoValue\'',
