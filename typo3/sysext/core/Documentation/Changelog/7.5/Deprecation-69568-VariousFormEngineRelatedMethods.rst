@@ -5,7 +5,7 @@ Deprecation: #69568 - Various FormEngine related methods
 Description
 ===========
 
-The following methods have been deprecated and should not be used any longer:
+The following methods have been marked as deprecated and should not no longer be used:
 
 * ``BackendUtility::getExcludeFields()``
 * ``BackendUtility::getExplicitAuthFieldValues()``
@@ -18,7 +18,7 @@ The following methods have been deprecated and should not be used any longer:
 Impact
 ======
 
-Using those methods will throw a deprecation warning.
+Using those methods will trigger a deprecation log entry.
 
 
 Affected Installations

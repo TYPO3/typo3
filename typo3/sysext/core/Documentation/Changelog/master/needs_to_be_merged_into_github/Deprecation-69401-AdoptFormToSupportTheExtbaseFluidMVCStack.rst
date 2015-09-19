@@ -6,7 +6,7 @@ Description
 ===========
 
 Form is now based on Extbase/ Fluid for frontend rendering. Therefore
-all TypoScript based layout settings have been deprecated. Using the
+all TypoScript based layout settings have been marked as deprecated. Using the
 following code is not recommended anymore:
 
 .. code-block:: [typoscript]
@@ -22,18 +22,18 @@ following code is not recommended anymore:
 Impact
 ======
 
-All .layout TypoScript properties should not be used anymore. Backward
+All ``.layout`` TypoScript properties should not be used anymore. Backward
 compatibility algorithms will be removed with TYPO3 CMS 8.
 
 
 Affected Installations
 ======================
 
-All installations using .layout TypoScript properties.
+All installations using ``.layout`` TypoScript properties.
 
 
 Migration
 =========
 
-Get rid of .layout TypoScript properties and move to Fluid based
+Move away from ``.layout`` TypoScript properties and move to Fluid based
 templating.

@@ -5,7 +5,7 @@ Deprecation: #69269 - Deprecate BackendUtility::getPathType_web_nonweb
 Description
 ===========
 
-Method ``getPathType_web_nonweb()`` of class ``TYPO3\CMS\Backend\Utility\BackendUtility`` has been deprecated.
+Method ``getPathType_web_nonweb()`` of class ``TYPO3\CMS\Backend\Utility\BackendUtility`` has been marked as deprecated.
 
 
 Impact
@@ -24,4 +24,4 @@ Searching for the string ``getPathType_web_nonweb`` may reveal possible usages.
 Migration
 =========
 
-Use path functions from ``TYPO3\CMS\Core\Utility\PathUtility``
+Use path functions from ``TYPO3\CMS\Core\Utility\PathUtility``.

@@ -5,7 +5,8 @@ Deprecation: #68128 - GeneralUtility slash-related methods
 Description
 ===========
 
-The following methods within GeneralUtility used to add or remove slashes have been marked as deprecated.
+The following methods within ``GeneralUtility`` used to add or remove slashes
+have been marked as deprecated.
 
 .. code-block:: php
 
@@ -17,10 +18,15 @@ The following methods within GeneralUtility used to add or remove slashes have b
 Impact
 ======
 
-Any usage of these methods will throw a deprecation warning.
+Any usage of these methods will trigger a deprecation log entry.
 
 
 Affected Installations
 ======================
 
 Extensions that call these PHP methods directly.
+
+Migration
+=========
+
+Remove usage of these methods from custom extensions.

@@ -6,7 +6,7 @@ Description
 ===========
 
 The ``\TYPO3\CMS\Backend\ContextMenu\ContextMenuAction::$class`` member variable is not
-used anymore inside Core, therefore it has been deprecated and will be removed with CMS 8.
+used anymore inside Core, therefore it has been marked as deprecated and will be removed with CMS 8.
 
 
 Affected Installations

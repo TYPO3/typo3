@@ -5,7 +5,7 @@ Deprecation: #66588 - POST Data in selectviewhelper should have higher priority 
 Description
 ===========
 
-Submitted form data has precedence over value argument
+Submitted form data has precedence over value arguments.
 
 This adjusts the behavior of all Form ViewHelpers so that any
 submitted value is redisplayed even if a "value" argument has been
@@ -24,13 +24,12 @@ ViewHelpers always being pre-populated with the specified value
 attribute / bound object property even when re-displaying the form upon
 validation errors.
 
-Besides this change deprecates
-``AbstractFormFieldViewHelper::getValue()``. If you call that method in
-your custom ViewHelpers you should use
+Besides this the change marks ``AbstractFormFieldViewHelper::getValue()`` as
+deprecated. If you call that method in your custom ViewHelpers you should use
 ``AbstractFormFieldViewHelper::getValueAttribute()`` instead and call
 ``AbstractFormFieldViewHelper::addAdditionalIdentityPropertiesIfNeeded()``
 explicitly if the ViewHelper might be bound to (sub)entities.
 
-The default usage of getValueAttribute() not respect the submitted form data, because not every viewhelper need
-this feature. But you can enable the usage of the form data by setting the
-AbstractFormFieldViewHelper::respectSubmittedDataValue to TRUE.
+The default usage of getValueAttribute() did not respect the submitted form data,
+because not every viewhelper needs this feature. But you can enable the usage of
+the form data by setting ``AbstractFormFieldViewHelper::respectSubmittedDataValue`` to TRUE.
