@@ -24,4 +24,4 @@ Any Installation that had to define a path different than ``diff``
 Migration
 =========
 
-Delete the line from LocalConfiguration.php
+Delete the line from LocalConfiguration.php if the UpgradeWizard should fail to do so.

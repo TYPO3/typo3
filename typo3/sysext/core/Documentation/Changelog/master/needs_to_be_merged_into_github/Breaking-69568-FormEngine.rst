@@ -19,7 +19,7 @@ The following hook has been removed:
 Impact
 ======
 
-Code instantiating these classes will fatal.
+Code trying to instantiate these classes will fatal.
 
 
 Affected Installations
@@ -33,7 +33,7 @@ Migration
 =========
 
 The methods and classes have been moved to different classes and solutions.
-Extensions need adaptions.
+Extensions needs adaption.
 
-The hook ``getMainFieldsClass`` was substituted with a much more fine grained and flexible API.
+The hook ``getMainFieldsClass`` has been substituted with a much more fine grained and flexible API.
 Use ``FormDataProvider`` to change data given to the render engine of FormEngine from now on.

@@ -7,13 +7,13 @@ Description
 ===========
 
 The HTMLparser now assigns the first class of ``fixAttrib.class.list`` when none of the given class name values
-are found in the configured list. Until now the class attribute of the rendered HTMl tag was just empty in that case.
+are found in the configured list. Until now the class attribute of the rendered HTML tag was just empty in that case.
 
 
 Impact
 ======
 
-A HTMl element that had no class before could now have been assigned a class.
+A HTML element that had no class before could now have been assigned a class.
 
 
 Migration

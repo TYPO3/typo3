@@ -9,7 +9,7 @@ JumpURL handling
 ^^^^^^^^^^^^^^^^
 
 The generation and handling of JumpURLs has been removed from the frontend extension and
-is moved to a new core extension called "jumpurl".
+has been moved to a new core extension called "jumpurl".
 
 URL handler hooks
 ^^^^^^^^^^^^^^^^^
@@ -26,8 +26,8 @@ This is how you can register a hook for manipulating URLs during link generation
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlHandlers']['myext_myidentifier']['handler'] =
 		\Company\MyExt\MyUrlHandler::class;
 
-	// The class needs to implement the UrlProcessorInterface:
-	class MyUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlProcessorInterface {}
+	// The class needs to implement the UrlHandlerInterface:
+	class MyUrlHandler implements \TYPO3\CMS\Frontend\Http\UrlHandlerInterface {}
 
 This is how you can handle URLs in a custom way:
 
@@ -37,8 +37,8 @@ This is how you can handle URLs in a custom way:
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors']['myext_myidentifier']['processor']
 		= \Company\MyExt\MyUrlProcessor::class;
 
-	// The class needs to implement the UrlHandlerInterface:
-	class MyUrlProcessor implements \TYPO3\CMS\Frontend\Http\UrlHandlerInterface {}
+	// The class needs to implement the UrlProcessorInterface:
+	class MyUrlProcessor implements \TYPO3\CMS\Frontend\Http\UrlProcessorInterface {}
 
 
 External URL page handling
@@ -61,22 +61,22 @@ Impact
 Unless the jumpurl extension is installed, no JumpURL related feature will work anymore.
 
 If an extension tightly integrates into the JumpURL process it might break, because some of the related
-methods were removed, disabled or changed.
+methods have been removed, disabled or changed.
 
-These methods are removed and their functionality is moved to the new jumpurl extension:
+These methods have been removed and their functionality has been moved to the new jumpurl extension:
 
 :code:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::locDataJU()`
 
 :code:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::locDataCheck()`
 
-The :code:`$initP` parameter of the method  :code:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getMailTo()` is removed.
+The :code:`$initP` parameter of the method  :code:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getMailTo()` has been removed.
 
-The method :code:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()` is deprecated
+The method :code:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setExternalJumpUrl()` has been marked as deprecated
 and is an alias for the new :code:`initializeRedirectUrlHandlers()` method that does no jumpurl handling any more. The
 new method only checks if the current page is a link to an external URL and sets the :code:`redirectUrl` property.
 
-The method :code:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::jumpUrl()` is also deprecated
-and is an alias for the new :code:`redirectToExternalUrl()` method. The jumpurl handling was removed from
+The method :code:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::jumpUrl()` has also been marked as deprecated
+and is an alias for the new :code:`redirectToExternalUrl()` method. The jumpurl handling has been removed from
 this method. It loops over all registered URL handlers and handles the redirection to the :code:`redirectUrl`.
 
 
@@ -91,10 +91,10 @@ Migration
 =========
 
 If you  want to use the JumpURL features you need to install the jumpurl extension. Your configuration should
-then work as before.
+work as before.
 
 Please note that the configuration of the :ref:`filelink <t3tsref:filelink>` TypoScript function has changed.
-Passing the :code:`jumpurl` parameter in the configuration is deprecated and will be removed in future versions.
+Passing the :code:`jumpurl` parameter in the configuration has been marked as deprecated and will be removed in future versions.
 
 You can now pass arbitrary configuration options for the typolink call that is used to generate
 the file link in the :code:`typolinkConfiguration` parameter:

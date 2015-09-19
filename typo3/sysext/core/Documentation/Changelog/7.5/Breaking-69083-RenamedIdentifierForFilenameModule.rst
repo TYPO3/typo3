@@ -5,7 +5,7 @@ Breaking: #69083 - Renamed identifier for filelist module
 Description
 ===========
 
-The filelist module was rewritten based on extbase. Therefore the module identifier was changed
+The filelist module was rewritten to use Extbase. Therefore the module identifier has been changed
 from ``file_list`` to ``file_FilelistList``.
 
 

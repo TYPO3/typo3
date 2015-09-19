@@ -5,7 +5,7 @@ Breaking: #69161 - Removed includeCsh setting from ContainerViewHelper
 Description
 ===========
 
-Include CSH setting in ``<f:be.container>`` is not needed anymore and therefor removed.
+Include CSH setting in ``<f:be.container>`` is not needed anymore and has therefore been removed.
 The JavaScript will be loaded automatically when ext:cshmanual is enabled.
 
 
@@ -18,7 +18,7 @@ Using ``<f:be.container>`` ViewHelpers in a custom Backend module, setting the i
 Affected Installations
 ======================
 
-Extensions that use ``<f:be.container>`` which set the setting includeCsh
+Extensions that use ``<f:be.container>`` which set the setting ``includeCsh``
 
 Migration
 =========

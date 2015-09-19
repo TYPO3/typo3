@@ -5,7 +5,7 @@ Breaking: #66190 - Remove flash and chart from ExtJS
 Description
 ===========
 
-The flash and chart module is removed from ExtJS. As we will remove the ExtJS components this is a first step to reduce it.
+The flash and chart module is removed from ExtJS. In order to reduce ExtJS components this is a first step.
 
 
 Impact

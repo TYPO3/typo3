@@ -14,7 +14,7 @@ Impact
 ======
 
 Any code calling the protected or removed methods or using the protected member will fail with a fatal error.
-Any code using the removed member, will receive only an empty value. (PHP fallback for non-existing class members)
+Any code using the removed member will receive only an empty value. (PHP fallback for non-existing class members)
 
 Affected Installations
 ======================

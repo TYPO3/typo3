@@ -6,7 +6,7 @@ Description
 ===========
 
 The removed method ``getMsgBox`` in ``ElementBrowser`` used table based styling.
-The method is removed, since we have better means to display this kind of messages: FlashMessages or Callouts.
+The method has been removed since we have better means to display this kind of messages: FlashMessages or Callouts.
 
 
 Impact

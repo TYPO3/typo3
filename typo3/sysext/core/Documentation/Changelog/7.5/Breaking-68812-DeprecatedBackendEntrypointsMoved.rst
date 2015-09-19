@@ -5,10 +5,10 @@ Breaking: #68812 - Old Backend Entrypoints moved to deprecation layer
 Description
 ===========
 
-The backend entry points within the typo3/ directory, which have been deprecated in favor of using typo3/index.php
+The backend entry points within the typo3/ directory which have been marked as deprecated in favor of using typo3/index.php
 directly as Entry Point via Request Handling, have been moved to a deprecation.php file.
 
-The following files are therefore removed from the typo3/ directory directly:
+The following files have therefore been removed from the typo3/ directory directly:
 
 .. code-block:: shell
 
@@ -37,7 +37,7 @@ Impact
 ======
 
 All references / links to these entry points directly without using the proper API calls will result
-in a 404 error when using these entry points.
+in a 404 error.
 
 If an Apache webserver is used with the enabled mod_rewrite module, a .htaccess file placed inside typo3/ will
 rewrite the URLs to the deprecated.php and throw a deprecation warning.

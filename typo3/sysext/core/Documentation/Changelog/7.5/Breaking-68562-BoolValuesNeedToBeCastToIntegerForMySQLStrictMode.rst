@@ -5,7 +5,7 @@ Breaking: #68562 - Bool values need to be cast to integer for MySQL strict mode
 Description
 ===========
 
-MySQL strict mode doesn't accept '' as a valid value to store in aninteger
+MySQL strict mode doesn't accept '' as a valid value to store in an integer
 column if the MySQL server is running in strict mode.
 
 mysqli_real_escape() casts boolean values to string using '1' (for ``TRUE``)
@@ -23,7 +23,7 @@ Affected Installations
 ======================
 
 Installations where 3rd party extension are relying on ``FALSE`` being cast to ''
-when they are storing boolean values in character type colums. In this case new
+when they are storing boolean values in character type columns. In this case new
 values will get stored as '0'
 
 

@@ -5,14 +5,14 @@ Breaking: #69561 - Replace sprite icons with IconFactory in ContextMenu
 Description
 ===========
 
-SpriteIcon and standalone image support have been replaced with IconFactory in
-the context menu. All menu icons need now to be registered through the IconRegistry.
+SpriteIcon and standalone image support have been replaced with ``IconFactory`` in
+the context menu. All menu icons now need to be registered through the ``IconRegistry``.
 
 
 Impact
 ======
 
-The UserTsConfig options for items ``icon`` and ``spriteIcon`` have no effect anymore,
+The ``UserTsConfig`` options for items ``icon`` and ``spriteIcon`` have no effect anymore,
 and will deliver a blank placeholder image if ``iconName`` is not set.
 
 
