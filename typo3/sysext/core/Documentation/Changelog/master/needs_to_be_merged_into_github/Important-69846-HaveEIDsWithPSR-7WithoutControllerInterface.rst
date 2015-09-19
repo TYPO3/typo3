@@ -5,11 +5,11 @@ Important: #69846 - Have eIDs with PSR-7 without ControllerInterface
 Description
 ===========
 
-In order to allow the same logic as with the routing and the direct information which method to call, the
-ControllerInterface is not mandatory anymore.
+In order to allow the same logic as with the routing and the direct information
+which method to call, implementing ``ControllerInterface`` is not mandatory anymore.
 
 Remove the ``implements ControllerInterface`` instruction in the affected class. The former ``processRequest``
-method may be changed to:
+method may (and should) be changed to:
 
 .. code-block:: php
 
@@ -17,7 +17,7 @@ method may be changed to:
 	}
 
 Please note that the ``$response`` object is now passed into the method directly, thus you must not create a new object
-by ``$response = GeneralUtility::makeInstance(Response::class);``
+by ``$response = GeneralUtility::makeInstance(Response::class);`` any more.
 
 The eID_include registration in :file:`ext_localconf.php` must be changed in such case to
 
