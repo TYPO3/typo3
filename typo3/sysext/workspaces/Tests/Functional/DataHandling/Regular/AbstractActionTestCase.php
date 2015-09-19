@@ -143,6 +143,26 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
 	}
 
 	/**
+	 * @see DataSet/changeContentSortingNDeleteMovedRecord.csv
+	 */
+	public function changeContentSortingAndDeleteMovedRecord() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+	}
+
+	/**
+	 * @see DataSet/changeContentSortingNDeleteLiveRecord.csv
+	 */
+	public function changeContentSortingAndDeleteLiveRecord() {
+		$this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+		// Switch to live workspace
+		$this->backendUser->workspace = 0;
+		$this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+		// Switch back to draft workspace
+		$this->backendUser->workspace = static::VALUE_WorkspaceId;
+	}
+
+	/**
 	 * @see DataSet/Assertion/moveContentRecordToDifferentPage.csv
 	 */
 	public function moveContentToDifferentPage() {

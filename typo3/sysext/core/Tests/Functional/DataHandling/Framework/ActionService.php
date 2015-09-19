@@ -248,6 +248,7 @@ class ActionService {
 	 * @param integer $uid
 	 * @param integer $pageId
 	 * @param NULL|array $recordData
+	 * @return array
 	 */
 	public function moveRecord($tableName, $uid, $pageId, array $recordData = NULL) {
 		$commandMap = array(
@@ -267,6 +268,7 @@ class ActionService {
 		$this->createDataHandler();
 		$this->dataHandler->start(array(), $commandMap);
 		$this->dataHandler->process_cmdmap();
+		return $this->dataHandler->copyMappingArray;
 	}
 
 	/**
