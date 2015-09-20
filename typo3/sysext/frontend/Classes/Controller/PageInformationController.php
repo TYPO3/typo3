@@ -72,8 +72,9 @@ class PageInformationController extends \TYPO3\CMS\Backend\Module\AbstractFuncti
 			'',
 			BackendUtility::cshItem($dblist->descrTable, 'pagetree_overview', NULL, '|<br />')
 			. '<div class="form-inline form-inline-spaced">'
-			. $h_func . $dblist->HTMLcode
-			. '</div>',
+			. $h_func
+			. '</div>'
+			. $dblist->HTMLcode,
 			0,
 			1
 		);
