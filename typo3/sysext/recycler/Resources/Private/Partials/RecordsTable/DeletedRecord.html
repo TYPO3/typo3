@@ -1,7 +1,7 @@
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
 <tr data-uid="{record.uid}" data-table="{record.table}" data-recordtitle="{record.title}">
 	<td nowrap="nowrap">{record.tableTitle}</td>
-	<td nowrap="nowrap"><f:format.html>{record.icon}</f:format.html> {record.title}</td>
+	<td nowrap="nowrap"><f:format.raw>{record.icon}</f:format.raw> {record.title}</td>
 	<td nowrap="nowrap">{record.tstamp}</td>
 	<td nowrap="nowrap">{record.uid}</td>
 	<td nowrap="nowrap">{record.pageTitle} ({record.pid})</td>
