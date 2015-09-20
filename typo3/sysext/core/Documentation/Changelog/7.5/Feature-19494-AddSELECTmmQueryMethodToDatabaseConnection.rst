@@ -9,7 +9,7 @@ A new method ``SELECT_mm_query`` has been added to the ``DatabaseConnection`` cl
 This method has been extracted from ``exec_SELECT_mm_query`` to separate the building
 and execution of M:M queries.
 
-This allows enables the use of the query building in the database abstraction layer.
+This enables the use of the query building in the database abstraction layer.
 
 Example:
 
