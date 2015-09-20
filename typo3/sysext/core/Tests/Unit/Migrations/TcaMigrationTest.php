@@ -557,4 +557,70 @@ class TcaMigrationTest extends UnitTestCase {
 		$subject = new TcaMigration();
 		$this->assertEquals($expected, $subject->migrate($input));
 	}
+
+	/**
+	 * @test
+	 */
+	public function migrateRewritesRelativeIconPathToExtensionReference() {
+		$input = [
+				'aTable' => [
+						'ctrl' => [
+								'iconfile' => '../typo3conf/ext/myExt/iconfile.gif',
+						],
+				],
+		];
+		$expected = [
+				'aTable' => [
+						'ctrl' => [
+								'iconfile' => 'EXT:myExt/iconfile.gif',
+						],
+				],
+		];
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function migrateRewritesIconFilenameOnlyToDefaultT3skinExtensionReference() {
+		$input = [
+				'aTable' => [
+						'ctrl' => [
+								'iconfile' => 'iconfile.gif',
+						],
+				],
+		];
+		$expected = [
+				'aTable' => [
+						'ctrl' => [
+								'iconfile' => 'EXT:t3skin/icons/gfx/i/iconfile.gif',
+						],
+				],
+		];
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function migrateKeepsGivenExtensionReference() {
+		$input = [
+				'aTable' => [
+						'ctrl' => [
+								'iconfile' => 'EXT:myExt/iconfile.gif',
+						],
+				],
+		];
+		$expected = [
+				'aTable' => [
+						'ctrl' => [
+								'iconfile' => 'EXT:myExt/iconfile.gif',
+						],
+				],
+		];
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
 }
