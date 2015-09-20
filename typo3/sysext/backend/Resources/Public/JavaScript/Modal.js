@@ -151,30 +151,30 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 		severity = (typeof severity !== 'undefined' ? severity : top.TYPO3.Severity.info);
 		buttons = buttons || [];
 		additionalCssClasses = additionalCssClasses || [];
-		Modal.currentModal = Modal.template.clone();
+
+		var currentModal = Modal.template.clone();
 		if (additionalCssClasses.length) {
 			for (var i=0; i < additionalCssClasses.length; i++) {
-				Modal.currentModal.addClass(additionalCssClasses[i]);
+				currentModal.addClass(additionalCssClasses[i]);
 			}
 		}
-		Modal.currentModal.attr('tabindex', '-1');
-		Modal.currentModal.find('.modal-title').text(title);
-		Modal.currentModal.find('.modal-header .close').on('click', function() {
-			Modal.currentModal.trigger('modal-dismiss');
+		currentModal.attr('tabindex', '-1');
+		currentModal.find('.modal-title').text(title);
+		currentModal.find('.modal-header .close').on('click', function() {
+			currentModal.modal('hide');
 		});
 
 		if (typeof content === 'object') {
-			Modal.currentModal.find('.modal-body').append(content);
+			currentModal.find('.modal-body').append(content);
 		} else {
 			// we need html, check if we have to wrap content in <p>
 			if (!/^<[a-z][\s\S]*>/i.test(content)) {
 				content = $('<p />').text(content);
 			}
-
-			Modal.currentModal.find('.modal-body').html(content);
+			currentModal.find('.modal-body').html(content);
 		}
 
-		Modal.currentModal.addClass('t3-modal-' + Modal.getSeverityClass(severity));
+		currentModal.addClass('t3-modal-' + Modal.getSeverityClass(severity));
 		if (buttons.length > 0) {
 			for (var i=0; i<buttons.length; i++) {
 				var button = buttons[i];
@@ -192,22 +192,23 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 				if (button.trigger) {
 					$button.on('click', button.trigger);
 				}
-				Modal.currentModal.find('.modal-footer').append($button);
+				currentModal.find('.modal-footer').append($button);
 			}
-			Modal.currentModal
+			currentModal
 				.find('.modal-footer button')
 				.on('click', function() {
 					$(this).trigger('button.clicked');
 				});
 
 		} else {
-			Modal.currentModal.find('.modal-footer').remove();
+			currentModal.find('.modal-footer').remove();
 		}
-		Modal.currentModal.on('shown.bs.modal', function(e) {
+		currentModal.on('shown.bs.modal', function(e) {
 			// focus the button which was configured as active button
 			$(this).find('.modal-footer .t3js-active').first().focus();
 		});
-		Modal.currentModal.on('hidden.bs.modal', function(e) {
+		// Remove modal from Modal.instances when hidden
+		currentModal.on('hidden.bs.modal', function(e) {
 			if (Modal.instances.length > 0) {
 				var lastIndex = Modal.instances.length-1;
 				Modal.instances.splice(lastIndex, 1);
@@ -219,15 +220,18 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 				top.TYPO3.jQuery('body').addClass('modal-open');
 			}
 		});
-		Modal.currentModal.on('show.bs.modal', function(e) {
+		// When modal is opened/shown add it to Modal.instances and make it Modal.currentModal
+		currentModal.on('show.bs.modal', function(e) {
+			Modal.currentModal = $(this);
 			Modal.instances.push(Modal.currentModal);
 			Modal.center();
 		});
-		Modal.currentModal.on('modal-dismiss', Modal.dismiss);
-		top.TYPO3.jQuery('body').append(Modal.currentModal);
-		Modal.currentModal.modal();
+		currentModal.on('modal-dismiss', function(e) {
+			// Hide modal, the bs.modal events will clean up Modal.instances
+			$(this).modal('hide');
+		});
 
-		return Modal.currentModal;
+		return currentModal.modal();
 	};
 
 	/**
@@ -236,7 +240,6 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 	Modal.dismiss = function() {
 		if (Modal.currentModal) {
 			Modal.currentModal.modal('hide');
-			Modal.currentModal = null;
 		}
 	};
 
@@ -245,7 +248,7 @@ define('TYPO3/CMS/Backend/Modal', ['jquery', 'TYPO3/CMS/Backend/Notification', '
 	 */
 	Modal.center = function() {
 		$(window).off('resize', Modal.center);
-		if(Modal.instances.length > 0){
+		if (Modal.instances.length > 0) {
 			$(window).on('resize', Modal.center);
 			$(Modal.instances).each(function() {
 				var $me = $(this),

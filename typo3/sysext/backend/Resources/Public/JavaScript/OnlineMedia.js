@@ -59,7 +59,7 @@ define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/
 								name: 'ok'
 							}]
 						).on('confirm.button.ok', function() {
-							$confirm.trigger('modal-dismiss');
+							$confirm.modal('hide');
 						});
 					}
 					NProgress.done();
@@ -84,12 +84,8 @@ define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/
 					trigger: function() {
 						var url = $modal.find('input.online-media-url').val();
 						if (url) {
-							$modal.trigger('modal-dismiss');
-
-							// Avoid a race condition between dismissing the current modal and creating a new one
-							window.setTimeout(function() {
-								me.addOnlineMedia(url);
-							}, 200);
+							$modal.modal('hide');
+							me.addOnlineMedia(url);
 						}
 					}
 				}]
