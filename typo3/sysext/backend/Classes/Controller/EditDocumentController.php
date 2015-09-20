@@ -947,6 +947,10 @@ class EditDocumentController {
 									'command' => $command,
 									'returnUrl' => $this->R_URI,
 								];
+								if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
+									$formDataCompilerInput['overrideValues'] = $this->overrideVals[$table];
+								}
+
 								$formData = $formDataCompiler->compile($formDataCompilerInput);
 
 								// Set this->viewId if possible
@@ -1006,12 +1010,6 @@ class EditDocumentController {
 									'cmd' => $command,
 									'deleteAccess' => $deleteAccess
 								);
-
-								// Set additional FormData
-								// @todo: This is a hack and should be done differently
-								if (is_array($this->overrideVals) && is_array($this->overrideVals[$table])) {
-									$formData['overrideValues'] = $this->overrideVals[$table];
-								}
 
 								if ($command !== 'new') {
 									BackendUtility::lockRecords($table, $formData['databaseRow']['uid'], $table === 'tt_content' ? $formData['databaseRow']['pid'] : 0);

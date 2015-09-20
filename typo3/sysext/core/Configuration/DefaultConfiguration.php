@@ -355,14 +355,20 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseSystemLanguageRows::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabasePageLanguageOverlayRows::class => array(
