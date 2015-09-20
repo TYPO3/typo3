@@ -349,6 +349,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-duplicates-select.svg',
 			)
 		),
+		'actions-document-export-csv' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Action/actions-document-export-csv.svg',
+			)
+		),
 		'actions-document-edit-access' => array(
 			'provider' => FontawesomeIconProvider::class,
 			'options' => array(

@@ -153,7 +153,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-document-close',
 	'actions-document-duplicates-select',
 	'actions-document-edit-access',
-	'actions-document-export-csv', // Not used in core!
+	'actions-document-export-csv',
 	'actions-document-export-t3d',
 	'actions-document-history-open',
 	'actions-document-import-t3d',

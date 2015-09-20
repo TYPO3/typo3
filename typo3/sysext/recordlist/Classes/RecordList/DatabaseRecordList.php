@@ -298,7 +298,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				// CSV
 				$buttons['csv'] = '<a href="' . htmlspecialchars(($this->listURL() . '&csv=1')) . '" title="'
 					. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv', TRUE) . '">'
-					. $this->iconFactory->getIcon('mimetypes-text-csv', Icon::SIZE_SMALL) . '</a>';
+					. $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL) . '</a>';
 				// Export
 				if (ExtensionManagementUtility::isLoaded('impexp')) {
 					$url = BackendUtility::getModuleUrl('xMOD_tximpexp', array('tx_impexp[action]' => 'export'));
