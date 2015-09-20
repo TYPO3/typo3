@@ -425,17 +425,16 @@ abstract class AbstractFormElement extends AbstractNode {
 						$options[] = '<option value="' . htmlspecialchars($selectWizardItem[1]) . '">' . htmlspecialchars($selectWizardItem[0]) . '</option>';
 					}
 					if ($wizardConfiguration['mode'] == 'append') {
-						$assignValue = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
+						$assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value=\'\'+this.options[this.selectedIndex].value+document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
 					} elseif ($wizardConfiguration['mode'] == 'prepend') {
-						$assignValue = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value+=\'\'+this.options[this.selectedIndex].value';
+						$assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value+=\'\'+this.options[this.selectedIndex].value';
 					} else {
-						$assignValue = 'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value=this.options[this.selectedIndex].value';
+						$assignValue = 'document.querySelectorAll(' . GeneralUtility::quoteJSvalue('[data-formengine-input-name="' . $itemName . '"]') . ')[0].value=this.options[this.selectedIndex].value';
 					}
 					$otherWizards[] =
 						'<select' .
 							' id="' . StringUtility::getUniqueId('tceforms-select-') . '"' .
 							' class="form-control tceforms-select tceforms-wizardselect"' .
-							' name="_WIZARD' . $fName . '"' .
 							' onchange="' . htmlspecialchars($assignValue . ';this.blur();this.selectedIndex=0;' . implode('', $fieldChangeFunc)) . '"'.
 						'>' .
 							implode('', $options) .
