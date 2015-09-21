@@ -19,8 +19,6 @@ Impact
 
 The ability to set the base (1000 or 1024) via TypoScript configuration has been added.
 
-The following lines should be added to the file "TYPO3CMS-Reference-Typoscript/Documentation/Functions/Stdwrap/Index.rst" in the "Property bytes container".
-
 With the ``base`` property it can be defined whether to use a base of 1000 or 1024 to calculate with
 
 Thus::
