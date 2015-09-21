@@ -35,83 +35,6 @@ class IconFactory {
 	protected $iconRegistry;
 
 	/**
-	 * Mapping of file extensions to mimetypes
-	 *
-	 * @var string[]
-	 */
-	protected $fileExtensionMapping = array(
-		'htm' => 'mimetypes-text-html',
-		'html' => 'mimetypes-text-html',
-		'css' => 'mimetypes-text-css',
-		'js' => 'mimetypes-text-js',
-		'csv' => 'mimetypes-text-csv',
-		'php' => 'mimetypes-text-php',
-		'php6' => 'mimetypes-text-php',
-		'php5' => 'mimetypes-text-php',
-		'php4' => 'mimetypes-text-php',
-		'php3' => 'mimetypes-text-php',
-		'inc' => 'mimetypes-text-php',
-		'ts' => 'mimetypes-text-ts',
-		'txt' => 'mimetypes-text-text',
-		'class' => 'mimetypes-text-text',
-		'tmpl' => 'mimetypes-text-text',
-		'jpg' => 'mimetypes-media-image',
-		'jpeg' => 'mimetypes-media-image',
-		'gif' => 'mimetypes-media-image',
-		'png' => 'mimetypes-media-image',
-		'bmp' => 'mimetypes-media-image',
-		'tif' => 'mimetypes-media-image',
-		'tiff' => 'mimetypes-media-image',
-		'tga' => 'mimetypes-media-image',
-		'psd' => 'mimetypes-media-image',
-		'eps' => 'mimetypes-media-image',
-		'ai' => 'mimetypes-media-image',
-		'svg' => 'mimetypes-media-image',
-		'pcx' => 'mimetypes-media-image',
-		'avi' => 'mimetypes-media-video',
-		'mpg' => 'mimetypes-media-video',
-		'mpeg' => 'mimetypes-media-video',
-		'mov' => 'mimetypes-media-video',
-		'wav' => 'mimetypes-media-audio',
-		'mp3' => 'mimetypes-media-audio',
-		'mid' => 'mimetypes-media-audio',
-		'swf' => 'mimetypes-media-flash',
-		'swa' => 'mimetypes-media-flash',
-		'exe' => 'mimetypes-application',
-		'com' => 'mimetypes-application',
-		't3x' => 'mimetypes-compressed',
-		't3d' => 'mimetypes-compressed',
-		'zip' => 'mimetypes-compressed',
-		'tgz' => 'mimetypes-compressed',
-		'gz' => 'mimetypes-compressed',
-		'pdf' => 'mimetypes-pdf',
-		'doc' => 'mimetypes-word',
-		'dot' => 'mimetypes-word',
-		'docm' => 'mimetypes-word',
-		'docx' => 'mimetypes-word',
-		'dotm' => 'mimetypes-word',
-		'dotx' => 'mimetypes-word',
-		'sxw' => 'mimetypes-word',
-		'rtf' => 'mimetypes-word',
-		'xls' => 'mimetypes-excel',
-		'xlsm' => 'mimetypes-excel',
-		'xlsx' => 'mimetypes-excel',
-		'xltm' => 'mimetypes-excel',
-		'xltx' => 'mimetypes-excel',
-		'sxc' => 'mimetypes-excel',
-		'pps' => 'mimetypes-powerpoint',
-		'ppsx' => 'mimetypes-powerpoint',
-		'ppt' => 'mimetypes-powerpoint',
-		'pptm' => 'mimetypes-powerpoint',
-		'pptx' => 'mimetypes-powerpoint',
-		'potm' => 'mimetypes-powerpoint',
-		'potx' => 'mimetypes-powerpoint',
-		'mount' => 'apps-filetree-mount',
-		'folder' => 'apps-filetree-folder-default',
-		'default' => 'mimetypes-other-other',
-	);
-
-	/**
 	 * Mapping of record status to overlays
 	 *
 	 * @var string[]
@@ -372,21 +295,9 @@ class IconFactory {
 	 * @return Icon
 	 */
 	public function getIconForFileExtension($fileExtension, $size = Icon::SIZE_DEFAULT, $overlayIdentifier = NULL) {
-		$iconName = $this->getIconIdentifierForFileExtension($fileExtension);
+		$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+		$iconName = $iconRegistry->getIconIdentifierForFileExtension($fileExtension);
 		return $this->getIcon($iconName, $size, $overlayIdentifier);
-	}
-
-	/**
-	 * @param string $fileExtension
-	 *
-	 * @return string
-	 */
-	protected function getIconIdentifierForFileExtension($fileExtension) {
-		// If the file extension is not valid use the default one
-		if (!isset($this->fileExtensionMapping[$fileExtension])) {
-			$fileExtension = 'default';
-		}
-		return $this->fileExtensionMapping[$fileExtension];
 	}
 
 	/**
@@ -462,7 +373,8 @@ class IconFactory {
 			if ($resource instanceof File && $resource->isMissing()) {
 				$overlayIdentifier = 'overlay-missing';
 			}
-			$iconIdentifier = $this->getIconIdentifierForFileExtension($resource->getExtension());
+			$iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+			$iconIdentifier = $iconRegistry->getIconIdentifierForFileExtension($resource->getExtension());
 		}
 
 		unset($options['mount-root']);
