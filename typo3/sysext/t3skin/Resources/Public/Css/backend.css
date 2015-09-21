@@ -12767,6 +12767,9 @@ iframe {
 .query-builder .indent {
   padding-left: 20px;
 }
+tr.collapse {
+  display: none;
+}
 .tx_scheduler_mod1 .table td {
   vertical-align: top;
 }
