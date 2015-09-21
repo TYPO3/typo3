@@ -88,20 +88,20 @@ class SystemEnvironmentBuilder {
 		define('TYPO3_copyright_year', '1998-2015');
 
 		// TYPO3 external links
-		define('TYPO3_URL_GENERAL', 'http://typo3.org/');
-		define('TYPO3_URL_LICENSE', 'http://typo3.org/typo3-cms/overview/licenses/');
-		define('TYPO3_URL_EXCEPTION', 'http://typo3.org/go/exception/CMS/');
+		define('TYPO3_URL_GENERAL', 'https://typo3.org/');
+		define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
+		define('TYPO3_URL_EXCEPTION', 'https://typo3.org/go/exception/CMS/');
 		define('TYPO3_URL_MAILINGLISTS', 'http://lists.typo3.org/cgi-bin/mailman/listinfo');
-		define('TYPO3_URL_DOCUMENTATION', 'http://typo3.org/documentation/');
+		define('TYPO3_URL_DOCUMENTATION', 'https://typo3.org/documentation/');
 		define('TYPO3_URL_DOCUMENTATION_TSREF', 'https://docs.typo3.org/typo3cms/TyposcriptReference/');
 		define('TYPO3_URL_DOCUMENTATION_TSCONFIG', 'https://docs.typo3.org/typo3cms/TSconfigReference/');
-		define('TYPO3_URL_CONSULTANCY', 'http://typo3.org/support/professional-services/');
-		define('TYPO3_URL_CONTRIBUTE', 'http://typo3.org/contribute/');
-		define('TYPO3_URL_SECURITY', 'http://typo3.org/teams/security/');
-		define('TYPO3_URL_DOWNLOAD', 'http://typo3.org/download/');
-		define('TYPO3_URL_SYSTEMREQUIREMENTS', 'http://typo3.org/typo3-cms/overview/requirements/');
-		define('TYPO3_URL_DONATE', 'http://typo3.org/donate/online-donation/');
-		define('TYPO3_URL_WIKI_OPCODECACHE', 'http://wiki.typo3.org/Opcode_Cache');
+		define('TYPO3_URL_CONSULTANCY', 'https://typo3.org/support/professional-services/');
+		define('TYPO3_URL_CONTRIBUTE', 'https://typo3.org/contribute/');
+		define('TYPO3_URL_SECURITY', 'https://typo3.org/teams/security/');
+		define('TYPO3_URL_DOWNLOAD', 'https://typo3.org/download/');
+		define('TYPO3_URL_SYSTEMREQUIREMENTS', 'https://typo3.org/typo3-cms/overview/requirements/');
+		define('TYPO3_URL_DONATE', 'https://typo3.org/donate/online-donation/');
+		define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
 
 		// A null, a tabulator, a linefeed, a carriage return, a substitution, a CR-LF combination
 		define('NUL', chr(0));

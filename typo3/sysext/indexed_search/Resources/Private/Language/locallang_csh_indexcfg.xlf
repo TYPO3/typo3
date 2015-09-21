@@ -126,10 +126,10 @@ Example value: "&amp;showUid=###UID###"</source>
 			</trans-unit>
 			<trans-unit id="url_deny.details" xml:space="preserve">
 				<source>Example:
-If you wish to index "http://typo3.org/" but not "http://typo3.org/extensions/" and "http://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
+If you wish to index "https://typo3.org/" but not "https://typo3.org/extensions/" and "https://typo3.org/downloads/" then you simply enter those two URLs into the box like this:
 
-http://typo3.org/downloads/
-http://typo3.org/extensions/</source>
+https://typo3.org/downloads/
+https://typo3.org/extensions/</source>
 			</trans-unit>
 			<trans-unit id="_url_deny.seeAlso">
 				<source>index_config:externalUrl</source>

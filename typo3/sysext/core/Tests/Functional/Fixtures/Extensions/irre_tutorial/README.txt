@@ -52,11 +52,11 @@ description what these strings (e.g. like "tx_irretutorial_<string>_hotel or tca
 -----------------------------
  4. Links
 ---------------------------
-Extension:	http://typo3.org/extensions/repository/view/irre_tutorial/
-Thesis:		http://typo3.org/documentation/article/inline-relational-record-editing-irre/
+Extension:	https://typo3.org/extensions/repository/view/irre_tutorial/
+Thesis:		https://typo3.org/documentation/article/inline-relational-record-editing-irre/
 Video:		http://typo3.org/videos/play/7-minutes-of-fame-inline-relational-record-editing-irre/
 Core API:	https://docs.typo3.org/typo3cms/CoreApiReference/
-Wiki:		http://wiki.typo3.org/IRRE
+Wiki:		https://wiki.typo3.org/Inline_Relational_Record_Editing
 XING:		https://www.xing.com/profile/Oliver_Hader
 
 

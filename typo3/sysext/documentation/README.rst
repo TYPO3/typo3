@@ -40,7 +40,7 @@ To be listed, documents should be stored within ``typo3conf/Documentation/<docum
 
 ``format``
 	Either ``html`` or ``pdf``. Additional formats may be supported by 3rd party extensions
-	(such as `EXT:sphinx <http://typo3.org/extensions/repository/view/sphinx>`_).
+	(such as `EXT:sphinx <https://typo3.org/extensions/repository/view/sphinx>`_).
 
 
 Registering Custom Documents

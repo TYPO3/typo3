@@ -245,7 +245,7 @@ SEE: Admin Panel section]]></description>
 			<description><![CDATA[This writes the <base> tag in the header of the document. Set this to the value that is expected to be the URL, and append a "/" to the end of the string.
 
 Example:
-config.baseURL = http://typo3.org/sub_dir/]]></description>
+config.baseURL = https://typo3.org/sub_dir/]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6832,7 +6832,7 @@ Example:
 This substitutes all occurencies of "T3" with "TYPO3 CMS" and "T3web" with a link to typo3.org.
 short {
   T3 = TYPO3 CMS
-  T3web = <a href="http://typo3.org">typo3</a>
+  T3web = <a href="https://typo3.org">typo3</a>
 }]]></description>
 			<default><![CDATA[
 ]]></default>

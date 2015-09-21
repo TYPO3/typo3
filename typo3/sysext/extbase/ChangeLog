@@ -1426,8 +1426,8 @@ features of Extbase. The documentation is bundled in a separate
 extension called doc_extbase. Both, the blog_example and the
 doc_extbase can downloaded via TER.
 
-http://typo3.org/extensions/repository/view/blog_example/current/
-http://typo3.org/extensions/repository/view/doc_extbase/current/
+https://typo3.org/extensions/repository/view/blog_example/current/
+https://typo3.org/extensions/repository/view/doc_extbase/current/
 
 Currently Extbase is in ALPHA state. Do not expect everything in the
 right place and shape. And keep in mind that the API may change
