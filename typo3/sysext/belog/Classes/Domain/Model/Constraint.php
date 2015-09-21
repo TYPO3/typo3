@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Belog\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Constraints for log entries
@@ -79,14 +78,12 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Manual date start
 	 * @var \DateTime
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	protected $manualDateStart = NULL;
 
 	/**
 	 * Manual date stop
 	 * @var \DateTime
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	protected $manualDateStop = NULL;
 
@@ -116,6 +113,16 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function __construct() {
 
+	}
+
+	/**
+	 * added to prevent the deprecation message
+	 * in Extbase\DomainObject\AbstractDomainObject
+	 *
+	 * @todo the constraints model needs another way of storing
+	 * persisted search data than serialisation
+	 */
+	public function __wakeup() {
 	}
 
 	/**
@@ -332,10 +339,8 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @param \DateTime $manualDateStart
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function setManualDateStart(\DateTime $manualDateStart = NULL) {
-		GeneralUtility::logDeprecatedFunction();
 		$this->manualDateStart = $manualDateStart;
 	}
 
@@ -343,10 +348,8 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Get manual date start
 	 *
 	 * @return \DateTime
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getManualDateStart() {
-		GeneralUtility::logDeprecatedFunction();
 		return $this->manualDateStart;
 	}
 
@@ -355,10 +358,8 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @param \DateTime $manualDateStop
 	 * @return void
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function setManualDateStop(\DateTime $manualDateStop = NULL) {
-		GeneralUtility::logDeprecatedFunction();
 		$this->manualDateStop = $manualDateStop;
 	}
 
@@ -366,10 +367,8 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Get manual date stop
 	 *
 	 * @return \DateTime
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8
 	 */
 	public function getManualDateStop() {
-		GeneralUtility::logDeprecatedFunction();
 		return $this->manualDateStop;
 	}
 }
