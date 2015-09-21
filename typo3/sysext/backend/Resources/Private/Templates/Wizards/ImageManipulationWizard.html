@@ -22,7 +22,7 @@
 						<f:if condition="{ratios}">
 						<div class="form-group">
 							<label for="ratio"><f:translate key="LLL:EXT:lang/locallang_wizards.xlf:imwizard.aspect-ratio" /></label>
-							<div class="btn-group btn-group-justified t3js-ratio-buttons" data-toggle="buttons">
+							<div class="ratio-buttons t3js-ratio-buttons" data-toggle="buttons">
 								<f:for each="{ratios}" as="ratio" key="key" iteration="iteration">
 									<label class="btn btn-default" data-method="setAspectRatio" data-option="{key}" title="{f:translate(key:'LLL:EXT:lang/locallang_wizards.xlf:imwizard.set-aspect-ratio')}"><input class="sr-only" id="aspestRatio{iteration.cycle}" name="aspestRatio" value="{key}" type="radio"> <span>{ratio}</span></label>
 								</f:for>
