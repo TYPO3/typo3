@@ -116,6 +116,8 @@ class FormDataCompiler {
 			'vanillaUid' => 0,
 			// Url to return to
 			'returnUrl' => NULL,
+			// Title of the handled record.
+			'recordTitle' => '',
 			// Parent page record is either the full row of the parent page the record is located at or should
 			// be added to, or it is NULL, if a record is added or edited below the root page node.
 			'parentPageRow' => NULL,

@@ -467,9 +467,14 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class,
 						),
 					),
 				),

@@ -81,7 +81,6 @@ class TcaTypesRemoveUnusedColumnsTest extends UnitTestCase {
 				'palettes' => [
 					'aPalette' => array(
 						'showitem' => 'keepMe',
-						'canNotCollapse' => TRUE
 					),
 				],
 				'columns' => [
@@ -121,7 +120,6 @@ class TcaTypesRemoveUnusedColumnsTest extends UnitTestCase {
 				'palettes' => [
 					'aPalette' => array(
 						'showitem' => 'aField',
-						'canNotCollapse' => TRUE
 					),
 				],
 				'columns' => [
@@ -146,6 +144,101 @@ class TcaTypesRemoveUnusedColumnsTest extends UnitTestCase {
 
 		$expected = $input;
 		unset($expected['processedTca']['columns']['removeMe']);
+
+		$this->assertSame($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataKeepsColumnsFieldReferencedInLabel() {
+		$input = [
+			'databaseRow' => [],
+			'recordTypeValue' => 'aType',
+			'processedTca' => [
+				'ctrl' => [
+					'label' => 'keepMe'
+				],
+				'types' => [
+					'aType' => [
+						'showitem' => 'keepMeToo'
+					],
+				],
+				'palettes' => [
+					'aPalette' => array(
+						'showitem' => 'keepMe',
+					),
+				],
+				'columns' => [
+					'keepMe' => [
+						'config' => [
+							'type' => 'input',
+						]
+					],
+					'keepMeToo' => [
+						'config' => [
+							'type' => 'input',
+						]
+					],
+					'aField' => [
+						'config' => [
+							'type' => 'input',
+						]
+					]
+				]
+			]
+		];
+
+		$expected = $input;
+		unset($expected['processedTca']['columns']['aField']);
+
+		$this->assertSame($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function addDataKeepsColumnsFieldReferencedInLabelAlt() {
+		$input = [
+			'databaseRow' => [],
+			'recordTypeValue' => 'aType',
+			'processedTca' => [
+				'ctrl' => [
+					'label' => 'keepMe',
+					'label_alt' => 'keepMeToo'
+				],
+				'types' => [
+					'aType' => [
+						'showitem' => 'keepMe'
+					],
+				],
+				'palettes' => [
+					'aPalette' => array(
+						'showitem' => 'keepMe',
+					),
+				],
+				'columns' => [
+					'keepMe' => [
+						'config' => [
+							'type' => 'input',
+						]
+					],
+					'keepMeToo' => [
+						'config' => [
+							'type' => 'input',
+						]
+					],
+					'aField' => [
+						'config' => [
+							'type' => 'input',
+						]
+					]
+				]
+			]
+		];
+
+		$expected = $input;
+		unset($expected['processedTca']['columns']['aField']);
 
 		$this->assertSame($expected, $this->subject->addData($input));
 	}

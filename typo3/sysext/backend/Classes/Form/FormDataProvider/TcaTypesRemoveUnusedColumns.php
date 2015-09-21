@@ -43,7 +43,16 @@ class TcaTypesRemoveUnusedColumns implements FormDataProviderInterface {
 
 		$showItemFieldString = $result['processedTca']['types'][$recordTypeValue]['showitem'];
 		$showItemFieldArray = GeneralUtility::trimExplode(',', $showItemFieldString, TRUE);
-		$shownColumnFields = [];
+
+		// Do not remove fields that are used for record title calculation
+		$shownColumnFields = empty($result['processedTca']['ctrl']['label']) ? [] : [$result['processedTca']['ctrl']['label']];
+		if (!empty($result['processedTca']['ctrl']['label_alt'])) {
+			$shownColumnFields = array_merge(
+				$shownColumnFields,
+				GeneralUtility::trimExplode(',', $result['processedTca']['ctrl']['label_alt'], TRUE)
+			);
+		}
+
 		foreach ($showItemFieldArray as $fieldConfigurationString) {
 			$fieldConfigurationArray = GeneralUtility::trimExplode(';', $fieldConfigurationString);
 			$fieldName = $fieldConfigurationArray[0];

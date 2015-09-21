@@ -92,7 +92,8 @@ class OuterWrapContainer extends AbstractContainer {
 
 			$newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
 
-			$recordLabel = BackendUtility::getRecordTitle($table, FormEngineUtility::databaseRowCompatibility($row), TRUE, FALSE);
+			// @todo: getRecordTitlePrep applies an htmlspecialchars here
+			$recordLabel = BackendUtility::getRecordTitlePrep($this->data['recordTitle']);
 			if ($table === 'pages') {
 				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editPage', TRUE);
 				$pageTitle = sprintf($label, $tableTitle, $recordLabel);
@@ -100,13 +101,13 @@ class OuterWrapContainer extends AbstractContainer {
 				$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecord', TRUE);
 				$workspacedPageRecord = BackendUtility::getRecordWSOL('pages', $row['pid'], 'uid,title');
 				$pageTitle = BackendUtility::getRecordTitle('pages', $workspacedPageRecord, TRUE, FALSE);
-				if ($recordLabel === BackendUtility::getNoRecordTitle(TRUE)) {
+				if (empty($recordLabel)) {
 					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordNoTitle', TRUE);
 				}
 				if ($this->data['effectivePid'] === 0) {
 					$label = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.editRecordRootLevel', TRUE);
 				}
-				if ($recordLabel !== BackendUtility::getNoRecordTitle(TRUE)) {
+				if (!empty($recordLabel)) {
 					// Use record title and prepend an edit label.
 					$pageTitle = sprintf($label, $tableTitle, $recordLabel, $pageTitle);
 				} else {
