@@ -200,8 +200,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			// Update template ?
 			$POST = GeneralUtility::_POST();
 			if (
-				isset($POST['submit'])
-				|| isset($POST['saveclose'])
+				isset($POST['_savedok'])
+				|| isset($POST['_saveandclosedok'])
 			) {
 				// Set the data to be saved
 				$recData = array();
@@ -259,7 +259,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			$theOutput .= $this->pObj->doc->spacer(10);
 			$numberOfRows = 35;
 			// If abort pressed, nothing should be edited:
-			if (isset($POST['saveclose'])) {
+			if (isset($POST['_saveandclosedok'])) {
 				unset($e);
 			}
 			if (isset($e['constants'])) {

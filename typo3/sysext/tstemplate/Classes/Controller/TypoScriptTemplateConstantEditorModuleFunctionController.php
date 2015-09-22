@@ -125,7 +125,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends AbstractF
 			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Tstemplate/ConstantEditor');
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
 			// Update template ?
-			if (GeneralUtility::_POST('submit') ) {
+			if (GeneralUtility::_POST('_savedok') ) {
 				$templateService->changed = 0;
 				$templateService->ext_procesInput(GeneralUtility::_POST(), array(), $theConstants, $tplRow);
 				if ($templateService->changed) {

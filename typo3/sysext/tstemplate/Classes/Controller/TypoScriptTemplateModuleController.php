@@ -314,15 +314,15 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 					'createExtension' => 'new'
 				);
 				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a>';
-				if (!empty($this->e) && !GeneralUtility::_POST('saveclose')) {
+				if (!empty($this->e) && !GeneralUtility::_POST('_saveandclosedok')) {
 					// no NEW-button while edit
 					$buttons['new'] = '';
 					// SAVE button
-					$buttons['save'] = '<button type="submit" class="c-inputButton" name="submit" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
+					$buttons['save'] = '<button type="submit" class="c-inputButton" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
 						. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
 						. '</button>';
 					// SAVE AND CLOSE button
-					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="saveclose" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
+					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="_saveandclosedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
 						. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
 						. '</button>';
 					// CLOSE button
@@ -331,7 +331,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 				}
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
-				$buttons['save'] = '<button class="c-inputButton" name="submit" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
+				$buttons['save'] = '<button class="c-inputButton" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
 					. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
 					. '</button>';
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
