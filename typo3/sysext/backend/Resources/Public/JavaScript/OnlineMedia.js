@@ -91,6 +91,10 @@ define('TYPO3/CMS/Backend/OnlineMedia', ['jquery', 'nprogress', 'TYPO3/CMS/Lang/
 				}]
 			);
 
+			$modal.on('shown.bs.modal', function(e) {
+				// focus the input field
+				$(this).find('input.online-media-url').first().focus();
+			});
 		});
 	};
 
