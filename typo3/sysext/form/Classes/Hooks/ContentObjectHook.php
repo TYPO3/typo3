@@ -19,9 +19,10 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * The form wizard controller
+ * Hook cObjGetSingleExt
  */
 class ContentObjectHook {
 
@@ -42,7 +43,11 @@ class ContentObjectHook {
 	 */
 	public function cObjGetSingleExt($typoScriptObjectName, array $typoScript, $typoScriptKey, ContentObjectRenderer $contentObject) {
 		$content = '';
-		if ($typoScriptObjectName === 'FORM' && !empty($typoScript['useDefaultContentObject'])) {
+		if (
+			$typoScriptObjectName === 'FORM'
+			&& !empty($typoScript['useDefaultContentObject'])
+			&& ExtensionManagementUtility::isLoaded('compatibility6')
+		) {
 			$content = $contentObject->getContentObject($typoScriptObjectName)->render($typoScript);
 		} elseif ($typoScriptObjectName === 'FORM') {
 			$mergedTypoScript = NULL;
