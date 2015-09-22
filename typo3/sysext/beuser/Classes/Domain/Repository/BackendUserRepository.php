@@ -14,13 +14,20 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Beuser\Domain\Model\Demand;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUser
  */
-class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository
+class BackendUserRepository extends BackendUserGroupRepository
 {
     /**
      * Finds Backend Users on a given list of uids
@@ -31,22 +38,25 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
     public function findByUidList(array $uidList)
     {
         $query = $this->createQuery();
-        return $query->matching($query->in('uid', array_map('intval', $uidList)))->execute();
+        $query->matching($query->in('uid', array_map('intval', $uidList)));
+        /** @var QueryResult $result */
+        $result = $query->execute();
+        return $result;
     }
 
     /**
      * Find Backend Users matching to Demand object properties
      *
-     * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
+     * @param Demand $demand
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
      */
-    public function findDemanded(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand)
+    public function findDemanded(Demand $demand)
     {
         $constraints = [];
         $query = $this->createQuery();
         // Find invisible as well, but not deleted
         $constraints[] = $query->equals('deleted', 0);
-        $query->setOrderings(['userName' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
+        $query->setOrderings(['userName' => QueryInterface::ORDER_ASCENDING]);
         // Username
         if ($demand->getUserName() !== '') {
             $searchConstraints = [];
@@ -59,42 +69,44 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
             $constraints[] = $query->logicalOr($searchConstraints);
         }
         // Only display admin users
-        if ($demand->getUserType() == \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_ADMINONLY) {
+        if ($demand->getUserType() == Demand::USERTYPE_ADMINONLY) {
             $constraints[] = $query->equals('admin', 1);
         }
         // Only display non-admin users
-        if ($demand->getUserType() == \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_USERONLY) {
+        if ($demand->getUserType() == Demand::USERTYPE_USERONLY) {
             $constraints[] = $query->equals('admin', 0);
         }
         // Only display active users
-        if ($demand->getStatus() == \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_ACTIVE) {
+        if ($demand->getStatus() == Demand::STATUS_ACTIVE) {
             $constraints[] = $query->equals('disable', 0);
         }
         // Only display in-active users
-        if ($demand->getStatus() == \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_INACTIVE) {
+        if ($demand->getStatus() == Demand::STATUS_INACTIVE) {
             $constraints[] = $query->logicalOr($query->equals('disable', 1));
         }
         // Not logged in before
-        if ($demand->getLogins() == \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_NONE) {
+        if ($demand->getLogins() == Demand::LOGIN_NONE) {
             $constraints[] = $query->equals('lastlogin', 0);
         }
         // At least one login
-        if ($demand->getLogins() == \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_SOME) {
+        if ($demand->getLogins() == Demand::LOGIN_SOME) {
             $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
         }
         // In backend user group
         // @TODO: Refactor for real n:m relations
         if ($demand->getBackendUserGroup()) {
-            $constraints[] = $query->logicalOr(
+            $constraints[] = $query->logicalOr([
                 $query->equals('usergroup', (int)$demand->getBackendUserGroup()->getUid()),
                 $query->like('usergroup', (int)$demand->getBackendUserGroup()->getUid() . ',%'),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()->getUid()),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()->getUid() . ',%')
-            );
+            ]);
             $query->contains('usergroup', $demand->getBackendUserGroup());
         }
         $query->matching($query->logicalAnd($constraints));
-        return $query->execute();
+        /** @var QueryResult $result */
+        $result = $query->execute();
+        return $result;
     }
 
     /**
@@ -105,28 +117,23 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
     public function findOnline()
     {
         $uids = [];
-
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
-
-        $res = $queryBuilder
-            ->select('ses_userid')
-            ->from('be_sessions')
-            ->groupBy('ses_userid')
-            ->execute();
-
-        while ($row = $res->fetch()) {
-            $uids[] = $row['ses_userid'];
+        foreach ($this->getSessionBackend()->getAll() as $sessionRecord) {
+            if (isset($sessionRecord['ses_userid']) && !in_array($sessionRecord['ses_userid'], $uids, true)) {
+                $uids[] = $sessionRecord['ses_userid'];
+            }
         }
 
         $query = $this->createQuery();
         $query->matching($query->in('uid', $uids));
-        return $query->execute();
+        /** @var QueryResult $result */
+        $result = $query->execute();
+        return $result;
     }
 
     /**
      * Overwrite createQuery to don't respect enable fields
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
+     * @return QueryInterface
      */
     public function createQuery()
     {
@@ -134,5 +141,22 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
         $query->getQuerySettings()->setIgnoreEnableFields(true);
         $query->getQuerySettings()->setIncludeDeleted(true);
         return $query;
+    }
+
+    /**
+     * @return SessionBackendInterface
+     */
+    protected function getSessionBackend()
+    {
+        $loginType = $this->getBackendUserAuthentication()->getLoginType();
+        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($loginType);
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

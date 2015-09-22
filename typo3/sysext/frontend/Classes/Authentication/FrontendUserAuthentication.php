@@ -15,8 +15,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -85,20 +84,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public $userTSUpdated = false;
 
     /**
-     * Session and user data:
-     * There are two types of data that can be stored: UserData and Session-Data.
-     * Userdata is for the login-user, and session-data for anyone viewing the pages.
-     * 'Keys' are keys in the internal data array of the data.
-     * When you get or set a key in one of the data-spaces (user or session) you decide the type of the variable (not object though)
-     * 'Reserved' keys are:
-     *   - 'recs': Array: Used to 'register' records, eg in a shopping basket. Structure: [recs][tablename][record_uid]=number
-     *   - sys: Reserved for TypoScript standard code.
-     *
-     * @var array
-     */
-    public $sesData = [];
-
-    /**
      * @var bool
      */
     public $sesData_change = false;
@@ -112,11 +97,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * @var bool
      */
     public $is_permanent = false;
-
-    /**
-     * @var int|NULL
-     */
-    protected $sessionDataTimestamp = null;
 
     /**
      * @var bool
@@ -134,7 +114,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         // a user is logging-in or an existing session is found
         $this->dontSetCookie = true;
 
-        $this->session_table = 'fe_sessions';
         $this->name = self::getCookieName();
         $this->get_name = 'ftu';
         $this->loginType = 'FE';
@@ -215,7 +194,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function isSetSessionCookie()
     {
         return ($this->newSessionID || $this->forceSetCookie)
-            && ($this->lifetime == 0 || !isset($this->user['ses_permanent']) || !$this->user['ses_permanent']);
+            && ((int)$this->lifetime === 0 || !isset($this->user['ses_permanent']) || !$this->user['ses_permanent']);
     }
 
     /**
@@ -272,7 +251,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function createUserSession($tempuser)
     {
-        // At this point we do not know if we need to set a session or a "permanant" cookie
+        // At this point we do not know if we need to set a session or a permanent cookie
         // So we force the cookie to be set after authentication took place, which will
         // then call setSessionCookie(), which will set a cookie with correct settings.
         $this->dontSetCookie = false;
@@ -396,79 +375,43 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      *
      ****************************************/
     /**
-     * Fetches the session data for the user (from the fe_session_data table) based on the ->id of the current user-session.
-     * The session data is restored to $this->sesData
-     * 1/100 calls will also do a garbage collection.
-     *
-     * @return void
-     * @access private
-     * @see storeSessionData()
-     */
-    public function fetchSessionData()
-    {
-        // Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
-        if ($this->id && empty($this->sesData)) {
-            $sesDataRow = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable('fe_session_data')->select(
-                    ['*'],
-                    'fe_session_data',
-                    ['hash' => $this->id]
-                )->fetch();
-            if ($sesDataRow !== null) {
-                $this->sesData = unserialize($sesDataRow['content']);
-                $this->sessionDataTimestamp = $sesDataRow['tstamp'];
-            }
-        }
-    }
-
-    /**
      * Will write UC and session data.
      * If the flag $this->userData_change has been set, the function ->writeUC is called (which will save persistent user session data)
-     * If the flag $this->sesData_change has been set, the fe_session_data table is updated with the content of $this->sesData
-     * If the $this->sessionDataTimestamp is NULL there was no session record yet, so we need to insert it into the database
+     * If the flag $this->sesData_change has been set, the current session record is updated with the content of $this->sessionData
      *
      * @return void
-     * @see fetchSessionData(), getKey(), setKey()
+     * @see getKey(), setKey()
      */
     public function storeSessionData()
     {
         // Saves UC and SesData if changed.
         if ($this->userData_change) {
-            $this->writeUC('');
+            $this->writeUC();
         }
-        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('fe_session_data');
+
         if ($this->sesData_change && $this->id) {
-            if (empty($this->sesData)) {
+            if (empty($this->sessionData)) {
                 // Remove session-data
                 $this->removeSessionData();
                 // Remove cookie if not logged in as the session data is removed as well
                 if (empty($this->user['uid']) && !$this->loginHidden && $this->isCookieSet()) {
                     $this->removeCookie($this->name);
                 }
-            } elseif ($this->sessionDataTimestamp === null) {
-                // Write new session-data
-                $insertFields = [
-                    'hash' => $this->id,
-                    'content' => serialize($this->sesData),
-                    'tstamp' => $GLOBALS['EXEC_TIME']
-                ];
-                $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $databaseConnection->insert(
-                    'fe_session_data',
-                    $insertFields,
-                    ['content' => Connection::PARAM_LOB]
-                );
+            } elseif (!$this->isExistingSessionRecord($this->id)) {
+                $sessionRecord = $this->getNewSessionRecord([]);
+                $sessionRecord['ses_anonymous'] = 1;
+                $sessionRecord['ses_data'] = serialize($this->sessionData);
+                $updatedSession = $this->getSessionBackend()->set($this->id, $sessionRecord);
+                $this->user = array_merge($this->user ?? [], $updatedSession);
                 // Now set the cookie (= fix the session)
                 $this->setSessionCookie();
             } else {
                 // Update session data
-                $updateFields = [
-                    'content' => serialize($this->sesData),
-                    'tstamp' => $GLOBALS['EXEC_TIME']
+                $insertFields = [
+                    'ses_data' => serialize($this->sessionData)
                 ];
-                $this->sessionDataTimestamp = $GLOBALS['EXEC_TIME'];
-                $databaseConnection->update('fe_session_data', $updateFields, ['hash' => $this->id]);
+                $updatedSession = $this->getSessionBackend()->update($this->id, $insertFields);
+                $this->user = array_merge($this->user ?? [], $updatedSession);
             }
         }
     }
@@ -480,70 +423,70 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function removeSessionData()
     {
-        $this->sessionDataTimestamp = null;
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')
-            ->delete(
-                'fe_session_data',
-                ['hash' => $this->id]
-            );
-    }
+        if (!empty($this->sessionData)) {
+            $this->sesData_change = true;
+        }
+        $this->sessionData = [];
 
-    /**
-     * Log out current user!
-     * Removes the current session record, sets the internal ->user array to a blank string
-     * Thereby the current user (if any) is effectively logged out!
-     * Additionally the cookie is removed
-     *
-     * @return void
-     */
-    public function logoff()
-    {
-        parent::logoff();
-        // Remove the cookie on log-off, but only if we do not have an anonymous session
-        if (!$this->isExistingSessionRecord($this->id) && $this->isCookieSet()) {
-            $this->removeCookie($this->name);
+        if ($this->isExistingSessionRecord($this->id)) {
+            // Remove session record if $this->user is empty is if session is anonymous
+            if ((empty($this->user) && !$this->loginHidden) || $this->user['ses_anonymous']) {
+                $this->getSessionBackend()->remove($this->id);
+            } else {
+                $this->getSessionBackend()->update($this->id, [
+                    'ses_data' => ''
+                ]);
+            }
         }
     }
 
     /**
-     * Regenerate the id, take separate session data table into account
-     * and set cookie again
-     */
-    protected function regenerateSessionId()
-    {
-        $oldSessionId = $this->id;
-        parent::regenerateSessionId();
-        // Update session data with new ID
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')
-            ->update(
-                'fe_session_data',
-                ['hash' => $this->id],
-                ['hash' => $oldSessionId]
-            );
-
-        // We force the cookie to be set later in the authentication process
-        $this->dontSetCookie = false;
-    }
-
-    /**
-     * Executes the garbage collection of session data and session.
-     * The lifetime of session data is defined by $TYPO3_CONF_VARS['FE']['sessionDataLifetime'].
+     * Removes the current session record, sets the internal ->user array to null,
+     * Thereby the current user (if any) is effectively logged out!
+     * Additionally the cookie is removed, but only if there is no session data.
+     * If session data exists, only the user information is removed and the session
+     * gets converted into an anonymous session.
      *
      * @return void
      */
-    public function gc()
+    protected function performLogoff()
     {
-        $timeoutTimeStamp = (int)($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('fe_session_data');
-        $queryBuilder->delete('fe_session_data')
-            ->where(
-                $queryBuilder->expr()->lt(
-                    'tstamp',
-                    $queryBuilder->createNamedParameter($timeoutTimeStamp, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
-        parent::gc();
+        $oldSession = [];
+        $sessionData = [];
+        try {
+            // Session might not be loaded at this point, so fetch it
+            $oldSession = $this->getSessionBackend()->get($this->id);
+            $sessionData = unserialize($oldSession['ses_data']);
+        } catch (SessionNotFoundException $e) {
+            // Leave uncaught, will unset cookie later in this method
+        }
+
+        if (!empty($sessionData)) {
+            // Regenerate session as anonymous
+            $this->regenerateSessionId($oldSession, true);
+        } else {
+            $this->user = null;
+            $this->getSessionBackend()->remove($this->id);
+            if ($this->isCookieSet()) {
+                $this->removeCookie($this->name);
+            }
+        }
+    }
+
+    /**
+     * Regenerate the session ID and transfer the session to new ID
+     * Call this method whenever a user proceeds to a higher authorization level
+     * e.g. when an anonymous session is now authenticated.
+     * Forces cookie to be set
+     *
+     * @param array $existingSessionRecord If given, this session record will be used instead of fetching again'
+     * @param bool $anonymous If true session will be regenerated as anonymous session
+     */
+    protected function regenerateSessionId(array $existingSessionRecord = [], bool $anonymous = false)
+    {
+        parent::regenerateSessionId($existingSessionRecord, $anonymous);
+        // We force the cookie to be set later in the authentication process
+        $this->dontSetCookie = false;
     }
 
     /**
@@ -551,7 +494,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * or current-session based (not available when browse is closed, but does not require login)
      *
      * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
-     * @param string $key Key from the data array to return; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines which key to return the value for.
+     * @param string $key Key from the data array to return; The session data (in either case) is an array ($this->uc / $this->sessionData) and this value determines which key to return the value for.
      * @return mixed Returns whatever value there was in the array for the key, $key
      * @see setKey()
      */
@@ -566,7 +509,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 $value = $this->uc[$key];
                 break;
             case 'ses':
-                $value = $this->sesData[$key];
+                $value = $this->getSessionData($key);
                 break;
         }
         return $value;
@@ -579,7 +522,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Notice: Simply calling this function will not save the data to the database! The actual saving is done in storeSessionData() which is called as some of the last things in \TYPO3\CMS\Frontend\Http\RequestHandler. So if you exit before this point, nothing gets saved of course! And the solution is to call $GLOBALS['TSFE']->storeSessionData(); before you exit.
      *
      * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
-     * @param string $key Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines in which key the $data value will be stored.
+     * @param string $key Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sessionData) and this value determines in which key the $data value will be stored.
      * @param mixed $data The data value to store in $key
      * @return void
      * @see setKey(), storeSessionData(), record_registration()
@@ -601,26 +544,27 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
                 }
                 break;
             case 'ses':
-                if ($data === null) {
-                    unset($this->sesData[$key]);
-                } else {
-                    $this->sesData[$key] = $data;
-                }
-                $this->sesData_change = true;
+                $this->setSessionData($key, $data);
                 break;
         }
     }
 
     /**
-     * Returns the session data stored for $key.
-     * The data will last only for this login session since it is stored in the session table.
+     * Set session data by key.
+     * The data will last only for this login session since it is stored in the user session.
      *
-     * @param string $key
-     * @return mixed
+     * @param string $key A non empty string to store the data under
+     * @param mixed $data Data store store in session
+     * @return void
      */
-    public function getSessionData($key)
+    public function setSessionData($key, $data)
     {
-        return $this->getKey('ses', $key);
+        $this->sesData_change = true;
+        if ($data === null) {
+            unset($this->sessionData[$key]);
+            return;
+        }
+        parent::setSessionData($key, $data);
     }
 
     /**
@@ -632,7 +576,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      */
     public function setAndSaveSessionData($key, $data)
     {
-        $this->setKey('ses', $key, $data);
+        $this->setSessionData($key, $data);
         $this->storeSessionData();
     }
 
@@ -644,9 +588,11 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * @param array $recs The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
      * @param int $maxSizeOfSessionData The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
      * @return void
+     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9. Automatically feeding a "basket" by magic GET/POST keyword "recs" has been deprecated.
      */
     public function record_registration($recs, $maxSizeOfSessionData = 0)
     {
+        GeneralUtility::logDeprecatedFunction();
         // Storing value ONLY if there is a confirmed cookie set,
         // otherwise a shellscript could easily be spamming the fe_sessions table
         // with bogus content and thus bloat the database
@@ -673,30 +619,14 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Determine whether there's an according session record to a given session_id
-     * in the database. Don't care if session record is still valid or not.
+     * Garbage collector, removing old expired sessions.
      *
-     * This calls the parent function but additionally tries to look up the session ID in the "fe_session_data" table.
-     *
-     * @param int $id Claimed Session ID
-     * @return bool Returns TRUE if a corresponding session was found in the database
+     * @return void
+     * @internal
      */
-    public function isExistingSessionRecord($id)
+    public function gc()
     {
-        // Perform check in parent function
-        $count = parent::isExistingSessionRecord($id);
-        // Check if there are any fe_session_data records for the session ID the client claims to have
-        if ($count == false) {
-            $sesDataRow = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('fe_session_data')
-                ->select(['content', 'tstamp'], 'fe_session_data', ['hash' => $id])->fetch();
-
-            if ($sesDataRow !== null) {
-                $count = true;
-                $this->sesData = unserialize($sesDataRow['content']);
-                $this->sessionDataTimestamp = $sesDataRow['tstamp'];
-            }
-        }
-        return $count;
+        $this->getSessionBackend()->collectGarbage($this->gc_time, $this->sessionDataLifetime);
     }
 
     /**

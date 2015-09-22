@@ -44,17 +44,6 @@ CREATE TABLE fe_groups (
 	KEY parent (pid)
 );
 
-#
-# Table structure for table 'fe_session_data'
-#
-CREATE TABLE fe_session_data (
-	hash varchar(32) DEFAULT '' NOT NULL,
-	content mediumblob,
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-
-	PRIMARY KEY (hash),
-	KEY tstamp (tstamp)
-) ENGINE=InnoDB;
 
 #
 # Table structure for table 'fe_sessions'
@@ -65,8 +54,9 @@ CREATE TABLE fe_sessions (
 	ses_iplock varchar(39) DEFAULT '' NOT NULL,
 	ses_userid int(11) unsigned DEFAULT '0' NOT NULL,
 	ses_tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	ses_data blob,
+	ses_data mediumblob,
 	ses_permanent tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	ses_anonymous tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (ses_id,ses_name),
 	KEY ses_tstamp (ses_tstamp)

@@ -50,6 +50,21 @@ return [
                 'xlf' => \TYPO3\CMS\Core\Localization\Parser\XliffParser::class
             ]
         ],
+        'session' => [
+            'BE' => [
+                'backend' => \TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend::class,
+                'options' => [
+                    'table' => 'be_sessions'
+                ]
+            ],
+            'FE' => [
+                'backend' => \TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend::class,
+                'options' => [
+                    'table' => 'fe_sessions',
+                    'has_anonymous' => true,
+                ]
+            ]
+        ],
         'fileCreateMask' => '0664',                        // File mode mask for Unix file systems (when files are uploaded/created).
         'folderCreateMask' => '2775',                    // As above, but for folders.
         'createGroup' => '',                            // Group for newly created files and folders (Unix only). Group ownership can be changed on Unix file systems (see above). Set this if you want to change the group ownership of created files/folders to a specific group. This makes sense in all cases where the webserver is running with a different user/group as you do. Create a new group on your system and add you and the webserver user to the group. Now you can safely set the last bit in fileCreateMask/folderCreateMask to 0 (e.g. 770). Important: The user who is running your webserver needs to be a member of the group you specify here! Otherwise you might get some error messages.
@@ -1110,8 +1125,8 @@ return [
         'loginSecurityLevel' => '',        // See description for <a href="#BE-loginSecurityLevel">[BE][loginSecurityLevel]</a>. Default state for frontend is "normal". Alternative authentication services can implement higher levels if preferred. For example, "rsa" level uses RSA password encryption (only if the rsaauth extension is installed)
         'lifetime' => 0,        // Integer: positive. If >0 and the option permalogin is >=0, the cookie of FE users will have a lifetime of the number of seconds this value indicates. Otherwise it will be a session cookie (deleted when browser is shut down). Setting this value to 604800 will result in automatic login of FE users during a whole week, 86400 will keep the FE users logged in for a day.
         'sessionDataLifetime' => 86400,        // Integer: positive. If >0, the session data will timeout and be removed after the number of seconds given (86400 seconds represents 24 hours).
+        'maxSessionDataSize' => 10000,        // Integer: Setting (deprecated) the maximum size (bytes) of frontend session data stored in the table fe_session_data. Set to zero (0) means no limit, but this is not recommended since it also disables a check that session data is stored only if a confirmed cookie is set. @deprecated since TYPO3 v8, will be removed in TYPO3 v9
         'permalogin' => 0,        // <p>Integer:</p><dl><dt>-1</dt><dd>Permanent login for FE users disabled.</dd><dt>0</dt><dd>By default permalogin is disabled for FE users but can be enabled by a form control in the login form.</dd><dt>1</dt><dd>Permanent login is by default enabled but can be disabled by a form control in the login form.</dd><dt>2</dt><dd>Permanent login is forced to be enabled.// In any case, permanent login is only possible if <a href="#FE-lifetime">[FE][lifetime]</a> lifetime is > 0.</dd></dl>
-        'maxSessionDataSize' => 10000,        // Integer: Setting the maximum size (bytes) of frontend session data stored in the table fe_session_data. Set to zero (0) means no limit, but this is not recommended since it also disables a check that session data is stored only if a confirmed cookie is set.
         'cookieDomain' => '',        // Same as <a href="#SYS-cookieDomain">$TYPO3_CONF_VARS['SYS']['cookieDomain']</a> but only for FE cookies. If empty, $TYPO3_CONF_VARS['SYS']['cookieDomain'] value will be used.
         'cookieName' => 'fe_typo_user',        // String: Set the name for the cookie used for the front-end user session
         'defaultUserTSconfig' => '',        // String (textarea). Enter lines of default frontend user/group TSconfig.

@@ -88,10 +88,6 @@ class CleanUp extends Action\AbstractAction
                 'description' => 'Frontend user sessions',
             ],
             [
-                'name' => 'fe_session_data',
-                'description' => 'Frontend user session data',
-            ],
-            [
                 'name' => 'sys_history',
                 'description' => 'Tracking of database record changes through TYPO3 backend forms',
             ],

@@ -27,8 +27,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Sv\AuthenticationService;
 
 /**
  * Authentication of users in TYPO3
@@ -41,12 +45,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 abstract class AbstractUserAuthentication
 {
-    /**
-     * Table to use for session data
-     * @var string
-     */
-    public $session_table = '';
-
     /**
      * Session/Cookie name
      * @var string
@@ -111,7 +109,7 @@ abstract class AbstractUserAuthentication
         'disabled' => '',
         'starttime' => '',
         'endtime' => '',
-        'deleted' => ''
+        'deleted' => '',
     ];
 
     /**
@@ -174,7 +172,7 @@ abstract class AbstractUserAuthentication
     public $gc_time = 0;
 
     /**
-     * Probability for g arbage collection to be run (in percent)
+     * Probability for garbage collection to be run (in percent)
      * @var int
      */
     public $gc_probability = 1;
@@ -338,6 +336,20 @@ abstract class AbstractUserAuthentication
     public $uc;
 
     /**
+     * @var SessionBackendInterface
+     */
+    protected $sessionBackend;
+
+    /**
+     * Holds deserialized data from session records.
+     * 'Reserved' keys are:
+     *   - 'recs': (DEPRECATED) Array: Used to 'register' records, eg in a shopping basket. Structure: [recs][tablename][record_uid]=number
+     *   - 'sys': Reserved for TypoScript standard code.
+     * @var array
+     */
+    protected $sessionData = [];
+
+    /**
      * Initialize some important variables
      */
     public function __construct()
@@ -438,7 +450,7 @@ abstract class AbstractUserAuthentication
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] as $funcName) {
                 $_params = [
-                    'pObj' => &$this
+                    'pObj' => $this,
                 ];
                 GeneralUtility::callUserFunction($funcName, $_params, $this);
             }
@@ -598,18 +610,23 @@ abstract class AbstractUserAuthentication
         // This is used mainly for checking session timeout in advance without refreshing the current session's timeout.
         $skipSessionUpdate = (bool)GeneralUtility::_GP('skipSessionUpdate');
         $haveSession = false;
+        $anonymousSession = false;
         if (!$this->newSessionID) {
             // Read user session
             $authInfo['userSession'] = $this->fetchUserSession($skipSessionUpdate);
             $haveSession = is_array($authInfo['userSession']);
+            if ($haveSession && !empty($authInfo['userSession']['ses_anonymous'])) {
+                $anonymousSession = true;
+            }
         }
-        // Active login (eg. with login form)
+
+        // Active login (eg. with login form).
         if (!$haveSession && $loginData['status'] === 'login') {
             $activeLogin = true;
             if ($this->writeDevLog) {
                 GeneralUtility::devLog('Active login (eg. with login form)', self::class);
             }
-            // check referer for submitted login values
+            // check referrer for submitted login values
             if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
                 $httpHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
                 if (!$this->getMethodEnabled && ($httpHost != $authInfo['refInfo']['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer'])) {
@@ -626,6 +643,12 @@ abstract class AbstractUserAuthentication
                 throw new \RuntimeException('TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!', 1270853931);
             }
         }
+
+        // Cause elevation of privilege, make sure regenerateSessionId is called later on
+        if ($anonymousSession && $loginData['status'] === 'login') {
+            $activeLogin = true;
+        }
+
         if ($this->writeDevLog) {
             if ($haveSession) {
                 GeneralUtility::devLog('User session found: ' . GeneralUtility::arrayToLogString($authInfo['userSession'], [$this->userid_column, $this->username_column]), self::class, 0);
@@ -636,6 +659,7 @@ abstract class AbstractUserAuthentication
                 GeneralUtility::devLog('SV setup: ' . GeneralUtility::arrayToLogString($this->svConfig['setup']), self::class, 0);
             }
         }
+
         // Fetch user if ...
         if (
             $activeLogin || $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']
@@ -643,11 +667,9 @@ abstract class AbstractUserAuthentication
         ) {
             // Use 'auth' service to find the user
             // First found user will be used
-            $serviceChain = '';
             $subType = 'getUser' . $this->loginType;
-            while (is_object($serviceObj = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain))) {
-                $serviceChain .= ',' . $serviceObj->getServiceKey();
-                $serviceObj->initAuth($subType, $loginData, $authInfo, $this);
+            /** @var AuthenticationService $serviceObj */
+            foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
                     if ($this->writeDevLog) {
@@ -658,14 +680,10 @@ abstract class AbstractUserAuthentication
                         break;
                     }
                 }
-                unset($serviceObj);
             }
-            unset($serviceObj);
+
             if ($this->writeDevLog && $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
                 GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', self::class);
-            }
-            if ($this->writeDevLog && $serviceChain) {
-                GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, self::class);
             }
             if ($this->writeDevLog && empty($tempuserArr)) {
                 GeneralUtility::devLog('No user found by services', self::class);
@@ -674,8 +692,9 @@ abstract class AbstractUserAuthentication
                 GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', self::class);
             }
         }
+
         // If no new user was set we use the already found user session
-        if (empty($tempuserArr) && $haveSession) {
+        if (empty($tempuserArr) && $haveSession && !$anonymousSession) {
             $tempuserArr[] = $authInfo['userSession'];
             $tempuser = $authInfo['userSession'];
             // User is authenticated because we found a user session
@@ -700,11 +719,9 @@ abstract class AbstractUserAuthentication
                 if ($this->writeDevLog) {
                     GeneralUtility::devLog('Auth user: ' . GeneralUtility::arrayToLogString($tempuser), self::class);
                 }
-                $serviceChain = '';
                 $subType = 'authUser' . $this->loginType;
-                while (is_object($serviceObj = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain))) {
-                    $serviceChain .= ',' . $serviceObj->getServiceKey();
-                    $serviceObj->initAuth($subType, $loginData, $authInfo, $this);
+
+                foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                     if (($ret = $serviceObj->authUser($tempuser)) > 0) {
                         // If the service returns >=200 then no more checking is needed - useful for IP checking without password
                         if ((int)$ret >= 200) {
@@ -718,45 +735,52 @@ abstract class AbstractUserAuthentication
                         $authenticated = false;
                         break;
                     }
-                    unset($serviceObj);
                 }
-                unset($serviceObj);
-                if ($this->writeDevLog && $serviceChain) {
-                    GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, self::class);
-                }
+
                 if ($authenticated) {
                     // Leave foreach() because a user is authenticated
                     break;
                 }
             }
         }
+
         // If user is authenticated a valid user is in $tempuser
         if ($authenticated) {
             // Reset failure flag
             $this->loginFailure = false;
             // Insert session record if needed:
-            if (!($haveSession && ($tempuser['ses_id'] == $this->id || $tempuser['uid'] == $authInfo['userSession']['ses_userid']))) {
+            if (!$haveSession || $anonymousSession || $tempuser['ses_id'] != $this->id && $tempuser['uid'] != $authInfo['userSession']['ses_userid']) {
                 $sessionData = $this->createUserSession($tempuser);
-                if ($sessionData) {
-                    $this->user = array_merge(
-                        $tempuser,
-                        $sessionData
+
+                // Preserve session data on login
+                if ($anonymousSession) {
+                    $sessionData = $this->getSessionBackend()->update(
+                        $this->id,
+                        ['ses_data' => $authInfo['userSession']['ses_data']]
                     );
                 }
+
+                $this->user = array_merge(
+                    $tempuser,
+                    $sessionData
+                );
                 // The login session is started.
                 $this->loginSessionStarted = true;
                 if ($this->writeDevLog && is_array($this->user)) {
                     GeneralUtility::devLog('User session finally read: ' . GeneralUtility::arrayToLogString($this->user, [$this->userid_column, $this->username_column]), self::class, -1);
                 }
             } elseif ($haveSession) {
+                // if we come here the current session is for sure not anonymous as this is a pre-condition for $authenticated = true
                 $this->user = $authInfo['userSession'];
             }
+
             if ($activeLogin && !$this->newSessionID) {
                 $this->regenerateSessionId();
             }
+
             // User logged in - write that to the log!
             if ($this->writeStdLog && $activeLogin) {
-                $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', [$tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')], '', '', '', -1, '', $tempuser['uid']);
+                $this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', [$tempuser[$this->username_column], GeneralUtility::getIndpEnv('REMOTE_ADDR'), GeneralUtility::getIndpEnv('REMOTE_HOST')], '', '', '');
             }
             if ($this->writeDevLog && $activeLogin) {
                 GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
@@ -764,6 +788,9 @@ abstract class AbstractUserAuthentication
             if ($this->writeDevLog && !$activeLogin) {
                 GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', self::class, -1);
             }
+        } elseif ($anonymousSession) {
+            // User was not authenticated, so we should reuse the existing anonymous session
+            $this->user = $authInfo['userSession'];
         } elseif ($activeLogin || !empty($tempuserArr)) {
             $this->loginFailure = true;
             if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
@@ -773,6 +800,7 @@ abstract class AbstractUserAuthentication
                 GeneralUtility::devLog('Login failed: ' . GeneralUtility::arrayToLogString($tempuser, [$this->userid_column, $this->username_column]), self::class, 2);
             }
         }
+
         // If there were a login failure, check to see if a warning email should be sent:
         if ($this->loginFailure && $activeLogin) {
             if ($this->writeDevLog) {
@@ -808,21 +836,52 @@ abstract class AbstractUserAuthentication
     }
 
     /**
+     * Initializes authentication services to be used in a foreach loop
+     *
+     * @param string $subType e.g. getUserFE
+     * @param array $loginData
+     * @param array $authInfo
+     * @return \Traversable A generator of service objects
+     */
+    protected function getAuthServices(string $subType, array $loginData, array $authInfo): \Traversable
+    {
+        $serviceChain = '';
+        while (is_object($serviceObj = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain))) {
+            $serviceChain .= ',' . $serviceObj->getServiceKey();
+            $serviceObj->initAuth($subType, $loginData, $authInfo, $this);
+            yield $serviceObj;
+        }
+        if ($this->writeDevLog && $serviceChain) {
+            GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, self::class);
+        }
+    }
+
+    /**
      * Regenerate the session ID and transfer the session to new ID
      * Call this method whenever a user proceeds to a higher authorization level
      * e.g. when an anonymous session is now authenticated.
+     *
+     * @param array $existingSessionRecord If given, this session record will be used instead of fetching again
+     * @param bool $anonymous If true session will be regenerated as anonymous session
      */
-    protected function regenerateSessionId()
+    protected function regenerateSessionId(array $existingSessionRecord = [], bool $anonymous = false)
     {
+        if (empty($existingSessionRecord)) {
+            $existingSessionRecord = $this->getSessionBackend()->get($this->id);
+        }
+
+        // Update session record with new ID
         $oldSessionId = $this->id;
         $this->id = $this->createSessionId();
-        // Update session record with new ID
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
-            $this->session_table,
-            ['ses_id' => $this->id],
-            ['ses_id' => $oldSessionId, 'ses_name' => $this->name]
-        );
-        $this->user['ses_id'] = $this->id;
+        $existingSessionRecord['ses_anonymous'] = (int)$anonymous;
+        if ($anonymous) {
+            $existingSessionRecord['ses_userid'] = 0;
+        }
+        $updatedSession = $this->getSessionBackend()->set($this->id, $existingSessionRecord);
+        $this->sessionData = unserialize($updatedSession['ses_data']);
+        // Merge new session data into user/session array
+        $this->user = array_merge($this->user ?? [], $updatedSession);
+        $this->getSessionBackend()->remove($oldSessionId);
         $this->newSessionID = true;
     }
 
@@ -831,6 +890,7 @@ abstract class AbstractUserAuthentication
      * User Sessions
      *
      *************************/
+
     /**
      * Creates a user session record and returns its values.
      *
@@ -843,38 +903,31 @@ abstract class AbstractUserAuthentication
         if ($this->writeDevLog) {
             GeneralUtility::devLog('Create session ses_id = ' . $this->id, self::class);
         }
-        // Delete session entry first
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table);
-        $connection->delete(
-            $this->session_table,
-            ['ses_id' => $this->id, 'ses_name' => $this->name]
-        );
-
+        // Delete any session entry first
+        $this->getSessionBackend()->remove($this->id);
         // Re-create session entry
-        $insertFields = $this->getNewSessionRecord($tempuser);
-        $inserted = (bool)$connection->insert(
-            $this->session_table,
-            $insertFields,
-            ['ses_data' => Connection::PARAM_LOB]
-        );
-        if (!$inserted) {
-            $message = 'Session data could not be written to DB. Error: ' . $connection->errorInfo();
-            GeneralUtility::sysLog($message, 'core', GeneralUtility::SYSLOG_SEVERITY_WARNING);
-            if ($this->writeDevLog) {
-                GeneralUtility::devLog($message, self::class, 2);
-            }
-        }
+        $sessionRecord = $this->getNewSessionRecord($tempuser);
+        $sessionRecord = $this->getSessionBackend()->set($this->id, $sessionRecord);
         // Updating lastLogin_column carrying information about last login.
-        if ($this->lastLogin_column && $inserted) {
+        $this->updateLoginTimestamp($tempuser[$this->userid_column]);
+        return $sessionRecord;
+    }
+
+    /**
+     * Updates the last login column in the user with the given id
+     *
+     * @param int $userId
+     */
+    protected function updateLoginTimestamp(int $userId)
+    {
+        if ($this->lastLogin_column) {
             $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table);
             $connection->update(
                 $this->user_table,
                 [$this->lastLogin_column => $GLOBALS['EXEC_TIME']],
-                [$this->userid_column => $tempuser[$this->userid_column]]
+                [$this->userid_column => $userId]
             );
         }
-
-        return $inserted ? $insertFields : [];
     }
 
     /**
@@ -895,9 +948,9 @@ abstract class AbstractUserAuthentication
             'ses_id' => $this->id,
             'ses_name' => $this->name,
             'ses_iplock' => $sessionIpLock,
-            'ses_userid' => $tempuser[$this->userid_column],
+            'ses_userid' => $tempuser[$this->userid_column] ?? 0,
             'ses_tstamp' => $GLOBALS['EXEC_TIME'],
-            'ses_data' => ''
+            'ses_data' => '',
         ];
     }
 
@@ -905,47 +958,60 @@ abstract class AbstractUserAuthentication
      * Read the user session from db.
      *
      * @param bool $skipSessionUpdate
-     * @return array User session data
+     * @return array|bool User session data, false if $this->id does not represent valid session
      */
     public function fetchUserSession($skipSessionUpdate = false)
     {
         if ($this->writeDevLog) {
             GeneralUtility::devLog('Fetch session ses_id = ' . $this->id, self::class);
         }
+        try {
+            $sessionRecord = $this->getSessionBackend()->get($this->id);
+        } catch (SessionNotFoundException $e) {
+            return false;
+        }
 
-        // Fetch the user session from the DB
-        $user = $this->fetchUserSessionFromDB();
+        // Fail if user session is not in current IPLock Range
+        if ($sessionRecord['ses_iplock'] !== $this->ipLockClause_remoteIPNumber($this->lockIP) && $sessionRecord['ses_iplock'] !== '[DISABLED]') {
+            return false;
+        }
 
-        if ($user) {
+        $this->sessionData = unserialize($sessionRecord['ses_data']);
+        // Session is anonymous so no need to fetch user
+        if ($sessionRecord['ses_anonymous']) {
+            return $sessionRecord;
+        }
+
+        // Fetch the user from the DB
+        $userRecord = $this->getRawUserByUid((int)$sessionRecord['ses_userid']);
+        if ($userRecord) {
+            $userRecord = array_merge($sessionRecord, $userRecord);
             // A user was found
-            $user['ses_tstamp'] = (int)$user['ses_tstamp'];
+            $userRecord['ses_tstamp'] = (int)$userRecord['ses_tstamp'];
+            $userRecord['is_online'] = (int)$userRecord['ses_tstamp'];
 
             if (!empty($this->auth_timeout_field)) {
                 // Get timeout-time from usertable
-                $timeout = (int)$user[$this->auth_timeout_field];
+                $timeout = (int)$userRecord[$this->auth_timeout_field];
             } else {
                 $timeout = $this->sessionTimeout;
             }
             // If timeout > 0 (TRUE) and current time has not exceeded the latest sessions-time plus the timeout in seconds then accept user
             // Use a gracetime-value to avoid updating a session-record too often
-            if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $user['ses_tstamp'] + $timeout) {
+            if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $userRecord['ses_tstamp'] + $timeout) {
                 $sessionUpdateGracePeriod = 61;
-                if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($user['ses_tstamp'] + $sessionUpdateGracePeriod)) {
-                    GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
-                        $this->session_table,
-                        ['ses_tstamp' => $GLOBALS['EXEC_TIME']],
-                        ['ses_id' => $this->id, 'ses_name' => $this->name]
-                    );
-                    // Make sure that the timestamp is also updated in the array
-                    $user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];
+                if (!$skipSessionUpdate && $GLOBALS['EXEC_TIME'] > ($userRecord['ses_tstamp'] + $sessionUpdateGracePeriod)) {
+                    // Update the session timestamp by writing a dummy update. (Backend will update the timestamp)
+                    $updatesSession = $this->getSessionBackend()->update($this->id, ['ses_name' => $userRecord['ses_name']]);
+                    $userRecord = array_merge($userRecord, $updatesSession);
                 }
             } else {
                 // Delete any user set...
                 $this->logoff();
-                $user = false;
+                $userRecord = false;
             }
         }
-        return $user;
+        return $userRecord;
     }
 
     /**
@@ -962,7 +1028,6 @@ abstract class AbstractUserAuthentication
         }
         // Release the locked records
         BackendUtility::lockRecords();
-        // Hook for pre-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'])) {
             $_params = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'] as $_funcRef) {
@@ -971,14 +1036,7 @@ abstract class AbstractUserAuthentication
                 }
             }
         }
-
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->delete(
-            $this->session_table,
-            ['ses_id' => $this->id, 'ses_name' => $this->name]
-        );
-
-        $this->user = null;
-        // Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
+        $this->performLogoff();
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
             $_params = [];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $_funcRef) {
@@ -987,6 +1045,21 @@ abstract class AbstractUserAuthentication
                 }
             }
         }
+    }
+
+    /**
+     * Perform the logoff action. Called from logoff() as a way to allow subclasses to override
+     * what happens when a user logs off, without needing to reproduce the hook calls and logging
+     * that happens in the public logoff() API method.
+     *
+     * @return void
+     */
+    protected function performLogoff()
+    {
+        if ($this->id) {
+            $this->getSessionBackend()->remove($this->id);
+        }
+        $this->user = null;
     }
 
     /**
@@ -1004,22 +1077,19 @@ abstract class AbstractUserAuthentication
     }
 
     /**
-     * Determine whether there's an according session record to a given session_id
-     * in the database. Don't care if session record is still valid or not.
+     * Determine whether there's an according session record to a given session_id.
+     * Don't care if session record is still valid or not.
      *
-     * @param int $id Claimed Session ID
+     * @param string $id Claimed Session ID
      * @return bool Returns TRUE if a corresponding session was found in the database
      */
     public function isExistingSessionRecord($id)
     {
-        $conn = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table);
-        $count = $conn->count(
-            '*',
-            $this->session_table,
-            ['ses_id' => $id]
-        );
-
-        return (bool)$count;
+        try {
+            return !empty($this->getSessionBackend()->get($id));
+        } catch (SessionNotFoundException $e) {
+            return false;
+        }
     }
 
     /**
@@ -1039,61 +1109,11 @@ abstract class AbstractUserAuthentication
      *
      *************************/
     /**
-     * The session_id is used to find user in the database.
-     * Two tables are joined: The session-table with user_id of the session and the usertable with its primary key
-     * if the client is flash (e.g. from a flash application inside TYPO3 that does a server request)
-     * then don't evaluate with the hashLockClause, as the client/browser is included in this hash
-     * and thus, the flash request would be rejected
-     *
-     * @return array|false
-     * @access private
-     */
-    protected function fetchUserSessionFromDB()
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->session_table);
-        $queryBuilder->setRestrictions($this->userConstraints());
-        $queryBuilder->select('*')
-            ->from($this->session_table)
-            ->from($this->user_table)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    $this->session_table . '.ses_id',
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    $this->session_table . '.ses_name',
-                    $queryBuilder->createNamedParameter($this->name, \PDO::PARAM_STR)
-                ),
-                // Condition on which to join the session and user table
-                $queryBuilder->expr()->eq(
-                    $this->session_table . '.ses_userid',
-                    $queryBuilder->quoteIdentifier($this->user_table . '.' . $this->userid_column)
-                )
-            );
-
-        if ($this->lockIP) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    $this->session_table . '.ses_iplock',
-                    $queryBuilder->createNamedParameter(
-                        [$this->ipLockClause_remoteIPNumber($this->lockIP), '[DISABLED]'],
-                        Connection::PARAM_STR_ARRAY // Automatically expand the array into multiple named parameters
-                    )
-                )
-            );
-        }
-
-        // Force the fetch mode to ensure we get back an array independently of the default fetch mode.
-        return $queryBuilder->execute()->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    /**
      * This returns the restrictions needed to select the user respecting
      * enable columns and flags like deleted, hidden, starttime, endtime
      * and rootLevel
      *
-     * @return \TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
+     * @return QueryRestrictionContainerInterface
      * @internal
      */
     protected function userConstraints(): QueryRestrictionContainerInterface
@@ -1137,7 +1157,7 @@ abstract class AbstractUserAuthentication
 
         $whereClause = '';
         if ($this->enablecolumns['rootLevel']) {
-            $whereClause .= 'AND ' . $this->user_table . '.pid=0 ';
+            $whereClause .= ' AND ' . $this->user_table . '.pid=0 ';
         }
         if ($this->enablecolumns['disabled']) {
             $whereClause .= ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0';
@@ -1153,32 +1173,6 @@ abstract class AbstractUserAuthentication
                 . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')';
         }
         return $whereClause;
-    }
-
-    /**
-     * This returns the where prepared statement-clause needed to lock a user to the IP address
-     *
-     * @return array
-     * @access private
-     * @deprecated since TYPO3 v8, will be removed in TYPO3 v9
-     */
-    protected function ipLockClause()
-    {
-        GeneralUtility::logDeprecatedFunction();
-        $statementClause = [
-            'where' => '',
-            'parameters' => []
-        ];
-        if ($this->lockIP) {
-            $statementClause['where'] = 'AND (
-				' . $this->session_table . '.ses_iplock = :ses_iplock
-				OR ' . $this->session_table . '.ses_iplock=\'[DISABLED]\'
-				)';
-            $statementClause['parameters'] = [
-                ':ses_iplock' => $this->ipLockClause_remoteIPNumber($this->lockIP)
-            ];
-        }
-        return $statementClause;
     }
 
     /**
@@ -1242,7 +1236,7 @@ abstract class AbstractUserAuthentication
                     self::class
                 );
             }
-            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
+            GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->user_table)->update(
                 $this->user_table,
                 ['uc' => serialize($variable)],
                 [$this->userid_column => (int)$this->user[$this->userid_column]],
@@ -1304,15 +1298,30 @@ abstract class AbstractUserAuthentication
 
     /**
      * Returns the session data stored for $key.
-     * The data will last only for this login session since it is stored in the session table.
+     * The data will last only for this login session since it is stored in the user session.
      *
-     * @param string $key Pointer to an associative key in the session data array which is stored serialized in the field "ses_data" of the session table.
+     * @param string $key The key associated with the session data
      * @return mixed
      */
     public function getSessionData($key)
     {
-        $sesDat = unserialize($this->user['ses_data']);
-        return $sesDat[$key];
+        return $this->sessionData[$key] ?? null;
+    }
+
+    /**
+     * Set session data by key.
+     * The data will last only for this login session since it is stored in the user session.
+     *
+     * @param string $key A non empty string to store the data under
+     * @param mixed $data Data store store in session
+     * @return void
+     */
+    public function setSessionData($key, $data)
+    {
+        if (empty($key)) {
+            throw new \InvalidArgumentException('Argument key must not be empty', 1484311516);
+        }
+        $this->sessionData[$key] = $data;
     }
 
     /**
@@ -1320,23 +1329,21 @@ abstract class AbstractUserAuthentication
      * The data will last only for this login session since it is stored in the session table.
      *
      * @param string $key Pointer to an associative key in the session data array which is stored serialized in the field "ses_data" of the session table.
-     * @param mixed $data The variable to store in index $key
+     * @param mixed $data The data to store in index $key
      * @return void
      */
     public function setAndSaveSessionData($key, $data)
     {
-        $sesDat = unserialize($this->user['ses_data']);
-        $sesDat[$key] = $data;
-        $this->user['ses_data'] = serialize($sesDat);
+        $this->sessionData[$key] = $data;
+        $this->user['ses_data'] = serialize($this->sessionData);
         if ($this->writeDevLog) {
-            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->user['ses_id'], self::class);
+            GeneralUtility::devLog('setAndSaveSessionData: ses_id = ' . $this->id, self::class);
         }
-        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->session_table)->update(
-            $this->session_table,
-            ['ses_data' => $this->user['ses_data']],
-            ['ses_id' => $this->user['ses_id']],
-            ['ses_data' => Connection::PARAM_LOB]
+        $updatedSession = $this->getSessionBackend()->update(
+            $this->id,
+            ['ses_data' => $this->user['ses_data']]
         );
+        $this->user = array_merge($this->user ?? [], $updatedSession);
     }
 
     /*************************
@@ -1475,19 +1482,7 @@ abstract class AbstractUserAuthentication
      */
     public function gc()
     {
-        $query = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->session_table);
-        $query->delete($this->session_table)
-            ->where(
-                $query->expr()->lt(
-                    'ses_tstamp',
-                    $query->createNamedParameter(($GLOBALS['EXEC_TIME'] - $this->gc_time), \PDO::PARAM_INT)
-                ),
-                $query->expr()->eq(
-                    'ses_name',
-                    $query->createNamedParameter($this->name, \PDO::PARAM_STR)
-                )
-            )
-            ->execute();
+        $this->getSessionBackend()->collectGarbage($this->gc_time);
     }
 
     /**
@@ -1589,11 +1584,6 @@ abstract class AbstractUserAuthentication
         return $query->execute()->fetch();
     }
 
-    /*************************
-     *
-     * Create/update user - EXPERIMENTAL
-     *
-     *************************/
     /**
      * Get a user from DB by username
      * provided for usage from services
@@ -1635,5 +1625,36 @@ abstract class AbstractUserAuthentication
         }
 
         return $user;
+    }
+
+    /**
+     * @internal
+     * @return string
+     */
+    public function getSessionId() : string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @internal
+     * @return string
+     */
+    public function getLoginType() : string
+    {
+        return $this->loginType;
+    }
+
+    /**
+     * Returns initialized session backend. Returns same session backend if called multiple times
+     *
+     * @return SessionBackendInterface
+     */
+    protected function getSessionBackend()
+    {
+        if (!isset($this->sessionBackend)) {
+            $this->sessionBackend = GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($this->loginType);
+        }
+        return $this->sessionBackend;
     }
 }

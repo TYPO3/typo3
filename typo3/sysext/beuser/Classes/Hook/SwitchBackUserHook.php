@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Beuser\Hook;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
@@ -51,15 +52,9 @@ class SwitchBackUserHook
      */
     protected function isAHandledBackendSession(AbstractUserAuthentication $authentication)
     {
-        if (
-            $authentication->session_table !== 'be_sessions'
-            || !is_array($authentication->user)
-            || !$authentication->user['uid']
-            || !$authentication->user['ses_backuserid']
-        ) {
-            return false;
-        } else {
-            return true;
-        }
+        return ($authentication instanceof BackendUserAuthentication)
+            && is_array($authentication->user)
+            && (int)$authentication->user['uid'] > 0
+            && (int)$authentication->user['ses_backuserid'] > 0;
     }
 }

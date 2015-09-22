@@ -16,7 +16,8 @@ namespace TYPO3\CMS\Beuser\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -232,24 +233,10 @@ class BackendUserController extends BackendUserActionController
      */
     protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('be_sessions');
+        $sessionBackend = $this->getSessionBackend();
+        $success = $sessionBackend->remove($sessionId);
 
-        $affectedRows = $queryBuilder
-            ->delete('be_sessions')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'ses_userid',
-                    $queryBuilder->createNamedParameter($backendUser->getUid(), \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'ses_id',
-                    $queryBuilder->createNamedParameter($sessionId, \PDO::PARAM_STR)
-                )
-            )
-            ->execute();
-
-        if ($affectedRows === 1) {
+        if ($success) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser'));
         }
         $this->forward('online');
@@ -269,37 +256,14 @@ class BackendUserController extends BackendUserActionController
             $this->getBackendUserAuthentication()->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
             $this->getBackendUserAuthentication()->writeUC();
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('be_sessions');
-
-            $queryBuilder
-                ->update('be_sessions')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'ses_id',
-                        $queryBuilder->createNamedParameter(
-                            $this->getBackendUserAuthentication()->id,
-                            \PDO::PARAM_STR
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'ses_name',
-                        $queryBuilder->createNamedParameter(
-                            \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(),
-                            \PDO::PARAM_STR
-                        )
-                    ),
-                    $queryBuilder->expr()->eq(
-                        'ses_userid',
-                        $queryBuilder->createNamedParameter(
-                            $this->getBackendUserAuthentication()->user['uid'],
-                            \PDO::PARAM_INT
-                        )
-                    )
-                )
-                ->set('ses_userid', (int)$targetUser['uid'])
-                ->set('ses_backuserid', (int)$this->getBackendUserAuthentication()->user['uid'])
-                ->execute();
+            $sessionBackend = $this->getSessionBackend();
+            $sessionBackend->update(
+                $this->getBackendUserAuthentication()->getSessionId(),
+                [
+                    'ses_userid' => (int)$targetUser['uid'],
+                    'ses_backuserid' => (int)$this->getBackendUserAuthentication()->user['uid']
+                ]
+            );
 
             $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
@@ -320,5 +284,14 @@ class BackendUserController extends BackendUserActionController
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @return SessionBackendInterface
+     */
+    protected function getSessionBackend()
+    {
+        $loginType = $this->getBackendUserAuthentication()->getLoginType();
+        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend($loginType);
     }
 }

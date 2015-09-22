@@ -64,7 +64,6 @@ class RedisBackendTest extends \TYPO3\Components\TestingFramework\Core\Unit\Unit
     /**
      * Sets up the redis backend used for testing
      *
-     * @param array $backendOptions Options for the redis backend
      */
     protected function setUpBackend(array $backendOptions = [])
     {

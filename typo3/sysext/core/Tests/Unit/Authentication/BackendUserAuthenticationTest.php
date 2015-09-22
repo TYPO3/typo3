@@ -21,14 +21,17 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for BackendUserAuthentication
+ * Test case
  */
-class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\Core\Unit\UnitTestCase
+class BackendUserAuthenticationTest extends UnitTestCase
 {
     /**
      * @var array
@@ -53,15 +56,12 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
         'recursivedeleteFolder' => false
     ];
 
-    protected function setUp()
-    {
-        // reset hooks
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = [];
-    }
-
+    /**
+     * Tear down
+     */
     protected function tearDown()
     {
-        \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::purgeInstances();
+        FormProtectionFactory::purgeInstances();
         parent::tearDown();
     }
 
@@ -97,13 +97,12 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
         $formProtection = $this->prophesize(\TYPO3\CMS\Core\FormProtection\BackendFormProtection::class);
         $formProtection->clean()->shouldBeCalled();
 
-        \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set(
+        FormProtectionFactory::set(
             'default',
             $formProtection->reveal()
         );
 
-        // logoff() call the static factory that has a dependency to a valid BE_USER object. Mock this away
-        $GLOBALS['BE_USER'] = $this->createMock(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $GLOBALS['BE_USER']->user = ['uid' => $this->getUniqueId()];
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
@@ -111,6 +110,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
+
         $subject->logoff();
     }
 
@@ -261,6 +261,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function getTSConfigReturnsCorrectArrayForGivenObjectString(array $completeConfiguration, $objectString, array $expectedConfiguration)
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -330,6 +331,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration)
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin'])
             ->getMock();
@@ -467,10 +469,11 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions)
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin', 'getFilePermissions'])
             ->getMock();
-        $storageMock = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
         $subject
@@ -505,10 +508,11 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions)
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin', 'getFilePermissions'])
             ->getMock();
-        $storageMock = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
+        $storageMock = $this->createMock(ResourceStorage::class);
         $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
 
         $subject
@@ -645,10 +649,15 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
 
     /**
      * @test
+     *
+     * @param string $permissionValue
+     * @param array $expectedPermissions
+     *
      * @dataProvider getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdminDataProvider
      */
-    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin($permissionValue, $expectedPermissions)
+    public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions)
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin'])
             ->getMock();
@@ -668,6 +677,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function getFilePermissionsGrantsAllPermissionsToAdminUsers()
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin'])
             ->getMock();
@@ -703,6 +713,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration()
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -717,6 +728,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function jsConfirmationAllowsSettingMultipleBitsInValue()
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -731,6 +743,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet()
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -745,6 +758,7 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
      */
     public function jsConfirmationReturnsTrueIfConfigurationIsMissing()
     {
+        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -810,23 +824,25 @@ class BackendUserAuthenticationTest extends \TYPO3\Components\TestingFramework\C
         // of GeneralUtility::addInstance will influence other tests
         // as the ConnectionPool is never used!
         if (!$admin) {
-            /** @var Connection|ObjectProphecy $connectionProphet */
-            $connectionProphet = $this->prophesize(Connection::class);
-            $connectionProphet->getDatabasePlatform()->willReturn(new MockPlatform());
-            $connectionProphet->quoteIdentifier(Argument::cetera())->will(function ($args) {
+            /** @var Connection|ObjectProphecy $connectionProphecy */
+            $connectionProphecy = $this->prophesize(Connection::class);
+            $connectionProphecy->getDatabasePlatform()->willReturn(new MockPlatform());
+            $connectionProphecy->quoteIdentifier(Argument::cetera())->will(function ($args) {
                 return '`' . str_replace('.', '`.`', $args[0]) . '`';
             });
 
-            /** @var QueryBuilder|ObjectProphecy $queryBuilderProphet */
-            $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
-            $queryBuilderProphet->expr()->willReturn(
-                GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionProphet->reveal())
+            /** @var QueryBuilder|ObjectProphecy $queryBuilderProphecy */
+            $queryBuilderProphecy = $this->prophesize(QueryBuilder::class);
+            $queryBuilderProphecy->expr()->willReturn(
+                new ExpressionBuilder($connectionProphecy->reveal())
             );
 
-            /** @var ConnectionPool|ObjectProphecy $databaseProphet */
-            $databaseProphet = $this->prophesize(ConnectionPool::class);
-            $databaseProphet->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphet->reveal());
-            GeneralUtility::addInstance(ConnectionPool::class, $databaseProphet->reveal());
+            /** @var ConnectionPool|ObjectProphecy $databaseProphecy */
+            $databaseProphecy = $this->prophesize(ConnectionPool::class);
+            $databaseProphecy->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphecy->reveal());
+            // Shift previously added instance
+            GeneralUtility::makeInstance(ConnectionPool::class);
+            GeneralUtility::addInstance(ConnectionPool::class, $databaseProphecy->reveal());
         }
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */

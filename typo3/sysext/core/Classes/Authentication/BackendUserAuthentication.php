@@ -173,12 +173,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
     protected $filePermissions;
 
     /**
-     * Table to use for session data
-     * @var string
-     */
-    public $session_table = 'be_sessions';
-
-    /**
      * Table in database with user data
      * @var string
      */

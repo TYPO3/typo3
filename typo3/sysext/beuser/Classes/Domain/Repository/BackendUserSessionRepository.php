@@ -13,10 +13,11 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Beuser\Domain\Model\BackendUser;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -28,40 +29,50 @@ class BackendUserSessionRepository extends Repository
     /**
      * Find all active sessions for all backend users
      *
-     * @return array|NULL Array of rows, or NULL in case of SQL error
+     * @return array
      */
     public function findAllActive()
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
-        return $queryBuilder
-            ->select('ses_id AS id', 'ses_userid', 'ses_iplock AS ip', 'ses_tstamp AS timestamp')
-            ->from('be_sessions')
-            ->execute()
-            ->fetchAll();
+        $sessionBackend = $this->getSessionBackend();
+        $allSessions = $sessionBackend->getAll();
+
+        // Map array to correct keys
+        $allSessions = array_map(
+            function ($session) {
+                return [
+                    'id' => $session['ses_id'],
+                    'ip' => $session['ses_iplock'],
+                    'timestamp' => $session['ses_tstamp'],
+                    'ses_userid' => $session['ses_userid']
+                ];
+            },
+            $allSessions
+        );
+
+        // Sort by timestamp
+        usort($allSessions, function ($session1, $session2) {
+            return $session1['timestamp'] <=> $session2['timestamp'];
+        });
+
+        return $allSessions;
     }
 
     /**
      * Find Sessions for specific BackendUser
-     * Delivers an Array, not an ObjectStorage!
      *
      * @param BackendUser $backendUser
      * @return array
      */
     public function findByBackendUser(BackendUser $backendUser)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
-        return $queryBuilder
-            ->select('ses_id AS id', 'ses_iplock AS ip', 'ses_tstamp AS timestamp')
-            ->from('be_sessions')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'ses_userid',
-                    $queryBuilder->createNamedParameter($backendUser->getUid(), \PDO::PARAM_INT)
-                )
-            )
-            ->orderBy('ses_tstamp', 'ASC')
-            ->execute()
-            ->fetchAll();
+        $allActive = $this->findAllActive();
+
+        return array_filter(
+            $allActive,
+            function ($session) use ($backendUser) {
+                return (int)$session['ses_userid'] === $backendUser->getUid();
+            }
+        );
     }
 
     /**
@@ -72,25 +83,30 @@ class BackendUserSessionRepository extends Repository
      */
     public function switchBackToOriginalUser(AbstractUserAuthentication $authentication)
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_sessions');
-        $queryBuilder
-            ->update('be_sessions')
-            ->set('ses_userid', $authentication->user['ses_backuserid'])
-            ->set('ses_backuserid', 0)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'ses_id',
-                    $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->id, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'ses_name',
-                    $queryBuilder->createNamedParameter(BackendUserAuthentication::getCookieName(), \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'ses_userid',
-                    $queryBuilder->createNamedParameter($GLOBALS['BE_USER']->user['uid'], \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
+        $sessionBackend = $this->getSessionBackend();
+        $sessionId = $this->getBackendSessionId();
+        $sessionBackend->update(
+            $sessionId,
+            [
+                'ses_userid' => $authentication->user['ses_backuserid'],
+                'ses_backuserid' => 0
+            ]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getBackendSessionId(): string
+    {
+        return $GLOBALS['BE_USER']->id;
+    }
+
+    /**
+     * @return SessionBackendInterface
+     */
+    protected function getSessionBackend(): SessionBackendInterface
+    {
+        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
     }
 }
