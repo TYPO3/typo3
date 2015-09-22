@@ -29,7 +29,7 @@ class ValidationBuilder {
 	 */
 	static public function create(Configuration $configuration) {
 		/** @var ValidationBuilder $validationBuilder */
-		$validationBuilder = \TYPO3\CMS\Form\Bootstrap::getObjectManager()->get(ValidationBuilder::class);
+		$validationBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ValidationBuilder::class);
 		$validationBuilder->setConfiguration($configuration);
 		return $validationBuilder;
 	}

@@ -31,7 +31,7 @@ class ElementBuilder {
 	 */
 	static public function create(FormBuilder $formBuilder, Element $element, array $userDefinedTypoScript) {
 		/** @var ElementBuilder $elementBuilder */
-		$elementBuilder = \TYPO3\CMS\Form\Bootstrap::getObjectManager()->get(ElementBuilder::class);
+		$elementBuilder = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(ElementBuilder::class);
 		$elementBuilder->setFormBuilder($formBuilder);
 		$elementBuilder->setElement($element);
 		$elementBuilder->setUserConfiguredElementTyposcript($userDefinedTypoScript);

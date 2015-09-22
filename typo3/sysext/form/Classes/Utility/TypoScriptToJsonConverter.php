@@ -24,6 +24,28 @@ use TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonElement;
  */
 class TypoScriptToJsonConverter {
 
+	protected $registeredElementNames = array(
+		'BUTTON',
+		'CHECKBOX',
+		'CHECKBOXGROUP',
+		'FIELDSET',
+		'FILEUPLOAD',
+		'HEADER',
+		'HIDDEN',
+		'IMAGEBUTTON',
+		'OPTGROUP',
+		'OPTION',
+		'PASSWORD',
+		'RADIO',
+		'RADIOGROUP',
+		'RESET',
+		'SELECT',
+		'SUBMIT',
+		'TEXTAREA',
+		'TEXTBLOCK',
+		'TEXTLINE'
+	);
+
 	/**
 	 * @var array
 	 */
@@ -105,7 +127,7 @@ class TypoScriptToJsonConverter {
 	 * @return void
 	 */
 	private function setElementType(AbstractJsonElement $parentElement, $class, array $arguments) {
-		if (in_array($class, \TYPO3\CMS\Form\Bootstrap::getRegisteredElementNames())) {
+		if (in_array($class, $this->registeredElementNames)) {
 			if (strstr($arguments['class'], 'predefined-name')) {
 				$class = 'NAME';
 			}

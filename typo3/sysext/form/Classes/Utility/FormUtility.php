@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Form\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A session utility
  */
@@ -80,4 +82,10 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		return $id;
 	}
 
+	/**
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	static public function getObjectManager() {
+		return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+	}
 }

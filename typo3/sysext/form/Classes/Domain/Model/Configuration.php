@@ -34,7 +34,7 @@ class Configuration {
 	 * @return Configuration
 	 */
 	static public function create() {
-		return \TYPO3\CMS\Form\Bootstrap::getObjectManager()->get(Configuration::class);
+		return \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(Configuration::class);
 	}
 
 	/**

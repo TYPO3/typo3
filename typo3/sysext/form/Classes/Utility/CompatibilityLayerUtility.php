@@ -30,7 +30,7 @@ class CompatibilityLayerUtility {
 	 */
 	static public function create(FormBuilder $formBuilder) {
 		/** @var CompatibilityLayerUtility $compatibilityService */
-		$compatibilityService = \TYPO3\CMS\Form\Bootstrap::getObjectManager()->get(CompatibilityLayerUtility::class);
+		$compatibilityService = \TYPO3\CMS\Form\Utility\FormUtility::getObjectManager()->get(CompatibilityLayerUtility::class);
 		$compatibilityService->setFormBuilder($formBuilder);
 		return $compatibilityService;
 	}

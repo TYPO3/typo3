@@ -1,13 +1,20 @@
 mod.wizards {
 	newContentElement.wizardItems {
-		forms.elements {
-			mailform {
-				tt_content_defValues {
-					bodytext (
+		forms {
+			show :=addToList(mailform)
+			elements {
+				mailform {
+					icon = EXT:frontend/Resources/Public/Icons/ContentElementWizard/mailform.gif
+					title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_title
+					description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_description
+					tt_content_defValues {
+						CType = mailform
+						bodytext (
 enctype = multipart/form-data
 method = post
 prefix = tx_form
-					)
+						)
+					}
 				}
 			}
 		}
