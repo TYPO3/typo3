@@ -347,6 +347,7 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 	protected function modifyDataStructureAndDataValuesByFlexFormSegmentGroup(array $result, $fieldName, $pageTsConfig) {
 		$dataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
 		$dataValues = $result['databaseRow'][$fieldName];
+		$tableName = $result['tableName'];
 
 		$availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
 		if ($dataStructure['meta']['langChildren']) {
@@ -376,9 +377,9 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 			$dataStructureSheetElements = $dataStructureSheetDefinition['ROOT']['el'];
 
 			// Prepare pageTsConfig of this sheet
-			$pageTsConfigMerged['TCEFORM.']['flexDummyTable.'] = [];
+			$pageTsConfigMerged['TCEFORM.'][$tableName . '.'] = [];
 			if (isset($pageTsConfig[$dataStructureSheetName . '.']) && is_array($pageTsConfig[$dataStructureSheetName . '.'])) {
-				$pageTsConfigMerged['TCEFORM.']['flexDummyTable.'] = $pageTsConfig[$dataStructureSheetName . '.'];
+				$pageTsConfigMerged['TCEFORM.'][$tableName . '.'] = $pageTsConfig[$dataStructureSheetName . '.'];
 			}
 
 			foreach ($languagesOnSheetLevel as $isoSheetLevel) {
@@ -415,14 +416,16 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 											}
 											foreach ($languagesOnElementLevel as $isoElementLevel) {
 												$langElementLevel = 'v' . $isoElementLevel;
-												$valueArray = [];
+												$valueArray = [
+													'uid' => $result['databaseRow']['uid'],
+												];
 												$command = 'new';
 												if (array_key_exists($langElementLevel, $singleFieldValueArray)) {
 													$command = 'edit';
 													$valueArray[$singleFieldName] = $singleFieldValueArray[$langElementLevel];
 												}
 												$inputToFlexFormSegment = [
-													'tableName' => 'flexDummyTable',
+													'tableName' => $result['tableName'],
 													'command' => $command,
 													// It is currently not possible to have pageTsConfig for section container
 													'pageTsConfigMerged' => [],
@@ -475,10 +478,12 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 										foreach ($languagesOnElementLevel as $isoElementLevel) {
 											$langElementLevel = 'v' . $isoElementLevel;
 											$inputToFlexFormSegment = [
-												'tableName' => 'flexDummyTable',
+												'tableName' => $result['tableName'],
 												'command' => 'new',
 												'pageTsConfigMerged' => [],
-												'databaseRow' => [],
+												'databaseRow' => [
+													'uid' => $result['databaseRow']['uid'],
+												],
 												'vanillaTableTca' => [
 													'ctrl' => [],
 													'columns' => [
@@ -520,7 +525,10 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 					} else {
 						foreach ($languagesOnElementLevel as $isoElementLevel) {
 							$langElementLevel = 'v' . $isoElementLevel;
-							$valueArray = [];
+							$valueArray = [
+								// uid of "parent" is given down for inline elements to resolve correctly
+								'uid' => $result['databaseRow']['uid'],
+							];
 							$command = 'new';
 							if (isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName])
 								&& array_key_exists($langElementLevel, $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName])
@@ -529,7 +537,8 @@ class TcaFlexProcess extends AbstractItemProvider implements FormDataProviderInt
 								$valueArray[$dataStructureSheetElementName] = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureSheetElementName][$langElementLevel];
 							}
 							$inputToFlexFormSegment = [
-								'tableName' => 'flexDummyTable',
+								// tablename of "parent" is given down for inline elements to resolve correctly
+								'tableName' => $result['tableName'],
 								'command' => $command,
 								'pageTsConfigMerged' => $pageTsConfigMerged,
 								'databaseRow' => $valueArray,
