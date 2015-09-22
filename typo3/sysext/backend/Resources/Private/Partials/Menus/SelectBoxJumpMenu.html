@@ -1,0 +1,5 @@
+{menu.label} <select class="form-control t3-js-jumpMenuBox" name="{menu.identifier}" onchange="if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}">
+	<f:for each="{menu.menuItems}" as="menuItem">
+		<option value="{menuItem.href}" {f:if(condition: '{menuItem.active}', then: ' selected="selected"')}>{menuItem.title}</option>
+	</f:for>
+</select>

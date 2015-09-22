@@ -1,0 +1,88 @@
+//
+// ModuleTemplate
+// ======
+// General component for backend modules.
+//
+
+
+//
+// Variables
+//
+@module-bg: #fff;
+
+@module-docheader-bg: #eee;
+@module-docheader-border: #c3c3c3;
+@module-docheader-zindex: 300;
+@module-docheader-height: 65px;
+@module-docheader-padding-vertical: 0;
+@module-docheader-padding-horizontal: 24px;
+@module-docheader-padding: @module-docheader-padding-vertical @module-docheader-padding-horizontal;
+
+@module-docheader-bar-height: 26px;
+@module-docheader-bar-margin-vertical: 4px;
+@module-docheader-bar-margin-horizontal: 0;
+@module-docheader-bar-margin: @module-docheader-bar-margin-vertical @module-docheader-bar-margin-horizontal;
+
+@module-body-padding-vertical: 24px;
+@module-body-padding-horizontal: 24px;
+@module-body-padding: @module-body-padding-vertical @module-body-padding-horizontal;
+
+
+//
+// Template
+//
+.module {
+	height: 100%;
+	width: 100%;
+	background-color: @module-bg;
+	form {
+		margin: 0;
+	}
+}
+
+
+//
+// Docheader
+//
+.module-docheader {
+	.clearfix;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	height: @module-docheader-height;
+	z-index: @module-docheader-zindex;
+	background-color: @module-docheader-bg;
+	border-bottom: 1px solid @module-docheader-border;
+	padding: @module-docheader-padding;
+}
+.module-docheader-bar {
+	.clearfix;
+	height: @module-docheader-bar-height;
+	margin: @module-docheader-bar-margin;
+	line-height: @module-docheader-bar-height;
+	label {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.form-group {
+		margin: 0;
+	}
+}
+.module-docheader-bar-column-left {
+	float: left;
+}
+.module-docheader-bar-column-right {
+	float: right;
+}
+
+
+//
+// Body
+//
+.module-body {
+	padding: @module-body-padding;
+}
+.module-docheader + .module-body {
+	padding-top: @module-docheader-height + @module-body-padding-vertical;
+}

@@ -7854,6 +7854,81 @@ button.close {
   background-color: #ebfce3;
   text-decoration: none;
 }
+.module {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+}
+.module form {
+  margin: 0;
+}
+.module-docheader {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 65px;
+  z-index: 300;
+  background-color: #eeeeee;
+  border-bottom: 1px solid #c3c3c3;
+  padding: 0 24px;
+}
+.module-docheader:before,
+.module-docheader:after {
+  content: " ";
+  display: table;
+}
+.module-docheader:after {
+  clear: both;
+}
+.module-docheader:before,
+.module-docheader:after {
+  content: " ";
+  display: table;
+}
+.module-docheader:after {
+  clear: both;
+}
+.module-docheader-bar {
+  height: 26px;
+  margin: 4px 0;
+  line-height: 26px;
+}
+.module-docheader-bar:before,
+.module-docheader-bar:after {
+  content: " ";
+  display: table;
+}
+.module-docheader-bar:after {
+  clear: both;
+}
+.module-docheader-bar:before,
+.module-docheader-bar:after {
+  content: " ";
+  display: table;
+}
+.module-docheader-bar:after {
+  clear: both;
+}
+.module-docheader-bar label {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.module-docheader-bar .form-group {
+  margin: 0;
+}
+.module-docheader-bar-column-left {
+  float: left;
+}
+.module-docheader-bar-column-right {
+  float: right;
+}
+.module-body {
+  padding: 24px 24px;
+}
+.module-docheader + .module-body {
+  padding-top: 89px;
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,
@@ -11461,8 +11536,9 @@ a.badge-danger:hover,
 a.badge-danger:focus {
   background-color: #a32e2e;
 }
-.btn .t3-icon {
-  margin: 0;
+.btn-sm,
+.btn-group-sm > .btn {
+  min-height: 26px;
 }
 .btn-group {
   font-size: 0;

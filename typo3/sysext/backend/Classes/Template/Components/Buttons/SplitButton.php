@@ -1,0 +1,172 @@
+<?php
+namespace TYPO3\CMS\Backend\Template\Components\Buttons;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+/**
+ * SplitButton
+ *
+ * This button type renders a bootstrap split button.
+ * It takes multiple button objects as parameters
+ *
+ * EXAMPLE USAGE TO ADD A SPLIT BUTTON TO THE FIRST BUTTON GROUP IN THE LEFT BAR:
+ *
+ * $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+ *
+ * $saveButton = $buttonBar->makeInputButton()
+ *      ->setName('save')
+ *      ->setValue('1')
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+ *      ->setTitle('Save');
+ *
+ * $saveAndCloseButton = $buttonBar->makeInputButton()
+ *      ->setName('save_and_close')
+ *      ->setValue('1')
+ *      ->setTitle('Save and close')
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
+ *
+ * $saveAndShowPageButton = $buttonBar->makeInputButton()
+ *      ->setName('save_and_show')
+ *      ->setValue('1')
+ *      ->setTitle('Save and show')
+ *      ->setIcon($this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL));
+ *
+ * $splitButtonElement = $buttonBar->makeSplitButton()
+ *      ->addItem($saveButton, TRUE)
+ *      ->addItem($saveAndCloseButton)
+ *      ->addItem($saveAndShowPageButton);
+ */
+class SplitButton extends AbstractButton implements ButtonInterface {
+
+	/**
+	 * Internal var that determines whether the split button has received any primary
+	 * actions yet
+	 *
+	 * @var bool
+	 */
+	protected $containsPrimaryAction = FALSE;
+
+	/**
+	 * Internal array of items in the split button
+	 *
+	 * @var array
+	 */
+	protected $items = [];
+
+	/**
+	 * Adds an instance of any button to the split button
+	 *
+	 * @param AbstractButton $item ButtonObject to add
+	 * @param bool $primaryAction Is the button the primary action?
+	 *
+	 * @throws \InvalidArgumentException In case a button is not valid
+	 *
+	 * @return $this
+	 */
+	public function addItem(AbstractButton $item, $primaryAction = FALSE) {
+		if (!$item->isValid($item)) {
+			throw new \InvalidArgumentException(
+				'Only valid items may be assigned to a split Button. "' .
+				$item->getType() .
+				'" did not pass validation', 1441706330
+			);
+		}
+		if ($primaryAction && $this->containsPrimaryAction) {
+			throw new \InvalidArgumentException('A splitButton may only contain one primary action', 1441706340);
+		}
+		if ($primaryAction) {
+			$this->containsPrimaryAction = TRUE;
+			$this->items['primary'] = clone $item;
+		} else {
+			$this->items['options'][] = clone $item;
+		}
+		return $this;
+	}
+
+	/**
+	 * Returns the current button
+	 *
+	 * @return array
+	 */
+	public function getButton() {
+		if (!isset($this->items['primary']) && isset($this->items['options'])) {
+			$primaryAction = array_shift($this->items['options']);
+			$this->items['primary'] = $primaryAction;
+		}
+		return $this->items;
+	}
+
+	/**
+	 * Validates the current button
+	 *
+	 *
+	 * @return bool
+	 */
+	public function isValid() {
+		$subject = $this->getButton();
+		if (
+			isset($subject['primary'])
+			&& ($subject['primary'] instanceof AbstractButton)
+			&& isset($subject['options'])
+		) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Renders the HTML markup of the button
+	 *
+	 * @return string
+	 */
+	public function render() {
+		$items = $this->getButton();
+		$content = '
+		<div class="btn-group">
+			<button
+				type="submit"
+				value="' . htmlspecialchars($items['primary']->getValue()) . '"
+				class="btn btn-sm btn-default ' . htmlspecialchars($items['primary']->getClasses()) . '"
+			>
+				' . $items['primary']->getIcon()->render() . '
+				' . htmlspecialchars($items['primary']->getTitle()) . '
+			</button>
+			<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				<span class="caret"></span>
+				<span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<ul class="dropdown-menu">';
+		foreach ($items['options'] as $option) {
+			$content .= '
+				<li>
+					<a href="#">' . $option->getIcon()->render() . ' ' . htmlspecialchars($option->getTitle()) . '</a>
+				</li>
+			';
+		}
+		$content .= '
+			</ul>
+		</div>
+		';
+		return $content;
+	}
+
+	/**
+	 * Magic method so Fluid can access a button via {button}
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->render();
+	}
+}

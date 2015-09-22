@@ -1,0 +1,25 @@
+<div class="module-docheader">
+	<div class="module-docheader-bar">
+		<div class="module-docheader-bar-column-left">
+			<div class="form-inline">
+				<f:for each="{docHeader.menus}" as="menu">
+					<div class="form-group form-group-sm">
+						<f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}" />
+					</div>
+				</f:for>
+			</div>
+		</div>
+		<div class="module-docheader-bar-column-right">
+			<span class="typo3-docheader-pagePath"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.path" />: <f:format.raw>{docHeader.metaInformation.path}</f:format.raw></span> <f:format.raw>{docHeader.metaInformation.recordInformation}</f:format.raw>
+		</div>
+
+	</div>
+	<div class="module-docheader-bar">
+		<div class="module-docheader-bar-column-left">
+			<f:render partial="ButtonBar" arguments="{buttons:docHeader.buttons.left}" />
+		</div>
+		<div class="module-docheader-bar-column-right">
+			<f:render partial="ButtonBar" arguments="{buttons:docHeader.buttons.right}" />
+		</div>
+	</div>
+</div>
