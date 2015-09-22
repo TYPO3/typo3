@@ -89,7 +89,21 @@ class CurrencyFilter extends AbstractFilter implements FilterInterface
      */
     public function filter($value)
     {
-        $value = (double) ((string)$value);
+        $value = str_replace(
+            array(
+                $this->thousandSeparator,
+                $this->decimalsPoint,
+            ),
+            array(
+                '',
+                '.'
+            ),
+            (string)$value
+        );
+
+        // replace all non numeric characters, decimalPoint and negativ sign
+        $value = preg_replace("/[^0-9.-]/", "", $value);
+        $value = (double)$value;
         return number_format($value, 2, $this->decimalsPoint, $this->thousandSeparator);
     }
 }
