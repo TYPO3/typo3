@@ -5013,15 +5013,14 @@ if (version == "n3") {
 		$enableFields = $this->sys_page->enableFields($tableName, $showHidden, array('starttime' => TRUE, 'endtime' => TRUE));
 		// For each start or end time field, get the minimum value
 		foreach (array('starttime', 'endtime') as $field) {
-			// Note: there is no need to load TCA because we need only enable columns!
 			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
 				$timeField = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
 				$selectField = 'MIN(' . $timeField . ') AS ' . $field;
 				$whereCondition = $timeField . ' > ' . $now;
 				// Find the smallest timestamp which could influence the cache duration (but is larger than 0)
 				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($selectField, $tableName, 'pid = ' . (int)$pid . ' AND ' . $whereCondition . $enableFields);
-				if ($row && !is_null($row[$timeField])) {
-					$result = min($result, $row[$timeField]);
+				if ($row && !is_null($row[$field])) {
+					$result = min($result, $row[$field]);
 				}
 			}
 		}
