@@ -30,31 +30,71 @@ class CurrencyFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\CurrencyFilter();
 	}
 
+	/**
+	 * Data provider for filterForVariousIntegerInputsReturnsFormattedCurrencyNotation
+	 * Each data set is an array with the following elements:
+	 *  - input value
+	 *  - thousand separator character
+	 *  - decimal point character
+	 *  - expected result
+	 *
+	 * @returns array
+	 */
 	public function validDataProvider() {
 		return array(
 			'1200 => 1.200,00' => array(
-				1200, // input
-				'.', // thousand separator
-				',', // decimal point
-				'1.200,00' // expected
+				'1200',
+				'.',
+				',',
+				'1.200,00'
 			),
 			'0 => 0,00' => array(
-				0,
+				'0',
 				NULL,
 				',',
 				'0,00'
 			),
 			'3333.33 => 3,333.33' => array(
-				3333.33,
+				'3333.33',
 				',',
 				'.',
 				'3,333.33'
 			),
 			'1099.33 => 1 099,33' => array(
-				1099.33,
+				'1099.33',
 				' ',
 				',',
 				'1 099,33'
+			),
+			'1200,00 => 1.200,00' => array(
+					'1200,00',
+					'.',
+					',',
+					'1.200,00'
+			),
+			'1.200,00 => 1.200,00' => array(
+					'1.200,00',
+					'.',
+					',',
+					'1.200,00'
+			),
+			'1.200 => 1.200,00' => array(
+					'1.200',
+					'.',
+					',',
+					'1.200,00'
+			),
+			'-1 => -1,00' => array(
+					'-1',
+					'.',
+					',',
+					'-1,00'
+			),
+			'1.200 => 1.200,00' => array(
+					'1.200',
+					'.',
+					',',
+					'1.200,00'
 			),
 		);
 	}
