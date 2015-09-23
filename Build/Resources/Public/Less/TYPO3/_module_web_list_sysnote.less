@@ -2,97 +2,55 @@
 // Sys notes
 //
 
-// Should be added by sys_note only when necessary
-#typo3-dblist-sysnotes {
+@sysnote-instruction-bg:      @state-info-bg;
+@sysnote-instruction-color:   #333;
+
+@sysnote-template-bg:         @state-warning-bg;
+@sysnote-template-color:      #333;
+
+@sysnote-notice-bg:           @state-notice-bg;
+@sysnote-notice-color:        #333;
+
+@sysnote-todo-bg:             @state-success-bg;
+@sysnote-todo-color:          #333;
+
+.typo3-dblist-sysnotes {
 	margin-top: 15px;
-
-	.single-note {
-		margin-bottom: 12px;
-
-		.header {
-			min-height: 24px;
-			line-height: 24px;
-			background: #d7d7d7;
-			color: #000;
-			font-size: 0.9em;
-
-			span.typeicon {
-				width: 23px;
-				height: 24px;
-				margin-right: 7px;
-				display: block;
-				float: left;
-				cursor: pointer;
-				background: url(../../../../sys_note/Resources/Public/Icons/default.png) no-repeat top left;
-			}
-			.right.icons {
-				visibility: hidden;
-			}
-			.right {
-				float: right;
-				margin-right: 5px;
-			}
-			span {
-				color: #666;
+	.panel-sysnote {
+		border: 0;
+		.panel-heading {
+			padding: 5px;
+			.typeicon {
+				padding: 4px 4px 12px 4px;
+				.icon {
+					margin-top: 5px;
+				}
 			}
 		}
-
-		.content {
-			padding: 12px;
-			background: #fffeed;
-			border: 1px solid #dadada;
-			border-top: none;
-			color: #666;
-			.title {
-				font-weight: bold;
-				margin-bottom: 6px;
+		.panel-body {
+			h4 {
+				margin-top: 0;
+				span {
+					font-style: italic;
+				}
 			}
 		}
 	}
-	.single-note:hover {
-		.header {
-			background-color: #666;
-			.right.icons {
-				visibility: visible;
-			}
-		}
+	.panel-sysnote-category-1 {
+		background-color: @sysnote-instruction-bg;
+		color: @sysnote-instruction-color;
 	}
-
-	.category-1 {
-		.header {
-			span.typeicon {
-				background-image: url(../../../../sys_note/Resources/Public/Icons/instruction.png);
-			}
-		}
+	.panel-sysnote-category-2 {
+		background-color: @sysnote-template-bg;
+		color: @sysnote-template-color;
 	}
-	.category-2 {
-		.header {
-			span.typeicon {
-				background-image: url(../../../../sys_note/Resources/Public/Icons/template.png);
-			}
-		}
+	.panel-sysnote-category-3 {
+		background-color: @sysnote-notice-bg;
+		color: @sysnote-notice-color;
 	}
-	.category-3 {
-		.header {
-			span.typeicon {
-				background-image: url(../../../../sys_note/Resources/Public/Icons/note.png);
-			}
-		}
-	}
-	.category-4 {
-		.header {
-			span.typeicon {
-				background-image: url(../../../../sys_note/Resources/Public/Icons/todo.png);
-			}
-		}
+	.panel-sysnote-category-4 {
+		background-color: @sysnote-todo-bg;
+		color: @sysnote-todo-color;
 	}
 }
-
-#typo3-dblist-sysnotes .single-note:hover {
-	.header,
-	.header span {
-		color: #d7d7d7;
-	}
-}
-
 

@@ -1538,6 +1538,36 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:scheduler/ext_icon.png'
 			)
 		),
+		'sysnote-type-0' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-pagetree-root.svg',
+			)
+		),
+		'sysnote-type-1' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'cog'
+			)
+		),
+		'sysnote-type-2' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'code'
+			)
+		),
+		'sysnote-type-3' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'thumb-tack'
+			)
+		),
+		'sysnote-type-4' => array(
+			'provider' => FontawesomeIconProvider::class,
+			'options' => array(
+				'name' => 'check-square'
+			)
+		),
 
 		// Spinner
 		'spinner-circle-dark' => array(

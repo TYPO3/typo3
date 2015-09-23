@@ -7,41 +7,42 @@
 	<f:if condition="{notes}">
 		<h2><f:translate key="internal_note" /></h2>
 
-		<div id="typo3-dblist-sysnotes">
+		<div class="typo3-dblist-sysnotes">
 			<f:for each="{notes}" as="note">
-				<div class="single-note category-{note.category}">
-					<div class="header">
-						<span class="typeicon t3-js-clickmenutrigger" data-table="sys_note" data-uid="{note.uid}" data-listframe="1"></span>
-						<span><f:translate key="author" /></span>
-						<f:if condition="{note.author.realName}">
-							<f:then>{note.author.realName}</f:then>
-							<f:else>{note.author.userName}</f:else>
-						</f:if>
-
+				<div class="panel panel-default panel-sysnote panel-sysnote-category-{note.category}">
+					<div class="panel-heading clearfix">
+						<span class="typeicon t3-js-clickmenutrigger" data-table="sys_note" data-uid="{note.uid}" data-listframe="1">
+							<core:icon identifier="sysnote-type-{note.category}" />
+						</span>
+						<span class="author">
+							<f:translate key="author" />
+							<f:if condition="{note.author.realName}">
+								<f:then>{note.author.realName}</f:then>
+								<f:else>{note.author.userName}</f:else>
+							</f:if>
+						</span>
 						&nbsp; <span>&bull;</span> &nbsp;
-
-						<span><f:translate key="date" /></span>
-						<f:format.date>{note.modificationDate}</f:format.date>
-
+						<span class="date">
+							<f:translate key="date" />
+							<f:format.date>{note.modificationDate}</f:format.date>
+						</span>
 						<f:if condition="{note.personal}">
 							&middot;
-							<span><f:translate key="personal" /></span>&nbsp;<f:translate key="yes" />
+							<span class="personal">
+								<f:translate key="personal" />&nbsp;<f:translate key="yes" /></span>
 						</f:if>
 
-						<div class="right icons">
-							<a href="{notes:deleteLink(id:note.uid)}" class="t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:lang/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:cancel')}">
+						<div class="btn-group pull-right">
+							<a href="{notes:deleteLink(id:note.uid)}" class="btn btn-default btn-sm t3js-modal-trigger" data-severity="warning" data-title="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:delete')}" data-content="{f:translate(key: 'LLL:EXT:lang/locallang_alt_doc.xlf:deleteWarning')}" data-button-close-text="{f:translate(key: 'LLL:EXT:lang/locallang_common.xlf:cancel')}">
 								<core:icon identifier="actions-edit-delete" />
 							</a>
-							<a href="{notes:editLink(id:note.uid)}">
+							<a href="{notes:editLink(id:note.uid)}" class="btn btn-default btn-sm">
 								<core:icon identifier="actions-document-open" />
 							</a>
 						</div>
 					</div>
-					<div class="content">
-						<div class="title">
-							<f:if condition="{note.category}"><f:translate key="category.{note.category}" />:</f:if>
-							{note.subject}
-						</div>
+					<div class="panel-body">
+						<h4><span><f:if condition="{note.category}"><f:translate key="category.{note.category}" />: </f:if></span>{note.subject}</h4>
 						<f:format.nl2br>{note.message}</f:format.nl2br>
 					</div>
 				</div>

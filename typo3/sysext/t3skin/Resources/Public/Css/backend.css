@@ -13372,70 +13372,42 @@ iframe {
 #typo3-debug-console .messages p strong {
   padding-right: 4px;
 }
-#typo3-dblist-sysnotes {
+.typo3-dblist-sysnotes {
   margin-top: 15px;
 }
-#typo3-dblist-sysnotes .single-note {
-  margin-bottom: 12px;
+.typo3-dblist-sysnotes .panel-sysnote {
+  border: 0;
 }
-#typo3-dblist-sysnotes .single-note .header {
-  min-height: 24px;
-  line-height: 24px;
-  background: #d7d7d7;
-  color: #000;
-  font-size: 0.9em;
+.typo3-dblist-sysnotes .panel-sysnote .panel-heading {
+  padding: 5px;
 }
-#typo3-dblist-sysnotes .single-note .header span.typeicon {
-  width: 23px;
-  height: 24px;
-  margin-right: 7px;
-  display: block;
-  float: left;
-  cursor: pointer;
-  background: url(../../../../sys_note/Resources/Public/Icons/default.png) no-repeat top left;
+.typo3-dblist-sysnotes .panel-sysnote .panel-heading .typeicon {
+  padding: 4px 4px 12px 4px;
 }
-#typo3-dblist-sysnotes .single-note .header .right.icons {
-  visibility: hidden;
+.typo3-dblist-sysnotes .panel-sysnote .panel-heading .typeicon .icon {
+  margin-top: 5px;
 }
-#typo3-dblist-sysnotes .single-note .header .right {
-  float: right;
-  margin-right: 5px;
+.typo3-dblist-sysnotes .panel-sysnote .panel-body h4 {
+  margin-top: 0;
 }
-#typo3-dblist-sysnotes .single-note .header span {
-  color: #666;
+.typo3-dblist-sysnotes .panel-sysnote .panel-body h4 span {
+  font-style: italic;
 }
-#typo3-dblist-sysnotes .single-note .content {
-  padding: 12px;
-  background: #fffeed;
-  border: 1px solid #dadada;
-  border-top: none;
-  color: #666;
+.typo3-dblist-sysnotes .panel-sysnote-category-1 {
+  background-color: #ebf3fb;
+  color: #333333;
 }
-#typo3-dblist-sysnotes .single-note .content .title {
-  font-weight: bold;
-  margin-bottom: 6px;
+.typo3-dblist-sysnotes .panel-sysnote-category-2 {
+  background-color: #fbefdd;
+  color: #333333;
 }
-#typo3-dblist-sysnotes .single-note:hover .header {
-  background-color: #666;
+.typo3-dblist-sysnotes .panel-sysnote-category-3 {
+  background-color: #f9f9f9;
+  color: #333333;
 }
-#typo3-dblist-sysnotes .single-note:hover .header .right.icons {
-  visibility: visible;
-}
-#typo3-dblist-sysnotes .category-1 .header span.typeicon {
-  background-image: url(../../../../sys_note/Resources/Public/Icons/instruction.png);
-}
-#typo3-dblist-sysnotes .category-2 .header span.typeicon {
-  background-image: url(../../../../sys_note/Resources/Public/Icons/template.png);
-}
-#typo3-dblist-sysnotes .category-3 .header span.typeicon {
-  background-image: url(../../../../sys_note/Resources/Public/Icons/note.png);
-}
-#typo3-dblist-sysnotes .category-4 .header span.typeicon {
-  background-image: url(../../../../sys_note/Resources/Public/Icons/todo.png);
-}
-#typo3-dblist-sysnotes .single-note:hover .header,
-#typo3-dblist-sysnotes .single-note:hover .header span {
-  color: #d7d7d7;
+.typo3-dblist-sysnotes .panel-sysnote-category-4 {
+  background-color: #d1e2bd;
+  color: #333333;
 }
 .typo3-extensionmanager-headerRowLeft {
   float: left;

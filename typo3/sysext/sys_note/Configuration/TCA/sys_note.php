@@ -23,11 +23,11 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', '0'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', '1', 'EXT:sys_note/Resources/Public/Icons/instruction.png'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3', '3', 'EXT:sys_note/Resources/Public/Icons/note.png'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '4', 'EXT:sys_note/Resources/Public/Icons/todo.png'),
-					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '2', 'EXT:sys_note/Resources/Public/Icons/template.png')
+					array('', '0', 'sysnote-type-0'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', '1', 'sysnote-type-1'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3', '3', 'sysnote-type-3'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '4', 'sysnote-type-4'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '2', 'sysnote-type-2')
 				),
 				'default' => '0'
 			)
