@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -117,7 +118,7 @@ class SingleFieldContainer extends AbstractContainer {
 			|| !empty($this->data['processedTca']['ctrl']['requestUpdate'])
 			&& GeneralUtility::inList(str_replace(' ', '', $this->data['processedTca']['ctrl']['requestUpdate']), $fieldName)
 		) {
-			if ($backendUser->jsConfirmation(1)) {
+			if ($backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
 				$alertMsgOnChange = 'if (confirm(TBE_EDITOR.labels.onChangeAlert) && TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
 			} else {
 				$alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';

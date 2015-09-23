@@ -1099,7 +1099,7 @@ class ClickMenu {
 	 */
 	public function FILE_delete($path) {
 		$loc = 'top.content.list_frame';
-		if ($this->backendUser->jsConfirmation(4)) {
+		if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
 			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' (There are %s reference(s) to this file!)'))) . ')';
 		} else {
 			$conf = '1==1';
