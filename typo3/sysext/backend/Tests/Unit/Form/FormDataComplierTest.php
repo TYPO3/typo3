@@ -35,7 +35,7 @@ class FormDataCompilerTest extends UnitTestCase {
 	 */
 	protected $formDataGroupProphecy;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->formDataGroupProphecy = $this->prophesize(FormDataGroupInterface::class);
 		$this->subject = new FormDataCompiler($this->formDataGroupProphecy->reveal());
 	}

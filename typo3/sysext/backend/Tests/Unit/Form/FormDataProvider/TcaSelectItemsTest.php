@@ -45,7 +45,7 @@ class TcaSelectItemsTest extends UnitTestCase {
 	 */
 	protected $singletonInstances = [];
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->subject = new TcaSelectItems();
 	}

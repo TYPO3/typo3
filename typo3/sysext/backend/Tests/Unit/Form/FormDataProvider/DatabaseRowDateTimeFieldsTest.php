@@ -49,7 +49,7 @@ class DatabaseRowDateTimeFieldsTest extends UnitTestCase {
 		],
 	);
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = new DatabaseRowDateTimeFields();
 		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();

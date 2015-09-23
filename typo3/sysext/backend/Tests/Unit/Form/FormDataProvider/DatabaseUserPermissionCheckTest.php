@@ -43,7 +43,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase {
 	 */
 	protected $beUserProphecy;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = new DatabaseUserPermissionCheck();
 
 		$this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);

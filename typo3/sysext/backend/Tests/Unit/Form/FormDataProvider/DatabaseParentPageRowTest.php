@@ -35,7 +35,7 @@ class DatabaseParentPageRowTest extends UnitTestCase {
 	 */
 	protected $dbProphecy;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = new DatabaseParentPageRow();
 
 		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);

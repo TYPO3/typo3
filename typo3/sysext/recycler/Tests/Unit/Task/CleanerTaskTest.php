@@ -30,7 +30,7 @@ class CleanerTaskTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * sets up an instance of \TYPO3\CMS\Recycler\Task\CleanerTask
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = $this->getMock(CleanerTask::class, array('dummy'), array(), '', FALSE);
 	}
 

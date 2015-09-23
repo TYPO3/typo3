@@ -30,7 +30,7 @@ class RequestTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $request;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->request = new Request();
 	}
 

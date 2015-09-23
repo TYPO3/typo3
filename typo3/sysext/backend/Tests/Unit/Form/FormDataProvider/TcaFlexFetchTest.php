@@ -43,7 +43,7 @@ class TcaFlexFetchTest extends UnitTestCase {
 	 */
 	protected $singletonInstances = array();
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 
 		// Suppress cache foo in xml helpers of GeneralUtility

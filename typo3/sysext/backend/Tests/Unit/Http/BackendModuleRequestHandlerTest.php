@@ -40,7 +40,7 @@ class BackendModuleRequestHandlerTest extends UnitTestCase {
 	 */
 	protected $requestMock;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->requestMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Http\ServerRequest::class, array(), array(), '', FALSE);
 		$this->formProtectionMock = $this->getMockForAbstractClass(BackendFormProtection::class, array(), '', FALSE, TRUE, TRUE, array('validateToken'));
 		$this->subject = $this->getAccessibleMock(BackendModuleRequestHandler::class, array('boot', 'getFormProtection'), array(\TYPO3\CMS\Core\Core\Bootstrap::getInstance()), '', TRUE);

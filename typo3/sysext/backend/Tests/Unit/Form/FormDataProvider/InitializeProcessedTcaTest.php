@@ -27,7 +27,7 @@ class InitializeProcessedTcaTest extends UnitTestCase {
 	 */
 	protected $subject;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = new InitializeProcessedTca();
 	}
 

@@ -41,7 +41,7 @@ class TableFlexFormToTtContentFieldsUpdateTest extends BaseTestCase {
 	 */
 	protected $updateWizard;
 
-	public function setUp() {
+	protected function setUp() {
 		unset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']);
 		$this->packageManagerProphecy = $this->prophesize(\TYPO3\CMS\Core\Package\PackageManager::class);
 		$this->dbProphecy = $this->prophesize(\TYPO3\CMS\Core\Database\DatabaseConnection::class);
@@ -50,7 +50,7 @@ class TableFlexFormToTtContentFieldsUpdateTest extends BaseTestCase {
 		ExtensionManagementUtility::setPackageManager($this->packageManagerProphecy->reveal());
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		ExtensionManagementUtility::setPackageManager(new PackageManager());
 	}
 

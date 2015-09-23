@@ -28,7 +28,7 @@ class StreamTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $stream;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->stream = new Stream('php://memory', 'wb+');
 	}
 

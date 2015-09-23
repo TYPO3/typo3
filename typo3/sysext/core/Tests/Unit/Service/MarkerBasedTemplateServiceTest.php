@@ -27,7 +27,7 @@ class MarkerBasedTemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 	 */
 	protected $templateService;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
 	}
 

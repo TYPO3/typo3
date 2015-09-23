@@ -27,11 +27,11 @@ class UploadedFileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	protected $tmpFile;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->tmpfile = NULL;
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		if (is_scalar($this->tmpFile) && file_exists($this->tmpFile)) {
 			unlink($this->tmpFile);
 		}

@@ -33,7 +33,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase {
 	/**
 	 * @throws \InvalidArgumentException
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, array('renderChildren'));
 		/** @var RenderingContext  $renderingContext */
 		$renderingContext = $this->getMock(RenderingContext::class);

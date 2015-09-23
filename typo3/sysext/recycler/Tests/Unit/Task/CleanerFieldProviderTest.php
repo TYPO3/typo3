@@ -33,7 +33,7 @@ class CleanerFieldProviderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Sets up an instance of \TYPO3\CMS\Recycler\Task\CleanerFieldProvider
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$languageServiceMock = $this->getMock(LanguageService::class, array('sL'), array(), '', FALSE);
 		$languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
 		$this->subject = $this->getMock(CleanerFieldProvider::class, array('getLanguageService'));

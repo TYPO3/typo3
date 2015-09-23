@@ -47,7 +47,7 @@ class JumpUrlProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Sets environment variables and initializes global mock object.
 	 */
-	public function setUp() {
+	protected function setUp() {
 
 		parent::setUp();
 

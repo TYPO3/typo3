@@ -34,7 +34,7 @@ class MessageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $message;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->stream = new Stream('php://memory', 'wb+');
 		$this->message = (new Message())->withBody($this->stream);
 	}

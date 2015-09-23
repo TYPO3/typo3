@@ -36,7 +36,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase {
 	/**
 	 * Sets up this test suite.
 	 */
-	public function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');

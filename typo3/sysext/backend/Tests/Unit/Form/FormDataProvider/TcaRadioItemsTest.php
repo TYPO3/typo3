@@ -39,7 +39,7 @@ class TcaRadioItemsTest extends UnitTestCase {
 	 */
 	protected $singletonInstances = array();
 
-	public function setUp() {
+	protected function setUp() {
 		$this->singletonInstances = GeneralUtility::getSingletonInstances();
 		$this->subject = new TcaRadioItems();
 	}

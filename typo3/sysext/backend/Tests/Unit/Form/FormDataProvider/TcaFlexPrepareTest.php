@@ -28,7 +28,7 @@ class TcaFlexPrepareTest extends UnitTestCase {
 	 */
 	protected $subject;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->subject = new TcaFlexPrepare();
 	}
 

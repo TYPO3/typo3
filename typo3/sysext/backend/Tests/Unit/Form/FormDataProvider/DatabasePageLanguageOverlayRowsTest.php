@@ -35,7 +35,7 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase {
 	 */
 	protected $dbProphecy;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->dbProphecy = $this->prophesize(DatabaseConnection::class);
 		$GLOBALS['TYPO3_DB'] = $this->dbProphecy->reveal();
 

@@ -29,7 +29,7 @@ class ResponseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	protected $response;
 
-	public function setUp() {
+	protected function setUp() {
 		$this->response = new Response();
 	}
 
