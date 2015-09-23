@@ -30,7 +30,7 @@ class ClassLoadingInformationGenerator {
 	/**
 	 * @var PackageInterface[]
 	 */
-	static protected $activeExtensionPackages;
+	protected $activeExtensionPackages;
 
 	/**
 	 * Returns class loading information for a single package
@@ -44,7 +44,7 @@ class ClassLoadingInformationGenerator {
 		$psr4 = array();
 		$packagePath = $package->getPackagePath();
 
-		$manifest = self::getPackageManager()->getComposerManifest($package->getPackagePath());
+		$manifest = $this->getPackageManager()->getComposerManifest($package->getPackagePath());
 		if (!empty($manifest->autoload->{'psr-4'})) {
 			$psr4manifest = json_decode(json_encode($manifest->autoload->{'psr-4'}), TRUE);
 			if (is_array($psr4manifest)) {
@@ -66,7 +66,7 @@ class ClassLoadingInformationGenerator {
 					continue;
 				}
 				if ($useRelativePaths) {
-					$classMap[$class] = self::makePathRelative($packagePath, $path);
+					$classMap[$class] = $this->makePathRelative($packagePath, $path);
 				} else {
 					$classMap[$class] = $path;
 				}
@@ -140,9 +140,6 @@ class ClassLoadingInformationGenerator {
 	 * @internal
 	 */
 	public function buildAutoloadInformationFiles() {
-		// Ensure that for each re-build, the packages are fetched again from the package manager
-		self::$activeExtensionPackages = NULL;
-
 		$psr4File = $classMapFile = <<<EOF
 <?php
 
@@ -156,7 +153,7 @@ EOF;
 		$classMap = array();
 		$psr4 = array();
 		foreach ($this->getActiveExtensionPackages() as $package) {
-			$classLoadingInformation = self::buildClassLoadingInformationForPackage($package, TRUE);
+			$classLoadingInformation = $this->buildClassLoadingInformationForPackage($package, TRUE);
 			$classMap = array_merge($classMap, $classLoadingInformation['classMap']);
 			$psr4 = array_merge($psr4, $classLoadingInformation['psr-4']);
 		}
@@ -164,12 +161,12 @@ EOF;
 		ksort($classMap);
 		ksort($psr4);
 		foreach ($classMap as $class => $relativePath) {
-			$classMapFile .= sprintf('    %s => %s,', var_export($class, TRUE), self::getPathCode($relativePath)) . LF;
+			$classMapFile .= sprintf('    %s => %s,', var_export($class, TRUE), $this->getPathCode($relativePath)) . LF;
 		}
 		$classMapFile .= ");\n";
 
 		foreach ($psr4 as $prefix => $relativePath) {
-			$psr4File .= sprintf('    %s => array(%s),', var_export($prefix, TRUE), self::getPathCode($relativePath)) . LF;
+			$psr4File .= sprintf('    %s => array(%s),', var_export($prefix, TRUE), $this->getPathCode($relativePath)) . LF;
 		}
 		$psr4File .= ");\n";
 
@@ -217,8 +214,8 @@ EOF;
 	public function buildClassAliasMapFile() {
 		$aliasToClassNameMapping = array();
 		$classNameToAliasMapping = array();
-		foreach (self::getActiveExtensionPackages() as $package) {
-			$aliasMappingForPackage = self::buildClassAliasMapForPackage($package);
+		foreach ($this->getActiveExtensionPackages() as $package) {
+			$aliasMappingForPackage = $this->buildClassAliasMapForPackage($package);
 			$aliasToClassNameMapping = array_merge($aliasToClassNameMapping, $aliasMappingForPackage['aliasToClassNameMapping']);
 			$classNameToAliasMapping = array_merge($classNameToAliasMapping, $aliasMappingForPackage['classNameToAliasMapping']);
 		}
@@ -238,18 +235,18 @@ EOF;
 	 * @return PackageInterface[]
 	 */
 	protected function getActiveExtensionPackages() {
-		if (self::$activeExtensionPackages === NULL) {
-			self::$activeExtensionPackages = array();
-			foreach (self::getPackageManager()->getActivePackages() as $package) {
-				if (self::isFrameworkPackage($package)) {
+		if ($this->activeExtensionPackages === NULL) {
+			$this->activeExtensionPackages = array();
+			foreach ($this->getPackageManager()->getActivePackages() as $package) {
+				if ($this->isFrameworkPackage($package)) {
 					// Skip all core packages as the class loading info is prepared for them already
 					continue;
 				}
-				self::$activeExtensionPackages[] = $package;
+				$this->activeExtensionPackages[] = $package;
 			}
 		}
 
-		return self::$activeExtensionPackages;
+		return $this->activeExtensionPackages;
 	}
 
 	/**
