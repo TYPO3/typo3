@@ -1544,11 +1544,17 @@ abstract class AbstractMenuContentObject {
 			$addParams .= $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS'];
 			$LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, '', '', $overrideArray, $addParams, $typeOverride);
 		}
-		// Override URL if using "External URL" as doktype with a valid e-mail address:
-		if ($this->menuArr[$key]['doktype'] == PageRepository::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
-			// Create mailto-link using \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink (concerning spamProtectEmailAddresses):
-			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
-			$LD['target'] = '';
+		// Override URL if using "External URL"
+		if ($this->menuArr[$key]['doktype'] == PageRepository::DOKTYPE_LINK) {
+
+			if ($this->menuArr[$key]['urltype'] == 3 && GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
+				// Create mailto-link using \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink (concerning spamProtectEmailAddresses):
+				$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
+				$LD['target'] = '';
+			} else {
+				$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->getSysPage()->getExtURL($this->menuArr[$key])));
+			}
+
 		}
 
 		$tsfe = $this->getTypoScriptFrontendController();
