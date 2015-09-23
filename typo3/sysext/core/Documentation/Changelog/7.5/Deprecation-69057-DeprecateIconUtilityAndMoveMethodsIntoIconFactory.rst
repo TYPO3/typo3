@@ -15,7 +15,7 @@ The ``IconUtility`` class will be removed with TYPO3 CMS 8. All public methods o
 * ``IconUtility::getSpriteIconForResource()``
 * ``IconUtility::getSpriteIconClasses()``
 
-The PageTS-Config: ``mod.wizards.newContentElement.wizardItems.*.elements.*.icon`` also has been marked as deprecated.
+The PageTSConfig setting ``mod.wizards.newContentElement.wizardItems.*.elements.*.icon`` also has been marked as deprecated.
 
 The ``IconUtilityOverrideResourceIconHookInterface`` interface will be removed with TYPO3 CMS 8.
 

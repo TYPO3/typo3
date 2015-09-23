@@ -2,11 +2,10 @@
 Deprecation: #69535 - Deprecate \TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\IconViewHelper
 ======================================================================================
 
-
 Description
 ===========
 
-``\TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\IconViewHelper`` has been deprecated.
+``\TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons\IconViewHelper`` has been marked as deprecated.
 
 
 Impact

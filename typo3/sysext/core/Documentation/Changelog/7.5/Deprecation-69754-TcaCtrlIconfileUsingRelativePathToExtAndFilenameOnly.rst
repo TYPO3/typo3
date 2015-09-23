@@ -5,21 +5,21 @@ Deprecation: #69754 - Deprecate relative path to extension directory and using f
 Description
 ===========
 
-* Using relative paths to refer to the extension directory for iconfiles in ``TCA['ctrl']['iconfile']`` has been deprecated.
-* Using filenames only to refer to an iconfile in TCA['ctrl'] has been deprecated.
+* Using relative paths to refer to the extension directory for iconfiles in ``TCA['ctrl']['iconfile']`` has been marked as deprecated.
+* Using filenames only to refer to an iconfile in TCA['ctrl'] has been marked as deprecated.
 
 
 Impact
 ======
 
-* TCA definitions in ``TCA['ctrl']['iconfile']`` containing ``'../typo3conf/ext/'`` or calls to ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()`` will trigger a message in the deprecation log.
-* TCA definitions in ``TCA['ctrl']['iconfile']`` containing a filename only will trigger a message in the deprecation log.
+* TCA definitions in ``TCA['ctrl']['iconfile']`` containing ``'../typo3conf/ext/'`` or calls to ``\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath()`` will trigger a deprecation log entry.
+* TCA definitions in ``TCA['ctrl']['iconfile']`` containing a filename only will trigger a deprecation log entry.
 
 
 Affected Installations
 ======================
 
-Any installation with extensions defining ``TCA['ctrl']['iconfile']`` by using ``../typo3conf/ext/`` or  a filename only.
+Any installation with extensions defining ``TCA['ctrl']['iconfile']`` by using ``../typo3conf/ext/`` or only a filename.
 
 
 Migration
@@ -44,8 +44,8 @@ has to be migrated to
 		'iconfile' => 'EXT:my_extension/Resources/Public/Icons/image.png'
 	),
 
-File name only
---------------
+Filename only
+-------------
 
 Use a full absolute path or an ``EXT:`` definition instead of a filename only:
 
@@ -68,5 +68,8 @@ or
 .. code-block:: php
 
 	'ctrl' => array(
+		// You can use absolute paths (to your web root folder) to the icons but
+		// it is discouraged to do so as these icons belong to an extension they
+		// should also be stored in this extension
 		'iconfile' => '/fileadmin/icons/_icon_ftp.gif'
 	),
