@@ -40,41 +40,44 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPo
 /**
  * CType "mailform"
  */
-// Add Default TypoScript for CType "mailform" after default content rendering
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('compatibility6', 'constants', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:compatibility6/Configuration/TypoScript/Form/constants.txt">', 'defaultContentRendering');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('compatibility6', 'setup', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:compatibility6/Configuration/TypoScript/Form/setup.txt">', 'defaultContentRendering');
+// Only apply fallback to plain old FORM/mailform if extension "form" is not loaded
+if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
+	// Add Default TypoScript for CType "mailform" after default content rendering
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('compatibility6', 'constants', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:compatibility6/Configuration/TypoScript/Form/constants.txt">', 'defaultContentRendering');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript('compatibility6', 'setup', '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:compatibility6/Configuration/TypoScript/Form/setup.txt">', 'defaultContentRendering');
 
-// Add the search CType to the "New Content Element" wizard
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-mod.wizards.newContentElement.wizardItems.forms {
-	elements.mailform {
-		iconIdentifier = content-elements-mailform
-		title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_title
-		description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_description
-		tt_content_defValues {
-			CType = mailform
-			bodytext (
-		# Example content:
-		Name: | *name = input,40 | Enter your name here
-		Email: | *email=input,40 |
-		Address: | address=textarea,40,5 |
-		Contact me: | tv=check | 1
+	// Add the search CType to the "New Content Element" wizard
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+	mod.wizards.newContentElement.wizardItems.forms {
+		elements.mailform {
+			iconIdentifier = content-elements-mailform
+			title = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_title
+			description = LLL:EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf:forms_mail_description
+			tt_content_defValues {
+				CType = mailform
+				bodytext (
+			# Example content:
+			Name: | *name = input,40 | Enter your name here
+			Email: | *email=input,40 |
+			Address: | address=textarea,40,5 |
+			Contact me: | tv=check | 1
 
-		|formtype_mail = submit | Send form!
-		|html_enabled=hidden | 1
-		|subject=hidden| This is the subject
-			)
+			|formtype_mail = submit | Send form!
+			|html_enabled=hidden | 1
+			|subject=hidden| This is the subject
+				)
+			}
 		}
+		show :=addToList(mailform)
 	}
-	show :=addToList(mailform)
+	');
+
+	// Register for hook to show preview of tt_content element of CType="mailform" in page module
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['mailform'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\MailformPreviewRenderer::class;
+
+	// Register for hook to show preview of tt_content element of CType="script" in page module
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['script'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\ScriptPreviewRenderer::class;
 }
-');
-
-// Register for hook to show preview of tt_content element of CType="mailform" in page module
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['mailform'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\MailformPreviewRenderer::class;
-
-// Register for hook to show preview of tt_content element of CType="script" in page module
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['script'] = \TYPO3\CMS\Compatibility6\Hooks\PageLayoutView\ScriptPreviewRenderer::class;
 
 /**
  * CType "search"
