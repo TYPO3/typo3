@@ -439,19 +439,32 @@ class FormInlineAjaxController {
 			$jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
 		}
 		$jsonResult['scriptCall'][] = $childResult['extJSCODE'];
-		foreach ($childResult['requireJsModules'] as $moduleName => $callbacks) {
-			if (!is_array($callbacks)) {
-				$callbacks = array($callbacks);
-			}
-			foreach ($callbacks as $callback) {
-				$inlineCodeKey = $moduleName;
-				$javaScriptCode = 'require(["' . $moduleName . '"]';
-				if ($callback !== NULL) {
-					$inlineCodeKey .= sha1($callback);
-					$javaScriptCode .= ', ' . $callback;
+		if (!empty($childResult['requireJsModules'])) {
+			foreach ($childResult['requireJsModules'] as $module) {
+				$moduleName = NULL;
+				$callback = NULL;
+				if (is_string($module)) {
+					// if $module is a string, no callback
+					$moduleName = $module;
+					$callback = NULL;
+				} elseif (is_array($module)) {
+					// if $module is an array, callback is possible
+					foreach ($module as $key => $value) {
+						$moduleName = $key;
+						$callback = $value;
+						break;
+					}
 				}
-				$javaScriptCode .= ');';
-				$jsonResult['scriptCall'][] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
+				if ($moduleName !== NULL) {
+					$inlineCodeKey = $moduleName;
+					$javaScriptCode = 'require(["' . $moduleName . '"]';
+					if ($callback !== NULL) {
+						$inlineCodeKey .= sha1($callback);
+						$javaScriptCode .= ', ' . $callback;
+					}
+					$javaScriptCode .= ');';
+					$jsonResult['scriptCall'][] = '/*RequireJS-Module-' . $inlineCodeKey . '*/' . LF . $javaScriptCode;
+				}
 			}
 		}
 		return $jsonResult;
