@@ -126,7 +126,7 @@ class DateValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @return string Human readable format
 	 */
 	protected function humanReadableDateFormat($format) {
-		$label = get_class($this) . '.strftime.';
+		$label = self::LOCALISATION_OBJECT_NAME . '.strftime.';
 		$pairs = array(
 			'%A' => $this->localizationHandler->getLocalLanguageLabel($label . 'A'),
 			'%a' => $this->localizationHandler->getLocalLanguageLabel($label . 'a'),
