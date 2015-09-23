@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception;
@@ -269,10 +270,21 @@ class ElementBrowser {
 	protected $hookName = 'typo3/class.browse_links.php';
 
 	/**
+	 * @var string
+	 */
+	protected $searchWord;
+
+	/**
+	 * @var FileRepository
+	 */
+	protected $fileRepository;
+
+	/**
 	* Construct
 	*/
 	public function __construct() {
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$this->fileRepository = GeneralUtility::makeInstance(FileRepository::class);
 		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$this->pageRenderer->loadJquery();
 		$this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
@@ -348,6 +360,7 @@ class ElementBrowser {
 		$this->expandFolder = GeneralUtility::_GP('expandFolder');
 		$this->PM = GeneralUtility::_GP('PM');
 		$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
+		$this->searchWord = (string)GeneralUtility::_GP('searchWord');
 
 		// Site URL
 		// Current site url
@@ -1500,6 +1513,8 @@ class ElementBrowser {
 				</tr>
 			</table>
 			';
+
+
 		// Adding create folder + upload forms if applicable:
 		if (!$backendUser->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 			$content .= $uploadForm;
@@ -1876,7 +1891,12 @@ class ElementBrowser {
 			return '';
 		}
 		$extensionList = $extensionList == '*' ? '' : $extensionList;
-		$files = $this->getFilesInFolder($folder, $extensionList);
+		if ($this->searchWord !== '') {
+			$files = $this->fileRepository->searchByName($folder, $this->searchWord);
+		} else {
+			$files = $this->getFilesInFolder($folder, $extensionList);
+		}
+
 		return $this->fileList($files, $folder, $noThumbs);
 	}
 
@@ -1896,6 +1916,7 @@ class ElementBrowser {
 		// Create headline (showing number of files):
 		$filesCount = count($files);
 		$out .= $this->barheader(sprintf($lang->getLL('files') . ' (%s):', $filesCount));
+		$out .= $this->getFileSearchField();
 		$out .= '<div id="filelist">';
 		$out .= $this->getBulkSelector($filesCount);
 		$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
@@ -2618,6 +2639,28 @@ class ElementBrowser {
 		} else {
 			$out .= $this->doc->spacer(15);
 		}
+		return $out;
+	}
+
+	/**
+	 * Get the HTML data required for the file search field of the TYPO3 Element Browser.
+	 *
+	 * @return string HTML data required for the search field in the file list of the Element Browser
+	 */
+	protected function getFileSearchField() {
+		$action = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
+			. '&bparams=' . rawurlencode($this->bparams)
+			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
+		$out = '
+			<form method="post" action="' . htmlspecialchars($action) . '">
+				<div class="input-group">
+					<input class="form-control" type="text" name="searchWord" value="' . htmlspecialchars($this->searchWord) . '">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="submit">' . $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang.xlf:search', TRUE) .'</button>
+					</span>
+				</div>
+			</form>';
+		$out .= $this->doc->spacer(15);
 		return $out;
 	}
 
