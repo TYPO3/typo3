@@ -103,8 +103,8 @@ abstract class AbstractElementView {
 									$replaceNode = $dom->createTextNode($this->model->getName());
 									$node->parentNode->insertBefore($replaceNode, $node);
 								}
+								$deleteNode = TRUE;
 							}
-							$deleteNode = TRUE;
 							break;
 						case 'legend':
 							if (!strrchr(get_class($this), 'AdditionalElement')) {
