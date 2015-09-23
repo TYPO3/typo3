@@ -51,17 +51,10 @@ class DatabaseQueryProcessor implements DataProcessorInterface {
 	protected $contentDataProcessor;
 
 	/**
-	 * @param ContentObjectRenderer $cObj
+	 * Constructor
 	 */
-	public function __construct(ContentObjectRenderer $cObj) {
+	public function __construct() {
 		$this->contentDataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
-	}
-
-	/**
-	 * @param ContentDataProcessor $contentDataProcessor
-	 */
-	public function setContentDataProcessor($contentDataProcessor) {
-		$this->contentDataProcessor = $contentDataProcessor;
 	}
 
 	/**
