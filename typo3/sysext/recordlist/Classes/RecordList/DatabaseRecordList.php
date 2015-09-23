@@ -1706,13 +1706,13 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 				$checked = '';
 			}
 			// Field label
-			$fL = is_array($GLOBALS['TCA'][$table]['columns'][$fieldName])
+			$fieldLabel = is_array($GLOBALS['TCA'][$table]['columns'][$fieldName])
 				? rtrim($lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']), ':')
-				: '[' . $fieldName . ']';
+				: '';
 			$checkboxes[] = '<tr><td class="col-checkbox"><input type="checkbox" id="check-' . $fieldName . '" name="displayFields['
 				. $table . '][]" value="' . $fieldName . '"' . $checked
 				. ($fieldName === $this->fieldArray[0] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
-				. '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($fL) . '</label></td></tr>';
+				. '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($fieldLabel) . ' <span class="text-muted text-monospace">[' . htmlspecialchars($fieldName) . ']</span></label></td></tr>';
 		}
 		// Table with the field selector::
 		$content = $formElements[0] . '
