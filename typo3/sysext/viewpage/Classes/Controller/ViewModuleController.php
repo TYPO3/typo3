@@ -180,6 +180,9 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	protected function getPreviewLanguages() {
 		$pageIdToShow = (int)GeneralUtility::_GP('id');
 		$modSharedTSconfig = BackendUtility::getModTSconfig($pageIdToShow, 'mod.SHARED');
+		if ($modSharedTSconfig['properties']['view.']['disableLanguageSelector'] === '1') {
+			return [];
+		}
 		$languages = array(
 			0 => isset($modSharedTSconfig['properties']['defaultLanguageLabel'])
 					? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $this->getLanguageService()->sl('LLL:EXT:lang/locallang_mod_web_list.xlf:defaultLanguage') . ')'
