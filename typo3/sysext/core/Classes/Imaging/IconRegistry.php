@@ -1774,6 +1774,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'mpg' => 'mimetypes-media-video',
 		'mpeg' => 'mimetypes-media-video',
 		'mov' => 'mimetypes-media-video',
+		'vimeo' => 'mimetypes-media-video',
+		'youtube' => 'mimetypes-media-video',
 		'wav' => 'mimetypes-media-audio',
 		'mp3' => 'mimetypes-media-audio',
 		'mid' => 'mimetypes-media-audio',
