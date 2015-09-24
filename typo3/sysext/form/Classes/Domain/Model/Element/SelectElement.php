@@ -52,10 +52,16 @@ class SelectElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElemen
 	/**
 	 * Add child object to this element
 	 *
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\OptionElement $element The child object
+	 * @param \TYPO3\CMS\Form\Domain\Model\Element\OptionElement|\TYPO3\CMS\Form\Domain\Model\Element\OptgroupElement $element The child object
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element\SelectElement
 	 */
-	public function addElement(\TYPO3\CMS\Form\Domain\Model\Element\OptionElement $element) {
+	public function addElement(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $element) {
+		if (
+			!($element instanceof \TYPO3\CMS\Form\Domain\Model\Element\OptionElement)
+			&& !($element instanceof \TYPO3\CMS\Form\Domain\Model\Element\OptgroupElement)
+		) {
+			throw new \InvalidArgumentException('Element type "' . get_class($element) . '" is not supported.', 1442928537);
+		}
 		$element->setParentName($this->getName());
 		$this->elements[] = $element;
 		return $this;
