@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\DataProcessing;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -204,7 +205,7 @@ class GalleryProcessor implements DataProcessorInterface {
 	/**
 	 * The (filtered) media files to be used in the gallery
 	 *
-	 * @var fileObjects[]
+	 * @var FileInterface[]
 	 */
 	protected $fileObjects = [];
 
@@ -396,8 +397,8 @@ class GalleryProcessor implements DataProcessorInterface {
 					if ($fileKey > $this->galleryData['count']['files'] - 1) {
 						break 2;
 					}
-					$currentMediaScaling = $this->equalMediaHeight / max($this->fileObjects[$fileKey]->getProperty('height'), 1);
-					$totalRowWidth += $this->fileObjects[$fileKey]->getProperty('width') * $currentMediaScaling;
+					$currentMediaScaling = $this->equalMediaHeight / max($this->getCroppedDimensionalProperty($this->fileObjects[$fileKey], 'height'), 1);
+					$totalRowWidth += $this->getCroppedDimensionalProperty($this->fileObjects[$fileKey], 'width') * $currentMediaScaling;
 				}
 				$maximumRowWidth = max($totalRowWidth, $maximumRowWidth);
 				$mediaInRowScaling = $totalRowWidth / $galleryWidthMinusBorderAndSpacing;
@@ -408,7 +409,7 @@ class GalleryProcessor implements DataProcessorInterface {
 			foreach ($this->fileObjects as $key => $fileObject) {
 				$mediaHeight = floor($this->equalMediaHeight / $mediaScalingCorrection);
 				$mediaWidth = floor(
-					$fileObject->getProperty('width') * ($mediaHeight / max($fileObject->getProperty('height'), 1))
+					$this->getCroppedDimensionalProperty($fileObject, 'width') * ($mediaHeight / max($this->getCroppedDimensionalProperty($fileObject, 'height'), 1))
 				);
 				$this->mediaDimensions[$key] = [
 					'width' => $mediaWidth,
@@ -432,7 +433,7 @@ class GalleryProcessor implements DataProcessorInterface {
 			foreach ($this->fileObjects as $key => $fileObject) {
 				$mediaWidth = floor($this->equalMediaWidth / $mediaScalingCorrection);
 				$mediaHeight = floor(
-					$fileObject->getProperty('height') * ($mediaWidth / max($fileObject->getProperty('width'), 1))
+					$this->getCroppedDimensionalProperty($fileObject, 'height') * ($mediaWidth / max($this->getCroppedDimensionalProperty($fileObject, 'width'), 1))
 				);
 				$this->mediaDimensions[$key] = [
 					'width' => $mediaWidth,
@@ -448,9 +449,9 @@ class GalleryProcessor implements DataProcessorInterface {
 			$maxMediaWidth = (int)($galleryWidthMinusBorderAndSpacing / $this->galleryData['count']['columns']);
 
 			foreach ($this->fileObjects as $key => $fileObject) {
-				$mediaWidth = min($maxMediaWidth, $fileObject->getProperty('width'));
+				$mediaWidth = min($maxMediaWidth, $this->getCroppedDimensionalProperty($fileObject, 'width'));
 				$mediaHeight = floor(
-					$fileObject->getProperty('height') * ($mediaWidth / max($fileObject->getProperty('width'), 1))
+					$this->getCroppedDimensionalProperty($fileObject, 'height') * ($mediaWidth / max($this->getCroppedDimensionalProperty($fileObject, 'width'), 1))
 				);
 				$this->mediaDimensions[$key] = [
 					'width' => $mediaWidth,
@@ -458,6 +459,22 @@ class GalleryProcessor implements DataProcessorInterface {
 				];
 			}
 		}
+	}
+
+	/**
+	 * When retrieving the height or width for a media file
+	 * a possible cropping needs to be taken into account.
+	 *
+	 * @param FileInterface $fileObject
+	 * @param string $dimensionalProperty 'width' or 'height'
+	 * @return int
+	 */
+	protected function getCroppedDimensionalProperty(FileInterface $fileObject, $dimensionalProperty) {
+		if (!$fileObject->hasProperty('crop') || empty($fileObject->getProperty('crop'))) {
+			return $fileObject->getProperty($dimensionalProperty);
+		}
+		$croppingConfiguration = json_decode($fileObject->getProperty('crop'), TRUE);
+		return (int)$croppingConfiguration[$dimensionalProperty];
 	}
 
 	/**
