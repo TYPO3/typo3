@@ -308,7 +308,7 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {
 
-			$requireJsModules = ['TYPO3/CMS/Filelist/FileListLocalisation'];
+			$requireJsModules = ['TYPO3/CMS/Filelist/FileListLocalisation', 'TYPO3/CMS/Filelist/FileSearch'];
 			$addJsInlineLabels = [];
 
 			// Create filelisting object
@@ -441,7 +441,7 @@ class FileListController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			}
 		}
 
-		$this->view->assign('requireJsModules', ['TYPO3/CMS/Filelist/FileList']);
+		$this->view->assign('requireJsModules', ['TYPO3/CMS/Filelist/FileList', 'TYPO3/CMS/Filelist/FileSearch']);
 		$this->view->assign('searchWord', $searchWord);
 		$this->view->assign('files', $fileFacades);
 		$this->view->assign('settings', [
