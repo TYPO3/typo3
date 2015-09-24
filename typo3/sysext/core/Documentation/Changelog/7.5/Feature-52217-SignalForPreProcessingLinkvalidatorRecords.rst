@@ -1,5 +1,5 @@
 =================================================================
-Feature - #52217: Signal for pre proccesing linkvalidator records
+Feature - #52217: Signal for pre processing linkvalidator records
 =================================================================
 
 Description
