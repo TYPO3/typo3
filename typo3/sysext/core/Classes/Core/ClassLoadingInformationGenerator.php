@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use Composer\Autoload\ClassMapGenerator;
-use TYPO3\CMS\Core\Package\Exception\MissingPackageManifestException;
+use Composer\Autoload\ClassLoader as ComposerClassLoader;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -55,25 +55,47 @@ class ClassLoadingInformationGenerator {
 					} else {
 						$psr4[$namespacePrefix] = $namespacePath;
 					}
+					if (!empty($this->getClassLoader()->getPrefixesPsr4()[$namespacePrefix])) {
+						// The namespace prefix has been registered already, which means there also might be
+						// a class map which we need to override
+						$classMap = array_merge($classMap, $this->createClassMap($namespacePath, $useRelativePaths, FALSE, $namespacePrefix));
+					}
 				}
 			}
 		} else {
-			foreach (ClassMapGenerator::createMap($packagePath) as $class => $path) {
-				if ($this->isIgnoredPath($packagePath, $path)) {
+			$classMap = $this->createClassMap($packagePath, $useRelativePaths, TRUE);
+		}
+
+		return array('classMap' => $classMap, 'psr-4' => $psr4);
+	}
+
+	/**
+	 * Creates a class map for a given (absolute) path
+	 *
+	 * @param string $classesPath
+	 * @param bool $useRelativePaths
+	 * @param bool $ignorePotentialTestClasses
+	 * @param string $namespace
+	 * @return array
+	 */
+	protected function createClassMap($classesPath, $useRelativePaths = FALSE, $ignorePotentialTestClasses = FALSE, $namespace = NULL) {
+		$classMap = array();
+		foreach (ClassMapGenerator::createMap($classesPath, NULL, NULL, $namespace) as $class => $path) {
+			if ($ignorePotentialTestClasses) {
+				if ($this->isIgnoredPath($classesPath, $path)) {
 					continue;
 				}
 				if ($this->isIgnoredClassName($class)) {
 					continue;
 				}
-				if ($useRelativePaths) {
-					$classMap[$class] = $this->makePathRelative($packagePath, $path);
-				} else {
-					$classMap[$class] = $path;
-				}
+			}
+			if ($useRelativePaths) {
+				$classMap[$class] = $this->makePathRelative($classesPath, $path);
+			} else {
+				$classMap[$class] = $path;
 			}
 		}
-
-		return array('classMap' => $classMap, 'psr-4' => $psr4);
+		return $classMap;
 	}
 
 	/**
@@ -267,4 +289,13 @@ EOF;
 		return Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
 	}
 
+	/**
+	 * Internal method calling the bootstrap to fetch the composer class loader
+	 *
+	 * @return ComposerClassLoader
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	protected function getClassLoader() {
+		return Bootstrap::getInstance()->getEarlyInstance(ComposerClassLoader::class);
+	}
 }

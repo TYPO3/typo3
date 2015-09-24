@@ -97,7 +97,7 @@ class ClassLoadingInformation {
 		$dynamicClassMapFile = self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME;
 		if (file_exists($dynamicClassMapFile)) {
 			$classMap = require $dynamicClassMapFile;
-			if (is_array($classMap)) {
+			if (!empty($classMap) && is_array($classMap)) {
 				$composerClassLoader->addClassMap($classMap);
 			}
 		}
