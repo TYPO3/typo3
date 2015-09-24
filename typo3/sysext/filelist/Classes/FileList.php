@@ -873,7 +873,7 @@ class FileList extends AbstractRecordList {
 			$n = '_FILE|' . $md5;
 			$this->CBnames[] = $n;
 			$checked = $this->clipObj->isSelected('_FILE', $md5) ? ' checked="checked"' : '';
-			$cells[] = '<label class="btn btn-default btn-checkbox"><input type="hidden" name="CBH[' . $n . ']" value="0" /><input type="checkbox" name="CBC[' . $n . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . $checked . ' /><span class="t3-icon fa"></span></label>';
+			$cells[] = '<input type="hidden" name="CBH[' . $n . ']" value="0" /><label class="btn btn-default btn-checkbox"><input type="checkbox" name="CBC[' . $n . ']" value="' . htmlspecialchars($fullIdentifier) . '" ' . $checked . ' /><span class="t3-icon fa"></span></label>';
 		}
 		// Display PASTE button, if directory:
 		$elFromTable = $this->clipObj->elFromTable('_FILE');

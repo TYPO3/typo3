@@ -1558,7 +1558,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// Adding the checkbox to the panel:
 			$cells['select'] = $isL10nOverlay
 				? $this->spaceIcon
-				: '<label class="btn btn-default btn-checkbox"><input type="hidden" name="CBH[' . $n . ']" value="0" /><input type="checkbox"'
+				: '<input type="hidden" name="CBH[' . $n . ']" value="0" /><label class="btn btn-default btn-checkbox"><input type="checkbox"'
 					. ' name="CBC[' . $n . ']" value="1" ' . $checked . '/><span class="t3-icon fa"></span></label>';
 		}
 		// Now, looking for selected elements from the current table:
