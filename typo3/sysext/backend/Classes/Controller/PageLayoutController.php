@@ -295,6 +295,13 @@ class PageLayoutController {
 	protected $iconFactory;
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'web_layout';
+
+	/**
 	 * Initializing the module
 	 *
 	 * @return void
@@ -304,7 +311,8 @@ class PageLayoutController {
 		$this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
 
 		// Setting module configuration / page select clause
-		$this->MCONF = $GLOBALS['MCONF'];
+		$this->MCONF['name'] = $this->moduleName;
+
 		$this->perms_clause = $this->getBackendUser()->getPagePermsClause(1);
 		// Get session data
 		$sessionData = $this->getBackendUser()->getSessionData(RecordList::class);
@@ -332,7 +340,7 @@ class PageLayoutController {
 		// Setting sys language from session var:
 		$this->current_sys_language = (int)$this->MOD_SETTINGS['language'];
 		// CSH / Descriptions:
-		$this->descrTable = '_MOD_' . $this->MCONF['name'];
+		$this->descrTable = '_MOD_' . $this->moduleName;
 
 		$this->markers['SEARCHBOX'] = '';
 		$this->markers['BUTTONLIST_ADDITIONAL'] = '';
@@ -390,7 +398,7 @@ class PageLayoutController {
 		}
 		// page/be_user TSconfig settings and blinding of menu-items
 		$this->modSharedTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.SHARED');
-		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->MCONF['name']);
+		$this->modTSconfig = BackendUtility::getModTSconfig($this->id, 'mod.' . $this->moduleName);
 		if ($this->modTSconfig['properties']['QEisDefault']) {
 			ksort($this->MOD_MENU['function']);
 		}
@@ -404,7 +412,7 @@ class PageLayoutController {
 			$this->MOD_MENU['language'][0] = $this->modTSconfig['properties']['defaultLanguageLabel'] ? $this->modSharedTSconfig['properties']['defaultLanguageLabel'] : $this->modSharedTSconfig['properties']['defaultLanguageLabel'];
 		}
 		// Clean up settings
-		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_layout');
+		$this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), $this->moduleName);
 		// For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
 		if ($this->getBackendUser()->workspace != 0 || $this->MOD_SETTINGS['tt_content_showHidden'] !== '0') {
 			$this->MOD_SETTINGS['tt_content_showHidden'] = 1;
@@ -557,7 +565,7 @@ class PageLayoutController {
 			// Setting doc-header
 			$this->doc->form = '<form action="' . htmlspecialchars(
 				BackendUtility::getModuleUrl(
-					'web_layout', array('id' => $this->id, 'imagemode' =>  $this->imagemode)
+					$this->moduleName, array('id' => $this->id, 'imagemode' =>  $this->imagemode)
 				)) . '" method="post">';
 			// Creating the top function menu:
 			$this->topFuncMenu = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], '', '');
@@ -783,7 +791,7 @@ class PageLayoutController {
 		$retUrlStr = $this->returnUrl ? '+\'&returnUrl=\'+' . GeneralUtility::quoteJSvalue(rawurlencode($this->returnUrl)) : '';
 		// Drawing the edit record selectbox
 		$this->editSelect = '<select name="edit_record" onchange="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue(
-			BackendUtility::getModuleUrl('web_layout') . '&id=' . $this->id . '&edit_record='
+			BackendUtility::getModuleUrl($this->moduleName) . '&id=' . $this->id . '&edit_record='
 		) . '+escape(this.options[this.selectedIndex].value)' . $retUrlStr . ',this);') . '">' . implode('', $opt) . '</select>';
 
 		// Creating editing form:
@@ -859,7 +867,7 @@ class PageLayoutController {
 					<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />
 					<input type="hidden" name="edit_record" value="' . $edit_record . '" />
 					<input type="hidden" name="redirect" value="' . htmlspecialchars(($uidVal == 'new' ? BackendUtility::getModuleUrl(
-						'web_layout',
+						$this->moduleName,
 						array(
 							'id' => $this->id,
 							'new_unique_uid' => $new_unique_uid,
@@ -938,7 +946,7 @@ class PageLayoutController {
 		$dbList->no_noWrap = 1;
 		$dbList->descrTable = $this->descrTable;
 		$this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
-		$dbList->script = BackendUtility::getModuleUrl('web_layout');
+		$dbList->script = BackendUtility::getModuleUrl($this->moduleName);
 		$dbList->showIcon = 0;
 		$dbList->setLMargin = 0;
 		$dbList->doEdit = $this->EDIT_CONTENT;
@@ -1117,11 +1125,11 @@ class PageLayoutController {
 		}
 		// Shortcut
 		if ($this->getBackendUser()->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
 		}
 		// Cache
 		if (!$this->modTSconfig['properties']['disableAdvanced']) {
-			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_layout', array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
+			$buttons['cache'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName, array('id' => $this->pageinfo['uid'], 'clear_cache' => '1'))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">' . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 			// Move record
