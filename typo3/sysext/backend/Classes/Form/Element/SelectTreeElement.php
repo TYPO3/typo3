@@ -143,7 +143,11 @@ class SelectTreeElement extends AbstractFormElement {
 		}
 		$html = '
 			<div class="typo3-tceforms-tree">
-				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars(implode(',', $selectedNodesForApi)) . '" />
+				<input class="treeRecord" type="hidden" '
+					.  $this->getValidationDataAsDataAttribute($config)
+					. ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
+					. ' data-relatedfieldname="' . htmlspecialchars($parameterArray['itemFormElName']) . '"'
+					. ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars(implode(',', $selectedNodesForApi)) . '" />
 			</div>
 			<div id="tree_' . $id . '">
 
