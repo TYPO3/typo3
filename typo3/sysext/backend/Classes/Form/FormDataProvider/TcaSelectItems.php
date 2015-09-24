@@ -1005,7 +1005,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 		// will take care of showing the "Invalid value" text.
 		// For maxitems=1 select fields is is also possible to select empty values.
 		// @todo: move handling of invalid values to this data provider.
-		if ($fieldConfig['config']['maxitems'] === 1) {
+		if ($fieldConfig['config']['maxitems'] === 1 && empty($fieldConfig['config']['MM'])) {
 			return array($result['databaseRow'][$fieldName]);
 		}
 

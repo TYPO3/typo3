@@ -46,9 +46,6 @@ class SelectTreeElement extends AbstractFormElement {
 		$possibleSelectboxItems = $config['items'];
 
 		$selectedNodes = $parameterArray['itemFormElValue'];
-		if ($config['maxitems'] === 1 && count($selectedNodes) === 1 && empty($selectedNodes[0])) {
-			$selectedNodes = array();
-		}
 
 		$selectedNodesForApi = array();
 		foreach ($selectedNodes as $selectedNode) {

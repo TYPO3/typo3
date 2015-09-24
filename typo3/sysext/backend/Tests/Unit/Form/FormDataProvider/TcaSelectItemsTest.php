@@ -2424,4 +2424,100 @@ class TcaSelectItemsTest extends UnitTestCase {
 		$this->assertEquals($expected, $this->subject->addData($input));
 
 	}
+
+	/**
+	 * @test
+	 * @dataProvider correctValuesForMmRelationWithSingleValueAllowedDataProvider
+	 */
+	public function correctValuesForMmRelationWithSingleValueAllowed($input, $relationHandlerUids) {
+
+		$GLOBALS['TCA']['foreignTable'] = [];
+
+		/** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+		$backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+		$GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+		/** @var DatabaseConnection|ObjectProphecy $database */
+		$database = $this->prophesize(DatabaseConnection::class);
+		$GLOBALS['TYPO3_DB'] = $database->reveal();
+
+		$fieldConfig = $input['processedTca']['columns']['aField']['config'];
+		/** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
+		$relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+		GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+
+		$field = $input['databaseRow']['aField'];
+		$foreignTable = $input['processedTca']['columns']['aField']['config']['foreign_table'];
+		$mmTable = $input['processedTca']['columns']['aField']['config']['MM'];
+		$uid = $input['databaseRow']['uid'];
+		$tableName = $input['tableName'];
+		$fieldConfig = $input['processedTca']['columns']['aField']['config'];
+
+		$relationHandlerProphecy->start($field, $foreignTable, $mmTable, $uid, $tableName, $fieldConfig)->shouldBeCalled();
+		$relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
+
+		$expected = $input;
+		$expected['databaseRow']['aField'] = $relationHandlerUids;
+
+		$this->assertEquals($expected, $this->subject->addData($input));
+	}
+
+	/**
+	 * Data Provider
+	 */
+	public function correctValuesForMmRelationWithSingleValueAllowedDataProvider() {
+		return array(
+			'Relation with MM table and maxitems = 1 processes field value (item count)' => [
+				[
+					'tableName' => 'aTable',
+					'databaseRow' => [
+						'uid' => 42,
+						// MM relation with one item has 1 in field value
+						'aField' => 1,
+					],
+					'processedTca' => [
+						'columns' => [
+							'aField' => [
+								'config' => [
+									'type' => 'select',
+									'maxitems' => 1,
+									'MM' => 'mm_aTable_foreignTable',
+									'foreign_table' => 'foreignTable',
+									'items' => [],
+								],
+							],
+						],
+					],
+				],
+				[
+					24
+				]
+			],
+			'Relation with MM table and maxitems = 1 results in empty array if no items are set' => [
+				[
+					'tableName' => 'aTable',
+					'databaseRow' => [
+						'uid' => 58,
+						// MM relation with no items has 0 in field value
+						'aField' => 0,
+					],
+					'processedTca' => [
+						'columns' => [
+							'aField' => [
+								'config' => [
+									'type' => 'select',
+									'maxitems' => 1,
+									'MM' => 'mm_aTable_foreignTable',
+									'foreign_table' => 'foreignTable',
+									'items' => [],
+								],
+							],
+						],
+					],
+				],
+				[
+				]
+			]
+		);
+	}
 }
