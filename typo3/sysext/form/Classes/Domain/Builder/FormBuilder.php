@@ -274,6 +274,10 @@ class FormBuilder {
 	protected function reviveElement(Element $element, array $userConfiguredElementTypoScript, $elementType = '') {
 		// @todo Check $userConfiguredElementTypoScript
 
+		if ($elementType === 'IMAGEBUTTON') {
+			GeneralUtility::deprecationLog('EXT:form: The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+		}
+
 		$element->setElementType($elementType);
 		$element->setElementCounter($this->elementCounter);
 

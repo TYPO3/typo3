@@ -107,10 +107,10 @@ class CompatibilityLayerUtility {
 	 */
 	public function setGlobalLayoutConfiguration($typoscript = array()) {
 		if (!empty($typoscript['layout.'])) {
-			GeneralUtility::deprecationLog('Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid');
+			GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
 			$layout = $typoscript['layout.'];
 		} else if (!empty($typoscript['layout'])) {
-			GeneralUtility::deprecationLog('Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid');
+			GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
 			$layout = $typoscript['layout'];
 		}
 		if (is_array($layout)) {
@@ -131,7 +131,7 @@ class CompatibilityLayerUtility {
 	 * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
 	 */
 	public function getGlobalLayoutByElementType($elementType) {
-		GeneralUtility::deprecationLog('Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid');
+		GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
 		$layout = '';
 		if (!empty($this->layout[$elementType])) {
 			$layout = $this->layout[$elementType];
@@ -193,7 +193,7 @@ class CompatibilityLayerUtility {
 	 * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
 	 */
 	public function setElementLayouts(Element $element, array $userConfiguredElementTyposcript = array()) {
-		GeneralUtility::deprecationLog('Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid');
+		GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
 		if ($element->getElementType() === 'FORM') {
 			$containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $this->getGlobalLayoutByElementType('CONTAINERWRAP'));
 			$formWrapReturn = $this->replaceTagWithMarker('containerwrap', 'form', $this->getGlobalLayoutByElementType('FORM'));
@@ -509,14 +509,14 @@ class CompatibilityLayerUtility {
 	public function remapOldAttributes($elementType, $attributeName, array $additionalArguments, $userConfiguredElementTyposcript = array()) {
 		if ($elementType === 'OPTION') {
 			if ($attributeName === 'data') {
-				GeneralUtility::deprecationLog('Deprecated since TYPO3 CMS 7, use text instead of data to configure the OPTION text');
+				GeneralUtility::deprecationLog('EXT:form: Deprecated since TYPO3 CMS 7, use text instead of data to configure the OPTION text');
 				$userConfiguredElementTyposcript['text'] = $userConfiguredElementTyposcript['data'];
 				unset($userConfiguredElementTyposcript[$attributeName]);
 				$attributeName = 'text';
 			}
 		} elseif ($elementType === 'TEXTAREA') {
 			if ($attributeName === 'data') {
-				GeneralUtility::deprecationLog('Deprecated since TYPO3 CMS 7, use value instead of data to configure the TEXTAREA value');
+				GeneralUtility::deprecationLog('EXT:form: Deprecated since TYPO3 CMS 7, use text instead of data to configure the TEXTAREA value');
 				$userConfiguredElementTyposcript['value'] = $userConfiguredElementTyposcript['data'];
 				unset($userConfiguredElementTyposcript[$attributeName]);
 				$attributeName = 'value';
