@@ -446,7 +446,7 @@ class AdminPanelView {
 							parent.opener.top.goToModule("' . $pageModule . '");
 							parent.opener.top.focus();
 						} else {
-							vHWin=window.open(' . GeneralUtility::quoteJSvalue(TYPO3_mainDir . BackendUtility::getBackendScript()) . ',\'' . md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '\',\'status=1,menubar=1,scrollbars=1,resizable=1\');
+							vHWin=window.open(' . GeneralUtility::quoteJSvalue(BackendUtility::getBackendScript()) . ',\'' . md5('Typo3Backend-' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '\');
 							vHWin.focus();
 						}
 						return false;
