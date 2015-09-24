@@ -21,7 +21,7 @@
 		</f:then>
 		<f:else>
 			<f:for each="{model.childElements}" as="element">
-				<f:render partial="{themeName}/Show/{element.partialPath}" arguments="{model: element, themeName: themeName}" />
+				<f:render partial="{themeName}/Confirmation/{element.partialPath}" arguments="{model: element, themeName: themeName}" />
 			</f:for>
 		</f:else>
 	</f:if>

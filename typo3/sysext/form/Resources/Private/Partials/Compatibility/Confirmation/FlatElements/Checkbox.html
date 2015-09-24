@@ -1,10 +1,12 @@
-<f:if condition="{model.additionalArguments.checked} == 'checked'">
-	<f:if condition="{model.showElement}">
+<f:if condition="{model.showElement}">
+	<f:if condition="{model.additionalArguments.checked} == 'checked'">
 		<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
 			<f:format.raw>{model.layout.label}</f:format.raw>
 		<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
 	</f:if>
+</f:if>
 
+<f:if condition="{model.additionalArguments.checked} == 'checked'">
 	<f:if condition="{model.additionalArguments.multiple}">
 		<f:then>
 			<f:form.hidden
@@ -37,7 +39,7 @@
 				onclick="{model.additionalArguments.onclick}"
 
 				name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
-				value="{model.additionalArguments.value}"
+				value="<f:if condition='{model.additionalArguments.value}'><f:then>{model.additionalArguments.value}</f:then><f:else>{model.additionalArguments.name}-{model.elementCounter}</f:else></f:if>"
 
 				additionalAttributes="{model.htmlAttributes}"
 			/>

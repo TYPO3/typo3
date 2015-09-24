@@ -22,10 +22,10 @@
 				</td>
 			</tr>
 		</f:then>
+		<f:else>
 			<f:for each="{model.childElements}" as="element">
 				<f:render partial="{element.partialPath}" arguments="{model: element}" />
 			</f:for>
-		<f:else>
 		</f:else>
 	</f:if>
 </f:if>
