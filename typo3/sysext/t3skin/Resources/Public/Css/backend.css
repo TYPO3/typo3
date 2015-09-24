@@ -12767,8 +12767,11 @@ iframe {
 .query-builder .indent {
   padding-left: 20px;
 }
-tr.collapse {
+.tx_recycler_recycler tr.collapse {
   display: none;
+}
+.tx_recycler_recycler tr.collapse.in {
+  display: table-row;
 }
 .tx_scheduler_mod1 .table td {
   vertical-align: top;
