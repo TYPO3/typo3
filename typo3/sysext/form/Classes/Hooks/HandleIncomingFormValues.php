@@ -71,7 +71,10 @@ class HandleIncomingFormValues implements SingletonInterface {
 					$this->setAttribute($element, 'checked', NULL);
 				}
 			} else {
-				if ($incomingData === $modelValue) {
+				if (
+					$incomingData === $modelValue
+					|| $incomingData === $incomingName . '-' . $element->getElementCounter()
+				) {
 					$this->setAttribute($element, 'checked', 'checked');
 					$checked = TRUE;
 				} else {
@@ -94,7 +97,10 @@ class HandleIncomingFormValues implements SingletonInterface {
 			}
 			$checked = FALSE;
 			$incomingData = $formBuilder->getIncomingData()->getIncomingField($incomingName);
-			if ($incomingData === $modelValue) {
+			if (
+				$incomingData === $modelValue
+				|| $incomingData === $incomingName . '-' . $element->getElementCounter()
+			) {
 				$this->setAttribute($element, 'checked', 'checked');
 				$checked = TRUE;
 			} else {

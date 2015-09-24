@@ -18,7 +18,7 @@
 		onclick="{model.additionalArguments.onclick}"
 
 		name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
-		value="{model.additionalArguments.value}"
+		value="<f:if condition='{model.additionalArguments.value}'><f:then>{model.additionalArguments.value}</f:then><f:else>{model.additionalArguments.name}-{model.elementCounter}</f:else></f:if>"
 
 		additionalAttributes="{model.htmlAttributes}"
 	/>
