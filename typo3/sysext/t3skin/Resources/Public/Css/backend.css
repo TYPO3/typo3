@@ -10536,10 +10536,12 @@ span.checkbox-spinner {
 .tab-content > .tab-pane {
   display: block;
   height: 0;
+  width: 0;
   overflow: hidden;
 }
 .tab-content > .tab-pane.active {
   height: auto;
+  width: auto;
   overflow: visible;
 }
 .t3-overview-list dt {
