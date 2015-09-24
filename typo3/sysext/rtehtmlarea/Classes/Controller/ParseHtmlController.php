@@ -51,6 +51,13 @@ class ParseHtmlController {
 	public $prefixId = 'TYPO3HtmlParser';
 
 	/**
+	 * The name of the module
+	 *
+	 * @var string
+	 */
+	protected $moduleName = 'rtehtmlarea_wizard_parse_html';
+
+	/**
 	 * Initialize
 	 */
 	public function __construct() {
@@ -63,11 +70,11 @@ class ParseHtmlController {
 	public function init() {
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->JScode = '';
-		$this->modData = $GLOBALS['BE_USER']->getModuleData($GLOBALS['MCONF']['name'], 'ses');
+		$this->modData = $GLOBALS['BE_USER']->getModuleData($this->moduleName, 'ses');
 		if (GeneralUtility::_GP('OC_key')) {
 			$parts = explode('|', GeneralUtility::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0] == 'O' ? 1 : 0;
-			$GLOBALS['BE_USER']->pushModuleData($GLOBALS['MCONF']['name'], $this->modData);
+			$GLOBALS['BE_USER']->pushModuleData($this->moduleName, $this->modData);
 		}
 	}
 
