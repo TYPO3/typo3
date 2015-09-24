@@ -44,26 +44,34 @@ class ClassLoadingInformationGenerator {
 		$psr4 = array();
 		$packagePath = $package->getPackagePath();
 
-		$manifest = $this->getPackageManager()->getComposerManifest($package->getPackagePath());
-		if (!empty($manifest->autoload->{'psr-4'})) {
-			$psr4manifest = json_decode(json_encode($manifest->autoload->{'psr-4'}), TRUE);
-			if (is_array($psr4manifest)) {
-				foreach ($psr4manifest as $namespacePrefix => $path) {
+		$manifest = $this->getPackageManager()->getComposerManifest($packagePath);
+
+		if (empty($manifest->autoload)) {
+			// Legacy mode: Scan the complete extension directory for class files
+			$classMap = $this->createClassMap($packagePath, $useRelativePaths, TRUE);
+		} else {
+			$autoloadDefinition = json_decode(json_encode($manifest->autoload), TRUE);
+			if (!empty($autoloadDefinition['psr-4']) && is_array($autoloadDefinition['psr-4'])) {
+				$classLoaderPrefixesPsr4 = $this->getClassLoader()->getPrefixesPsr4();
+				foreach ($autoloadDefinition['psr-4'] as $namespacePrefix => $path) {
 					$namespacePath = $packagePath . $path;
 					if ($useRelativePaths) {
 						$psr4[$namespacePrefix] = $this->makePathRelative($namespacePath, realpath($namespacePath));
 					} else {
 						$psr4[$namespacePrefix] = $namespacePath;
 					}
-					if (!empty($this->getClassLoader()->getPrefixesPsr4()[$namespacePrefix])) {
+					if (!empty($classLoaderPrefixesPsr4[$namespacePrefix])) {
 						// The namespace prefix has been registered already, which means there also might be
 						// a class map which we need to override
 						$classMap = array_merge($classMap, $this->createClassMap($namespacePath, $useRelativePaths, FALSE, $namespacePrefix));
 					}
 				}
 			}
-		} else {
-			$classMap = $this->createClassMap($packagePath, $useRelativePaths, TRUE);
+			if (!empty($autoloadDefinition['classmap']) && is_array($autoloadDefinition['classmap'])) {
+				foreach ($autoloadDefinition['classmap'] as $path) {
+					$classMap = array_merge($classMap, $this->createClassMap($packagePath . $path, $useRelativePaths));
+				}
+			}
 		}
 
 		return array('classMap' => $classMap, 'psr-4' => $psr4);
