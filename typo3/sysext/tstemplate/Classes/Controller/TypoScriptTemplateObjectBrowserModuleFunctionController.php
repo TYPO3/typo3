@@ -403,24 +403,27 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends AbstractFu
 			$theOutput .= '
 				<div class="tsob-menu">
 					<div class="form-inline">';
-			if(is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1){
+			if (is_array($this->pObj->MOD_MENU['ts_browser_type']) && count($this->pObj->MOD_MENU['ts_browser_type']) > 1) {
 				$theOutput .= '
 						<div class="form-group">
 							<label class="control-label">' . $lang->getLL('browse') . '</label>'
 							. BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']). '
 						</div>';
 			}
-			if(is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1){
+			if (is_array($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) && count($this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) > 1) {
 				$theOutput .= '
 						<div class="form-group">
 							<label class="control-label" for="ts_browser_toplevel_' . $bType . '">' . $lang->getLL('objectList') . '</label> '
 							. BackendUtility::getDropdownMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]) . '
 						</div>';
 			}
+
+			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser');
+
 			$theOutput .= '
 						<div class="form-group">
 							<label class="control-label" for="search_field">' . $lang->getLL('search') . '</label>
-							<input class="form-control" type="search" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '"' . $documentTemplate->formWidth(20) . '/>
+							<div class="form-group"><input class="form-control" type="search" name="search_field" id="search_field" value="' . htmlspecialchars($POST['search_field']) . '" /></div>
 						</div>
 						<input class="btn btn-default tsob-search-submit" type="submit" name="search" value="' . $lang->sL('LLL:EXT:lang/locallang_common.xlf:search') . '" />
 					</div>
