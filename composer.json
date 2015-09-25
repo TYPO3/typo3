@@ -168,7 +168,6 @@
 			"TYPO3\\CMS\\SysAction\\": "typo3/sysext/sys_action/Classes/",
 			"TYPO3\\CMS\\SysNote\\": "typo3/sysext/sys_note/Classes/",
 			"TYPO3\\CMS\\T3editor\\": "typo3/sysext/t3editor/Classes/",
-			"TYPO3\\CMS\\T3skin\\": "typo3/sysext/t3skin/Classes/",
 			"TYPO3\\CMS\\Taskcenter\\": "typo3/sysext/taskcenter/Classes/",
 			"TYPO3\\CMS\\Tstemplate\\": "typo3/sysext/tstemplate/Classes/",
 			"TYPO3\\CMS\\Version\\": "typo3/sysext/version/Classes/",
