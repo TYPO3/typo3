@@ -138,6 +138,7 @@ return array(
 					array('ee', 'ee', 'flags-ee'),
 					array('eg', 'eg', 'flags-eg'),
 					array('eh', 'eh', 'flags-eh'),
+					array('en-us-gb', 'en-us-gb', 'flags-en-us-gb'),
 					array('england', 'england', 'flags-gb-eng'),
 					array('er', 'er', 'flags-er'),
 					array('es', 'es', 'flags-es'),

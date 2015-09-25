@@ -1716,6 +1716,12 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:core/Resources/Public/Icons/Flags/cs.png'
 			)
 		),
+		'flags-en-us-gb' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:core/Resources/Public/Icons/Flags/en_us-gb.png'
+			)
+		),
 		'flags-fam' => array(
 			'provider' => BitmapIconProvider::class,
 			'options' => array(
