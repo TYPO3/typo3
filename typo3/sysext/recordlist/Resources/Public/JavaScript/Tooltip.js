@@ -20,6 +20,7 @@ define('TYPO3/CMS/Recordlist/Tooltip', ['jquery', 'TYPO3/CMS/Backend/Tooltip'], 
 			show: 500,
 			hide: 100
 		},
+		trigger: 'hover',
 		container: 'body'
 	});
 });
