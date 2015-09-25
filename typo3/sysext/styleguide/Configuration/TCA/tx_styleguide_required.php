@@ -211,6 +211,25 @@ return array(
 				),
 			),
 		),
+		'select_5' => array(
+			'exclude' => 1,
+			'label' => 'SELECT: 34 renderMode=tree of pages',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'pages',
+				'size' => 20,
+				'minitems' => 1,
+				'maxitems' => 4, // @TODO: *must* be set, otherwise invalid upon checking first item?!
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'expandAll' => true,
+					'parentField' => 'pid',
+					'appearance' => array(
+						'showHeader' => TRUE,
+					),
+				),
+			),
+		),
 
 
 		'group_1' => array(
@@ -419,7 +438,7 @@ return array(
 			notrequired_1,
 			input_1, input_2, input_3, input_4, input_5
 			text_1,
-			select_1, select_2, select_3, select_4,
+			select_1, select_2, select_3, select_4, select_34,
 			group_1, group_2,
 			rte_1, rte_2,
 			inline_1, inline_2, inline_3,
@@ -437,7 +456,7 @@ return array(
 				--div--;Text,
 					text_1,
 				--div--;Select,
-					select_1, select_2,
+					select_1, select_2, select_5,
 				--div--;Group,
 					group_1, group_2,
 				--div--;Inline,

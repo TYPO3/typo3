@@ -274,6 +274,7 @@ CREATE TABLE tx_styleguide_required (
 	select_2 text,
 	select_3 text,
 	select_4 text,
+	select_5 text,
 
 	group_1 text,
 	group_2 text,
