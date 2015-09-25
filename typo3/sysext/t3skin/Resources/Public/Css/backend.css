@@ -13277,6 +13277,11 @@ iframe {
   margin-top: -8px;
   z-index: 1;
 }
+.typo3-topbar-navigation-search .form-group button.close {
+  opacity: 1;
+  color: #dddddd;
+  text-shadow: none;
+}
 .typo3-topbar-navigation-search .form-control {
   background-color: #222222;
   color: #dddddd;
