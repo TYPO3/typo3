@@ -116,7 +116,7 @@ return array(
 						'EXT:t3skin/icons/gfx/i/tt_content_html.gif'
 					)
 				),
-				'default' => 'text',
+				'default' => 'header',
 				'authMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['explicitADmode'],
 				'authMode_enforce' => 'strict',
 				'noIconsBelowSelect' => 1

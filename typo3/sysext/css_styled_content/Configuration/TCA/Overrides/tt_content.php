@@ -387,6 +387,7 @@ array_splice(
 		)
 	)
 );
+$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['default'] = 'text';
 
 // Add palettes
 $GLOBALS['TCA']['tt_content']['palettes'] = array_replace(

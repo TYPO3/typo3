@@ -18,6 +18,8 @@ call_user_func(function() {
 		'header',
 		'after'
 	);
+	$GLOBALS['TCA']['tt_content']['columns']['CType']['config']['default'] = 'textmedia';
+
 	$GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']['textmedia'] = 'mimetypes-x-content-text-media';
 	$GLOBALS['TCA']['tt_content']['palettes']['mediaAdjustments'] = [
 		'showitem' => '
