@@ -558,34 +558,27 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Get extensions (out of a given list) that are suitable for the current TYPO3 version
 	 *
-	 * @param array $extensions List of extensions to check
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array $extensions List of extensions to check
 	 * @return array List of extensions suitable for current TYPO3 version
 	 */
-	public function getExtensionsSuitableForTypo3Version(array $extensions) {
+	public function getExtensionsSuitableForTypo3Version($extensions) {
 		$suitableExtensions = array();
 		/** @var Extension $extension */
 		foreach ($extensions as $extension) {
 			/** @var Dependency $dependency */
 			foreach ($extension->getDependencies() as $dependency) {
-				if ($dependency->getIdentifier() === 'typo3' && $this->isDependencySatisfiedByTypo3Version($dependency)) {
-					array_push($suitableExtensions, $extension);
+				if ($dependency->getIdentifier() === 'typo3') {
+					try {
+						if ($this->checkTypo3Dependency($dependency)) {
+							array_push($suitableExtensions, $extension);
+						}
+					} catch (Exception\UnresolvedTypo3DependencyException $e) {
+					}
+					break;
 				}
 			}
 		}
 		return $suitableExtensions;
-	}
-
-	/**
-	 * Checks if given dependency is satisfied by current TYPO3 version
-	 *
-	 * @param Dependency $dependency
-	 * @return bool
-	 */
-	protected function isDependencySatisfiedByTypo3Version(Dependency $dependency) {
-		$numericTypo3Version = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
-		$numericLowestVersion = VersionNumberUtility::convertVersionNumberToInteger($dependency->getLowestVersion());
-		$numericHighestVersion = VersionNumberUtility::convertVersionNumberToInteger($dependency->getHighestVersion());
-		return MathUtility::isIntegerInRange($numericTypo3Version, $numericLowestVersion, $numericHighestVersion);
 	}
 
 }
