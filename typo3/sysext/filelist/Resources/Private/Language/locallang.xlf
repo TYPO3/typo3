@@ -9,9 +9,6 @@
 			<trans-unit id="flashmessage.no_results">
 				<source>No results found</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.no_results">
-				<source>No results found</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
