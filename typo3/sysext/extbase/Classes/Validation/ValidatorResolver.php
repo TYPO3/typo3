@@ -284,8 +284,8 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 						$collectionValidator = $this->createValidator(\TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator::class, array('elementType' => $parsedType['elementType'], 'validationGroups' => $validationGroups));
 						$objectValidator->addPropertyValidator($classPropertyName, $collectionValidator);
 					} elseif (class_exists($propertyTargetClassName) && !TypeHandlingUtility::isCoreType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === \TYPO3\CMS\Extbase\Object\Container\Container::SCOPE_PROTOTYPE) {
-						$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName, $validationGroups);
-						if (!empty($validatorForProperty)) {
+						$validatorForProperty = $this->getBaseValidatorConjunction($propertyTargetClassName);
+						if ($validatorForProperty !== NULL && $validatorForProperty->count() > 0) {
 							$objectValidator->addPropertyValidator($classPropertyName, $validatorForProperty);
 						}
 					}
