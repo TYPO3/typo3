@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Resolve and prepare inline data.
@@ -111,6 +112,10 @@ class TcaInline extends AbstractItemProvider implements FormDataProviderInterfac
 		$localTca = $result['processedTca']['columns'][$fieldName];
 		$localFieldcontent = $result['databaseRow'][$fieldName];
 		$directlyConnectedIds = GeneralUtility::trimExplode(',', $localFieldcontent);
+
+		if (StringUtility::beginsWith((string)$localUid, 'NEW')) {
+			return $result;
+		}
 
 		if (empty($localTca['config']['MM'])) {
 			$localUid = $this->getLiveDefaultId($localTable, $localUid);
