@@ -441,7 +441,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			));
 			// check if the access is restricted
 			if (is_array($this->requiredFrontendUsergroups[$pathId]) && count($this->requiredFrontendUsergroups[$pathId])) {
-				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('IndexedSearch') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'IndexedSearch'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId]))) . '" alt="" />';
+				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'IndexedSearch'), implode(',', array_unique($this->requiredFrontendUsergroups[$pathId]))) . '" alt="" />';
 			}
 		}
 		// If there are subrows (eg. subpages in a PDF-file or if a duplicate page
