@@ -18,7 +18,7 @@ return array(
 		'hideAtCopy' => TRUE,
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'copyAfterDuplFields' => 'colPos,sys_language_uid',
-		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',
+		'useColumnsForDefaultValues' => 'colPos,sys_language_uid,CType',
 		'shadowColumnsForNewPlaceholders' => 'colPos',
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
