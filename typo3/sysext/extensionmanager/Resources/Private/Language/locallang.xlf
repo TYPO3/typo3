@@ -399,7 +399,7 @@
 				<source>Install impexp</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.label">
-				<source>Retrieving Extension-List from TYPO3 Extension Repository (TER)</source>
+				<source>Retrieving extension list from TYPO3 Extension Repository (TER)...</source>
 			</trans-unit>
 			<trans-unit id="extensionList.updateFromTer.buttonLabel">
 				<source>Update now</source>

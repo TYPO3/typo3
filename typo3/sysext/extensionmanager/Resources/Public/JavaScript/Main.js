@@ -470,7 +470,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 			{
 				onClear: function() {
 					if (searchResultShown) {
-						$(this).parents('form').first().submit();
+						$(this).closest('form').submit();
 					}
 				}
 			}
@@ -479,6 +479,7 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 
 	ExtensionManager.Update = {
 		identifier: {
+			extensionTable: '#terTable',
 			terUpdateAction: '.update-from-ter',
 			pagination: '.pagination-wrap',
 			splashscreen: '.splash-receivedata',
@@ -518,6 +519,9 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 
 		// Hide triggers for TER update
 		$(ExtensionManager.Update.identifier.terUpdateAction).addClass('is-hidden');
+
+		// Hide extension table
+		$(ExtensionManager.Update.identifier.extensionTable).hide();
 
 		// Show loaders
 		$(ExtensionManager.Update.identifier.splashscreen).addClass('is-shown');
@@ -576,6 +580,9 @@ define(['jquery', 'nprogress', 'datatables', 'TYPO3/CMS/Backend/jquery.clearable
 
 				// Show triggers for TER-update
 				$(ExtensionManager.Update.identifier.terUpdateAction).removeClass('is-hidden');
+
+				// Show extension table
+				$(ExtensionManager.Update.identifier.extensionTable).show();
 			}
 		});
 	};
