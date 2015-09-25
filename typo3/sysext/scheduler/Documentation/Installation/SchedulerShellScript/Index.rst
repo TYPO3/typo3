@@ -31,3 +31,26 @@ following error:
 If the user exists, you should see nothing, as the Scheduler doesn't
 give any visual feedback while running.
 
+.. _options:
+
+Providing options to the shell script
+"""""""""""""""""""""""""""""""""""""
+
+The shell scripts accepts a number of options which can be provided in any
+order.
+
+To run a specific scheduler task you need to provide the uid of the task:
+
+::
+
+   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler -i 8
+
+The example will trigger the task with uid 8.
+
+To run a task even if it is disabled, you need to provide the force option
+
+::
+
+   /usr/local/bin/php /home/bob/www/typo3/cli_dispatch.phpsh scheduler -i 8 -f
+
+This will also run the task with uid 8 if it is disabled.
