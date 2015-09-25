@@ -1882,6 +1882,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	* The constructor
 	*/
 	public function __construct() {
+		if (!$this->tcaInitialized && !empty($GLOBALS['TCA'])) {
+			$this->registerTCAIcons();
+		}
 		$this->registerFlags();
 	}
 
