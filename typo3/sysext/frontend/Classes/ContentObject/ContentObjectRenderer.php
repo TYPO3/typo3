@@ -6123,7 +6123,7 @@ class ContentObjectRenderer {
 	 * Basically the input string, $linktext, is (typically) wrapped in a <a>-tag linking to some page, email address, file or URL based on a parameter defined by the configuration array $conf.
 	 * This function is best used from internal functions as is. There are some API functions defined after this function which is more suited for general usage in external applications.
 	 * Generally the concept "typolink" should be used in your own applications as an API for making links to pages with parameters and more. The reason for this is that you will then automatically make links compatible with all the centralized functions for URL simulation and manipulation of parameters into hashes and more.
-	 * For many more details on the parameters and how they are intepreted, please see the link to TSref below.
+	 * For many more details on the parameters and how they are interpreted, please see the link to TSref below.
 	 *
 	 * the FAL API is handled with the namespace/prefix "file:..."
 	 *

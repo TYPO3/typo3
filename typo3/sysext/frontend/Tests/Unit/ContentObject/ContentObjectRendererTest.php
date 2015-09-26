@@ -112,9 +112,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		parent::tearDown();
 	}
 
-	////////////////////////
-	// Utitility functions
-	////////////////////////
+	//////////////////////
+	// Utility functions
+	//////////////////////
 
 	/**
 	 * Avoid logging to the file system (file writer is currently the only configured writer)
@@ -184,9 +184,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 
-	/*************************
-	 * Tests concerning getContentObject
-	 ************************/
+	//////////////////////////////////////
+	// Tests concerning getContentObject
+	//////////////////////////////////////
 
 	public function getContentObjectValidContentObjectsDataProvider() {
 		$dataProvider = array();
@@ -435,9 +435,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		return str_replace(array('[', ']'), array('%5B', '%5D'), $string);
 	}
 
-	//////////////////////////////
+	//////////////////////////
 	// Tests concerning crop
-	//////////////////////////////
+	//////////////////////////
 	/**
 	 * @test
 	 */
@@ -1618,6 +1618,56 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for stdWrap_ifEmptyDeterminesEmptyValues test
+	 *
+	 * @return array
+	 */
+	public function stdWrap_ifEmptyDeterminesEmptyValuesDataProvider() {
+		return array(
+			'null value' => array(
+				NULL,
+				array(
+					'ifEmpty' => '1',
+				),
+				'1',
+			),
+			'empty value' => array(
+				'',
+				array(
+					'ifEmpty' => '1',
+				),
+				'1',
+			),
+			'string value' => array(
+				'string',
+				array(
+					'ifEmpty' => '1',
+				),
+				'string',
+			),
+			'empty string value' => array(
+				'        ',
+				array(
+					'ifEmpty' => '1',
+				),
+				'1',
+			),
+		);
+	}
+
+	/**
+	 * @param string|NULL $content
+	 * @param array $configuration
+	 * @param string $expected
+	 * @dataProvider stdWrap_ifEmptyDeterminesEmptyValuesDataProvider
+	 * @test
+	 */
+	public function stdWrap_ifEmptyDeterminesEmptyValues($content, array $configuration, $expected) {
+		$result = $this->subject->stdWrap_ifEmpty($content, $configuration);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * @param $content
 	 * @param array $configuration
 	 * @param $expected
@@ -1782,9 +1832,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 
-	/////////////////////////////
+	///////////////////////////////
 	// Tests concerning getData()
-	/////////////////////////////
+	///////////////////////////////
 
 	/**
 	 * @return array
@@ -3663,9 +3713,9 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($expectedResult, $contentObjectRenderer->getWhere($table, $configuration));
 	}
 
-	/////////////////////////////////////
-	// Test concerning link generation //
-	/////////////////////////////////////
+	////////////////////////////////////
+	// Test concerning link generation
+	////////////////////////////////////
 
 	/**
 	 * @test
