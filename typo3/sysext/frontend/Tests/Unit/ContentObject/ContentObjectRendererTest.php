@@ -1582,6 +1582,71 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for stdWrap_stdWrapValue test
+	 *
+	 * @return array
+	 */
+	public function stdWrap_stdWrapValueDataProvider() {
+		return array(
+			'only key returns value' => array(
+				'ifNull',
+				array(
+					'ifNull' => '1',
+				),
+				'',
+				'1',
+			),
+			'array without key returns empty string' => array(
+				'ifNull',
+				array(
+					'ifNull.' => '1',
+				),
+				'',
+				'',
+			),
+			'array without key returns default' => array(
+				'ifNull',
+				array(
+					'ifNull.' => '1',
+				),
+				'default',
+				'default',
+			),
+			'non existing key returns default' => array(
+				'ifNull',
+				array(
+					'noTrimWrap' => 'test',
+					'noTrimWrap.' => '1',
+				),
+				'default',
+				'default',
+			),
+			'existing key and array returns stdWrap' => array(
+				'test',
+				array(
+					'test' => 'value',
+					'test.' => array('case' => 'upper'),
+				),
+				'default',
+				'VALUE'
+			),
+		);
+	}
+
+	/**
+	 * @param string $key
+	 * @param array $configuration
+	 * @param string $defaultValue
+	 * @param string $expected
+	 * @dataProvider stdWrap_stdWrapValueDataProvider
+	 * @test
+	 */
+	public function stdWrap_stdWrapValue($key, array $configuration, $defaultValue, $expected) {
+		$result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * @param string|NULL $content
 	 * @param array $configuration
 	 * @param string $expected
