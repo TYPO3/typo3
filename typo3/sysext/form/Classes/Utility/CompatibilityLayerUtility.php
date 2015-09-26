@@ -201,6 +201,13 @@ class CompatibilityLayerUtility {
 			$formContainerWrap = explode($containerWrapReturn['marker'], $formLayout);
 			$layout['containerInnerWrap'] = $formContainerWrap;
 			$element->setLayout($layout);
+			$classFromLayout = $this->getElementClassFromLayout('form');
+			if (!empty($classFromLayout)) {
+				if (!empty($element->getAdditionalArgument('class'))) {
+					$classFromLayout .= ' ' . $element->getAdditionalArgument('class');
+				}
+				$element->setAdditionalArgument('class', $classFromLayout);
+			}
 			return;
 		}
 		if (in_array($element->getElementType(), $this->registeredFormElements)) {
@@ -288,7 +295,7 @@ class CompatibilityLayerUtility {
 				if ($dom) {
 					$node = $dom->firstChild;
 					if ($node) {
-						if (strlen($node->getAttribute('class')) > 0) {
+						if ($node->getAttribute('class') !== '') {
 							$class = $node->getAttribute('class') . ' ';
 						}
 						$class .= 'csc-form-' . $element->getElementCounter() . ' csc-form-element csc-form-element-' . $element->getElementTypeLowerCase();
@@ -351,6 +358,13 @@ class CompatibilityLayerUtility {
 				$layout = $element->getLayout();
 				$layout['containerInnerWrap'] = $containerWrap;
 				$element->setLayout($layout);
+				$classFromLayout = $this->getElementClassFromLayout('fieldset');
+				if (!empty($classFromLayout)) {
+					if (!empty($element->getHtmlAttribute('class'))) {
+						$classFromLayout .= ' ' . $element->getHtmlAttribute('class');
+					}
+					$element->setHtmlAttribute('class', $classFromLayout);
+				}
 			}
 			return;
 		}
@@ -369,6 +383,31 @@ class CompatibilityLayerUtility {
 		$return = $this->replaceTagWithMarker($scope . 'value', 'body', $this->getGlobalLayoutByElementType(strtoupper($scope)));
 		$html = str_replace($return['marker'], $messages, $return['html']);
 		return $html;
+	}
+
+	/**
+	 * Return the class attribute for a element defined by layout.
+	 *
+	 * @param string $elementName
+	 * @return string
+	 */
+	protected function getElementClassFromLayout($elementName = '') {
+		$class = '';
+		$libxmlUseInternalErrors = libxml_use_internal_errors(true);
+		$dom = new \DOMDocument('1.0', 'utf-8');
+		$dom->formatOutput = TRUE;
+		$dom->preserveWhiteSpace = FALSE;
+		if ($dom->loadXML($this->getGlobalLayoutByElementType(strtoupper($elementName)))) {
+			$nodes = $dom->getElementsByTagName($elementName);
+			if ($nodes->length) {
+				$node = $nodes->item(0);
+				if ($node && $node->getAttribute('class') !== '') {
+					$class = $node->getAttribute('class');
+				}
+			}
+		}
+		libxml_use_internal_errors($libxmlUseInternalErrors);
+		return $class;
 	}
 
 	/**
