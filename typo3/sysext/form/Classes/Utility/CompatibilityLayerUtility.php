@@ -211,35 +211,6 @@ class CompatibilityLayerUtility {
 			return;
 		}
 		if (in_array($element->getElementType(), $this->registeredFormElements)) {
-			/* layout.label */
-			if (!in_array($element->getElementType(), $this->elementsWithoutLabel)) {
-				$labelLayout = $this->getGlobalLayoutByElementType('LABEL');
-				$mandatoryLayout = '';
-				$errorLayout = '';
-				if ($this->formBuilder->getControllerAction() === 'show') {
-					/* layout.mandatory */
-					$mandatoryMessages = $this->formBuilder->getValidationBuilder()->getMandatoryValidationMessagesByElementName($element->getName());
-					if (count($mandatoryMessages) > 0) {
-						$mandatoryLayout = $this->replaceLabelContent('mandatory', $mandatoryMessages);
-					}
-					/* layout.error */
-					$errorMessages = $element->getValidationErrorMessages();
-					if (count($errorMessages) > 0) {
-						$errorLayout = $this->replaceLabelContent('error', $errorMessages);
-					}
-				}
-				/* Replace the mandatory and error messages */
-				$mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $labelLayout);
-				$labelLayout = str_replace($mandatoryReturn['marker'], $mandatoryLayout, $mandatoryReturn['html']);
-				$errorReturn = $this->replaceTagWithMarker('error', 'body', $labelLayout);
-				$labelLayout = str_replace($errorReturn['marker'], $errorLayout, $errorReturn['html']);
-				/* Replace the label value */
-				$labelValueReturn = $this->replaceTagWithMarker('labelvalue', 'body', $labelLayout);
-				$labelLayout = str_replace($labelValueReturn['marker'], $element->getAdditionalArgument('label'), $labelValueReturn['html']);
-				$layout = $element->getLayout();
-				$layout['label'] = $labelLayout;
-				$element->setLayout($layout);
-			}
 			/* Get the element layout definition or fallback to the global definition (if set) */
 			if (isset($userConfiguredElementTyposcript['layout'])) {
 				$elementLayout = $userConfiguredElementTyposcript['layout'];
@@ -250,39 +221,68 @@ class CompatibilityLayerUtility {
 			$elementWrap = NULL;
 			if ($elementLayout) {
 				$elementWrap = $this->determineElementOuterWraps($element->getElementType(), $elementLayout);
-				if ($elementWrap['marker'] !== '') {
-					/*
-					 * Dedect the label position.
-					 * Things like layout.textline = <input /><div class="before label"><label /></div>
-					 * are NOT supported.
-					 * To wrap the label, you must use layout.label
-					 * All around the <input /> tag will be interpreted as elementOuterWrap.
-					 * The position of the label is detected by "if it before or after the <input /> tag".
-					 * Then the template will place the label before or after the element.
-					 * Things like
-					 * layout.textline = <div class="form-element"><input /><div class="sibling after"></div><label /></div>
-					 * result in a html like
-					 * <div class="form-element"><input ... /><label ... /><div class="sibling after"></div></div>
-					 * That means every layout that is not like <some><tags><input /><label /></some></tags>
-					 * or <some><tags><label /><input /></some></tags> result in another markup.
-					 * Sorry guys.
-					 * */
-					if (!in_array($element->getElementType(), $this->elementsWithoutLabel)) {
-						$labelReturn = $this->replaceTagWithMarker('label', 'body', $elementWrap['html']);
-						$elementWrap = explode($elementWrap['marker'], $labelReturn['html']);
-						$labelPosition = 'before';
-						if (strpos($elementWrap[0], $labelReturn['marker']) !== FALSE) {
-							$elementWrap[0] = str_replace($labelReturn['marker'], '', $elementWrap[0]);
-						} else if (strpos($elementWrap[1], $labelReturn['marker']) !== FALSE) {
-							$labelPosition = 'after';
-							$elementWrap[1] = str_replace($labelReturn['marker'], '', $elementWrap[1]);
+				if ($elementWrap['html'] !== '') {
+					/* layout.label */
+					if (!in_array($element->getElementType(), $this->elementsWithoutLabel, TRUE)) {
+						$labelLayout = $this->getGlobalLayoutByElementType('LABEL');
+						$mandatoryLayout = '';
+						$errorLayout = '';
+						if ($this->formBuilder->getControllerAction() === 'show') {
+							/* layout.mandatory */
+							$mandatoryMessages = $this->formBuilder->getValidationBuilder()->getMandatoryValidationMessagesByElementName($element->getName());
+							if (!empty($mandatoryMessages)) {
+								$mandatoryLayout = $this->replaceLabelContent('mandatory', $mandatoryMessages);
+							}
+							/* layout.error */
+							$errorMessages = $element->getValidationErrorMessages();
+							if (!empty($errorMessages)) {
+								$errorLayout = $this->replaceLabelContent('error', $errorMessages);
+							}
 						}
-						$layout = $element->getLayout();
-						$layout['labelPosition'] = $labelPosition;
-						$element->setLayout($layout);
-					} else {
-						$elementWrap = explode($elementWrap['marker'], $elementWrap['html']);
+						/* Replace the mandatory and error messages */
+						$mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $labelLayout);
+						$labelContainContent = FALSE;
+						if ($mandatoryReturn['html'] !== '') {
+							if (!empty($mandatoryLayout)) {
+								$labelContainContent = TRUE;
+							}
+							$labelLayout = str_replace($mandatoryReturn['marker'], $mandatoryLayout, $mandatoryReturn['html']);
+						}
+						$errorReturn = $this->replaceTagWithMarker('error', 'body', $labelLayout);
+						if ($errorReturn['html'] !== '') {
+							if (!empty($errorLayout)) {
+								$labelContainContent = TRUE;
+							}
+							$labelLayout = str_replace($errorReturn['marker'], $errorLayout, $errorReturn['html']);
+						}
+						/* Replace the label value */
+						$labelValueReturn = $this->replaceTagWithMarker('labelvalue', 'body', $labelLayout);
+						if ($labelValueReturn['html'] !== '') {
+							if (!empty($element->getAdditionalArgument('label'))) {
+								$labelContainContent = TRUE;
+							}
+							$labelLayout = str_replace($labelValueReturn['marker'], $element->getAdditionalArgument('label'), $labelValueReturn['html']);
+						}
+						if (!$labelContainContent) {
+							$labelLayout = '';
+						}
+						/* Replace <label />, <error /> and <mandatory /> in the element wrap html */
+						$labelReturn = $this->replaceTagWithMarker('label', 'body', $elementWrap['html']);
+						if ($labelReturn['html'] !== '') {
+							$elementWrap['html'] = str_replace($labelReturn['marker'], $labelLayout, $labelReturn['html']);
+						}
+						$errorReturn = $this->replaceTagWithMarker('error', 'body', $elementWrap['html']);
+						if ($errorReturn['html'] !== '') {
+							$elementWrap['html'] = str_replace($errorReturn['marker'], $errorLayout, $errorReturn['html']);
+						}
+						$mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $elementWrap['html']);
+						if ($mandatoryReturn['html'] !== '') {
+							$elementWrap['html'] = str_replace($mandatoryReturn['marker'], $mandatoryLayout, $mandatoryReturn['html']);
+						}
 					}
+					$elementWrap = explode($elementWrap['marker'], $elementWrap['html']);
+				} else {
+					$elementWrap = NULL;
 				}
 			}
 			/* Set element outer wraps and set the default classes */
@@ -431,43 +431,6 @@ class CompatibilityLayerUtility {
 			$return = $this->replaceTagWithMarker('input', 'body', $elementLayout);
 		}
 		return $return;
-	}
-
-	/**
-	 * Try to detect if a label before or after the element.
-	 * If the position is found, delete the tag because the
-	 * label content is already known and the positioning
-	 * is done with fluid.
-	 *
-	 * @param string $wrapParts
-	 * @return NULL|string
-	 */
-	protected function determineLabelPositionAndDeleteTheLabelTag($html) {
-		$dom = new \DOMDocument('1.0', 'utf-8');
-		$dom->preserveWhiteSpace = FALSE;
-		$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-		if (!$dom) {
-			return NULL;
-		}
-		$nodes = $dom->getElementsByTagName('label');
-		if (!$nodes->length) {
-			return NULL;
-		} else {
-			$labelNode = $nodes->item(0);
-			$parentNode = $labelNode->parentNode;
-			$parentNode->removeChild($labelNode);
-				$html = $dom->saveHTML();
-				if ($key == 0) {
-					$position = 'before';
-				} else {
-					$position = 'after';
-				}
-				return array(
-					'position' => $position,
-					'elementWrap' => $wrapParts
-				);
-			}
-		return NULL;
 	}
 
 	/**

@@ -1,13 +1,7 @@
 <f:if condition="{model.showElement}">
 	<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
-	<f:if condition="{model.layout.labelPosition} == 'before'">
-		<f:format.raw>{model.layout.label}</f:format.raw>
-	</f:if>
 	<f:for each="{model.additionalArguments.uploadedFiles}" as="uploadedFile">
 		{uploadedFile.originalFilename}<br />
 	</f:for>
-	<f:if condition="{model.layout.labelPosition} == 'after'">
-		<f:format.raw>{model.layout.label}</f:format.raw>
-	</f:if>
 	<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
 </f:if>

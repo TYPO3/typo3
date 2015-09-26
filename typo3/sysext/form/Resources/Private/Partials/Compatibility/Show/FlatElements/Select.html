@@ -2,10 +2,6 @@
 
 <f:if condition="{model.showElement}">
 	<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
-		<f:if condition="{model.layout.labelPosition} == 'before'">
-			<f:format.raw>{model.layout.label}</f:format.raw>
-		</f:if>
-
 		<form:select
 			class="{model.additionalArguments.class}"
 			dir="{model.additionalArguments.dir}"
@@ -34,9 +30,5 @@
 			errorClass="{model.additionalArguments.errorClass}"
 			additionalAttributes="{model.htmlAttributes}"
 		/>
-
-		<f:if condition="{model.layout.labelPosition} == 'after'">
-			<f:format.raw>{model.layout.label}</f:format.raw>
-		</f:if>
 	<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
 </f:if>

@@ -1,9 +1,5 @@
 <f:if condition="{model.showElement}">
 	<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
-		<f:if condition="{model.layout.labelPosition} == 'before'">
-			<f:format.raw>{model.layout.label}</f:format.raw>
-		</f:if>
-
 		<f:form.submit
 			class="{model.additionalArguments.class}"
 			dir="{model.additionalArguments.dir}"
@@ -18,9 +14,5 @@
 			name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
 			value="{model.additionalArguments.value}"
 		/>
-
-		<f:if condition="{model.layout.labelPosition} == 'after'">
-			<f:format.raw>{model.layout.label}</f:format.raw>
-		</f:if>
 	<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
 </f:if>
