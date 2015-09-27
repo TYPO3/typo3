@@ -2,11 +2,13 @@
 <f:form action="index" objectName="demand" object="{demand}" class="form-inline form-inline-spaced">
 	<div class="form-group">
 		<label for="tx_Beuser_username"><f:translate key="userName">Username</f:translate></label>
-		<f:form.textfield
-			id="tx_Beuser_username"
-			class="form-control input-sm"
-			property="userName"
-		/>
+		<div class="form-group">
+			<f:form.textfield
+				id="tx_Beuser_username"
+				class="form-control input-sm"
+				property="userName"
+			/>
+		</div>
 	</div>
 	<div class="form-group">
 		<label for="tx_Beuser_usertype"><f:translate key="admin">Admin</f:translate></label>
