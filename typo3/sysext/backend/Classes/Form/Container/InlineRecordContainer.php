@@ -603,14 +603,9 @@ class InlineRecordContainer extends AbstractContainer {
 					|| !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT
 					|| $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)
 			) {
-				$onClick = htmlspecialchars(('if (confirm('
-					. GeneralUtility::quoteJSvalue($languageService->getLL('deleteWarning')) . ')) {	'
-					. 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ');'
-					. ' } return false;'));
 				$title = $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE);
 				$icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
-				$cells['delete'] = '<a class="btn btn-default" href="#" onclick="' . $onClick . '" title="' . $title
-					. '">' . $icon . '</a>';
+				$cells['delete'] = '<a href="#" class="btn btn-default t3js-editform-delete-inline-record" data-objectid="' . htmlspecialchars($nameObjectFtId) . '" title="' . $title . '">' . $icon . '</a>';
 			}
 
 			// "Hide/Unhide" links:

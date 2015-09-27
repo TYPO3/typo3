@@ -595,7 +595,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
 			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
 			var $anchorElement = $(this);
-			$modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+			var $modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
 					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'No, I will continue editing',
 					active: true,
@@ -612,6 +612,34 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 					top.TYPO3.Modal.dismiss();
 				} else if (e.target.name === 'yes') {
 					deleteRecord($anchorElement.data('table'), $anchorElement.data('uid'), $anchorElement.data('return-url'));
+					top.TYPO3.Modal.dismiss();
+				}
+			});
+		});
+
+		$(document).on('click', '.t3js-editform-delete-inline-record', function(e) {
+			e.preventDefault();
+			var title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
+			var content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
+			var $anchorElement = $(this);
+			var $modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
+				{
+					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'No, I will continue editing',
+					active: true,
+					name: 'no'
+				},
+				{
+					text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
+					btnClass: 'btn-warning',
+					name: 'yes'
+				}
+			]);
+			$modal.on('button.clicked', function(e) {
+				if (e.target.name === 'no') {
+					top.TYPO3.Modal.dismiss();
+				} else if (e.target.name === 'yes') {
+					var objectId = $anchorElement.data('objectid');
+					inline.deleteRecord(objectId);
 					top.TYPO3.Modal.dismiss();
 				}
 			});
