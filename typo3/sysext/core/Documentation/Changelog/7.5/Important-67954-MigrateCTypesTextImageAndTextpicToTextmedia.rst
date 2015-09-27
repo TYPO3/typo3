@@ -12,7 +12,7 @@ being dropped in favor of type ``textmedia``. The relation field is changed from
 Impact
 ======
 
-When EXT:fluid_styled_content is and EXT:css_styled_content isn't installed an "Upgrade Wizard" is available in the
+When EXT:fluid_styled_content is installed and EXT:css_styled_content isn't installed an "Upgrade Wizard" is available in the
 Install Tool to migrate all CE of type ``text``, ``image`` or ``textpic`` to type ``textmedia``.
 Furthermore the relations to field ``image`` will be adjusted to ``media_references`` for the migrated CE's.
 
@@ -23,7 +23,7 @@ Migration will not happen automatically but has to be triggered manually.
 Affected Installations
 ======================
 
-All installations where EXT:fluid_styled_content is and EXT:css_styled_content isn't installed.
+All installations where EXT:fluid_styled_content is installed and EXT:css_styled_content isn't installed.
 
 
 Migration
