@@ -141,6 +141,7 @@ class DataHandler {
 	 * If set, .vDEFbase values are unset in flexforms.
 	 *
 	 * @var bool
+	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public $clear_flexFormData_vDEFbase = FALSE;
 
@@ -2448,6 +2449,7 @@ class DataHandler {
 				$currentValueArray = array();
 			}
 			if (isset($currentValueArray['meta']['currentLangId'])) {
+				// @deprecated call since TYPO3 7, will be removed with TYPO3 8
 				unset($currentValueArray['meta']['currentLangId']);
 			}
 			// Remove all old meta for languages...
@@ -3078,6 +3080,7 @@ class DataHandler {
 					// Finally, check if new and old values are different (or no .vDEFbase value is found) and if so, we record the vDEF value for diff'ing.
 					// We do this after $dataValues has been updated since I expect that $dataValues_current holds evaluated values from database (so this must be the right value to compare with).
 					if (substr($vKey, -9) != '.vDEFbase') {
+						// @deprecated: flexFormXMLincludeDiffBase is only enabled by ext:compatibility6 since TYPO3 CMS 7, vDEFbase can be unset / ignored with TYPO3 CMS 8
 						if ($this->clear_flexFormData_vDEFbase) {
 							$dataValues[$key][$vKey . '.vDEFbase'] = '';
 						} elseif ($this->updateModeL10NdiffData && $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] && $vKey !== 'vDEF' && ((string)$dataValues[$key][$vKey] !== (string)$dataValues_current[$key][$vKey] || !isset($dataValues_current[$key][($vKey . '.vDEFbase')]) || $this->updateModeL10NdiffData === 'FORCE_FFUPD')) {

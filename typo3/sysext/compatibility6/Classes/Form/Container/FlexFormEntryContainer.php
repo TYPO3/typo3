@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Container;
+namespace TYPO3\CMS\Compatibility6\Form\Container;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,20 +14,20 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Handle flex form language overlays.
- *
  * Entry container to a flex form element. This container is created by
- * SingleFieldContainer if a type='flexform' field is rendered.
+ * SingleFieldContainer if a type='flex' field is rendered.
  *
- * For each existing language overlay it forks a FlexFormTabsContainer or a
- * FlexFormNoTabsContainer for rendering a full flex form record of the specific language.
+ * It either forks a FlexFormTabsContainer or a FlexFormNoTabsContainer.
+ *
+ * This container additionally handles flex form languages on sheet level.
  */
-class FlexFormLanguageContainer extends AbstractContainer {
+class FlexFormEntryContainer extends AbstractContainer {
 
 	/**
 	 * Entry method

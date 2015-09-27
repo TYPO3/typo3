@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
  * Container around a "single field".
  *
  * This container is the last one in the chain before processing is handed over to single element classes.
- * If a single field is of type flex or inline, it however creates FlexFormLanguageContainer or InlineControlContainer.
+ * If a single field is of type flex or inline, it however creates FlexFormEntryContainer or InlineControlContainer.
  *
  * The container does various checks and processing for a given single fields, for example it resolves
  * display conditions and the HTML to compare different languages.

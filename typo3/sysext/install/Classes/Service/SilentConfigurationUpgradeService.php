@@ -98,6 +98,8 @@ class SilentConfigurationUpgradeService {
 		'BE/diff_path',
 		// #69930
 		'SYS/serverTimeZone',
+		// #70138
+		'BE/flexFormXMLincludeDiffBase',
 	);
 
 	/**

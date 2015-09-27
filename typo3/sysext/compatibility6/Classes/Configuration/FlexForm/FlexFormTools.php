@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Configuration\FlexForm;
+namespace TYPO3\CMS\Compatibility6\Configuration\FlexForm;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -118,6 +118,27 @@ class FlexFormTools {
 			if (!is_array($editData)) {
 				return 'Parsing error: ' . $editData;
 			}
+			// Language settings:
+			$langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
+			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
+			// Empty or invalid <meta>
+			if (!is_array($editData['meta'])) {
+				$editData['meta'] = array();
+			}
+			$editData['meta']['currentLangId'] = array();
+			$languages = $this->getAvailableLanguages();
+			foreach ($languages as $lInfo) {
+				$editData['meta']['currentLangId'][] = $lInfo['ISOcode'];
+			}
+			if (empty($editData['meta']['currentLangId'])) {
+				$editData['meta']['currentLangId'] = array('DEF');
+			}
+			$editData['meta']['currentLangId'] = array_unique($editData['meta']['currentLangId']);
+			if ($langChildren || $langDisabled) {
+				$lKeys = array('DEF');
+			} else {
+				$lKeys = $editData['meta']['currentLangId'];
+			}
 			// Tabs sheets
 			if (is_array($dataStructArray['sheets'])) {
 				$sKeys = array_keys($dataStructArray['sheets']);
@@ -125,22 +146,27 @@ class FlexFormTools {
 				$sKeys = array('sDEF');
 			}
 			// Traverse languages:
-			foreach ($sKeys as $sheet) {
-				list($dataStruct, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sheet);
-				// Render sheet:
-				if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
-					$PA['vKeys'] = array('DEF');
-					$PA['lKey'] = 'lDEF';
-					$PA['callBackMethod_value'] = $callBackMethod_value;
-					$PA['table'] = $table;
-					$PA['field'] = $field;
-					$PA['uid'] = $row['uid'];
-					$this->traverseFlexFormXMLData_DS = &$dataStruct;
-					$this->traverseFlexFormXMLData_Data = &$editData;
-					// Render flexform:
-					$this->traverseFlexFormXMLData_recurse($dataStruct['ROOT']['el'], $editData['data'][$sheet]['lDEF'], $PA, 'data/' . $sheet . '/lDEF');
-				} else {
-					return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheet . '".';
+			foreach ($lKeys as $lKey) {
+				foreach ($sKeys as $sheet) {
+					$sheetCfg = $dataStructArray['sheets'][$sheet];
+					list($dataStruct, $sheet) = GeneralUtility::resolveSheetDefInDS($dataStructArray, $sheet);
+					// Render sheet:
+					if (is_array($dataStruct['ROOT']) && is_array($dataStruct['ROOT']['el'])) {
+						// Separate language key
+						$lang = 'l' . $lKey;
+						$PA['vKeys'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : array('DEF');
+						$PA['lKey'] = $lang;
+						$PA['callBackMethod_value'] = $callBackMethod_value;
+						$PA['table'] = $table;
+						$PA['field'] = $field;
+						$PA['uid'] = $row['uid'];
+						$this->traverseFlexFormXMLData_DS = &$dataStruct;
+						$this->traverseFlexFormXMLData_Data = &$editData;
+						// Render flexform:
+						$this->traverseFlexFormXMLData_recurse($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $PA, 'data/' . $sheet . '/' . $lang);
+					} else {
+						return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheet . '".';
+					}
 				}
 			}
 		} else {
@@ -223,10 +249,8 @@ class FlexFormTools {
 	 * Returns an array of available languages to use for FlexForm operations
 	 *
 	 * @return array
-	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */
 	public function getAvailableLanguages() {
-		GeneralUtility::logDeprecatedFunction();
 		$isL = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 		// Find all language records in the system
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -300,6 +324,13 @@ class FlexFormTools {
 	public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {
 		// Just setting value in our own result array, basically replicating the structure:
 		$pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
+		// Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase']) {
+			$vDEFbase = $pObj->getArrayValueByPath($path . '.vDEFbase', $pObj->traverseFlexFormXMLData_Data);
+			if (isset($vDEFbase)) {
+				$pObj->setArrayValueByPath($path . '.vDEFbase', $this->cleanFlexFormXML, $vDEFbase);
+			}
+		}
 	}
 
 	/***********************************

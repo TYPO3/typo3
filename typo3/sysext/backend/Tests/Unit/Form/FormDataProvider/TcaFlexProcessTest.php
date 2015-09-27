@@ -17,11 +17,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -56,133 +53,15 @@ class TcaFlexProcessTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function addDataOverwritesDataStructureLangDisableIfSetViaPageTsConfig() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'sheets' => [
-									'sDEF' => [
-										'ROOT' => [],
-									],
-								],
-							],
-						],
-					],
-				],
-			],
-			'pageTsConfigMerged' => [
-				'TCEFORM.' => [
-					'aTable.' => [
-						'aField.' => [
-							'aFlex.' => [
-								'langDisable' => 1,
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [],
-			'langDisable' => TRUE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			],
-		];
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataOverwritesDataStructureLangChildrenIfSetViaPageTsConfig() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'sheets' => [
-									'sDEF' => [
-										'ROOT' => [],
-									],
-								],
-							],
-						],
-					],
-				],
-			],
-			'pageTsConfigMerged' => [
-				'TCEFORM.' => [
-					'aTable.' => [
-						'aField.' => [
-							'aFlex.' => [
-								'langChildren' => FALSE,
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
 	public function addDataRemovesSheetIfDisabledByPageTsConfig() {
 		$input = [
 			'tableName' => 'aTable',
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -227,15 +106,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [],
 		];
 
@@ -251,11 +121,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -300,15 +168,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'aSheet' => [
 					'ROOT' => [
@@ -339,11 +198,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -388,15 +245,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'aSheet' => [
 					'ROOT' => [
@@ -427,11 +275,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -476,15 +322,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'aSheet' => [
 					'ROOT' => [
@@ -515,11 +352,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -564,15 +399,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'sDEF' => [
 					'ROOT' => [
@@ -603,11 +429,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -644,15 +468,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'sDEF' => [
 					'ROOT' => [
@@ -675,11 +490,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -716,15 +529,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'sDEF' => [
 					'ROOT' => [
@@ -755,11 +559,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -796,15 +598,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'sDEF' => [
 					'ROOT' => [
@@ -835,11 +628,9 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
 			],
-			'systemLanguageRows' => [],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -886,15 +677,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'sDEF' => [
 					'ROOT' => [
@@ -911,588 +693,14 @@ class TcaFlexProcessTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function addDataCleansLanguageDisabledDataValues() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'input_1' => [
-									'vDEF' => 'input1 text',
-									'vDEF.vDEFbase' => 'base',
-									'_TRANSFORM_vDEF.vDEFbase' => 'transform',
-									'vRemoveMe' => 'removeMe',
-									'vRemoveMe.vDEFbase' => 'removeMe',
-									'_TRANSFORM_vRemoveMe.vDEFbase' => 'removeMe',
-								],
-								'section_1' => [
-									'el' => [
-										'1' => [
-											'container_1' => [
-												'el' => [
-													'input_2' => [
-														'vDEF' => 'input2 text',
-														'vRemoveMe' => 'removeMe',
-													]
-												],
-											],
-										],
-									],
-								],
-								'invalid1' => 'keepMe',
-								'invalid2' => [
-									'el' => [
-										'1' => [
-											'keepMe',
-										],
-									],
-								],
-								'invalid3' => [
-									'el' => [
-										'1' => [
-											'container_2' => 'keepMe',
-										],
-									],
-								],
-								'invalid4' => [
-									'el' => [
-										'1' => [
-											'container_2' => [
-												'el' => 'keepMe',
-											],
-										],
-									],
-								],
-								'invalid5' => [
-									'el' => [
-										'1' => [
-											'container_2' => [
-												'el' => [
-													'field' => 'keepMe',
-												],
-											],
-										],
-									],
-								],
-							],
-							'lRemoveMe' => [],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'title' => 'aLanguageTitle',
-					'iso' => 'DEF',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'meta' => [
-									'langDisable' => 1,
-								],
-								'sheets' => [],
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('0')->shouldBeCalled()->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-			],
-			'langDisable' => TRUE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lRemoveMe']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['input_1']['vRemoveMe']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['input_1']['vRemoveMe.vDEFbase']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['input_1']['_TRANSFORM_vRemoveMe.vDEFbase']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['input_2']['vRemoveMe']);
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataRemovesDataValuesIfUserHasNoAccess() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'input_1' => [
-									'vDEF' => 'input1 text',
-								],
-								'section_1' => [
-									'el' => [
-										'1' => [
-											'container_1' => [
-												'el' => [
-													'input_2' => [
-														'vDEF' => 'input2 text',
-														'vNoAccess' => 'removeMe',
-													]
-												],
-											],
-										],
-									],
-								],
-							],
-							'lNoAccess' => [],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'NoAccess',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'meta' => [
-									'langDisable' => 0,
-								],
-								'sheets' => [],
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('0')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('1')->shouldBeCalled()->willReturn(FALSE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lNoAccess']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['input_2']['vNoAccess']);
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataAddsNewLanguageDataValues() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'input_1' => [
-									'vDEF' => 'input1 text',
-								],
-							],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'meta' => [
-									'langDisable' => 0,
-								],
-								'sheets' => [],
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('0')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('1')->shouldBeCalled()->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
-		$expected['databaseRow']['aField']['data']['sDEF']['lEN'] = [];
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataRemovesDataValuesIfPageOverlayCheckIsEnabled() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [],
-							'lEN' => [],
-							'lNoOverlay' => [],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-				2 => [
-					'uid' => 2,
-					'iso' => 'NoOverlay',
-				],
-			],
-			'userTsConfig' => [
-				'options.' => [
-					'checkPageLanguageOverlay' => '1',
-				],
-			],
-			'pageLanguageOverlayRows' => [
-				0 => [
-					'uid' => 1,
-					'sys_language_uid' => 1,
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'meta' => [
-									'langDisable' => 0,
-								],
-								'sheets' => [],
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('0')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('1')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('2')->shouldBeCalled()->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lNoOverlay']);
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataRemovesLanguageDataValuesIfUserHasNoAccessWithLangChildren() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'input_1' => [
-									'vDEF' => 'input1 text',
-									'vNoAccess' => 'removeMe',
-								],
-								'section_1' => [
-									'el' => [
-										'1' => [
-											'container_1' => [
-												'el' => [
-													'input_2' => [
-														'vDEF' => 'input2 text',
-														'vNoAccess' => 'removeMe',
-													]
-												],
-											],
-										],
-									],
-								],
-							],
-							'lNoAccess' => [],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'NoAccess',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'meta' => [
-									'langDisable' => 0,
-									'langChildren' => 1,
-								],
-								'sheets' => [],
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('0')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('1')->shouldBeCalled()->willReturn(FALSE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => TRUE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lNoAccess']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['input_1']['vNoAccess']);
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['input_2']['vNoAccess']);
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataRemovesDataValuesIfPageOverlayCheckIsEnabledWithLangChildren() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'input_1' => [
-									'vDEF' => 'input1 text',
-									'vEN' => 'input1 en text',
-									'vNoOverlay' => 'removeMe',
-								],
-							],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-				2 => [
-					'uid' => 2,
-					'iso' => 'NoOverlay',
-				],
-			],
-			'userTsConfig' => [
-				'options.' => [
-					'checkPageLanguageOverlay' => '1',
-				],
-			],
-			'pageLanguageOverlayRows' => [
-				0 => [
-					'uid' => 1,
-					'sys_language_uid' => 1,
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => [
-								'meta' => [
-									'langDisable' => 0,
-									'langChildren' => 1,
-								],
-								'sheets' => [],
-							],
-						],
-					],
-				],
-			],
-		];
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('0')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('1')->shouldBeCalled()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess('2')->shouldBeCalled()->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => TRUE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-				1 => 'EN',
-			]
-		];
-
-		unset($expected['databaseRow']['aField']['data']['sDEF']['lDEF']['input_1']['vNoOverlay']);
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
 	public function addDataHandlesPageTsConfigSettingsOfSingleFlexField() {
 		$input = [
 			'tableName' => 'aTable',
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
 			],
 			'processedTca' => [
 				'columns' => [
@@ -1501,10 +709,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 							'type' => 'flex',
 							'ds_pointerField' => 'pointerField',
 							'ds' => [
-								'meta' => [
-									'langDisable' => 0,
-									'langChildren' => 0,
-								],
 								'sheets' => [
 									'sDEF' => [
 										'ROOT' => [
@@ -1564,19 +768,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 
 		$expected = $input;
 		$expected['processedTca']['columns']['aField']['config']['ds'] = [
-			'meta' => [
-				'availableLanguageCodes' => [
-					0 => 'DEF',
-				],
-				'langDisable' => FALSE,
-				'langChildren' => FALSE,
-				'languagesOnSheetLevel' => [
-					0 => 'DEF',
-				],
-				'languagesOnElement' => [
-					0 => 'DEF',
-				]
-			],
 			'sheets' => [
 				'sDEF' => [
 					'ROOT' => [
@@ -1612,15 +803,8 @@ class TcaFlexProcessTest extends UnitTestCase {
 			'databaseRow' => [
 				'aField' => [
 					'data' => [],
-					'meta' => [],
 				],
 				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
 			],
 			'processedTca' => [
 				'columns' => [
@@ -1666,198 +850,7 @@ class TcaFlexProcessTest extends UnitTestCase {
 		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
 
 		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
-
 		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsDefaultValueFromFlexTcaForFieldInLocalizedSheet() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [],
-					'meta' => [],
-				],
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => [
-								'sheets' => [
-									'sDEF' => [
-										'ROOT' => [
-											'type' => 'array',
-											'el' => [
-												'aFlexField' => [
-													'label' => 'aFlexFieldLabel',
-													'config' => [
-														'type' => 'input',
-														'default' => 'defaultValue',
-													],
-												],
-											],
-										],
-									],
-								],
-							],
-						],
-					],
-				],
-			],
-			'pageTsConfigMerged' => [],
-		];
-
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-			\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
-		];
-
-		/** @var LanguageService|ObjectProphecy $languageService */
-		$languageService = $this->prophesize(LanguageService::class);
-		$GLOBALS['LANG'] = $languageService->reveal();
-		$languageService->sL(Argument::cetera())->willReturnArgument(0);
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF'
-			]
-		];
-
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
-		$expected['databaseRow']['aField']['data']['sDEF']['lEN']['aFlexField']['vDEF'] = 'defaultValue';
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsDefaultValueFromFlexTcaForFieldInLocalizedSheetWithLangChildren() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [],
-					'meta' => [],
-				],
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => [
-								'meta' => [
-									'langChildren' => 1,
-								],
-								'sheets' => [
-									'sDEF' => [
-										'ROOT' => [
-											'type' => 'array',
-											'el' => [
-												'aFlexField' => [
-													'label' => 'aFlexFieldLabel',
-													'config' => [
-														'type' => 'input',
-														'default' => 'defaultValue',
-													],
-												],
-											],
-										],
-									],
-								],
-							],
-						],
-					],
-				],
-			],
-			'pageTsConfigMerged' => [],
-		];
-
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-			\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
-		];
-
-		/** @var LanguageService|ObjectProphecy $languageService */
-		$languageService = $this->prophesize(LanguageService::class);
-		$GLOBALS['LANG'] = $languageService->reveal();
-		$languageService->sL(Argument::cetera())->willReturnArgument(0);
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => TRUE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-				1 => 'EN'
-			]
-		];
-
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vEN'] = 'defaultValue';
 
 		$this->assertEquals($expected, $this->subject->addData($input));
 	}
@@ -1872,12 +865,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 				'aField' => [
 					'data' => [],
 					'meta' => [],
-				],
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
 				],
 			],
 			'processedTca' => [
@@ -1926,12 +913,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 					'meta' => [],
 				],
 			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-			],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -1969,7 +950,7 @@ class TcaFlexProcessTest extends UnitTestCase {
 	/**
 	 * @test
 	 */
-	public function addDataSetsValuesAndStructureForSectionContainerElementsNoLangChildren() {
+	public function addDataSetsValuesAndStructureForSectionContainerElements() {
 		$input = [
 			'tableName' => 'aTable',
 			'databaseRow' => [
@@ -2015,16 +996,6 @@ class TcaFlexProcessTest extends UnitTestCase {
 					'meta' => [],
 				],
 			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-			],
 			'processedTca' => [
 				'columns' => [
 					'aField' => [
@@ -2079,319 +1050,14 @@ class TcaFlexProcessTest extends UnitTestCase {
 		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
 
 		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => FALSE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-			]
-		];
 
 		// A default value for existing container field aFlexField should have been set
 		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
-		// Also for the other defined language
-		$expected['databaseRow']['aField']['data']['sDEF']['lEN']['section_1']['el']['1']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
 
 		// Dummy row values for container_1 on lDEF sheet
 		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['templateRows']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
-		// Dummy row values for container_1 on lDEF sheet
-		$expected['databaseRow']['aField']['data']['sDEF']['lEN']['section_1']['templateRows']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
 
 		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-	/**
-	 * @test
-	 */
-	public function addDataSetsValuesAndStructureForSectionContainerElementsWithLangChildren() {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'section_1' => [
-									'el' => [
-										'1' => [
-											'container_1' => [
-												// It should set a default for both vDEF and vEN
-												'el' => [
-												],
-											],
-										],
-										'2' => [
-											'container_1' => [
-												'el' => [
-													'aFlexField' => [
-														// It should keep this value
-														'vDEF' => 'dbValue',
-														// It should set a default for vEN
-													],
-												],
-											],
-										],
-									],
-								],
-							],
-						],
-					],
-					'meta' => [],
-				],
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds' => [
-								'meta' => [
-									'langChildren' => 1,
-								],
-								'sheets' => [
-									'sDEF' => [
-										'ROOT' => [
-											'type' => 'array',
-											'el' => [
-												'section_1' => [
-													'section' => '1',
-													'type' => 'array',
-													'el' => [
-														'container_1' => [
-															'type' => 'array',
-															'el' => [
-																'aFlexField' => [
-																	'label' => 'aFlexFieldLabel',
-																	'config' => [
-																		'type' => 'input',
-																		'default' => 'defaultValue',
-																	],
-																],
-															],
-														],
-													],
-												],
-											],
-										],
-									],
-								],
-							],
-						],
-					],
-				],
-			],
-			'pageTsConfigMerged' => [],
-		];
-
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['flexFormSegment'] = [
-			\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
-		];
-
-		/** @var LanguageService|ObjectProphecy $languageService */
-		$languageService = $this->prophesize(LanguageService::class);
-		$GLOBALS['LANG'] = $languageService->reveal();
-		$languageService->sL(Argument::cetera())->willReturnArgument(0);
-
-		$this->backendUserProphecy->isAdmin()->willReturn(TRUE);
-		$this->backendUserProphecy->checkLanguageAccess(Argument::cetera())->willReturn(TRUE);
-
-		$expected = $input;
-		$expected['processedTca']['columns']['aField']['config']['ds']['meta'] = [
-			'availableLanguageCodes' => [
-				0 => 'DEF',
-				1 => 'EN',
-			],
-			'langDisable' => FALSE,
-			'langChildren' => TRUE,
-			'languagesOnSheetLevel' => [
-				0 => 'DEF',
-			],
-			'languagesOnElement' => [
-				0 => 'DEF',
-				1 => 'EN',
-			]
-		];
-
-		// A default value for existing container field aFlexField should have been set
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['1']['container_1']['el']['aFlexField']['vEN'] = 'defaultValue';
-		// Also for the other defined language
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['el']['2']['container_1']['el']['aFlexField']['vEN'] = 'defaultValue';
-
-		// There should be a templateRow for container_1 with defaultValue set for both languages
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['templateRows']['container_1']['el']['aFlexField']['vDEF'] = 'defaultValue';
-		$expected['databaseRow']['aField']['data']['sDEF']['lDEF']['section_1']['templateRows']['container_1']['el']['aFlexField']['vEN'] = 'defaultValue';
-
-		$this->assertEquals($expected, $this->subject->addData($input));
-	}
-
-
-	/**
-	 * Date provider for addDataSetsLanguageFlags
-	 *
-	 * @return array
-	 */
-	public function addDataSetsLanguageFlagsDataProvider() {
-		return [
-			'Default values are set' => [
-				'sheets' => [
-					'sDEF' => [
-						'ROOT' => [],
-					],
-				],
-				FALSE,
-				FALSE,
-				[],
-				[0 => 'DEF'],
-			],
-			'langDisable is set to FALSE' => [
-				'sheets' => [
-					'meta' => [
-						'langDisable' => 0,
-					],
-					'sDEF' => [
-						'ROOT' => [],
-					],
-				],
-				FALSE,
-				FALSE,
-				[],
-				[0 => 'DEF'],
-			],
-			'langDisable is set to TRUE' => [
-				'sheets' => [
-					'meta' => [
-						'langDisable' => 1,
-					],
-					'sDEF' => [
-						'ROOT' => [],
-					],
-				],
-				TRUE,
-				FALSE,
-				[],
-				[0 => 'DEF'],
-			],
-			'langChildren is set to FALSE' => [
-				'sheets' => [
-					'meta' => [
-						'langChildren' => 0,
-					],
-					'sDEF' => [
-						'ROOT' => [],
-					],
-				],
-				FALSE,
-				FALSE,
-				[],
-				[0 => 'DEF'],
-			],
-			'langChildren is set to TRUE' => [
-				'sheets' => [
-					'meta' => [
-						'langChildren' => 1,
-					],
-					'sDEF' => [
-						'ROOT' => [],
-					],
-				],
-				FALSE,
-				TRUE,
-				[0 => 'DEF'],
-				[],
-			],
-			'langDisable and langChildren are set' => [
-				'sheets' => [
-					'meta' => [
-						'langDisable' => 1,
-						'langChildren' => 1,
-					],
-					'sDEF' => [
-						'ROOT' => [],
-					],
-				],
-				TRUE,
-				TRUE,
-				[0 => 'DEF'],
-				[],
-			],
-		];
-	}
-
-	/**
-	 * @test
-	 * @param $flexform
-	 * @param $expectedLangDisable
-	 * @param $expectedLangChildren
-	 * @param $expectedLanguagesOnSheetLevel
-	 * @param $expectedLanguagesOnElement
-	 * @dataProvider addDataSetsLanguageFlagsDataProvider
-	 */
-	public function addDataSetsLanguageFlags($flexform, $expectedLangDisable, $expectedLangChildren, $expectedLanguagesOnSheetLevel, $expectedLanguagesOnElement) {
-		$input = [
-			'tableName' => 'aTable',
-			'databaseRow' => [
-				'aField' => [
-					'data' => [
-						'sDEF' => [
-							'lDEF' => [
-								'input_1' => [
-									'vDEF' => 'input1 text',
-								],
-							],
-						],
-					],
-					'meta' => [],
-				],
-				'pointerField' => 'aFlex',
-			],
-			'systemLanguageRows' => [
-				0 => [
-					'uid' => 0,
-					'iso' => 'DEF',
-				],
-				1 => [
-					'uid' => 1,
-					'iso' => 'EN',
-				],
-			],
-			'processedTca' => [
-				'columns' => [
-					'aField' => [
-						'config' => [
-							'type' => 'flex',
-							'ds_pointerField' => 'pointerField',
-							'ds' => $flexform,
-						],
-					],
-				],
-			],
-		];
-
-		$result = $this->subject->addData($input);
-
-		$this->assertEquals($expectedLangDisable, $result['processedTca']['columns']['aField']['config']['ds']['meta']['langDisable']);
-		$this->assertEquals($expectedLangChildren, $result['processedTca']['columns']['aField']['config']['ds']['meta']['langChildren']);
-		$this->assertEquals($expectedLanguagesOnSheetLevel, $result['processedTca']['columns']['aField']['config']['ds']['meta']['languagesOnSheetLevel']);
-		$this->assertEquals($expectedLanguagesOnElement, $result['processedTca']['columns']['aField']['config']['ds']['meta']['languagesOnElement']);
 	}
 
 }

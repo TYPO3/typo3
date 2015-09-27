@@ -29,7 +29,7 @@ class NodeFactory {
 	 * @var array
 	 */
 	protected $nodeTypes = array(
-		'flex' => Container\FlexFormLanguageContainer::class,
+		'flex' => Container\FlexFormEntryContainer::class,
 		'flexFormContainerContainer' => Container\FlexFormContainerContainer::class,
 		'flexFormElementContainer' => Container\FlexFormElementContainer::class,
 		'flexFormNoTabsContainer' => Container\FlexFormNoTabsContainer::class,

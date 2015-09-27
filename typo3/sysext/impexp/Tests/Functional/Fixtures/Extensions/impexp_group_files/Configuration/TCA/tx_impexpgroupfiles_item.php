@@ -131,9 +131,6 @@ return array(
 				'type' => 'flex',
 				'ds' => array(
 					'default' => '<T3DataStructure>
-							<meta>
-								<langDisable>1</langDisable>
-							</meta>
 							<sheets>
 								<sDEF>
 									<ROOT>

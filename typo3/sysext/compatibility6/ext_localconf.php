@@ -10,6 +10,52 @@ if (!$_EXTCONF || $_EXTCONF['setPageTSconfig']) {
 	');
 }
 
+
+// Register language aware flex form handling in FormEngine
+// Register render elements
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361297] = [
+	'nodeName' => 'flex',
+	'priority' => 40,
+	'class' => \TYPO3\CMS\Compatibility6\Form\Container\FlexFormEntryContainer::class,
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361298] = [
+	'nodeName' => 'flexFormNoTabsContainer',
+	'priority' => 40,
+	'class' => \TYPO3\CMS\Compatibility6\Form\Container\FlexFormNoTabsContainer::class,
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361299] = [
+	'nodeName' => 'flexFormTabsContainer',
+	'priority' => 40,
+	'class' => \TYPO3\CMS\Compatibility6\Form\Container\FlexFormTabsContainer::class,
+];
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1443361300] = [
+	'nodeName' => 'flexFormElementContainer',
+	'priority' => 40,
+	'class' => \TYPO3\CMS\Compatibility6\Form\Container\FlexFormElementContainer::class,
+];
+// Unregister stock TcaFlexProcess data provider and substitute with own data provider at the same position
+unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
+	[\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]
+);
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
+	[\TYPO3\CMS\Compatibility6\Form\FormDataProvider\TcaFlexProcess::class] = [
+		'depends' => [
+			\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare::class,
+		]
+	];
+unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
+	[\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class]['depends'][\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexProcess::class]
+);
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord']
+	[\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class]['depends'][]
+		= \TYPO3\CMS\Compatibility6\Form\FormDataProvider\TcaFlexProcess::class;
+// Register "XCLASS" of FlexFormTools for language parsing
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+	= TYPO3\CMS\Compatibility6\Configuration\FlexForm\FlexFormTools::class;
+// Language diff updating in flex
+$GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = TRUE;
+
+
 // TCA migration if TCA registration still happened in ext_tables.php
 if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] = array();

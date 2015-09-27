@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Container;
+namespace TYPO3\CMS\Compatibility6\Form\Container;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,13 +37,14 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 		$fieldName = $this->data['fieldName']; // field name of the flex form field in DB
 		$parameterArray = $this->data['parameterArray'];
 		$flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
+		$flexFormCurrentLanguage = $this->data['flexFormCurrentLanguage'];
 		$flexFormRowData = $this->data['flexFormRowData'];
 		$resultArray = $this->initializeResultArray();
 
 		// Flex ds was normalized in flex provider to always have a sheet.
 		// Determine this single sheet name, most often it ends up with sDEF, except if only one sheet was defined
 		$sheetName = array_pop(array_keys($flexFormDataStructureArray['sheets']));
-		$flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?: [];
+		$flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
 		// That was taken from GeneralUtility::resolveSheetDefInDS - no idea if it is important
 		unset($flexFormDataStructureArray['meta']);
@@ -65,7 +67,7 @@ class FlexFormNoTabsContainer extends AbstractContainer {
 		$options = $this->data;
 		$options['flexFormDataStructureArray'] = $flexFormDataStructureArray['sheets'][$sheetName]['ROOT']['el'];
 		$options['flexFormRowData'] = $flexFormRowDataSubPart;
-		$options['flexFormFormPrefix'] = '[data][' . $sheetName . '][lDEF]';
+		$options['flexFormFormPrefix'] = '[data][' . $sheetName . '][' . $flexFormCurrentLanguage . ']';
 		$options['parameterArray'] = $parameterArray;
 
 		$options['renderType'] = 'flexFormElementContainer';

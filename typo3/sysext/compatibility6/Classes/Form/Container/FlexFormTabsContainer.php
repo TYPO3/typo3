@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Form\Container;
+namespace TYPO3\CMS\Compatibility6\Form\Container;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
@@ -40,16 +41,17 @@ class FlexFormTabsContainer extends AbstractContainer {
 		$fieldName = $this->data['fieldName']; // field name of the flex form field in DB
 		$parameterArray = $this->data['parameterArray'];
 		$flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
+		$flexFormCurrentLanguage = $this->data['flexFormCurrentLanguage'];
 		$flexFormRowData = $this->data['flexFormRowData'];
 
-		$tabId = 'TCEFORMS:flexform:' . $this->data['parameterArray']['itemFormElName'] . 'lDEF';
+		$tabId = 'TCEFORMS:flexform:' . $this->data['parameterArray']['itemFormElName'] . $flexFormCurrentLanguage;
 		$tabIdString = $docTemplate->getDynTabMenuId($tabId);
 		$tabCounter = 0;
 
 		$resultArray = $this->initializeResultArray();
 		$tabsContent = array();
 		foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
-			$flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName]['lDEF'] ?: [];
+			$flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
 
 			if (!is_array($sheetDataStructure['ROOT']['el'])) {
 				$resultArray['html'] .= LF . 'No Data Structure ERROR: No [\'ROOT\'][\'el\'] found for sheet "' . $sheetName . '".';
@@ -71,7 +73,7 @@ class FlexFormTabsContainer extends AbstractContainer {
 			$options = $this->data;
 			$options['flexFormDataStructureArray'] = $sheetDataStructure['ROOT']['el'];
 			$options['flexFormRowData'] = $flexFormRowSheetDataSubPart;
-			$options['flexFormFormPrefix'] = '[data][' . $sheetName . '][lDEF]';
+			$options['flexFormFormPrefix'] = '[data][' . $sheetName . '][' . $flexFormCurrentLanguage . ']';
 			$options['parameterArray'] = $parameterArray;
 			// Merge elements of this tab into a single list again and hand over to
 			// palette and single field container to render this group
