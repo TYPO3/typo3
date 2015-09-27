@@ -905,6 +905,94 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return array
 	 */
+	public function stdWrap_trimDataProvider() {
+		return array(
+			'trimstring' => array(
+				'trimstring',
+				'trimstring',
+			),
+			'trim string with space inside' => array(
+				'trim string',
+				'trim string',
+			),
+			'trim string with space at the begin and end' => array(
+				' trim string ',
+				'trim string',
+			),
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function "trim"
+	 *
+	 * @param string $content
+	 * @param string $expected
+	 *
+	 * @dataProvider stdWrap_trimDataProvider
+	 * @test
+	 */
+	public function stdWrap_trim($content, $expected) {
+		$result = $this->subject->stdWrap_trim($content);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function stdWrap_intvalDataProvider() {
+		return array(
+			'number' => array(
+				'123',
+				123,
+			),
+			'float' => array(
+				'123.45',
+				123,
+			),
+			'string' => array(
+				'string',
+				0,
+			),
+			'zero' => array(
+				'0',
+				0,
+			),
+			'empty' => array(
+				'',
+				0,
+			),
+			'NULL' => array(
+				NULL,
+				0,
+			),
+			'bool TRUE' => array(
+				TRUE,
+				1,
+			),
+			'bool FALSE' => array(
+				FALSE,
+				0,
+			),
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function "intval"
+	 *
+	 * @param string $content
+	 * @param int $expected
+	 *
+	 * @dataProvider stdWrap_intvalDataProvider
+	 * @test
+	 */
+	public function stdWrap_intval($content, $expected) {
+		$result = $this->subject->stdWrap_intval($content);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
 	public function stdWrap_strPadDataProvider() {
 		return array(
 			'pad string with default settings and length 10' => array(
