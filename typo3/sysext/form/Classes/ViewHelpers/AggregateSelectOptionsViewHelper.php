@@ -15,16 +15,12 @@ namespace TYPO3\CMS\Form\ViewHelpers;
  */
 
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Form\Domain\Model\Element;
 
 /**
  * Aggregator for the select options
  */
 class AggregateSelectOptionsViewHelper extends AbstractViewHelper  {
-
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Model\Form
-	 */
-	protected $model;
 
 	/**
 	 * @var array
@@ -37,14 +33,14 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper  {
 	protected $selectedValues = array();
 
 	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model
+	 * @param Element $model
 	 * @param boolean $returnSelectedValues
 	 * @return array
 	 */
-	public function render($model, $returnSelectedValues = FALSE) {
+	public function render(Element $model, $returnSelectedValues = FALSE) {
 
 		foreach ($model->getChildElements() as $element) {
-			$this->createElement($element, array());
+			$this->createElement($element);
 		}
 
 		if ($returnSelectedValues === TRUE) {
@@ -55,20 +51,20 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper  {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model
+	 * @param Element $model
 	 * @param array $optGroupData
 	 * @return void
 	 */
-	public function createElement($model, $optGroupData = array()) {
+	protected function createElement(Element $model, array $optGroupData = array()) {
 		$this->checkElementForOptgroup($model, $optGroupData);
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model
+	 * @param Element $model
 	 * @param array $optGroupData
 	 * @return void
 	 */
-	protected function checkElementForOptgroup($model, $optGroupData = array()) {
+	protected function checkElementForOptgroup(Element $model, array $optGroupData = array()) {
 		if ($model->getElementType() === 'OPTGROUP') {
 			$optGroupData = array(
 				'label' => $model->getAdditionalArgument('label'),
@@ -77,13 +73,13 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper  {
 			$this->getChildElements($model, $optGroupData);
 		} else {
 			$optionData = array(
-				'value' => $model->getAdditionalArgument('value'),
+				'value' => $model->getAdditionalArgument('value') ?: $model->getElementCounter(),
 				'label' => $model->getAdditionalArgument('text'),
 				'selected' => $model->getHtmlAttribute('selected'),
 			);
 
-			if ($model->getHtmlAttribute('selected') == 'selected') {
-				$this->selectedValues[] = $model->getAdditionalArgument('value');
+			if (!empty($optionData['selected'])) {
+				$this->selectedValues[] = $optionData['value'];
 			}
 
 			if (count($optGroupData)) {
@@ -93,18 +89,18 @@ class AggregateSelectOptionsViewHelper extends AbstractViewHelper  {
 			} else {
 				$this->options[] = $optionData;
 			}
-			return $model;
 		}
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model
+	 * @param Element $model
 	 * @param array $optGroupData
 	 * @return void
 	 */
-	protected function getChildElements($model, $optGroupData = array()) {
+	protected function getChildElements(Element $model, array $optGroupData = array()) {
 		foreach ($model->getChildElements() as $element) {
 			$this->createElement($element, $optGroupData);
 		}
 	}
+
 }

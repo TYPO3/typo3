@@ -113,6 +113,7 @@ class HandleIncomingFormValues implements SingletonInterface {
 				$element->getParentElement()->setAdditionalArgument('atLeastOneCheckedChildElement', TRUE);
 			}
 		} elseif ($element->getElementType() === 'OPTION') {
+			$modelValue = (string)($element->getAdditionalArgument('value') ?: $element->getElementCounter());
 			if ($element->getParentElement()->getElementType() === 'OPTGROUP') {
 				$parentName = $element->getParentElement()->getParentElement()->getName();
 			} else {
@@ -121,7 +122,7 @@ class HandleIncomingFormValues implements SingletonInterface {
 			$incomingData = $formBuilder->getIncomingData()->getIncomingField($parentName);
 			/* Multiselect */
 			if (is_array($incomingData)) {
-				if (in_array($modelValue, $incomingData)) {
+				if (in_array($modelValue, $incomingData, TRUE)) {
 					$element->setHtmlAttribute('selected', 'selected');
 				} else {
 					$element->setHtmlAttribute('selected', NULL);

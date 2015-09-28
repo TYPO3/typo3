@@ -5,18 +5,18 @@
     <em>{model.additionalArguments.label}</em>
   </td>
   <td>
-<f:for each="<form:aggregateSelectOptions model='{model}' />" as="option">
+<f:for each="{form:aggregateSelectOptions(model:model)}" as="option">
 <f:if condition="{option.options}">
 <f:then>
 <f:for each="{option.options}" as="optgroupOption">
-<f:if condition="{optgroupOption.selected} == 'selected'">
-    <div class="csc-form-element csc-form-element-{model.elementTypeLowerCase}">{optgroupOption.value}</div>
+<f:if condition="{optgroupOption.selected}">
+    <div class="csc-form-element csc-form-element-{model.elementTypeLowerCase}">{optgroupOption.label}</div>
 </f:if>
 </f:for>
 </f:then>
 <f:else>
-<f:if condition="{option.selected} == 'selected'">
-    <div class="csc-form-element csc-form-element-{model.elementTypeLowerCase}">{option.value}</div>
+<f:if condition="{option.selected}">
+    <div class="csc-form-element csc-form-element-{model.elementTypeLowerCase}">{option.label}</div>
 </f:if>
 </f:else>
 </f:if>
