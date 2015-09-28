@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Form\Domain\Builder;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
 use TYPO3\CMS\Form\Domain\Validator\AbstractValidator;
+use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
  * Parse and hole all the validation rules
@@ -55,7 +56,7 @@ class ValidationBuilder {
 	protected $typoScriptRepository;
 
 	/**
-	 * @var \TYPO3\CMS\Form\Utility\FormUtility
+	 * @var FormUtility
 	 */
 	protected $formUtility;
 
@@ -81,18 +82,17 @@ class ValidationBuilder {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Form\Utility\FormUtility $formUtility
-	 * @return void
-	 */
-	public function injectFormUtility(\TYPO3\CMS\Form\Utility\FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
-
-	/**
 	 * @param Configuration $configuration
 	 */
 	public function setConfiguration(Configuration $configuration) {
 		$this->configuration = $configuration;
+	}
+
+	/**
+	 * @param FormUtility $formUtility
+	 */
+	public function setFormUtility(FormUtility $formUtility) {
+		$this->formUtility = $formUtility;
 	}
 
 	/**
@@ -139,8 +139,8 @@ class ValidationBuilder {
 					$validator = $this->objectManager->get($validatorClassName, $validatorOptions);
 
 					if ($validator instanceof AbstractValidator) {
-						$validator->setConfiguration($this->configuration);
 						$validator->setRawArgument($rawArgument);
+						$validator->setFormUtility($this->formUtility);
 						$mandatoryMessage = $validator->renderMessage($ruleArguments['message.'], $ruleArguments['message']);
 
 						$this->rules[$this->configuration->getPrefix()][$fieldName][] = array(

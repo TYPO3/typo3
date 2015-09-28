@@ -134,6 +134,9 @@ class HandleIncomingFormValues implements SingletonInterface {
 					$element->setHtmlAttribute('selected', NULL);
 				}
 			}
+		} elseif ($element->getElementType() === 'TEXTAREA') {
+			$incomingData = $formBuilder->getIncomingData()->getIncomingField($elementName);
+			$element->setAdditionalArgument('text', $incomingData);
 		} elseif ($element->getElementType() === 'FILEUPLOAD') {
 			if (
 				$formBuilder->getValidationErrors() == NULL

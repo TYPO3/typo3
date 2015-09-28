@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Mail\Rfc822AddressesParser;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Form\Utility\FormUtility;
 
 /**
  * The mail post processor
@@ -41,6 +42,11 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @var \TYPO3\CMS\Form\Utility\SessionUtility
 	 */
 	protected $sessionUtility;
+
+	/**
+	 * @var FormUtility
+	 */
+	protected $formUtility;
 
 	/**
 	 * @var \TYPO3\CMS\Form\Domain\Model\Element
@@ -109,6 +115,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @return string HTML message from this processor
 	 */
 	public function process() {
+		$this->formUtility = FormUtility::create($this->controllerContext->getConfiguration());
 		$this->setSubject();
 		$this->setFrom();
 		$this->setTo();
@@ -445,45 +452,11 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @return string
 	 */
 	protected function renderMessage($messageType) {
-		$message = NULL;
-		$type = NULL;
-		if ($this->typoScript['messages.'][$messageType]) {
-			$type = $this->typoScript['messages.'][$messageType];
-		}
-		if ($this->typoScript['messages.'][$messageType . '.']) {
-			$message = $this->typoScript['messages.'][$messageType . '.'];
-		}
-		if ($this->controllerContext->getConfiguration()->getContentElementRendering()) {
-			if (empty($message)) {
-				if (!empty($type)) {
-					$message = $type;
-					$type = 'TEXT';
-				} else {
-					$type = 'TEXT';
-					$message = $this->getLocalLanguageLabel($messageType);
-				}
-				$value['value'] = $message;
-				$value['wrap'] = '<p>|</p>';
-			} elseif (!is_array($message)) {
-				$value['value'] = $message;
-				$value['wrap'] = '<p>|</p>';
-			} else {
-				$value = $message;
-			}
-			$message = $GLOBALS['TSFE']->cObj->cObjGetSingle(
-				$type,
-				$value
-			);
-		} else {
-			if (isset($message['value'])) {
-				$message = $message['value'];
-			} elseif (isset($message['data'])) {
-				$message = LocalizationUtility::translate($message['data'], 'form');
-			} elseif ($type !== '') {
-				$message = $this->getLocalLanguageLabel($messageType);
-			}
-		}
-		return $message;
+		return $this->formUtility->renderItem(
+			$this->typoScript['messages.'][$messageType . '.'],
+			$this->typoScript['messages.'][$messageType],
+			$this->getLocalLanguageLabel($messageType)
+		);
 	}
 
 	/**

@@ -20,6 +20,7 @@ use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\Domain\Builder\FormBuilder;
 use TYPO3\CMS\Form\Domain\Builder\ValidationBuilder;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
+use TYPO3\CMS\Form\Utility\FormUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -43,7 +44,7 @@ class FrontendController extends ActionController {
 	protected $sessionUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Form\Utility\FormUtility
+	 * @var FormUtility
 	 */
 	protected $formUtility;
 
@@ -80,23 +81,18 @@ class FrontendController extends ActionController {
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Form\Utility\FormUtility $formUtility
-	 * @return void
-	 */
-	public function injectFormUtility(\TYPO3\CMS\Form\Utility\FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
-
-	/**
 	 * initialize action
 	 *
 	 * @return void
 	 */
 	protected function initializeAction() {
 		$this->configuration = Configuration::create()->setTypoScript($this->settings['typoscript']);
+		$this->formUtility = FormUtility::create($this->configuration);
 		$this->validationBuilder = ValidationBuilder::create($this->configuration);
+		$this->validationBuilder->setFormUtility($this->formUtility);
 		$this->formBuilder = FormBuilder::create($this->configuration);
 		$this->formBuilder->setValidationBuilder($this->validationBuilder);
+		$this->formBuilder->setFormUtility($this->formUtility);
 		$this->typoscript = $this->settings['typoscript'];
 
 			// uploaded file storage
@@ -205,15 +201,10 @@ class FrontendController extends ActionController {
 		$this->sessionUtility->storeSession();
 		$this->view->assign('model', $form);
 
-		$confirmationMessage = NULL;
-		$confirmationMessageType = NULL;
-		if (isset($this->typoscript['confirmation']['message.'])) {
-			$confirmationMessage = $this->typoscript['confirmation']['message.'];
-			$confirmationMessageType = $this->typoscript['confirmation']['message'];
-		}
-		$message = $this->renderConfirmationMessage(
-			$confirmationMessage,
-			$confirmationMessageType
+		$message = $this->formUtility->renderItem(
+			$this->typoscript['confirmation.']['message.'],
+			$this->typoscript['confirmation.']['message'],
+			LocalizationUtility::translate('tx_form_view_confirmation.message', 'form')
 		);
 		$this->view->assign('message', $message);
 	}
@@ -321,43 +312,4 @@ class FrontendController extends ActionController {
 			$baseConjunctionValidator->addValidator($modelValidator);
 		}
 	}
-
-	/**
-	 * Render the message for the confirmation page
-	 *
-	 * @param mixed $message Message as string or TS
-	 * @param NULL|string $type Name of the cObj
-	 * @return string XHTML string containing the message
-	 */
-	protected function renderConfirmationMessage($message = NULL, $type = NULL) {
-		if ($this->configuration->getContentElementRendering()) {
-			if (
-				$type !== NULL
-				&& $message !== NULL
-			) {
-				$value = $message;
-			} elseif ($message !== NULL) {
-				$value = $message;
-				$type = 'TEXT';
-			} else {
-				$value['wrap'] = '<p>|</p>';
-				$value['value'] = LocalizationUtility::translate('tx_form_view_confirmation.message', 'form');
-				$type = 'TEXT';
-			}
-			$message = $this->formUtility->renderContentObject(
-				$type,
-				$value
-			);
-		} else {
-			if (isset($this->typoscript['message.']['value'])) {
-				$message = $this->typoscript['message.']['value'];
-			} elseif (isset($this->typoscript['message.']['data'])) {
-				$message = LocalizationUtility::translate($this->typoscript['message.']['data'], 'form');
-			} else {
-				$message = $this->typoscript['message'];
-			}
-		}
-		return $message;
-	}
-
 }

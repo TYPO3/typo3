@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Form\Domain\Validator;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Form\Domain\Model\Configuration;
+use TYPO3\CMS\Form\Utility\FormUtility;
 
 abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
@@ -26,27 +26,14 @@ abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate';
 
 	/**
-	 * @var \TYPO3\CMS\Form\Utility\FormUtility
+	 * @var FormUtility
 	 */
 	protected $formUtility;
-
-	/**
-	 * @var Configuration
-	 */
-	protected $configuration;
 
 	/**
 	 * @var mixed
 	 */
 	protected $rawArgument;
-
-	/**
-	 * @param \TYPO3\CMS\Form\Utility\FormUtility $formUtility
-	 * @return void
-	 */
-	public function injectFormUtility(\TYPO3\CMS\Form\Utility\FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
 
 	/**
 	 * @var array
@@ -65,17 +52,17 @@ abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 	protected $acceptsEmptyValues = FALSE;
 
 	/**
-	 * @param Configuration $configuration
-	 */
-	public function setConfiguration(Configuration $configuration) {
-		$this->configuration = $configuration;
-	}
-
-	/**
 	 * @param mixed $rawArgument
 	 */
 	public function setRawArgument($rawArgument) {
 		$this->rawArgument = $rawArgument;
+	}
+
+	/**
+	 * @param FormUtility $formUtility
+	 */
+	public function setFormUtility(FormUtility $formUtility) {
+		$this->formUtility = $formUtility;
 	}
 
 	/**
@@ -106,68 +93,18 @@ abstract class AbstractValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 	 * Set the message, like 'required' for the validation rule
 	 * and substitutes markers for values, like %maximum
 	 *
-	 * The output will be a rendered cObject if allowed.
-	 * If cObject rendering is allowed:
-	 * If no parameter is given, it will take the default locallang label
-	 * If only first parameter, then it's supposed to be a TEXT cObj
-	 * When both are filled, it's supposed to be a cObj made by the administrator
-	 * In the last case, no markers will be substituted
-	 * If cObject rendering is not allowed:
-	 * If no parameter is given, it will take the default locallang label
-	 * If the first parameter is given and its no array, then the markers
-	 * are substituted.
-	 * If the first parameter is given and its a array, then we try some fallbacks:
-	 * If the array contains a value key, then return the value
-	 * If the data array contains a data key, then try to localize it via
-	 * extbase LocalizationUtility::translate
 	 *
-	 * @param string|array $message Message as string or TS
-	 * @param string $type Name of the cObj
+	 * @param mixed $message Message as string or TS
+	 * @param NULL|string $type Name of the cObj
 	 * @param string $messageType message or error
-	 * @param \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator $validator
 	 * @return string
 	 */
-	public function renderMessage($message = '', $type = 'TEXT', $messageType = 'message') {
-		if ($this->configuration->getContentElementRendering()) {
-			if (empty($message)) {
-				if (!empty($type)) {
-						// cObj Text, cast to - message = "some message", type = "TEXT"
-					$message = $type;
-					$type = 'TEXT';
-				} else {
-						// cObj Text, default locallang label
-					$type = 'TEXT';
-					$message = $this->getLocalLanguageLabel($messageType);
-				}
-				$value['value'] = $this->substituteMarkers($message);
-			} elseif (!is_array($message)) {
-					// cObj Text, $message is string and replaced by the validator function
-				$value['value'] = $this->substituteMarkers($message);
-			} else {
-					// cObj $type, message is rendered as cOnj
-				$value = $message;
-			}
-			$message = $this->formUtility->renderContentObject($type, $value);
-		} else {
-			if (empty($message)) {
-				if (!empty($type)) {
-					$message = $type;
-				} else {
-					$message = $this->getLocalLanguageLabel($messageType);
-				}
-				$message = $this->substituteMarkers($message);
-			} elseif (!is_array($message)) {
-				$message = $this->substituteMarkers($message);
-			} else {
-				if (isset($message['value'])) {
-					$message = $message['value'];
-				} elseif (isset($message['data'])) {
-					$message = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($message['data'], 'form');
-				} else {
-					$message = '';
-				}
-			}
-		}
-		return $message;
+	public function renderMessage($message = NULL, $type = NULL, $messageType = 'message') {
+		$message = $this->formUtility->renderItem(
+			$message,
+			$type,
+			$this->getLocalLanguageLabel($messageType)
+		);
+		return $this->substituteMarkers($message);
 	}
 }

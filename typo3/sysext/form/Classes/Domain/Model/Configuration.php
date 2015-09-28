@@ -172,13 +172,14 @@ class Configuration {
 		if (!empty($this->typoScript['prefix'])) {
 			$this->setPrefix($this->typoScript['prefix']);
 		}
-		// Determine compatibility behavior from global settings
-		$this->setCompatibility(
-			$this->typoScriptRepository->getModelConfigurationByScope('FORM', 'compatibilityMode')
-		);
-		// Override compatibility behavior from current local settings
+		// Determine compatibility behavior
+		$this->setCompatibility((bool)$this->typoScriptRepository->getModelConfigurationByScope('FORM', 'compatibilityMode'));
 		if (isset($this->typoScript['compatibilityMode'])) {
-			$this->setCompatibility($this->typoScript['compatibilityMode']);
+			if ((int)($this->typoScript['compatibilityMode']) === 0) {
+				$this->setCompatibility(FALSE);
+			} else {
+				$this->setCompatibility(TRUE);
+			}
 		}
 		// Set the theme name
 		if (!empty($this->typoScript['themeName'])) {

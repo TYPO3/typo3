@@ -1,7 +1,7 @@
 <f:if condition="{model.showElement}">
 	<li class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
 		<label>{model.additionalArguments.label}</label>
-		{model.additionalArguments.value}
+		{model.additionalArguments.text}
 	</li>
 </f:if>
 
@@ -17,7 +17,7 @@
 	onclick="{model.additionalArguments.onclick}"
 
 	name="{model.additionalArguments.prefix}[{model.additionalArguments.name}]"
-	value="{model.additionalArguments.value}"
+	value="{model.additionalArguments.text}"
 
 	additionalAttributes="{model.htmlAttributes}"
 />

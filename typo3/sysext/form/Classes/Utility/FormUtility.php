@@ -14,25 +14,183 @@ namespace TYPO3\CMS\Form\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Form\Domain\Model\Configuration;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A session utility
+ * A utility for the form
  */
-class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
+class FormUtility {
 
 	/**
-	 * Render a content object if allowed
+	 * @param Configuration $configuration
+	 * @return FormBuilder
+	 */
+	static public function create(Configuration $configuration) {
+		/** @var FormBuilder $formBuilder */
+		$formUtility = FormUtility::getObjectManager()->get(FormUtility::class);
+		$formUtility->setConfiguration($configuration);
+		return $formUtility;
+	}
+
+	/**
+	 * @var Configuration
+	 */
+	protected $configuration;
+
+	/**
+	 * @param Configuration $configuration
+	 */
+	public function setConfiguration(Configuration $configuration) {
+		$this->configuration = $configuration;
+	}
+
+	/**
+	 * Render TypoScript values
+	 * There are different variants. It is possible that the TypoScript
+	 * which we want to render looks like this:
 	 *
-	 * @param string $key
-	 * @param array $configuration
+	 * array(
+	 *   'message' => 'TEXT',
+	 *   'message.' => array(
+	 *     'value' => 'blah'
+	 *   )
+	 * )
+	 *
+	 * or in "short syntax" (the wizard writes some syntax partly)
+	 *
+	 * array(
+	 *   'message.' => array(
+	 *     'value' => 'blah'
+	 *   )
+	 * )
+	 *
+	 * or it is simply a string.
+	 *
+	 * Furthermore we have 2 modes:
+	 * - contentelement rendering is allowed
+	 * - or contentelement rendering is not allowed
+	 *
+	 * This method will take care of all scenarios and provide some
+	 * fallbacks.
+	 * Call this method always in the following way:
+	 *
+	 * renderItem(
+	 *   $typoscript['itemToRender.'],
+	 *   $typoscript['itemToRender'],
+	 *   $optionalDefaultMessage
+	 * )
+	 *
+	 * You dont have to handle if is $typoscript['itemToRender.'] is
+	 * set or not. This function determines this.
+	 * This allows us to get the value of a TypoScript construct
+	 * without knowing about "short syntax", only a string, a cObject,
+	 * if cObject rendering is allowed and so on.
+	 *
+	 * If contentelement rendering is allowed:
+	 *   If $type and $configuration are set
+	 *   render as an cObject.
+	 *
+	 *   If $type is set but $configuration is empty
+	 *   only return the value of $type.
+	 *
+	 *   If $type is empty and $configuration is an array ("short syntax")
+	 *   render the $configuration as content type TEXT.
+	 *
+	 *   If $type is empty and $configuration is a string
+	 *   render the value of $configuration like
+	 *   10 = TEXT 10.value = $configuration.
+	 *
+	 *   If $type is empty and $configuration is empty
+	 *   return the $defaultMessage.
+	 *
+	 * If contentelement rendering is not allowed:
+	 *   If $type is set but $configuration is empty
+	 *   only return the value of $type.
+	 *
+	 *   If $type is set and $configuration['value'] isset
+	 *   return the value of $configuration['value'].
+	 * 
+	 *   If $type is set and $configuration['value'] is not set
+	 *   return the value of $defaultMessage.
+	 * 
+	 *   If $type is empty and $configuration['value'] isset
+	 *   return the value of $configuration['value'].
+	 * 
+	 *   If $type is empty and $configuration['value'] is not set
+	 *   return the value of $defaultMessage.
+	 *
+	 * @param mixed $configuration a string or a TypoScript array
+	 * @param NULL|string $type cObject type or simply a string value
+	 * @param string $defaultMessage
 	 * @return string
 	 */
-	public function renderContentObject($key, array $configuration) {
-		return $GLOBALS['TSFE']->cObj->cObjGetSingle(
-			$key,
-			$configuration
-		);
+	public function renderItem($configuration, $type = NULL, $defaultMessage = '') {
+		if ($this->configuration->getContentElementRendering()) {
+			$renderedMessage = NULL;
+			if ($type !== NULL) {
+				if (is_array($configuration)) {
+					/* Direct cObject rendering */
+					$value = $configuration;
+				} else {
+					/* got only a string, no rendering required */
+					$renderedMessage = $type;
+				}
+			} else {
+				if ($configuration !== NULL) {
+					/* Render the "short syntax"
+					 * The wizard write things like label.value
+					 * The previous version of EXT:form interpreted this
+					 * as a TEXT content object, so we do the same
+					 *  */
+					$type = 'TEXT';
+					if (is_array($configuration)) {
+						$value = $configuration;
+					} else {
+						$value['value'] = $configuration;
+					}
+				} else {
+					/* return the default message
+					 * If $type === NULL and $configuration === NULL
+					 * return the default message (if set).
+					 * */
+					$renderedMessage = $defaultMessage;
+				}
+			}
+			if ($renderedMessage === NULL) {
+				$renderedMessage = $GLOBALS['TSFE']->cObj->cObjGetSingle(
+					$type,
+					$value
+				);
+			}
+		} else {
+			if ($type !== NULL) {
+				if ($configuration !== NULL) {
+					/* the wizard write things like label.value = some text
+					 * so we need the handle that, even content object rendering
+					 * is not allowed.
+					 *  */
+					if (isset($configuration['value'])) {
+						$renderedMessage = $configuration['value'];
+					} else {
+						$renderedMessage = $defaultMessage;
+					}
+				} else {
+					// string, no rendering required
+					$renderedMessage = $type;
+				}
+			} else {
+				$renderedMessage = $defaultMessage;
+				if (
+					is_array($configuration)
+					&& isset($configuration['value'])
+				) {
+					$renderedMessage = $configuration['value'];
+				}
+			}
+		}
+		return $renderedMessage;
 	}
 
 	/**

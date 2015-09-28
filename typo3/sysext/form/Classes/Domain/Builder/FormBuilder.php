@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Form\Domain\Model\Element;
 use TYPO3\CMS\Form\Domain\Model\ValidationElement;
 use TYPO3\CMS\Form\Utility\CompatibilityLayerUtility;
+use TYPO3\CMS\Form\Utility\FormUtility;
 use TYPO3\CMS\Form\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Form\Domain\Model\Configuration;
 
@@ -47,7 +48,7 @@ class FormBuilder {
 	}
 
 	/**
-	 * @var \TYPO3\CMS\Form\Utility\FormUtility
+	 * @var FormUtility
 	 */
 	protected $formUtility;
 
@@ -105,14 +106,6 @@ class FormBuilder {
 	 * @var ControllerContext
 	 */
 	protected $controllerContext;
-
-	/**
-	 * @param \TYPO3\CMS\Form\Utility\FormUtility $formUtility
-	 * @return void
-	 */
-	public function injectFormUtility(\TYPO3\CMS\Form\Utility\FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\Service\TypoScriptService $typoScriptService
@@ -204,6 +197,20 @@ class FormBuilder {
 	}
 
 	/**
+	 * @return FormUtility
+	 */
+	public function getFormUtility() {
+		return $this->formUtility;
+	}
+
+	/**
+	 * @param FormUtility $formUtility
+	 */
+	public function setFormUtility(FormUtility $formUtility) {
+		$this->formUtility = $formUtility;
+	}
+
+	/**
 	 * @return ValidationBuilder
 	 */
 	public function getValidationBuilder() {
@@ -274,10 +281,6 @@ class FormBuilder {
 	protected function reviveElement(Element $element, array $userConfiguredElementTypoScript, $elementType = '') {
 		// @todo Check $userConfiguredElementTypoScript
 
-		if ($elementType === 'IMAGEBUTTON') {
-			GeneralUtility::deprecationLog('EXT:form: The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
-		}
-
 		$element->setElementType($elementType);
 		$element->setElementCounter($this->elementCounter);
 
@@ -288,9 +291,9 @@ class FormBuilder {
 		if ($element->getElementType() == 'CONTENTELEMENT') {
 			$attributeValue = '';
 			if ($this->configuration->getContentElementRendering()) {
-				$attributeValue = $this->formUtility->renderContentObject(
-					$userConfiguredElementTypoScript['cObj'],
-					$userConfiguredElementTypoScript['cObj.']
+				$attributeValue = $this->formUtility->renderItem(
+					$userConfiguredElementTypoScript['cObj.'],
+					$userConfiguredElementTypoScript['cObj']
 				);
 			}
 			$element->setAdditionalArguments(array(

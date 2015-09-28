@@ -39,11 +39,6 @@ class ElementBuilder {
 	}
 
 	/**
-	 * @var \TYPO3\CMS\Form\Utility\FormUtility
-	 */
-	protected $formUtility;
-
-	/**
 	 * @var \TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository
 	 */
 	protected $typoScriptRepository;
@@ -77,14 +72,6 @@ class ElementBuilder {
 	 * @var Element
 	 */
 	protected $element;
-
-	/**
-	 * @param \TYPO3\CMS\Form\Utility\FormUtility $formUtility
-	 * @return void
-	 */
-	public function injectFormUtility(\TYPO3\CMS\Form\Utility\FormUtility $formUtility) {
-		$this->formUtility = $formUtility;
-	}
 
 	/**
 	 * @param \TYPO3\CMS\Form\Domain\Repository\TypoScriptRepository $typoScriptRepository
@@ -188,15 +175,45 @@ class ElementBuilder {
 	public function overlayUserdefinedHtmlAttributeValues() {
 		foreach ($this->htmlAttributes as $attributeName => $attributeValue) {
 			$attributeNameWithoutDot = rtrim($attributeName, '.');
-			if (
-				isset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot])
-				|| isset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'])
-			) {
-				$returnValue = $this->renderAttributeValue($attributeName, array());
-				$attributeValue = $returnValue['attributeValue'];
-				$this->htmlAttributes[$attributeNameWithoutDot] = $attributeValue;
-				unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot]);
+			$attributeNameToSet = $attributeNameWithoutDot;
+			$rendered = FALSE;
+			/* If the attribute exists in the user configured typoscript */
+			if ($this->arrayKeyExists($attributeName, $this->userConfiguredElementTyposcript)) {
+				if ($this->formBuilder->getConfiguration()->getCompatibility()) {
+					$newAttributeName = $this->formBuilder->getCompatibilityService()->getNewAttributeName(
+						$this->element->getElementType(),
+						$attributeNameWithoutDot
+					);
+					/* Should the attribute be renamed? */
+					if ($newAttributeName !== $attributeNameWithoutDot) {
+						$attributeNameToSet = $newAttributeName;
+						/* If the renamed attribute already exists in the user configured typoscript */
+						if ($this->arrayKeyExists($newAttributeName, $this->userConfiguredElementTyposcript)) {
+							$attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+								$this->userConfiguredElementTyposcript[$newAttributeName . '.'],
+								$this->userConfiguredElementTyposcript[$newAttributeName]
+							);
+							/* set renamed attribute name with the value of the renamed attribute */
+							$this->htmlAttributes[$newAttributeName] = $attributeValue;
+							/* unset the renamed attribute */
+							unset($this->userConfiguredElementTyposcript[$newAttributeName . '.']);
+							unset($this->userConfiguredElementTyposcript[$newAttributeName]);
+							$rendered = TRUE;
+						}
+					}
+				}
 			}
+			if ($rendered === FALSE) {
+				if ($this->arrayKeyExists($attributeNameWithoutDot, $this->userConfiguredElementTyposcript)) {
+					$attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+						$this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
+						$this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
+					);
+					$this->htmlAttributes[$attributeNameToSet] = $attributeValue;
+				}
+			}
+			unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']);
+			unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot]);
 		}
 
 			// the prefix-* magic
@@ -216,10 +233,13 @@ class ElementBuilder {
 					continue;
 				}
 				$attributeNameWithoutDot = rtrim($attributeName, '.');
-				$returnValue = $this->renderAttributeValue($attributeName, $ignoreKeys);
-				$attributeValue = $returnValue['attributeValue'];
-				$ignoreKeys = $returnValue['ignoreKeys'];
+				$attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+					$this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
+					$this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
+				);
 				$this->htmlAttributes[$attributeNameWithoutDot] = $attributeValue;
+				$ignoreKeys[$attributeNameWithoutDot . '.'] = TRUE;
+				unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']);
 				unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot]);
 				break;
 			}
@@ -296,24 +316,44 @@ class ElementBuilder {
 				$ignoreKeys[$attributeName . '.'] = TRUE;
 				continue;
 			}
-
-			if ($this->formBuilder->getConfiguration()->getCompatibility()) {
-				$returnValue = $this->formBuilder->getCompatibilityService()->remapOldAttributes(
-					$this->element->getElementType(),
-					$attributeName,
-					$this->additionalArguments,
-					$this->userConfiguredElementTyposcript
-				);
-				$attributeName = $returnValue['attributeName'];
-				$this->additionalArguments = $returnValue['additionalArguments'];
-				$this->userConfiguredElementTyposcript = $returnValue['userConfiguredElementTyposcript'];
-			}
-
 			$attributeNameWithoutDot = rtrim($attributeName, '.');
-			$returnValue = $this->renderAttributeValue($attributeName, $ignoreKeys);
-			$attributeValue = $returnValue['attributeValue'];
-			$ignoreKeys = $returnValue['ignoreKeys'];
-			$this->additionalArguments[$attributeNameWithoutDot] = $attributeValue;
+			$attributeNameToSet = $attributeNameWithoutDot;
+			$rendered = FALSE;
+			if ($this->formBuilder->getConfiguration()->getCompatibility()) {
+				$newAttributeName = $this->formBuilder->getCompatibilityService()->getNewAttributeName(
+					$this->element->getElementType(),
+					$attributeNameWithoutDot
+				);
+				/* Should the attribute be renamed? */
+				if ($newAttributeName !== $attributeNameWithoutDot) {
+					$attributeNameToSet = $newAttributeName;
+					/* If the renamed attribute already exists in the user configured typoscript */
+					if ($this->arrayKeyExists($newAttributeName, $this->userConfiguredElementTyposcript)) {
+						$attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+							$this->userConfiguredElementTyposcript[$newAttributeName . '.'],
+							$this->userConfiguredElementTyposcript[$newAttributeName]
+						);
+						/* set renamed attribute name with the value of the renamed attribute */
+						$this->additionalArguments[$newAttributeName] = $attributeValue;
+						/* unset the renamed attribute */
+						$ignoreKeys[$newAttributeName . '.'] = TRUE;
+						$ignoreKeys[$newAttributeName] = TRUE;
+						unset($this->userConfiguredElementTyposcript[$newAttributeName . '.']);
+						unset($this->userConfiguredElementTyposcript[$newAttributeName]);
+						$rendered = TRUE;
+					}
+				}
+			}
+			if ($rendered === FALSE) {
+				$attributeValue = $this->formBuilder->getFormUtility()->renderItem(
+					$this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'],
+					$this->userConfiguredElementTyposcript[$attributeNameWithoutDot]
+				);
+				$this->additionalArguments[$attributeNameToSet] = $attributeValue;
+				$ignoreKeys[$attributeNameToSet . '.'] = TRUE;
+				$ignoreKeys[$attributeNameToSet] = TRUE;
+			}
+			unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']);
 			unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot]);
 		}
 			// remove "stdWrap." from "additionalArguments" on
@@ -335,7 +375,7 @@ class ElementBuilder {
 	public function setNameAndId() {
 		if (
 			$this->element->getParentElement()
-			&& (int)$this->typoScriptRepository->getModelConfigurationByScope($this->element->getParentElement()->getElementType(), 'childsInerhitName') == 1
+			&& (int)$this->typoScriptRepository->getModelConfigurationByScope($this->element->getParentElement()->getElementType(), 'childrenInheritName') == 1
 		) {
 			$this->htmlAttributes['name'] = $this->element->getParentElement()->getName();
 			$this->htmlAttributes['multiple'] = '1';
@@ -350,47 +390,6 @@ class ElementBuilder {
 	}
 
 	/**
-	 * Render a attribute value
-	 * Try to render it as content element if allowed
-	 * Take care about short synthax like label.data = LLL:EXT: ...
-	 * Try to translate label.data = LLL: ... stuff even if content
-	 * elemet rendering is disabled
-	 *
-	 * @param string $attributeName
-	 * @param array $ignoreKeys
-	 * @return string
-	 */
-	protected function renderAttributeValue($attributeName = '', array $ignoreKeys) {
-		$attributeNameWithoutDot = rtrim($attributeName, '.');
-		if (
-			$this->formBuilder->getConfiguration()->getContentElementRendering()
-			&& isset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.'])
-		) {
-			if ($attributeName !== $attributeNameWithoutDot) {
-				$this->userConfiguredElementTyposcript[$attributeNameWithoutDot] = 'TEXT';
-			}
-			$attributeValue = $this->formUtility->renderContentObject(
-				$this->userConfiguredElementTyposcript[$attributeNameWithoutDot],
-				$this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']
-			);
-			$ignoreKeys[$attributeNameWithoutDot . '.'] = TRUE;
-			unset($this->userConfiguredElementTyposcript[$attributeNameWithoutDot . '.']);
-		} else {
-			if (isset($this->userConfiguredElementTyposcript[$attributeName]['value'])) {
-				$attributeValue = $this->userConfiguredElementTyposcript[$attributeName]['value'];
-			} elseif (isset($this->userConfiguredElementTyposcript[$attributeName]['data'])) {
-				$attributeValue = LocalizationUtility::translate($this->userConfiguredElementTyposcript[$attributeName]['data'], 'form');
-			} else {
-				$attributeValue = $this->userConfiguredElementTyposcript[$attributeNameWithoutDot];
-			}
-		}
-		return array(
-			'attributeValue' => $attributeValue,
-			'ignoreKeys' => $ignoreKeys,
-		);
-	}
-
-	/**
 	 * If the name is not defined it is automatically generated
 	 * using the following syntax: id-{element_counter}
 	 * The name attribute will be transformed if it contains some
@@ -402,7 +401,7 @@ class ElementBuilder {
 	 * @return string
 	 */
 	public function sanitizeNameAttribute($name) {
-		$name = $this->formUtility->sanitizeNameAttribute($name);
+		$name = $this->formBuilder->getFormUtility()->sanitizeNameAttribute($name);
 		if (empty($name)) {
 			$name = 'id-' . $this->element->getElementCounter();
 		}
@@ -422,11 +421,24 @@ class ElementBuilder {
 	 * @return string
 	 */
 	protected function sanitizeIdAttribute($id) {
-		$id = $this->formUtility->sanitizeIdAttribute($id);
+		$id = $this->formBuilder->getFormUtility()->sanitizeIdAttribute($id);
 		if (empty($id)) {
 			$id = 'field-' . $this->element->getElementCounter();
 		}
 		return $id;
+	}
+
+	/**
+	 * Check if a needle exists in a array.
+	 *
+	 * @param string $needle
+	 * @param array $haystack
+	 * @return boolean TRUE if found
+	 */
+	protected function arrayKeyExists($needle, array $haystack = array()) {
+		return (
+			isset($haystack[$needle]) || isset($haystack[$needle . '.'])
+		);
 	}
 
 	/**

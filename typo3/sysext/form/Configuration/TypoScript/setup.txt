@@ -177,7 +177,7 @@ lib.tx_form.registeredElements.defaultModelDescription {
 		# viewhelpers where we need some typecasting.
 	viewHelperDefaulArguments =
 
-		# childsInerhitName
+		# childrenInheritName
 		# Used by: frontend
 		# Overwriteable by user: FALSE
 		#
@@ -185,7 +185,7 @@ lib.tx_form.registeredElements.defaultModelDescription {
 		# the parent element
 		#
 		# toDo: description
-	childsInerhitName = 0
+	childrenInheritName = 0
 
 		# visibleInShowAction
 		# Used by: frontend
@@ -1329,7 +1329,7 @@ plugin.tx_form {
 			CHECKBOXGROUP {
 				partialPath =< plugin.tx_form.view.elementPartials.CHECKBOXGROUP.10.partialPath
 
-				childsInerhitName = 1
+				childrenInheritName = 1
 
 				visibleInConfirmationAction = 1
 				visibleInMail = 1
@@ -1345,7 +1345,7 @@ plugin.tx_form {
 			RADIOGROUP {
 				partialPath =< plugin.tx_form.view.elementPartials.RADIOGROUP.10.partialPath
 
-				childsInerhitName = 1
+				childrenInheritName = 1
 
 				visibleInConfirmationAction = 1
 				visibleInMail = 1

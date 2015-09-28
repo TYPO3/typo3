@@ -499,35 +499,30 @@ class CompatibilityLayerUtility {
 	}
 
 	/**
-	 * Remap some old inconsistent settings
+	 * Get new name for some old inconsistent attribute names
 	 *
 	 * @param string $elementType
 	 * @param string $attributeName
-	 * @param array $additionalArguments
-	 * @param array $userConfiguredElementTyposcript The configuration array
-	 * @return array
+	 * @return string
 	 * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
 	 */
-	public function remapOldAttributes($elementType, $attributeName, array $additionalArguments, $userConfiguredElementTyposcript = array()) {
+	public function getNewAttributeName($elementType, $attributeName) {
 		if ($elementType === 'OPTION') {
 			if ($attributeName === 'data') {
 				GeneralUtility::deprecationLog('EXT:form: Deprecated since TYPO3 CMS 7, use text instead of data to configure the OPTION text');
-				$userConfiguredElementTyposcript['text'] = $userConfiguredElementTyposcript['data'];
-				unset($userConfiguredElementTyposcript[$attributeName]);
 				$attributeName = 'text';
 			}
 		} elseif ($elementType === 'TEXTAREA') {
 			if ($attributeName === 'data') {
 				GeneralUtility::deprecationLog('EXT:form: Deprecated since TYPO3 CMS 7, use text instead of data to configure the TEXTAREA value');
-				$userConfiguredElementTyposcript['value'] = $userConfiguredElementTyposcript['data'];
-				unset($userConfiguredElementTyposcript[$attributeName]);
-				$attributeName = 'value';
+				$attributeName = 'text';
+			}
+		} elseif ($elementType === 'TEXTBLOCK') {
+			if ($attributeName === 'content') {
+				GeneralUtility::deprecationLog('EXT:form: Deprecated since TYPO3 CMS 7, use text instead of content to configure the TEXTBLOCK value');
+				$attributeName = 'text';
 			}
 		}
-		return array(
-			'attributeName' => $attributeName,
-			'additionalArguments' => $additionalArguments,
-			'userConfiguredElementTyposcript' => $userConfiguredElementTyposcript,
-		);
+		return $attributeName;
 	}
 }
