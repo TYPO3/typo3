@@ -9,7 +9,7 @@ Form is now based on Extbase/ Fluid for frontend rendering. Therefore
 all TypoScript based layout settings have been marked as deprecated. Using the
 following code is not recommended anymore:
 
-.. code-block:: [typoscript]
+.. code-block:: typoscript
 
 	10 = FORM
 	10 {

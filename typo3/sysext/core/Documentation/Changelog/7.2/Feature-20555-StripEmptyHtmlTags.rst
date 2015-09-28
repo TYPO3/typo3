@@ -14,10 +14,10 @@ configuration of :ref:`stdWrap <t3tsref:stdwrap-htmlparser>`:
 
 	stdWrap {
 
-		// If this is set all empty tags are stripped, unless a list of tags is provided below.
+		# If this is set all empty tags are stripped, unless a list of tags is provided below.
 		HTMLparser.stripEmptyTags = 1
 
-		// This setting can be used to filter the tags that should be stripped if they are empty.
+		# This setting can be used to filter the tags that should be stripped if they are empty.
 		HTMLparser.stripEmptyTags.tags = h2, h3
 	}
 
@@ -27,19 +27,21 @@ in Page TSconfig:
 
 .. code-block:: typoscript
 
-	// For rtehtmlarea we need to use the entry parser because otherwise the p tags will
-	// be converted to linebreaks during the RTE transformation.
+	# For rtehtmlarea we need to use the entry parser because otherwise the p tags will
+	# be converted to linebreaks during the RTE transformation.
 	RTE.default.proc.entryHTMLparser_db {
 		stripEmptyTags = 1
 		stripEmptyTags.tags = p
 
-		// Since rtehtmlarea adds non breaking spaces in empty <p> tags we need to
-		// tell the parser that &nbsp; should be treated as an empty string:
+		# Since rtehtmlarea adds non breaking spaces in empty <p> tags we need to
+		# tell the parser that &nbsp; should be treated as an empty string:
 		stripEmptyTags.treatNonBreakingSpaceAsEmpty = 1
 	}
 
-**Hint!** Please note that the HTMLparser will strip all unknown tags by default. If you **only** want
-to strip empty tags, you need to set ``keepNonMatchedTags`` to TRUE or configure the allowed tags:
+.. tip::
+
+	Please note that the HTMLparser will strip all unknown tags by default. If you **only** want
+	to strip empty tags, you need to set ``keepNonMatchedTags`` to TRUE or configure the allowed tags:
 
 .. code-block:: typoscript
 

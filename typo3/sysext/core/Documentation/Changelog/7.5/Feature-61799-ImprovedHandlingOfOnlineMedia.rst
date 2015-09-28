@@ -37,9 +37,9 @@ YouTubeRenderer
 ^^^^^^^^^^^^^^^
 
 * ``bool autoplay`` default = FALSE; when set video starts immediately after loading of the page
-* ``int controls`` default = 2; see `https://developers.google.com/youtube/player_parameters#controls`_
+* ``int controls`` default = 2; see `<https://developers.google.com/youtube/player_parameters#controls>`_
 * ``bool loop`` default = FALSE; if set video starts over again from te beginning when finished
-* ``bool enablejsapi`` default = TRUE; see `https://developers.google.com/youtube/player_parameters#enablejsapi`_
+* ``bool enablejsapi`` default = TRUE; see `<https://developers.google.com/youtube/player_parameters#enablejsapi>`_
 * ``bool showinfo`` default = FALSE; show video title and uploader before video starts playing
 * ``bool no-cookie`` default = FALSE; use domain youtube-nocookie.com instead of youtube.com when embedding a video
 

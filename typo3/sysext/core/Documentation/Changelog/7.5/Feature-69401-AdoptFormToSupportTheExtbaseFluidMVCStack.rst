@@ -48,7 +48,7 @@ The ``partialRootPath`` can be overridden or extended to customize the form
 objects on a global scope. Furthermore it is possible to set a partial
 path for each form element on a local scope.
 
-.. code-block:: [typoscript]
+.. code-block:: typoscript
 
 	10 = BUTTON
 	10 {

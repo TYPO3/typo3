@@ -25,4 +25,4 @@ Any data of the flexform field ``pi_flexform`` is available with the property ``
 
 .. note::
 
-If a PHP hook already is set to render the element, it will take precedence over the Fluid-based preview.
+	If a PHP hook already is set to render the element, it will take precedence over the Fluid-based preview.
