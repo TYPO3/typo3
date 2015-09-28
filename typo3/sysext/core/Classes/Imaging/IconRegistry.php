@@ -1278,6 +1278,18 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-video.svg'
 			)
 		),
+		'mimetypes-media-video-vimeo' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-video-vimeo.svg'
+			)
+		),
+		'mimetypes-media-video-youtube' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Mimetype/mimetypes-media-video-youtube.svg'
+			)
+		),
 		'mimetypes-other-other' => array(
 			'provider' => SvgIconProvider::class,
 			'options' => array(
@@ -1810,8 +1822,8 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		'mpg' => 'mimetypes-media-video',
 		'mpeg' => 'mimetypes-media-video',
 		'mov' => 'mimetypes-media-video',
-		'vimeo' => 'mimetypes-media-video',
-		'youtube' => 'mimetypes-media-video',
+		'vimeo' => 'mimetypes-media-video-vimeo',
+		'youtube' => 'mimetypes-media-video-youtube',
 		'wav' => 'mimetypes-media-audio',
 		'mp3' => 'mimetypes-media-audio',
 		'mid' => 'mimetypes-media-audio',

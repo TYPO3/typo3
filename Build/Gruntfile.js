@@ -193,6 +193,8 @@ module.exports = function(grunt) {
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-flash.svg': '<%= paths.icons %>Mimetype/mimetypes-media-flash.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-image.svg': '<%= paths.icons %>Mimetype/mimetypes-media-image.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-video.svg': '<%= paths.icons %>Mimetype/mimetypes-media-video.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-video-vimeo.svg': '<%= paths.icons %>Mimetype/mimetypes-media-video-vimeo.svg',
+					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-media-video-youtube.svg': '<%= paths.icons %>Mimetype/mimetypes-media-video-youtube.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-other-other.svg': '<%= paths.icons %>Mimetype/mimetypes-other-other.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-pdf.svg': '<%= paths.icons %>Mimetype/mimetypes-pdf.svg',
 					'<%= paths.backend %>Public/Icons/Mimetype/mimetypes-powerpoint.svg': '<%= paths.icons %>Mimetype/mimetypes-powerpoint.svg',
