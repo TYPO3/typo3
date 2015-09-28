@@ -100,7 +100,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 	/**
-	 * Load the necessarry javascript
+	 * Load the necessary javascript
 	 *
 	 * This will only be done when the referenced record is available
 	 *
@@ -217,7 +217,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	}
 
 	/**
-	 * Load the necessarry css
+	 * Load the necessary css
 	 *
 	 * This will only be done when the referenced record is available
 	 *

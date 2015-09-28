@@ -595,7 +595,7 @@ class CompatibilityLayerUtility {
 	}
 
 	/**
-	 * Replace a html tag with a uniqe marker
+	 * Replace a html tag with a unique marker
 	 *
 	 * @param string $tagName
 	 * @param string $stopTag

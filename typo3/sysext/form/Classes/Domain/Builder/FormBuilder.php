@@ -476,7 +476,7 @@ class FormBuilder {
 
 		if ($this->getIncomingData()->getIncomingField($elementName) !== NULL) {
 				/* filter values and set it back to incoming fields */
-				/* remove xss everytime */
+				/* remove xss every time */
 			$userConfiguredElementTypoScript['filters.'][-1] = 'removexss';
 			$keys = TemplateService::sortedKeyList($userConfiguredElementTypoScript['filters.']);
 			foreach ($keys as $key) {
@@ -527,7 +527,7 @@ class FormBuilder {
 	}
 
 	/**
-	 * Set the rendered mandatrory message
+	 * Set the rendered mandatory message
 	 * and the validation error message if available
 	 *
 	 * @param Element $element

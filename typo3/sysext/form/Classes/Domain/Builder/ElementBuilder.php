@@ -286,13 +286,13 @@ class ElementBuilder {
 	 * @return void
 	 */
 	public function setViewHelperDefaulArgumentsToAdditionalArguments() {
-		$viewHelperDefaulArguments = $this->typoScriptRepository->getModelConfigurationByScope($this->element->getElementType(), 'viewHelperDefaulArguments.');
-		if (is_array($viewHelperDefaulArguments)) {
-			foreach ($viewHelperDefaulArguments as $viewHelperDefaulArgumentName => $viewHelperDefaulArgumentValue) {
+		$viewHelperDefaultArguments = $this->typoScriptRepository->getModelConfigurationByScope($this->element->getElementType(), 'viewHelperDefaultArguments.');
+		if (is_array($viewHelperDefaultArguments)) {
+			foreach ($viewHelperDefaultArguments as $viewHelperDefaulArgumentName => $viewHelperDefaulArgumentValue) {
 				$this->additionalArguments[$viewHelperDefaulArgumentName] = $viewHelperDefaulArgumentValue;
 			}
 		}
-		unset($this->userConfiguredElementTyposcript['viewHelperDefaulArguments']);
+		unset($this->userConfiguredElementTyposcript['viewHelperDefaultArguments']);
 	}
 
 	/**

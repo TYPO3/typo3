@@ -87,7 +87,7 @@ class AbstractJsonElement {
 	}
 
 	/**
-	 * Set the attiobutes according to the allowed attributes of this element
+	 * Set the attributes according to the allowed attributes of this element
 	 *
 	 * @param array $parameters Configuration array
 	 * @return void

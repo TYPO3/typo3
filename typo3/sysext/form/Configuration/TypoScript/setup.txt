@@ -5,11 +5,10 @@ tt_content.mailform = COA
 tt_content.mailform.10 = < lib.stdheader
 tt_content.mailform.20 = FORM
 tt_content.mailform.20 {
-	stdWrap.wrap = <div class="csc-mailform"> | </div>
+	stdWrap.wrap = <div class="csc-mailform">|</div>
 	stdWrap {
 		editIcons = tt_content: bodytext
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xlf:eIcon.form
-
 		prefixComment = 2 | Mail form inserted:
 	}
 }
@@ -53,165 +52,153 @@ lib.tx_form.htmlAttributesUsedByTheViewHelperDirectly.abstractFormFieldViewHelpe
 lib.tx_form.registeredElements.defaultModelDescription {
 		# compatibilityMode
 		# Used by: frontend
-		# Overwriteable by user: TRUE
+		# Overwritable by user: TRUE
 		#
-		# If set to 1 tx_form acts almost like before.
-		# The following things dont work if compatibilityMode = 0:
-		# This settings can be overwritten in the FORM object
-		# toDo: more description
+		# If set to 1 tx_form acts almost like in TYPO3 6.2.
+		# This setting can be overwritten in the FORM object.
+		# @ToDo: add more details
 	compatibilityMode = 1
 
 		# themeName
-		# Used by: frontend,  wizard (not implemented at this time)
-		# Overwriteable by user: TRUE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: TRUE
 		#
-		# The theme name for the templating.
-		# At this time there are 2 themes.
-		# Default: a template that looks similar to the previous form extension.
-		# Compatibility: This template try to imitate the old form behavior.
-		# If a compatibilityMode = 1 and a layout.xxx is set in the user definded
-		# typoscript, the theme name switch automatically to the Compatibility theme
+		# Sets the theme name used for templating.
+		# Right now there are 2 themes:
+		# 	* Default: This theme provides a solid and clean foundation and should be used.
+		# 	* Compatibility: This theme imitates the form layout/ behavior of TYPO3 6.2.
+		# If compatibilityMode = 1 and layout is used in the user definded TypoScript
+		# the theme name switches automatically to "Compatibility".
 		#
-		# This settings can be overwritten in the FORM object
-		# This settings can be overwritten in the FORM object
-		# toDo: more description
+		# This setting can be overwritten in the FORM object.
+		# @ToDo: add more details
 	themeName = Default
 
 		# htmlAttributes
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: FALSE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: FALSE
 		#
-		# The allowed html attributes for this element, based on selfhtml
-		# documentation version 8.1.2 http://wiki.selfhtml.org/wiki/Referenz:HTML/
-		# We need this to dedect and map this strings in the user configured element definition as html attributes
-		# There is a special magic
-		# If you define prefix-*. That registers every attribute (that follow this synthax)
-		# that is found in the user configured element automaicly as a html attribute.
-		# prefix-xyz found in the user configured element is automaticly set as a
-		# html attribute.
+		# Defines allowed HTML attributes for a specific element.
+		# Based on selfhtml documentation version 8.1.2 (see http://wiki.selfhtml.org/wiki/Referenz:HTML/).
+		# This is needed to detect and map these strings within the user configured element definition as HTML attributes.
+		# As soon as prefix-* is defined every attribute is registered automatically as HTML attribute.
 	htmlAttributes =< lib.tx_form.html.universalAttributes
 
 		# defaultHtmlAttributeValues
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: FALSE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: FALSE
 		#
-		# This values are set if there is no entry in the user configured element
+		# The following values are set if there is no entry in the user configured element.
 	defaultHtmlAttributeValues =
 
 		# fixedHtmlAttributeValues
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: FALSE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: FALSE
 		#
-		# This attributes are automaticly set to this values
+		# The following values are automatically set as attributes.
 	fixedHtmlAttributeValues =
 
 		# htmlAttributesUsedByTheViewHelperDirectly
 		# Used by: frontend
-		# Overwriteable by user: FALSE
+		# Overwritable by user: FALSE
 		#
-		# Each html attribute defined at "htmlAttributes" is available
-		# in the model as a array.
-		# This array will be added directly to the resulting HTML tag.
-		# For this purpose the Argument "additionalAttributes" from the
-		# ViewHelper is used.
-		# But some html attributes has to be assigned as an argument to the viewhelper.
-		# The htmlAttributesUsedByTheViewHelperDirectly map is used
-		# to remove the specified html attribute from the "htmlAttributes" array
-		# and put this into the models "additionalArguments" array
+		# Each HTML attribute defined at ".htmlAttributes" is available as array within the model.
+		# This array will be added to the resulting HTML tag.
+		# For this purpose the Fluid argument "additionalAttributes" of the ViewHelper is used.
+		#
+		# Some HTML attributes have to be assigned directly as an argument to the ViewHelper.
+		# The htmlAttributesUsedByTheViewHelperDirectly map is used to remove the specified
+		# HTML attribute from the "htmlAttributes" array and sets it for the model's "additionalArguments" array.
+		#
 		# There are two attributes which special behavior:
-		# disabled and redonly can be assigned to the most viewhelpers,
-		# but whenever a disabled-tag appears, the browser will disable the element
-		# no matter of the value.
+		# 	* disabled
+		#	* readonly
+		# These attributes can be assigned to the most ViewHelpers but whenever a "disabled" attribute appears
+		# the browser will disable this element no matter of the value.
 		# See: https://forge.typo3.org/issues/42474
-		# So we hold it in the htmlAttributes array and the code remove this attribute
-		# if its value is set to 0
+		# Therefore it is held in the htmlAttributes array and the code removes this attribute if its value is set to 0.
 	htmlAttributesUsedByTheViewHelperDirectly =
 
 		# name
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: TRUE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: TRUE
 		#
-		# This is the name of the element
+		# Sets the name of the element.
 		# If the name is not defined it is automatically generated
-		# using the following syntax: id-{element_counter}
+		# using the following syntax: id-{element_counter}.
 		# The name attribute will be transformed if it contains some
 		# non allowed characters:
-		# - spaces are changed into hyphens
-		# - remove all characters except a-z A-Z 0-9 _ -
+		# 	* spaces are changed into hyphens
+		# 	* remove all characters except a-z A-Z 0-9 _ -
 	name =
 
 		# id
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: TRUE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: TRUE
 		#
-		# This is the id of the element
+		# Sets the id of the element.
 		# If the id is not defined it is automatically generated
-		# using the following syntax: field-{element_counter}
+		# using the following syntax: field-{element_counter}.
 		# The id attribute will be transformed if it contains some
 		# non allowed characters:
-		# - spaces are changed into hyphens
-		# - if the id start with a integer then transform it to field-{integer}
-		# - remove all characters expect a-z A-Z 0-9 _ - : .
+		#	* spaces are changed into hyphens
+		#	* if the id starts with an integer then transform it to field-{integer}
+		#	* remove all characters expect a-z A-Z 0-9 _ - : .
 	id =
 
 		# partialPath
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: TRUE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: TRUE
 		#
-		# This partial is used to render the element
-		# The partial paths to the element are build by the following rule
-		# {$plugin.tx_form.view.partialRootPath}/{$themeName}/@actionName/{$partialPath}
+		# The defined partial is used to render the element.
+		# The partial paths to the element are build based on the following rule:
+		# {$plugin.tx_form.view.partialRootPath}/{$themeName}/@actionName/{$partialPath}.
 	partialPath =
 
-		# viewHelperDefaulArguments
+		# viewHelperDefaultArguments
 		# Used by: frontend
-		# Overwriteable by user: FALSE
+		# Overwritable by user: FALSE
 		#
-		# This helper array is used to cast some values needed by the
-		# viewhelpers. E.g the f:form viewhelper need a array for the
-		# argument "additionalParams". If additionalParams are not defined
-		# in the users form typoscript, this results in a NULL value in the
+		# This helper array is used to cast some values needed by the ViewHelpers.
+		# E.g the f:form ViewHelper needs an array for the
+		# argument "additionalParams". If additionalParams is not set
+		# in the userdefined TypoScript this results in a NULL value in the
 		# templating variable "{model.additionalArguments.additionalParams}"
-		# and this throws an error. The most of the viewhelper arguments
-		# are strings and/or can handle such NULL values, but there are some
-		# viewhelpers where we need some typecasting.
-	viewHelperDefaulArguments =
+		# and this throws an error. Most of the ViewHelper arguments
+		# are strings and/ or can handle such NULL values but there are some
+		# ViewHelpers which need some type casting.
+	viewHelperDefaultArguments =
 
 		# childrenInheritName
 		# Used by: frontend
-		# Overwriteable by user: FALSE
+		# Overwritable by user: FALSE
 		#
-		# If set to 1 all child elements inerhit the name of
-		# the parent element
-		#
-		# toDo: description
+		# If set to 1 all child elements inherit the name of the parent element.
+		# @ToDo: add more details
 	childrenInheritName = 0
 
 		# visibleInShowAction
 		# Used by: frontend
-		# Overwriteable by user: TRUE
+		# Overwritable by user: TRUE
 		#
-		# If set to 1 this Element is displayed in the formular
-		#
-		# toDo: description
+		# If set to 1 this element is displayed in the form.
+		# @ToDo: add more details
 	visibleInShowAction = 1
 
 		# visibleInConfirmationAction
 		# Used by: frontend
-		# Overwriteable by user: TRUE
+		# Overwritable by user: TRUE
 		#
-		# If set to 1 this Element is displayed in the confirmation page
-		#
-		# toDo: description
+		# If set to 1 this element is displayed in the confirmation page.
+		# @ToDo: add more details
 	visibleInConfirmationAction = 1
 
 		# visibleInProcessAction
 		# Used by: frontend
-		# Overwriteable by user: TRUE
+		# Overwritable by user: TRUE
 		#
-		# If set to 1 this Element is displayed in the mail
-		#
-		# toDo: description
+		# If set to 1 this element is displayed in the mail.
+		# @ToDo: add more details
 	visibleInMail = 1
 }
 
@@ -220,21 +207,24 @@ plugin.tx_form {
 		templateRootPaths {
 			10 = {$plugin.tx_form.view.templateRootPath}
 		}
+
 		partialRootPaths {
 			10 = {$plugin.tx_form.view.partialRootPath}
 		}
+
 		layoutRootPaths {
 			10 = {$plugin.tx_form.view.layoutRootPath}
 		}
 
 		# elementPartials
-		# Used by: frontend, wizard (not implemented at this time)
-		# Overwriteable by user: FALSE
+		# Used by: frontend, wizard (not implemented right now)
+		# Overwritable by user: FALSE
 		#
-		# This is the template selection array for the wizard
-		# This items are shown for the element
-		# If there is no partialPath property in the user configured element
-		# than elementPartials.ELEMENTNAME.10.partialPath is the default
+		# Defines the template selection array for the form wizard.
+		# Each defined item is shown as option within the wizard.
+		#
+		# If there is no partialPath property in the userdefined TypoScript
+		# then elementPartials.ELEMENTNAME.10.partialPath is the default.
 		elementPartials {
 			BUTTON {
 				10 {
@@ -242,120 +232,140 @@ plugin.tx_form {
 					partialPath = FlatElements/Button
 				}
 			}
+
 			BUTTONTAG {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/ButtonTag
 				}
 			}
+
 			CHECKBOX {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Checkbox
 				}
 			}
+
 			FILEUPLOAD {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Upload
 				}
 			}
+
 			FORM {
 				10 {
 					displayName = Default
 					partialPath = ContainerElements/Form
 				}
 			}
+
 			HIDDEN {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Hidden
 				}
 			}
+
 			INPUT {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Input
 				}
 			}
+
 			INPUTTYPEBUTTON {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/InputTypeButton
 				}
 			}
+
 			IMAGEBUTTON {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Imagebutton
 				}
 			}
+
 			PASSWORD {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Password
 				}
 			}
+
 			RADIO {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Radio
 				}
 			}
+
 			RESET {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Reset
 				}
 			}
+
 			SELECT {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Select
 				}
 			}
+
 			SUBMIT {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Submit
 				}
 			}
+
 			TEXTLINE {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Textfield
 				}
 			}
+
 			FIELDSET {
 				10 {
 					displayName = Default
 					partialPath = ContainerElements/Fieldset
 				}
 			}
+
 			RADIOGROUP {
 				10 {
 					displayName = Default
 					partialPath = ContainerElements/Radiogroup
 				}
 			}
+
 			CHECKBOXGROUP {
 				10 {
 					displayName = Default
 					partialPath = ContainerElements/Checkboxgroup
 				}
 			}
+
 			HEADER {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Header
 				}
 			}
+
 			TEXTAREA {
 				10 {
 					displayName = Default
 					partialPath = FlatElements/Textarea
 				}
 			}
+
 			TEXTBLOCK {
 				10 {
 					displayName = Default
@@ -382,88 +392,107 @@ plugin.tx_form {
 
 	settings {
 			# registeredValidators
-			# Used by: frontend, wizard (not implemented at this time)
-			# Overwriteable by user: FALSE
+			# Used by: frontend, wizard (not implemented right now)
+			# Overwritable by user: FALSE
 			#
-			# This array hold all possible validators
-			# displayName is planned for the wizard (not implemented at this time)
+			# The array holds all available validators.
+			# "displayName" is planned for the form wizard (not implemented right now).
 		registeredValidators {
 			alphabetic {
 				displayName = Alphabetic
 				className = TYPO3\CMS\Form\Domain\Validator\AlphabeticValidator
 			}
+
 			alphanumeric {
 				displayName = Alphanumeric
 				className = TYPO3\CMS\Form\Domain\Validator\AlphanumericValidator
 			}
+
 			between {
 				displayName = Between
 				className = TYPO3\CMS\Form\Domain\Validator\BetweenValidator
 			}
+
 			date {
 				displayName = Date
 				className = TYPO3\CMS\Form\Domain\Validator\DateValidator
 			}
+
 			digit {
 				displayName = Digit
 				className = TYPO3\CMS\Form\Domain\Validator\DigitValidator
 			}
+
 			email {
 				displayName = Email address
 				className = TYPO3\CMS\Form\Domain\Validator\EmailValidator
 			}
+
 			equals {
 				displayName = Equals
 				className = TYPO3\CMS\Form\Domain\Validator\EqualsValidator
 			}
+
 			fileallowedtypes {
 				displayName = Allowed mimetypes for file
 				className = TYPO3\CMS\Form\Domain\Validator\FileAllowedTypesValidator
 			}
+
 			filemaximumsize {
 				displayName = Maximum size for file (bytes)
 				className = TYPO3\CMS\Form\Domain\Validator\FileMaximumSizeValidator
 			}
+
 			fileminimumsize {
 				displayName = Minimum size for file (bytes)
 				className = TYPO3\CMS\Form\Domain\Validator\FileMinimumSizeValidator
 			}
+
 			float {
 				displayName = Float
 				className = TYPO3\CMS\Form\Domain\Validator\FloatValidator
 			}
+
 			greaterthan {
 				displayName = Greater than
 				className = TYPO3\CMS\Form\Domain\Validator\GreaterThanValidator
 			}
+
 			inarray {
 				displayName = In array
 				className = TYPO3\CMS\Form\Domain\Validator\InArrayValidator
 			}
+
 			integer {
 				displayName = Integer
 				className = TYPO3\CMS\Form\Domain\Validator\IntegerValidator
 			}
+
 			ip {
 				displayName = Ip address
 				className = TYPO3\CMS\Form\Domain\Validator\IpValidator
 			}
+
 			length {
 				displayName = Length
 				className = TYPO3\CMS\Form\Domain\Validator\LengthValidator
 			}
+
 			lessthan {
 				displayName = Less than
 				className = TYPO3\CMS\Form\Domain\Validator\LessThanValidator
 			}
+
 			regexp {
 				displayName = Regular Expression
 				className = TYPO3\CMS\Form\Domain\Validator\RegExpValidator
 			}
+
 			required {
 				displayName = Required
 				className = TYPO3\CMS\Form\Domain\Validator\RequiredValidator
 			}
+
 			uri {
 				displayName = Uniform Resource Identifier
 				className = TYPO3\CMS\Form\Domain\Validator\UriValidator
@@ -471,70 +500,81 @@ plugin.tx_form {
 		}
 
 			# registeredFilters
-			# Used by: frontend, wizard (not implemented at this time)
-			# Overwriteable by user: FALSE
+			# Used by: frontend, wizard (not implemented right now)
+			# Overwritable by user: FALSE
 			#
-			# This array hold all possible filters
-			# displayName is planned for the wizard (not implemented at this time)
+			# The array holds all available filters.
+			# "displayName" is planned for the wizard (not implemented right now).
 		registeredFilters {
 			alphabetic {
 				displayName = Alphabetic
 				className = TYPO3\CMS\Form\Domain\Filter\AlphabeticFilter
 			}
+
 			alphanumeric {
 				displayName = Alphanumeric
 				className = TYPO3\CMS\Form\Domain\Filter\AlphanumericFilter
 			}
+
 			currency {
 				displayName = Currency
 				className = TYPO3\CMS\Form\Domain\Filter\CurrencyFilter
 			}
+
 			digit {
 				displayName = Digit
 				className = TYPO3\CMS\Form\Domain\Filter\DigitFilter
 			}
+
 			integer {
 				displayName = Integer
 				className = TYPO3\CMS\Form\Domain\Filter\IntegerFilter
 			}
+
 			lowercase {
 				displayName = Lowercase
 				className = TYPO3\CMS\Form\Domain\Filter\LowerCaseFilter
 			}
+
 			regexp {
 				displayName = Regular Expression
 				className = TYPO3\CMS\Form\Domain\Filter\RegExpFilter
 			}
+
 			removexss {
 				displayName = Remove XSS
 				className = TYPO3\CMS\Form\Domain\Filter\RemoveXssFilter
 			}
+
 			stripnewlines {
 				displayName = Strip New Lines
 				className = TYPO3\CMS\Form\Domain\Filter\StripNewLinesFilter
 			}
+
 			titlecase {
 				displayName = Titlecase
 				className = TYPO3\CMS\Form\Domain\Filter\TitleCaseFilter
 			}
+
 			trim {
 				displayName = Trim
 				className = TYPO3\CMS\Form\Domain\Filter\TrimFilter
 			}
+
 			uppercase {
 				displayName = Uppercase
 				className = TYPO3\CMS\Form\Domain\Filter\UpperCaseFilter
 			}
 		}
 
-		# the model definition
+		# model definition
 		registeredElements {
-
 				# FORM
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form
+				# Used by: frontend, wizard (not implemented right now)
+				# Overwritable by user: TRUE
+				# Used ViewHelper: f:form
 				#
-				# toDo: description
+				# @ToDo: add more details
 			FORM =< lib.tx_form.registeredElements.defaultModelDescription
 			FORM {
 				htmlAttributes {
@@ -563,34 +603,29 @@ plugin.tx_form {
 					240 = onsubmit
 				}
 
-				viewHelperDefaulArguments {
+				viewHelperDefaultArguments {
 					arguments {
 					}
+
 					additionalParams {
 					}
+
 					argumentsToBeExcludedFromQueryString {
 					}
 				}
 
-					# FORM
-					# Used by: frontend, wizard (not implemented at this time)
-					# Overwriteable by user: TRUE
-					#
-					# There are two shipped themes
-					# Default and Compstibility
-					# The partial paths to the theme are build by the following rule
-					# {$plugin.tx_form.view.partialRootPath}/themeName/@actionName
 				themeName = Default
+
 				partialPath =< plugin.tx_form.view.elementPartials.FORM.10.partialPath
 
 				compatibilityMode = 1
 			}
 
 				# INPUT
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.textfield
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.textfield
 				#
-				# toDo: description
+				# @ToDo: add more details
 			INPUT =< lib.tx_form.registeredElements.defaultModelDescription
 			INPUT {
 				htmlAttributes {
@@ -637,10 +672,10 @@ plugin.tx_form {
 			}
 
 				# CHECKBOX
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.checkbox
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.checkbox
 				#
-				# toDo: description
+				# @ToDo: add more details
 			CHECKBOX =< lib.tx_form.registeredElements.defaultModelDescription
 			CHECKBOX {
 				htmlAttributes {
@@ -686,10 +721,10 @@ plugin.tx_form {
 			}
 
 				# FILEUPLOAD
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.upload
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.upload
 				#
-				# toDo: description
+				# @ToDo: add more details
 			FILEUPLOAD =< lib.tx_form.registeredElements.defaultModelDescription
 			FILEUPLOAD {
 				htmlAttributes {
@@ -734,10 +769,10 @@ plugin.tx_form {
 			}
 
 				# HIDDEN
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.hidden
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.hidden
 				#
-				# toDo: description
+				# @ToDo: add more details
 			HIDDEN =< lib.tx_form.registeredElements.defaultModelDescription
 			HIDDEN {
 				htmlAttributes {
@@ -777,15 +812,16 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.HIDDEN.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# IMAGEBUTTON
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.textfield
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.textfield
 				# Deprecated
 				#
-				# toDo: description
+				# @ToDo: add more details
 			IMAGEBUTTON =< lib.tx_form.registeredElements.defaultModelDescription
 			IMAGEBUTTON {
 				htmlAttributes {
@@ -835,14 +871,15 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.IMAGEBUTTON.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# PASSWORD
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.password
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.password
 				#
-				# toDo: description
+				# @ToDo: add more details
 			PASSWORD =< lib.tx_form.registeredElements.defaultModelDescription
 			PASSWORD {
 				htmlAttributes {
@@ -887,14 +924,15 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.PASSWORD.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# RADIO
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.radio
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.radio
 				#
-				# toDo: description
+				# @ToDo: add more details
 			RADIO =< lib.tx_form.registeredElements.defaultModelDescription
 			RADIO {
 				htmlAttributes {
@@ -939,10 +977,10 @@ plugin.tx_form {
 			}
 
 				# RESET
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.textfield
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.textfield
 				#
-				# toDo: description
+				# @ToDo: add more details
 			RESET =< lib.tx_form.registeredElements.defaultModelDescription
 			RESET {
 				htmlAttributes {
@@ -992,14 +1030,15 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.RESET.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# SUBMIT
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.submit
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.submit
 				#
-				# toDo: description
+				# @ToDo: add more details
 			SUBMIT =< lib.tx_form.registeredElements.defaultModelDescription
 			SUBMIT {
 				htmlAttributes {
@@ -1039,14 +1078,15 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.SUBMIT.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# TEXTLINE
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.textfield
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.textfield
 				#
-				# toDo: description
+				# @ToDo: add more details
 			TEXTLINE =< lib.tx_form.registeredElements.defaultModelDescription
 			TEXTLINE {
 				htmlAttributes {
@@ -1097,10 +1137,10 @@ plugin.tx_form {
 			}
 
 				# TEXTAREA
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.textarea
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.textarea
 				#
-				# toDo: description
+				# @ToDo: add more details
 			TEXTAREA =< lib.tx_form.registeredElements.defaultModelDescription
 			TEXTAREA {
 				htmlAttributes {
@@ -1134,10 +1174,10 @@ plugin.tx_form {
 			}
 
 				# SELECT
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: form:select (extends f:form.select)
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: form:select (extends f:form.select)
 				#
-				# toDo: description
+				# @ToDo: add more details
 			SELECT =< lib.tx_form.registeredElements.defaultModelDescription
 			SELECT {
 				htmlAttributes {
@@ -1160,13 +1200,13 @@ plugin.tx_form {
 			}
 
 				# OPTION
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: form:select (extends f:form.select)
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: form:select (extends f:form.select)
 				#
-				# We need this element to define select options via Typoscript
-				# but the rendering is made with the select viewhelper.
-				# That is the reason why we do not need a partialPath definition
-				# toDo: description
+				# No partialPath definition necessary.
+				# Element is needed to define select options via TypoScript but
+				# the rendering is based on the select ViewHelper.
+				# @ToDo: add more details
 			OPTION =< lib.tx_form.registeredElements.defaultModelDescription
 			OPTION {
 				htmlAttributes {
@@ -1183,13 +1223,13 @@ plugin.tx_form {
 			}
 
 				# OPTGROUP
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: form:select (extends f:form.select)
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: form:select (extends f:form.select)
 				#
-				# We need this element to define select options via Typoscript
-				# but the rendering is made with the select viewhelper.
-				# That is the reason why we do not need a partialPath definition
-				# toDo: description
+				# No partialPath definition necessary.
+				# Element is needed to define select options via TypoScript but
+				# the rendering is based on the select ViewHelper.
+				# @ToDo: add more details
 			OPTGROUP =< lib.tx_form.registeredElements.defaultModelDescription
 			OPTGROUP {
 				htmlAttributes {
@@ -1203,10 +1243,10 @@ plugin.tx_form {
 			}
 
 				# BUTTONTAG
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.button
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.button
 				#
-				# # Generates a element <button type="..." />
+				# # Generates an element <button type="..." />
 			BUTTONTAG =< lib.tx_form.registeredElements.defaultModelDescription
 			BUTTONTAG {
 				htmlAttributes {
@@ -1227,14 +1267,15 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.BUTTONTAG.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# INPUTTYPEBUTTON
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.textfield
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.textfield
 				#
-				# Generates a element <input type="button" />
+				# Generates an element <input type="button" />
 			INPUTTYPEBUTTON =< lib.tx_form.registeredElements.defaultModelDescription
 			INPUTTYPEBUTTON {
 				htmlAttributes {
@@ -1284,16 +1325,17 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.INPUTTYPEBUTTON.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# BUTTON
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:form.button
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:form.button
 				#
-				# A historical element whch generates a <input type="button" />
-				# To be compatible its a copy of the new element INPUTTYPEBUTTON
-				# If you want to use a <button /> tag, you must write
+				# A historical element which generates a <input type="button" /> tag.
+				# To be compatible it is a copy of the new element INPUTTYPEBUTTON
+				# If you want to use a <button> tag you have to use
 				# BUTTON =< .BUTTONTAG or use the BUTTONTAG directly
 			BUTTON =< .INPUTTYPEBUTTON
 			BUTTON {
@@ -1301,11 +1343,11 @@ plugin.tx_form {
 			}
 
 				# FIELDSET
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: none
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: none
 				#
-				# This is a container element
-				# toDo: description
+				# This defines a container element.
+				# @ToDo: add more details
 			FIELDSET =< lib.tx_form.registeredElements.defaultModelDescription
 			FIELDSET {
 				htmlAttributes {
@@ -1316,15 +1358,16 @@ plugin.tx_form {
 				partialPath =< plugin.tx_form.view.elementPartials.FIELDSET.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# CHECKBOXGROUP
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: none
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: none
 				#
-				# This is a container element
-				# toDo: description
+				# This defines a container element.
+				# @ToDo: add more details
 			CHECKBOXGROUP =< .FIELDSET
 			CHECKBOXGROUP {
 				partialPath =< plugin.tx_form.view.elementPartials.CHECKBOXGROUP.10.partialPath
@@ -1332,15 +1375,16 @@ plugin.tx_form {
 				childrenInheritName = 1
 
 				visibleInConfirmationAction = 1
+
 				visibleInMail = 1
 			}
 
 				# RADIOGROUP
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: none
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: none
 				#
-				# This is a container element
-				# toDo: description
+				# This defines a container element.
+				# @ToDo: add more details
 			RADIOGROUP =< .FIELDSET
 			RADIOGROUP {
 				partialPath =< plugin.tx_form.view.elementPartials.RADIOGROUP.10.partialPath
@@ -1348,49 +1392,54 @@ plugin.tx_form {
 				childrenInheritName = 1
 
 				visibleInConfirmationAction = 1
+
 				visibleInMail = 1
 			}
 
 				# HEADER
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:format.raw
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:format.raw
 				#
-				# toDo: description
+				# @ToDo: add more details
 			HEADER =< lib.tx_form.registeredElements.defaultModelDescription
 			HEADER {
 				partialPath =< plugin.tx_form.view.elementPartials.HEADER.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# TEXTBLOCK
-				# Used by: frontend, wizard (not implemented at this time)
-				# Used viewhelper: f:format.raw
+				# Used by: frontend, wizard (not implemented right now)
+				# Used ViewHelper: f:format.raw
 				#
-				# toDo: description
+				# @ToDo: add more details
 			TEXTBLOCK =< lib.tx_form.registeredElements.defaultModelDescription
 			TEXTBLOCK {
 				htmlAttributes >
+
 				partialPath =< plugin.tx_form.view.elementPartials.TEXTBLOCK.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 
 				# CONTENTELEMENT
 				# Used by: frontend
-				# Used viewhelper: none
+				# Used ViewHelper: none
 				#
-				# This is an internal element but some thing should be configurable
-				# like the visibility and the used partial path.
+				# This defines an internal element which holds some basic configuration
+				# like visibility settings and the used partial path.
 				#
-				# toDo: description
+				# @ToDo: add more details
 			CONTENTELEMENT =< lib.tx_form.registeredElements.defaultModelDescription
 			CONTENTELEMENT {
 				partialPath =< plugin.tx_form.view.elementPartials.CONTENTELEMENT.10.partialPath
 
 				visibleInConfirmationAction = 0
+
 				visibleInMail = 0
 			}
 		}

@@ -217,14 +217,14 @@ class ValidationBuilder {
 	 * @return array
 	 */
 	public function getMandatoryValidationMessagesByElementName($key = '') {
-		$mandatroryMessages = array();
+		$mandatoryMessages = array();
 		if ($this->getRulesByElementName($key)) {
 			$rules = $this->getRulesByElementName($key);
 			foreach ($rules as $rule) {
-				$mandatroryMessages[] = $rule['mandatoryMessage'];
+				$mandatoryMessages[] = $rule['mandatoryMessage'];
 			}
 		}
-		return $mandatroryMessages;
+		return $mandatoryMessages;
 	}
 
 }
