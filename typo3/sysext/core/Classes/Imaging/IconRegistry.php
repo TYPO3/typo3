@@ -2028,7 +2028,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 					} elseif (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
 						$icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($tcaCtrl['iconfile']);
 					}
-					$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
+					if ($icon !== NULL) {
+						$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
+					}
 				}
 			}
 		}
