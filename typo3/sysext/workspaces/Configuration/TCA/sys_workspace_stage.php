@@ -9,7 +9,7 @@ return array(
 		'rootLevel' => 1,
 		'hideTable' => TRUE,
 		'delete' => 'deleted',
-		'iconfile' => 'EXT:t3skin/icons/gfx/i/sys_workspace.png',
+		'iconfile' => 'mimetypes-x-sys_workspace',
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_workspace'
 		),

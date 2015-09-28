@@ -77,12 +77,12 @@ return array(
 					array(
 						'LLL:EXT:lang/locallang_tca.xlf:doktype.I.0',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
-						'EXT:t3skin/icons/gfx/i/pages.gif'
+						'apps-pagetree-page-default'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.4',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION,
-						'EXT:t3skin/icons/gfx/i/be_users_section.gif'
+						'apps-pagetree-page-backend-users'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.link',
@@ -91,17 +91,17 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.2',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT,
-						'EXT:t3skin/icons/gfx/i/pages_shortcut.gif'
+						'apps-pagetree-page-shortcut'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.5',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT,
-						'EXT:t3skin/icons/gfx/i/pages_mountpoint.gif'
+						'apps-pagetree-page-mountpoint'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.8',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
-						'EXT:t3skin/icons/gfx/i/pages_link.gif'
+						'apps-pagetree-page-shortcut-external'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.div.special',
@@ -110,17 +110,17 @@ return array(
 					array(
 						'LLL:EXT:lang/locallang_tca.xlf:doktype.I.folder',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER,
-						'EXT:t3skin/icons/gfx/i/sysf.gif'
+						'apps-pagetree-folder-default'
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.xlf:doktype.I.2',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER,
-						'EXT:t3skin/icons/gfx/i/recycler.gif'
+						'apps-filetree-folder-recycler'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.doktype.I.7',
 						(string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER,
-						'EXT:t3skin/icons/gfx/i/spacer_icon.gif'
+						'apps-pagetree-spacer'
 					)
 				),
 				'default' => (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
@@ -719,7 +719,7 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.module.I.4',
 						'fe_users',
-						'EXT:t3skin/icons/gfx/i/fe_users.gif'
+						'apps-pagetree-folder-contains-fe_users'
 					)
 				),
 				'default' => '',

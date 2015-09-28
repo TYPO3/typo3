@@ -14,7 +14,7 @@ call_user_func(function() {
 	$additionalCTypeItem = array(
 		'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.10',
 		'login',
-		'EXT:t3skin/icons/gfx/i/tt_content_login.gif'
+		'content-elements-login'
 	);
 
 	$existingCTypeItems = $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'];

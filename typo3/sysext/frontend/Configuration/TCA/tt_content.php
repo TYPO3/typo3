@@ -65,7 +65,7 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.0',
 						'header',
-						'EXT:t3skin/icons/gfx/i/tt_content_header.gif'
+						'content-header'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.lists',
@@ -74,17 +74,17 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.4',
 						'bullets',
-						'EXT:t3skin/icons/gfx/i/tt_content_bullets.gif'
+						'content-bullets'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.5',
 						'table',
-						'EXT:t3skin/icons/gfx/i/tt_content_table.gif'
+						'content-table'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.6',
 						'uploads',
-						'EXT:t3skin/icons/gfx/i/tt_content_uploads.gif'
+						'content-special-uploads'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.div.special',
@@ -93,27 +93,27 @@ return array(
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.12',
 						'menu',
-						'EXT:t3skin/icons/gfx/i/tt_content_menu.gif'
+						'content-special-menu'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.13',
 						'shortcut',
-						'EXT:t3skin/icons/gfx/i/tt_content_shortcut.gif'
+						'content-special-shortcut'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.14',
 						'list',
-						'EXT:t3skin/icons/gfx/i/tt_content_list.gif'
+						'content-plugin'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.16',
 						'div',
-						'EXT:t3skin/icons/gfx/i/tt_content_div.gif'
+						'content-special-div'
 					),
 					array(
 						'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.I.17',
 						'html',
-						'EXT:t3skin/icons/gfx/i/tt_content_html.gif'
+						'content-special-html'
 					)
 				),
 				'default' => 'header',

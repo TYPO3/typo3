@@ -14,7 +14,7 @@ return array(
 		'delete' => 'deleted',
 		'adminOnly' => 1,
 		// Only admin, if any
-		'iconfile' => 'EXT:t3skin/icons/gfx/i/template.gif',
+		'iconfile' => 'tcarecords-sys_template-default',
 		'enablecolumns' => array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',

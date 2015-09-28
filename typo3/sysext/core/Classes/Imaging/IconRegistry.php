@@ -228,9 +228,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			)
 		),
 		'apps-pagetree-page-mountpoint' => array(
-			'provider' => BitmapIconProvider::class,
+			'provider' => SvgIconProvider::class,
 			'options' => array(
-				'source' => 'EXT:t3skin/images/icons/apps/pagetree-page-mountpoint.png',
+				'source' => 'EXT:backend/Resources/Public/Icons/App/apps-filetree-mount.svg',
 			)
 		),
 		'apps-pagetree-page-mountpoint-hideinmenu' => array(
