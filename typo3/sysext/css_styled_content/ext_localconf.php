@@ -1,6 +1,9 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+// Get the extension configuration
+$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
+
 // Disable image positions that make no sense on CType=image (it leaves just "above left", "center" and "right")
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 	TCEFORM.tt_content.imageorient.types.image.removeItems = 8,9,10,17,18,25,26
@@ -22,5 +25,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php'][
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['text'] =
 	\TYPO3\CMS\CssStyledContent\Hooks\PageLayoutView\TextPreviewRenderer::class;
 
-// Include new content elements to modWizards
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/PageTSconfig/NewContentElementWizard.ts">');
+if (!isset($extConf['loadContentElementWizardTsConfig']) || (int)$extConf['loadContentElementWizardTsConfig'] === 1) {
+	// Include new content elements to modWizards
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:css_styled_content/Configuration/PageTSconfig/NewContentElementWizard.ts">');
+}

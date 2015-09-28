@@ -1,0 +1,2 @@
+# cat=basic//; type=boolean; label=LLL:EXT:css_styled_content/Resources/Private/Language/locallang_em.xlf:css_styled_content.config.loadContentElementWizardTsConfig
+loadContentElementWizardTsConfig = 1
