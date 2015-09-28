@@ -4874,7 +4874,7 @@ class ContentObjectRenderer {
 	 *
 	 * @param float $content Value to process
 	 * @param array $conf TypoScript Configuration for numberFormat
-	 * @return string The formated number
+	 * @return string The formatted number
 	 */
 	public function numberFormat($content, $conf) {
 		$decimals = isset($conf['decimals.']) ? $this->stdWrap($conf['decimals'], $conf['decimals.']) : $conf['decimals'];

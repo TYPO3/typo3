@@ -827,6 +827,18 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Checks if stdWrap.cropHTML handles linebreaks correctly (by ignoring them)
+	 *
+	 * @test
+	 */
+	public function cropHtmlWorksWithLinebreaks() {
+		$subject = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
+		$expected = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna";
+		$result = $this->subject->cropHTML($subject, '121');
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * @return array
 	 */
 	public function stdWrap_roundDataProvider() {
@@ -873,18 +885,6 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * Checks if stdWrap.cropHTML handles linebreaks correctly (by ignoring them)
-	 *
-	 * @test
-	 */
-	public function cropHtmlWorksWithLinebreaks() {
-		$subject = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
-		$expected = "Lorem ipsum dolor sit amet,\nconsetetur sadipscing elitr,\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna";
-		$result = $this->subject->cropHTML($subject, '121');
-		$this->assertEquals($expected, $result);
-	}
-
-	/**
 	 * Test for the stdWrap function "round"
 	 *
 	 * @param float $float
@@ -899,6 +899,84 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'round.' => $conf
 		);
 		$result = $this->subject->stdWrap_round($float, $conf);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function stdWrap_numberFormatDataProvider() {
+		return array(
+			'testing decimals' => array(
+				0.8,
+				array(
+					'numberFormat.' => array(
+						'decimals' => 2
+					),
+				),
+				'0.80'
+			),
+			'testing decimals with input as string' => array(
+				'0.8',
+				array(
+					'numberFormat.' => array(
+						'decimals' => 2
+					),
+				),
+				'0.80'
+			),
+			'testing dec_point' => array(
+				0.8,
+				array(
+					'numberFormat.' => array(
+						'decimals' => 1,
+						'dec_point' => ','
+					),
+				),
+				'0,8'
+			),
+			'testing thousands_sep' => array(
+				999.99,
+				array(
+					'numberFormat.' => array(
+						'decimals' => 0,
+						'thousands_sep.' => array(
+							'char' => 46
+						),
+					),
+				),
+				'1.000'
+			),
+			'testing mixture' => array(
+				1281731.45,
+				array(
+					'numberFormat.' => array(
+						'decimals' => 1,
+						'dec_point.' => array(
+							'char' => 44
+						),
+						'thousands_sep.' => array(
+							'char' => 46
+						),
+					),
+				),
+				'1.281.731,5'
+			)
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function "round"
+	 *
+	 * @param float $float
+	 * @param array $conf
+	 * @param string $expected
+	 * @return void
+	 * @dataProvider stdWrap_numberFormatDataProvider
+	 * @test
+	 */
+	public function stdWrap_numberFormat($float, $conf, $expected) {
+		$result = $this->subject->stdWrap_numberFormat($float, $conf);
 		$this->assertEquals($expected, $result);
 	}
 
