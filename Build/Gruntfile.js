@@ -50,10 +50,27 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		postcss: {
+			options: {
+				map: false,
+				processors: [
+					require('autoprefixer')({ // add vendor prefixes
+						browsers: [
+							'Last 2 versions',
+							'Firefox ESR',
+							'IE 9'
+						]
+					})
+				]
+			},
+			t3skin: {
+				src: '<%= paths.t3skin %>Public/Css/*.css'
+			}
+		},
 		watch: {
 			less: {
 				files: '<%= paths.less %>**/*.less',
-				tasks: 'less'
+				tasks: 'css'
 			}
 		},
 		bowercopy: {
@@ -300,15 +317,27 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-bower-just-install');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-svgmin');
+	grunt.loadNpmTasks('grunt-postcss');
 
 	/**
 	 * grunt default task
 	 *
 	 * call "$ grunt"
 	 *
-	 * this will trigger the less build
+	 * this will trigger the CSS build
 	 */
-	grunt.registerTask('default', ['less']);
+	grunt.registerTask('default', ['css']);
+
+	/**
+	 * grunt css task
+	 *
+	 * call "$ grunt css"
+	 *
+	 * this task does the following things:
+	 * - less
+	 * - postcss
+	 */
+	grunt.registerTask('css', ['less', 'postcss']);
 
 	/**
 	 * grunt update task
@@ -316,7 +345,7 @@ module.exports = function(grunt) {
 	 * call "$ grunt update"
 	 *
 	 * this task does the following things:
-	 * - npn install
+	 * - npm install
 	 * - bower install
 	 * - copy some bower components to a specific destinations because they need to be included via PHP
 	 */
@@ -333,5 +362,5 @@ module.exports = function(grunt) {
 	 * - uglify js files
 	 * - minifies svg files
 	 */
-	grunt.registerTask('build', ['update', 'less', 'uglify', 'svgmin']);
+	grunt.registerTask('build', ['update', 'css', 'uglify', 'svgmin']);
 };
