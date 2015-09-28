@@ -6663,16 +6663,19 @@ class ContentObjectRenderer
                     $targetPart = $LD['target'] ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
                     // If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
                     if ($sectionMark && !$tsfe->config['config']['baseURL'] && $page['uid'] == $tsfe->id && !trim($addQueryParams) && !($conf['addQueryString'] && $conf['addQueryString.'])) {
-                        list(, $URLparams) = explode('?', $this->lastTypoLinkUrl);
-                        list($URLparams) = explode('#', $URLparams);
-                        parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
-                        // Type nums must match as well as page ids
-                        if ((int)$URLparamsArray['type'] == $tsfe->type) {
-                            unset($URLparamsArray['id']);
-                            unset($URLparamsArray['type']);
-                            // If there are no parameters left.... set the new url.
-                            if (empty($URLparamsArray)) {
-                                $this->lastTypoLinkUrl = $sectionMark;
+                        $currentQueryParams = $this->getQueryArguments(array());
+                        if (!trim($currentQueryParams)) {
+                            list(, $URLparams) = explode('?', $this->lastTypoLinkUrl);
+                            list($URLparams) = explode('#', $URLparams);
+                            parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
+                            // Type nums must match as well as page ids
+                            if ((int)$URLparamsArray['type'] == $tsfe->type) {
+                                unset($URLparamsArray['id']);
+                                unset($URLparamsArray['type']);
+                                // If there are no parameters left.... set the new url.
+                                if (empty($URLparamsArray)) {
+                                    $this->lastTypoLinkUrl = $sectionMark;
+                                }
                             }
                         }
                     }
