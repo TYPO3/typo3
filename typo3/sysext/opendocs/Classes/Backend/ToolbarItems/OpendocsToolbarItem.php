@@ -88,7 +88,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $title = $this->getLanguageService()->getLL('toolbaritem', true);
 
         $opendocsMenu = array();
-        $opendocsMenu[] = '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL)->render() . '</span>';
+        $opendocsMenu[] = '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-opendocs', Icon::SIZE_SMALL)->render('inline') . '</span>';
         $opendocsMenu[] = '<span class="badge" id="tx-opendocs-counter">' . $numDocs . '</span>';
 
         return implode(LF, $opendocsMenu);
@@ -160,7 +160,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         if (!$isRecentDoc) {
             $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true);
             // Open document
-            $closeIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render();
+            $closeIcon = $this->iconFactory->getIcon('actions-close', Icon::SIZE_SMALL)->render('inline');
             $entry = '
 				<li class="opendoc">
 					<a href="#" class="dropdown-list-link dropdown-link-list-add-close" onclick="' . htmlspecialchars($onClickCode) . '" target="content">' . $icon . ' ' . $label . '</a>

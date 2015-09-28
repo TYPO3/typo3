@@ -119,7 +119,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', true);
-        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render() . '</span>';
+        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-shortcut', Icon::SIZE_SMALL)->render('inline') . '</span>';
     }
 
     /**
@@ -134,9 +134,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         $shortcutEdit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit', true);
         $shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', true);
         $editIcon = '<a href="#" class="dropdown-list-link-edit shortcut-edit" ' . $shortcutEdit . '>'
-            . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+            . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render('inline') . '</a>';
         $deleteIcon = '<a href="#" class="dropdown-list-link-delete shortcut-delete" title="' . $shortcutDelete . '">'
-            . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
+            . $this->iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)->render('inline') . '</a>';
 
         $shortcutMenu[] = '<ul class="dropdown-list">';
 
@@ -186,7 +186,7 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         if (count($shortcutMenu) === 2) {
             // No shortcuts added yet, show a small help message how to add shortcuts
             $title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarks', true);
-            $icon = '<span title="' . $title . '">' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $title . '">' . $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render('inline') . '</span>';
             $label = str_replace('%icon%', $icon, $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:bookmarkDescription', true));
             $compiledShortcutMenu = '<p>' . $label . '</p>';
         } else {

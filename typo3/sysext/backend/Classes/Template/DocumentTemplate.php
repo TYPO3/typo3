@@ -679,18 +679,17 @@ function jumpToUrl(URL) {
         $shortcutUrl = $pathInfo['path'] . '?' . $storeUrl;
         $shortcutExist = BackendUtility::shortcutExists($shortcutUrl);
 
-        $icon = $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render();
-
         if ($shortcutExist) {
-            return '<a class="active ' . htmlspecialchars($classes) . '" title="">' . $icon . '</a>';
+            return '<a class="active ' . htmlspecialchars($classes) . '" title="">' .
+            $this->iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . '</a>';
         }
-
         $url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));
         $onClick = 'top.TYPO3.ShortcutMenu.createShortcut(' . GeneralUtility::quoteJSvalue(rawurlencode($modName)) .
             ', ' . $url . ', ' . $confirmationText . ', ' . $motherModule . ', this);return false;';
 
         return '<a href="#" class="' . htmlspecialchars($classes) . '" onclick="' . htmlspecialchars($onClick) . '" title="' .
-            $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', true) . '">' . $icon . '</a>';
+        $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.makeBookmark', true) . '">' .
+        $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
     }
 
     /**

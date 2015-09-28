@@ -42,6 +42,7 @@
     "taboverride": "4.0.2",
     "seiyria-bootstrap-slider": "5.1.1",
     "devbridge-autocomplete": "1.2.21",
-    "region-flags": "*"
+    "region-flags": "*",
+    "wmdbsystems-typo3-icons": "0.0.4"
   }
 }

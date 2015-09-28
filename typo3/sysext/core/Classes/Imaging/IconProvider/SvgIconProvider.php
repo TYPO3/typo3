@@ -46,7 +46,7 @@ class SvgIconProvider implements IconProviderInterface
     protected function generateMarkup(Icon $icon, array $options)
     {
         if (empty($options['source'])) {
-            throw new \InvalidArgumentException('The option "source" is required and must not be empty', 1440754980);
+            throw new \InvalidArgumentException('[' . $icon->getIdentifier() . '] The option "source" is required and must not be empty', 1440754980);
         }
 
         $source = $options['source'];

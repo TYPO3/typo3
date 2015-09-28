@@ -73,7 +73,7 @@ class WorkspaceSelectorToolbarItem implements ToolbarItemInterface
         }
 
         return '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.workspace', true) . '">'
-            . $this->iconFactory->getIcon('apps-toolbar-menu-workspace', Icon::SIZE_SMALL)->render() . '</span>';
+            . $this->iconFactory->getIcon('apps-toolbar-menu-workspace', Icon::SIZE_SMALL)->render('inline') . '</span>';
     }
 
     /**

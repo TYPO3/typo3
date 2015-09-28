@@ -124,15 +124,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 		});
 
 		var $iconElement = $anchorElement.find(AjaxDataHandler.identifier.icon);
-		Icons.getIcon(iconName, Icons.sizes.small).done(function(icons) {
-			$iconElement.replaceWith(icons[iconName]);
+		Icons.getIcon(iconName, Icons.sizes.small).done(function(icon) {
+			$iconElement.replaceWith(icon);
 		});
 
 		// Set overlay for the record icon
 		var $recordIcon = $rowElement.find('.col-icon ' + AjaxDataHandler.identifier.icon);
 		if (nextState === 'hidden') {
-			Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').done(function(icons) {
-				$recordIcon.append($(icons['miscellaneous-placeholder']).find('.icon-overlay'));
+			Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').done(function(icon) {
+				$recordIcon.append($(icon).find('.icon-overlay'));
 			});
 		} else {
 			$recordIcon.find('.icon-overlay').remove();
@@ -163,8 +163,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 		// make the AJAX call to toggle the visibility
 		AjaxDataHandler._call(params).done(function(result) {
 			// revert to the old class
-			Icons.getIcon('actions-edit-delete', Icons.sizes.small).done(function(icons) {
-				$iconElement.replaceWith(icons['actions-edit-delete']);
+			Icons.getIcon('actions-edit-delete', Icons.sizes.small).done(function(icon) {
+				$iconElement.replaceWith(icon);
 			});
 			// print messages on errors
 			if (result.hasErrors) {
@@ -235,8 +235,8 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons', 'TYPO3/C
 	 * @private
 	 */
 	AjaxDataHandler._showSpinnerIcon = function($iconElement) {
-		Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(icons) {
-			$iconElement.replaceWith(icons['spinner-circle-dark']);
+		Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done(function(icon) {
+			$iconElement.replaceWith(icon);
 		});
 	};
 

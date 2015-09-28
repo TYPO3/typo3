@@ -470,7 +470,8 @@ class InlineControlContainer extends AbstractContainer
 					data-file-allowed="' . htmlspecialchars($allowed) . '"
 					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
 					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
-					><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-upload">&nbsp;</span>';
+					>';
+                $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
                 $item .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', true);
                 $item .= '</a>';
 

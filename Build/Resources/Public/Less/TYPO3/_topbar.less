@@ -114,6 +114,9 @@
 	padding-left: 0;
 	list-style: none;
 	float: left;
+	.icon-color {
+		fill: @topbar-navigation-color;
+	}
 	a {
 		color: @topbar-navigation-color;
 		text-decoration: none;
@@ -234,7 +237,7 @@
 			.submodule-label {
 				white-space: nowrap;
 				text-overflow: ellipsis;
-				padding-top: 5px;
+				padding-top: 7px;
 				display: block;
 				overflow: hidden;
 				*zoom: 1;
@@ -299,7 +302,6 @@
 		width: 26px;
 		height: 26px;
 		&:hover {
-			color: @topbar-dropdown-link-hover-color;
 			background-color: @topbar-dropdown-link-hover-bg;
 		}
 	}
@@ -309,7 +311,6 @@
 	.dropdown-list-link-delete,
 	.dropdown-list-link-close {
 		&:hover {
-			color: @topbar-dropdown-link-hover-color;
 			background-color: @btn-danger-bg;
 		}
 	}

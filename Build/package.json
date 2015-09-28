@@ -17,6 +17,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-npm-install": "^0.2.0",
     "grunt-postcss": "^0.6.0",
-    "grunt-svgmin": "2.0.1"
+    "grunt-svgmin": "2.0.1",
+    "grunt-copy": "*"
   }
 }

@@ -125,6 +125,9 @@ define(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], functio
 						ShortcutMenu.refreshMenu();
 						$(ShortcutMenu.options.toolbarIconSelector, ShortcutMenu.options.containerSelector).replaceWith($existingIcon);
 						if (typeof shortcutButton === 'object') {
+							Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).done(function(icons) {
+								$(shortcutButton).html(icons['actions-system-shortcut-active']);
+							});
 							$(shortcutButton).addClass('active');
 							$(shortcutButton).attr('title', null);
 							$(shortcutButton).attr('onclick', null);

@@ -53,7 +53,7 @@ class ActionToolbarItem implements ToolbarItemInterface
     public function getItem()
     {
         $title = $this->getLanguageService()->getLL('action_toolbaritem', true);
-        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render() . '</span>';
+        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render('inline') . '</span>';
     }
 
     /**
@@ -68,7 +68,7 @@ class ActionToolbarItem implements ToolbarItemInterface
         foreach ($this->actionEntries as $linkConf) {
             $actionMenu[] = '<li>';
             $actionMenu[] = '<a href="' . htmlspecialchars($linkConf[1]) . '" target="content" class="dropdown-list-link">';
-            $actionMenu[] = $linkConf[2] . htmlspecialchars($linkConf[0]);
+            $actionMenu[] = $linkConf[2] . ' ' . htmlspecialchars($linkConf[0]);
             $actionMenu[] = '</a>';
             $actionMenu[] = '</li>';
         }

@@ -7553,7 +7553,7 @@ button.close {
   width: 32px;
   overflow: hidden;
   border-radius: 50%;
-  background-image: url('../../../../../../typo3/sysext/backend/Resources/Public/Icons/avatar-default.svg');
+  background-image: url('../../../../../../typo3/sysext/core/Resources/Public/Icons/T3Icons/avatar/avatar-default.svg');
   background-size: 100%;
 }
 .avatar-image:after {
@@ -7695,10 +7695,13 @@ button.close {
   white-space: nowrap;
   vertical-align: -22%;
 }
+.icon svg,
 .icon img {
   display: block;
   height: 100%;
   width: 100%;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 .icon * {
   display: block;
@@ -7717,8 +7720,8 @@ button.close {
   position: absolute;
   bottom: 0;
   right: 0;
-  height: 60%;
-  width: 60%;
+  height: 68.75%;
+  width: 68.75%;
   text-align: center;
 }
 .icon-spin .icon-markup {
@@ -12112,8 +12115,8 @@ em {
   position: relative;
   display: inline-block;
   padding: 0;
-  height: 28px;
-  width: 28px;
+  height: 32px;
+  width: 32px;
   overflow: hidden;
   border-radius: 2px;
   background-color: #484848;
@@ -12130,8 +12133,8 @@ em {
   vertical-align: middle;
 }
 .typo3-app-icon img {
-  max-height: 28px;
-  max-width: 28px;
+  max-height: 32px;
+  max-width: 32px;
   margin: 0 auto;
 }
 .typo3-app-icon .fa {
@@ -12632,7 +12635,7 @@ iframe {
   position: relative;
   cursor: pointer;
   display: block;
-  padding: 4px 9px;
+  padding: 3px 9px;
   text-transform: uppercase;
 }
 [id="typo3-menu"] .typo3-module-menu-group-header:before,
@@ -12658,7 +12661,7 @@ iframe {
   position: relative;
   cursor: pointer;
   display: block;
-  padding: 4px 9px;
+  padding: 3px 9px;
   color: #aaaaaa;
   border-radius: 0 2px 2px 0;
   text-decoration: none;
@@ -12698,14 +12701,14 @@ iframe {
   background-color: transparent;
 }
 [id="typo3-menu"] .typo3-module-menu-group-icon > span {
-  line-height: 28px;
+  line-height: 32px;
 }
 [id="typo3-menu"] .typo3-module-menu-group-icon > span > .t3-icon {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
 }
 [id="typo3-menu"] .typo3-module-menu-group-icon > span > .t3-icon:before {
-  line-height: 28px;
+  line-height: 32px;
 }
 [id="typo3-menu"] .typo3-module-menu-group-icon:after {
   display: none;
@@ -12714,7 +12717,7 @@ iframe {
 [id="typo3-menu"] .typo3-module-menu-item-title {
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-top: 5px;
+  padding-top: 7px;
   display: block;
   overflow: hidden;
   *zoom: 1;
@@ -13034,6 +13037,9 @@ iframe {
   list-style: none;
   float: left;
 }
+.typo3-topbar-navigation-items .icon-color {
+  fill: #dddddd;
+}
 .typo3-topbar-navigation-items a {
   color: #dddddd;
   text-decoration: none;
@@ -13181,7 +13187,7 @@ iframe {
 .typo3-topbar-navigation-items .dropdown-list .modlink .submodule-label {
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-top: 5px;
+  padding-top: 7px;
   display: block;
   overflow: hidden;
   *zoom: 1;
@@ -13245,7 +13251,6 @@ iframe {
 .typo3-topbar-navigation-items .dropdown-list-link-edit:hover,
 .typo3-topbar-navigation-items .dropdown-list-link-delete:hover,
 .typo3-topbar-navigation-items .dropdown-list-link-close:hover {
-  color: #ffffff;
   background-color: #333333;
 }
 .typo3-topbar-navigation-items .dropdown-list-link-edit {
@@ -13253,7 +13258,6 @@ iframe {
 }
 .typo3-topbar-navigation-items .dropdown-list-link-delete:hover,
 .typo3-topbar-navigation-items .dropdown-list-link-close:hover {
-  color: #ffffff;
   background-color: #c83c3c;
 }
 .typo3-topbar-navigation-items .dropdown-link-list-add-close {

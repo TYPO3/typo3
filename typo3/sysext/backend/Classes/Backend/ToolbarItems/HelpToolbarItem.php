@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
@@ -30,6 +32,11 @@ class HelpToolbarItem implements ToolbarItemInterface
     protected $helpModuleMenu = null;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -41,6 +48,7 @@ class HelpToolbarItem implements ToolbarItemInterface
         if ($helpModuleMenu && $helpModuleMenu->getChildren()->count() > 0) {
             $this->helpModuleMenu = $helpModuleMenu;
         }
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
@@ -61,7 +69,7 @@ class HelpToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        return $this->helpModuleMenu->getIcon();
+        return $this->iconFactory->getIcon('apps-toolbar-menu-help', Icon::SIZE_SMALL)->render('inline');
     }
 
     /**

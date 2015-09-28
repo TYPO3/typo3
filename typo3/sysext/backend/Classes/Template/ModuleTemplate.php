@@ -578,7 +578,7 @@ class ModuleTemplate
 
         if ($shortcutExist) {
             return '<a class="active" title="">' .
-            $this->iconFactory->getIcon('actions-system-shortcut-new', Icon::SIZE_SMALL)->render() . '</a>';
+            $this->iconFactory->getIcon('actions-system-shortcut-active', Icon::SIZE_SMALL)->render() . '</a>';
         }
 
         $url = GeneralUtility::quoteJSvalue(rawurlencode($shortcutUrl));

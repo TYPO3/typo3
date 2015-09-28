@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
@@ -26,6 +28,19 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
  */
 class UserToolbarItem implements ToolbarItemInterface
 {
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
+
     /**
      * Item is always enabled
      *
@@ -110,7 +125,8 @@ class UserToolbarItem implements ToolbarItemInterface
         // Logout button
         $buttonLabel = 'LLL:EXT:lang/locallang_core.xlf:' . ($backendUser->user['ses_backuserid'] ? 'buttons.exit' : 'buttons.logout');
         $dropdown[] = '<li class="reset-dropdown">';
-        $dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top"><i class="fa fa-power-off"></i> ';
+        $dropdown[] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('logout')) . '" class="btn btn-danger pull-right" target="_top">';
+        $dropdown[] = $this->iconFactory->getIcon('actions-logout', Icon::SIZE_SMALL)->render('inline') . ' ';
         $dropdown[] = $languageService->sL($buttonLabel, true);
         $dropdown[] = '</a>';
         $dropdown[] = '</li>';
