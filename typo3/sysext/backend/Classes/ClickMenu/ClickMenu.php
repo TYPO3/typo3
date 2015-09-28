@@ -779,7 +779,7 @@ class ClickMenu {
 	public function DB_delete($table, $uid, $elInfo) {
 		$loc = 'top.content.list_frame';
 		if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-			$conf = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' (There are %s reference(s) to this record!)') . BackendUtility::translationCount($table, $uid, (' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')))) . ')';
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue(sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), $elInfo[0]) . BackendUtility::referenceCount($table, $uid, ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToRecord')) . BackendUtility::translationCount($table, $uid, (' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.translationsOfRecord')))) . ')';
 		} else {
 			$conf = '1==1';
 		}
@@ -1100,7 +1100,7 @@ class ClickMenu {
 	public function FILE_delete($path) {
 		$loc = 'top.content.list_frame';
 		if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
-			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' (There are %s reference(s) to this file!)'))) . ')';
+			$conf = 'confirm(' . GeneralUtility::quoteJSvalue((sprintf($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.delete'), basename($path)) . BackendUtility::referenceCount('_FILE', $path, ' ' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile')))) . ')';
 		} else {
 			$conf = '1==1';
 		}

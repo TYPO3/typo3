@@ -388,6 +388,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.referencesToRecord">
 				<source>(There are %s reference(s) to this record!)</source>
 			</trans-unit>
+			<trans-unit id="labels.referencesToFolder">
+				<source>(There are %s reference(s) to this folder!)</source>
+			</trans-unit>
+			<trans-unit id="labels.referencesToFile">
+				<source>(There are %s reference(s) to this file!)</source>
+			</trans-unit>
 			<trans-unit id="labels.translationsOfRecord">
 				<source>(This record has %s translation(s) which will be deleted, too!)</source>
 			</trans-unit>

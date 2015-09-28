@@ -958,9 +958,9 @@ class FileList extends AbstractRecordList {
 		if ($fileOrFolderObject->checkActionPermission('delete')) {
 			$identifier = $fileOrFolderObject->getIdentifier();
 			if ($fileOrFolderObject instanceof Folder) {
-				$referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' (There are %s reference(s) to this folder!)');
+				$referenceCountText = BackendUtility::referenceCount('_FILE', $identifier, ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFolder'));
 			} else {
-				$referenceCountText = BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' (There are %s reference(s) to this file!)');
+				$referenceCountText = BackendUtility::referenceCount('sys_file', $fileOrFolderObject->getUid(), ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.referencesToFile'));
 			}
 
 			if ($this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE)) {
