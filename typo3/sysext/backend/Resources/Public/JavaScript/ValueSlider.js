@@ -44,7 +44,7 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 	 */
 	ValueSlider.updateValue = function(e) {
 		var $slider = $(e.currentTarget),
-			$foreignField = $('[name="' + $slider.data('sliderItemName') + '"]'),
+			$foreignField = $('[data-formengine-input-name="' + $slider.data('sliderItemName') + '"]'),
 			elementType = $slider.data('sliderElementType'),
 			sliderField = $slider.data('sliderField'),
 			sliderCallback = $slider.data('sliderCallback');
@@ -78,7 +78,7 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 			data = $slider.data();
 		switch (data.sliderValueType) {
 			case 'array':
-				var $foreignField = $('[name="' + data.sliderItemName + '"]');
+				var $foreignField = $('[data-formengine-input-name="' + data.sliderItemName + '"]');
 				renderedValue = $foreignField.find('option').eq(value).text();
 				break;
 			case 'double':
