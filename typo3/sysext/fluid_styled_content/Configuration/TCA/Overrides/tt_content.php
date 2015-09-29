@@ -74,6 +74,9 @@ call_user_func(function() {
 				categories';
 	}
 
+	// Add table wizard
+	$GLOBALS['TCA']['tt_content']['types']['table']['columnsOverrides']['bodytext']['defaultExtras'] = 'nowrap:wizards[table]';
+
 	// Add additional fields for bullets + upload CTypes
 	$additionalColumns = [
 		'bullets_type' => [
