@@ -276,7 +276,7 @@ var TBE_EDITOR = {
 		return (theStr.substring(sPos+lengthOfDelim,ePos));
 	},
 	curSelected: function(theField) {
-		var fObjSel = document[TBE_EDITOR.formname][theField];
+		var fObjSel = TYPO3.jQuery('select[data-formengine-input-name="' + theField + '"]').get(0);
 		var retVal="";
 		if (fObjSel) {
 			if (fObjSel.type=='select-multiple' || fObjSel.type=='select-one') {

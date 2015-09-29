@@ -295,7 +295,7 @@ abstract class AbstractFormElement extends AbstractNode {
 					if (isset($wizardConfiguration['popup_onlyOpenIfSelected']) && $wizardConfiguration['popup_onlyOpenIfSelected']) {
 						$notSelectedText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:mess.noSelItemForEdit');
 						$onlyIfSelectedJS =
-							'if (!TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName . $listFlag) . ')){' .
+							'if (!TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . ')){' .
 								'alert(' . GeneralUtility::quoteJSvalue($notSelectedText) . ');' .
 								'return false;' .
 							'}';
@@ -306,7 +306,7 @@ abstract class AbstractFormElement extends AbstractNode {
 						'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
 								'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,200' .
 							')' .
-							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName . $listFlag) . '),' .
+							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . '),' .
 							GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .
 							GeneralUtility::quoteJSvalue($wizardConfiguration['JSopenParams']) .
 						');' .
@@ -351,7 +351,7 @@ abstract class AbstractFormElement extends AbstractNode {
 						'vHWin=window.open('. GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
 							'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,200' .
 							')' .
-							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName . $listFlag) . '),' .
+							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . '),' .
 							GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .
 							GeneralUtility::quoteJSvalue($wizardConfiguration['JSopenParams']) .
 						');' .
