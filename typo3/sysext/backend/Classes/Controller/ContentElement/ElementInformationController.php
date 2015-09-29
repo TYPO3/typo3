@@ -276,7 +276,7 @@ class ElementInformationController {
 		}
 
 		$previewTag = '';
-		$downloadLink = '';
+		$showLink = '';
 
 		// check if file is marked as missing
 		if ($this->fileObject->isMissing()) {
@@ -321,18 +321,18 @@ class ElementInformationController {
 				}
 			}
 
-			// Download
+			// Show
 			if ($url) {
-				$downloadLink .= '
+				$showLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
-						' . $this->iconFactory->getIcon('actions-edit-download', Icon::SIZE_SMALL) . '
-						' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:download', TRUE) . '
+						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '
+						' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.show', TRUE) . '
 					</a>';
 			}
 		}
 
 		return ($previewTag ? '<p>' . $previewTag . '</p>' : '') .
-				($downloadLink ? '<p>' . $downloadLink . '</p>' : '');
+				($showLink ? '<p>' . $showLink . '</p>' : '');
 	}
 
 	/**
