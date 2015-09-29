@@ -192,7 +192,7 @@ class HandleIncomingFormValues implements SingletonInterface {
 					$originalFilename = $_FILES['tx_form_form']['name'][$formPrefix][$fieldName][$key];
 					$size = $_FILES['tx_form_form']['size'][$formPrefix][$fieldName][$key];
 				}
-				$fileInfo = GeneralUtility::makeInstance(FileInfo::class, $tempFilename);
+				$fileInfo = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Type\File\FileInfo::class, $tempFilename);
 				return array(
 						'tempFilename' => $tempFilename,
 						'originalFilename' => $originalFilename,
