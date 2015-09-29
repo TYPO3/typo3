@@ -1567,7 +1567,7 @@ class ResourceStorage implements ResourceStorageInterface {
 		$downloadName = $alternativeFilename ?: $file->getName();
 		$contentDisposition = $asDownload ? 'attachment' : 'inline';
 		header('Content-Disposition: ' . $contentDisposition . '; filename="' . $downloadName . '"');
-		header('Content-Type: ' . $overrideMimeType ?: $file->getMimeType());
+		header('Content-Type: ' . ($overrideMimeType ?: $file->getMimeType()));
 		header('Content-Length: ' . $file->getSize());
 
 		// Cache-Control header is needed here to solve an issue with browser IE8 and lower
