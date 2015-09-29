@@ -1,9 +1,6 @@
 <f:if condition="{model.showElement}">
-<f:if condition="{model.additionalArguments.checked} == 'checked'">
-<tr class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
-  <td style="width: 200px;">
-    <em>{model.additionalArguments.label}</em>
-  </td>
-</tr>
-</f:if>
+	<f:if condition="{model.additionalArguments.checked} == 'checked'">
+		<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
+		<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
+	</f:if>
 </f:if>

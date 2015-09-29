@@ -233,23 +233,38 @@ class FormBuilder {
 	public function buildModel() {
 		$userConfiguredFormTypoScript = $this->configuration->getTypoScript();
 
-		/**
-		 * The layout handling for the postProcessor is no longer supported
-		 **/
 		if ($this->configuration->getCompatibility()) {
-			/* use the compatibility theme whenever if a layout is defined */
-			if (
-				isset($userConfiguredFormTypoScript['layout.'])
-				|| isset($userConfiguredFormTypoScript['confirmation.']['layout.'])
-			) {
+			$layout = array();
+			if (isset($userConfiguredFormTypoScript['layout.'])) {
+				$layout = $userConfiguredFormTypoScript['layout.'];
+				/* use the compatibility theme whenever if a layout is defined */
 				$this->configuration->setThemeName(static::COMPATIBILITY_THEME_NAME);
-			}
-			if ($this->getControllerAction() === 'show') {
-				$this->compatibilityService->setGlobalLayoutConfiguration($userConfiguredFormTypoScript);
 				unset($userConfiguredFormTypoScript['layout.']);
-			} else if ($this->getControllerAction() === 'confirmation') {
-				$this->compatibilityService->setGlobalLayoutConfiguration($userConfiguredFormTypoScript['confirmation.']);
-				unset($userConfiguredFormTypoScript['confirmation.']['layout.']);
+			}
+
+			switch ($this->getControllerAction()) {
+				case 'show':
+					$actionLayoutKey = 'form.';
+					break;
+				case 'confirmation':
+					$actionLayoutKey = 'confirmation.';
+					break;
+				case 'process':
+					$actionLayoutKey = 'postProcessor.';
+					break;
+				default:
+					$actionLayoutKey = '';
+					break;
+			}
+			if ($actionLayoutKey && isset($userConfiguredFormTypoScript[$actionLayoutKey]['layout.'])) {
+				$actionLayout = $userConfiguredFormTypoScript[$actionLayoutKey]['layout.'];
+				$this->configuration->setThemeName(static::COMPATIBILITY_THEME_NAME);
+				unset($userConfiguredFormTypoScript[$actionLayoutKey]['layout.']);
+				$layout = array_replace_recursive($layout, $actionLayout);
+			}
+
+			if (!empty($layout)) {
+				$this->compatibilityService->setGlobalLayoutConfiguration($layout);
 			}
 		}
 
@@ -280,6 +295,10 @@ class FormBuilder {
 	 */
 	protected function reviveElement(Element $element, array $userConfiguredElementTypoScript, $elementType = '') {
 		// @todo Check $userConfiguredElementTypoScript
+
+		if ($elementType === 'IMAGEBUTTON') {
+			GeneralUtility::deprecationLog('EXT:form: The element IMAGEBUTTON is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8.');
+		}
 
 		$element->setElementType($elementType);
 		$element->setElementCounter($this->elementCounter);

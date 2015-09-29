@@ -1,14 +1,5 @@
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	</head>
-	<body>
-		<table cellspacing="0">
-			<tbody>
-			<f:for each="{model.childElements}" as="element">
-				<f:render partial="{element.partialPath}" arguments="{model: element}" />
-			</f:for>
-			</tbody>
-		</table>
-	</body>
-</html>
+<f:format.raw>{model.layout.containerInnerWrap.0}</f:format.raw>
+<f:for each="{model.childElements}" as="element">
+	<f:render partial="{element.partialPath}" arguments="{model: element}" />
+</f:for>
+<f:format.raw>{model.layout.containerInnerWrap.1}</f:format.raw>

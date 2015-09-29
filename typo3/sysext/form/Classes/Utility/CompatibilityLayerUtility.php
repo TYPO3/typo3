@@ -101,18 +101,12 @@ class CompatibilityLayerUtility {
 	/**
 	 * Set the layout configuration for one or more elements
 	 *
-	 * @param NULL|array $typoscript The configuration array
+	 * @param NULL|array $layout The configuration array
 	 * @return void
 	 * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
 	 */
-	public function setGlobalLayoutConfiguration($typoscript = array()) {
-		if (!empty($typoscript['layout.'])) {
-			GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
-			$layout = $typoscript['layout.'];
-		} else if (!empty($typoscript['layout'])) {
-			GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
-			$layout = $typoscript['layout'];
-		}
+	public function setGlobalLayoutConfiguration($layout = array()) {
+		GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
 		if (is_array($layout)) {
 			foreach ($layout as $elementType => $elementValue) {
 				$elementType = strtoupper($elementType);
@@ -136,47 +130,115 @@ class CompatibilityLayerUtility {
 		if (!empty($this->layout[$elementType])) {
 			$layout = $this->layout[$elementType];
 		} else {
+			$action = $this->formBuilder->getControllerAction();
 			switch ($elementType) {
 				case 'FORM':
 					$layout = '<form><containerWrap /></form>';
 					break;
+				case 'CONFIRMATION':
+					$layout = '<containerWrap />';
+					break;
+				case 'HTML':
+					$layout = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head><body><table cellspacing="0"><containerWrap /></table></body></html>';
+					break;
 				case 'CONTAINERWRAP':
-					$layout = '<ol><elements /></ol>';
+					if ($action !== 'process') {
+						$layout = '<ol><elements /></ol>';
+					} else {
+						$layout = '<tbody><elements /></tbody>';
+					}
 					break;
 				case 'ELEMENTWRAP':
-					$layout = '<li><element /></li>';
+					if ($action !== 'process') {
+						$layout = '<li><element /></li>';
+					} else {
+						$layout = '<tr><element /></tr>';
+					}
 					break;
 				case 'LABEL':
-					$layout = '<label><labelvalue /><mandatory /><error /></label>';
+					if ($action === 'show') {
+						$layout = '<label><labelvalue /><mandatory /><error /></label>';
+					} else if ($action === 'confirmation') {
+						$layout = '<label><labelvalue /></label>';
+					} else {
+						$layout = '<em><labelvalue /></em>';
+					}
+					break;
+				case 'LEGEND':
+					if ($action !== 'process') {
+						$layout = '<legend><legendvalue /></legend>';
+					} else {
+						$layout = '<thead><tr><th colspan="2" align="left"><legendvalue /></th></tr></thead>';
+					}
 					break;
 				case 'MANDATORY':
-					$layout = '<em><mandatoryvalue /></em>';
+					if ($action !== 'process') {
+						$layout = '<em><mandatoryvalue /></em>';
+					} else {
+						$layout = '';
+					}
 					break;
 				case 'ERROR':
-					$layout = '<strong><errorvalue /></strong>';
+					if ($action !== 'process') {
+						$layout = '<strong><errorvalue /></strong>';
+					} else {
+						$layout = '';
+					}
 					break;
+				case 'RADIOGROUP':
+				case 'CHECKBOXGROUP':
 				case 'FIELDSET':
-					$layout = '<fieldset><legend /><containerWrap /></fieldset>';
+					if ($action !== 'process') {
+						$layout = '<fieldset><legend /><containerWrap /></fieldset>';
+					} else {
+						$layout = '<td colspan="2"><table cellspacing="0" style="padding-left: 20px; margin-bottom: 20px;"><legend /><containerWrap /></table></td>';
+					}
 					break;
 				case 'HIDDEN':
-					$layout = '<input />';
+					if ($action !== 'process') {
+						$layout = '<input />';
+					} else {
+						$layout = '';
+					}
 					break;
 				case 'SELECT':
-					$layout = '<label /><select><elements /></select>';
+					if ($action === 'show') {
+						$layout = '<label /><select><elements /></select>';
+					} else if ($action === 'confirmation') {
+						$layout = '<label /><ol><elements /></ol>';
+					} else {
+						$layout = '<td style="width: 200px;"><label /></td><td><elements /></td>';
+					}
 					break;
 				case 'TEXTAREA':
-					$layout = '<label /><textarea />';
+					if ($action === 'show') {
+						$layout = '<label /><textarea />';
+					} else if ($action === 'confirmation') {
+						$layout = '<label /><inputvalue />';
+					} else {
+						$layout = '<td style="width: 200px;" valign="top"><label /></td><td><inputvalue /></td>';
+					}
 					break;
 				case 'BUTTON':
-				case 'CHECKBOX':
-				case 'FILEUPLOAD':
 				case 'IMAGEBUTTON':
 				case 'PASSWORD':
-				case 'RADIO':
 				case 'RESET':
 				case 'SUBMIT':
+					if ($action !== 'show') {
+						$layout = '';
+						break;
+					}
+				case 'CHECKBOX':
+				case 'FILEUPLOAD':
+				case 'RADIO':
 				case 'TEXTLINE':
-					$layout = '<label /><input />';
+					if ($action === 'show') {
+						$layout = '<label /><input />';
+					} else if ($action === 'confirmation') {
+						$layout = '<label /><inputvalue />';
+					} else {
+						$layout = '<td style="width: 200px;"><label /></td><td><inputvalue /></td>';
+					}
 					break;
 			}
 		}
@@ -196,7 +258,13 @@ class CompatibilityLayerUtility {
 		GeneralUtility::deprecationLog('EXT:form: Do not use "layout." anymore. Deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8.');
 		if ($element->getElementType() === 'FORM') {
 			$containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $this->getGlobalLayoutByElementType('CONTAINERWRAP'));
-			$formWrapReturn = $this->replaceTagWithMarker('containerwrap', 'form', $this->getGlobalLayoutByElementType('FORM'));
+			if ($this->formBuilder->getControllerAction() === 'show') {
+				$formWrapReturn = $this->replaceTagWithMarker('containerwrap', 'form', $this->getGlobalLayoutByElementType('FORM'));
+			} else if ($this->formBuilder->getControllerAction() === 'confirmation') {
+				$formWrapReturn = $this->replaceTagWithMarker('containerwrap', 'body', $this->getGlobalLayoutByElementType('CONFIRMATION'));
+			} else {
+				$formWrapReturn = $this->replaceTagWithMarker('containerwrap', 'html', $this->getGlobalLayoutByElementType('HTML'));
+			}
 			$formLayout = str_replace($formWrapReturn['marker'], $containerWrapReturn['html'], $formWrapReturn['html']);
 			$formContainerWrap = explode($containerWrapReturn['marker'], $formLayout);
 			$layout['containerInnerWrap'] = $formContainerWrap;
@@ -265,6 +333,22 @@ class CompatibilityLayerUtility {
 						}
 						if (!$labelContainContent) {
 							$labelLayout = '';
+						} else {
+							$libxmlUseInternalErrors = libxml_use_internal_errors(true);
+							$dom = new \DOMDocument('1.0', 'utf-8');
+							$dom->formatOutput = TRUE;
+							$dom->preserveWhiteSpace = FALSE;
+							if ($dom->loadXML($labelLayout)) {
+								$nodes = $dom->getElementsByTagName('label');
+								if ($nodes->length) {
+									$node = $nodes->item(0);
+									if ($node) {
+										$node->setAttribute('for', $element->getId());
+										$labelLayout = $dom->saveXML($dom->firstChild);
+									}
+								}
+							}
+							libxml_use_internal_errors($libxmlUseInternalErrors);
 						}
 						/* Replace <label />, <error /> and <mandatory /> in the element wrap html */
 						$labelReturn = $this->replaceTagWithMarker('label', 'body', $elementWrap['html']);
@@ -288,13 +372,14 @@ class CompatibilityLayerUtility {
 			/* Set element outer wraps and set the default classes */
 			$elementOuterWrap = NULL;
 			if ($this->getGlobalLayoutByElementType('ELEMENTWRAP')) {
+				$libxmlUseInternalErrors = libxml_use_internal_errors(true);
 				$dom = new \DOMDocument('1.0', 'utf-8');
 				$dom->formatOutput = TRUE;
 				$dom->preserveWhiteSpace = FALSE;
-				$dom->loadXML($this->getGlobalLayoutByElementType('ELEMENTWRAP'));
-				if ($dom) {
+				if ($dom->loadXML($this->getGlobalLayoutByElementType('ELEMENTWRAP'))) {
 					$node = $dom->firstChild;
 					if ($node) {
+						$class = '';
 						if ($node->getAttribute('class') !== '') {
 							$class = $node->getAttribute('class') . ' ';
 						}
@@ -304,6 +389,11 @@ class CompatibilityLayerUtility {
 						$return = $this->replaceTagWithMarker('element', 'body', $elementOuterWrap);
 						if ($return['marker'] !== '') {
 							$elementOuterWrap = explode($return['marker'], $return['html']);
+							if ($element->getElementType() === 'SELECT') {
+								$layout = $element->getLayout();
+								$layout['optionOuterWrap'] = $elementOuterWrap;
+								$element->setLayout($layout);
+							}
 						} else {
 							/* this should never be happen */
 							$elementOuterWrap = NULL;
@@ -312,7 +402,9 @@ class CompatibilityLayerUtility {
 				} else {
 					$elementOuterWrap = NULL;
 				}
+				libxml_use_internal_errors($libxmlUseInternalErrors);
 			}
+
 			if (
 				$elementWrap
 				&& !$elementOuterWrap
@@ -345,25 +437,77 @@ class CompatibilityLayerUtility {
 			/* Set container inner wraps */
 			if (in_array($element->getElementType(), $this->containerElements)) {
 				$elementWrap = $this->determineElementOuterWraps($element->getElementType(), $elementLayout);
-				$containerOuterWrap = array('', '');
-				if ($elementWrap['marker'] !== '') {
-					$containerOuterWrap = explode($elementWrap['marker'], $elementWrap['html']);
-				}
-				$containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $this->getGlobalLayoutByElementType('CONTAINERWRAP'));
-				$containerInnerWrap = explode($containerWrapReturn['marker'], $containerWrapReturn['html']);
-				$containerWrap = array(
-					$containerOuterWrap[0] . $containerInnerWrap[0],
-					$containerInnerWrap[1] . $containerOuterWrap[1],
-				);
-				$layout = $element->getLayout();
-				$layout['containerInnerWrap'] = $containerWrap;
-				$element->setLayout($layout);
-				$classFromLayout = $this->getElementClassFromLayout('fieldset');
-				if (!empty($classFromLayout)) {
-					if (!empty($element->getHtmlAttribute('class'))) {
-						$classFromLayout .= ' ' . $element->getHtmlAttribute('class');
+				/* Replace the legend value */
+				$legendLayout = $this->getGlobalLayoutByElementType('LEGEND');
+				$legendValueReturn = $this->replaceTagWithMarker('legendvalue', 'body', $legendLayout);
+				$legendContainContent = FALSE;
+				if ($legendValueReturn['html'] !== '') {
+					if (!empty($element->getAdditionalArgument('legend'))) {
+						$legendContainContent = TRUE;
 					}
-					$element->setHtmlAttribute('class', $classFromLayout);
+					$legendLayout = str_replace($legendValueReturn['marker'], $element->getAdditionalArgument('legend'), $legendValueReturn['html']);
+				}
+				/* remove <mandatory /> and <error /> from legend */
+				$mandatoryReturn = $this->replaceTagWithMarker('mandatory', 'body', $legendLayout);
+				if (!empty($mandatoryReturn['html'])) {
+					$legendLayout = str_replace($mandatoryReturn['marker'], '', $mandatoryReturn['html']);
+				}
+				$errorReturn = $this->replaceTagWithMarker('error', 'body', $legendLayout);
+				if (!empty($errorReturn['html'])) {
+					$legendLayout = str_replace($errorReturn['marker'], '', $errorReturn['html']);
+				}
+
+				if (!$legendContainContent) {
+					$legendLayout = '';
+				}
+				/* No fieldset tag exist.
+				 * Ignore CONTAINERWRAP
+				 * */
+				if ($elementWrap['html'] === '') {
+					$containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $elementLayout);
+					$legendReturn = $this->replaceTagWithMarker('legend', 'body', $containerWrapReturn['html']);
+
+					if ($legendReturn['html'] !== '') {
+						$containerWrapReturn['html'] = str_replace($legendReturn['marker'], $legendLayout, $legendReturn['html']);
+					}
+					if ($containerWrapReturn['marker'] && $containerWrapReturn['html']) {
+						$containerWrap = explode($containerWrapReturn['marker'], $containerWrapReturn['html']);
+					} else {
+						$containerWrap = array('', '');
+					}
+
+					$layout = $element->getLayout();
+					$layout['containerInnerWrap'] = $containerWrap;
+					$layout['noFieldsetTag'] = TRUE;
+					$element->setLayout($layout);
+				} else {
+					$legendReturn = $this->replaceTagWithMarker('legend', 'body', $elementWrap['html']);
+
+					if ($legendReturn['html'] !== '') {
+						$elementWrap['html'] = str_replace($legendReturn['marker'], $legendLayout, $legendReturn['html']);
+					}
+
+					/* set the wraps */
+					$containerOuterWrap = array('', '');
+					$containerOuterWrap = explode($elementWrap['marker'], $elementWrap['html']);
+					$containerWrapReturn = $this->replaceTagWithMarker('elements', 'body', $this->getGlobalLayoutByElementType('CONTAINERWRAP'));
+					$containerInnerWrap = explode($containerWrapReturn['marker'], $containerWrapReturn['html']);
+
+					$containerWrap = array(
+						$containerOuterWrap[0] . $containerInnerWrap[0],
+						$containerInnerWrap[1] . $containerOuterWrap[1],
+					);
+
+					$layout = $element->getLayout();
+					$layout['containerInnerWrap'] = $containerWrap;
+					$element->setLayout($layout);
+					$classFromLayout = $this->getElementClassFromLayout('fieldset');
+					if (!empty($classFromLayout)) {
+						if (!empty($element->getHtmlAttribute('class'))) {
+							$classFromLayout .= ' ' . $element->getHtmlAttribute('class');
+						}
+						$element->setHtmlAttribute('class', $classFromLayout);
+					}
 				}
 			}
 			return;
@@ -415,20 +559,37 @@ class CompatibilityLayerUtility {
 	 * outer wrapping
 	 *
 	 * @param string $elementType
-	 * @return string $elementLayout
+	 * @param string $elementLayout
+	 * @return string
 	 * @deprecated since TYPO3 CMS 7, this function will be removed in TYPO3 CMS 8, as the functionality is now done via fluid
 	 */
 	protected function determineElementOuterWraps($elementType, $elementLayout = '') {
-		if ($elementType === 'TEXTAREA') {
-			$return = $this->replaceTagWithMarker('textarea', 'body', $elementLayout);
-		} elseif ($elementType === 'CONTENTELEMENT') {
-			$return = $this->replaceTagWithMarker('content', 'body', $elementLayout);
-		} elseif ($elementType === 'SELECT') {
-			$return = $this->replaceTagWithMarker('select', 'body', $elementLayout);
-		} elseif (in_array($elementType, $this->containerElements)) {
-			$return = $this->replaceTagWithMarker('fieldset', 'body', $elementLayout);
+		if ($this->formBuilder->getControllerAction() === 'show') {
+			if ($elementType === 'TEXTAREA') {
+				$return = $this->replaceTagWithMarker('textarea', 'body', $elementLayout);
+			} elseif ($elementType === 'CONTENTELEMENT') {
+				$return = $this->replaceTagWithMarker('content', 'body', $elementLayout);
+			} elseif ($elementType === 'SELECT') {
+				$return = $this->replaceTagWithMarker('select', 'body', $elementLayout);
+			} elseif (in_array($elementType, $this->containerElements)) {
+				$return = $this->replaceTagWithMarker('fieldset', 'body', $elementLayout);
+			} else {
+				$return = $this->replaceTagWithMarker('input', 'body', $elementLayout);
+			}
 		} else {
-			$return = $this->replaceTagWithMarker('input', 'body', $elementLayout);
+			if ($elementType === 'CONTENTELEMENT') {
+				$return = $this->replaceTagWithMarker('content', 'body', $elementLayout);
+			} elseif ($elementType === 'SELECT') {
+				$return = $this->replaceTagWithMarker('elements', 'body', $elementLayout);
+			} elseif (in_array($elementType, $this->containerElements)) {
+				if ($this->formBuilder->getControllerAction() === 'confirmation') {
+					$return = $this->replaceTagWithMarker('fieldset', 'body', $elementLayout);
+				} else {
+					$return = $this->replaceTagWithMarker('containerwrap', 'body', $elementLayout);
+				}
+			} else {
+				$return = $this->replaceTagWithMarker('inputvalue', 'body', $elementLayout);
+			}
 		}
 		return $return;
 	}
@@ -451,17 +612,17 @@ class CompatibilityLayerUtility {
 				'marker' => ''
 			);
 		}
-		libxml_use_internal_errors(true);
+		$libxmlUseInternalErrors = libxml_use_internal_errors(true);
 		$dom = new \DOMDocument('1.0', 'utf-8');
 		$dom->preserveWhiteSpace = FALSE;
-		$dom->loadHTML($html);
-		libxml_use_internal_errors(false);
-		if (!$dom) {
+		if (!$dom->loadHTML($html)) {
+			libxml_use_internal_errors($libxmlUseInternalErrors);
 			return array(
 				'html' => '',
 				'marker' => ''
 			);
 		}
+		libxml_use_internal_errors($libxmlUseInternalErrors);
 		$nodes = $dom->getElementsByTagName($tagName);
 		if (!$nodes->length) {
 			return array(
@@ -487,13 +648,19 @@ class CompatibilityLayerUtility {
 			}
 			$nextParent = $nextParent->parentNode;
 		}
-		$children = $nextParent->childNodes;
-		$innerHtml = '';
-		foreach ($children as $child) {
-			$innerHtml .= $nextParent->ownerDocument->saveHTML($child);
+		$html = '';
+		/* if stopTag == html, save the whole html */
+		if ($stopTag === 'html') {
+			$html = $nextParent->ownerDocument->saveHTML($nextParent);
+		} else {
+			/* do not save the stopTag */
+			$children = $nextParent->childNodes;
+			foreach ($children as $child) {
+				$html .= $nextParent->ownerDocument->saveHTML($child);
+			}
 		}
 		return array(
-			'html' => $innerHtml,
+			'html' => $html,
 			'marker' => $marker
 		);
 	}

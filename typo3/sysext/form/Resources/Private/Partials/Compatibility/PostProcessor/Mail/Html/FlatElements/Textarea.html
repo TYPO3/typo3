@@ -1,8 +1,5 @@
 <f:if condition="{model.showElement}">
-<tr class="csc-form-{model.elementCounter} csc-form-element csc-form-element-{model.elementTypeLowerCase}">
-  <td style="width: 200px;" valign="top">
-    <em>{model.additionalArguments.label}</em>
-  </td>
-  <td>{model.additionalArguments.text}</td>
-</tr>
+	<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
+		{model.additionalArguments.text}
+	<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
 </f:if>

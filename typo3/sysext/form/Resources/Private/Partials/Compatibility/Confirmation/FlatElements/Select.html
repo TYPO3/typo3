@@ -10,9 +10,7 @@
 						<f:for each="{option.options}" as="optgroupOption">
 							<f:if condition="{optgroupOption.selected}">
 								<f:if condition="{model.showElement}">
-									<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
-										{optgroupOption.label}
-									<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
+									<f:format.raw>{model.layout.optionOuterWrap.0}</f:format.raw>{optgroupOption.label}<f:format.raw>{model.layout.optionOuterWrap.1}</f:format.raw>
 								</f:if>
 								<f:if condition="{model.additionalArguments.multiple}">
 									<f:then>
@@ -58,9 +56,7 @@
 				<f:else>
 					<f:if condition="{option.selected}">
 						<f:if condition="{model.showElement}">
-							<f:format.raw>{model.layout.elementOuterWrap.0}</f:format.raw>
-								{option.label}
-							<f:format.raw>{model.layout.elementOuterWrap.1}</f:format.raw>
+							<f:format.raw>{model.layout.optionOuterWrap.0}</f:format.raw>{option.label}<f:format.raw>{model.layout.optionOuterWrap.1}</f:format.raw>
 						</f:if>
 						<f:if condition="{model.additionalArguments.multiple}">
 							<f:then>
