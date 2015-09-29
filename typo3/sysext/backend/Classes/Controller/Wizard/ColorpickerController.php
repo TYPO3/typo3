@@ -150,48 +150,27 @@ class ColorpickerController extends AbstractWizardController {
 				$this->imageError = 'ERROR: The image, "' . $this->exampleImg . '", could not be found!';
 			}
 		}
-		$update = '';
+		$update = array();
 		if ($this->areFieldChangeFunctionsValid()) {
 			// Setting field-change functions:
 			$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 			unset($fieldChangeFuncArr['alert']);
 			foreach ($fieldChangeFuncArr as $v) {
-				$update .= '
-				parent.opener.' . $v;
+				$update[] = 'parent.opener.' . $v;
 			}
 		}
 		// Initialize document object:
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function checkReference() {	//
-				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"]) {
-					return parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"];
-				} else {
-					close();
-				}
-			}
-			function changeBGcolor(color) {	// Changes the color in the table sample back in the TCEform.
-			    if (parent.opener.document.layers) {
-			        parent.opener.document.layers["' . $this->md5ID . '"].bgColor = color;
-			    } else if (parent.opener.document.all) {
-			        parent.opener.document.all["' . $this->md5ID . '"].style.background = color;
-				} else if (parent.opener.document.getElementById && parent.opener.document.getElementById("' . $this->md5ID . '")) {
-					parent.opener.document.getElementById("' . $this->md5ID . '").bgColor = color;
-				}
-			}
-			function setValue(input) {	//
-				var field = checkReference();
-				if (field) {
-					field.value = input;
-					' . $update . '
-					changeBGcolor(input);
-				}
-			}
-			function getValue() {	//
-				var field = checkReference();
-				return field.value;
-			}
-		');
+		$this->getPageRenderer()->loadRequireJsModule(
+			'TYPO3/CMS/Backend/Wizard/Colorpicker',
+			'function(Colorpicker) {
+				Colorpicker.setFieldChangeFunctions({
+					fieldChangeFunctions: function() {'
+						. implode('', $update) .
+					'}
+				});
+			}'
+		);
 		// Start page:
 		$this->content .= $this->doc->startPage($this->getLanguageService()->getLL('colorpicker_title'));
 	}
@@ -231,23 +210,23 @@ class ColorpickerController extends AbstractWizardController {
 					' . $this->colorList() . '
 					' . $this->colorImage() . '
 
-						<!-- Value box: -->
+					<!-- Value box: -->
 					<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_colorValue', TRUE) . '</p>
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td>
-								<input type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" />
+								<input id="colorValue" type="text" ' . $this->doc->formWidth(7) . ' maxlength="10" name="colorValue" value="' . htmlspecialchars($this->colorValue) . '" />
 							</td>
 							<td style="background-color:' . htmlspecialchars($this->colorValue) . '; border: 1px solid black;">
 								<span style="color: black;">' . $this->getLanguageService()->getLL('colorpicker_black', TRUE) . '</span>&nbsp;<span style="color: white;">' . $this->getLanguageService()->getLL('colorpicker_white', TRUE) . '</span>
 							</td>
 							<td>
-								<input class="btn btn-default" type="submit" name="save_close" value="' . $this->getLanguageService()->getLL('colorpicker_setClose', TRUE) . '" />
+								<input class="btn btn-default" type="submit" id="colorpicker-saveclose" value="' . $this->getLanguageService()->getLL('colorpicker_setClose', TRUE) . '" />
 							</td>
 						</tr>
 					</table>
 
-						<!-- Hidden fields with values that has to be kept constant -->
+					<!-- Hidden fields with values that has to be kept constant -->
 					<input type="hidden" name="showPicker" value="1" />
 					<input type="hidden" name="fieldChangeFunc" value="' . htmlspecialchars($this->fieldChangeFunc) . '" />
 					<input type="hidden" name="fieldChangeFuncHash" value="' . htmlspecialchars($this->fieldChangeFuncHash) . '" />
@@ -256,15 +235,8 @@ class ColorpickerController extends AbstractWizardController {
 					<input type="hidden" name="md5ID" value="' . htmlspecialchars($this->md5ID) . '" />
 					<input type="hidden" name="exampleImg" value="' . htmlspecialchars($this->exampleImg) . '" />
 				</form>';
-			// If the save/close button is clicked, then close:
-			if (GeneralUtility::_GP('save_close')) {
-				$content .= $this->doc->wrapScriptTags('
-					setValue(' . GeneralUtility::quoteJSvalue($this->colorValue) . ');
-					parent.close();
-				');
-			}
-			// Output:
-			$this->content .= $this->doc->section($this->getLanguageService()->getLL('colorpicker_title'), $content, 0, 1);
+
+			$this->content .= $this->doc->section($this->getLanguageService()->getLL('colorpicker_title'), $content, FALSE, TRUE);
 		}
 	}
 
@@ -347,19 +319,13 @@ class ColorpickerController extends AbstractWizardController {
 		while (isset($color[$columns * $rows])) {
 			$tCells = array();
 			for ($i = 0; $i < $columns; $i++) {
-				$tCells[] = '
-					<td bgcolor="' . $color[($columns * $rows + $i)] . '" onclick="document.colorform.colorValue.value = ' . GeneralUtility::quoteJSvalue($color[($columns * $rows + $i)]) . '; document.colorform.submit();" title="' . $color[($columns * $rows + $i)] . '">&nbsp;&nbsp;</td>';
+				$tCells[] = '<td bgcolor="' . $color[($columns * $rows + $i)] . '" class="t3js-colorpicker-value" data-color-value="' . htmlspecialchars($color[($columns * $rows + $i)]) . '" title="' . htmlspecialchars($color[($columns * $rows + $i)]) . '">&nbsp;&nbsp;</td>';
 			}
-			$tRows[] = '
-				<tr>' . implode('', $tCells) . '
-				</tr>';
+			$tRows[] = '<tr>' . implode('', $tCells) . '</tr>';
 			$rows++;
 		}
-		$table = '
-			<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromMatrix', TRUE) . '</p>
-			<table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px solid black; cursor:crosshair;">' . implode('', $tRows) . '
-			</table>';
-		return $table;
+		return '<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromMatrix', TRUE) . '</p>
+			<table style="width:100%; border: 1px solid black; cursor:crosshair;">' . implode('', $tRows) . '</table>';
 	}
 
 	/**
@@ -378,13 +344,8 @@ class ColorpickerController extends AbstractWizardController {
 			$opt[] = '<option style="background-color: ' . $colorName . ';" value="' . htmlspecialchars($colorName) . '"' . ($currentValue === $colorName ? ' selected="selected"' : '') . '>' . htmlspecialchars($colorName) . '</option>';
 		}
 		// Compile selector box and return result:
-		$output = '
-			<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromList', TRUE) . '</p>
-			<select onchange="document.colorform.colorValue.value = this.options[this.selectedIndex].value; document.colorform.submit(); return false;">
-				' . implode('
-				', $opt) . '
-			</select><br />';
-		return $output;
+		return '<p class="c-head">' . $this->getLanguageService()->getLL('colorpicker_fromList', TRUE) . '</p>
+			<select class="t3js-colorpicker-selector">' . implode(LF, $opt) . '</select><br />';
 	}
 
 	/**
@@ -397,7 +358,7 @@ class ColorpickerController extends AbstractWizardController {
 		if (!$this->imageError) {
 			if ($this->pickerImage) {
 				if (GeneralUtility::_POST('coords_x')) {
-					/* @var $image \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
+					/** @var $image \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
 					$image = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\GraphicalFunctions::class);
 					$this->colorValue = '#' . $this->getIndex($image->imageCreateFromFile($this->pickerImage), GeneralUtility::_POST('coords_x'), GeneralUtility::_POST('coords_y'));
 				}
