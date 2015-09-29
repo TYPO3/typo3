@@ -426,18 +426,23 @@ TYPO3.Components.PageTree.TopPanel = Ext.extend(Ext.Panel, {
 		});
 
 		this.dataProvider.getNodeTypes(function(response) {
-			for (var i = 0; i < response.length; ++i) {
-				response[i].template = this.getButtonTemplate();
-				newNodeToolbar.addItem(response[i]);
+			var amountOfNodeTypes = response.length;
+			if (amountOfNodeTypes > 0) {
+				topPanelButton.show();
+				for (var i = 0; i < amountOfNodeTypes; ++i) {
+					response[i].template = this.getButtonTemplate();
+					newNodeToolbar.addItem(response[i]);
+				}
+				newNodeToolbar.doLayout();
 			}
-			newNodeToolbar.doLayout();
 		}, this);
 
 		var topPanelButton = new Ext.Button({
 			id: this.id + '-button-newNode',
 			cls: this.id + '-button',
 			text: TYPO3.Components.PageTree.Icons.NewNode,
-			tooltip: TYPO3.Components.PageTree.LLL.buttonNewNode
+			tooltip: TYPO3.Components.PageTree.LLL.buttonNewNode,
+			hidden: true
 		});
 
 		this.addButton(topPanelButton, newNodeToolbar);

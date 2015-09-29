@@ -125,8 +125,12 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTre
 		}
 		$doktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.doktypesToShowInNewPageDragArea'));
 		$output = array();
-		$allowedDoktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select']);
+		$allowedDoktypes = GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['pagetypes_select'], TRUE);
 		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
+		// Early return if backend user may not create any doktype
+		if (!$isAdmin && empty($allowedDoktypes)) {
+			return $output;
+		}
 		foreach ($doktypes as $doktype) {
 			if (!$isAdmin && !in_array($doktype, $allowedDoktypes)) {
 				continue;
