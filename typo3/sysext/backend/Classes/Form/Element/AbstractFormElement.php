@@ -131,7 +131,6 @@ abstract class AbstractFormElement extends AbstractNode {
 
 		$fieldChangeFunc = $PA['fieldChangeFunc'];
 		$item = $itemKinds[0];
-		$fName = '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 		$md5ID = 'ID' . GeneralUtility::shortmd5($itemName);
 		$fieldConfig = $PA['fieldConf']['config'];
 		$prefixOfFormElName = 'data[' . $table . '][' . $row['uid'] . '][' . $field . ']';
@@ -140,17 +139,9 @@ abstract class AbstractFormElement extends AbstractNode {
 			$flexFormPath = str_replace('][', '/', substr($PA['itemFormElName'], strlen($prefixOfFormElName) + 1, -1));
 		}
 
-		// Manipulate the field name (to be the TRUE form field name) and remove
-		// a suffix-value if the item is a selector box with renderMode "singlebox":
-		$listFlag = '_list';
-		if ($PA['fieldConf']['config']['type'] == 'select') {
-			// Single select situation:
-			if ($PA['fieldConf']['config']['maxitems'] <= 1) {
-				$listFlag = '';
-			} elseif ($PA['fieldConf']['config']['renderMode'] == 'singlebox') {
-				$itemName .= '[]';
-				$listFlag = '';
-			}
+		// Add a suffix-value if the item is a selector box with renderMode "singlebox":
+		if ($PA['fieldConf']['config']['type'] === 'select' && (int)$PA['fieldConf']['config']['maxitems'] > 1 && $PA['fieldConf']['config']['renderMode'] === 'singlebox') {
+			$itemName .= '[]';
 		}
 
 		// Contains wizard identifiers enabled for this record type, see "special configuration" docs
