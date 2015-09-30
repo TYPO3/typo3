@@ -864,21 +864,13 @@ class Bootstrap {
 	 */
 	public function checkSslBackendAndRedirectIfNeeded() {
 		if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) {
-			if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
-				$sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
-			} else {
-				$sslPortSuffix = '';
-			}
-			if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 3) {
-				$requestStr = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
-				if ($requestStr === 'index.php' && !GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-					list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'), 2);
-					list($server, $address) = explode('/', $url, 2);
-					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
-					die;
-				}
-			} elseif (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+			if (!GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 2) {
+					if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
+						$sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
+					} else {
+						$sslPortSuffix = '';
+					}
 					list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);

@@ -756,20 +756,6 @@ abstract class AbstractUserAuthentication {
 			if ($this->writeDevLog && !$activeLogin) {
 				GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication::class, -1);
 			}
-			if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] === 3 && $this->user_table === 'be_users') {
-				$requestStr = substr(GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
-				$backendScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript();
-				if ($requestStr == $backendScript && GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-					list(, $url) = explode('://', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), 2);
-					list($server, $address) = explode('/', $url, 2);
-					if ((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort']) {
-						$sslPortSuffix = ':' . (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
-						// strip port from server
-						$server = str_replace($sslPortSuffix, '', $server);
-					}
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
-				}
-			}
 		} elseif ($activeLogin || !empty($tempuserArr)) {
 			$this->loginFailure = TRUE;
 			if ($this->writeDevLog && empty($tempuserArr) && $activeLogin) {
