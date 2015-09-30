@@ -5,7 +5,6 @@
         "This file is @generated automatically"
     ],
     "hash": "a5bf312ce486ffab2bcf00cdeeb9b58c",
-    "content-hash": "e58be35e6cabe53413486bb5de4cad11",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -114,16 +113,16 @@
         },
         {
             "name": "helhum/class-alias-loader",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helhum/class-alias-loader.git",
-                "reference": "91ef94c5a0ab6883018c8125ed66c00e5704ff6a"
+                "reference": "965d720eeae5bd04d45a22ff380eb569be801447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helhum/class-alias-loader/zipball/91ef94c5a0ab6883018c8125ed66c00e5704ff6a",
-                "reference": "91ef94c5a0ab6883018c8125ed66c00e5704ff6a",
+                "url": "https://api.github.com/repos/helhum/class-alias-loader/zipball/965d720eeae5bd04d45a22ff380eb569be801447",
+                "reference": "965d720eeae5bd04d45a22ff380eb569be801447",
                 "shasum": ""
             },
             "require": {
@@ -165,7 +164,7 @@
                 "classloader",
                 "composer"
             ],
-            "time": "2015-08-10 20:58:34"
+            "time": "2015-09-30 16:50:39"
         },
         {
             "name": "pear/http_request2",
