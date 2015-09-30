@@ -1008,8 +1008,14 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							if ($this->clipNumPane()) {
 								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
 							}
-							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray);
-							$icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
+							$params = 'edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray);
+							// we need to build this uri differently, otherwise GeneralUtility::quoteJSvalue messes up the edit list function
+							$onClick = BackendUtility::editOnClick('', '', -1);
+							$onClickArray = explode('?', $onClick, 2);
+							$lastElement = array_pop($onClickArray);
+							array_push($onClickArray, $params . '&' . $lastElement);
+							$onClick = implode('?', $onClickArray);
+							$icon .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)
 								. '" title="' . $lang->getLL('editShownColumns', TRUE) . '">'
 								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 							$icon = '<div class="btn-group" role="group">' . $icon . '</div>';
@@ -1048,9 +1054,15 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 							if ($this->clipNumPane()) {
 								$editIdList = '\'+editList(\'' . $table . '\',\'' . $editIdList . '\')+\'';
 							}
-							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol;
+							$params = 'edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol;
+							// we need to build this uri differently, otherwise GeneralUtility::quoteJSvalue messes up the edit list function
+							$onClick = BackendUtility::editOnClick('', '', -1);
+							$onClickArray = explode('?', $onClick, 2);
+							$lastElement = array_pop($onClickArray);
+							array_push($onClickArray, $params . '&' . $lastElement);
+							$onClick = implode('?', $onClickArray);
 							$iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
-							$theData[$fCol] .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', -1))
+							$theData[$fCol] .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick)
 								. '" title="' . htmlspecialchars($iTitle) . '">'
 								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 						}
