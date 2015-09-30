@@ -38,7 +38,7 @@ return array(
 		'im_useStripProfileByDefault' => TRUE,			// Boolean: If set, the im_stripProfileCommand is used with all IM Image operations by default. See tsRef for setting this parameter explocit for IMAGE generation.
 		'jpg_quality' => 70,							// Integer: Default JPEG generation quality
 		'png_truecolor' => TRUE,
-		'colorspace' => 'RGB',							// String: Specifiy the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV
+		'colorspace' => 'RGB',							// String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV
 	),
 	'SYS' => array(
 		// System related concerning both frontend and backend.
@@ -103,7 +103,7 @@ return array(
 		'UTF8filesystem' => FALSE,				// Boolean: If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
 		'systemLocale' => '',					// String: locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="http://php.net/manual/en/function.setlocale.php" target="_blank">setlocale()</a>.
 		'lockingMode' => 'simple',				// String: *deprecated* Define which locking mode is used to control requests to pages being generated. Can be one of either "disable" (no locking), "simple" (checks for file existence), "flock" (using PHPs <a href="http://php.net/flock" target="_blank">flock()</a> function), "semaphore" (using PHPs <a href="http://php.net/sem-acquire" target="_blank">sem_acquire()</a> function). Default is "simple". (This option is deprecated since TYPO3 CMS 7 and will be removed in TYPO3 CMS 8. The option is only used by extensions using the old Locker.)
-		'reverseProxyIP' => '',					// String: list of IP addresses. If TYPO3 is behind one or more (intransparent) reverese proxies the IP addresses must be added here.
+		'reverseProxyIP' => '',					// String: list of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here.
 		'reverseProxyHeaderMultiValue' => 'none',	// String: "none","first","last": defines which values of a proxy header (eg HTTP_X_FORWARDED_FOR) to use, if more than one is found. "none" discards the value, "first" and "last" use the first/last of the values in the list.
 		'reverseProxyPrefix' => '',				// String: optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI).
 		'reverseProxySSL' => '',				// String: '*' or list of IP addresses of proxies that use SSL (https) for the connection to the client, but an unencrypted connection (http) to the server. If '*' all proxies defined in <a href="#SYS-reverseProxyIP">[SYS][reverseProxyIP]</a> use SSL.
@@ -558,7 +558,7 @@ return array(
 		'loginSecurityLevel' => '',						// String: Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text, "rsa" uses RSA password encryption (only if the rsaauth extension is installed).
 		'showRefreshLoginPopup' => FALSE,				// Boolean: If set, the Ajax relogin will show a real popup window for relogin after the count down. Some auth services need this as they add custom validation to the login form. If it's not set, the Ajax relogin will show an inline relogin window.
 		'adminOnly' => 0,								// <p>Integer (-1, 0, 1, 2)</p><dl><dt>-1</dt><dd>total shutdown for maintenance purposes</dd><dt>0</dt><dd>normal operation, everyone can login (default)</dd><dt>1</dt><dd>only admins can login</dd><dt>2</dt><dd>only admins and regular CLI users can login</dd></dl>
-		'disable_exec_function' => FALSE,				// Boolean: Don't use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all fileoperations are done by the default PHP-functions. This is nescessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.
+		'disable_exec_function' => FALSE,				// Boolean: Don't use exec() function (except for ImageMagick which is disabled by <a href="#GFX-im">[GFX][im]</a>=0). If set, all fileoperations are done by the default PHP-functions. This is necessary under Windows! On Unix the system commands by exec() can be used, unless this is disabled.
 		'compressionLevel' => 0,						// Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gzip and .js.gzip (please see _.htacces for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. 'true' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.
 		'maxFileSize' => '10240',						// Integer: If set this is the max filesize in KB's for file operations in the backend. Can be overridden through $TCA per table field separately.
 		'installToolPassword' => '',					// String: This is the md5-hashed, salted password for the Install Tool. Set this to '' and access will be totally denied. You may consider to externally protect the typo3/sysext/install/ folder, eg. with a .htaccess file.
@@ -845,17 +845,17 @@ return array(
 		// String (exclude).Enter lines of default Page TSconfig.
 		'defaultPermissions' => array(),
 		'defaultUC' => array(),
-		// The control of fileextensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
+		// The control of file extensions goes in two catagories. Webspace and Ftpspace. Webspace is folders accessible from a webbrowser (below TYPO3_DOCUMENT_ROOT) and ftpspace is everything else.
 		// The control is done like this: If an extension matches 'allow' then the check returns TRUE. If not and an extension matches 'deny' then the check return FALSE. If no match at all, returns TRUE.
 		// You list extensions comma-separated. If the value is a '*' every extension is matched
-		// If no fileextension, TRUE is returned if 'allow' is '*', FALSE if 'deny' is '*' and TRUE if none of these matches
+		// If no file extension, TRUE is returned if 'allow' is '*', FALSE if 'deny' is '*' and TRUE if none of these matches
 		// This configuration below accepts everything in ftpspace and everything in webspace except php3,php4,php5 or php files
 		'fileExtensions' => array(
 			'webspace' => array('allow' => '', 'deny' => PHP_EXTENSIONS_DEFAULT),
 			'ftpspace' => array('allow' => '*', 'deny' => '')
 		),
 		'customPermOptions' => array(),						// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
-		'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT,		// A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT
+		'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT,		// A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitrary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT
 		'interfaces' => 'backend',							// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
 		'notificationPrefix' => '[TYPO3 Note]',				// String: Used to prefix the subject of mails sent in the taskcenter
 		'explicitADmode' => 'explicitDeny',					// Sets the general allow/deny mode for selector box values. Value can be either "explicitAllow" or "explicitDeny", nothing else!
