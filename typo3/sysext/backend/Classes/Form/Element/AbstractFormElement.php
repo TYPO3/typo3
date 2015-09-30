@@ -355,10 +355,10 @@ abstract class AbstractFormElement extends AbstractNode {
 					$params = array();
 					$params['fieldConfig'] = $fieldConfig;
 					$params['field'] = $field;
+					$params['table'] = $table;
 					$params['flexFormPath'] = $flexFormPath;
 					$params['md5ID'] = $md5ID;
 					$params['itemName'] = $itemName;
-					$params['fieldChangeFunc'] = $fieldChangeFunc;
 					$params['wConf'] = $wizardConfiguration;
 					$params['row'] = $row;
 

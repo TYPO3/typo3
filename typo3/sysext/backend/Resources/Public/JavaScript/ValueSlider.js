@@ -47,7 +47,7 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 			$foreignField = $('[data-formengine-input-name="' + $slider.data('sliderItemName') + '"]'),
 			elementType = $slider.data('sliderElementType'),
 			sliderField = $slider.data('sliderField'),
-			sliderCallback = $slider.data('sliderCallback');
+			sliderCallbackParams = $slider.data('sliderCallbackParams');
 
 		switch (elementType) {
 			case 'input':
@@ -58,13 +58,7 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 				break;
 		}
 
-		if (sliderField) {
-			eval(sliderField);
-		}
-
-		if (sliderCallback) {
-			eval(sliderCallback);
-		}
+		TBE_EDITOR.fieldChanged.apply(sliderCallbackParams);
 	};
 
 	/**
@@ -74,7 +68,7 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 	 */
 	ValueSlider.renderTooltipValue = function(value) {
 		var renderedValue,
-			$slider = $('[data-slider-id="' + $(this).get(0).id + '"]'),
+			$slider = $('[data-slider-id="' + this.id + '"]'),
 			data = $slider.data();
 		switch (data.sliderValueType) {
 			case 'array':

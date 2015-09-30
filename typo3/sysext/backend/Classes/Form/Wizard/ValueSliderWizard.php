@@ -80,8 +80,7 @@ class ValueSliderWizard {
 			$step = 1;
 			$value = $index;
 		}
-		$callback = $params['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
-		$getField = $params['fieldChangeFunc']['typo3form.fieldGet'];
+		$callbackParams = [ $params['table'], $params['row']['uid'], $params['field'], $params['itemName'] ];
 		$id = 'slider-' . $params['md5ID'];
 		$content =
 			'<div'
@@ -94,8 +93,7 @@ class ValueSliderWizard {
 				. ' data-slider-value-type="' . htmlspecialchars($type) . '"'
 				. ' data-slider-item-name="' . htmlspecialchars($itemName) . '"'
 				. ' data-slider-element-type="' . htmlspecialchars($elementType) . '"'
-				. ' data-slider-field="' . htmlspecialchars($getField) . '"'
-				. ' data-slider-callback="' . htmlspecialchars($callback) . '"'
+				. ' data-slider-callback-params="' . htmlspecialchars(json_encode($callbackParams)) . '"'
 				. ' style="width: ' . $width . 'px;"'
 			. '></div>';
 
