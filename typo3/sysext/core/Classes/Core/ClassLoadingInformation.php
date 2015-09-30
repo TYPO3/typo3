@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Composer\Autoload\ClassLoader as ComposerClassLoader;
+use Composer\Autoload\ClassLoader;
 use Helhum\ClassAliasLoader\ClassAliasMap;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -69,8 +70,11 @@ class ClassLoadingInformation {
 	 */
 	static public function dumpClassLoadingInformation() {
 		self::ensureAutoloadInfoDirExists();
+		$composerClassLoader = static::getClassLoader();
+		$activeExtensionPackages = static::getActiveExtensionPackages();
+
 		/** @var ClassLoadingInformationGenerator  $generator */
-		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class);
+		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site);
 		$classInfoFiles = $generator->buildAutoloadInformationFiles();
 		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
 		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
@@ -121,9 +125,10 @@ class ClassLoadingInformation {
 	 */
 	static public function registerTransientClassLoadingInformationForPackage(PackageInterface $package) {
 		$composerClassLoader = static::getClassLoader();
+		$activeExtensionPackages = static::getActiveExtensionPackages();
 
 		/** @var ClassLoadingInformationGenerator  $generator */
-		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class);
+		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site);
 
 		$classInformation = $generator->buildClassLoadingInformationForPackage($package);
 		$composerClassLoader->addClassMap($classInformation['classMap']);
@@ -173,11 +178,30 @@ class ClassLoadingInformation {
 	/**
 	 * Internal method calling the bootstrap to fetch the composer class loader
 	 *
-	 * @return ComposerClassLoader
+	 * @return ClassLoader
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	static protected function getClassLoader() {
-		return Bootstrap::getInstance()->getEarlyInstance(ComposerClassLoader::class);
+		return Bootstrap::getInstance()->getEarlyInstance(ClassLoader::class);
+	}
+
+	/**
+	 * Get all packages except the protected ones, as they are covered already
+	 *
+	 * @return PackageInterface[]
+	 */
+	static protected function getActiveExtensionPackages() {
+		$activeExtensionPackages = [];
+		/** @var PackageManager $packageManager */
+		$packageManager = Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
+		foreach ($packageManager->getActivePackages() as $package) {
+			if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
+				// Skip all core packages as the class loading info is prepared for them already
+				continue;
+			}
+			$activeExtensionPackages[] = $package;
+		}
+		return $activeExtensionPackages;
 	}
 
 }

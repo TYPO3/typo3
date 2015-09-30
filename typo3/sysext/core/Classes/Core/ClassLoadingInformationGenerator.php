@@ -15,15 +15,14 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use Composer\Autoload\ClassMapGenerator;
-use Composer\Autoload\ClassLoader as ComposerClassLoader;
+use Composer\Autoload\ClassLoader;
 use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Generates class loading information (class maps, class aliases etc.) and writes it to files
  * for further inclusion in the bootstrap
+ * @internal
  */
 class ClassLoadingInformationGenerator {
 
@@ -31,6 +30,27 @@ class ClassLoadingInformationGenerator {
 	 * @var PackageInterface[]
 	 */
 	protected $activeExtensionPackages;
+
+	/**
+	 * @var ClassLoader
+	 */
+	protected $classLoader;
+
+	/**
+	 * @var string
+	 */
+	protected $installationRoot;
+
+	/**
+	 * @param ClassLoader $classLoader
+	 * @param array $activeExtensionPackages
+	 * @param string $installationRoot
+	 */
+	public function __construct(ClassLoader $classLoader, array $activeExtensionPackages = array(), $installationRoot) {
+		$this->classLoader = $classLoader;
+		$this->activeExtensionPackages = $activeExtensionPackages;
+		$this->installationRoot = $installationRoot;
+	}
 
 	/**
 	 * Returns class loading information for a single package
@@ -43,8 +63,7 @@ class ClassLoadingInformationGenerator {
 		$classMap = array();
 		$psr4 = array();
 		$packagePath = $package->getPackagePath();
-
-		$manifest = $this->getPackageManager()->getComposerManifest($packagePath);
+		$manifest = $package->getValueFromComposerManifest();
 
 		if (empty($manifest->autoload)) {
 			// Legacy mode: Scan the complete extension directory for class files
@@ -52,7 +71,7 @@ class ClassLoadingInformationGenerator {
 		} else {
 			$autoloadDefinition = json_decode(json_encode($manifest->autoload), TRUE);
 			if (!empty($autoloadDefinition['psr-4']) && is_array($autoloadDefinition['psr-4'])) {
-				$classLoaderPrefixesPsr4 = $this->getClassLoader()->getPrefixesPsr4();
+				$classLoaderPrefixesPsr4 = $this->classLoader->getPrefixesPsr4();
 				foreach ($autoloadDefinition['psr-4'] as $namespacePrefix => $path) {
 					$namespacePath = $packagePath . $path;
 					if ($useRelativePaths) {
@@ -182,7 +201,7 @@ return array(
 EOF;
 		$classMap = array();
 		$psr4 = array();
-		foreach ($this->getActiveExtensionPackages() as $package) {
+		foreach ($this->activeExtensionPackages as $package) {
 			$classLoadingInformation = $this->buildClassLoadingInformationForPackage($package, TRUE);
 			$classMap = array_merge($classMap, $classLoadingInformation['classMap']);
 			$psr4 = array_merge($psr4, $classLoadingInformation['psr-4']);
@@ -214,7 +233,7 @@ EOF;
 	protected function makePathRelative($packagePath, $realPathOfClassFile, $relativeToRoot = TRUE) {
 		$realPathOfClassFile = GeneralUtility::fixWindowsFilePath($realPathOfClassFile);
 		$packageRealPath = GeneralUtility::fixWindowsFilePath(realpath($packagePath));
-		$relativePackagePath = rtrim(PathUtility::stripPathSitePrefix($packagePath), '/');
+		$relativePackagePath = rtrim(substr($packagePath, strlen($this->installationRoot)), '/');
 		if ($relativeToRoot) {
 			$relativePathToClassFile = $relativePackagePath . '/' . ltrim(substr($realPathOfClassFile, strlen($packageRealPath)), '/');
 		} else {
@@ -244,7 +263,7 @@ EOF;
 	public function buildClassAliasMapFile() {
 		$aliasToClassNameMapping = array();
 		$classNameToAliasMapping = array();
-		foreach ($this->getActiveExtensionPackages() as $package) {
+		foreach ($this->activeExtensionPackages as $package) {
 			$aliasMappingForPackage = $this->buildClassAliasMapForPackage($package);
 			$aliasToClassNameMapping = array_merge($aliasToClassNameMapping, $aliasMappingForPackage['aliasToClassNameMapping']);
 			$classNameToAliasMapping = array_merge($classNameToAliasMapping, $aliasMappingForPackage['classNameToAliasMapping']);
@@ -259,51 +278,4 @@ EOF;
 		return $fileContent;
 	}
 
-	/**
-	 * Get all packages except the protected ones, as they are covered already
-	 *
-	 * @return PackageInterface[]
-	 */
-	protected function getActiveExtensionPackages() {
-		if ($this->activeExtensionPackages === NULL) {
-			$this->activeExtensionPackages = array();
-			foreach ($this->getPackageManager()->getActivePackages() as $package) {
-				if ($this->isFrameworkPackage($package)) {
-					// Skip all core packages as the class loading info is prepared for them already
-					continue;
-				}
-				$this->activeExtensionPackages[] = $package;
-			}
-		}
-
-		return $this->activeExtensionPackages;
-	}
-
-	/**
-	 * Check if the package is a framework package (located in typo3/sysext)
-	 *
-	 * @param PackageInterface $package
-	 * @return bool
-	 */
-	protected function isFrameworkPackage(PackageInterface $package) {
-		return $package->getValueFromComposerManifest('type') === 'typo3-cms-framework';
-	}
-
-	/**
-	 * @return PackageManager
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	protected function getPackageManager() {
-		return Bootstrap::getInstance()->getEarlyInstance(PackageManager::class);
-	}
-
-	/**
-	 * Internal method calling the bootstrap to fetch the composer class loader
-	 *
-	 * @return ComposerClassLoader
-	 * @throws \TYPO3\CMS\Core\Exception
-	 */
-	protected function getClassLoader() {
-		return Bootstrap::getInstance()->getEarlyInstance(ComposerClassLoader::class);
-	}
 }

@@ -1,0 +1,20 @@
+{
+	"name": "typo3/cms-core-test",
+	"type": "typo3-cms-extension",
+	"description": "TYPO3 Core Test",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0+"],
+
+	"require": {
+		"php" : ">=5.5.0"
+	},
+	"replace": {
+		"core": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\TestExtension\\": "Classes/"
+		},
+		"classmap": ["Resources/PHP/"]
+	}
+}
