@@ -12860,6 +12860,7 @@ iframe {
 }
 .t3-page-ce .t3-page-ce-body-inner {
   padding: 10px;
+  word-wrap: break-word;
 }
 .t3-page-ce .t3-page-ce-header {
   -webkit-transition: background 0.15s ease-in;
