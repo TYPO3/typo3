@@ -11,9 +11,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'typo3' => '7.5.0-7.5.99'
 		),
-		'conflicts' => array(
-			'css_styled_content' => ''
-		),
+		'conflicts' => array(),
 		'suggests' => array(),
 	),
 );
