@@ -15,6 +15,6 @@
 		"psr-4": {
 			"TYPO3\\CMS\\TestExtension\\": "Classes/"
 		},
-		"classmap": ["Resources/PHP/"]
+		"classmap": ["Resources/PHP/Test.php"]
 	}
 }

@@ -235,7 +235,11 @@ EOF;
 		$packageRealPath = GeneralUtility::fixWindowsFilePath(realpath($packagePath));
 		$relativePackagePath = rtrim(substr($packagePath, strlen($this->installationRoot)), '/');
 		if ($relativeToRoot) {
-			$relativePathToClassFile = $relativePackagePath . '/' . ltrim(substr($realPathOfClassFile, strlen($packageRealPath)), '/');
+			if ($realPathOfClassFile === $packageRealPath) {
+				$relativePathToClassFile = $relativePackagePath;
+			} else {
+				$relativePathToClassFile = $relativePackagePath . '/' . ltrim(substr($realPathOfClassFile, strlen($packageRealPath)), '/');
+			}
 		} else {
 			$relativePathToClassFile = ltrim(substr($realPathOfClassFile, strlen($packageRealPath)), '/');
 		}

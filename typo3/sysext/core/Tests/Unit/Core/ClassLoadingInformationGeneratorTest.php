@@ -71,7 +71,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 
 		$this->assertArrayHasKey('psr-4File', $files);
 		$this->assertArrayHasKey('classMapFile', $files);
-		$this->assertContains('\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes/\')', $files['psr-4File']);
+		$this->assertContains('\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\')', $files['psr-4File']);
 		$this->assertContains('$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'', $files['classMapFile']);
 	}
 
