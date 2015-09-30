@@ -19,6 +19,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 
 /**
  * QueryParser, converting the qom to string representation
@@ -633,7 +634,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param array $enableFieldsToBeIgnored If $ignoreEnableFields is true, this array specifies enable fields to be ignored. If it is NULL or an empty array (default) all enable fields are ignored.
 	 * @param bool $includeDeleted A flag indicating whether deleted records should be included
 	 * @return string
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
+	 * @throws InconsistentQuerySettingsException
 	 */
 	protected function getFrontendConstraintStatement($tableName, $ignoreEnableFields, array $enableFieldsToBeIgnored = array(), $includeDeleted) {
 		$statement = '';
@@ -647,7 +648,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 		} elseif (!$ignoreEnableFields && !$includeDeleted) {
 			$statement .= $this->getPageRepository()->enableFields($tableName);
 		} elseif (!$ignoreEnableFields && $includeDeleted) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1327678173);
+			throw new InconsistentQuerySettingsException('Query setting "ignoreEnableFields=FALSE" can not be used together with "includeDeleted=TRUE" in frontend context.', 1327678173);
 		}
 		return $statement;
 	}
@@ -727,7 +728,7 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $tableName The database table name
 	 * @param string $tableAlias The table alias used in the query.
 	 * @param array $storagePageIds list of storage page ids
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException
+	 * @throws InconsistentQuerySettingsException
 	 * @return string
 	 */
 	protected function getPageIdStatement($tableName, $tableAlias, array $storagePageIds) {
@@ -739,16 +740,28 @@ class Typo3DbQueryParser implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $tableColumns)) {
 			$rootLevel = (int)$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'];
-			if ($rootLevel) {
-				if ($rootLevel === 1) {
-					$pageIdStatement = $tableAlias . '.pid = 0';
-				}
-			} else {
-				if (empty($storagePageIds)) {
-					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
-				}
-				$pageIdStatement = $tableAlias . '.pid IN (' . implode(', ', $storagePageIds) . ')';
+			switch ($rootLevel) {
+				// Only in pid 0
+				case 1:
+					return $tableAlias . '.pid = 0';
+				// Pid 0 and pagetree
+				case -1:
+					if (empty($storagePageIds)) {
+						return $tableAlias . '.pid = 0';
+					}
+					$storagePageIds[] = 0;
+					break;
+				// Only pagetree or not set
+				case 0:
+					if (empty($storagePageIds)) {
+						throw new InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
+					}
+					break;
+				// Invalid configuration
+				default:
+					return '';
 			}
+			$pageIdStatement = $tableAlias . '.pid IN (' . implode(', ', $storagePageIds) . ')';
 		}
 		return $pageIdStatement;
 	}

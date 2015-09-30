@@ -327,6 +327,7 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
 		unset($GLOBALS['TCA'][$tableName]);
 	}
+
 	/**
 	 * DataProvider for addPageIdStatement Tests
 	 */
@@ -343,8 +344,19 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				$table,
 				$table . '.pid IN (42, 27)'
 			),
-			'set no statement if rootLevel = -1' => array(
+			'add 0 to given Pids if rootLevel = -1' => array(
 				'-1',
+				$table,
+				$table . '.pid IN (42, 27, 0)'
+			),
+			'set Pid to zero if rootLevel = -1 and no further pids given' => array(
+				'-1',
+				$table,
+				$table . '.pid = 0',
+				array()
+			),
+			'set no statement for invalid configuration' => array(
+				'2',
 				$table,
 				''
 			)
@@ -355,12 +367,11 @@ class Typo3DbQueryParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 * @dataProvider providerForAddPageIdStatementData
 	 */
-	public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootlevel($rootLevel, $table, $expectedSql) {
+	public function addPageIdStatementSetsPidToZeroIfTableDeclaresRootlevel($rootLevel, $table, $expectedSql, $storagePageIds = array(42,27)) {
 
 		$GLOBALS['TCA'][$table]['ctrl'] = array(
 			'rootLevel' => $rootLevel
 		);
-		$storagePageIds = array(42,27);
 		$mockTypo3DbQueryParser = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class, array('dummy'), array(), '', FALSE);
 		$mockFrontendVariableCache = $this->getMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class, array(), array(), '', FALSE);
 		$mockTypo3DbQueryParser->_set('tableColumnCache', $mockFrontendVariableCache);
