@@ -546,12 +546,18 @@ class QueryView {
 				$out .= '<td>' . $fVnew . '</td>';
 			}
 		}
-		$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
 		$out .= '<td><div class="btn-group">';
 		if (!$row['deleted']) {
-			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+			$url = BackendUtility::getModuleUrl('record_edit', [
+				'edit' => [
+					$table => [
+						$row['uid'] => 'edit'
+					]
+				],
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET'))
+			]);
 			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
-			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+			$out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 		} else {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',

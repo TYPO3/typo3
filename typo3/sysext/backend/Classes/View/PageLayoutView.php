@@ -352,12 +352,21 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Traverse fields (as set above) in order to create header values:
 			foreach ($this->fieldArray as $field) {
 				if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field != 'uid' && !$this->pages_noEditColumns) {
-					$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=' . $field;
 					$iTitle = sprintf(
 						$this->getLanguageService()->getLL('editThisColumn'),
 						rtrim(trim($this->getLanguageService()->sL(BackendUtility::getItemLabel('pages', $field))), ':')
 					);
-					$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+					$editUrl = BackendUtility::getModuleUrl('record_edit', [
+						'edit' => [
+							'pages' => [
+								$editIdList => 'edit',
+							]
+						],
+						'columnsOnly' => $field,
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					]);
+
+					$eI = '<a href="' . htmlspecialchars($editUrl)
 						. '" title="' . htmlspecialchars($iTitle) . '">'
 						. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 				} else {
@@ -556,16 +565,25 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						if (!$disableMoveAndNewButtons && $this->getPageLayoutController()->pageIsNotLockedForEditors()) {
 							// New content element:
 							if ($this->option_newWizard) {
-								$onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('new_content_element') . '&id=' . $row['pid']
-									. '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos']
-									. '&uid_pid=' . -$row['uid'] .
-									'&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'))) . ';';
+								$url = BackendUtility::getModuleUrl('new_content_element', [
+									'id' => $row['pid'],
+									'sys_language_uid' => $row['sys_language_uid'],
+									'colPos' => $row['colPos'],
+									'uid_pid' => -$row['uid'],
+									'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+								]);
 							} else {
-								$params = '&edit[tt_content][' . -$row['uid'] . ']=new';
-								$onClick = BackendUtility::editOnClick($params);
+								$url = BackendUtility::getModuleUrl('record_edit', [
+									'edit' => [
+										'tt_content' => [
+											-$row['uid'] => 'new',
+										]
+									],
+									'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+								]);
 							}
 							$singleElementHTML .= '
-								<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+								<a href="' . htmlspecialchars($url) . '" title="'
 									. $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
 									. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
 									. ' '
@@ -584,7 +602,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				}
 				$content[$key] .= '</div>';
 				// Add new-icon link, header:
-				$newP = $this->newContentElementOnClick($id, $key, $lP);
 				$colTitle = BackendUtility::getProcessedValue('tt_content', 'colPos', $key);
 				$tcaItems = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getColPosListItemsParsed', $id, $this);
 				foreach ($tcaItems as $item) {
@@ -597,7 +614,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$editParam = $this->doEdit && !empty($rowArr)
 					? '&edit[tt_content][' . $editUidList . ']=edit' . $pageTitleParamForAltDoc
 					: '';
-				$head[$key] .= $this->tt_content_drawColHeader($colTitle, $editParam, $newP, $pasteP);
+				$head[$key] .= $this->tt_content_drawColHeader($colTitle, $editParam, '', $pasteP);
 			}
 			// For each column, fit the rendered content into a table cell:
 			$out = '';
@@ -666,18 +683,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
 							&& GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
 						) {
-							$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'), '', '');
+							$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('noAccess'));
 						} elseif (
 							isset($columnConfig['colPos']) && $columnConfig['colPos'] !== ''
 							&& !GeneralUtility::inList($this->tt_contentConfig['activeCols'], $columnConfig['colPos'])
 						) {
 							$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name']) .
-								' (' . $this->getLanguageService()->getLL('noAccess') . ')', '', '');
+								' (' . $this->getLanguageService()->getLL('noAccess') . ')');
 						} elseif (isset($columnConfig['name']) && $columnConfig['name'] !== '') {
 							$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->sL($columnConfig['name'])
-								. ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '', '');
+								. ' (' . $this->getLanguageService()->getLL('notAssigned') . ')');
 						} else {
-							$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('notAssigned'), '', '');
+							$grid .= $this->tt_content_drawColHeader($this->getLanguageService()->getLL('notAssigned'));
 						}
 
 						$grid .= '</td>';
@@ -718,25 +735,44 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				if ($lP) {
 					list($lpRecord) = BackendUtility::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . $lP);
 					BackendUtility::workspaceOL('pages_language_overlay', $lpRecord);
-					$params = '&edit[pages_language_overlay][' . $lpRecord['uid'] . ']=edit&overrideVals[pages_language_overlay][sys_language_uid]=' . $lP;
+					$editUrl = BackendUtility::getModuleUrl('record_edit', [
+						'edit' => [
+							'pages_language_overlay' => [
+								$lpRecord['uid'] => 'edit',
+							]
+						],
+						'overrideVals' => [
+							'pages_language_overlay' => [
+								'sys_language_uid' => $lP
+							]
+						],
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					]);
 					$lPLabel = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon(
 						$this->iconFactory->getIconForRecord('pages_language_overlay', $lpRecord, Icon::SIZE_SMALL)->render(),
 						'pages_language_overlay',
 						$lpRecord['uid']
 					) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
-							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+							? '<a href="' . htmlspecialchars($editUrl)
 								. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
 								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>'
 							: ''
 						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
 				} else {
-					$params = '&edit[pages][' . $this->id . ']=edit';
+					$editUrl = BackendUtility::getModuleUrl('record_edit', [
+						'edit' => [
+							'pages' => [
+								$this->id => 'edit',
+							]
+						],
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					]);
 					$lPLabel = $this->getPageLayoutController()->doc->wrapClickMenuOnIcon(
 							$this->iconFactory->getIconForRecord('pages', $this->pageRecord, Icon::SIZE_SMALL)->render(),
 							'pages',
 							$this->id
 						) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
-							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+							? '<a href="' . htmlspecialchars($editUrl)
 							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
 							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>'
 							: ''
@@ -834,8 +870,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			. '</tr>';
 		// Column's titles
 		if ($this->doEdit) {
-			$onClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $this->id . ']=new');
-			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" '
+			$url = BackendUtility::getModuleUrl('record_edit', [
+				'edit' => [
+					$table => [
+						$this->id => 'new',
+					]
+				],
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			]);
+			$theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" '
 				. 'title="' . $this->getLanguageService()->getLL('new', TRUE) . '">'
 				. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
 		}
@@ -848,7 +891,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				list($flag, $code) = $this->fwd_rwd_nav();
 				$out .= $code;
 				if ($flag) {
-					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
 					$Nrow = array();
 					// Setting icons links
 					if ($icon) {
@@ -858,7 +900,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
 					// Attach edit icon
 					if ($this->doEdit) {
-						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+						$url = BackendUtility::getModuleUrl('record_edit', [
+							'edit' => [
+								$table => [
+									$row['uid'] => 'edit',
+								]
+							],
+							'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+						]);
+						$Nrow['__editIconLink__'] = '<a href="' . htmlspecialchars($url)
 							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
 							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 					} else {
@@ -1061,9 +1111,15 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					break;
 				case 'uid':
 					if ($this->getBackendUser()->doesUserHaveAccess($row, 2)) {
-						$params = '&edit[pages][' . $row['uid'] . ']=edit';
-						$eI = '<a href="#" onclick="'
-							. htmlspecialchars(BackendUtility::editOnClick($params))
+						$url = BackendUtility::getModuleUrl('record_edit', [
+							'edit' => [
+								'pages' => [
+									$row['uid'] => 'edit',
+								]
+							],
+							'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+						]);
+						$eI = '<a href="' . htmlspecialchars($url)
 							. '" title="' . $this->getLanguageService()->getLL('editThisPage', TRUE) . '">'
 							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 					} else {
@@ -1119,7 +1175,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @param array|NULL $pasteParams Paste element params (i.e. array(colPos => 1, sys_language_uid => 2))
 	 * @return string HTML table
 	 */
-	public function tt_content_drawColHeader($colName, $editParams, $newParams, array $pasteParams = NULL) {
+	public function tt_content_drawColHeader($colName, $editParams = '', $newParams = '', array $pasteParams = NULL) {
 		$iconsArr = array();
 		// Create command links:
 		if ($this->tt_contentConfig['showCommands']) {
@@ -1214,12 +1270,16 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			// Render control panel for the element:
 			if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
 				// Edit content element:
-				$params = '&edit[tt_content][' . $this->tt_contentData['nextThree'][$row['uid']] . ']=edit';
-				$out .= '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick(
-						$params,
-						'',
-						GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid']
-					)) . '" title="' . htmlspecialchars($this->nextThree > 1
+				$url = BackendUtility::getModuleUrl('record_edit', [
+					'edit' => [
+						'tt_content' => [
+							$this->tt_contentData['nextThree'][$row['uid']] => 'edit',
+						]
+					],
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid']
+				]);
+				$out .= '<a class="btn btn-default" href="' . htmlspecialchars($url)
+					. '" title="' . htmlspecialchars($this->nextThree > 1
 						? sprintf($this->getLanguageService()->getLL('nextThree'), $this->nextThree)
 						: $this->getLanguageService()->getLL('edit'))
 					. '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1675,15 +1735,20 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * @see getTable_tt_content()
 	 */
 	public function linkEditContent($str, $row) {
-		$addButton = '';
-		$onClick = '';
 		if ($this->doEdit && $this->getBackendUser()->recordEditAccessInternals('tt_content', $row)) {
-			// Setting onclick action for content link:
-			$onClick = BackendUtility::editOnClick('&edit[tt_content][' . $row['uid'] . ']=edit');
+			$editUrl = BackendUtility::getModuleUrl('record_edit', [
+				'edit' => [
+					'tt_content' => [
+						$row['uid'] => 'edit',
+					]
+				],
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			]);
+			// Return link
+			return '<a href="' . htmlspecialchars($editUrl) . '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $str . '</a>';
+		} else {
+			return $str;
 		}
-		// Return link
-		return $onClick ? '<a href="#" onclick="' . htmlspecialchars($onClick)
-			. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">' . $str . '</a>' . $addButton : $str;
 	}
 
 	/**

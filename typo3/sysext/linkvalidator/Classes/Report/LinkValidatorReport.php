@@ -473,12 +473,15 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$requestUri = GeneralUtility::getIndpEnv('REQUEST_URI') .
 			'&id=' . $this->pObj->id .
 			'&search_levels=' . $this->searchLevel;
-		$actionLink = '<a href="#" onclick="';
-		$actionLink .= htmlspecialchars(BackendUtility::editOnClick(
-			'&edit[' . $table . '][' . $row['record_uid'] . ']=edit',
-			'',
-			$requestUri
-		));
+		$url = BackendUtility::getModuleUrl('record_edit', [
+			'edit' => [
+				$table => [
+					$row['record_uid'] => 'edit'
+				]
+			],
+			'returnUrl' => $requestUri
+		]);
+		$actionLink = '<a href="' . htmlspecialchars($url);
 		$actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
 		$actionLink .= $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 		$actionLink .= '</a>';

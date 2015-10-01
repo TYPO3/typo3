@@ -1160,9 +1160,15 @@ class PageLayoutController {
 						'sys_language_uid'
 					);
 
-					$editLanguageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit'));
-					$buttons['edit_language'] = '<a href="#" ' .
-						'onclick="' . $editLanguageOnClick . '"' .
+					$editUrl = BackendUtility::getModuleUrl('record_edit', [
+						'edit' => [
+							'pages_language_overlay' => [
+								$overlayRecord['uid'] => 'edit'
+							]
+						],
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					]);
+					$buttons['edit_language'] = '<a href="' . htmlspecialchars($editUrl) . '" ' .
 						'title="' . $lang->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
 						$this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() .
 						'</a>';
@@ -1170,8 +1176,15 @@ class PageLayoutController {
 
 
 				// Edit page properties
-				$editPageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
-				$buttons['edit_page'] = '<a href="#" onclick="' . $editPageOnClick . '" title="' . $lang->getLL('editPageProperties', TRUE) . '">'
+				$editUrl = BackendUtility::getModuleUrl('record_edit', [
+					'edit' => [
+						'pages' => [
+							$this->id => 'edit'
+						]
+					],
+					'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+				]);
+				$buttons['edit_page'] = '<a href="' . htmlspecialchars($editUrl) . '" title="' . $lang->getLL('editPageProperties', TRUE) . '">'
 					. $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
 					. '</a>';
 			}

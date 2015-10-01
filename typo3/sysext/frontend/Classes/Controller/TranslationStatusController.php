@@ -145,10 +145,15 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				$this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
 			$status = $data['row']['l18n_cfg'] & 1 ? 'danger' : 'success';
 			// Create links:
-			$info = '';
-			$editUid = $data['row']['uid'];
-			$params = '&edit[pages][' . $editUid . ']=edit';
-			$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+			$editUrl = BackendUtility::getModuleUrl('record_edit', [
+				'edit' => [
+					'pages' => [
+						$data['row']['uid'] => 'edit'
+					]
+				],
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			]);
+			$info = '<a href="' . htmlspecialchars($editUrl)
 				. '" title="' . $lang->sL(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editDefaultLanguagePage'
 				) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -186,10 +191,16 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageLang'
 							) . '">' . $info . '</a></td>';
 						// Edit whole record:
-						$info = '';
-						$editUid = $row['uid'];
-						$params = '&edit[pages_language_overlay][' . $editUid . ']=edit';
-						$info .= '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+						// Create links:
+						$editUrl = BackendUtility::getModuleUrl('record_edit', [
+							'edit' => [
+								'pages_language_overlay' => [
+									$row['uid'] => 'edit'
+								]
+							],
+							'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+						]);
+						$info = '<a href="' . htmlspecialchars($editUrl)
 							. '" title="' . $lang->sL(
 								'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLanguageOverlayRecord'
 							) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -230,8 +241,16 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 		$tCells = array();
 		$tCells[] = '<td>' . $lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_page') . ':</td>';
 		if (is_array($langRecUids[0])) {
-			$params = '&edit[pages][' . implode(',', $langRecUids[0]) . ']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
-			$editIco = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+			$editUrl = BackendUtility::getModuleUrl('record_edit', [
+				'edit' => [
+					'pages' => [
+						implode(',', $langRecUids[0]) => 'edit'
+					]
+				],
+				'columnsOnly' => 'title,nav_title,l18n_cfg,hidden',
+				'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+			]);
+			$editIco = '<a href="' . htmlspecialchars($editUrl)
 				. '" title="' . $lang->sL(
 					'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editPageProperties'
 				) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -247,10 +266,16 @@ class TranslationStatusController extends \TYPO3\CMS\Backend\Module\AbstractFunc
 				$tCells[] = '<td class="col-border-left">' . htmlspecialchars($langRow['title']) . '</td>';
 				// Edit language overlay records:
 				if (is_array($langRecUids[$langRow['uid']])) {
-					$params = '&edit[pages_language_overlay][' .
-						implode(',', $langRecUids[$langRow['uid']]) .
-						']=edit&columnsOnly=title,nav_title,hidden';
-					$tCells[] = '<td><a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
+					$editUrl = BackendUtility::getModuleUrl('record_edit', [
+						'edit' => [
+							'pages_language_overlay' => [
+								implode(',', $langRecUids[$langRow['uid']]) => 'edit'
+							]
+						],
+						'columnsOnly' => 'title,nav_title,hidden',
+						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+					]);
+					$tCells[] = '<td><a href="' . htmlspecialchars($editUrl)
 						. '" title="' . $lang->sL(
 							'LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_editLangOverlays'
 						) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a></td>';
