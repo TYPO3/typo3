@@ -530,9 +530,6 @@ class UriBuilder {
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
 		}
-
-		$this->disableCacheHashForNonCacheableAction($controllerArguments);
-
 		if ($this->environmentService->isEnvironmentInFrontendMode() && $this->configurationManager->isFeatureEnabled('skipDefaultArguments')) {
 			$controllerArguments = $this->removeDefaultControllerAndAction($controllerArguments, $extensionName, $pluginName);
 		}
@@ -550,26 +547,6 @@ class UriBuilder {
 		}
 		ArrayUtility::mergeRecursiveWithOverrule($this->arguments, $prefixedControllerArguments);
 		return $this->build();
-	}
-
-	/**
-	 * Disable cache hash if the action is not cacheable
-	 * and pointed to from an already uncached request
-	 *
-	 * @param array $controllerArguments the current controller arguments
-	 * @return void
-	 */
-	protected function disableCacheHashForNonCacheableAction(array $controllerArguments) {
-		if (isset($controllerArguments['action']) && $this->getUseCacheHash()) {
-			$actionIsCacheable = $this->extensionService->isActionCacheable(
-				NULL,
-				NULL,
-				$controllerArguments['controller'],
-				$controllerArguments['action']
-			);
-			$isRequestCached = $this->request instanceof WebRequest && $this->request->isCached();
-			$this->setUseCacheHash($isRequestCached || $actionIsCacheable);
-		}
 	}
 
 	/**
