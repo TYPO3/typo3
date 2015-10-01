@@ -332,6 +332,9 @@ class EvaluateDisplayConditions implements FormDataProviderInterface {
 		$result = FALSE;
 		switch ($operator) {
 			case 'REQ':
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
 				if (strtoupper($operand) === 'TRUE') {
 					$result = (bool)$fieldValue;
 				} else {
@@ -339,19 +342,34 @@ class EvaluateDisplayConditions implements FormDataProviderInterface {
 				}
 				break;
 			case '>':
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
 				$result = $fieldValue > $operand;
 				break;
 			case '<':
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
 				$result = $fieldValue < $operand;
 				break;
 			case '>=':
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
 				$result = $fieldValue >= $operand;
 				break;
 			case '<=':
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
 				$result = $fieldValue <= $operand;
 				break;
 			case '-':
 			case '!-':
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
 				list($minimum, $maximum) = explode('-', $operand);
 				$result = $fieldValue >= $minimum && $fieldValue <= $maximum;
 				if ($operator[0] === '!') {

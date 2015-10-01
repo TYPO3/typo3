@@ -602,6 +602,36 @@ class EvaluateDisplayConditionsTest extends UnitTestCase {
 	}
 
 	/**
+	 * @param string $condition
+	 * @param array $record
+	 * @param string $expectedResult
+	 *
+	 * @dataProvider conditionStringDataProvider
+	 * @test
+	 */
+	public function matchConditionStringsWithRecordTestFieldBeingArray($condition, array $record, $expectedResult) {
+		$input = [
+			'processedTca' => [
+				'columns' => [
+					'testField' => [
+						'displayCond' => $condition,
+						'config' => [
+							'type' => 'input',
+						],
+					],
+				],
+			],
+		];
+		$input['databaseRow'] = $record ?: ['testField' => ['key' => $record['testField']]];
+
+		$expected = $input;
+		if (!$expectedResult) {
+			unset($expected['processedTca']['columns']['testField']);
+		}
+		$this->assertSame($expected, $this->subject->addData($input));
+	}
+
+	/**
 	 * Returns data sets for the test matchConditionStrings
 	 * Each data set is an array with the following elements:
 	 * - the condition string
