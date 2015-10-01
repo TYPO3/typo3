@@ -273,7 +273,8 @@ class DownloadController extends AbstractController {
 		$updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
 			$extensionKey,
 			$versionStart,
-			$versionStop
+			$versionStop,
+			FALSE
 		);
 		$highestPossibleVersion = FALSE;
 

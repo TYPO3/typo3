@@ -511,7 +511,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		/** @var $extensionUpdates[] \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
 			$extensionData->getExtensionKey(),
-			$version + 1
+			$version,
+			0,
+			FALSE
 		);
 		if ($extensionUpdates->count() > 0) {
 			foreach ($extensionUpdates as $extensionUpdate) {

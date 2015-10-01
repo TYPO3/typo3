@@ -179,15 +179,23 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$query = $this->createQuery();
 		$constraint = NULL;
 		if ($lowestVersion !== 0 && $highestVersion !== 0) {
-			$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
-		} elseif ($lowestVersion === 0 && $highestVersion !== 0 && $includeCurrentVersion) {
-			$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
+			if ($includeCurrentVersion) {
+				$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+			} else {
+				$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->greaterThan('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+			}
 		} elseif ($lowestVersion === 0 && $highestVersion !== 0) {
-			$constraint = $query->logicalAnd($query->lessThan('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
-		} elseif ($lowestVersion !== 0 && $highestVersion === 0 && $includeCurrentVersion) {
-			$constraint = $query->logicalAnd($query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+			if ($includeCurrentVersion) {
+				$constraint = $query->logicalAnd($query->lessThanOrEqual('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
+			} else {
+				$constraint = $query->logicalAnd($query->lessThan('integerVersion', $highestVersion), $query->equals('extensionKey', $extensionKey));
+			}
 		} elseif ($lowestVersion !== 0 && $highestVersion === 0) {
-			$constraint = $query->logicalAnd($query->greaterThan('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+			if ($includeCurrentVersion) {
+				$constraint = $query->logicalAnd($query->greaterThanOrEqual('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+			} else {
+				$constraint = $query->logicalAnd($query->greaterThan('integerVersion', $lowestVersion), $query->equals('extensionKey', $extensionKey));
+			}
 		} elseif ($lowestVersion === 0 && $highestVersion === 0) {
 			$constraint = $query->equals('extensionKey', $extensionKey);
 		}
