@@ -983,6 +983,40 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @return array
 	 */
+	public function stdWrap_expandListDataProvider() {
+		return array(
+			'numbers' => array(
+				'1,2,3',
+				'1,2,3',
+			),
+			'range' => array(
+				'3-5',
+				'3,4,5',
+			),
+			'numbers and range' => array(
+				'1,3-5,7',
+				'1,3,4,5,7',
+			),
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function "expandList"
+	 *
+	 * @param string $content
+	 * @param string $expected
+	 *
+	 * @dataProvider stdWrap_expandListDataProvider
+	 * @test
+	 */
+	public function stdWrap_expandList($content, $expected) {
+		$result = $this->subject->stdWrap_expandList($content);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @return array
+	 */
 	public function stdWrap_trimDataProvider() {
 		return array(
 			'trimstring' => array(
