@@ -139,8 +139,8 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	protected function setSubject() {
 		if (isset($this->typoScript['subject'])) {
 			$subject = $this->typoScript['subject'];
-		} elseif ($this->getTypoScriptValueFromIncomingData('subject') !== NULL) {
-			$subject = $this->getTypoScriptValueFromIncomingData('subject');
+		} elseif ($this->getTypoScriptValueFromIncomingData('subjectField') !== NULL) {
+			$subject = $this->getTypoScriptValueFromIncomingData('subjectField');
 		} else {
 			$subject = 'Formmail on ' . GeneralUtility::getIndpEnv('HTTP_HOST');
 		}
