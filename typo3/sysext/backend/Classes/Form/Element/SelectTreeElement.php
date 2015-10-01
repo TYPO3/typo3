@@ -98,7 +98,6 @@ class SelectTreeElement extends AbstractFormElement {
 		*/
 
 		$itemArray[] = $treeData;
-		$treeData = json_encode($itemArray);
 		$id = md5($parameterArray['itemFormElName']);
 		if (isset($config['size']) && (int)$config['size'] > 0) {
 			$height = (int)$config['size'] * 20;
@@ -166,13 +165,13 @@ class SelectTreeElement extends AbstractFormElement {
 		$resultArray = $this->initializeResultArray();
 		$resultArray['extJSCODE'] .= LF .
 			'Ext.onReady(function() {
-			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . $treeData . ';
+			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . json_encode($itemArray) . ';
 			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
 				id: "' . $id . '",
 				showHeader: ' . (int)$header . ',
-				onChange: "' . $onChange . '",
+				onChange: ' . GeneralUtility::quoteJSvalue($onChange) . ',
 				countSelectedNodes: ' . count($selectedNodes) . ',
-				width: ' . $width . ',
+				width: ' . (int)$width . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
