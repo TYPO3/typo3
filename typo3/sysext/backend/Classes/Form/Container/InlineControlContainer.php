@@ -550,7 +550,11 @@ class InlineControlContainer extends AbstractContainer {
 			$onlineMediaAllowed = array_intersect($allowedArray, $onlineMediaAllowed);
 		}
 		if ($showUpload && $isDirectFileUploadEnabled) {
-			$folder = $backendUser->getDefaultUploadFolder();
+			$folder = $backendUser->getDefaultUploadFolder(
+				$this->data['parentPageRow']['uid'],
+				$this->data['tableName'],
+				$this->data['fieldName']
+			);
 			if (
 				$folder instanceof Folder
 				&& $folder->checkActionPermission('add')

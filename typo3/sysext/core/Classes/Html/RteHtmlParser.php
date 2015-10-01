@@ -408,7 +408,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							if (GeneralUtility::inList('gif,png,jpeg,jpg', strtolower($pI['extension']))) {
 								$fileName = GeneralUtility::shortMD5($absoluteUrl) . '.' . $pI['extension'];
 								// We insert this image into the user default upload folder
-								$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+								list($table, $field) = explode(':', $this->elRef);
+								$folder = $GLOBALS['BE_USER']->getDefaultUploadFolder($this->recPid, $table, $field);
 								$fileObject = $folder->createFile($fileName)->setContents($externalFile);
 								$imageConfiguration = array(
 									'width' => $attribArray['width'],

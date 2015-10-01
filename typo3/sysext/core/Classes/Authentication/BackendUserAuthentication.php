@@ -1771,7 +1771,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * Returns a \TYPO3\CMS\Core\Resource\Folder object that is used for uploading
 	 * files by default.
 	 * This is used for RTE and its magic images, as well as uploads
-	 * in the TCEforms fields, unless otherwise configured (will be added in the future)
+	 * in the TCEforms fields.
 	 *
 	 * The default upload folder for a user is the defaultFolder on the first
 	 * filestorage/filemount that the user can access and to which files are allowed to be added
@@ -1779,9 +1779,12 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * options.defaultUploadFolder = 3:myfolder/yourfolder/
 	 *
+	 * @param int $pid PageUid
+	 * @param string $table Table name
+	 * @param string $field Field name
 	 * @return \TYPO3\CMS\Core\Resource\Folder|boolean The default upload folder for this user
 	 */
-	public function getDefaultUploadFolder() {
+	public function getDefaultUploadFolder($pid = NULL, $table = NULL, $field = NULL) {
 		$uploadFolder = $this->getTSConfigVal('options.defaultUploadFolder');
 		if ($uploadFolder) {
 			$uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
@@ -1817,6 +1820,20 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 				}
 			}
 		}
+
+		// HOOK: getDefaultUploadFolder
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getDefaultUploadFolder'] as $_funcRef) {
+				$_params = array(
+					'uploadFolder' => $uploadFolder,
+					'pid' => $pid,
+					'table' => $table,
+					'field' => $field,
+				);
+				$uploadFolder = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+
 		if ($uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 			return $uploadFolder;
 		} else {
