@@ -170,7 +170,7 @@ class ListController extends AbstractController {
 		} else {
 			$extensions = $this->extensionRepository->findAll();
 		}
-		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($this->listUtility->getAvailableExtensions());
 		$this->view->assign('extensions', $extensions)
 				->assign('search', $search)
 				->assign('availableAndInstalled', $availableAndInstalledExtensions);
