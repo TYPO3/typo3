@@ -33,7 +33,7 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 			$sliders.slider({
 				formatter: ValueSlider.renderTooltipValue
 			});
-			$sliders.on('slide', ValueSlider.updateValue);
+			$sliders.on('change', ValueSlider.updateValue);
 		}
 	};
 
@@ -51,10 +51,10 @@ define('TYPO3/CMS/Backend/ValueSlider', ['jquery', 'twbs/bootstrap-slider'], fun
 
 		switch (elementType) {
 			case 'input':
-				$foreignField.val(e.value);
+				$foreignField.val(e.value.newValue);
 				break;
 			case 'select':
-				$foreignField.find('option').eq(e.value).prop('selected', true);
+				$foreignField.find('option').eq(e.value.newValue).prop('selected', true);
 				break;
 		}
 
