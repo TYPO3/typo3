@@ -54,35 +54,152 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 		$generator = $this->getAccessibleMock(
 			ClassLoadingInformationGenerator::class,
 			['dummy'],
-			[$this->getMock(ClassLoader::class), $this->createPackagesMock(), __DIR__]
+			[$this->getMock(ClassLoader::class), $this->createPackagesMock(array()), __DIR__]
 		);
 
 		$this->assertEquals($expectedResult, $generator->_call('isIgnoredClassName', $className));
 	}
 
 	/**
-	 * @test
+	 * Data provider for different autoload information
+	 *
+	 * @return array
 	 */
-	public function autoloadFilesAreBuildCorrectly() {
+	public function autoloadFilesAreBuildCorrectlyDataProvider() {
+		return [
+			'Psr-4 section' => [
+				[
+					'autoload' => [
+						'psr-4' => [
+							'TYPO3\\CMS\\TestExtension\\' => 'Classes/',
+						],
+					],
+				],
+				[
+					'\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\')',
+				],
+				[],
+			],
+			'Psr-4 section without trailing slash' => [
+				[
+					'autoload' => [
+						'psr-4' => [
+							'TYPO3\\CMS\\TestExtension\\' => 'Classes',
+						],
+					],
+				],
+				[
+					'\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\')',
+				],
+				[],
+			],
+			'Classmap section' => [
+				[
+					'autoload' => [
+						'classmap' => [
+							'Resources/PHP/',
+						],
+					],
+				],
+				[],
+				[
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+				],
+			],
+			'Classmap section without trailing slash' => [
+				[
+					'autoload' => [
+						'classmap' => [
+							'Resources/PHP',
+						],
+					],
+				],
+				[],
+				[
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+				],
+			],
+			'Classmap section pointing to a file' => [
+				[
+					'autoload' => [
+						'classmap' => [
+							'Resources/PHP/Test.php',
+						],
+					],
+				],
+				[],
+				[
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+					'!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
+					'!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+				],
+			],
+			'Classmap section pointing to two files' => [
+				[
+					'autoload' => [
+						'classmap' => [
+							'Resources/PHP/Test.php',
+							'Resources/PHP/AnotherTestFile.php',
+						],
+					],
+				],
+				[],
+				[
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
+					'!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+				],
+			],
+		];
+	}
+
+	/**
+	 * @test
+	 * @dataProvider autoloadFilesAreBuildCorrectlyDataProvider
+	 *
+	 * @param string $packageManifest
+	 * @param array $expectedPsr4Files
+	 * @param array $expectedClassMapFiles
+	 */
+	public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles) {
 		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
 		$classLoaderMock = $this->getMock(ClassLoader::class);
-		$generator = new ClassLoadingInformationGenerator($classLoaderMock, $this->createPackagesMock(), __DIR__);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, $this->createPackagesMock($packageManifest), __DIR__);
 		$files = $generator->buildAutoloadInformationFiles();
 
 		$this->assertArrayHasKey('psr-4File', $files);
 		$this->assertArrayHasKey('classMapFile', $files);
-		$this->assertContains('\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\')', $files['psr-4File']);
-		$this->assertContains('$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'', $files['classMapFile']);
+		foreach ($expectedPsr4Files as $expectation) {
+			if ($expectation[0] === '!') {
+				$expectedCount = 0;
+			} else {
+				$expectedCount = 1;
+			}
+			$this->assertSame($expectedCount, substr_count($files['psr-4File'], $expectation));
+		}
+		foreach ($expectedClassMapFiles as $expectation) {
+			if ($expectation[0] === '!') {
+				$expectedCount = 0;
+			} else {
+				$expectedCount = 1;
+			}
+			$this->assertSame($expectedCount, substr_count($files['classMapFile'], $expectation));
+		}
 	}
 
 	/**
+	 * @param array Array which should be returned as composer manifest
 	 * @return PackageInterface[]
 	 */
-	protected function createPackagesMock() {
+	protected function createPackagesMock($packageManifest) {
 		$packageStub = $this->getMock(PackageInterface::class);
 		$packageStub->expects($this->any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
 		$packageStub->expects($this->any())->method('getValueFromComposerManifest')->willReturn(
-			json_decode(file_get_contents(__DIR__ . '/Fixtures/test_extension/composer.json'))
+			json_decode(json_encode($packageManifest))
 		);
 
 		return [$packageStub];
