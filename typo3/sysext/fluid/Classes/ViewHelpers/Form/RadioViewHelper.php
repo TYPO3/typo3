@@ -90,6 +90,7 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
         }
         if ($checked === null && $propertyValue === null) {
             $propertyValue = $this->getPropertyValue();
+            $propertyValue = $this->convertToPlainValue($propertyValue);
         }
 
         if ($propertyValue !== null) {
