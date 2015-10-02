@@ -537,6 +537,12 @@
 			<trans-unit id="sys_file_reference.imageoverlayPalette">
 				<source>Image Metadata</source>
 			</trans-unit>
+			<trans-unit id="sys_file_reference.audioOverlayPalette">
+				<source>Audio Metadata</source>
+			</trans-unit>
+			<trans-unit id="sys_file_reference.videoOverlayPalette">
+				<source>Video Metadata</source>
+			</trans-unit>
 			<trans-unit id="sys_file_reference.title">
 				<source>Title</source>
 			</trans-unit>
