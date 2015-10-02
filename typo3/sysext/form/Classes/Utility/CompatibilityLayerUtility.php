@@ -434,6 +434,7 @@ class CompatibilityLayerUtility {
 				$layout['elementOuterWrap'] = $elementWrap;
 				$element->setLayout($layout);
 			}
+
 			/* Set container inner wraps */
 			if (in_array($element->getElementType(), $this->containerElements)) {
 				$elementWrap = $this->determineElementOuterWraps($element->getElementType(), $elementLayout);
@@ -509,8 +510,26 @@ class CompatibilityLayerUtility {
 						$element->setHtmlAttribute('class', $classFromLayout);
 					}
 				}
+			} else {
+				/* set class attribute for the element tag */
+				if ($this->formBuilder->getControllerAction() === 'show') {
+					if ($elementType === 'TEXTAREA') {
+						$tagName = 'textarea';
+					} elseif ($elementType === 'SELECT') {
+						$tagName = 'select';
+					} else {
+						$tagName = 'input';
+					}
+
+					$classFromLayout = $this->getElementClassFromLayout($element->getElementType(), $tagName);
+					if (!empty($classFromLayout)) {
+						if (!empty($element->getAdditionalArgument('class'))) {
+							$classFromLayout .= ' ' . $element->getAdditionalArgument('class');
+						}
+						$element->setAdditionalArgument('class', $classFromLayout);
+					}
+				}
 			}
-			return;
 		}
 	}
 
@@ -532,17 +551,21 @@ class CompatibilityLayerUtility {
 	/**
 	 * Return the class attribute for a element defined by layout.
 	 *
-	 * @param string $elementName
+	 * @param string $elementType
+	 * @param string $tagName
 	 * @return string
 	 */
-	protected function getElementClassFromLayout($elementName = '') {
+	protected function getElementClassFromLayout($elementType = '', $tagName = '') {
 		$class = '';
 		$libxmlUseInternalErrors = libxml_use_internal_errors(true);
 		$dom = new \DOMDocument('1.0', 'utf-8');
 		$dom->formatOutput = TRUE;
 		$dom->preserveWhiteSpace = FALSE;
-		if ($dom->loadXML($this->getGlobalLayoutByElementType(strtoupper($elementName)))) {
-			$nodes = $dom->getElementsByTagName($elementName);
+		if ($dom->loadXML($this->getGlobalLayoutByElementType(strtoupper($elementType)))) {
+			if ($tagName === '') {
+				$tagName = $elementType;
+			}
+			$nodes = $dom->getElementsByTagName($tagName);
 			if ($nodes->length) {
 				$node = $nodes->item(0);
 				if ($node && $node->getAttribute('class') !== '') {
