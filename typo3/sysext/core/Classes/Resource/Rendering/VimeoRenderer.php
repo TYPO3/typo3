@@ -111,27 +111,29 @@ class VimeoRenderer implements FileRendererInterface {
 		}
 
 		$videoId = $this->getOnlineMediaHelper($file)->getOnlineMediaId($orgFile);
-		$attributes = array(
-			'src' => sprintf('//player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams)),
-		);
-		$width = (int)$width;
-		if (!empty($width)) {
-			$attributes['width'] = $width;
+		$src = sprintf('//player.vimeo.com/video/%s?%s', $videoId, implode('&amp;', $urlParams));
+
+		$attributes = ['allowfullscreen'];
+		if ((int)$width > 0) {
+			$attributes[] = 'width="' . (int)$width . '"';
 		}
-		$height = (int)$height;
-		if (!empty($height)) {
-			$attributes['height'] = $height;
+		if ((int)$height > 0) {
+			$attributes[] = 'height="' . (int)$height . '"';
 		}
 		if (is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->config['config']['doctype'] !== 'html5') {
-			$attributes['frameborder'] = '0';
+			$attributes[] = 'frameborder="0"';
 		}
-		$output = '';
-		foreach ($attributes as $key => $value) {
-			$output .= $key . '="' . $value . '" ';
+		foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick'] as $key) {
+			if (!empty($options[$key])) {
+				$attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
+			}
 		}
 
-		// wrap in div so you can make it responsive
-		return '<div class="video-container"><iframe ' . $output . 'allowfullscreen></iframe></div>';
+		return sprintf(
+			'<iframe src="%s"%s></iframe>',
+			$src,
+			empty($attributes) ? '' : ' ' . implode(' ', $attributes)
+		);
 	}
 
 }

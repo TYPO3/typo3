@@ -85,7 +85,7 @@ class VimeoRendererTest extends UnitTestCase {
 		$fileResourceMock = $this->getMock(File::class, array(), array(), '', FALSE);
 
 		$this->assertSame(
-			'<div class="video-container"><iframe src="//player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" width="300" height="200" allowfullscreen></iframe></div>',
+			'<iframe src="//player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
 			$this->subject->render($fileResourceMock, '300m', '200')
 		);
 	}
@@ -98,7 +98,7 @@ class VimeoRendererTest extends UnitTestCase {
 		$fileResourceMock = $this->getMock(File::class, array(), array(), '', FALSE);
 
 		$this->assertSame(
-			'<div class="video-container"><iframe src="//player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" width="300" height="200" allowfullscreen></iframe></div>',
+			'<iframe src="//player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
 			$this->subject->render($fileResourceMock, '300m', '200', array('loop' => 1))
 		);
 	}
@@ -111,7 +111,7 @@ class VimeoRendererTest extends UnitTestCase {
 		$fileResourceMock = $this->getMock(File::class, array(), array(), '', FALSE);
 
 		$this->assertSame(
-			'<div class="video-container"><iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" width="300" height="200" allowfullscreen></iframe></div>',
+			'<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
 			$this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
 		);
 	}
@@ -124,7 +124,7 @@ class VimeoRendererTest extends UnitTestCase {
 		$fileResourceMock = $this->getMock(File::class, array(), array(), '', FALSE);
 
 		$this->assertSame(
-			'<div class="video-container"><iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" width="300" height="200" allowfullscreen></iframe></div>',
+			'<iframe src="//player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200"></iframe>',
 			$this->subject->render($fileResourceMock, '300m', '200', array('autoplay' => 1))
 		);
 	}

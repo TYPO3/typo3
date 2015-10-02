@@ -72,22 +72,34 @@ class VideoTagRenderer implements FileRendererInterface {
 			}
 		}
 
-		$additionalAttributes = array();
+		$attributes = [];
+		if ((int)$width > 0) {
+			$attributes[] = 'width="' . (int)$width . '"';
+		}
+		if ((int)$height > 0) {
+			$attributes[] = 'height="' . (int)$height . '"';
+		}
 		if (!isset($options['controls']) || !empty($options['controls'])) {
-			$additionalAttributes[] = 'controls';
+			$attributes[] = 'controls';
 		}
 		if (!empty($options['autoplay'])) {
-			$additionalAttributes[] = 'autoplay';
+			$attributes[] = 'autoplay';
+		}
+		if (!empty($options['muted'])) {
+			$attributes[] = 'muted';
 		}
 		if (!empty($options['loop'])) {
-			$additionalAttributes[] = 'loop';
+			$attributes[] = 'loop';
+		}
+		foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick'] as $key) {
+			if (!empty($options[$key])) {
+				$attributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
+			}
 		}
 
 		return sprintf(
-			'<video width="%d" height="%d"%s><source src="%s" type="%s"></video>',
-			(int)$width,
-			(int)$height,
-			empty($additionalAttributes) ? '' : ' ' . implode(' ', $additionalAttributes),
+			'<video%s><source src="%s" type="%s"></video>',
+			empty($attributes) ? '' : ' ' . implode(' ', $attributes),
 			htmlspecialchars($file->getPublicUrl($usedPathsRelativeToCurrentScript)),
 			$file->getMimeType()
 		);

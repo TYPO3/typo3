@@ -79,8 +79,16 @@ class AudioTagRenderer implements FileRendererInterface {
 		if (!empty($options['autoplay'])) {
 			$additionalAttributes[] = 'autoplay';
 		}
+		if (!empty($options['muted'])) {
+			$additionalAttributes[] = 'muted';
+		}
 		if (!empty($options['loop'])) {
 			$additionalAttributes[] = 'loop';
+		}
+		foreach (['class', 'dir', 'id', 'lang', 'style', 'title', 'accesskey', 'tabindex', 'onclick', 'preload'] as $key) {
+			if (!empty($options[$key])) {
+				$additionalAttributes[] = $key . '="' . htmlspecialchars($options[$key]) . '"';
+			}
 		}
 
 		return sprintf(
