@@ -18,8 +18,8 @@ plugin.tx_frontend._CSS_DEFAULT_STYLE (
 	.ce-gallery iframe { border-width: 0; }
 	.ce-border img,
 	.ce-border iframe {
-		border: {$styles.content.textmedia.borderThick}px solid {$styles.content.textmedia.borderColor};
-		padding: {$styles.content.textmedia.borderSpace}px;
+		border: {$styles.content.textmedia.borderWidth}px solid {$styles.content.textmedia.borderColor};
+		padding: {$styles.content.textmedia.borderPadding}px;
 	}
 
 	.ce-intext.ce-right .ce-gallery, .ce-intext.ce-left .ce-gallery, .ce-above .ce-gallery {
@@ -32,7 +32,7 @@ plugin.tx_frontend._CSS_DEFAULT_STYLE (
 	.ce-column { margin-right: {$styles.content.textmedia.colSpace}px; }
 	.ce-column:last-child { margin-right: 0; }
 
-	.ce-row { margin-bottom: {$styles.content.textmedia.rowSpace}px; }
+	.ce-row { margin-bottom: {$styles.content.textmedia.rowSpacing}px; }
 	.ce-row:last-child { margin-bottom: 0; }
 
 	.ce-above .ce-bodytext { clear: both; }

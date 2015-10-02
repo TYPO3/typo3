@@ -178,17 +178,11 @@ tt_content {
 			}
 			20 = TYPO3\CMS\Frontend\DataProcessing\GalleryProcessor
 			20 {
-				maxGalleryWidth = {$styles.content.imgtext.maxW}
-				maxGalleryWidth {
-					override.data = register:maxImageWidth
-				}
-				maxGalleryWidthInText = {$styles.content.imgtext.maxWInText}
-				maxGalleryWidthInText {
-					override.data = register:maxImageWidthInText
-				}
-				columnSpacing = {$styles.content.imgtext.colSpace}
-				borderWidth = {$styles.content.imgtext.borderThick}
-				borderPadding = {$styles.content.imgtext.borderSpace}
+				maxGalleryWidth = {$styles.content.textmedia.maxW}
+				maxGalleryWidthInText = {$styles.content.textmedia.maxWInText}
+				columnSpacing = {$styles.content.textmedia.columnSpacing}
+				borderWidth = {$styles.content.textmedia.borderWidth}
+				borderPadding = {$styles.content.textmedia.borderPadding}
 			}
 		}
 		stdWrap {

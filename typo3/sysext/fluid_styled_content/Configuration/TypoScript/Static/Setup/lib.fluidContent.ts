@@ -16,19 +16,11 @@ lib.fluidContent {
 		defaultHeaderType = {$styles.content.defaultHeaderType}
 
 		media {
-			gallery {
-				columnSpacing = {$styles.content.textmedia.colSpace}
-				maximumImageWidth = {$styles.content.textmedia.maxW}
-				maximumImageWidthInText = {$styles.content.textmedia.maxWInText}
-				borderWidth = {$styles.content.textmedia.borderThick}
-				borderPadding = {$styles.content.textmedia.borderSpace}
-			}
 			popup {
 				bodyTag = <body style="margin:0; background:#fff;">
 				wrap = <a href="javascript:close();"> | </a>
 				width = {$styles.content.textmedia.linkWrap.width}
 				height = {$styles.content.textmedia.linkWrap.height}
-				effects = {$styles.content.textmedia.linkWrap.effects}
 
 				JSwindow = 1
 				JSwindow {

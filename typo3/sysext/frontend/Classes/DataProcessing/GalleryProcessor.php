@@ -40,8 +40,8 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
  *   borderEnabled.field = imageborder
  *   borderPadding = 0
  *   borderWidth = 0
- *   maxGalleryWidth = {$styles.content.imgtext.maxW}
- *   maxGalleryWidthInText = {$styles.content.imgtext.maxWInText}
+ *   maxGalleryWidth = {$styles.content.mediatext.maxW}
+ *   maxGalleryWidthInText = {$styles.content.mediatext.maxWInText}
  *   as = gallery
  * }
  *
