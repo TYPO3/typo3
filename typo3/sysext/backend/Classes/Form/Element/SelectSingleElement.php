@@ -224,7 +224,7 @@ class SelectSingleElement extends AbstractFormElement {
 			$selectIconRows = ceil(count($selectIcons) / $selectIconColumns);
 			$selectIcons = array_pad($selectIcons, $selectIconRows * $selectIconColumns, '');
 
-			$html[] = '<div class="t3js-forms-select-single-icons table-fit table-fit-inline-block">';
+			$html[] = '<div class="t3js-forms-select-single-icons table-icons table-fit table-fit-inline-block">';
 			$html[] = 	'<table class="table table-condensed table-white table-center">';
 			$html[] = 		'<tbody>';
 			$html[] = 			'<tr>';

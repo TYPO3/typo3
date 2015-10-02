@@ -11168,6 +11168,10 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 .t3-form-field-label.t3-form-field-state-changed {
   color: #004fb0;
 }
+.table-icons td img {
+  max-width: 128px;
+  max-height: 128px;
+}
 .list-tree,
 .list-tree ul {
   margin-left: 8px;
