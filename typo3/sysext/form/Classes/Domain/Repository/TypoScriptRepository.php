@@ -74,9 +74,7 @@ class TypoScriptRepository implements SingletonInterface {
 			}
 			$registeredElements = $this->modelDefinitionTypoScript['settings.']['registeredElements.'];
 			foreach ($registeredElements as $registeredElementKey => $value) {
-				if (strpos(strrev($registeredElementKey), '.') === 0) {
-					continue;
-				}
+				$registeredElementKey = rtrim($registeredElementKey, '.');
 				$this->registeredElementTypes[] = $registeredElementKey;
 			}
 		}
