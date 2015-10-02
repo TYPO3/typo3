@@ -56,6 +56,32 @@
 						</TCEforms>
 					</input_2>
 
+					<input_3>
+						<TCEforms>
+							<label>input_3 with wizard</label>
+							<config>
+								<type>input</type>
+								<size>50</size>
+								<max>256</max>
+								<eval>trim</eval>
+								<softref>typolink</softref>
+								<wizards type="array">
+									<link type="array">
+										<type>popup</type>
+										<title>Link</title>
+										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
+										<module type="array">
+											<name>wizard_element_browser</name>
+											<urlParameters type="array">
+												<mode>wizard</mode>
+											</urlParameters>
+										</module>
+										<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
+									</link>
+								</wizards>
+							</config>
+						</TCEforms>
+					</input_3>
 
 					<text_1>
 						<TCEforms>
