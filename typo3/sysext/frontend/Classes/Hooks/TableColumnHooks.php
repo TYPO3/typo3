@@ -24,7 +24,7 @@ class TableColumnHooks {
 	 * @param array $parameters
 	 */
 	public function sortPluginList(array &$parameters) {
-		usort(
+		@usort(
 			$parameters['items'],
 			function ($item1, $item2) {
 				return strcasecmp($this->getLanguageService()->sL($item1[0]), $this->getLanguageService()->sL($item2[0]));
