@@ -9,7 +9,7 @@ return array(
 		'delete' => 'deleted',
 		'sortby' => 'sorting',
 		'default_sortby' => 'ORDER BY crdate',
-		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png',
+		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg',
 
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
@@ -943,7 +943,7 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png'),
+					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
 					array('Icon from typo3/gfx', 'es', 'flags/es.gif'), // @TODO: docu says typo3/sysext/t3skin/icons/gfx/, but in fact it is typo3/gfx.
 				),
 			),
@@ -954,7 +954,7 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png'),
+					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
 					array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
 				),
 				'iconsInOptionTags' => TRUE,
@@ -966,7 +966,7 @@ return array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png'),
+					array('Icon using EXT:', 'foo', 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg'),
 					array('Icon from typo3/gfx', 'es', 'flags/es.gif'),
 				),
 				'iconsInOptionTags' => TRUE,
@@ -1185,7 +1185,7 @@ return array(
 				'type' => 'select',
 				'items' => array(
 					array('foo 1', 1, '', 'optional description'), // @TODO: In contrast to "items" documentation, description seems not to have an effect for renderMode=checkbox
-					array('foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png', 'other description'),
+					array('foo 2', 2, 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg', 'other description'),
 					array('foo 3', 3, '', ''),
 				),
 				'renderMode' => 'checkbox',

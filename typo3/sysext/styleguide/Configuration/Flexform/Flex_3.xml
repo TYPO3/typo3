@@ -152,7 +152,7 @@
 									<numIndex index="0">
 										<numIndex index="0">Icon using EXT:</numIndex>
 										<numIndex index="1">foo</numIndex>
-										<numIndex index="2">EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png</numIndex>
+										<numIndex index="2">EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg</numIndex>
 									</numIndex>
 									<numIndex index="1">
 										<numIndex index="0">Icon from typo3/gfx</numIndex>
@@ -182,7 +182,7 @@
 									<numIndex index="1">
 										<numIndex index="0">foo 2</numIndex>
 										<numIndex index="1">2</numIndex>
-										<numIndex index="2">EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.png</numIndex>
+										<numIndex index="2">EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms.svg</numIndex>
 										<numIndex index="3">other description</numIndex>
 									</numIndex>
 								</items>

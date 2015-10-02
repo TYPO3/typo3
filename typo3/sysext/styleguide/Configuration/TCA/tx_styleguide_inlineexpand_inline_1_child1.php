@@ -3,7 +3,7 @@ return array(
 	'ctrl' => array(
 		'title' => 'Form engine tests - inline expand inline_1 child 1',
 		'label' => 'rte_1',
-		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
+		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

@@ -9,7 +9,7 @@ return array(
 		'delete' => 'deleted',
 		'sortby' => 'sorting',
 		'default_sortby' => 'ORDER BY crdate',
-		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_required.png',
+		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_required.svg',
 
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',

@@ -4,7 +4,7 @@ return array(
 		'title' => 'Form engine tests - static data',
 		'label' => 'value_1',
 		'rootLevel' => 1,
-		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.png',
+		'iconfile' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide_forms_staticdata.svg',
 	),
 
 	'columns' => array(
