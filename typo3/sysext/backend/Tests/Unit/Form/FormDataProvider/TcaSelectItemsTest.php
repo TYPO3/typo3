@@ -2467,49 +2467,68 @@ class TcaSelectItemsTest extends UnitTestCase
         $this->assertEquals($expected, $this->subject->addData($input));
     }
 
-    /**
-     * @test
-     * @dataProvider correctValuesForMmRelationWithSingleValueAllowedDataProvider
-     */
-    public function correctValuesForMmRelationWithSingleValueAllowed($input, $relationHandlerUids)
-    {
-        $GLOBALS['TCA']['foreignTable'] = [];
-
-        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-
-        /** @var DatabaseConnection|ObjectProphecy $database */
-        $database = $this->prophesize(DatabaseConnection::class);
-        $GLOBALS['TYPO3_DB'] = $database->reveal();
-
-        $fieldConfig = $input['processedTca']['columns']['aField']['config'];
-        /** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
-        $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
-
-        $field = $input['databaseRow']['aField'];
-        $foreignTable = $input['processedTca']['columns']['aField']['config']['foreign_table'];
-        $mmTable = $input['processedTca']['columns']['aField']['config']['MM'];
-        $uid = $input['databaseRow']['uid'];
-        $tableName = $input['tableName'];
-        $fieldConfig = $input['processedTca']['columns']['aField']['config'];
-
-        $relationHandlerProphecy->start($field, $foreignTable, $mmTable, $uid, $tableName, $fieldConfig)->shouldBeCalled();
-        $relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
-
-        $expected = $input;
-        $expected['databaseRow']['aField'] = $relationHandlerUids;
-
-        $this->assertEquals($expected, $this->subject->addData($input));
-    }
 
     /**
      * Data Provider
+     *
+     * @return array
      */
-    public function correctValuesForMmRelationWithSingleValueAllowedDataProvider()
+    public function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider()
     {
         return array(
+            'Relation with MM table and new status with default values' => [
+                [
+                    'tableName' => 'aTable',
+                    'command' => 'new',
+                    'databaseRow' => [
+                        'uid' => 'NEW1234',
+                        'aField' => '24,35',
+                    ],
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'select',
+                                    'maxitems' => 999,
+                                    'MM' => 'mm_aTable_foreignTable',
+                                    'foreign_table' => 'foreignTable',
+                                    'items' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'MM' => ''
+                ],
+                [
+                    24, 35
+                ]
+            ],
+            'Relation with MM table and item array in list but no new status' => [
+                [
+                    'tableName' => 'aTable',
+                    'databaseRow' => [
+                        'uid' => 'NEW1234',
+                        'aField' => '24,35',
+                    ],
+                    'processedTca' => [
+                        'columns' => [
+                            'aField' => [
+                                'config' => [
+                                    'type' => 'select',
+                                    'maxitems' => 999,
+                                    'MM' => 'mm_aTable_foreignTable',
+                                    'foreign_table' => 'foreignTable',
+                                    'items' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [],
+                []
+            ],
             'Relation with MM table and maxitems = 1 processes field value (item count)' => [
                 [
                     'tableName' => 'aTable',
@@ -2532,6 +2551,7 @@ class TcaSelectItemsTest extends UnitTestCase
                         ],
                     ],
                 ],
+                [],
                 [
                     24
                 ]
@@ -2558,9 +2578,49 @@ class TcaSelectItemsTest extends UnitTestCase
                         ],
                     ],
                 ],
-                [
-                ]
+                [],
+                []
             ]
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider processSelectFieldSetsCorrectValuesForMmRelationsDataProvider
+     *
+     * @param array $input
+     * @param array $overrideRelationHandlerSettings
+     * @param array $relationHandlerUids
+     */
+    public function processSelectFieldSetsCorrectValuesForMmRelations(array $input, array $overrideRelationHandlerSettings, array $relationHandlerUids)
+    {
+        $field = $input['databaseRow']['aField'];
+        $foreignTable = isset($overrideRelationHandlerSettings['foreign_table']) ? $overrideRelationHandlerSettings['foreign_table'] : $input['processedTca']['columns']['aField']['config']['foreign_table'];
+        $mmTable = isset($overrideRelationHandlerSettings['MM']) ? $overrideRelationHandlerSettings['MM'] : $input['processedTca']['columns']['aField']['config']['MM'];
+        $uid = $input['databaseRow']['uid'];
+        $tableName = $input['tableName'];
+        $fieldConfig = $input['processedTca']['columns']['aField']['config'];
+
+        $GLOBALS['TCA'][$foreignTable] = [];
+
+        /** @var BackendUserAuthentication|ObjectProphecy $backendUserProphecy */
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+        /** @var DatabaseConnection|ObjectProphecy $database */
+        $database = $this->prophesize(DatabaseConnection::class);
+        $GLOBALS['TYPO3_DB'] = $database->reveal();
+
+        /** @var RelationHandler|ObjectProphecy $relationHandlerProphecy */
+        $relationHandlerProphecy = $this->prophesize(RelationHandler::class);
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerProphecy->reveal());
+
+        $relationHandlerProphecy->start($field, $foreignTable, $mmTable, $uid, $tableName, $fieldConfig)->shouldBeCalled();
+        $relationHandlerProphecy->getValueArray()->shouldBeCalled()->willReturn($relationHandlerUids);
+
+        $expected = $input;
+        $expected['databaseRow']['aField'] = $relationHandlerUids;
+
+        $this->assertEquals($expected, $this->subject->addData($input));
     }
 }

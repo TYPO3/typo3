@@ -1044,7 +1044,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             /** @var RelationHandler $relationHandler */
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->registerNonTableValues = !empty($fieldConfig['config']['allowNonIdValues']);
-            if (isset($fieldConfig['config']['MM']) && !empty($fieldConfig['config']['MM'])) {
+            if (!empty($fieldConfig['config']['MM']) && $result['command'] !== 'new') {
                 // MM relation
                 $relationHandler->start(
                     $currentDatabaseValues,
