@@ -194,7 +194,8 @@ var TBE_EDITOR = {
 	 */
 	checkSubmit: function(sendAlert) {
 		var funcIndex, funcMax, funcRes;
-		var OK=1;
+		var OK = 1;
+		var STOP = 0;
 
 		// $this->additionalJS_submit:
 		if (TBE_EDITOR.actionChecks && TBE_EDITOR.actionChecks.submit) {
@@ -205,7 +206,12 @@ var TBE_EDITOR = {
 			}
 		}
 
-		if(!OK) {
+		if (STOP) {
+			// return false immediately, if the code in additionalJS_submit set STOP variable.
+			return false;
+		}
+
+		if (!OK) {
 			if (!confirm(unescape("SYSTEM ERROR: One or more Rich Text Editors on the page could not be contacted. This IS an error, although it should not be regular.\nYou can save the form now by pressing OK, but you will loose the Rich Text Editor content if you do.\n\nPlease report the error to your administrator if it persists."))) {
 				return false;
 			} else {
@@ -220,7 +226,7 @@ var TBE_EDITOR = {
 		if (OK || sendAlert==-1) {
 			return true;
 		} else {
-			if(sendAlert) alert(TBE_EDITOR.labels.fieldsMissing);
+			if (sendAlert) alert(TBE_EDITOR.labels.fieldsMissing);
 			return false;
 		}
 	},
