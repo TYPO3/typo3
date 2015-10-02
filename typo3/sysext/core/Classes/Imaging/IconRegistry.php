@@ -1781,7 +1781,32 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			'options' => array(
 				'source' => 'EXT:core/Resources/Public/Icons/Flags/wales.png'
 			)
-		)
+		),
+
+		'tcarecords-sys_domain-default' => array(
+			'provider' => SvgIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:backend/Resources/Public/Icons/Overlay/overlay-translated.svg'
+			)
+		),
+		'tcarecords-sys_template-default' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-content-template.png'
+			)
+		),
+		'tcarecords-sys_workspace-default' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_workspace.png'
+			)
+		),
+		'tcarecords-sys_workspace_stage-default' => array(
+			'provider' => BitmapIconProvider::class,
+			'options' => array(
+				'source' => 'EXT:t3skin/images/icons/mimetypes/x-sys_workspace.png'
+			)
+		),
 	);
 
 	/**
@@ -2034,6 +2059,10 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			if (is_array($GLOBALS['TCA'][$tableName])) {
 				$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
 				$icon = NULL;
+				$iconIdentifier = 'tcarecords-' . $tableName . '-default';
+				if ($this->isRegistered($iconIdentifier)) {
+					continue;
+				}
 				if (isset($tcaCtrl['iconfile'])) {
 					if (StringUtility::beginsWith($tcaCtrl['iconfile'], 'EXT:')) {
 						$icon = $tcaCtrl['iconfile'];
@@ -2041,7 +2070,7 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 						$icon = TYPO3_mainDir . GeneralUtility::resolveBackPath($tcaCtrl['iconfile']);
 					}
 					if ($icon !== NULL) {
-						$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
+						$resultArray[$iconIdentifier] = $icon;
 					}
 				}
 			}
@@ -2050,6 +2079,9 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 			foreach ($GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $iconIdentifier => $iconFile) {
 				if (StringUtility::beginsWith($iconFile, '../typo3conf/ext/')) {
 					$iconFile = str_replace('../typo3conf/ext/', 'EXT:', $iconFile);
+				}
+				if (StringUtility::beginsWith($iconFile, 'sysext/')) {
+					$iconFile = str_replace('sysext/', 'EXT:', $iconFile);
 				}
 				$resultArray[$iconIdentifier] = $iconFile;
 			}
