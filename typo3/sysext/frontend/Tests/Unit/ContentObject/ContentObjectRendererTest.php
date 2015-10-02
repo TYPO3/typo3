@@ -1656,6 +1656,64 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for the stdWrap_date test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 * @see stdWrap_date
+	 */
+	public function stdWrap_dateDataProvider() {
+		return array(
+			'given timestamp' => array(
+				1443780000, // This is 2015-10-02 12:00
+				array(
+					'date' => 'd.m.Y',
+				),
+				'02.10.2015',
+			),
+			'empty string' => array(
+				'',
+				array(
+					'date' => 'd.m.Y',
+				),
+				'02.10.2015',
+			),
+			'testing null' => array(
+				NULL,
+				array(
+					'date' => 'd.m.Y',
+				),
+				'02.10.2015',
+			),
+			'given timestamp return GMT' => array(
+				1443780000, // This is 2015-10-02 12:00
+				array(
+					'date' => 'd.m.Y H:i:s',
+					'date.' => array(
+						'GMT' => TRUE,
+					)
+				),
+				'02.10.2015 10:00:00',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider stdWrap_dateDataProvider
+	 * @param string|int|NULL $content
+	 * @param array $conf
+	 * @param string $expected
+	 */
+	public function stdWrap_date($content, $conf, $expected) {
+		// Set exec_time to a hard timestamp
+		$GLOBALS['EXEC_TIME'] = 1443780000;
+
+		$result = $this->subject->stdWrap_date($content, $conf);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * Data provider for the stdWrap_strftime test
 	 *
 	 * @return array multi-dimensional array with the second level like this:
