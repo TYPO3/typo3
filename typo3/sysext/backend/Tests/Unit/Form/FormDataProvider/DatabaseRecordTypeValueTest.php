@@ -409,4 +409,49 @@ class DatabaseRecordTypeValueTest extends UnitTestCase {
 		$this->assertSame($expected, $this->subject->addData($input));
 	}
 
+
+	/**
+	 * @test
+	 */
+	public function addDataSetsTypeValueFromNestedTcaGroupField() {
+		$input = [
+			'vanillaTableTca' => [
+				'ctrl' => [
+					'type' => 'uid_local:type',
+				],
+				'columns' => [
+					'uid_local' => [
+						'config' => [
+							'type' => 'group',
+							'internal_type' => 'db',
+							'size' => 1,
+							'maxitems' => 1,
+							'minitems' => 0,
+							'allowed' => 'sys_file'
+						],
+					],
+				],
+				'types' => [
+					'2' => 'foo',
+				],
+			],
+			'databaseRow' => [
+				// Processed group field
+				'uid_local' => 'sys_file_222|my_test.jpg',
+			],
+		];
+
+		$foreignRecordResult = [
+			'type' => 2,
+		];
+		// Required for BackendUtility::getRecord
+		$GLOBALS['TCA']['sys_file'] = array('foo');
+
+		$this->dbProphecy->exec_SELECTgetSingleRow('type', 'sys_file', 'uid=222')->shouldBeCalled()->willReturn($foreignRecordResult);
+
+		$expected = $input;
+		$expected['recordTypeValue'] = '2';
+
+		$this->assertSame($expected, $this->subject->addData($input));
+	}
 }

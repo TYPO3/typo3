@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Determine the final TCA type value
@@ -90,6 +91,12 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface {
 							'No target table defined for type config field ' . $pointerField . ' of table ' . $result['tableName'],
 							1438253614
 						);
+					}
+					// Extract UID from value formed like {table_name}_{uid}|{default_value}
+					// @todo: This needs adaption as soon as the group format is changed
+					if (!MathUtility::canBeInterpretedAsInteger($foreignUid)) {
+						list($foreignUid) = explode('|', $foreignUid);
+						$foreignUid = str_replace($foreignTable . '_', '', $foreignUid);
 					}
 					// Fetch field of this foreign row from db
 					$foreignRow = BackendUtility::getRecord($foreignTable, $foreignUid, $foreignTableTypeField);

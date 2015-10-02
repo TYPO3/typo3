@@ -386,6 +386,8 @@ return array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseLanguageRows::class,
+							// As the ctrl.type can hold a nested key we need to resolve all relations
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfigMerged::class => array(
