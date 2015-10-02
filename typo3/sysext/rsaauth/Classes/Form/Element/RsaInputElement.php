@@ -120,9 +120,8 @@ class RsaInputElement extends AbstractFormElement {
 		}
 
 		// This is the EDITABLE form field.
-		$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
-		if (!empty($placeholderValue)) {
-			$attributes['placeholder'] = trim($languageService->sL($placeholderValue));
+		if (!empty($config['placeholder'])) {
+			$attributes['placeholder'] = trim($config['placeholder']);
 		}
 
 		// Build the attribute string

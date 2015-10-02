@@ -114,32 +114,6 @@ abstract class AbstractNode implements NodeInterface {
 	}
 
 	/**
-	 * Determine and get the value for the placeholder for an input field.
-	 * Typically used in an inline relation where values from fields down the record chain
-	 * are used as "default" values for fields.
-	 *
-	 * @param string $table
-	 * @param array $config
-	 * @param array $row
-	 * @return mixed
-	 */
-	protected function getPlaceholderValue($table, array $config, array $row) {
-		$value = trim($config['placeholder']);
-		if (!$value) {
-			return '';
-		}
-		// Check if we have a reference to another field value from the current record
-		if (substr($value, 0, 6) === '__row|') {
-			/** @var FormDataTraverser $traverser */
-			$traverseFields = GeneralUtility::trimExplode('|', substr($value, 6));
-			$traverser = GeneralUtility::makeInstance(FormDataTraverser::class);
-			$value = $traverser->getTraversedFieldValue($traverseFields, $table, $row, $this->data['inlineFirstPid']);
-		}
-
-		return $value;
-	}
-
-	/**
 	 * Build JSON string for validations rules and return it
 	 * as data attribute for HTML elements.
 	 *

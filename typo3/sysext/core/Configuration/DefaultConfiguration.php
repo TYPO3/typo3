@@ -469,6 +469,11 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
+						),
+					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
@@ -500,6 +505,57 @@ return array(
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+						),
+					),
+				),
+				'tcaInputPlaceholderRecord' => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => array(),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TableTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(

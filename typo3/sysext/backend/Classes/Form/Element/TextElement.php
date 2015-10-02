@@ -160,10 +160,9 @@ class TextElement extends AbstractFormElement {
 			}
 
 			// Build the textarea
-			$placeholderValue = $this->getPlaceholderValue($table, $config, $row);
 			$placeholderAttribute = '';
-			if (!empty($placeholderValue)) {
-				$placeholderAttribute = ' placeholder="' . htmlspecialchars(trim($languageService->sL($placeholderValue))) . '" ';
+			if (!empty($config['placeholder'])) {
+				$placeholderAttribute = ' placeholder="' . htmlspecialchars(trim($config['placeholder'])) . '" ';
 			}
 
 			$html .= '<textarea'

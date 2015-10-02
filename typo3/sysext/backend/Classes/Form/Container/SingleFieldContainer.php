@@ -243,7 +243,7 @@ class SingleFieldContainer extends AbstractContainer {
 			// field has no name attribute and is not transferred at all. Those two are then hidden / shown depending
 			// on the state of the above checkbox in via JS.
 
-			$placeholder = $this->getPlaceholderValue($table, $parameterArray['fieldConf']['config'], $row);
+			$placeholder = empty($parameterArray['fieldConf']['config']['placeholder']) ? '' : $parameterArray['fieldConf']['config']['placeholder'];
 			$onChange = 'typo3form.fieldTogglePlaceholder(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', !this.checked)';
 			$checked = $parameterArray['itemFormElValue'] === NULL ? '' : ' checked="checked"';
 
