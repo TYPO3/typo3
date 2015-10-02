@@ -29,7 +29,7 @@ return array(
 	),
 
 	'interface' => array(
-		'showRecordFieldList' => 'inpput_1',
+		'showRecordFieldList' => 'input_1',
 	),
 
 	'types' => array(
