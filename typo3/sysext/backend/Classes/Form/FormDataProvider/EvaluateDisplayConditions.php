@@ -115,8 +115,8 @@ class EvaluateDisplayConditions implements FormDataProviderInterface {
 			foreach ($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
 				$flexFormSheetRowData = $flexFormRowData[$sheetName]['lDEF'];
 				$flexFormSheetRowData['parentRec'] = $result['databaseRow'];
-				$result['processedTca']['columns'][$columnName]['config']['ds']['sheets'] = $this->removeFlexformFieldsRecursive(
-					$result['processedTca']['columns'][$columnName]['config']['ds']['sheets'],
+				$result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName] = $this->removeFlexformFieldsRecursive(
+					$result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName],
 					$flexFormSheetRowData
 				);
 			}

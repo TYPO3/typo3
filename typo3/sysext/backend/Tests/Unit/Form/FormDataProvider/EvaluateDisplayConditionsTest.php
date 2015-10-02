@@ -222,8 +222,30 @@ class EvaluateDisplayConditionsTest extends UnitTestCase {
 														'items' => [],
 													],
 												],
+												'mmUseCurl' => [
+													'displayCond' => 'FIELD:mmType:=:audio',
+													'config' => [
+														'type' => 'check',
+														'default' => '0',
+														'items' => [],
+													],
+												],
 											],
 											'sheetTitle' => 'aTitle',
+										],
+									],
+									'secondSheet' => [
+										'ROOT' => [
+											'type' => 'array',
+											'el' => [
+												'foo' => [
+													'config' => [
+														'type' => 'select',
+														'items' => [],
+													],
+												],
+											],
+											'sheetTitle' => 'bTitle',
 										],
 									],
 								],
