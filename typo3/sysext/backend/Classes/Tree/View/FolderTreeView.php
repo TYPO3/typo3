@@ -63,7 +63,7 @@ class FolderTreeView extends AbstractTreeView {
 	 * If file-drag mode is set, temp and recycler folders are filtered out.
 	 * @var bool
 	 */
-	public $ext_noTempRecyclerDirs;
+	public $ext_noTempRecyclerDirs = FALSE;
 
 	/**
 	 * override to not use a title attribute
@@ -88,7 +88,8 @@ class FolderTreeView extends AbstractTreeView {
 	 * Constructor function of the class
 	 */
 	public function __construct() {
-		parent::init();
+		parent::__construct();
+		$this->init();
 		$this->storages = $this->BE_USER->getFileStorages();
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
@@ -124,7 +125,6 @@ class FolderTreeView extends AbstractTreeView {
 	 * @internal
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
-
 		if (empty($this->scope)) {
 			$this->scope = array(
 				'class' => get_class($this),
@@ -142,6 +142,16 @@ class FolderTreeView extends AbstractTreeView {
 		} else {
 			return $icon;
 		}
+	}
+
+	/**
+	 * @param string $cmd
+	 * @param bool $isOpen
+	 * @return string
+	 */
+	protected function renderPMIconAndLink($cmd, $isOpen) {
+		$link = $this->thisScript ? ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"' : '';
+		return '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
 	}
 
 	/**
@@ -289,19 +299,11 @@ class FolderTreeView extends AbstractTreeView {
 			$isOpen = $this->stored[$storageHashNumber][$folderHashSpecUID] || $this->expandFirst;
 			// Set PM icon:
 			$cmd = $this->generateExpandCollapseParameter($this->bank, !$isOpen, $rootLevelFolder);
+			// Only show and link icon if storage is browseable
 			if (!$storageObject->isBrowsable() || $this->getNumberOfSubfolders($rootLevelFolder) === 0) {
 				$firstHtml = '';
 			} else {
-				// Only show and link icon if storage is browseable
-				if (get_class($this) !== ElementBrowserFolderTreeView::class) {
-					$link = '';
-					if ($this->thisScript) {
-						$link = ' href="' . htmlspecialchars($this->getThisScript() . 'PM=' . $cmd) . '"';
-					}
-					$firstHtml = '<a class="list-tree-control list-tree-control-' . ($isOpen ? 'open' : 'closed') . '"' . $link . '><i class="fa"></i></a>';
-				} else {
-					$firstHtml = $this->PMiconATagWrap('', $cmd, !$isOpen);
-				}
+				$firstHtml = $this->renderPMIconAndLink($cmd, $isOpen);
 			}
 			// Mark a storage which is not online, as offline
 			// maybe someday there will be a special icon for this

@@ -935,7 +935,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 
 		$urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
-		return BackendUtility::getModuleUrl(GeneralUtility::_GP('M'), $urlParameters);
+		return $this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&');
 	}
 
 	/**

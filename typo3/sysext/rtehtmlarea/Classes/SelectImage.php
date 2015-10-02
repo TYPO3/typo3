@@ -497,8 +497,8 @@ plugin.insertImage(imageTags.join(\' \'));
 				}
 				// Setup filelist indexed elements:
 				$this->doc->JScode .= $this->doc->wrapScriptTags('
-				require(["TYPO3/CMS/Backend/BrowseLinks"], function(BrowseLinks) {
-					BrowseLinks.addElements(' . json_encode($this->elements) . ');
+				require(["TYPO3/CMS/Recordlist/BrowseFiles"], function(BrowseFiles) {
+					BrowseFiles.addElements(' . json_encode($this->elements) . ');
 				});');
 				// Wrap tree
 				$this->content .= '
@@ -528,7 +528,7 @@ plugin.insertImage(imageTags.join(\' \'));
 				break;
 			case 'dragdrop':
 				$foldertree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
-				$foldertree->setElementBrowser($this);
+				$foldertree->setLinkParameterProvider($this);
 				$foldertree->thisScript = $this->thisScript;
 				$foldertree->ext_noTempRecyclerDirs = TRUE;
 				$tree = $foldertree->getBrowsableTree();

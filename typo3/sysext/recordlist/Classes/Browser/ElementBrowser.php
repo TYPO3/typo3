@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Recordlist\Browser;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Form\FormEngine;
 use TYPO3\CMS\Backend\RecordList\ElementBrowserRecordList;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -39,7 +38,6 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\File\BasicFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -250,9 +248,9 @@ class ElementBrowser {
 	protected $hookObjects = array();
 
 	/**
-	 * @var BasicFileUtility
+	 * @var string
 	 */
-	public $fileProcessor;
+	protected $hookName = 'typo3/class.browse_links.php';
 
 	/**
 	 * @var PageRenderer
@@ -263,11 +261,6 @@ class ElementBrowser {
 	 * @var IconFactory
 	 */
 	protected $iconFactory;
-
-	/**
-	 * @var string
-	 */
-	protected $hookName = 'typo3/class.browse_links.php';
 
 	/**
 	 * @var string
@@ -373,10 +366,6 @@ class ElementBrowser {
 			$this->mode = 'rte';
 		}
 
-		// Init fileProcessor
-		$this->fileProcessor = GeneralUtility::makeInstance(BasicFileUtility::class);
-		$this->fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-
 		// Rich Text Editor specific configuration:
 		if ($this->mode === 'rte') {
 			$this->RTEProperties = $this->getRTEConfig();
@@ -396,8 +385,7 @@ class ElementBrowser {
 
 		$pageRenderer = $this->getPageRenderer();
 		$pageRenderer->loadJquery();
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BrowseLinks');
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree');
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/BrowseFiles');
 	}
 
 	/**
@@ -491,6 +479,7 @@ class ElementBrowser {
 				$this->curUrlInfo = $this->parseCurUrl($this->siteURL . '?id=' . $this->curUrlArray['href'], $this->siteURL);
 			}
 		} else {
+			// RTE only
 			$this->curUrlArray = GeneralUtility::_GP('curUrl');
 			if ($this->curUrlArray['all']) {
 				$this->curUrlArray = GeneralUtility::get_tag_attributes($this->curUrlArray['all']);
@@ -1211,7 +1200,7 @@ class ElementBrowser {
 	protected function getFileSelectorHtml($treeClassName = ElementBrowserFolderTreeView::class) {
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance($treeClassName);
-		$folderTree->setElementBrowser($this);
+		$folderTree->setLinkParameterProvider($this);
 		$folderTree->thisScript = $this->thisScript;
 		$tree = $folderTree->getBrowsableTree();
 		$backendUser = $this->getBackendUser();
@@ -1302,7 +1291,7 @@ class ElementBrowser {
 
 		/** @var ElementBrowserPageTreeView $pageTree */
 		$pageTree = GeneralUtility::makeInstance($treeClassName);
-		$pageTree->setElementBrowser($this);
+		$pageTree->setLinkParameterProvider($this);
 		$pageTree->thisScript = $this->thisScript;
 		$pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
@@ -1325,77 +1314,6 @@ class ElementBrowser {
 							</tr>
 						</table>
 						';
-		return $content;
-	}
-
-	/**
-	 * TYPO3 Element Browser: Showing a page tree and allows you to browse for records
-	 *
-	 * @return string HTML content for the module
-	 */
-	protected function main_db() {
-		// Starting content:
-		$content = $this->doc->startPage('TBE record selector');
-		// Init variable:
-		$pArr = explode('|', $this->bparams);
-		$tables = $pArr[3];
-		$backendUser = $this->getBackendUser();
-
-		// Making the browsable pagetree:
-		/** @var \TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView $pageTree */
-		$pageTree = GeneralUtility::makeInstance(\TYPO3\CMS\Recordlist\Tree\View\ElementBrowserPageTreeView::class);
-		$pageTree->setElementBrowser($this);
-		$pageTree->thisScript = $this->thisScript;
-		$pageTree->ext_pArrPages = $tables === 'pages';
-		$pageTree->ext_showNavTitle = (bool)$backendUser->getTSConfigVal('options.pageTree.showNavTitle');
-		$pageTree->ext_showPageId = (bool)$backendUser->getTSConfigVal('options.pageTree.showPageIdWithTitle');
-		$pageTree->addField('nav_title');
-
-		$withTree = TRUE;
-		if (($tables !== '') && ($tables !== '*')) {
-			$tablesArr = GeneralUtility::trimExplode(',', $tables, TRUE);
-			$onlyRootLevel = TRUE;
-			foreach ($tablesArr as $currentTable) {
-				$tableTca = $GLOBALS['TCA'][$currentTable];
-				if (isset($tableTca)) {
-					if (!isset($tableTca['ctrl']['rootLevel']) || ((int)$tableTca['ctrl']['rootLevel']) != 1) {
-						$onlyRootLevel = FALSE;
-					}
-				}
-			}
-			if ($onlyRootLevel) {
-				$withTree = FALSE;
-				// page to work on will be root
-				$this->expandPage = 0;
-			}
-		}
-
-		$tree = $pageTree->getBrowsableTree();
-		// Making the list of elements, if applicable:
-		$cElements = $this->TBE_expandPage($tables);
-		// Putting the things together, side by side:
-		$content .= '
-
-			<!--
-				Wrapper table for page tree / record list:
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBrecords">
-				<tr>';
-		if ($withTree) {
-			$content .= '<td class="c-wCell" valign="top">'
-				. $this->barheader(($this->getLanguageService()->getLL('pageTree') . ':'))
-				. $this->getTemporaryTreeMountCancelNotice()
-				. $tree . '</td>';
-		}
-		$content .= '<td class="c-wCell" valign="top">' . $cElements . '</td>
-				</tr>
-			</table>
-			';
-		// Add some space
-		$content .= '<br /><br />';
-		// End page, return content:
-		$content .= $this->doc->endPage();
-		$content = $this->doc->insertStylesAndJS($content);
 		return $content;
 	}
 
@@ -1485,7 +1403,7 @@ class ElementBrowser {
 		// Create folder tree:
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
-		$folderTree->setElementBrowser($this);
+		$folderTree->setLinkParameterProvider($this);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode === 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1524,8 +1442,8 @@ class ElementBrowser {
 		$content .= '<br /><br />';
 		// Setup indexed elements:
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
-		require(["TYPO3/CMS/Backend/BrowseLinks"], function(BrowseLinks) {
-			BrowseLinks.addElements(' . json_encode($this->elements) . ');
+		require(["TYPO3/CMS/Recordlist/BrowseFiles"], function(BrowseLinks) {
+			BrowseFiles.addElements(' . json_encode($this->elements) . ');
 		});');
 		// Ending page, returning content:
 		$content .= $this->doc->endPage();
@@ -1559,7 +1477,7 @@ class ElementBrowser {
 		// Create folder tree:
 		/** @var ElementBrowserFolderTreeView $folderTree */
 		$folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
-		$folderTree->setElementBrowser($this);
+		$folderTree->setLinkParameterProvider($this);
 		$folderTree->thisScript = $this->thisScript;
 		$folderTree->ext_noTempRecyclerDirs = $this->mode === 'filedrag';
 		$tree = $folderTree->getBrowsableTree();
@@ -1648,7 +1566,7 @@ class ElementBrowser {
 			$c = 0;
 			while ($row = $db->sql_fetch_assoc($res)) {
 				$c++;
-				$icon = $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render();
+					$icon = $this->iconFactory->getIconForRecord('tt_content', $row, Icon::SIZE_SMALL)->render();
 				$selected = '';
 				if ($this->curUrlInfo['act'] == 'page' && $this->curUrlInfo['cElement'] == $row['uid']) {
 					$selected = ' class="active"';
@@ -2394,10 +2312,10 @@ class ElementBrowser {
 	}
 
 	/**
-	 * For TBE: Makes an upload form for uploading files to the filemount the user is browsing.
+	 * Makes an upload form for uploading files to the filemount the user is browsing.
 	 * The files are uploaded to the tce_file.php script in the core which will handle the upload.
 	 *
-	 * @param Folder $folderObject Absolute filepath on server to which to upload.
+	 * @param Folder $folderObject
 	 * @return string HTML for an upload form.
 	 */
 	public function uploadForm(Folder $folderObject) {
@@ -2406,8 +2324,8 @@ class ElementBrowser {
 		}
 		// Read configuration of upload field count
 		$userSetting = $this->getBackendUser()->getTSConfigVal('options.folderTree.uploadFieldsInLinkBrowser');
-		$count = isset($userSetting) ? $userSetting : 1;
-		if ($count === '0') {
+		$count = isset($userSetting) ? (int)$userSetting : 1;
+		if ($count === 0) {
 			return '';
 		}
 		$pArr = explode('|', $this->bparams);
@@ -2442,17 +2360,18 @@ class ElementBrowser {
 					</tr>
 					<tr>
 						<td class="c-wCell c-hCell">';
-		// Traverse the number of upload fields (default is 3):
+		// Traverse the number of upload fields:
+		$combinedIdentifier = $folderObject->getCombinedIdentifier();
 		for ($a = 1; $a <= $count; $a++) {
 			$code .= '<input type="file" multiple="multiple" name="upload_' . $a . '[]"' . $this->doc->formWidth(35)
 					. ' size="50" />
 				<input type="hidden" name="file[upload][' . $a . '][target]" value="'
-					. htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />
+					. htmlspecialchars($combinedIdentifier) . '" />
 				<input type="hidden" name="file[upload][' . $a . '][data]" value="' . $a . '" /><br />';
 		}
 		// Make footer of upload form, including the submit button:
 		$redirectValue = $this->getThisScript() . 'act=' . $this->act . '&mode=' . $this->mode
-			. '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())
+			. '&expandFolder=' . rawurlencode($combinedIdentifier)
 			. '&bparams=' . rawurlencode($this->bparams)
 			. (is_array($this->P) ? GeneralUtility::implodeArrayForUrl('P', $this->P) : '');
 		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';

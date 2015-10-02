@@ -820,7 +820,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 		}
 		// Add row to CSV list:
 		if ($this->csvOutput) {
-			$this->addToCSV($row, $table);
+			$this->addToCSV($row);
 		}
 		// Add classes to table cells
 		$this->addElement_tdCssClass[$titleCol] = 'col-title' . $localizationMarkerClass;

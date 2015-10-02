@@ -14,8 +14,10 @@
 /**
  * API for tooltip windows powered by Twitter Bootstrap.
  */
-define('TYPO3/CMS/Recordlist/Tooltip', ['jquery', 'TYPO3/CMS/Backend/Tooltip'], function($) {
-	TYPO3.Tooltip.initialize('.table-fit a[title]', {
+define('TYPO3/CMS/Recordlist/Tooltip', ['TYPO3/CMS/Backend/Tooltip'], function(Tooltip) {
+	"use strict";
+
+	Tooltip.initialize('.table-fit a[title]', {
 		delay: {
 			show: 500,
 			hide: 100
@@ -23,4 +25,5 @@ define('TYPO3/CMS/Recordlist/Tooltip', ['jquery', 'TYPO3/CMS/Backend/Tooltip'], 
 		trigger: 'hover',
 		container: 'body'
 	});
+
 });

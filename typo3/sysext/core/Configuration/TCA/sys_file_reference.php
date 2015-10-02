@@ -183,10 +183,7 @@ return array(
 						'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
 						'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
 						'module' => array(
-							'name' => 'wizard_element_browser',
-							'urlParameters' => array(
-								'mode' => 'wizard'
-							)
+							'name' => 'wizard_link_browser',
 						),
 						'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
 					)

@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Impexp\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Backend\Tree\View\BrowseTreeView;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -20,12 +23,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
  */
-class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
+class ExportPageTreeView extends BrowseTreeView {
 
 	/**
 	 * Initialization
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->init();
 	}
 
@@ -37,7 +41,7 @@ class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @return string Wrapped title
 	 */
 	public function wrapTitle($title, $v) {
-		return trim($title) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : htmlspecialchars($title);
+		return trim($title) === '' ? '<em>[' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : htmlspecialchars($title);
 	}
 
 	/**
@@ -49,7 +53,7 @@ class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param bool $isOpen
 	 * @return string Icon HTML
 	 */
-	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = '') {
+	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
 		return $icon;
 	}
 
@@ -86,7 +90,7 @@ class ExportPageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$this->reset();
 		$this->ids = $curIds;
 		if ($pid > 0) {
-			$rootRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $pid);
+			$rootRec = BackendUtility::getRecordWSOL('pages', $pid);
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$firstHtml = $iconFactory->getIconForRecord('pages', $rootRec, Icon::SIZE_SMALL)->render();
 		} else {

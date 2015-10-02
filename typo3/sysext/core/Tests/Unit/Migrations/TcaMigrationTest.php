@@ -812,4 +812,50 @@ class TcaMigrationTest extends UnitTestCase {
 		$subject = new TcaMigration();
 		$this->assertEquals($expected, $subject->migrate($input));
 	}
+
+	/**
+	 * @test
+	 */
+	public function migrateFixesReferenceToLinkHandler() {
+		$input = [
+			'aTable' => [
+				'columns' => [
+					'aCol' => [
+						'config' => [
+							'wizards' => [
+								'link' => [
+									'module' => [
+										'name' => 'wizard_element_browser',
+										'urlParameters' => [
+											'mode' => 'wizard'
+										]
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		];
+		$expected = [
+			'aTable' => [
+				'columns' => [
+					'aCol' => [
+						'config' => [
+							'wizards' => [
+								'link' => [
+									'module' => [
+										'name' => 'wizard_link_browser',
+									],
+								],
+							],
+						],
+					],
+				],
+			],
+		];
+
+		$subject = new TcaMigration();
+		$this->assertEquals($expected, $subject->migrate($input));
+	}
 }

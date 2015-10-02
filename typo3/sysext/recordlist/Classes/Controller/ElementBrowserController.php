@@ -17,10 +17,11 @@ namespace TYPO3\CMS\Recordlist\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
+use TYPO3\CMS\Recordlist\Browser\ElementBrowserInterface;
 
 /**
  * Script class for the Element Browser window.
@@ -31,11 +32,10 @@ class ElementBrowserController {
 	 * The mode determines the main kind of output of the element browser.
 	 *
 	 * There are these options for values:
-	 *  - "rte" will show the link selector for the Rich Text Editor (see main_rte())
-	 *  - "wizard" will allow you to browse for links (like "rte") which are passed back to FormEngine (see main_rte(TRUE))
-	 *  - "db" will allow you to browse for pages or records in the page tree for FormEngine select fields (see main_db())
-	 *  - "file"/"filedrag" will allow you to browse for files in the folder mounts for FormEngine file selections (main_file())
-	 *  - "folder" will allow you to browse for folders in the folder mounts for FormEngine folder selections (see main_folder())
+	 *  - "db" will allow you to browse for pages or records in the page tree for FormEngine select fields
+	 *  - "file" will allow you to browse for files in the folder mounts for FormEngine file selections
+	 *  - "folder" will allow you to browse for folders in the folder mounts for FormEngine folder selections
+	 *  - Other options may be registered via extensions
 	 *
 	 * @var string
 	 */
@@ -63,13 +63,15 @@ class ElementBrowserController {
 		$this->init();
 	}
 
+	/**
+	 * Initialize the controller
+	 *
+	 * @return void
+	 */
 	protected function init() {
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_browse_links.xlf');
 
 		$this->mode = GeneralUtility::_GP('mode');
-		if (!$this->mode) {
-			$this->mode = 'rte';
-		}
 	}
 
 	/**
@@ -81,6 +83,11 @@ class ElementBrowserController {
 	 * @return ResponseInterface the response with the content
 	 */
 	public function mainAction(ServerRequestInterface $request, ResponseInterface $response) {
+		// Fallback for old calls, which use mode "wizard" or "rte" for link selection
+		if ($this->mode === 'wizard' || $this->mode === 'rte') {
+			return $response->withStatus(303)->withHeader('Location', BackendUtility::getModuleUrl('wizard_link_browser', $_GET, FALSE, TRUE));
+		}
+
 		$response->getBody()->write($this->main());
 		return $response;
 	}
@@ -91,8 +98,6 @@ class ElementBrowserController {
 	 * @return string HTML content
 	 */
 	public function main() {
-		$this->setTemporaryDbMounts();
-
 		$content = '';
 
 		// Render type by user func
@@ -102,57 +107,27 @@ class ElementBrowserController {
 				$browserRenderObj = GeneralUtility::getUserObj($classRef);
 				if (is_object($browserRenderObj) && method_exists($browserRenderObj, 'isValid') && method_exists($browserRenderObj, 'render')) {
 					if ($browserRenderObj->isValid($this->mode, $this)) {
-						$content .= $browserRenderObj->render($this->mode, $this);
+						$content = $browserRenderObj->render($this->mode, $this);
 						$browserRendered = TRUE;
 						break;
 					}
 				}
 			}
 		}
+
 		// if type was not rendered use default rendering functions
 		if (!$browserRendered) {
 			$browser = $this->getElementBrowserInstance();
-			$browser->init();
+
 			$backendUser = $this->getBackendUser();
 			$modData = $backendUser->getModuleData('browse_links.php', 'ses');
 			list($modData) = $browser->processSessionData($modData);
 			$backendUser->pushModuleData('browse_links.php', $modData);
-			$content .= $browser->render();
+
+			$content = $browser->render();
 		}
 
 		return $content;
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function setTemporaryDbMounts() {
-		$backendUser = $this->getBackendUser();
-
-		// Clear temporary DB mounts
-		$tmpMount = GeneralUtility::_GET('setTempDBmount');
-		if (isset($tmpMount)) {
-			$backendUser->setAndSaveSessionData('pageTree_temporaryMountPoint', (int)$tmpMount);
-		}
-		// Set temporary DB mounts
-		$alternativeWebmountPoint = (int)$backendUser->getSessionData('pageTree_temporaryMountPoint');
-		if ($alternativeWebmountPoint) {
-			$alternativeWebmountPoint = GeneralUtility::intExplode(',', $alternativeWebmountPoint);
-			$backendUser->setWebmounts($alternativeWebmountPoint);
-		} else {
-			switch ((string)$this->mode) {
-				case 'rte':
-				case 'db':
-				case 'wizard':
-					// Setting alternative browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
-					$alternativeWebmountPoints = trim($backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
-					$appendAlternativeWebmountPoints = $backendUser->getTSConfigVal('options.pageTree.altElementBrowserMountPoints.append');
-					if ($alternativeWebmountPoints) {
-						$alternativeWebmountPoints = GeneralUtility::intExplode(',', $alternativeWebmountPoints);
-						$this->getBackendUser()->setWebmounts($alternativeWebmountPoints, $appendAlternativeWebmountPoints);
-					}
-			}
-		}
 	}
 
 	/**
@@ -160,10 +135,16 @@ class ElementBrowserController {
 	 *
 	 * This method shall be overwritten in subclasses
 	 *
-	 * @return ElementBrowser
+	 * @return ElementBrowserInterface
+	 * @throws \UnexpectedValueException
 	 */
 	protected function getElementBrowserInstance() {
-		return GeneralUtility::makeInstance(ElementBrowser::class);
+		$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers'][$this->mode];
+		$browser = GeneralUtility::makeInstance($className);
+		if (!$browser instanceof ElementBrowserInterface) {
+			throw new \UnexpectedValueException('The specified element browser "' . $className . '" does not implement the required ElementBrowserInterface', 1442763890);
+		}
+		return $browser;
 	}
 
 	/**

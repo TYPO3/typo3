@@ -295,7 +295,7 @@ abstract class AbstractFormElement extends AbstractNode {
 						'this.blur();' .
 						$onlyIfSelectedJS .
 						'vHWin=window.open(' . GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
-								'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,200' .
+								'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,300' .
 							')' .
 							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . '),' .
 							GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .
@@ -340,7 +340,7 @@ abstract class AbstractFormElement extends AbstractNode {
 					$aOnClick =
 						'this.blur();' .
 						'vHWin=window.open('. GeneralUtility::quoteJSvalue($url) . '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(' .
-							'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,200' .
+							'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value,300' .
 							')' .
 							'+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . '),' .
 							GeneralUtility::quoteJSvalue('popUp' . $md5ID) . ',' .

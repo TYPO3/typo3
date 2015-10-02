@@ -13,9 +13,10 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
+use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
  * Base extension class which generates the folder tree.
@@ -35,24 +36,18 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	/**
 	 * Back-reference to ElementBrowser class
 	 *
-	 * @var ElementBrowser
+	 * @var LinkParameterProviderInterface
 	 */
-	protected $elementBrowser;
+	protected $linkParameterProvider;
 
 	/**
-	 * Initializes the script path
-	 */
-	public function __construct() {
-		$this->determineScriptUrl();
-		parent::__construct();
-	}
-
-	/**
-	 * @param ElementBrowser $elementBrowser
+	 * @param LinkParameterProviderInterface $linkParameterProvider
+	 *
 	 * @return void
 	 */
-	public function setElementBrowser(ElementBrowser $elementBrowser) {
-		$this->elementBrowser = $elementBrowser;
+	public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider) {
+		$this->linkParameterProvider = $linkParameterProvider;
+		$this->thisScript = $linkParameterProvider->getScriptUrl();
 	}
 
 	/**
@@ -64,8 +59,8 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 */
 	public function wrapTitle($title, Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier())) . ');';
-			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
+			$parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()]));
+			return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
 		} else {
 			return '<span class="text-muted">' . $title . '</span>';
 		}
@@ -78,11 +73,20 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 * @return bool TRUE is returned if the path is found in the web-part of the server and is NOT a recycler or temp folder AND if ->ext_noTempRecyclerDirs is not set.
 	 */
 	public function ext_isLinkable(Folder $folderObject) {
-		if ($this->ext_noTempRecyclerDirs && (substr($folderObject->getIdentifier(), -7) === '_temp_/' || substr($folderObject->getIdentifier(), -11) === '_recycler_/')) {
-			return FALSE;
-		} else {
-			return TRUE;
+		$identifier = $folderObject->getIdentifier();
+		return !$this->ext_noTempRecyclerDirs || substr($identifier, -7) !== '_temp_/' && substr($identifier, -11) !== '_recycler_/';
+	}
+
+	/**
+	 * @param string $cmd
+	 * @param bool $isOpen
+	 * @return string
+	 */
+	protected function renderPMIconAndLink($cmd, $isOpen) {
+		if (get_class($this) === __CLASS__) {
+			return $this->PMiconATagWrap('', $cmd, !$isOpen);
 		}
+		return parent::renderPMIconAndLink($cmd, $isOpen);
 	}
 
 	/**
@@ -96,12 +100,11 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 	 * @access private
 	 */
 	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
-		$name = $anchor = '';
-		if ($bMark) {
-			$anchor = '#' . $bMark;
-			$name = ' name="' . $bMark . '"';
-		}
-		$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'PM=' . $cmd) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
+		$anchor = $bMark ? '#' . $bMark : '';
+		$name = $bMark ? ' name=' . $bMark : '';
+		$urlParameters = $this->linkParameterProvider->getUrlParameters([]);
+		$urlParameters['PM'] = $cmd;
+		$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
 		return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
 	}
 
@@ -120,10 +123,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView {
 				'class' => get_class($this),
 				'script' => $this->thisScript,
 				'ext_noTempRecyclerDirs' => $this->ext_noTempRecyclerDirs,
-				'browser' => array(
-					'mode' => $this->elementBrowser->mode,
-					'act' => $this->elementBrowser->act,
-				),
+				'browser' => $this->linkParameterProvider->getUrlParameters([]),
 			);
 		}
 

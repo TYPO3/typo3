@@ -35,7 +35,7 @@ class PageTree extends ElementBrowserPageTreeView {
 	 *
 	 * @var BrowseLinks
 	 */
-	protected $elementBrowser;
+	protected $linkParameterProvider;
 
 	/**
 	 * Create the page navigation tree in HTML
@@ -63,13 +63,13 @@ class PageTree extends ElementBrowserPageTreeView {
 			}
 
 			$selected = '';
-			if ($this->elementBrowser->curUrlInfo['act'] === 'page' && $this->elementBrowser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $this->elementBrowser->curUrlInfo['pageid']) {
+			if ($this->linkParameterProvider->curUrlInfo['act'] === 'page' && $this->linkParameterProvider->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $this->linkParameterProvider->curUrlInfo['pageid']) {
 				$selected = ' bg-success';
 			}
 			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript()
-					. 'act=' . $this->elementBrowser->act . '&editorNo=' . $this->elementBrowser->editorNo
-					. '&contentTypo3Language=' . $this->elementBrowser->contentTypo3Language
-					. '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+					. 'act=' . $this->linkParameterProvider->act . '&editorNo=' . $this->linkParameterProvider->editorNo
+					. '&contentTypo3Language=' . $this->linkParameterProvider->contentTypo3Language
+					. '&mode=' . $this->linkParameterProvider->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
 			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid'])
 				? '<a href="#" class="pull-right" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>'
 				: '';

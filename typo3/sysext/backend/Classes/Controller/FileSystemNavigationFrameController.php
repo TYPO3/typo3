@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Filelist\FileListFolderTree;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
+use TYPO3\CMS\Recordlist\Tree\View\DummyLinkParameterProvider;
 
 /**
  * Main script class for rendering of the folder tree
@@ -113,10 +113,13 @@ class FileSystemNavigationFrameController {
 			$this->foldertree->thisScript = $this->scopeData['script'];
 			$this->foldertree->ext_noTempRecyclerDirs = $this->scopeData['ext_noTempRecyclerDirs'];
 			if ($this->foldertree instanceof ElementBrowserFolderTreeView) {
-				$browser = GeneralUtility::makeInstance(ElementBrowser::class);
-				$browser->mode = $this->scopeData['browser']['mode'];
-				$browser->act = $this->scopeData['browser']['act'];
-				$this->foldertree->setElementBrowser($browser);
+				// create a fake provider to pass link data along properly
+				$linkParamProvider = GeneralUtility::makeInstance(DummyLinkParameterProvider::class,
+					$this->scopeData['browser']['mode'],
+					$this->scopeData['browser']['act'],
+					$this->scopeData['script']
+				);
+				$this->foldertree->setLinkParameterProvider($linkParamProvider);
 			}
 		} else {
 			$this->foldertree = GeneralUtility::makeInstance(FileListFolderTree::class);

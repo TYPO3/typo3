@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Backend\RecordList;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,6 +34,11 @@ use TYPO3\CMS\Lang\LanguageService;
  * @see typo3/sysext/filelist/mod1/index.php
  */
 abstract class AbstractRecordList {
+
+	/**
+	 * @var int
+	 */
+	protected $id = 0;
 
 	/**
 	 * default Max items shown
@@ -153,7 +162,7 @@ abstract class AbstractRecordList {
 	public $languageIconTitles = array();
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
+	 * @var TranslationConfigurationProvider
 	 */
 	public $translateTools;
 
@@ -165,16 +174,22 @@ abstract class AbstractRecordList {
 			$this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		$this->getTranslateTools();
+		$this->determineScriptUrl();
 	}
 
 	/**
 	 * Sets the script url depending on being a module or script request
 	 */
 	protected function determineScriptUrl() {
-		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
-			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
+		if ($routePath = GeneralUtility::_GP('route')) {
+			$router = GeneralUtility::makeInstance(Router::class);
+			$route = $router->match($routePath);
+			$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+			$this->thisScript = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
+		} elseif ($moduleName = GeneralUtility::_GP('M')) {
+			$this->thisScript = BackendUtility::getModuleUrl($moduleName);
 		} else {
-			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+			$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
 		}
 	}
 
@@ -193,12 +208,12 @@ abstract class AbstractRecordList {
 	 * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
 	 * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
 	 * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
-	 * @param int OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
-	 * @param string $altLine Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
+	 * @param string $_ OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
+	 * @param string $_ OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
 	 * @param string $colType Defines the tag being used for the columns. Default is td.
 	 * @return string HTML content for the table row
 	 */
-	public function addElement($h, $icon, $data, $rowParams = '', $lMargin = '', $altLine = '', $colType = 'td') {
+	public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_ = '', $colType = 'td') {
 		$colType = ($colType === 'th') ? 'th' : 'td';
 		$noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
 		// Start up:
@@ -397,7 +412,7 @@ abstract class AbstractRecordList {
 	 */
 	public function initializeLanguages() {
 		// Look up page overlays:
-		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . (int)$this->id . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+		$this->pageOverlays = $this->getDatabaseConnection()->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . (int)$this->id . BackendUtility::deleteClause('pages_language_overlay') . BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
 		$this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id);
 	}
 
@@ -426,11 +441,11 @@ abstract class AbstractRecordList {
 	/**
 	 * Gets an instance of TranslationConfigurationProvider
 	 *
-	 * @return \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
+	 * @return TranslationConfigurationProvider
 	 */
 	protected function getTranslateTools() {
 		if (!isset($this->translateTools)) {
-			$this->translateTools = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider::class);
+			$this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
 		}
 		return $this->translateTools;
 	}
@@ -464,6 +479,15 @@ abstract class AbstractRecordList {
 	 */
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Returns the database connection
+	 *
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

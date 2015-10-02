@@ -15,10 +15,9 @@
  * Check-all / uncheck-all for the Database Recordlist fieldSelectBox
  */
 define('TYPO3/CMS/Recordlist/FieldSelectBox', ['jquery'], function($) {
+	"use strict";
 
-	var FieldSelectBox = {};
-
-	FieldSelectBox.initializeEvents = function() {
+	$(function() {
 		$('.fieldSelectBox .checkAll').change(function() {
 			var checked = $(this).prop('checked');
 			var $checkboxes = $('.fieldSelectBox tbody').find(':checkbox');
@@ -28,15 +27,6 @@ define('TYPO3/CMS/Recordlist/FieldSelectBox', ['jquery'], function($) {
 				}
 			});
 		});
-	};
+	});
 
-	// initialize and return the FieldSelectBox object
-	return function() {
-		$(document).ready(function() {
-			FieldSelectBox.initializeEvents();
-		});
-
-		TYPO3.FieldSelectBox = FieldSelectBox;
-		return FieldSelectBox;
-	}();
 });

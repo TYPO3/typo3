@@ -963,7 +963,7 @@ class SetupModuleController {
 	/**
 	 * Add JavaScript to for browse files button
 	 *
-	 * @param sting $fieldName
+	 * @param string $fieldName
 	 */
 	protected function addAvatarButtonJs($fieldName) {
 		$this->doc->JScodeArray['avatar-button'] = '

@@ -17,13 +17,10 @@ namespace TYPO3\CMS\Backend\RecordList;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 use TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList;
 
 /**
- * Displays the page/file tree for browsing database records or files.
- * Used from TCEFORMS an other elements
- * In other words: This is the ELEMENT BROWSER!
+ * Displays the page tree for browsing database records.
  */
 class ElementBrowserRecordList extends DatabaseRecordList {
 
@@ -42,57 +39,6 @@ class ElementBrowserRecordList extends DatabaseRecordList {
 	protected $relatingField;
 
 	/**
-	 * Back-reference to ElementBrowser class
-	 *
-	 * @var ElementBrowser
-	 */
-	protected $elementBrowser;
-
-	/**
-	 * Initializes the script path
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->determineScriptUrl();
-	}
-
-	/**
-	 * @param ElementBrowser $elementBrowser
-	 * @return void
-	 */
-	public function setElementBrowser(ElementBrowser $elementBrowser) {
-		$this->elementBrowser = $elementBrowser;
-	}
-
-	/**
-	 * Creates the URL for links
-	 *
-	 * @param mixed $altId If not blank string, this is used instead of $this->id as the id value.
-	 * @param string $table If this is "-1" then $this->table is used, otherwise the value of the input variable.
-	 * @param string $exclList Commalist of fields NOT to pass as parameters (currently "sortField" and "sortRev")
-	 * @return string Query-string for URL
-	 */
-	public function listURL($altId = '', $table = '-1', $exclList = '') {
-		return $this->getThisScript() . 'id=' . ($altId !== '' ? $altId : $this->id)
-			. '&table=' . rawurlencode((int)$table === -1 ? $this->table : $table)
-			. ($this->thumbs ? '&imagemode=' . $this->thumbs : '')
-			. ($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '')
-			. ($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '')
-			. ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '')
-			. ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '')
-			. $this->ext_addP();
-	}
-
-	/**
-	 * Returns additional, local GET parameters to include in the links of the record list.
-	 *
-	 * @return string
-	 */
-	public function ext_addP() {
-		return '&act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $this->elementBrowser->expandPage . '&bparams=' . rawurlencode($this->elementBrowser->bparams);
-	}
-
-	/**
 	 * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
 	 *
 	 * @param string $table Table name
@@ -109,11 +55,15 @@ class ElementBrowserRecordList extends DatabaseRecordList {
 		}
 		$title = BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 		$ficon = $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render();
-		$aOnClick = 'return insertElement(' . GeneralUtility::quoteJSvalue($table) . ', ' . GeneralUtility::quoteJSvalue($row['uid']) . ', \'db\', ' . GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ');';
-		$ATag = '<a href="#" onclick="' . $aOnClick . '" title="' . $this->getLanguageService()->getLL('addToList', TRUE) . '">';
-		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
+
+		$ATag = '<a href="#" data-close="0" title="' . $this->getLanguageService()->getLL('addToList', TRUE) . '">';
+		$ATag_alt = '<a href="#" data-close="1" title="' . $this->getLanguageService()->getLL('addToList', TRUE) . '">';
 		$ATag_e = '</a>';
-		return $ATag . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;
+		$out = '<span data-uid="' . htmlspecialchars($row['uid']) . '" data-table="' . htmlspecialchars($table) . '" data-title="' . htmlspecialchars($title) . '" data-icon="' . htmlspecialchars($ficon) . '">';
+		$out .= $ATag . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;
+		$out .= '</span>';
+
+		return $out;
 	}
 
 	/**

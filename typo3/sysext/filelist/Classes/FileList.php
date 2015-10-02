@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -183,8 +184,11 @@ class FileList extends AbstractRecordList {
 
 	/**
 	 * Construct
+	 *
+	 * @param FileListController $fileListController
 	 */
 	public function __construct(FileListController $fileListController) {
+		parent::__construct();
 		$this->fileListController = $fileListController;
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
@@ -290,12 +294,12 @@ class FileList extends AbstractRecordList {
 	 * Wrapping input string in a link with clipboard command.
 	 *
 	 * @param string $string String to be linked - must be htmlspecialchar'ed / prepared before.
-	 * @param string $table table - NOT USED
+	 * @param string $_ unused
 	 * @param string $cmd "cmd" value
 	 * @param string $warning Warning for JS confirm message
 	 * @return string Linked string
 	 */
-	public function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '') {
+	public function linkClipboardHeaderIcon($string, $_, $cmd, $warning = '') {
 		$onClickEvent = 'document.dblistForm.cmd.value=\'' . $cmd . '\';document.dblistForm.submit();';
 		if ($warning) {
 			$onClickEvent = 'if (confirm(' . GeneralUtility::quoteJSvalue($warning) . ')){' . $onClickEvent . '}';
@@ -322,7 +326,7 @@ class FileList extends AbstractRecordList {
 			try {
 				$foldersCount = $storage->countFoldersInFolder($this->folderObject);
 				$filesCount = $storage->countFilesInFolder($this->folderObject);
-			} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
+			} catch (InsufficientFolderAccessPermissionsException $e) {
 				$foldersCount = 0;
 				$filesCount = 0;
 			}
@@ -384,7 +388,7 @@ class FileList extends AbstractRecordList {
 			$iOut = '';
 			// Directories are added
 			$this->eCounter = $this->firstElementNumber;
-			list($flag, $code) = $this->fwd_rwd_nav();
+			list(, $code) = $this->fwd_rwd_nav();
 			$iOut .= $code;
 
 			$iOut .= $this->formatDirList($folders);
@@ -394,7 +398,7 @@ class FileList extends AbstractRecordList {
 			$this->eCounter = $this->firstElementNumber + $this->iLimit <= $this->totalItems
 				? $this->firstElementNumber + $this->iLimit
 				: $this->totalItems;
-			list($flag, $code) = $this->fwd_rwd_nav();
+			list(, $code) = $this->fwd_rwd_nav();
 			$iOut .= $code;
 
 			// Header line is drawn
@@ -537,7 +541,7 @@ class FileList extends AbstractRecordList {
 						case 'size':
 							try {
 								$numFiles = $folderObject->getFileCount();
-							} catch (\TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException $e) {
+							} catch (InsufficientFolderAccessPermissionsException $e) {
 								$numFiles = 0;
 							}
 							$theData[$field] = $numFiles . ' ' . $this->getLanguageService()->getLL(($numFiles === 1 ? 'file' : 'files'), TRUE);
@@ -626,6 +630,8 @@ class FileList extends AbstractRecordList {
 	 * The URL however is not relative, otherwise GeneralUtility::sanitizeLocalUrl() would say that
 	 * the URL would be invalid
 	 *
+	 * @param string $altId
+	 *
 	 * @return string URL
 	 */
 	public function listURL($altId = '') {
@@ -697,7 +703,7 @@ class FileList extends AbstractRecordList {
 								$languageId = $language['uid'];
 								$flagIcon = $language['flagIcon'];
 								if (array_key_exists($languageId, $translations)) {
-									$title = htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('editMetadataForLanguage'), $language['title']));
+									$title = htmlspecialchars(sprintf($this->getLanguageService()->getLL('editMetadataForLanguage'), $language['title']));
 									// @todo the overlay for the flag needs to be added ($flagIcon . '-overlay')
 									$urlParameters = [
 										'edit' => [
@@ -708,12 +714,8 @@ class FileList extends AbstractRecordList {
 										'returnUrl' => $this->listURL()
 									];
 									$flagButtonIcon = $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-edit')->render();
-									$data = array(
-										'sys_file_metadata' => array($translations[$languageId]['uid'] => 'edit')
-									);
 									$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-									$languageCode .= '<a href="' . htmlspecialchars($url)
-										. '" class="btn btn-default" title="' . $title . '">'
+									$languageCode .= '<a href="' . htmlspecialchars($url) . '" class="btn btn-default" title="' . $title . '">'
 										. $flagButtonIcon . '</a>';
 								} else {
 									$parameters = [
@@ -725,7 +727,7 @@ class FileList extends AbstractRecordList {
 										'&cmd[sys_file_metadata][' . $metaDataRecord['uid'] . '][localize]=' . $languageId,
 										$returnUrl
 									);
-									$flagButtonIcon = '<span title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('createMetadataForLanguage'), $language['title'])) . '">' . $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-new')->render() . '</span>';
+									$flagButtonIcon = '<span title="' . htmlspecialchars(sprintf($this->getLanguageService()->getLL('createMetadataForLanguage'), $language['title'])) . '">' . $this->iconFactory->getIcon($flagIcon, Icon::SIZE_SMALL, 'overlay-new')->render() . '</span>';
 									$languageCode .= '<a href="' . htmlspecialchars($href) . '" class="btn btn-default">' . $flagButtonIcon . '</a> ';
 								}
 							}
@@ -734,7 +736,7 @@ class FileList extends AbstractRecordList {
 							$theData[$field] = ' <div class="localisationData btn-group" data-fileid="' . $fileObject->getUid() . '"' .
 								(empty($translations) ? ' style="display: none;"' : '') . '>' . $languageCode . '</div>';
 							$theData[$field] .= '<a class="btn btn-default filelist-translationToggler" data-fileid="' . $fileObject->getUid() . '">' .
-								'<span title="' . $GLOBALS['LANG']->getLL('translateMetadata', TRUE) . '">'
+								'<span title="' . $this->getLanguageService()->getLL('translateMetadata', TRUE) . '">'
 								. $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>'
 								. '</a>';
 						}
@@ -931,7 +933,7 @@ class FileList extends AbstractRecordList {
 		if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('replace')) {
 			$url = BackendUtility::getModuleUrl('file_replace', array('target' => $fullIdentifier, 'uid' => $fileOrFolderObject->getUid()));
 			$replaceOnClick = 'top.content.list_frame.location.href = ' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location.pathname+top.content.list_frame.document.location.search);return false;';
-			$cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:cm.replace') . '">' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
+			$cells['replace'] = '<a href="#" class="btn btn-default" onclick="' . $replaceOnClick . '"  title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:cm.replace') . '">' . $this->iconFactory->getIcon('actions-edit-replace', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 
 		// rename the file

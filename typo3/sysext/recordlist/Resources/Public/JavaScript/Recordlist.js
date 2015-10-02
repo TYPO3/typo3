@@ -15,6 +15,8 @@
  * Usability improvements for the record list
  */
 define('TYPO3/CMS/Recordlist/Recordlist', ['jquery', 'TYPO3/CMS/Backend/Storage'], function($, Storage) {
+	"use strict";
+
 	var Recordlist = {
 		identifier: {
 			toggle: '.t3js-toggle-recordlist'
@@ -27,35 +29,35 @@ define('TYPO3/CMS/Recordlist/Recordlist', ['jquery', 'TYPO3/CMS/Backend/Storage'
 		}
 	};
 
-	Recordlist.initialize = function() {
-		$(document).on('click', Recordlist.identifier.toggle, function(e) {
-			e.preventDefault();
+	Recordlist.toggleClick = function(e) {
+		e.preventDefault();
 
-			var $me = $(this),
-				table = $me.data('table'),
-				$target = $($me.data('target')),
-				isExpanded = $target.data('state') === 'expanded';
+		var $me = $(this),
+			table = $me.data('table'),
+			$target = $($me.data('target')),
+			isExpanded = $target.data('state') === 'expanded';
 
-			$me.find('.collapseIcon .icon-unify .fa').toggleClass(Recordlist.classes.toggleIconState.collapsed).toggleClass(Recordlist.classes.toggleIconState.expanded);
+		$me.find('.collapseIcon .icon-unify .fa').toggleClass(Recordlist.classes.toggleIconState.collapsed).toggleClass(Recordlist.classes.toggleIconState.expanded);
 
-			// Store collapse state in UC
-			var storedModuleDataList = {};
+		// Store collapse state in UC
+		var storedModuleDataList = {};
 
-			if (Storage.Persistent.isset('moduleData.list')) {
-				storedModuleDataList = Storage.Persistent.get('moduleData.list');
-			}
+		if (Storage.Persistent.isset('moduleData.list')) {
+			storedModuleDataList = Storage.Persistent.get('moduleData.list');
+		}
 
-			var collapseConfig = {};
-			collapseConfig[table] = isExpanded ? 1 : 0;
+		var collapseConfig = {};
+		collapseConfig[table] = isExpanded ? 1 : 0;
 
-			$.extend(true, storedModuleDataList, collapseConfig);
-			Storage.Persistent.set('moduleData.list', storedModuleDataList).done(function() {
-				$target.data('state', isExpanded ? 'collapsed' : 'expanded');
-			});
+		$.extend(true, storedModuleDataList, collapseConfig);
+		Storage.Persistent.set('moduleData.list', storedModuleDataList).done(function() {
+			$target.data('state', isExpanded ? 'collapsed' : 'expanded');
 		});
 	};
 
-	$(document).ready(function() {
-		Recordlist.initialize();
+	$(function() {
+		$(document).on('click', Recordlist.identifier.toggle, Recordlist.toggleClick);
 	});
+
+	return Recordlist;
 });

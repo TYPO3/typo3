@@ -13,15 +13,15 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
+use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
 /**
- * Class which generates the page tree
+ * Class which generates the selectable page tree
  *
- * Browsable tree, used in PagePositionMaps (move elements), Element Browser and RTE (for which it will be extended)
- * previously located inside typo3/class.browse_links.php
+ * Browsable tree, used in PagePositionMaps (move elements), the Link Wizard and the Database Browser (for which it will be extended)
  */
 class ElementBrowserPageTreeView extends BrowseTreeView {
 
@@ -46,25 +46,27 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	/**
 	 * Back-reference to ElementBrowser class
 	 *
-	 * @var ElementBrowser
+	 * @var LinkParameterProviderInterface
 	 */
-	protected $elementBrowser;
+	protected $linkParameterProvider;
 
 	/**
 	 * Constructor. Just calling init()
 	 */
 	public function __construct() {
-		$this->determineScriptUrl();
+		parent::__construct();
 		$this->init();
-		$this->clause = ' AND doktype != ' . PageRepository::DOKTYPE_RECYCLER . $this->clause;
+		$this->clause = ' AND doktype <> ' . PageRepository::DOKTYPE_RECYCLER . $this->clause;
 	}
 
 	/**
-	 * @param ElementBrowser $elementBrowser
+	 * @param LinkParameterProviderInterface $linkParameterProvider
+	 *
 	 * @return void
 	 */
-	public function setElementBrowser(ElementBrowser $elementBrowser) {
-		$this->elementBrowser = $elementBrowser;
+	public function setLinkParameterProvider(LinkParameterProviderInterface $linkParameterProvider) {
+		$this->linkParameterProvider = $linkParameterProvider;
+		$this->thisScript = $linkParameterProvider->getScriptUrl();
 	}
 
 	/**
@@ -77,8 +79,7 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	 */
 	public function wrapTitle($title, $v, $ext_pArrPages = FALSE) {
 		if ($this->ext_isLinkable($v['doktype'], $v['uid'])) {
-			$aOnClick = 'return link_typo3Page(' . GeneralUtility::quoteJSvalue($v['uid']) . ');';
-			return '<span class="list-tree-title"><a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a></span>';
+			return '<span class="list-tree-title"><a href="#" class="t3-js-pageLink" data-id="' . (int)$v['uid'] . '">' . $title . '</a></span>';
 		} else {
 			return '<span class="list-tree-title text-muted">' . $title . '</span>';
 		}
@@ -111,11 +112,12 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 			}
 
 			$selected = '';
-			if ($this->elementBrowser->curUrlInfo['act'] == 'page' && $this->elementBrowser->curUrlInfo['pageid'] == $treeItem['row']['uid'] && $this->elementBrowser->curUrlInfo['pageid']) {
+			if ($this->linkParameterProvider->isCurrentlySelectedItem(['pid' => (int)$treeItem['row']['uid']])) {
 				$selected = ' bg-success';
 				$classAttr .= ' active';
 			}
-			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $treeItem['row']['uid']) . ');';
+			$urlParameters = $this->linkParameterProvider->getUrlParameters(['pid' => (int)$treeItem['row']['uid']]);
+			$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ');';
 			$cEbullet = $this->ext_isLinkable($treeItem['row']['doktype'], $treeItem['row']['uid']) ? '<a href="#" class="list-tree-show" onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa fa-caret-square-o-right"></i></a>' : '';
 			$out .= '
 				<li' . ($classAttr ? ' class="' . trim($classAttr) . '"' : '') . '>
@@ -169,7 +171,9 @@ class ElementBrowserPageTreeView extends BrowseTreeView {
 	public function PM_ATagWrap($icon, $cmd, $bMark = '', $isOpen = FALSE) {
 		$anchor = $bMark ? '#' . $bMark : '';
 		$name = $bMark ? ' name=' . $bMark : '';
-		$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'PM=' . $cmd) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
+		$urlParameters = $this->linkParameterProvider->getUrlParameters([]);
+		$urlParameters['PM'] = $cmd;
+		$aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters), '&')) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
 		return '<a class="list-tree-control ' . ($isOpen ? 'list-tree-control-open' : 'list-tree-control-closed')
 			. '" href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '"><i class="fa"></i></a>';
 	}

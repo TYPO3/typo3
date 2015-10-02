@@ -14,10 +14,15 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
@@ -263,13 +268,25 @@ abstract class AbstractTreeView {
 	public $recs = array();
 
 	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->determineScriptUrl();
+	}
+
+	/**
 	 * Sets the script url depending on being a module or script request
 	 */
 	protected function determineScriptUrl() {
-		if ($moduleName = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) {
-			$this->thisScript = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName);
+		if ($routePath = GeneralUtility::_GP('route')) {
+			$router = GeneralUtility::makeInstance(Router::class);
+			$route = $router->match($routePath);
+			$uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+			$this->thisScript = (string)$uriBuilder->buildUriFromRoute($route->getOption('_identifier'));
+		} elseif ($moduleName = GeneralUtility::_GP('M')) {
+			$this->thisScript = BackendUtility::getModuleUrl($moduleName);
 		} else {
-			$this->thisScript = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME');
+			$this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
 		}
 	}
 
@@ -283,8 +300,8 @@ abstract class AbstractTreeView {
 	/**
 	 * Initialize the tree class. Needs to be overwritten
 	 *
-	 * @param string Record WHERE clause
-	 * @param string Record ORDER BY field
+	 * @param string $clause Record WHERE clause
+	 * @param string $orderByFields Record ORDER BY field
 	 * @return void
 	 */
 	public function init($clause = '', $orderByFields = '') {
@@ -315,7 +332,7 @@ abstract class AbstractTreeView {
 	 * @param bool $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
 	 * @return void
 	 */
-	public function addField($field, $noCheck = 0) {
+	public function addField($field, $noCheck = FALSE) {
 		if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field]) || GeneralUtility::inList($this->defaultList, $field)) {
 			$this->fieldArray[] = $field;
 		}
@@ -369,7 +386,7 @@ abstract class AbstractTreeView {
 				$firstHtml .= $this->getIcon($rootRec);
 			} else {
 				// Artificial record for the tree root, id=0
-				$rootRec = $this->getRootRecord($uid);
+				$rootRec = $this->getRootRecord();
 				$firstHtml .= $this->getRootIcon($rootRec);
 			}
 			if (is_array($rootRec)) {
@@ -395,7 +412,7 @@ abstract class AbstractTreeView {
 	/**
 	 * Compiles the HTML code for displaying the structure found inside the ->tree array
 	 *
-	 * @param array $treeArr "tree-array" - if blank string, the internal ->tree array is used.
+	 * @param array|string $treeArr "tree-array" - if blank string, the internal ->tree array is used.
 	 * @return string The HTML code for the tree
 	 */
 	public function printTree($treeArr = '') {
@@ -647,7 +664,7 @@ abstract class AbstractTreeView {
 	 */
 	public function getTitleStr($row, $titleLen = 30) {
 		$title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], $titleLen));
-		$title = trim($row['title']) === '' ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : $title;
+		$title = trim($row['title']) === '' ? '<em>[' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.no_title', TRUE) . ']</em>' : $title;
 		return $title;
 	}
 
@@ -693,11 +710,10 @@ abstract class AbstractTreeView {
 	 * @param int $uid item id for which to select subitems (parent id)
 	 * @param int $depth Max depth (recursivity limit)
 	 * @param string $depthData HTML-code prefix for recursive calls.
-	 * @param string $blankLineCode ? (internal)
-	 * @param string $subCSSclass CSS class to use for <td> sub-elements
+
 	 * @return int The count of items on the level
 	 */
-	public function getTree($uid, $depth = 999, $depthData = '', $blankLineCode = '', $subCSSclass = '') {
+	public function getTree($uid, $depth = 999, $depthData = '') {
 		// Buffer for id hierarchy is reset:
 		$this->buffer_idH = array();
 		// Init vars
@@ -709,9 +725,9 @@ abstract class AbstractTreeView {
 		$crazyRecursionLimiter = 999;
 		$idH = array();
 		// Traverse the records:
-		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, ''))) {
+		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
 			$pageUid = ($this->table === 'pages') ? $row['uid'] : $row['pid'];
-			if (!$GLOBALS['BE_USER']->isInWebMount($pageUid)) {
+			if (!$this->getBackendUser()->isInWebMount($pageUid)) {
 				// Current record is not within web mount => skip it
 				continue;
 			}
@@ -791,17 +807,18 @@ abstract class AbstractTreeView {
 			$res = $this->getDataInit($uid);
 			return $this->getDataCount($res);
 		} else {
-			return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause);
+			$db = $this->getDatabaseConnection();
+			$where = $this->parentField . '=' . $db->fullQuoteStr($uid, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause;
+			return $db->exec_SELECTcountRows('uid', $this->table, $where);
 		}
 	}
 
 	/**
 	 * Returns root record for uid (<=0)
 	 *
-	 * @param int $uid uid, <= 0 (normally, this does not matter)
 	 * @return array Array with title/uid keys with values of $this->title/0 (zero)
 	 */
-	public function getRootRecord($uid) {
+	public function getRootRecord() {
 		return array('title' => $this->title, 'uid' => 0);
 	}
 
@@ -827,11 +844,11 @@ abstract class AbstractTreeView {
 	 * For arrays: This will return key to the ->dataLookup array
 	 *
 	 * @param int $parentId parent item id
-	 * @param string $subCSSclass Class for sub-elements.
+	 *
 	 * @return mixed Data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
 	 * @access private
 	 */
-	public function getDataInit($parentId, $subCSSclass = '') {
+	public function getDataInit($parentId) {
 		if (is_array($this->data)) {
 			if (!is_array($this->dataLookup[$parentId][$this->subLevelID])) {
 				$parentId = -1;
@@ -840,7 +857,9 @@ abstract class AbstractTreeView {
 			}
 			return $parentId;
 		} else {
-			return $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $this->parentField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($parentId, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause, '', $this->orderByFields);
+			$db = $this->getDatabaseConnection();
+			$where = $this->parentField . '=' . $db->fullQuoteStr($parentId, $this->table) . BackendUtility::deleteClause($this->table) . BackendUtility::versioningPlaceholderClause($this->table) . $this->clause;
+			return $db->exec_SELECTquery(implode(',', $this->fieldArray), $this->table, $where, '', $this->orderByFields);
 		}
 	}
 
@@ -856,7 +875,7 @@ abstract class AbstractTreeView {
 		if (is_array($this->data)) {
 			return count($this->dataLookup[$res][$this->subLevelID]);
 		} else {
-			return $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			return $this->getDatabaseConnection()->sql_num_rows($res);
 		}
 	}
 
@@ -864,12 +883,12 @@ abstract class AbstractTreeView {
 	 * Getting the tree data: next entry
 	 *
 	 * @param mixed $res Data handle
-	 * @param string $subCSSclass CSS class for sub elements (workspace related)
+	 *
 	 * @return array item data array OR FALSE if end of elements.
 	 * @access private
 	 * @see getDataInit()
 	 */
-	public function getDataNext(&$res, $subCSSclass = '') {
+	public function getDataNext(&$res) {
 		if (is_array($this->data)) {
 			if ($res < 0) {
 				$row = FALSE;
@@ -878,7 +897,7 @@ abstract class AbstractTreeView {
 			}
 			return $row;
 		} else {
-			while ($row = @$GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			while ($row = @$this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 				BackendUtility::workspaceOL($this->table, $row, $this->BE_USER->workspace, TRUE);
 				if (is_array($row)) {
 					break;
@@ -897,7 +916,7 @@ abstract class AbstractTreeView {
 	 */
 	public function getDataFree(&$res) {
 		if (!is_array($this->data)) {
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			$this->getDatabaseConnection()->sql_free_result($res);
 		}
 	}
 
@@ -941,6 +960,27 @@ abstract class AbstractTreeView {
 	public function setDataFromTreeArray(&$treeArr, &$treeLookupArr) {
 		$this->data = &$treeArr;
 		$this->dataLookup = &$treeLookupArr;
+	}
+
+	/**
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
+	}
+
+	/**
+	 * @return BackendUserAuthentication
+	 */
+	protected function getBackendUser() {
+		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * @return DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

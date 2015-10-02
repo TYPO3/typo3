@@ -154,10 +154,7 @@ return array(
 																<title>Link</title>
 																<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 																<module type="array">
-																	<name>wizard_element_browser</name>
-																	<urlParameters type="array">
-																		<mode>wizard</mode>
-																	</urlParameters>
+																	<name>wizard_link_browser</name>
 																</module>
 																<JSopenParams>width=800,height=600,status=0,menubar=0,scrollbars=1</JSopenParams>
 															</link>

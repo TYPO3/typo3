@@ -61,6 +61,7 @@ class PageTreeView extends BrowseTreeView {
 	 * Calls init functions
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->init();
 	}
 
@@ -308,7 +309,7 @@ class PageTreeView extends BrowseTreeView {
 				$firstHtml .= $this->getIcon($rootRec);
 			} else {
 				// Artificial record for the tree root, id=0
-				$rootRec = $this->getRootRecord($uid);
+				$rootRec = $this->getRootRecord();
 				$firstHtml .= $this->getRootIcon($rootRec);
 			}
 			if (is_array($rootRec)) {

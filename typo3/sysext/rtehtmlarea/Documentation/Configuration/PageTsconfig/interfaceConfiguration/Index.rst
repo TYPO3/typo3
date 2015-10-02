@@ -1624,9 +1624,9 @@ buttons.link.options.removeItems
 
    Description
          List of tab items to remove from the dialog of the link button.
-         Possible tab items are: page,file,url,mail,spec
+         Possible tab items are: page,file,url,mail
 
-         Note: More tabs may be provided by extensions such as DAM.
+         Note: More tabs may be provided by extensions.
 
 
 

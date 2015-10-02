@@ -26,33 +26,9 @@ use TYPO3\CMS\Recordlist\Browser\ElementBrowser;
 class BrowseLinks extends ElementBrowser {
 
 	/**
-	 * @var int
-	 */
-	public $editorNo;
-
-	/**
-	 * TYPO3 language code of the content language
-	 *
-	 * @var int
-	 */
-	public $contentTypo3Language;
-
-	/**
-	 * Language service object for localization to the content language
-	 *
-	 * @var LanguageService
-	 */
-	protected $contentLanguageService;
-
-	/**
 	 * @var array
 	 */
 	public $additionalAttributes = array();
-
-	/**
-	 * @var array
-	 */
-	public $buttonConfig = array();
 
 	/**
 	 * @var array
@@ -90,79 +66,6 @@ class BrowseLinks extends ElementBrowser {
 	protected $defaultLinkTarget;
 
 	/**
-	 * @var string
-	 */
-	protected $hookName = 'ext/rtehtmlarea/mod3/class.tx_rtehtmlarea_browse_links.php';
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-
-		// Create content language service
-		$this->contentLanguageService = GeneralUtility::makeInstance(LanguageService::class);
-	}
-
-	/**
-	 * Initialize class variables
-	 *
-	 * @return void
-	 */
-	public function initVariables() {
-		parent::initVariables();
-
-		// Process bparams
-		$pArr = explode('|', $this->bparams);
-		$pRteArr = explode(':', $pArr[1]);
-		$this->editorNo = $pRteArr[0];
-		$this->contentTypo3Language = $pRteArr[1];
-		$this->RTEtsConfigParams = $pArr[2];
-		if (!$this->editorNo) {
-			$this->editorNo = GeneralUtility::_GP('editorNo');
-			$this->contentTypo3Language = GeneralUtility::_GP('contentTypo3Language');
-			$this->RTEtsConfigParams = GeneralUtility::_GP('RTEtsConfigParams');
-		}
-		$pArr[1] = implode(':', array($this->editorNo, $this->contentTypo3Language));
-		$pArr[2] = $this->RTEtsConfigParams;
-		$this->bparams = implode('|', $pArr);
-
-		$this->contentLanguageService->init($this->contentTypo3Language);
-
-		$this->buttonConfig = $this->getButtonConfig('link');
-	}
-
-	/**
-	 * Initialize document template object
-	 *
-	 * @return void
-	 */
-	protected function initDocumentTemplate() {
-		parent::initDocumentTemplate();
-
-		// Add attributes to body tag. Note: getBodyTagAdditions will invoke the hooks
-		$this->doc->bodyTagAdditions = $this->getBodyTagAdditions();
-
-		$pageRenderer = $this->getPageRenderer();
-		$pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('t3skin') . 'rtehtmlarea/htmlarea.css');
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LegacyTree', 'function(Tree) {
-			Tree.ajaxID = "sc_alt_file_navframe_expandtoggle";
-		}');
-	}
-
-	/**
-	 * Get the configuration of the button
-	 *
-	 * @param string $buttonName: the name of the button
-	 * @return array the configuration array of the image button
-	 */
-	protected function getButtonConfig($buttonName) {
-		return isset($this->RTEProperties['default.']['buttons.'][$buttonName . '.'])
-			? $this->RTEProperties['default.']['buttons.'][$buttonName . '.']
-			: array();
-	}
-
-	/**
 	 * Initialize the current or default values of the link attributes
 	 *
 	 * @return void
@@ -187,7 +90,7 @@ class BrowseLinks extends ElementBrowser {
 							if ($this->buttonConfig[$conf['type'] . '.']['properties.']['class.']['default'] == $conf['class']) {
 								$this->classesAnchorDefault[$conf['type']] = $conf['class'];
 								if ($conf['titleText']) {
-									$this->classesAnchorDefaultTitle[$conf['type']] = $this->getLLContent(trim($conf['titleText']));
+									$this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText']));
 								}
 								if (isset($conf['target'])) {
 									$this->classesAnchorDefaultTarget[$conf['type']] = trim($conf['target']);
@@ -195,7 +98,7 @@ class BrowseLinks extends ElementBrowser {
 							}
 						}
 						if ($titleReadOnly && $conf['titleText']) {
-							$this->classesAnchorClassTitle[$conf['class']] = ($this->classesAnchorDefaultTitle[$conf['type']] = $this->getLLContent(trim($conf['titleText'])));
+							$this->classesAnchorClassTitle[$conf['class']] = ($this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText'])));
 						}
 					}
 				}
@@ -249,22 +152,6 @@ class BrowseLinks extends ElementBrowser {
 	}
 
 	/**
-	 * Provide the additional parameters to be included in the template body tag
-	 *
-	 * @return string the body tag additions
-	 */
-	public function getBodyTagAdditions() {
-		$bodyTagAdditions = array();
-		// call hook for extra additions
-		foreach ($this->hookObjects as $hookObject) {
-			if (method_exists($hookObject, 'addBodyTagAdditions')) {
-				$bodyTagAdditions = $hookObject->addBodyTagAdditions($bodyTagAdditions);
-			}
-		}
-		return GeneralUtility::implodeAttributes($bodyTagAdditions, TRUE);
-	}
-
-	/**
 	 * Generate JS code to be used on the link insert/modify dialogue
 	 *
 	 * @return string the generated JS code
@@ -272,34 +159,8 @@ class BrowseLinks extends ElementBrowser {
 	public function getJSCode() {
 		// BEGIN accumulation of header JavaScript:
 		$JScode = '';
-		$JScode .= '
-			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Link");
-			var HTMLArea = window.parent.HTMLArea;
-			var add_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . ';
-			var add_target=' . GeneralUtility::quoteJSvalue($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . ';
-			var add_class=' . GeneralUtility::quoteJSvalue($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '') . ';
-			var add_title=' . GeneralUtility::quoteJSvalue($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '') . ';
-			var add_params=' . GeneralUtility::quoteJSvalue($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . ';
-			var additionalValues = ' . (!empty($this->additionalAttributes) ? json_encode($this->additionalAttributes, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) : '{}') . ';';
 		// Attributes setting functions
 		$JScode .= '
-			var cur_href=' . GeneralUtility::quoteJSvalue($this->curUrlArray['href'] ? ($this->curUrlInfo['query'] ? substr($this->curUrlArray['href'], 0, -strlen($this->curUrlInfo['query'])) : $this->curUrlArray['href']) : '') . ';
-			var cur_target=' . GeneralUtility::quoteJSvalue($this->setTarget ?: '') . ';
-			var cur_class=' . GeneralUtility::quoteJSvalue($this->setClass ?: '') . ';
-			var cur_title=' . GeneralUtility::quoteJSvalue($this->setTitle ?: '') . ';
-
-			function browse_links_setTarget(value) {
-				cur_target=value;
-				add_target="&curUrl[target]="+encodeURIComponent(value);
-			}
-			function browse_links_setClass(value) {
-				cur_class=value;
-				add_class="&curUrl[class]="+encodeURIComponent(value);
-			}
-			function browse_links_setTitle(value) {
-				cur_title=value;
-				add_title="&curUrl[title]="+encodeURIComponent(value);
-			}
 			function browse_links_setHref(value) {
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
@@ -313,76 +174,12 @@ class BrowseLinks extends ElementBrowser {
 			function link_typo3Page(id,anchor) {
 				var parameters = (document.ltargetform.query_parameters && document.ltargetform.query_parameters.value) ? (document.ltargetform.query_parameters.value.charAt(0) == "&" ? "" : "&") + document.ltargetform.query_parameters.value : "";
 				var theLink = \'' . $this->siteURL . '?id=\' + id + parameters + (anchor ? anchor : "");
-				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
-				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
 				browse_links_setAdditionalValue("data-htmlarea-external", "");
 				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
 				return false;
 			}
-			function link_folder(folder) {
-				if (folder && folder.substr(0, 5) == "file:") {
-					var theLink = \'' . $this->siteURL . '?file:\' + encodeURIComponent(folder.substr(5));
-				} else {
-					var theLink = \'' . $this->siteURL . '?\' + folder;
-				}
-				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
-				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
-				browse_links_setAdditionalValue("data-htmlarea-external", "");
-				plugin.createLink(theLink,cur_target,cur_class,cur_title,additionalValues);
-				return false;
-			}
-			function link_current() {
-				var parameters = (document.ltargetform.query_parameters && document.ltargetform.query_parameters.value) ? (document.ltargetform.query_parameters.value.charAt(0) == "&" ? "" : "&") + document.ltargetform.query_parameters.value : "";
-				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
-				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
-				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
-				if (document.ltargetform.lrel) browse_links_setAdditionalValue("rel", document.ltargetform.lrel.value);
-				if (cur_href!="http://" && cur_href!="mailto:") {
-					plugin.createLink(cur_href + parameters,cur_target,cur_class,cur_title,additionalValues);
-				}
-				return false;
-			}
 		';
-		// General "jumpToUrl" and launchView functions:
-		$JScode .= '
-			function jumpToUrl(URL,anchor) {
-				if (URL.charAt(0) === \'?\') {
-					URL = ' . GeneralUtility::quoteJSvalue($this->getThisScript()) . ' + URL.substring(1);
-				}
-				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $this->act . '" : "";
-				var add_mode = URL.indexOf("mode=")==-1 ? "&mode=' . $this->mode . '" : "";
-				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=' . $this->editorNo . '" : "";
-				var add_contentTypo3Language = URL.indexOf("contentTypo3Language=")==-1 ? "&contentTypo3Language=' . $this->contentTypo3Language . '" : "";
-				var add_additionalValues = "";
-				if (plugin.pageTSConfiguration && plugin.pageTSConfiguration.additionalAttributes) {
-					var additionalAttributes = plugin.pageTSConfiguration.additionalAttributes.split(",");
-					for (var i = additionalAttributes.length; --i >= 0;) {
-						if (additionalValues[additionalAttributes[i]] != "") {
-							add_additionalValues += "&curUrl[" + additionalAttributes[i] + "]=" + encodeURIComponent(additionalValues[additionalAttributes[i]]);
-						}
-					}
-				}
-				window.location.href = URL + add_act + add_mode + add_editorNo + add_contentTypo3Language + add_href + add_target + add_class + add_title + add_additionalValues + add_params + (typeof(anchor) === "string" ? anchor : "");
-				return false;
-			}
-		';
-		// Hook to overwrite or extend javascript functions
-		if (
-			isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendJScode'])
-			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendJScode'])
-		) {
-			$_params = array(
-				'conf' => []
-			);
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][$this->hookName]['extendJScode'] as $objRef) {
-				$processor =& GeneralUtility::getUserObj($objRef);
-				$JScode .= $processor->extendJScode($_params, $this);
-			}
-		}
+
 		return $JScode;
 	}
 
@@ -495,31 +292,6 @@ class BrowseLinks extends ElementBrowser {
 	}
 
 	/**
-	 * Get the allowed items or tabs
-	 *
-	 * @param string $items: initial list of possible items
-	 * @return array the allowed items
-	 */
-	public function getAllowedItems($items) {
-		$allowedItems = explode(',', $items);
-		// Calling hook for extra options
-		foreach ($this->hookObjects as $hookObject) {
-			$allowedItems = $hookObject->addAllowedItems($allowedItems);
-		}
-
-		// Removing items as per configuration
-		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
-			$allowedItems = array_diff($allowedItems, GeneralUtility::trimExplode(',', $this->buttonConfig['options.']['removeItems'], TRUE));
-		}
-
-		reset($allowedItems);
-		if (!in_array($this->act, $allowedItems)) {
-			$this->act = current($allowedItems);
-		}
-		return $allowedItems;
-	}
-
-	/**
 	 * Creates a form for link attributes
 	 *
 	 * @param string $rows: html code for some initial rows of the table to be wrapped in form
@@ -544,49 +316,35 @@ class BrowseLinks extends ElementBrowser {
 
 		// Add page id, target, class selector box, title and parameters fields:
 		$lpageId = $this->addPageIdSelector();
-		$queryParameters = $this->addQueryParametersSelector();
-		$ltarget = $this->addTargetSelector();
-		$lclass = $this->addClassSelector();
-		$ltitle = $this->addTitleSelector();
-		$rel = $this->addRelField();
+
 
 		$ltargetForm = '';
 		if ($rows || $lpageId || $queryParameters || $lclass || $ltitle || $ltarget || $rel) {
-			$ltargetForm = $this->wrapInForm($rows . $lpageId . $queryParameters . $lclass . $ltitle . $ltarget . $rel . $additionalAttributeFields);
-		}
-		return $ltargetForm;
-	}
-
-	/**
-	 * Wrap in form
-	 *
-	 * @param string $string
-	 * @return string
-	 */
-	public function wrapInForm($string) {
-		$form = '
+			$ltargetForm = '
 			<!--
 				Selecting target for link:
 			-->
 			<form action="" name="ltargetform" id="ltargetform">
-				<table id="typo3-linkTarget" class="htmlarea-window-table">' . $string;
-		if ($this->act === $this->curUrlInfo['act'] && $this->act != 'mail' && $this->curUrlArray['href']) {
-			$form .= '
+				<table id="typo3-linkTarget" class="htmlarea-window-table">' . $rows . $lpageId . $queryParameters . $lclass . $ltitle . $ltarget . $rel . $additionalAttributeFields;
+			if ($this->act === $this->curUrlInfo['act'] && $this->act != 'mail' && $this->curUrlArray['href']) {
+				$ltargetForm .= '
 					<tr>
 						<td>
 						</td>
 						<td colspan="3">
 							<input class="btn btn-default" type="submit" value="' . $this->getLanguageService()->getLL('update', TRUE) . '" onclick="'
-								. ($this->act === 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
-								. 'return link_current();" />
+					. ($this->act === 'url' ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '')
+					. 'return link_current();" />
 						</td>
 					</tr>';
-		}
-		$form .= '
+			}
+			$ltargetForm .= '
 				</table>
 			</form>';
-		return $form;
+		}
+		return $ltargetForm;
 	}
+
 
 	/**
 	 * Add page id selector
@@ -611,191 +369,6 @@ class BrowseLinks extends ElementBrowser {
 				</tr>';
 		}
 		return '';
-	}
-
-	/**
-	 * Add rel field
-	 *
-	 * @return string
-	 */
-	public function addRelField() {
-		// Unset rel attribute if we changed tab
-		$currentRel = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['rel']) ? $this->curUrlArray['rel'] : '';
-		if (($this->act === 'page' || $this->act === 'url' || $this->act === 'file')
-			&& isset($this->buttonConfig['relAttribute.']['enabled']) && $this->buttonConfig['relAttribute.']['enabled']
-		) {
-			return '
-						<tr>
-							<td><label>' . $this->getLanguageService()->getLL('linkRelationship', TRUE) . ':</label></td>
-							<td colspan="3">
-								<input type="text" name="lrel" value="' . $currentRel . '"  '
-				. $this->doc->formWidth(30) . ' />
-							</td>
-						</tr>';
-		}
-		return '';
-	}
-
-	/**
-	 * Add query parameter selector
-	 *
-	 * @return string
-	 */
-	public function addQueryParametersSelector() {
-		if ($this->act === 'page' && isset($this->buttonConfig['queryParametersSelector.']['enabled'])
-			&& $this->buttonConfig['queryParametersSelector.']['enabled']
-		) {
-			return '
-						<tr>
-							<td><label>' . $this->getLanguageService()->getLL('query_parameters', TRUE) . ':</label></td>
-							<td colspan="3">
-								<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ?: '')
-				. '" ' . $this->doc->formWidth(30) . ' />
-							</td>
-						</tr>';
-		}
-		return '';
-	}
-
-	/**
-	 * Add target selector
-	 *
-	 * @return string
-	 */
-	public function addTargetSelector() {
-		if ($this->act === 'mail') {
-			return '';
-		}
-		$targetSelectorConfig = array();
-		if (is_array($this->buttonConfig['targetSelector.'])) {
-			$targetSelectorConfig = $this->buttonConfig['targetSelector.'];
-		}
-		// Reset the target to default if we changed tab
-		$currentTarget = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['target']) ? $this->curUrlArray['target'] : '';
-		$target = $currentTarget ?: $this->defaultLinkTarget;
-		$lang = $this->getLanguageService();
-		$ltarget = '
-				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-					<td><label>' . $lang->getLL('target', TRUE) . ':</label></td>
-					<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="'
-					. htmlspecialchars($target) . '"' . $this->doc->formWidth(10) . ' /></td>';
-		$ltarget .= '
-					<td colspan="2">';
-		if (!$targetSelectorConfig['disabled']) {
-			$ltarget .= '
-						<select name="ltarget_type" onchange="browse_links_setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
-							<option></option>
-							<option value="_top">' . $lang->getLL('top', TRUE) . '</option>
-							<option value="_blank">' . $lang->getLL('newWindow', TRUE) . '</option>
-						</select>';
-		}
-		$ltarget .= '
-					</td>
-				</tr>';
-		return $ltarget;
-	}
-
-	/**
-	 * Return html code for the class selector
-	 *
-	 * @return string the html code to be added to the form
-	 */
-	public function addClassSelector() {
-		$selectClass = '';
-		if ($this->classesAnchorJSOptions[$this->act]) {
-			$selectClass = '
-						<tr>
-							<td><label>' . $this->getLanguageService()->getLL('anchor_class', TRUE) . ':</label></td>
-							<td colspan="3">
-								<select name="anchor_class" onchange="' . $this->getClassOnChangeJS() . '">
-									' . $this->classesAnchorJSOptions[$this->act] . '
-								</select>
-							</td>
-						</tr>';
-		}
-		return $selectClass;
-	}
-
-	/**
-	 * Return JS code for the class selector onChange event
-	 *
-	 * @return 	string	class selector onChange JS code
-	 */
-	public function getClassOnChangeJS() {
-		return '
-					if (document.ltargetform.anchor_class) {
-						document.ltargetform.anchor_class.value = document.ltargetform.anchor_class.options[document.ltargetform.anchor_class.selectedIndex].value;
-						if (document.ltargetform.anchor_class.value && HTMLArea.classesAnchorSetup) {
-							for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
-								var anchorClass = HTMLArea.classesAnchorSetup[i];
-								if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
-									if (anchorClass[\'titleText\'] && document.ltargetform.anchor_title) {
-										document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
-										document.getElementById(\'rtehtmlarea-browse-links-title-readonly\').innerHTML = anchorClass[\'titleText\'];
-										browse_links_setTitle(anchorClass[\'titleText\']);
-									}
-									if (typeof anchorClass[\'target\'] !== \'undefined\') {
-										if (document.ltargetform.ltarget) {
-											document.ltargetform.ltarget.value = anchorClass[\'target\'];
-										}
-										browse_links_setTarget(anchorClass[\'target\']);
-									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
-											// Reset target to default if field is not displayed and class has no configured target
-										document.ltargetform.ltarget.value = \'' . ($this->defaultLinkTarget ?: '') . '\';
-										browse_links_setTarget(document.ltargetform.ltarget.value);
-									}
-									break;
-								}
-							}
-						}
-						browse_links_setClass(document.ltargetform.anchor_class.value);
-					}
-								';
-	}
-
-	/**
-	 * Add title selector
-	 *
-	 * @return string
-	 */
-	public function addTitleSelector() {
-		// Reset the title to default if we changed tab
-		$currentTitle = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['title']) ? $this->curUrlArray['title'] : '';
-		$title = $currentTitle ?: (!$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
-		$readOnly = isset($this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly'])
-			? $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly']
-			: (isset($this->buttonConfig['properties.']['title.']['readOnly'])
-				? $this->buttonConfig['properties.']['title.']['readOnly']
-				: FALSE);
-		if ($readOnly) {
-			$currentClass = $this->curUrlInfo['act'] === $this->act ? $this->curUrlArray['class'] : '';
-			if (!$currentClass) {
-				$currentClass = !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefault[$this->act];
-			}
-			$title = $currentClass
-				? $this->classesAnchorClassTitle[$currentClass]
-				: $this->classesAnchorDefaultTitle[$this->act];
-		}
-		return '
-						<tr>
-							<td><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $this->getLanguageService()->getLL('anchor_title', TRUE) . ':</label></td>
-							<td colspan="3">
-								<span id="rtehtmlarea-browse-links-title-input" style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
-									<input type="text" id="rtehtmlarea-browse-links-anchor_title" name="anchor_title" value="' . htmlspecialchars($title) . '" ' . $this->doc->formWidth(30) . ' />
-								</span>
-								<span id="rtehtmlarea-browse-links-title-readonly" style="display: ' . ($readOnly ? 'inline' : 'none') . ';">' . htmlspecialchars($title) . '</span>
-							</td>
-						</tr>';
-	}
-
-	/**
-	 * Localize a string using the language of the content element rather than the language of the BE interface
-	 *
-	 * @param string string: the label to be localized
-	 * @return string Localized string.
-	 */
-	public function getLLContent($string) {
-		return $this->contentLanguageService->sL($string);
 	}
 
 	/**

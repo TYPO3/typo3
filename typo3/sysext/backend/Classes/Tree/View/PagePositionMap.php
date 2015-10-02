@@ -414,7 +414,7 @@ class PagePositionMap {
 			$row = '';
 			foreach ($colPosArray as $kk => $vv) {
 				$row .= '<td class="col-nowrap col-min" width="' . round(100 / $count) . '%">';
-				$row .= '<p><strong>' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv, $pid), TRUE), $vv) . '</strong></p>';
+				$row .= '<p><strong>' . $this->wrapColumnHeader($GLOBALS['LANG']->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv), TRUE), $vv) . '</strong></p>';
 				if (!empty($lines[$vv])) {
 					$row .= '<ul class="list-unstyled">';
 					foreach ($lines[$vv] as $line) {

@@ -38,19 +38,22 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
 	 * Wrapping the title in a link, if applicable.
 	 *
 	 * @param string $title Title, ready for output.
-	 * @param array $v The record
+	 * @param array $row The record
 	 * @param bool $ext_pArrPages If set, pages clicked will return immediately, otherwise reload page.
 	 * @return string Wrapping title string.
 	 */
-	public function wrapTitle($title, $v, $ext_pArrPages) {
-		if ($ext_pArrPages) {
+	public function wrapTitle($title, $row, $ext_pArrPages) {
+		if ($ext_pArrPages && $row['uid']) {
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$ficon = $iconFactory->getIconForRecord('pages', $v, Icon::SIZE_SMALL)->render();
-			$onClick = 'return insertElement(\'pages\', \'' . $v['uid'] . '\', \'db\', ' . GeneralUtility::quoteJSvalue($v['title']) . ', \'\', \'\', ' . GeneralUtility::quoteJSvalue($ficon) . ',\'\',1);';
-		} else {
-			$onClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . 'act=' . $this->elementBrowser->act . '&mode=' . $this->elementBrowser->mode . '&expandPage=' . $v['uid']) . ');';
+			$ficon = $iconFactory->getIconForRecord('pages', $row, Icon::SIZE_SMALL)->render();
+			$out = '<span data-uid="' . htmlspecialchars($row['uid']) . '" data-table="pages" data-title="' . htmlspecialchars($row['title']) . '" data-icon="' . htmlspecialchars($ficon) . '">';
+			$out .= '<a href="#" data-close="1">' . $title . '</a>';
+			$out .= '</span>';
+			return $out;
 		}
-		return '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . $title . '</a>';
+
+		$parameters = GeneralUtility::implodeArrayForUrl('', $this->linkParameterProvider->getUrlParameters(['pid' => $row['uid']]));
+		return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . ltrim($parameters, '&'))) . ');">' . $title . '</a>';
 	}
 
 }

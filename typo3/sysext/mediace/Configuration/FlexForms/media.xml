@@ -225,10 +225,9 @@
 										<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
 										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
-											<name>wizard_element_browser</name>
+											<name>wizard_link_browser</name>
 											<urlParameters type="array">
-												<mode>wizard</mode>
-												<act>file|url</act>
+												<act>file</act>
 											</urlParameters>
 										</module>
 										<params type="array">
@@ -275,10 +274,9 @@
 														<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
 														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
-															<name>wizard_element_browser</name>
+															<name>wizard_link_browser</name>
 															<urlParameters type="array">
-																<mode>wizard</mode>
-																<act>file|url</act>
+																<act>file</act>
 															</urlParameters>
 														</module>
 														<params type="array">
@@ -309,10 +307,9 @@
 										<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
 										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
-											<name>wizard_element_browser</name>
+											<name>wizard_link_browser</name>
 											<urlParameters type="array">
-												<mode>wizard</mode>
-												<act>file|url</act>
+												<act>file</act>
 											</urlParameters>
 										</module>
 										<params type="array">
@@ -348,10 +345,9 @@
 														<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
 														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
-															<name>wizard_element_browser</name>
+															<name>wizard_link_browser</name>
 															<urlParameters type="array">
-																<mode>wizard</mode>
-																<act>file|url</act>
+																<act>file</act>
 															</urlParameters>
 														</module>
 														<params type="array">
@@ -394,10 +390,9 @@
 										<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
 										<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 										<module type="array">
-											<name>wizard_element_browser</name>
+											<name>wizard_link_browser</name>
 											<urlParameters type="array">
-												<mode>wizard</mode>
-												<act>file|url</act>
+												<act>file</act>
 											</urlParameters>
 										</module>
 										<params type="array">
@@ -433,10 +428,9 @@
 														<title>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media.browseUrlTitle</title>
 														<icon>EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif</icon>
 														<module type="array">
-															<name>wizard_element_browser</name>
+															<name>wizard_link_browser</name>
 															<urlParameters type="array">
-																<mode>wizard</mode>
-																<act>file|url</act>
+																<act>file</act>
 															</urlParameters>
 														</module>
 														<params type="array">

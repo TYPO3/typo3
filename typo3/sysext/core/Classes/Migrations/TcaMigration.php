@@ -49,6 +49,7 @@ class TcaMigration {
 		$tca = $this->migrateIconsInOptionTags($tca);
 		$tca = $this->migrateIconfileRelativePathOrFilenameOnlyToExtReference($tca);
 		$tca = $this->migrateSelectFieldRenderType($tca);
+		$tca = $this->migrateElementBrowserWizardToLinkHandler($tca);
 		// @todo: if showitem/defaultExtras wizards[xy] is migrated to columnsOverrides here, enableByTypeConfig could be dropped
 		return $tca;
 	}
@@ -349,7 +350,7 @@ class TcaMigration {
 	 * @param array $tca Incoming TCA
 	 * @return array Migrated TCA
 	 */
-	protected function migrateIconsForFormFieldWizardsToNewLocation($tca) {
+	protected function migrateIconsForFormFieldWizardsToNewLocation(array $tca) {
 		$newTca = $tca;
 
 		$oldFileNames = array(
@@ -406,7 +407,7 @@ class TcaMigration {
 	 * @param array $tca Incoming TCA
 	 * @return array Migrated TCA
 	 */
-	protected function migrateExtAndSysextPathToEXTPath($tca) {
+	protected function migrateExtAndSysextPathToEXTPath(array $tca) {
 		foreach ($tca as $table => &$tableDefinition) {
 			if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
 				continue;
@@ -451,7 +452,7 @@ class TcaMigration {
 	 * @param array $tca Incoming TCA
 	 * @return array Migrated TCA
 	 */
-	protected function migrateIconsInOptionTags($tca) {
+	protected function migrateIconsInOptionTags(array $tca) {
 		$newTca = $tca;
 
 		foreach ($newTca as $table => &$tableDefinition) {
@@ -475,7 +476,7 @@ class TcaMigration {
 	 * @param array $tca Incoming TCA
 	 * @return array Migrated TCA
 	 */
-	protected function migrateIconfileRelativePathOrFilenameOnlyToExtReference($tca) {
+	protected function migrateIconfileRelativePathOrFilenameOnlyToExtReference(array $tca) {
 		foreach ($tca as $table => &$tableDefinition) {
 			if (!isset($tableDefinition['ctrl']) || !is_array($tableDefinition['ctrl'])) {
 				continue;
@@ -556,4 +557,33 @@ class TcaMigration {
 
 		return $newTca;
 	}
+
+	/**
+	 * Migrate wizard "wizard_element_browser" used in mode "wizard" to use the "wizard_link_browser" instead
+	 *
+	 * @param array $tca
+	 * @return array Migrated TCA
+	 */
+	protected function migrateElementBrowserWizardToLinkHandler(array $tca) {
+		foreach ($tca as $table => &$tableDefinition) {
+			if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+				continue;
+			}
+			foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+				if (
+					isset($fieldConfig['config']['wizards']['link']['module']['name']) && $fieldConfig['config']['wizards']['link']['module']['name'] === 'wizard_element_browser'
+					&& isset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']) &&  $fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode'] === 'wizard'
+				) {
+					$fieldConfig['config']['wizards']['link']['module']['name'] = 'wizard_link_browser';
+					unset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']);
+					if (empty($fieldConfig['config']['wizards']['link']['module']['urlParameters'])) {
+						unset($fieldConfig['config']['wizards']['link']['module']['urlParameters']);
+					}
+					$this->messages[] = 'Reference to "wizard_element_browser" was migrated to new "wizard_link_browser" for field "' . $fieldName . '" in TCA table "' . $table . '"';
+				}
+			}
+		}
+		return $tca;
+	}
+
 }

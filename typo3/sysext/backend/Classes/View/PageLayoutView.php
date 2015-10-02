@@ -205,6 +205,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 	 * Construct to initialize class variables.
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
