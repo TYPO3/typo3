@@ -1840,6 +1840,88 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function stdWrap_ageCallsCalcAgeWithSubtractedTimestampAndSubPartOfArray() {
+		$subject = $this->getMock(
+			\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class,
+			array('calcAge')
+		);
+		// Set exec_time to a hard timestamp
+		$GLOBALS['EXEC_TIME'] = 10;
+		$subject->expects($this->once())->method('calcAge')->with(1, 'Min| Hrs| Days| Yrs');
+		$subject->stdWrap_age(9, array('age' => 'Min| Hrs| Days| Yrs'));
+	}
+
+	/**
+	 * Data provider for calcAgeCalculatesAgeOfTimestamp
+	 *
+	 * @return array
+	 * @see calcAge
+	 */
+	public function calcAgeCalculatesAgeOfTimestampDataProvider() {
+		return array(
+			'minutes' => array(
+				120,
+				' min| hrs| days| yrs',
+				'2 min',
+			),
+			'hours' => array(
+				7200,
+				' min| hrs| days| yrs',
+				'2 hrs',
+			),
+			'days' => array(
+				604800,
+				' min| hrs| days| yrs',
+				'7 days',
+			),
+			'day with provided singular labels' => array(
+				86400,
+				' min| hrs| days| yrs| min| hour| day| year',
+				'1 day',
+			),
+			'years' => array(
+				1417997800,
+				' min| hrs| days| yrs',
+				'45 yrs',
+			),
+			'different labels' => array(
+				120,
+				' Minutes| Hrs| Days| Yrs',
+				'2 Minutes',
+			),
+			'negative values' => array(
+				-604800,
+				' min| hrs| days| yrs',
+				'-7 days',
+			),
+			'default label values for wrong label input' => array(
+				121,
+				10,
+				'2 min',
+			),
+			'default singular label values for wrong label input' => array(
+				31536000,
+				10,
+				'1 year',
+			)
+		);
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @param string $labels
+	 * @param int $expectation
+	 * @dataProvider calcAgeCalculatesAgeOfTimestampDataProvider
+	 * @test
+	 */
+	public function calcAgeCalculatesAgeOfTimestamp($timestamp, $labels, $expectation) {
+		$result = $this->subject->calcAge($timestamp, $labels);
+		$this->assertEquals($result, $expectation);
+	}
+
+	/**
 	 * Data provider for stdWrap_stdWrapValue test
 	 *
 	 * @return array
