@@ -192,9 +192,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
             $value = $this->arguments['value'];
         }
 
-        if (is_object($value)) {
-            $value = $this->persistenceManager->getIdentifierByObject($value);
-        }
+        $value = $this->convertToPlainValue($value);
         return $value;
     }
 
