@@ -26,12 +26,6 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 		me.btnSubmit = me.$btn.data('data-btn-submit') || 'Add';
 		me.placeholder = me.$btn.data('placeholder') || 'Paste media url here...';
 
-		// No IRRE element found then hide input+button
-		if (!me.irreObjectUid) {
-			me.$btn.hide();
-			return;
-		}
-
 		me.addOnlineMedia = function(url) {
 			NProgress.start();
 			$.post(TYPO3.settings.ajaxUrls['online_media_create'],
@@ -68,10 +62,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 			);
 		};
 
-		// Bind key press enter event
-		me.$btn.on('click', function(evt) {
-			evt.preventDefault();
-
+		me.triggerModal = function() {
 			var $modal = Modal.show(
 				me.$btn.attr('title'),
 				'<div class="form-control-wrap">' +
@@ -100,24 +91,19 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Lang/Lang']
 					}
 				});
 			});
-		});
+		};
+
+		return {triggerModal: me.triggerModal};
 	};
 
-	// register the jQuery plugin "OnlineMediaPlugin"
-	$.fn.onlineMedia = function(option) {
-		return this.each(function() {
-			var $this = $(this),
-				data = $this.data('OnlineMediaPlugin');
-			if (!data) {
-				$this.data('OnlineMediaPlugin', (data = new OnlineMediaPlugin(this)));
-			}
-			if (typeof option === 'string') {
-				data[option]();
-			}
-		});
-	};
-
-	$(function() {
-		$('.t3js-online-media-add-btn').onlineMedia();
+	$(document).on('click', '.t3js-online-media-add-btn', function(evt) {
+		evt.preventDefault();
+		var $this = $(this),
+			onlineMediaPlugin = $this.data('OnlineMediaPlugin');
+		if (!onlineMediaPlugin) {
+			$this.data('OnlineMediaPlugin', (onlineMediaPlugin = new OnlineMediaPlugin(this)));
+		}
+		onlineMediaPlugin.triggerModal();
 	});
+
 });

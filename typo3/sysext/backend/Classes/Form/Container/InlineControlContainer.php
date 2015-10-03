@@ -62,6 +62,11 @@ class InlineControlContainer extends AbstractContainer
     protected $iconFactory;
 
     /**
+     * @var string[]
+     */
+    protected $requireJsModules = [];
+
+    /**
      * Container objects give $nodeFactory down to other containers.
      *
      * @param NodeFactory $nodeFactory
@@ -282,6 +287,8 @@ class InlineControlContainer extends AbstractContainer
         if (count($sortableRecordUids) > 1 && $config['appearance']['useSortable']) {
             $resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records' . '");';
         }
+        $resultArray['requireJsModules'] = $this->requireJsModules;
+
         // Publish the uids of the child records in the given order to the browser
         $html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
             . $this->getValidationDataAsDataAttribute(array('type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']))
@@ -574,7 +581,9 @@ class InlineControlContainer extends AbstractContainer
                 $item .= $languageService->sL('LLL:EXT:lang/locallang_core.xlf:file_upload.select-and-submit', true);
                 $item .= '</a>';
 
+                $this->requireJsModules[] = ['TYPO3/CMS/Backend/DragUploader' => 'function(dragUploader){dragUploader.initialize()}'];
                 if (!empty($onlineMediaAllowed)) {
+                    $this->requireJsModules[] = 'TYPO3/CMS/Backend/OnlineMedia';
                     $buttonText = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.button', true);
                     $placeholder = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.placeholder', true);
                     $buttonSubmit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:online_media.new_media.submit', true);
