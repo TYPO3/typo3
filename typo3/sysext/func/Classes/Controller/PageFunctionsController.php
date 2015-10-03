@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Func\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -35,6 +37,13 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @internal
 	 */
 	public $pageinfo;
+
+	/**
+	 * ModuleTemplate Container
+	 *
+	 * @var ModuleTemplate
+	 */
+	protected $moduleTemplate;
 
 	/**
 	 * Document Template Object
@@ -60,6 +69,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 */
 	public function __construct() {
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
 		$this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_func.xlf');
 		$this->MCONF = array(
 			'name' => $this->moduleName,
@@ -85,7 +95,9 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$this->checkSubExtObj();
 		$this->main();
 
-		$response->getBody()->write($this->content);
+		$this->moduleTemplate->setContent($this->content);
+
+		$response->getBody()->write($this->moduleTemplate->renderContent());
 		return $response;
 	}
 
@@ -98,37 +110,27 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+		$this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 		$access = is_array($this->pageinfo);
-		// Template markers
-		$markers = array(
-			'CSH' => '',
-			'FUNC_MENU' => '',
-			'CONTENT' => ''
-		);
+		// We keep this here, in case somebody relies on the old doc being here
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-		$this->doc->setModuleTemplate('EXT:func/Resources/Private/Templates/func.html');
 		// Main
 		if ($this->id && $access) {
 			// JavaScript
-			$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
+			$this->moduleTemplate->addJavaScriptCode(
+				'WebFuncInLineJS',
+				'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
 			// Setting up the context sensitive menu:
-			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />';
-			$vContent = $this->doc->getVersionSelector($this->id, TRUE);
+			$this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+			$this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('web_func')) . '" method="post"><input type="hidden" name="id" value="' . htmlspecialchars($this->id) . '" />');
+			$vContent = $this->moduleTemplate->getVersionSelector($this->id, TRUE);
 			if ($vContent) {
-				$this->content .= $this->doc->section('', $vContent);
+				$this->content .= $this->moduleTemplate->section('', $vContent);
 			}
 			$this->extObjContent();
 			// Setting up the buttons and markers for docheader
-			$docHeaderButtons = $this->getButtons();
-			$markers['CSH'] = $docHeaderButtons['csh'];
-			$markers['FUNC_MENU'] = BackendUtility::getFuncMenu(
-				$this->id,
-				'SET[function]',
-				$this->MOD_SETTINGS['function'],
-				$this->MOD_MENU['function']
-			);
-			$markers['CONTENT'] = $this->content;
+			$this->getButtons();
+			$this->generateMenu();
 		} else {
 			// If no access or if ID == zero
 			$title = $this->getLanguageService()->getLL('title');
@@ -141,16 +143,41 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				'state' => InfoboxViewHelper::STATE_INFO
 			));
 			$this->content = $view->render();
-
 			// Setting up the buttons and markers for docheader
-			$docHeaderButtons = $this->getButtons();
-			$markers['CSH'] = $docHeaderButtons['csh'];
-			$markers['CONTENT'] = $this->content;
+			$this->getButtons();
 		}
-		// Build the <body> for the module
-		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		// Renders the module page
-		$this->content = $this->doc->render($this->getLanguageService()->getLL('title'), $this->content);
+	}
+
+	/**
+	 * Generates the menu based on $this->MOD_MENU
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	protected function generateMenu() {
+		$menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+		$menu->setIdentifier('WebFuncJumpMenu');
+		foreach ($this->MOD_MENU['function'] as $controller => $title) {
+			$item = $menu
+				->makeMenuItem()
+				->setHref(
+					BackendUtility::getModuleUrl(
+						$this->moduleName,
+						[
+							'id' => $this->id,
+							'SET' => [
+								'function' => $controller
+							]
+						]
+						)
+				)
+				->setTitle($title);
+			if ($controller === $this->MOD_SETTINGS['function']) {
+				$item->setActive(TRUE);
+			}
+			$menu->addMenuItem($item);
+		}
+		$this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
 	}
 
 	/**
@@ -166,29 +193,32 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
-	 *
-	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
-		$buttons = array(
-			'csh' => '',
-			'view' => '',
-			'shortcut' => ''
-		);
+		$buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 		// CSH
-		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_func', '');
+		$cshButton = $buttonBar->makeFullyRenderedButton()
+			->setHtmlSource(BackendUtility::cshItem('_MOD_web_func', ''));
+		$buttonBar->addButton($cshButton);
 		if ($this->id && is_array($this->pageinfo)) {
 			// View page
-			$buttons['view'] = '<a href="#" '
-				. 'onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" '
-				. 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+			$viewButton = $buttonBar->makeLinkButton()
+				->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
+				->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE))
+				->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
+				->setHref('#');
+			$buttonBar->addButton($viewButton);
 			// Shortcut
 			if ($this->getBackendUser()->mayMakeShortcut()) {
-				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
+				$shortCutButton = $buttonBar->makeFullyRenderedButton()
+					->setHtmlSource($this->moduleTemplate->makeShortcutIcon(
+						'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+						implode(',', array_keys($this->MOD_MENU)),
+						$this->moduleName
+					));
+				$buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 			}
 		}
-		return $buttons;
 	}
 
 	/**
