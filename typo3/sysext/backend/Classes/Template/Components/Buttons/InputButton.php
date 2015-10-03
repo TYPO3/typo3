@@ -118,7 +118,7 @@ class InputButton extends AbstractButton implements ButtonInterface {
 		$content = '
 		<button name="' .
 			htmlspecialchars($this->getName()) .
-			'" class="' .
+			'" class="btn btn-default btn-sm ' .
 			htmlspecialchars($this->getClasses()) .
 			'" value="' .
 			htmlspecialchars($this->getValue()) .
