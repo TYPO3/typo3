@@ -138,16 +138,6 @@ TYPO3.Viewport.configuration = {
 					layout: 'border',
 					items: [
 						{
-							id: 'typo3-navigationDummy',
-							region: 'west',
-							layout: 'fit',
-							border: false,
-							hidden: true,
-							floatable: true,
-							xtime: 'iframePanel',
-							width: 5
-						},
-						{
 							id: 'typo3-contentContainerWrapper',
 							border: false,
 							layout: 'fit',

@@ -9537,8 +9537,7 @@ div#contentMenu1 {
   border-bottom: 1px solid #C3C3C3;
 }
 #typo3-navigationContainer-xsplit,
-#typo3-navigationContainer-xcollapsed,
-#typo3-navigationDummy {
+#typo3-navigationContainer-xcollapsed {
   background: #ffffff url(../../Public/Images/docheader-split-background.png) left top repeat-x;
 }
 #typo3-navigationContainer-xcollapsed {
