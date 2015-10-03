@@ -1892,6 +1892,48 @@ return array(
 				),
 			),
 		),
+		'inline_4' => array(
+			'label' => 'IRRE: 4 media FAL field',
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('inline_4', array(
+				'appearance' => array(
+					'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+				),
+				// custom configuration for displaying fields in the overlay/reference table
+				// to use the imageoverlayPalette instead of the basicoverlayPalette
+				'foreign_types' => array(
+					'0' => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					)
+				)
+			), $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'])
+		),
 
 
 		'palette_1_1' => array(
@@ -2593,7 +2635,7 @@ return array(
 			passthrough_1,
 			user_1, user_2,
 			flex_1, flex_2, flex_3,
-			inline_1, inline_2, inline_3,
+			inline_1, inline_2, inline_3, inline_4,
 			wizard_1, wizard_2, wizard_3, wizard_4, wizard_5, wizard_6, wizard_7,
 			rte_1, rte_2, rte_3, rte_4,
 			t3editor_1, t3editor_2, t3editor_5, t3editor_6,
@@ -2637,7 +2679,7 @@ return array(
 				--div--;Flex,
 					flex_1, flex_2, flex_3, flex_4, flex_5,
 				--div--;Inline,
-					inline_1, inline_2, inline_3,
+					inline_1, inline_2, inline_3, inline_4,
 				--div--;Palettes,
 					--palette--;Palettes 1;palettes_1,
 					--palette--;Palettes 2;palettes_2,

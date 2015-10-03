@@ -88,17 +88,59 @@ return array(
 				),
 			),
 		),
+		'inline_2' => array(
+			'label' => 'IRRE: 2 media FAL field',
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig('inline_2', array(
+				'appearance' => array(
+					'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference'
+				),
+				// custom configuration for displaying fields in the overlay/reference table
+				// to use the imageoverlayPalette instead of the basicoverlayPalette
+				'foreign_types' => array(
+					'0' => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
+							--palette--;;filePalette'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						'showitem' => '
+							--palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+							--palette--;;filePalette'
+					)
+				)
+			), $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'])
+		),
 	),
 	'interface' => array(
 		'showRecordFieldList' => '
 			sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable,
-			input_1, inline_1,
+			input_1, inline_1, inline_2,
 		',
 	),
 	'types' => array(
 		'0' => array(
 			'showitem' => '
-				--div--;General, input_1, inline_1,
+				--div--;General, input_1, inline_1, inline_2,
 				--div--;Visibility, sys_language_uid, l18n_parent, l18n_diffsource, hidden, parentid, parenttable
 			',
 		),
