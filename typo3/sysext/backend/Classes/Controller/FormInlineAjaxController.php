@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
-use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -34,18 +33,6 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 class FormInlineAjaxController {
 
 	/**
-	 * @var InlineStackProcessor
-	 */
-	protected $inlineStackProcessor;
-
-	/**
-	 * Create the inline stack processor
-	 */
-	public function __construct() {
-		$this->inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-	}
-
-	/**
 	 * Create a new inline child via AJAX.
 	 *
 	 * @param ServerRequestInterface $request
@@ -54,12 +41,209 @@ class FormInlineAjaxController {
 	 */
 	public function createAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+
 		$domObjectId = $ajaxArguments[0];
-		$createAfterUid = isset($ajaxArguments[1]) ? $ajaxArguments[1] : 0;
-		// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-		$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
-		$response->getBody()->write(json_encode($this->renderInlineNewChildRecord($domObjectId, $createAfterUid)));
+		$inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
+		$childChildUid = NULL;
+		if (isset($ajaxArguments[1]) && MathUtility::canBeInterpretedAsInteger($ajaxArguments[1])) {
+			$childChildUid = (int)$ajaxArguments[1];
+		}
+
+		// Parse the DOM identifier, add the levels to the structure stack
+		/** @var InlineStackProcessor $inlineStackProcessor */
+		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
+		$inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+		$inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+
+		// Parent, this table embeds the child table
+		$parent = $inlineStackProcessor->getStructureLevel(-1);
+		$parentFieldName = $parent['field'];
+
+		if (MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
+			$command = 'edit';
+			$vanillaUid = (int)$parent['uid'];
+		} else {
+			$command = 'new';
+			$vanillaUid = (int)$inlineFirstPid;
+		}
+		$formDataCompilerInputForParent = [
+			'vanillaUid' => $vanillaUid,
+			'command' => $command,
+			'tableName' => $parent['table'],
+			'inlineFirstPid' => $inlineFirstPid,
+			// @todo: still needed?
+			'inlineStructure' => $inlineStackProcessor->getStructure(),
+			// Do not resolve existing children, we don't need them now
+			'inlineResolveExistingChildren' => FALSE,
+		];
+		// @todo: It would be enough to restrict parsing of parent to "inlineConfiguration" of according inline field only
+		// @todo: maybe, not even the database row is required?? We only need overruleTypesArray and sanitized configuration?
+		// @todo: Improving this area would significantly speed up this parsing!
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+		$parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
+		$parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
+
+		// Child, a record from this table should be rendered
+		$child = $inlineStackProcessor->getUnstableStructure();
+		if (MathUtility::canBeInterpretedAsInteger($child['uid'])) {
+			// If uid comes in, it is the id of the record neighbor record "create after"
+			$childVanillaUid = -1 * abs((int)$child['uid']);
+		} else {
+			// Else inline first Pid is the storage pid of new inline records
+			$childVanillaUid = (int)$inlineFirstPid;
+		}
+
+		$childTableName = $parentConfig['foreign_table'];
+		$overruleTypesArray = [];
+		if (isset($parentConfig['foreign_types'])) {
+			$overruleTypesArray = $parentConfig['foreign_types'];
+		}
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+		$formDataCompilerInput = [
+			'command' => 'new',
+			'tableName' => $childTableName,
+			'vanillaUid' => $childVanillaUid,
+			'inlineFirstPid' => $inlineFirstPid,
+			'overruleTypesArray' => $overruleTypesArray,
+		];
+		$childData = $formDataCompiler->compile($formDataCompilerInput);
+
+		// Set default values for new created records
+		// @todo: This should be moved over to some data provider? foreign_record_defaults is currently not handled
+		// @todo: at all, but also not used in core itself. Bonus question: There is "overruleTypesArray", there is this
+		// @todo: default setting stuff ... why can't just "all" TCA be overwritten by parent similar to TCA type
+		// @todo: related columnsOverrides? Another gem: foreign_selector_fieldTcaOverride overwrites TCA of foreign_selector
+		// @todo: depending on parent ...
+		/**
+		if (isset($config['foreign_record_defaults']) && is_array($config['foreign_record_defaults'])) {
+			$foreignTableConfig = $GLOBALS['TCA'][$child['table']];
+			// The following system relevant fields can't be set by foreign_record_defaults
+			$notSettableFields = [
+				'uid', 'pid', 't3ver_oid', 't3ver_id', 't3ver_label', 't3ver_wsid', 't3ver_state', 't3ver_stage',
+				't3ver_count', 't3ver_tstamp', 't3ver_move_id'
+			];
+			$configurationKeysForNotSettableFields = [
+				'crdate', 'cruser_id', 'delete', 'origUid', 'transOrigDiffSourceField', 'transOrigPointerField',
+				'tstamp'
+			];
+			foreach ($configurationKeysForNotSettableFields as $configurationKey) {
+				if (isset($foreignTableConfig['ctrl'][$configurationKey])) {
+					$notSettableFields[] = $foreignTableConfig['ctrl'][$configurationKey];
+				}
+			}
+			foreach ($config['foreign_record_defaults'] as $fieldName => $defaultValue) {
+				if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSettableFields)) {
+					$record[$fieldName] = $defaultValue;
+				}
+			}
+		}
+		 */
+
+		// Set language of new child record to the language of the parent record:
+		// @todo: To my understanding, the below case can't happen: With localizationMode select, lang overlays
+		// @todo: of children are only created with the "synchronize" button that will trigger a different ajax action.
+		// @todo: The edge case of new page overlay together with localized media field, this code won't kick in either.
+		/**
+		if ($parent['localizationMode'] === 'select' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
+			$parentRecord = $inlineRelatedRecordResolver->getRecord($parent['table'], $parent['uid']);
+			$parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
+			$childLanguageField = $GLOBALS['TCA'][$child['table']]['ctrl']['languageField'];
+			if ($parentRecord[$parentLanguageField] > 0) {
+				$record[$childLanguageField] = $parentRecord[$parentLanguageField];
+			}
+		}
+		 */
+
+		if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+			// We have a foreign_selector. So, we just created a new record on an intermediate table in $mainChild.
+			// Now, if a valid id is given as second ajax parameter, the intermediate row should be connected to an
+			// existing record of the child-child table specified by the given uid. If there is no such id, user
+			// clicked on "created new" and a new child-child should be created, too.
+			if ($childChildUid) {
+				// Fetch existing child child
+				$childData['databaseRow'][$parentConfig['foreign_selector']] = [
+					$childChildUid,
+				];
+				$childData['combinationChild'] = $this->compileCombinationChild($childData, $parentConfig);
+			} else {
+				/** @var TcaDatabaseRecord $formDataGroup */
+				$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+				/** @var FormDataCompiler $formDataCompiler */
+				$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+				$formDataCompilerInput = [
+					'command' => 'new',
+					'tableName' => $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['foreign_table'],
+					'vanillaUid' => (int)$inlineFirstPid,
+					'inlineFirstPid' => (int)$inlineFirstPid,
+				];
+				$childData['combinationChild'] = $formDataCompiler->compile($formDataCompilerInput);
+			}
+		} elseif ($parentConfig['foreign_selector'] && $childChildUid) {
+			// @todo: Setting these values here is too late, it should happen before single fields are
+			// @todo: prepared in $childData. Otherwise fields that use this relation like for instance
+			// @todo: the placeholder relation does not work for "fresh" children. This stuff here
+			// @todo: probably needs to be moved somewhere after "initializeNew" data provider.
+			// There is an existing child-child, but it should not be rendered directly. Still, the intermediate
+			// record must point to the child table
+			if ($childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['type'] === 'select') {
+				$childData['databaseRow'][$parentConfig['foreign_selector']] = [
+					$childChildUid,
+				];
+			}
+			// This is the case for fal, uid_local is a group field in sys_file_reference
+			if ($childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['type'] === 'group') {
+				$childData['databaseRow'][$parentConfig['foreign_selector']]
+					= $childData['processedTca']['columns'][$parentConfig['foreign_selector']]['config']['allowed'] . '_' . $childChildUid;
+			}
+		}
+
+		$childData['inlineParentUid'] = (int)$parent['uid'];
+		$childData['inlineParentConfig'] = $parentConfig;
+		// @todo: needed?
+		$childData['inlineStructure'] = $inlineStackProcessor->getStructure();
+		// @todo: needed?
+		$childData['inlineExpandCollapseStateArray'] = $parentData['inlineExpandCollapseStateArray'];
+		$childData['renderType'] = 'inlineRecordContainer';
+		$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+		$childResult = $nodeFactory->create($childData)->render();
+
+		$jsonArray = [
+			'data' => '',
+			'stylesheetFiles' => [],
+			'scriptCall' => [],
+		];
+
+		// The HTML-object-id's prefix of the dynamically created record
+		$objectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
+		$objectPrefix = $objectName . '-' . $child['table'];
+		$objectId = $objectPrefix . '-' . $childData['databaseRow']['uid'];
+		$expandSingle = $parentConfig['appearance']['expandSingle'];
+		if (!$child['uid']) {
+			$jsonArray['scriptCall'][] = 'inline.domAddNewRecord(\'bottom\',' . GeneralUtility::quoteJSvalue($objectName . '_records') . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',json.data);';
+			$jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($childData['databaseRow']['uid']) . ',null,' . GeneralUtility::quoteJSvalue($childChildUid) . ');';
+		} else {
+			$jsonArray['scriptCall'][] = 'inline.domAddNewRecord(\'after\',' . GeneralUtility::quoteJSvalue($domObjectId . '_div') . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',json.data);';
+			$jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($childData['databaseRow']['uid']) . ',' . GeneralUtility::quoteJSvalue($child['uid']) . ',' . GeneralUtility::quoteJSvalue($childChildUid) . ');';
+		}
+		$jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childResult);
+		if ($parentConfig['appearance']['useSortable']) {
+			$inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
+			$jsonArray['scriptCall'][] = 'inline.createDragAndDropSorting(' . GeneralUtility::quoteJSvalue($inlineObjectName . '_records') . ');';
+		}
+		if (!$parentConfig['appearance']['collapseAll'] && $expandSingle) {
+			$jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($childData['databaseRow']['uid']) . ');';
+		}
+		// Fade out and fade in the new record in the browser view to catch the user's eye
+		$jsonArray['scriptCall'][] = 'inline.fadeOutFadeIn(' . GeneralUtility::quoteJSvalue($objectId . '_div') . ');';
+
+		$response->getBody()->write(json_encode($jsonArray));
+
 		return $response;
 	}
 
@@ -72,16 +256,89 @@ class FormInlineAjaxController {
 	 */
 	public function detailsAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
+
 		$domObjectId = $ajaxArguments[0];
-		// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-		$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
-		$response->getBody()->write(json_encode($this->renderInlineChildRecord($domObjectId)));
+		$inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
+
+		// Parse the DOM identifier, add the levels to the structure stack
+		/** @var InlineStackProcessor $inlineStackProcessor */
+		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
+		$inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+		$inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+
+		// Parent, this table embeds the child table
+		$parent = $inlineStackProcessor->getStructureLevel(-1);
+		$parentFieldName = $parent['field'];
+
+		$formDataCompilerInputForParent = [
+			'vanillaUid' => (int)$parent['uid'],
+			'command' => 'edit',
+			'tableName' => $parent['table'],
+			'inlineFirstPid' => $inlineFirstPid,
+			// @todo: still needed?
+			'inlineStructure' => $inlineStackProcessor->getStructure(),
+			// Do not resolve existing children, we don't need them now
+			'inlineResolveExistingChildren' => FALSE,
+		];
+		// @todo: It would be enough to restrict parsing of parent to "inlineConfiguration" of according inline field only
+		// @todo: maybe, not even the database row is required?? We only need overruleTypesArray and sanitized configuration?
+		// @todo: Improving this area would significantly speed up this parsing!
+		/** @var TcaDatabaseRecord $formDataGroup */
+		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+		/** @var FormDataCompiler $formDataCompiler */
+		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+		$parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
+		$parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
+		// Set flag in config so that only the fields are rendered
+		// @todo: Solve differently / rename / whatever
+		$parentConfig['renderFieldsOnly'] = TRUE;
+
+		// Child, a record from this table should be rendered
+		$child = $inlineStackProcessor->getUnstableStructure();
+
+		$childData = $this->compileChild($parentData, $parentFieldName, (int)$child['uid']);
+
+		$childData['inlineParentUid'] = (int)$parent['uid'];
+		$childData['inlineParentConfig'] = $parentConfig;
+		// @todo: needed?
+		$childData['inlineStructure'] = $inlineStackProcessor->getStructure();
+		// @todo: needed?
+		$childData['inlineExpandCollapseStateArray'] = $parentData['inlineExpandCollapseStateArray'];
+		$childData['renderType'] = 'inlineRecordContainer';
+		$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+		$childResult = $nodeFactory->create($childData)->render();
+
+		$jsonArray = [
+			'data' => '',
+			'stylesheetFiles' => [],
+			'scriptCall' => [],
+		];
+
+		// The HTML-object-id's prefix of the dynamically created record
+		$objectPrefix = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid) . '-' . $child['table'];
+		$objectId = $objectPrefix . '-' . (int)$child['uid'];
+		$expandSingle = $parentConfig['appearance']['expandSingle'];
+		$jsonArray['scriptCall'][] = 'inline.domAddRecordDetails(' . GeneralUtility::quoteJSvalue($domObjectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . ($expandSingle ? '1' : '0') . ',json.data);';
+		if ($parentConfig['foreign_unique']) {
+			$jsonArray['scriptCall'][] = 'inline.removeUsed(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',\'' . (int)$child['uid'] . '\');';
+		}
+		$jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childResult);
+		if ($parentConfig['appearance']['useSortable']) {
+			$inlineObjectName = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
+			$jsonArray['scriptCall'][] = 'inline.createDragAndDropSorting(' . GeneralUtility::quoteJSvalue($inlineObjectName . '_records') . ');';
+		}
+		if (!$parentConfig['appearance']['collapseAll'] && $expandSingle) {
+			$jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',\'' . (int)$child['uid'] . '\');';
+		}
+
+		$response->getBody()->write(json_encode($jsonArray));
+
 		return $response;
 	}
 
 	/**
 	 * Adds localizations or synchronizes the locations of all child records.
+	 * Handle AJAX calls to localize all records of a parent, localize a single record or to synchronize with the original language parent.
 	 *
 	 * @param ServerRequestInterface $request the incoming request
 	 * @param ResponseInterface $response the empty response
@@ -91,11 +348,112 @@ class FormInlineAjaxController {
 		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
 		$domObjectId = $ajaxArguments[0];
 		$type = $ajaxArguments[1];
+
+		/** @var InlineStackProcessor $inlineStackProcessor */
+		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
 		// Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-		$this->inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
-		$inlineFirstPid = FormEngineUtility::getInlineFirstPidFromDomObjectId($domObjectId);
-		$response->getBody()->write(json_encode($this->renderInlineSynchronizeLocalizeRecords($type, $inlineFirstPid)));
+		$inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+		$inlineStackProcessor->injectAjaxConfiguration($ajaxArguments['context']);
+		$inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
+
+		$jsonArray = FALSE;
+		if ($type === 'localize' || $type === 'synchronize' || MathUtility::canBeInterpretedAsInteger($type)) {
+			// Parent, this table embeds the child table
+			$parent = $inlineStackProcessor->getStructureLevel(-1);
+			$parentFieldName = $parent['field'];
+
+			// Child, a record from this table should be rendered
+			$child = $inlineStackProcessor->getUnstableStructure();
+
+			$formDataCompilerInputForParent = [
+				'vanillaUid' => (int)$parent['uid'],
+				'command' => 'edit',
+				'tableName' => $parent['table'],
+				'inlineFirstPid' => $inlineFirstPid,
+				// @todo: still needed?
+				'inlineStructure' => $inlineStackProcessor->getStructure(),
+				// Do not compile existing children, we don't need them now
+				'inlineCompileExistingChildren' => FALSE,
+			];
+			// @todo: It would be enough to restrict parsing of parent to "inlineConfiguration" of according inline field only
+			// @todo: maybe, not even the database row is required?? We only need overruleTypesArray and sanitized configuration?
+			// @todo: Improving this area would significantly speed up this parsing!
+			/** @var TcaDatabaseRecord $formDataGroup */
+			$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+			/** @var FormDataCompiler $formDataCompiler */
+			$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+			$parentData = $formDataCompiler->compile($formDataCompilerInputForParent);
+			$parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
+			$oldItemList = $parentData['databaseRow'][$parentFieldName];
+
+			$cmd = array();
+			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
+			/** @var $tce DataHandler */
+			$tce = GeneralUtility::makeInstance(DataHandler::class);
+			$tce->stripslashes_values = FALSE;
+			$tce->start(array(), $cmd);
+			$tce->process_cmdmap();
+
+			$newItemList = $tce->registerDBList[$parent['table']][$parent['uid']][$parentFieldName];
+
+			$jsonArray = array(
+				'data' => '',
+				'stylesheetFiles' => [],
+				'scriptCall' => [],
+			);
+			$nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
+			$nameObjectForeignTable = $nameObject . '-' . $child['table'];
+
+			$oldItems = FormEngineUtility::getInlineRelatedRecordsUidArray($oldItemList);
+			$newItems = FormEngineUtility::getInlineRelatedRecordsUidArray($newItemList);
+
+			// Set the items that should be removed in the forms view:
+			$removedItems = array_diff($oldItems, $newItems);
+			foreach ($removedItems as $childUid) {
+				$jsonArray['scriptCall'][] = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable . '-' . $childUid) . ', {forceDirectRemoval: true});';
+			}
+
+			$localizedItems = array_diff($newItems, $oldItems);
+			foreach ($localizedItems as $childUid) {
+				$childData = $this->compileChild($parentData, $parentFieldName, (int)$childUid);
+
+				$childData['inlineParentUid'] = (int)$parent['uid'];
+				$childData['inlineParentConfig'] = $parentConfig;
+				// @todo: needed?
+				$childData['inlineStructure'] = $inlineStackProcessor->getStructure();
+				// @todo: needed?
+				$childData['inlineExpandCollapseStateArray'] = $parentData['inlineExpandCollapseStateArray'];
+				$childData['renderType'] = 'inlineRecordContainer';
+				$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
+				$childResult = $nodeFactory->create($childData)->render();
+
+				$jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childResult);
+
+				// Get the name of the field used as foreign selector (if any):
+				$foreignSelector = isset($parentConfig['foreign_selector']) && $parentConfig['foreign_selector'] ? $parentConfig['foreign_selector'] : FALSE;
+				$selectedValue = $foreignSelector ? GeneralUtility::quoteJSvalue($childData['databaseRow'][$foreignSelector]) : 'null';
+				if (is_array($selectedValue)) {
+					$selectedValue = $selectedValue[0];
+				}
+				$jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', ' . GeneralUtility::quoteJSvalue($childUid) . ', null, ' . $selectedValue . ');';
+				// Remove possible virtual records in the form which showed that a child records could be localized:
+				$transOrigPointerFieldName = $GLOBALS['TCA'][$childData['table']]['ctrl']['transOrigPointerField'];
+				$transOrigPointerField = FALSE;
+				if (isset($childData['databaseRow'][$transOrigPointerFieldName]) && $childData['dataabaseRow'][$transOrigPointerFieldName]) {
+					$transOrigPointerField = $childData['databaseRow'][$transOrigPointerFieldName];
+					if (is_array($transOrigPointerField)) {
+						$transOrigPointerField = $transOrigPointerField[0];
+					}
+					$jsonArray['scriptCall'][] = 'inline.fadeAndRemove(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable . '-' . $transOrigPointerField . '_div') . ');';
+				}
+				if (!empty($childResult['html'])) {
+					array_unshift($jsonArray['scriptCall'], 'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records') . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', json.data);');
+				}
+			}
+		}
+
+		$response->getBody()->write(json_encode($jsonArray));
+
 		return $response;
 	}
 
@@ -109,334 +467,101 @@ class FormInlineAjaxController {
 	public function expandOrCollapseAction(ServerRequestInterface $request, ResponseInterface $response) {
 		$ajaxArguments = isset($request->getParsedBody()['ajax']) ? $request->getParsedBody()['ajax'] : $request->getQueryParams()['ajax'];
 		$domObjectId = $ajaxArguments[0];
+
+		/** @var InlineStackProcessor $inlineStackProcessor */
+		$inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
 		// Parse the DOM identifier (string), add the levels to the structure stack (array), don't load TCA config
-		$this->inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId, FALSE);
+		$inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
 		$expand = $ajaxArguments[1];
 		$collapse = $ajaxArguments[2];
-		$this->setInlineExpandedCollapsedState($expand, $collapse);
+
+		$backendUser = $this->getBackendUserAuthentication();
+		// The current table - for this table we should add/import records
+		$currentTable = $inlineStackProcessor->getUnstableStructure();
+		$currentTable = $currentTable['table'];
+		// The top parent table - this table embeds the current table
+		$top = $inlineStackProcessor->getStructureLevel(0);
+		$topTable = $top['table'];
+		$topUid = $top['uid'];
+		$inlineView = $this->getInlineExpandCollapseStateArray();
+		// Only do some action if the top record and the current record were saved before
+		if (MathUtility::canBeInterpretedAsInteger($topUid)) {
+			$expandUids = GeneralUtility::trimExplode(',', $expand);
+			$collapseUids = GeneralUtility::trimExplode(',', $collapse);
+			// Set records to be expanded
+			foreach ($expandUids as $uid) {
+				$inlineView[$topTable][$topUid][$currentTable][] = $uid;
+			}
+			// Set records to be collapsed
+			foreach ($collapseUids as $uid) {
+				$inlineView[$topTable][$topUid][$currentTable] = $this->removeFromArray($uid, $inlineView[$topTable][$topUid][$currentTable]);
+			}
+			// Save states back to database
+			if (is_array($inlineView[$topTable][$topUid][$currentTable])) {
+				$inlineView[$topTable][$topUid][$currentTable] = array_unique($inlineView[$topTable][$topUid][$currentTable]);
+				$backendUser->uc['inlineView'] = serialize($inlineView);
+				$backendUser->writeUC();
+			}
+		}
+
 		$response->getBody()->write(json_encode(array()));
 		return $response;
 	}
 
 	/**
-	 * Handle AJAX calls to dynamically load the form fields of a given inline record.
+	 * Compile a full child record
 	 *
-	 * @param string $domObjectId The calling object in hierarchy, that requested a new record.
-	 * @return array An array to be used for JSON
+	 * @param array $result Result array of parent
+	 * @param string $parentFieldName Name of parent field
+	 * @param int $childUid Uid of child to compile
+	 * @return array Full result array
+	 *
+	 * @todo: This clones methods compileChild and compileCombinationChild from TcaInline Provider.
+	 * @todo: Find something around that, eg. some option to force TcaInline provider to calculate a
+	 * @todo: specific forced-open element only :)
 	 */
-	protected function renderInlineChildRecord($domObjectId) {
-		// The current table - for this table we should add/import records
-		$current = $this->inlineStackProcessor->getUnstableStructure();
-		// The parent table - this table embeds the current table
-		$parent = $this->inlineStackProcessor->getStructureLevel(-1);
-		$config = $parent['config'];
-
-		if (empty($config['foreign_table']) || !is_array($GLOBALS['TCA'][$config['foreign_table']])) {
-			return $this->getErrorMessageForAJAX('Wrong configuration in table ' . $parent['table']);
+	protected function compileChild(array $result, $parentFieldName, $childUid) {
+		$parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
+		$childTableName = $parentConfig['foreign_table'];
+		$overruleTypesArray = [];
+		if (isset($parentConfig['foreign_types'])) {
+			$overruleTypesArray = $parentConfig['foreign_types'];
 		}
-
-		$config = FormEngineUtility::mergeInlineConfiguration($config);
-
-		// Set flag in config so that only the fields are rendered
-		$config['renderFieldsOnly'] = TRUE;
-		$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
-		$expandSingle = isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle'];
-
-		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-		$record = $inlineRelatedRecordResolver->getRecord($current['table'], $current['uid']);
-
-		$inlineFirstPid = FormEngineUtility::getInlineFirstPidFromDomObjectId($domObjectId);
-		// The HTML-object-id's prefix of the dynamically created record
-		$objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid) . '-' . $current['table'];
-		$objectId = $objectPrefix . '-' . $record['uid'];
-
-		$formDataInput = [];
-		$formDataInput['vanillaUid'] = (int)$parent['uid'];
-		$formDataInput['command'] = 'edit';
-		$formDataInput['tableName'] = $parent['table'];
-		$formDataInput['inlineFirstPid'] = $inlineFirstPid;
-		$formDataInput['inlineStructure'] = $this->inlineStackProcessor->getStructure();
-
 		/** @var TcaDatabaseRecord $formDataGroup */
 		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
 		/** @var FormDataCompiler $formDataCompiler */
 		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-
-		$formData = $formDataCompiler->compile($formDataInput);
-		$formData['renderType'] = 'inlineRecordContainer';
-		$formData['inlineRelatedRecordToRender'] = $record;
-		$formData['inlineRelatedRecordConfig'] = $config;
-
-		try {
-			// Access to this record may be denied, create an according error message in this case
-			$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-			$childArray = $nodeFactory->create($formData)->render();
-		} catch (AccessDeniedException $e) {
-			return $this->getErrorMessageForAJAX('Access denied');
-		}
-
-		$jsonArray = [
-			'data' => '',
-			'stylesheetFiles' => [],
-			'scriptCall' => [],
+		$formDataCompilerInput = [
+			'command' => 'edit',
+			'tableName' => $childTableName,
+			'vanillaUid' => (int)$childUid,
+			'inlineFirstPid' => $result['inlineFirstPid'],
+			'overruleTypesArray' => $overruleTypesArray,
 		];
-		$jsonArray['scriptCall'][] = 'inline.domAddRecordDetails(' . GeneralUtility::quoteJSvalue($domObjectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . ($expandSingle ? '1' : '0') . ',json.data);';
-		if ($config['foreign_unique']) {
-			$jsonArray['scriptCall'][] = 'inline.removeUsed(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($record['uid']) . ');';
+		// For foreign_selector with useCombination $mainChild is the mm record
+		// and $combinationChild is the child-child. For "normal" relations, $mainChild
+		// is just the normal child record and $combinationChild is empty.
+		$mainChild = $formDataCompiler->compile($formDataCompilerInput);
+		if ($parentConfig['foreign_selector'] && $parentConfig['appearance']['useCombination']) {
+			$mainChild['combinationChild'] = $this->compileCombinationChild($mainChild, $parentConfig);
 		}
-		if (!empty($childArray['inlineData'])) {
-			$jsonArray['scriptCall'][] = 'inline.addToDataArray(' . json_encode($childArray['inlineData']) . ');';
-		}
-		$jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childArray);
-		if ($config['appearance']['useSortable']) {
-			$inlineObjectName = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
-			$jsonArray['scriptCall'][] = 'inline.createDragAndDropSorting(' . GeneralUtility::quoteJSvalue($inlineObjectName . '_records') . ');';
-		}
-		if (!$collapseAll && $expandSingle) {
-			$jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($record['uid']) . ');';
-		}
-
-		return $jsonArray;
+		return $mainChild;
 	}
 
 	/**
-	 * Handle AJAX calls to show a new inline-record of the given table.
+	 * With useCombination set, not only content of the intermediate table, but also
+	 * the connected child should be rendered in one go. Prepare this here.
 	 *
-	 * @param string $domObjectId The calling object in hierarchy, that requested a new record.
-	 * @param string|int $foreignUid If set, the new record should be inserted after that one.
-	 * @return array An array to be used for JSON
+	 * @param array $intermediate Full data array of "mm" record
+	 * @param array $parentConfig TCA configuration of "parent"
+	 * @return array Full data array of child
+	 * @todo: probably foreign_selector_fieldTcaOverride should be merged over here before
 	 */
-	protected function renderInlineNewChildRecord($domObjectId, $foreignUid) {
-		// The current table - for this table we should add/import records
-		$current = $this->inlineStackProcessor->getUnstableStructure();
-		// The parent table - this table embeds the current table
-		$parent = $this->inlineStackProcessor->getStructureLevel(-1);
-		$config = $parent['config'];
-
-		if (empty($config['foreign_table']) || !is_array($GLOBALS['TCA'][$config['foreign_table']])) {
-			return $this->getErrorMessageForAJAX('Wrong configuration in table ' . $parent['table']);
-		}
-
-		/** @var InlineRelatedRecordResolver $inlineRelatedRecordResolver */
-		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-
-		$config = FormEngineUtility::mergeInlineConfiguration($config);
-
-		$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
-		$expandSingle = isset($config['appearance']['expandSingle']) && $config['appearance']['expandSingle'];
-
-		$inlineFirstPid = FormEngineUtility::getInlineFirstPidFromDomObjectId($domObjectId);
-
-		// Dynamically create a new record
-		if (!$foreignUid || !MathUtility::canBeInterpretedAsInteger($foreignUid) || $config['foreign_selector']) {
-			$record = $inlineRelatedRecordResolver->getNewRecord($inlineFirstPid, $current['table']);
-			// Set default values for new created records
-			if (isset($config['foreign_record_defaults']) && is_array($config['foreign_record_defaults'])) {
-				$foreignTableConfig = $GLOBALS['TCA'][$current['table']];
-				// The following system relevant fields can't be set by foreign_record_defaults
-				$notSettableFields = array(
-					'uid', 'pid', 't3ver_oid', 't3ver_id', 't3ver_label', 't3ver_wsid', 't3ver_state', 't3ver_stage',
-					't3ver_count', 't3ver_tstamp', 't3ver_move_id'
-				);
-				$configurationKeysForNotSettableFields = array(
-					'crdate', 'cruser_id', 'delete', 'origUid', 'transOrigDiffSourceField', 'transOrigPointerField',
-					'tstamp'
-				);
-				foreach ($configurationKeysForNotSettableFields as $configurationKey) {
-					if (isset($foreignTableConfig['ctrl'][$configurationKey])) {
-						$notSettableFields[] = $foreignTableConfig['ctrl'][$configurationKey];
-					}
-				}
-				foreach ($config['foreign_record_defaults'] as $fieldName => $defaultValue) {
-					if (isset($foreignTableConfig['columns'][$fieldName]) && !in_array($fieldName, $notSettableFields)) {
-						$record[$fieldName] = $defaultValue;
-					}
-				}
-			}
-			// Set language of new child record to the language of the parent record:
-			if ($parent['localizationMode'] === 'select' && MathUtility::canBeInterpretedAsInteger($parent['uid'])) {
-				$parentRecord = $inlineRelatedRecordResolver->getRecord($parent['table'], $parent['uid']);
-				$parentLanguageField = $GLOBALS['TCA'][$parent['table']]['ctrl']['languageField'];
-				$childLanguageField = $GLOBALS['TCA'][$current['table']]['ctrl']['languageField'];
-				if ($parentRecord[$parentLanguageField] > 0) {
-					$record[$childLanguageField] = $parentRecord[$parentLanguageField];
-				}
-			}
-		} else {
-			// @todo: Check this: Else also hits if $foreignUid = 0?
-			$record = $inlineRelatedRecordResolver->getRecord($current['table'], $foreignUid);
-		}
-		// Now there is a foreign_selector, so there is a new record on the intermediate table, but
-		// this intermediate table holds a field, which is responsible for the foreign_selector, so
-		// we have to set this field to the uid we get - or if none, to a new uid
-		if ($config['foreign_selector'] && $foreignUid) {
-			$selConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($config, $config['foreign_selector']);
-			// For a selector of type group/db, prepend the tablename (<tablename>_<uid>):
-			$record[$config['foreign_selector']] = $selConfig['type'] != 'groupdb' ? '' : $selConfig['table'] . '_';
-			$record[$config['foreign_selector']] .= $foreignUid;
-			if ($selConfig['table'] === 'sys_file') {
-				$fileRecord = $inlineRelatedRecordResolver->getRecord($selConfig['table'], $foreignUid);
-				if ($fileRecord !== FALSE && !$this->checkInlineFileTypeAccessForField($selConfig, $fileRecord)) {
-					return $this->getErrorMessageForAJAX('File extension ' . $fileRecord['extension'] . ' is not allowed here!');
-				}
-			}
-		}
-		// The HTML-object-id's prefix of the dynamically created record
-		$objectName = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
-		$objectPrefix = $objectName . '-' . $current['table'];
-		$objectId = $objectPrefix . '-' . $record['uid'];
-
-		$formDataInput = [];
-		$formDataInput['vanillaUid'] = (int)$parent['uid'];
-		$formDataInput['command'] = 'edit';
-		$formDataInput['tableName'] = $parent['table'];
-		$formDataInput['inlineFirstPid'] = $inlineFirstPid;
-		$formDataInput['inlineStructure'] = $this->inlineStackProcessor->getStructure();
-
-		if (!MathUtility::canBeInterpretedAsInteger($parent['uid']) && (int)$formDataInput['inlineFirstPid'] > 0) {
-			$formDataInput['command'] = 'new';
-			$formDataInput['vanillaUid'] = (int)$formDataInput['inlineFirstPid'];
-		}
-
-		/** @var TcaDatabaseRecord $formDataGroup */
-		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-		/** @var FormDataCompiler $formDataCompiler */
-		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-
-		$formData = $formDataCompiler->compile($formDataInput);
-		$formData['renderType'] = 'inlineRecordContainer';
-		$formData['inlineRelatedRecordToRender'] = $record;
-		$formData['inlineRelatedRecordConfig'] = $config;
-
-		try {
-			// Access to this record may be denied, create an according error message in this case
-			$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-			$childArray = $nodeFactory->create($formData)->render();
-		} catch (AccessDeniedException $e) {
-			return $this->getErrorMessageForAJAX('Access denied');
-		}
-
-		$jsonArray = [
-			'data' => '',
-			'stylesheetFiles' => [],
-			'scriptCall' => [],
-		];
-		if (!$current['uid']) {
-			$jsonArray['scriptCall'][] = 'inline.domAddNewRecord(\'bottom\',' . GeneralUtility::quoteJSvalue($objectName . '_records') . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',json.data);';
-			$jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($record['uid']) . ',null,' . GeneralUtility::quoteJSvalue($foreignUid) . ');';
-		} else {
-			$jsonArray['scriptCall'][] = 'inline.domAddNewRecord(\'after\',' . GeneralUtility::quoteJSvalue($domObjectId . '_div') . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',json.data);';
-			$jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($record['uid']) . ',' . GeneralUtility::quoteJSvalue($current['uid']) . ',' . GeneralUtility::quoteJSvalue($foreignUid) . ');';
-		}
-		$jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childArray);
-		if ($config['appearance']['useSortable']) {
-			$inlineObjectName = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
-			$jsonArray['scriptCall'][] = 'inline.createDragAndDropSorting(' . GeneralUtility::quoteJSvalue($inlineObjectName . '_records') . ');';
-		}
-		if (!$collapseAll && $expandSingle) {
-			$jsonArray['scriptCall'][] = 'inline.collapseAllRecords(' . GeneralUtility::quoteJSvalue($objectId) . ',' . GeneralUtility::quoteJSvalue($objectPrefix) . ',' . GeneralUtility::quoteJSvalue($record['uid']) . ');';
-		}
-		// Fade out and fade in the new record in the browser view to catch the user's eye
-		$jsonArray['scriptCall'][] = 'inline.fadeOutFadeIn(' . GeneralUtility::quoteJSvalue($objectId . '_div') . ');';
-
-		return $jsonArray;
-	}
-
-	/**
-	 * Handle AJAX calls to localize all records of a parent, localize a single record or to synchronize with the original language parent.
-	 *
-	 * @param string $type Defines the type 'localize' or 'synchronize' (string) or a single uid to be localized (int)
-	 * @param int $inlineFirstPid Inline first pid
-	 * @return array An array to be used for JSON
-	 */
-	protected function renderInlineSynchronizeLocalizeRecords($type, $inlineFirstPid) {
-		$jsonArray = FALSE;
-		if (GeneralUtility::inList('localize,synchronize', $type) || MathUtility::canBeInterpretedAsInteger($type)) {
-			$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-			// The parent level:
-			$parent = $this->inlineStackProcessor->getStructureLevel(-1);
-			$current = $this->inlineStackProcessor->getUnstableStructure();
-			$parentRecord = $inlineRelatedRecordResolver->getRecord($parent['table'], $parent['uid']);
-
-			$cmd = array();
-			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
-			/** @var $tce DataHandler */
-			$tce = GeneralUtility::makeInstance(DataHandler::class);
-			$tce->stripslashes_values = FALSE;
-			$tce->start(array(), $cmd);
-			$tce->process_cmdmap();
-
-			$oldItemList = $parentRecord[$parent['field']];
-			$newItemList = $tce->registerDBList[$parent['table']][$parent['uid']][$parent['field']];
-
-			$jsonArray = array(
-				'data' => '',
-				'stylesheetFiles' => [],
-				'scriptCall' => [],
-			);
-			$nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($inlineFirstPid);
-			$nameObjectForeignTable = $nameObject . '-' . $current['table'];
-			// Get the name of the field pointing to the original record:
-			$transOrigPointerField = $GLOBALS['TCA'][$current['table']]['ctrl']['transOrigPointerField'];
-			// Get the name of the field used as foreign selector (if any):
-			$foreignSelector = isset($parent['config']['foreign_selector']) && $parent['config']['foreign_selector'] ? $parent['config']['foreign_selector'] : FALSE;
-			// Convert lists to array with uids of child records:
-			$oldItems = FormEngineUtility::getInlineRelatedRecordsUidArray($oldItemList);
-			$newItems = FormEngineUtility::getInlineRelatedRecordsUidArray($newItemList);
-			// Determine the items that were localized or localized:
-			$removedItems = array_diff($oldItems, $newItems);
-			$localizedItems = array_diff($newItems, $oldItems);
-			// Set the items that should be removed in the forms view:
-			foreach ($removedItems as $item) {
-				$jsonArray['scriptCall'][] = 'inline.deleteRecord(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable . '-' . $item) . ', {forceDirectRemoval: true});';
-			}
-			foreach ($localizedItems as $item) {
-				$row = $inlineRelatedRecordResolver->getRecord($current['table'], $item);
-				$selectedValue = $foreignSelector ? GeneralUtility::quoteJSvalue($row[$foreignSelector]) : 'null';
-
-				$formDataInput = [];
-				$formDataInput['vanillaUid'] = (int)$parent['uid'];
-				$formDataInput['command'] = 'edit';
-				$formDataInput['tableName'] = $parent['table'];
-				$formDataInput['inlineFirstPid'] = $inlineFirstPid;
-				$formDataInput['inlineStructure'] = $this->inlineStackProcessor->getStructure();
-
-				/** @var TcaDatabaseRecord $formDataGroup */
-				$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-				/** @var FormDataCompiler $formDataCompiler */
-				$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-
-				$formData = $formDataCompiler->compile($formDataInput);
-				$formData['renderType'] = 'inlineRecordContainer';
-				$formData['inlineRelatedRecordToRender'] = $row;
-				$formData['inlineRelatedRecordConfig'] = $parent['config'];
-
-				try {
-					// Access to this record may be denied, create an according error message in this case
-					$nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
-					$childArray = $nodeFactory->create($formData)->render();
-				} catch (AccessDeniedException $e) {
-					return $this->getErrorMessageForAJAX('Access denied');
-				}
-
-				$jsonArray['html'] .= $childArray['html'];
-				$jsonArray = [
-					'data' => '',
-					'stylesheetFiles' => [],
-					'scriptCall' => [],
-				];
-				$jsonArray = $this->mergeChildResultIntoJsonResult($jsonArray, $childArray);
-				$jsonArray['scriptCall'][] = 'inline.memorizeAddRecord(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', ' . GeneralUtility::quoteJSvalue($item) . ', null, ' . $selectedValue . ');';
-				// Remove possible virtual records in the form which showed that a child records could be localized:
-				if (isset($row[$transOrigPointerField]) && $row[$transOrigPointerField]) {
-					$jsonArray['scriptCall'][] = 'inline.fadeAndRemove(' . GeneralUtility::quoteJSvalue($nameObjectForeignTable . '-' . $row[$transOrigPointerField] . '_div') . ');';
-				}
-			}
-			if (!empty($jsonArray['data'])) {
-				array_unshift($jsonArray['scriptCall'], 'inline.domAddNewRecord(\'bottom\', ' . GeneralUtility::quoteJSvalue($nameObject . '_records') . ', ' . GeneralUtility::quoteJSvalue($nameObjectForeignTable) . ', json.data);');
-			}
-		}
-		return $jsonArray;
+	protected function compileCombinationChild(array $intermediate, array $parentConfig) {
+		// foreign_selector on intermediate is probably type=select, so data provider of this table resolved that to the uid already
+		$intermediateUid = $intermediate['databaseRow'][$parentConfig['foreign_selector']][0];
+		$combinationChild = $this->compileChild($intermediate, $parentConfig['foreign_selector'], $intermediateUid);
+		return $combinationChild;
 	}
 
 	/**
@@ -494,49 +619,12 @@ class FormInlineAjaxController {
 	}
 
 	/**
-	 * Save the expanded/collapsed state of a child record in the BE_USER->uc.
-	 *
-	 * @param string $expand Whether this record is expanded.
-	 * @param string $collapse Whether this record is collapsed.
-	 * @return void
-	 */
-	protected function setInlineExpandedCollapsedState($expand, $collapse) {
-		$backendUser = $this->getBackendUserAuthentication();
-		// The current table - for this table we should add/import records
-		$currentTable = $this->inlineStackProcessor->getUnstableStructure();
-		$currentTable = $currentTable['table'];
-		// The top parent table - this table embeds the current table
-		$top = $this->inlineStackProcessor->getStructureLevel(0);
-		$topTable = $top['table'];
-		$topUid = $top['uid'];
-		$inlineView = $this->getInlineExpandCollapseStateArray();
-		// Only do some action if the top record and the current record were saved before
-		if (MathUtility::canBeInterpretedAsInteger($topUid)) {
-			$expandUids = GeneralUtility::trimExplode(',', $expand);
-			$collapseUids = GeneralUtility::trimExplode(',', $collapse);
-			// Set records to be expanded
-			foreach ($expandUids as $uid) {
-				$inlineView[$topTable][$topUid][$currentTable][] = $uid;
-			}
-			// Set records to be collapsed
-			foreach ($collapseUids as $uid) {
-				$inlineView[$topTable][$topUid][$currentTable] = $this->removeFromArray($uid, $inlineView[$topTable][$topUid][$currentTable]);
-			}
-			// Save states back to database
-			if (is_array($inlineView[$topTable][$topUid][$currentTable])) {
-				$inlineView[$topTable][$topUid][$currentTable] = array_unique($inlineView[$topTable][$topUid][$currentTable]);
-				$backendUser->uc['inlineView'] = serialize($inlineView);
-				$backendUser->writeUC();
-			}
-		}
-	}
-
-	/**
 	 * Checks if a record selector may select a certain file type
 	 *
 	 * @param array $selectorConfiguration
 	 * @param array $fileRecord
 	 * @return bool
+	 * @todo: check this ...
 	 */
 	protected function checkInlineFileTypeAccessForField(array $selectorConfiguration, array $fileRecord) {
 		if (!empty($selectorConfiguration['PA']['fieldConf']['config']['appearance']['elementBrowserAllowed'])) {
@@ -613,6 +701,23 @@ class FormInlineAjaxController {
 				'alert("' . $message . '");'
 			],
 		];
+	}
+
+	/**
+	 * Get inlineFirstPid from a given objectId string
+	 *
+	 * @param string $domObjectId The id attribute of an element
+	 * @return int|NULL Pid or null
+	 */
+	protected function getInlineFirstPidFromDomObjectId($domObjectId) {
+		// Substitute FlexForm addition and make parsing a bit easier
+		$domObjectId = str_replace('---', ':', $domObjectId);
+		// The starting pattern of an object identifier (e.g. "data-<firstPidValue>-<anything>)
+		$pattern = '/^data' . '-' . '(.+?)' . '-' . '(.+)$/';
+		if (preg_match($pattern, $domObjectId, $match)) {
+			return $match[1];
+		}
+		return NULL;
 	}
 
 	/**

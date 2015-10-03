@@ -20,8 +20,6 @@ use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 
 /**
  * Extended by other provider that fetch records from database
- *
- * @todo: This abstract is rather semi useful and may get removed later again
  */
 abstract class AbstractDatabaseRecordProvider {
 

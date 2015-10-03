@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  * Code related to inline elements need to know their nesting level. This class takes
  * care of the according handling and can return field prefixes to be used in DOM.
+ *
+ * @internal: This class may change any time or vanish altogether
  */
 class InlineStackProcessor {
 
@@ -51,10 +53,9 @@ class InlineStackProcessor {
 	 * - 'unstable': Containing partly filled data (e.g. only table and possibly field)
 	 *
 	 * @param string $domObjectId The DOM object-id
-	 * @param bool $loadConfig Load the TCA configuration for that level (default: TRUE)
 	 * @return void
 	 */
-	public function initializeByParsingDomObjectIdString($domObjectId, $loadConfig = TRUE) {
+	public function initializeByParsingDomObjectIdString($domObjectId) {
 		$unstable = array();
 		$vector = array('table', 'uid', 'field');
 
@@ -70,16 +71,16 @@ class InlineStackProcessor {
 			for ($i = 0; $i < $partsCnt; $i++) {
 				if ($i > 0 && $i % 3 == 0) {
 					// Load the TCA configuration of the table field and store it in the stack
-					if ($loadConfig) {
-						$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
-						// Fetch TSconfig:
-						$TSconfig = FormEngineUtility::getTSconfigForTableRow($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $inlineFirstPid), $unstable['field']);
-						// Override TCA field config by TSconfig:
-						if (!$TSconfig['disabled']) {
-							$unstable['config'] = FormEngineUtility::overrideFieldConf($unstable['config'], $TSconfig);
-						}
-						$unstable['localizationMode'] = BackendUtility::getInlineLocalizationMode($unstable['table'], $unstable['config']);
+					// @todo: This TCA loading here must fall - config sub-array shouldn't exist at all!
+					$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
+					// Fetch TSconfig:
+					// @todo: aaargs ;)
+					$TSconfig = FormEngineUtility::getTSconfigForTableRow($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $inlineFirstPid), $unstable['field']);
+					// Override TCA field config by TSconfig:
+					if (!$TSconfig['disabled']) {
+						$unstable['config'] = FormEngineUtility::overrideFieldConf($unstable['config'], $TSconfig);
 					}
+					$unstable['localizationMode'] = BackendUtility::getInlineLocalizationMode($unstable['table'], $unstable['config']);
 
 					// Extract FlexForm from field part (if any)
 					if (strpos($unstable['field'], ':') !== FALSE) {

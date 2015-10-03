@@ -464,14 +464,24 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexFetch::class,
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
 						),
 					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
+						),
+					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInputPlaceholders::class => array(
 						'depends' => array(
-							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class,
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
 						),
 					),
 					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class => array(
@@ -507,9 +517,19 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
 						),
 					),
 				),
@@ -558,9 +578,19 @@ return array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaCheckboxItems::class,
 						),
 					),
-					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class => array(
 						'depends' => array(
 							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineExpandCollapseState::class,
+						),
+					),
+					\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInline::class => array(
+						'depends' => array(
+							\TYPO3\CMS\Backend\Form\FormDataProvider\TcaInlineConfiguration::class,
 						),
 					),
 				),

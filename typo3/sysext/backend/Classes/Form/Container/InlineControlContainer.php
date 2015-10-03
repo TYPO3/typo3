@@ -30,8 +30,6 @@ use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
-use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 
 /**
  * Inline element entry container.
@@ -95,27 +93,13 @@ class InlineControlContainer extends AbstractContainer {
 		$parameterArray = $this->data['parameterArray'];
 
 		$resultArray = $this->initializeResultArray();
-		$html = '';
 
-		// An inline field must have a foreign_table, if not, stop all further inline actions for this field
-		if (
-			!$parameterArray['fieldConf']['config']['foreign_table']
-			|| !is_array($GLOBALS['TCA'][$parameterArray['fieldConf']['config']['foreign_table']])
-		) {
-			return $resultArray;
-		}
-
-		$config = FormEngineUtility::mergeInlineConfiguration($parameterArray['fieldConf']['config']);
+		$config = $parameterArray['fieldConf']['config'];
 		$foreign_table = $config['foreign_table'];
 
 		$language = 0;
 		if (BackendUtility::isTableLocalizable($table)) {
 			$language = (int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
-		}
-		$minItems = MathUtility::forceIntegerInRange($config['minitems'], 0);
-		$maxItems = MathUtility::forceIntegerInRange($config['maxitems'], 0);
-		if (!$maxItems) {
-			$maxItems = 100000;
 		}
 
 		// Add the current inline job to the structure stack
@@ -128,7 +112,7 @@ class InlineControlContainer extends AbstractContainer {
 		);
 		// Extract FlexForm parts (if any) from element name, e.g. array('vDEF', 'lDEF', 'FlexField', 'vDEF')
 		if (!empty($parameterArray['itemFormElName'])) {
-			$flexFormParts = FormEngineUtility::extractFlexFormParts($parameterArray['itemFormElName']);
+			$flexFormParts = $this->extractFlexFormParts($parameterArray['itemFormElName']);
 			if ($flexFormParts !== NULL) {
 				$newStructureItem['flexform'] = $flexFormParts;
 			}
@@ -140,15 +124,20 @@ class InlineControlContainer extends AbstractContainer {
 		// e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
 		$nameObject = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 
-		// Get the records related to this inline record
-		/** @var InlineRelatedRecordResolver $inlineRelatedRecordResolver */
-		$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-		$relatedRecords = $inlineRelatedRecordResolver->getRelatedRecords($table, $field, $row, $parameterArray, $config, $this->data['inlineFirstPid']);
-
-		// Set the first and last record to the config array
-		$relatedRecordsUids = array_keys($relatedRecords['records']);
-		$config['inline']['first'] = reset($relatedRecordsUids);
-		$config['inline']['last'] = end($relatedRecordsUids);
+		$config['inline']['first'] = FALSE;
+		// @todo: This initialization shouldn't be required data provider should take care this is set?
+		if (!is_array($this->data['parameterArray']['fieldConf']['children'])) {
+			$this->data['parameterArray']['fieldConf']['children'] = array();
+		}
+		$firstChild = reset($this->data['parameterArray']['fieldConf']['children']);
+		if (isset($firstChild['databaseRow']['uid'])) {
+			$config['inline']['first'] = $firstChild['databaseRow']['uid'];
+		}
+		$config['inline']['last'] = FALSE;
+		$lastChild = end($this->data['parameterArray']['fieldConf']['children']);
+		if (isset($lastChild['databaseRow']['uid'])) {
+			$config['inline']['last'] = $lastChild['databaseRow']['uid'];
+		}
 
 		$top = $inlineStackProcessor->getStructureLevel(0);
 
@@ -157,8 +146,8 @@ class InlineControlContainer extends AbstractContainer {
 			'md5' => md5($nameObject)
 		);
 		$this->inlineData['config'][$nameObject . '-' . $foreign_table] = array(
-			'min' => $minItems,
-			'max' => $maxItems,
+			'min' => $config['minitems'],
+			'max' => $config['maxitems'],
 			'sortable' => $config['appearance']['useSortable'],
 			'top' => array(
 				'table' => $top['table'],
@@ -179,7 +168,7 @@ class InlineControlContainer extends AbstractContainer {
 			// If uniqueness *and* selector are set, they should point to the same field - so, get the configuration of one:
 			$selConfig = FormEngineUtility::getInlinePossibleRecordsSelectorConfig($config, $config['foreign_unique']);
 			// Get the used unique ids:
-			$uniqueIds = $this->getUniqueIds($relatedRecords['records'], $config, $selConfig['type'] == 'groupdb');
+			$uniqueIds = $this->getUniqueIds($this->data['parameterArray']['fieldConf']['children'], $config, $selConfig['type'] == 'groupdb');
 			$possibleRecords = $this->getPossibleRecords($table, $field, $row, $config, 'foreign_unique');
 			$uniqueMax = $config['appearance']['useCombination'] || $possibleRecords === FALSE ? -1 : count($possibleRecords);
 			$this->inlineData['unique'][$nameObject . '-' . $foreign_table] = array(
@@ -210,8 +199,14 @@ class InlineControlContainer extends AbstractContainer {
 			}
 		}
 
+		$numberOfFullChildren = 0;
+		foreach ($this->data['parameterArray']['fieldConf']['children'] as $child) {
+			if (!$child['inlineIsDefaultLanguage']) {
+				$numberOfFullChildren ++;
+			}
+		}
 		// Define how to show the "Create new record" link - if there are more than maxitems, hide it
-		if ($relatedRecords['count'] >= $maxItems || $uniqueMax > 0 && $relatedRecords['count'] >= $uniqueMax) {
+		if ($numberOfFullChildren >= $config['maxitems'] || $uniqueMax > 0 && $numberOfFullChildren >= $uniqueMax) {
 			$config['inline']['inlineNewButtonStyle'] = 'display: none;';
 			$config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
 		}
@@ -220,11 +215,12 @@ class InlineControlContainer extends AbstractContainer {
 		$levelLinks = $this->getLevelInteractionLink('newRecord', $nameObject . '-' . $foreign_table, $config);
 
 		// Wrap all inline fields of a record with a <div> (like a container)
-		$html .= '<div class="form-group" id="' . $nameObject . '">';
+		$html = '<div class="form-group" id="' . $nameObject . '">';
 		// Add the level links before all child records:
 		if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'top') {
 			$html .= '<div class="form-group t3js-formengine-validation-marker">' . $levelLinks . $localizationLinks . '</div>';
 		}
+
 		// If it's required to select from possible child records (reusable children), add a selector box
 		if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== FALSE) {
 			// If not already set by the foreign_unique, set the possibleRecords here and the uniqueIds to an empty array
@@ -235,34 +231,31 @@ class InlineControlContainer extends AbstractContainer {
 			$selectorBox = $this->renderPossibleRecordsSelector($possibleRecords, $config, $uniqueIds);
 			$html .= $selectorBox . $localizationLinks;
 		}
+
 		$title = $languageService->sL($parameterArray['fieldConf']['label']);
 		$html .= '<div class="panel-group panel-hover" data-title="' . htmlspecialchars($title) . '" id="' . $nameObject . '_records">';
 
-		$relationList = array();
-		if (!empty($relatedRecords['records'])) {
-			foreach ($relatedRecords['records'] as $rec) {
-				$options = $this->data;
-				$options['inlineRelatedRecordToRender'] = $rec;
-				$options['inlineRelatedRecordConfig'] = $config;
-				$options['inlineData'] = $this->inlineData;
-				$options['inlineStructure'] = $inlineStackProcessor->getStructure();
-				$options['renderType'] = 'inlineRecordContainer';
-				try {
-					// This container may raise an access denied exception, to not kill further processing,
-					// just a simple "empty" return is created here to ignore this field.
-					$childArray = $this->nodeFactory->create($options)->render();
-				} catch (AccessDeniedException $e) {
-					$childArray = $this->initializeResultArray();
-				}
-				$html .= $childArray['html'];
-				$childArray['html'] = '';
-				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
-				if (!isset($rec['__virtual']) || !$rec['__virtual']) {
-					$relationList[] = $rec['uid'];
-				}
+		$sortableRecordUids = [];
+		foreach ($this->data['parameterArray']['fieldConf']['children'] as $options) {
+			$options['inlineParentUid'] = $row['uid'];
+			$options['inlineParentConfig'] = $config;
+			$options['inlineData'] = $this->inlineData;
+			$options['inlineStructure'] = $inlineStackProcessor->getStructure();
+			$options['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
+			$options['renderType'] = 'inlineRecordContainer';
+			$childResult = $this->nodeFactory->create($options)->render();
+			$html .= $childResult['html'];
+			$childArray['html'] = '';
+			$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childResult);
+			if (!$options['inlineIsDefaultLanguage']) {
+				// Don't add record to list of "valid" uids if it is only the default
+				// language record of a not yet localized child
+				$sortableRecordUids[] = $options['databaseRow']['uid'];
 			}
 		}
+
 		$html .= '</div>';
+
 		// Add the level links after all child records:
 		if ($config['appearance']['levelLinksPosition'] ===  'both' || $config['appearance']['levelLinksPosition'] === 'bottom') {
 			$html .= $levelLinks . $localizationLinks;
@@ -283,11 +276,13 @@ class InlineControlContainer extends AbstractContainer {
 			$html .= '</div>';
 		}
 		// Add Drag&Drop functions for sorting to FormEngine::$additionalJS_post
-		if (count($relationList) > 1 && $config['appearance']['useSortable']) {
+		if (count($sortableRecordUids) > 1 && $config['appearance']['useSortable']) {
 			$resultArray['additionalJavaScriptPost'][] = 'inline.createDragAndDropSorting("' . $nameObject . '_records' . '");';
 		}
 		// Publish the uids of the child records in the given order to the browser
-		$html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $relationList) . '" ' . $this->getValidationDataAsDataAttribute(array('type' => 'inline', 'minitems' => $minItems, 'maxitems' => $maxItems)) . ' class="inlineRecord" />';
+		$html .= '<input type="hidden" name="' . $nameForm . '" value="' . implode(',', $sortableRecordUids) . '" '
+			. $this->getValidationDataAsDataAttribute(array('type' => 'inline', 'minitems' => $config['minitems'], 'maxitems' => $config['maxitems']))
+			. ' class="inlineRecord" />';
 		// Close the wrap for all inline fields (container)
 		$html .= '</div>';
 
@@ -298,18 +293,21 @@ class InlineControlContainer extends AbstractContainer {
 	/**
 	 * Gets the uids of a select/selector that should be unique and have already been used.
 	 *
-	 * @param array $records All inline records on this level
+	 * @param array $children All inline records on this level
 	 * @param array $conf The TCA field configuration of the inline field to be rendered
 	 * @param bool $splitValue For usage with group/db, values come like "tx_table_123|Title%20abc", but we need "tx_table" and "123
 	 * @return array The uids, that have been used already and should be used unique
 	 */
-	protected function getUniqueIds($records, $conf = array(), $splitValue = FALSE) {
+	protected function getUniqueIds($children, $conf = array(), $splitValue = FALSE) {
 		$uniqueIds = array();
-		if (isset($conf['foreign_unique']) && $conf['foreign_unique'] && !empty($records)) {
-			foreach ($records as $rec) {
+		if (isset($conf['foreign_unique']) && $conf['foreign_unique'] && !empty($children)) {
+			foreach ($children as $child) {
 				// Skip virtual records (e.g. shown in localization mode):
-				if (!isset($rec['__virtual']) || !$rec['__virtual']) {
-					$value = $rec[$conf['foreign_unique']];
+				if (!$child['inlineIsDefaultLanguage']) {
+					$value = $child[$conf['foreign_unique']];
+					if (is_array($value)) {
+						$value = $value['0'];
+					}
 					// Split the value and extract the table and uid:
 					if ($splitValue) {
 						$valueParts = GeneralUtility::trimExplode('|', $value);
@@ -319,7 +317,7 @@ class InlineControlContainer extends AbstractContainer {
 							'table' => implode('_', $itemParts)
 						);
 					}
-					$uniqueIds[$rec['uid']] = $value;
+					$uniqueIds[$child['uid']] = $value;
 				}
 			}
 		}
@@ -669,6 +667,26 @@ class InlineControlContainer extends AbstractContainer {
 			$item = '<div class="input-group form-group t3js-formengine-validation-marker ' . $this->inlineData['config'][$nameObject]['md5'] . '">' . $item . '</div>';
 		}
 		return $item;
+	}
+
+	/**
+	 * Extracts FlexForm parts of a form element name like
+	 * data[table][uid][field][sDEF][lDEF][FlexForm][vDEF]
+	 * Helper method used in inline
+	 *
+	 * @param string $formElementName The form element name
+	 * @return array|NULL
+	 */
+	protected function extractFlexFormParts($formElementName) {
+		$flexFormParts = NULL;
+		$matches = array();
+		if (preg_match('#^data(?:\[[^]]+\]){3}(\[data\](?:\[[^]]+\]){4,})$#', $formElementName, $matches)) {
+			$flexFormParts = GeneralUtility::trimExplode(
+				'][',
+				trim($matches[1], '[]')
+			);
+		}
+		return $flexFormParts;
 	}
 
 	/**

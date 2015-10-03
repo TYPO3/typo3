@@ -107,6 +107,9 @@ class FlexFormElementContainer extends AbstractContainer {
 				$originalFieldName = $parameterArray['itemFormElName'];
 				$fakeParameterArray['itemFormElName'] = $parameterArray['itemFormElName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][vDEF]';
 				if ($fakeParameterArray['itemFormElName'] !== $originalFieldName) {
+					// If calculated itemFormElName is different from originalFieldName
+					// change the originalFieldName in TBE_EDITOR_fieldChanged. This is
+					// especially relevant for wizards writing their content back to hidden fields
 					if (!empty($fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
 						$fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
 					}

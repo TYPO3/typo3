@@ -72,6 +72,8 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface {
 		$userPermissionOnPage = Permission::NOTHING;
 		if ($result['command'] === 'new') {
 			// A new record is created. Access rights of parent record are important here
+			// @todo: In case of new inline child, parentPageRow should probably be the
+			// @todo: "inlineFirstPid" page - Maybe effectivePid and parentPageRow should be calculated differently then?
 			if (is_array($result['parentPageRow'])) {
 				// Record is added below an existing page
 				$userPermissionOnPage = $backendUser->calcPerms($result['parentPageRow']);

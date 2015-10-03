@@ -51,6 +51,8 @@ class DatabaseRowInitializeNew implements FormDataProviderInterface {
 		}
 
 		// Apply defaults from pageTsConfig
+		// @todo: For inline records it should be possible to set the pid here via TCAdefaults, but
+		// @todo: those values would be overwritten by 'pid' setter later below again.
 		if (isset($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot])
 			&& is_array($result['pageTsConfig']['TCAdefaults.'][$tableNameWithDot])
 		) {

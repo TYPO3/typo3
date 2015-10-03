@@ -134,6 +134,7 @@ class TcaInputPlaceholders extends AbstractItemProvider implements FormDataProvi
 			'command' => 'edit',
 			'vanillaUid' => (int)$uid,
 			'tableName' => $tableName,
+			'inlineCompileExistingChildren' => FALSE,
 		];
 		/** @var TcaInputPlaceholderRecord $formDataGroup */
 		$formDataGroup = GeneralUtility::makeInstance(TcaInputPlaceholderRecord::class);

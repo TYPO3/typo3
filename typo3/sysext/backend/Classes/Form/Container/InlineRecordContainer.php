@@ -16,9 +16,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\Element\InlineElementHookInterface;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedContentEditException;
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
-use TYPO3\CMS\Backend\Form\InlineRelatedRecordResolver;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Form\Utility\FormEngineUtility;
@@ -34,7 +31,6 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -100,10 +96,9 @@ class InlineRecordContainer extends AbstractContainer {
 
 		$this->initHookObjects();
 
-		$row = $this->data['databaseRow'];
-		$parentUid = $row['uid'];
-		$record = $this->data['inlineRelatedRecordToRender'];
-		$config = $this->data['inlineRelatedRecordConfig'];
+		$parentUid = $this->data['inlineParentUid'];
+		$record = $this->data['databaseRow'];
+		$config = $this->data['inlineParentConfig'];
 
 		$foreign_table = $config['foreign_table'];
 		$foreign_selector = $config['foreign_selector'];
@@ -119,8 +114,8 @@ class InlineRecordContainer extends AbstractContainer {
 
 		// Set this variable if we handle a brand new unsaved record:
 		$isNewRecord = !MathUtility::canBeInterpretedAsInteger($record['uid']);
-		// Set this variable if the record is virtual and only show with header and not editable fields:
-		$isVirtualRecord = isset($record['__virtual']) && $record['__virtual'];
+		// Set this variable if the only the default language record and inline child has not been localized yet
+		$isDefaultLanguageRecord = $this->data['inlineIsDefaultLanguage'];
 		// If there is a selector field, normalize it:
 		if ($foreign_selector) {
 			$valueToNormalize = $record[$foreign_selector];
@@ -130,18 +125,13 @@ class InlineRecordContainer extends AbstractContainer {
 			}
 			$record[$foreign_selector] = $this->normalizeUid($valueToNormalize);
 		}
-		if (!$this->checkAccess(($isNewRecord ? 'new' : 'edit'), $foreign_table, $record['uid'])) {
-			// This is caught by InlineControlContainer or FormEngine, they need to handle this case differently
-			// @todo: This is actually not the correct exception, but this code will vanish if inline data stuff is within provider
-			throw new AccessDeniedContentEditException('Access denied', 1437081986);
-		}
 		// Get the current naming scheme for DOM name/id attributes:
 		$appendFormFieldNames = '[' . $foreign_table . '][' . $record['uid'] . ']';
 		$objectId = $domObjectId . '-' . $foreign_table . '-' . $record['uid'];
 		$class = '';
 		$html = '';
 		$combinationHtml = '';
-		if (!$isVirtualRecord) {
+		if (!$isDefaultLanguageRecord) {
 			// Get configuration:
 			$collapseAll = isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll'];
 			$expandAll = isset($config['appearance']['collapseAll']) && !$config['appearance']['collapseAll'];
@@ -154,12 +144,17 @@ class InlineRecordContainer extends AbstractContainer {
 			}
 			// Render full content ONLY IF this is an AJAX request, a new record, the record is not collapsed or AJAX loading is explicitly turned off
 			if ($isNewRecord || $isExpanded || !$ajaxLoad) {
-				$combinationChildArray = $this->renderCombinationTable($record, $appendFormFieldNames, $config);
-				$combinationHtml = $combinationChildArray['html'];
-				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $combinationChildArray);
 
-				$overruleTypesArray = isset($config['foreign_types']) ? $config['foreign_types'] : array();
-				$childArray = $this->renderRecord($foreign_table, $record, $overruleTypesArray);
+				$combinationHtml = '';
+				if (isset($this->data['combinationChild'])) {
+					$combinationChild = $this->renderCombinationChild($this->data, $appendFormFieldNames);
+					$combinationHtml = $combinationChild['html'];
+					$combinationChild['html'] = '';
+					$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $combinationChild);
+				}
+
+				$childArray = $this->renderChild($this->data);
+
 				$html = $childArray['html'];
 				$childArray['html'] = '';
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
@@ -193,7 +188,7 @@ class InlineRecordContainer extends AbstractContainer {
 			$html = $html . $combinationHtml;
 		} else {
 			// Set the record container with data for output
-			if ($isVirtualRecord) {
+			if ($isDefaultLanguageRecord) {
 				$class .= ' t3-form-field-container-inline-placeHolder';
 			}
 			if (isset($record['hidden']) && (int)$record['hidden']) {
@@ -207,7 +202,7 @@ class InlineRecordContainer extends AbstractContainer {
 							<div class="form-irre-header-cell form-irre-header-icon">
 								<span class="caret"></span>
 							</div>
-							' . $this->renderForeignRecordHeader($parentUid, $foreign_table, $record, $config, $isVirtualRecord) . '
+							' . $this->renderForeignRecordHeader($parentUid, $foreign_table, $this->data, $config, $isDefaultLanguageRecord) . '
 						</div>
 					</div>
 					<div class="panel-collapse" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . $html . $combinationHtml . '</div>
@@ -219,120 +214,72 @@ class InlineRecordContainer extends AbstractContainer {
 	}
 
 	/**
-	 * Creates main container for foreign record and renders it
+	 * Render inner child
 	 *
-	 * @param string $table The table name
-	 * @param array $row The record to be rendered
-	 * @param array $overruleTypesArray Overrule TCA [types] array, e.g to override [showitem] configuration of a particular type
-	 * @return string The rendered form
+	 * @param array $options
+	 * @return array Result array
 	 */
-	protected function renderRecord($table, array $row, array $overruleTypesArray = array()) {
-		$domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
-
-		$options = $this->data['tabAndInlineStack'];
-		$options['tabAndInlineStack'][] = array(
+	protected function renderChild(array $options) {
+		$domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($options['inlineFirstPid']);
+		$options['tabAndInlineStack'][] = [
 			'inline',
-			$domObjectId . '-' . $table . '-' . $row['uid'],
-		);
-
-		$command = 'edit';
-		$vanillaUid = (int)$row['uid'];
-
-		// If dealing with a new record, take pid as vanillaUid and set command to new
-		if (!MathUtility::canBeInterpretedAsInteger($row['uid'])) {
-			$command = 'new';
-			$vanillaUid = (int)$row['pid'];
-		}
-
-		/** @var TcaDatabaseRecord $formDataGroup */
-		$formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
-		/** @var FormDataCompiler $formDataCompiler */
-		$formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
-		$formDataCompilerInput = [
-			'command' => $command,
-			'vanillaUid' => $vanillaUid,
-			'tableName' => $table,
-			'inlineData' => $this->inlineData,
-			'tabAndInlineStack' => $options['tabAndInlineStack'],
-			'overruleTypesArray' => $overruleTypesArray,
-			'inlineStructure' => $this->data['inlineStructure'],
+			$domObjectId . '-' . $options['tableName'] . '-' . $options['databaseRow']['uid'],
 		];
-		$options = $formDataCompiler->compile($formDataCompilerInput);
+		// @todo: ugly construct ...
+		$options['inlineData'] = $this->inlineData;
 		$options['renderType'] = 'fullRecordContainer';
-
-		// @todo: This hack merges data from already prepared row over fresh row again.
-		// @todo: This really must fall ...
-		foreach ($row as $field => $value) {
-			if ($command === 'new' && is_string($value) && $value !== '' && array_key_exists($field, $options['databaseRow'])) {
-				$options['databaseRow'][$field] = $value;
-			}
-		}
-
 		return $this->nodeFactory->create($options)->render();
 	}
 
 	/**
+	 * Render child child
+	 *
 	 * Render a table with FormEngine, that occurs on an intermediate table but should be editable directly,
 	 * so two tables are combined (the intermediate table with attributes and the sub-embedded table).
 	 * -> This is a direct embedding over two levels!
 	 *
-	 * @param array $record The table record of the child/embedded table
+	 * @param array $options
 	 * @param string $appendFormFieldNames The [<table>][<uid>] of the parent record (the intermediate table)
-	 * @param array $config content of $PA['fieldConf']['config']
-	 * @return array As defined in initializeResultArray() of AbstractNode
-	 * @todo: Maybe create another container from this?
+	 * @return array Result array
 	 */
-	protected function renderCombinationTable($record, $appendFormFieldNames, $config = array()) {
+	protected function renderCombinationChild(array $options, $appendFormFieldNames) {
+		$childData = $options['combinationChild'];
+		$parentConfig = $options['inlineParentConfig'];
+
 		$resultArray = $this->initializeResultArray();
 
-		$foreign_table = $config['foreign_table'];
-		$foreign_selector = $config['foreign_selector'];
-
-		if ($foreign_selector && $config['appearance']['useCombination']) {
-			$comboConfig = $GLOBALS['TCA'][$foreign_table]['columns'][$foreign_selector]['config'];
-			// If record does already exist, load it:
-			/** @var InlineRelatedRecordResolver $inlineRelatedRecordResolver */
-			$inlineRelatedRecordResolver = GeneralUtility::makeInstance(InlineRelatedRecordResolver::class);
-			if ($record[$foreign_selector] && MathUtility::canBeInterpretedAsInteger($record[$foreign_selector])) {
-				$comboRecord = $inlineRelatedRecordResolver->getRecord($comboConfig['foreign_table'], $record[$foreign_selector]);
-				$isNewRecord = FALSE;
-			} else {
-				$comboRecord = $inlineRelatedRecordResolver->getNewRecord($this->data['inlineFirstPid'], $comboConfig['foreign_table']);
-				$isNewRecord = TRUE;
+		// Display Warning FlashMessage if it is not suppressed
+		if (!isset($parentConfig['appearance']['suppressCombinationWarning']) || empty($parentConfig['appearance']['suppressCombinationWarning'])) {
+			$combinationWarningMessage = 'LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination';
+			if (!empty($parentConfig['appearance']['overwriteCombinationWarningMessage'])) {
+				$combinationWarningMessage = $parentConfig['appearance']['overwriteCombinationWarningMessage'];
 			}
-
-			// Display Warning FlashMessage if it is not suppressed
-			if (!isset($config['appearance']['suppressCombinationWarning']) || empty($config['appearance']['suppressCombinationWarning'])) {
-				$combinationWarningMessage = 'LLL:EXT:lang/locallang_core.xlf:warning.inline_use_combination';
-				if (!empty($config['appearance']['overwriteCombinationWarningMessage'])) {
-					$combinationWarningMessage = $config['appearance']['overwriteCombinationWarningMessage'];
-				}
-				$flashMessage = GeneralUtility::makeInstance(
-					FlashMessage::class,
-					$this->getLanguageService()->sL($combinationWarningMessage),
-					'',
-					FlashMessage::WARNING
-				);
-				$resultArray['html'] = $flashMessage->render();
-			}
-
-			// Get the FormEngine interpretation of the TCA of the child table
-			$childArray = $this->renderRecord($comboConfig['foreign_table'], $comboRecord);
-			$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
-
-			// If this is a new record, add a pid value to store this record and the pointer value for the intermediate table
-			if ($isNewRecord) {
-				$comboFormFieldName = 'data[' . $comboConfig['foreign_table'] . '][' . $comboRecord['uid'] . '][pid]';
-				$resultArray['html'] .= '<input type="hidden" name="' . $comboFormFieldName . '" value="' . $comboRecord['pid'] . '" />';
-			}
-			// If the foreign_selector field is also responsible for uniqueness, tell the browser the uid of the "other" side of the relation
-			if ($isNewRecord || $config['foreign_unique'] === $foreign_selector) {
-				$parentFormFieldName = 'data' . $appendFormFieldNames . '[' . $foreign_selector . ']';
-				$resultArray['html'] .= '<input type="hidden" name="' . $parentFormFieldName . '" value="' . $comboRecord['uid'] . '" />';
-			}
+			$flashMessage = GeneralUtility::makeInstance(
+				FlashMessage::class,
+				$this->getLanguageService()->sL($combinationWarningMessage),
+				'',
+				FlashMessage::WARNING
+			);
+			$resultArray['html'] = $flashMessage->render();
 		}
+
+		$childArray = $this->renderChild($childData);
+		$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
+
+		// If this is a new record, add a pid value to store this record and the pointer value for the intermediate table
+		if ($childData['command'] === 'new') {
+			$comboFormFieldName = 'data[' . $childData['tableName'] . '][' . $childData['databaseRow']['uid'] . '][pid]';
+			$resultArray['html'] .= '<input type="hidden" name="' . htmlspecialchars($comboFormFieldName) . '" value="' . htmlspecialchars($childData['databaseRow']['pid']) . '" />';
+		}
+		// If the foreign_selector field is also responsible for uniqueness, tell the browser the uid of the "other" side of the relation
+		if ($childData['command'] === 'new' || $parentConfig['foreign_unique'] === $parentConfig['foreign_selector']) {
+			$parentFormFieldName = 'data' . $appendFormFieldNames . '[' . $parentConfig['foreign_selector'] . ']';
+			$resultArray['html'] .= '<input type="hidden" name="' . htmlspecialchars($parentFormFieldName) . '" value="' . htmlspecialchars($childData['databaseRow']['uid']) . '" />';
+		}
+
 		return $resultArray;
 	}
+
 
 	/**
 	 * Renders the HTML header for a foreign record, such as the title, toggle-function, drag'n'drop, etc.
@@ -340,12 +287,13 @@ class InlineRecordContainer extends AbstractContainer {
 	 *
 	 * @param string $parentUid The uid of the parent (embedding) record (uid or NEW...)
 	 * @param string $foreign_table The foreign_table we create a header for
-	 * @param array $rec The current record of that foreign_table
+	 * @param array $data Current data
 	 * @param array $config content of $PA['fieldConf']['config']
 	 * @param bool $isVirtualRecord
 	 * @return string The HTML code of the header
 	 */
-	protected function renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord = FALSE) {
+	protected function renderForeignRecordHeader($parentUid, $foreign_table, $data, $config, $isVirtualRecord = FALSE) {
+		$rec = $data['databaseRow'];
 		// Init:
 		$domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
 		$objectId = $domObjectId . '-' . $foreign_table . '-' . $rec['uid'];
@@ -417,13 +365,13 @@ class InlineRecordContainer extends AbstractContainer {
 
 		$iconImg = '<span title="' . $altText . '" id="' . htmlspecialchars($objectId) . '_icon' . '">' . $this->iconFactory->getIconForRecord($foreign_table, $rec, Icon::SIZE_SMALL)->render() . '</span>';
 		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
-		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
+		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $data, $config, $isVirtualRecord);
 		$thumbnail = FALSE;
 
 		// Renders a thumbnail for the header
 		if (!empty($config['appearance']['headerThumbnail']['field'])) {
 			$fieldValue = $rec[$config['appearance']['headerThumbnail']['field']];
-			$firstElement = array_shift(GeneralUtility::trimExplode(',', $fieldValue));
+			$firstElement = array_shift(GeneralUtility::trimExplode('|', array_shift(GeneralUtility::trimExplode(',', $fieldValue))));
 			$fileUid = array_pop(BackendUtility::splitTable_Uid($firstElement));
 
 			if (!empty($fileUid)) {
@@ -471,12 +419,13 @@ class InlineRecordContainer extends AbstractContainer {
 	 *
 	 * @param string $parentUid The uid of the parent (embedding) record (uid or NEW...)
 	 * @param string $foreign_table The table (foreign_table) we create control-icons for
-	 * @param array $rec The current record of that foreign_table
+	 * @param array $data Current data
 	 * @param array $config (modified) TCA configuration of the field
 	 * @param bool $isVirtualRecord TRUE if the current record is virtual, FALSE otherwise
 	 * @return string The HTML code with the control-icons
 	 */
-	protected function renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config = array(), $isVirtualRecord = FALSE) {
+	protected function renderForeignRecordHeaderControl($parentUid, $foreign_table, $data, $config = array(), $isVirtualRecord = FALSE) {
+		$rec = $data['databaseRow'];
 		$languageService = $this->getLanguageService();
 		$backendUser = $this->getBackendUserAuthentication();
 		// Initialize:
@@ -508,11 +457,11 @@ class InlineRecordContainer extends AbstractContainer {
 			/** @var InlineElementHookInterface $hookObj */
 			$hookObj->renderForeignRecordHeaderControl_preProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $enabledControls);
 		}
-		if (isset($rec['__create'])) {
+		if ($data['inlineIsDefaultLanguage']) {
 			$cells['localize.isLocalizable'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE) . '">'
 				. $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render()
 				. '</span>';
-		} elseif (isset($rec['__remove'])) {
+		} elseif ($data['inlineIsDanglingLocalization']) {
 			$cells['localize.wasRemovedInOriginal'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE) . '">'
 				. $this->iconFactory->getIcon('actions-edit-localize-status-high', Icon::SIZE_SMALL)->render()
 				. '</span>';
@@ -631,7 +580,7 @@ class InlineRecordContainer extends AbstractContainer {
 					</span>';
 			}
 		} elseif ($isVirtualRecord && $isParentExisting) {
-			if ($enabledControls['localize'] && isset($rec['__create'])) {
+			if ($enabledControls['localize'] && $data['inlineIsDefaultLanguage']) {
 				$onClick = 'inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($nameObjectFt) . ', ' . GeneralUtility::quoteJSvalue($rec['uid']) . ');';
 				$cells['localize'] = '
 					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . 'title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE) . '">
@@ -659,104 +608,6 @@ class InlineRecordContainer extends AbstractContainer {
 			$out .= ' <div class="btn-group btn-group-sm" role="group">' . implode('', $additionalCells) . '</div>';
 		}
 		return $out;
-	}
-
-	/**
-	 * Checks the page access rights (Code for access check mostly taken from alt_doc.php)
-	 * as well as the table access rights of the user.
-	 *
-	 * @param string $cmd The command that should be performed ('new' or 'edit')
-	 * @param string $table The table to check access for
-	 * @param string $theUid The record uid of the table
-	 * @return bool Returns TRUE is the user has access, or FALSE if not
-	 */
-	protected function checkAccess($cmd, $table, $theUid) {
-		// @todo This should be within data provider
-		$backendUser = $this->getBackendUserAuthentication();
-		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
-		// First, resetting flags.
-		$hasAccess = FALSE;
-		// Admin users always have access:
-		if ($backendUser->isAdmin()) {
-			return TRUE;
-		}
-		// If the command is to create a NEW record...:
-		if ($cmd === 'new') {
-			// If the pid is numerical, check if it's possible to write to this page:
-			if (MathUtility::canBeInterpretedAsInteger($this->data['inlineFirstPid'])) {
-				$calcPRec = BackendUtility::getRecord('pages', $this->data['inlineFirstPid']);
-				if (!is_array($calcPRec)) {
-					return FALSE;
-				}
-				// Permissions for the parent page
-				$CALC_PERMS = $backendUser->calcPerms($calcPRec);
-				// If pages:
-				if ($table === 'pages') {
-					// Are we allowed to create new subpages?
-					$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_NEW);
-				} else {
-					// Are we allowed to edit the page?
-					if ($table === 'sys_file_reference' && $this->isMediaOnPages($theUid)) {
-						$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_EDIT);
-					}
-					if (!$hasAccess) {
-						// Are we allowed to edit content on this page?
-						$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
-					}
-				}
-			} else {
-				$hasAccess = TRUE;
-			}
-		} else {
-			// Edit:
-			$calcPRec = BackendUtility::getRecord($table, $theUid);
-			BackendUtility::fixVersioningPid($table, $calcPRec);
-			if (is_array($calcPRec)) {
-				// If pages:
-				if ($table === 'pages') {
-					$CALC_PERMS = $backendUser->calcPerms($calcPRec);
-					$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_EDIT);
-				} else {
-					// Fetching pid-record first.
-					$CALC_PERMS = $backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
-					if ($table === 'sys_file_reference' && $this->isMediaOnPages($theUid)) {
-						$hasAccess = (bool)($CALC_PERMS & Permission::PAGE_EDIT);
-					}
-					if (!$hasAccess) {
-						$hasAccess = (bool)($CALC_PERMS & Permission::CONTENT_EDIT);
-					}
-				}
-				// Check internals regarding access
-				$isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
-				if ($hasAccess || (int)$calcPRec['pid'] === 0 && $isRootLevelRestrictionIgnored) {
-					$hasAccess = (bool)$backendUser->recordEditAccessInternals($table, $calcPRec);
-				}
-			}
-		}
-		if (!$backendUser->check('tables_modify', $table)) {
-			$hasAccess = FALSE;
-		}
-		if (
-			!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'])
-			&& is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'])
-		) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['checkAccess'] as $_funcRef) {
-				$_params = array(
-					'table' => $table,
-					'uid' => $theUid,
-					'cmd' => $cmd,
-					'hasAccess' => $hasAccess
-				);
-				$hasAccess = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-			}
-		}
-		if (!$hasAccess) {
-			$deniedAccessReason = $backendUser->errorMsg;
-			if ($deniedAccessReason) {
-				debug($deniedAccessReason);
-			}
-		}
-		return $hasAccess;
 	}
 
 	/**
@@ -810,20 +661,6 @@ class InlineRecordContainer extends AbstractContainer {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Check if the record is a media element on a page.
-	 *
-	 * @param string $theUid Uid of the sys_file_reference record to be checked
-	 * @return bool TRUE if the record has media in the column 'fieldname' and pages in the column 'tablenames'
-	 */
-	protected function isMediaOnPages($theUid) {
-		if (StringUtility::beginsWith($theUid, 'NEW')) {
-			return TRUE;
-		}
-		$row = BackendUtility::getRecord('sys_file_reference', $theUid);
-		return ($row['fieldname'] === 'media') && ($row['tablenames'] === 'pages');
 	}
 
 	/**
