@@ -14,6 +14,8 @@ namespace TYPO3\CMS\FluidStyledContent\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\TypoScriptService;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
@@ -69,7 +71,7 @@ class ClickEnlargeViewHelper extends AbstractViewHelper {
 	 */
 	static public function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext) {
 		$image = $arguments['image'];
-		$configuration = $arguments['configuration'];
+		$configuration = self::getTypoScriptService()->convertPlainArrayToTypoScriptArray($arguments['configuration']);
 		$content = $renderChildrenClosure();
 		$configuration['enable'] = TRUE;
 
@@ -81,5 +83,16 @@ class ClickEnlargeViewHelper extends AbstractViewHelper {
 	 */
 	static protected function getContentObjectRenderer() {
 		return $GLOBALS['TSFE']->cObj;
+	}
+
+	/**
+	 * @return TypoScriptService
+	 */
+	static protected function getTypoScriptService() {
+		static $typoScriptService;
+		if ($typoScriptService === NULL) {
+			$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+		}
+		return $typoScriptService;
 	}
 }
