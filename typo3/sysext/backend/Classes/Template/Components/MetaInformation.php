@@ -84,6 +84,7 @@ class MetaInformation {
 	 */
 	public function getRecordInformation() {
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
 		$pageRecord = $this->recordArray;
 		// Add icon with clickMenu, etc:
 		// If there IS a real page
@@ -91,7 +92,7 @@ class MetaInformation {
 			$altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
 			$iconImg = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => $altText));
 			// Make Icon:
-			$theIcon = ModuleTemplate::wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+			$theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 			$uid = $pageRecord['uid'];
 			$title = BackendUtility::getRecordTitle('pages', $pageRecord);
 		} else {
@@ -102,7 +103,7 @@ class MetaInformation {
 				'">' .
 				$iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
 			if ($this->getBackendUser()->isAdmin()) {
-				$theIcon = ModuleTemplate::wrapClickMenuOnIcon($iconImg, 'pages', 0);
+				$theIcon = $moduleTemplate->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
 				$theIcon = $iconImg;
 			}
