@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Info\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -63,10 +65,18 @@ class InfoModuleController extends BaseScriptClass {
 	protected $iconFactory;
 
 	/**
+	 * ModuleTemplate Container
+	 *
+	 * @var ModuleTemplate
+	 */
+	protected $moduleTemplate;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
 		$this->languageService = $GLOBALS['LANG'];
 		$this->languageService->includeLLFile('EXT:lang/locallang_mod_web_info.xlf');
 
@@ -83,49 +93,43 @@ class InfoModuleController extends BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
+		// We leave this here because of dependencies to submodules
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 
 		// The page will show only if there is a valid page and if this page
 		// may be viewed by the user
 		$this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+		$this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 		$access = is_array($this->pageinfo);
 		if ($this->id && $access || $this->backendUser->user['admin'] && !$this->id) {
 			if ($this->backendUser->user['admin'] && !$this->id) {
 				$this->pageinfo = array('title' => '[root-level]', 'uid' => 0, 'pid' => 0);
 			}
-			$this->doc->setModuleTemplate('EXT:info/Resources/Private/Templates/info.html');
-
 			// JavaScript
-			$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
+			$this->moduleTemplate->addJavaScriptCode(
+				'WebFuncInLineJS',
+				'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
+				function jumpToUrl(URL) {
+					window.location.href = URL;
+					return false;
+				}
+				');
 			// Setting up the context sensitive menu:
-			$this->doc->getContextMenuCode();
-			$this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
-				'" method="post" name="webinfoForm" class="form-inline form-inline-spaced">';
-			$vContent = $this->doc->getVersionSelector($this->id, 1);
+			$this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+			$this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl($this->moduleName)) .
+				'" method="post" name="webinfoForm" class="form-inline form-inline-spaced">');
+			$vContent = $this->moduleTemplate->getVersionSelector($this->id, 1);
 			if ($vContent) {
-				$this->content .= $this->doc->section('', $vContent);
+				$this->content .= $this->moduleTemplate->section('', $vContent);
 			}
 			$this->extObjContent();
 			// Setting up the buttons and markers for docheader
-			$docHeaderButtons = $this->getButtons();
-			$markers = array(
-				'CSH' => $docHeaderButtons['csh'],
-				'FUNC_MENU' => BackendUtility::getFuncMenu(
-					$this->id,
-					'SET[function]',
-					$this->MOD_SETTINGS['function'],
-					$this->MOD_MENU['function']
-				),
-				'CONTENT' => $this->content
-			);
-			// Build the <body> for the module
-			$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->getButtons();
+			$this->generateMenu();
 		} else {
 			// If no access or if ID == zero
 			$this->content = $this->doc->header($this->languageService->getLL('title'));
 		}
-		// Renders the module page
-		$this->content = $this->doc->render($this->languageService->getLL('title'), $this->content);
 	}
 
 	/**
@@ -159,40 +163,65 @@ class InfoModuleController extends BaseScriptClass {
 		$this->checkSubExtObj();
 		$this->main();
 
-		$this->content = $this->doc->insertStylesAndJS($this->content);
-		$response->getBody()->write($this->content);
+		$this->moduleTemplate->setContent($this->content);
+		$response->getBody()->write($this->moduleTemplate->renderContent());
 		return $response;
 	}
 
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
-	 *
-	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
-		$buttons = array(
-			'csh' => '',
-			'view' => '',
-			'shortcut' => ''
-		);
+		$buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 		// CSH
-		$buttons['csh'] = BackendUtility::cshItem('_MOD_web_info', '');
+		$cshButton = $buttonBar->makeFullyRenderedButton()
+			->setHtmlSource(BackendUtility::cshItem('_MOD_web_info', ''));
+		$buttonBar->addButton($cshButton, ButtonBar::BUTTON_POSITION_LEFT, 0);
 		// View page
-		$buttons['view'] = '<a href="#" ' .
-			'onclick="' . htmlspecialchars(
-				BackendUtility::viewOnClick($this->pageinfo['uid'], '',
-					BackendUtility::BEgetRootLine($this->pageinfo['uid']))
-			) . '" ' .
-			'title="' . $this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' .
-			$this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) .
-			'</a>';
+		$viewButton = $buttonBar->makeLinkButton()
+			->setHref('#')
+			->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
+			->setTitle($this->languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE))
+			->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+		$buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
 		// Shortcut
 		if ($this->backendUser->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon(
-				'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
-				implode(',', array_keys($this->MOD_MENU)), $this->moduleName);
+			$shortCutButton = $buttonBar->makeFullyRenderedButton()
+				->setHtmlSource($this->moduleTemplate->makeShortcutIcon(
+					'id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit',
+					implode(',', array_keys($this->MOD_MENU)), $this->moduleName));
+			$buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
 		}
-		return $buttons;
+	}
+
+	/**
+	 * Generate the ModuleMenu
+	 */
+	protected function generateMenu() {
+		$menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+		$menu->setIdentifier('WebInfoJumpMenu');
+		foreach ($this->MOD_MENU['function'] as $controller => $title) {
+			$item = $menu
+				->makeMenuItem()
+				->setHref(
+					BackendUtility::getModuleUrl(
+						$this->moduleName,
+						[
+							'id' => $this->id,
+							'SET' => [
+								'function' => $controller
+							]
+						]
+					)
+				)
+				->setTitle($title);
+			if ($controller === $this->MOD_SETTINGS['function']) {
+				$item->setActive(TRUE);
+			}
+			$menu->addMenuItem($item);
+		}
+		$this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+
 	}
 
 }

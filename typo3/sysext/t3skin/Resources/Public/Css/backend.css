@@ -7867,7 +7867,7 @@ button.close {
   width: 100%;
   top: 0;
   left: 0;
-  height: 65px;
+  min-height: 65px;
   z-index: 300;
   background-color: #eeeeee;
   border-bottom: 1px solid #c3c3c3;
@@ -7891,7 +7891,7 @@ button.close {
   clear: both;
 }
 .module-docheader .module-docheader-bar {
-  height: 26px;
+  min-height: 26px;
   margin: 4px 0;
   line-height: 26px;
 }
@@ -10573,6 +10573,8 @@ span.checkbox-spinner {
 }
 table {
   background: transparent;
+  font-size: inherit;
+  line-height: inherit;
 }
 .table {
   background-color: #fafafa;

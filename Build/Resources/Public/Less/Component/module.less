@@ -50,7 +50,7 @@
 	width: 100%;
 	top: 0;
 	left: 0;
-	height: @module-docheader-height;
+	min-height: @module-docheader-height;
 	z-index: @module-docheader-zindex;
 	background-color: @module-docheader-bg;
 	border-bottom: 1px solid @module-docheader-border;
@@ -58,7 +58,7 @@
 	.transition(margin-top 0.3s ease-in-out);
 	.module-docheader-bar {
 		.clearfix;
-		height: @module-docheader-bar-height;
+		min-height: @module-docheader-bar-height;
 		margin: @module-docheader-bar-margin;
 		line-height: @module-docheader-bar-height;
 		label {
