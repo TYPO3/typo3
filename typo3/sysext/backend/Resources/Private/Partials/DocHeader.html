@@ -1,5 +1,5 @@
-<div class="module-docheader">
-	<div class="module-docheader-bar">
+<div class="module-docheader t3js-module-docheader">
+	<div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation">
 		<div class="module-docheader-bar-column-left">
 			<div class="form-inline">
 				<f:for each="{docHeader.menus}" as="menu">
@@ -12,9 +12,8 @@
 		<div class="module-docheader-bar-column-right">
 			<span class="typo3-docheader-pagePath"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.path" />: <f:format.raw>{docHeader.metaInformation.path}</f:format.raw></span> <f:format.raw>{docHeader.metaInformation.recordInformation}</f:format.raw>
 		</div>
-
 	</div>
-	<div class="module-docheader-bar">
+	<div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
 		<div class="module-docheader-bar-column-left">
 			<f:render partial="ButtonBar" arguments="{buttons:docHeader.buttons.left}" />
 		</div>

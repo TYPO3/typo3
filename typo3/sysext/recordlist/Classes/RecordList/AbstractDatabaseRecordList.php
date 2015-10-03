@@ -549,7 +549,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 		}
 		$lMenu = '<select class="form-control" name="search_levels" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search_levels', TRUE) . '" id="search_levels">' . implode('', $opt) . '</select>';
 		// Table with the search box:
-		$content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
+		$content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
 				<div id="typo3-dblist-search">
 					<div class="panel panel-default">
