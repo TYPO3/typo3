@@ -3079,7 +3079,6 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 								);
 							}
 						}
-						$this->setSqlMode();
 						$this->checkConnectionCharset();
 					}
 
