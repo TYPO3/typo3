@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recordlist;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Module\AbstractModule;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -35,7 +36,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Script Class for the Web > List module; rendering the listing of records on a page
  */
-class RecordList
+class RecordList extends AbstractModule
 {
     /**
      * Page Id for which to make the listing
@@ -198,11 +199,11 @@ class RecordList
      */
     public function __construct()
     {
+        parent::__construct();
         $this->getLanguageService()->includeLLFile('EXT:lang/locallang_mod_web_list.xlf');
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $this->pageRenderer->loadJquery();
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
+        $this->moduleTemplate->getPageRenderer()->loadJquery();
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
     }
 
     /**
@@ -285,8 +286,9 @@ class RecordList
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         $access = is_array($this->pageinfo) ? 1 : 0;
         // Start document template object:
+        // We need to keep this due to deeply nested dependencies
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:recordlist/Resources/Private/Templates/db_list.html');
+
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $calcPerms = $backendUser->calcPerms($this->pageinfo);
         $userCanEditPage = $calcPerms & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
@@ -403,13 +405,16 @@ class RecordList
             $dblist->setDispFields();
             // Render versioning selector:
             if (ExtensionManagementUtility::isLoaded('version')) {
-                $dblist->HTMLcode .= $this->doc->getVersionSelector($this->id);
+                $dblist->HTMLcode .= $this->moduleTemplate->getVersionSelector($this->id);
             }
             // Render the list of tables:
             $dblist->generateList();
             $listUrl = $dblist->listURL();
             // Add JavaScript functions to the page:
-            $this->doc->JScode = $this->doc->wrapScriptTags('
+
+            $this->moduleTemplate->addJavaScriptCode(
+                'RecordListInlineJS',
+                '
 				function jumpExt(URL,anchor) {	//
 					var anc = anchor?anchor:"";
 					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
@@ -428,7 +433,7 @@ class RecordList
 						top.content.nav_frame.refresh_nav();
 					}
 				}
-				' . $this->doc->redirectUrls($listUrl) . '
+				' . $this->moduleTemplate->redirectUrls($listUrl) . '
 				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {	//
 					window.location.href="' . BackendUtility::getModuleUrl('record_edit', array('returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
@@ -454,16 +459,18 @@ class RecordList
 				}
 
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-			');
+			'
+            );
+
             // Setting up the context sensitive menu:
-            $this->doc->getContextMenuCode();
+            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
         }
         // access
         // Begin to compile the whole page, starting out with page header:
         if (!$this->id) {
-            $this->body = $this->doc->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
+            $this->body = $this->moduleTemplate->header($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         } else {
-            $this->body = $this->doc->header($this->pageinfo['title']);
+            $this->body = $this->moduleTemplate->header($this->pageinfo['title']);
         }
 
         if (!empty($dblist->HTMLcode)) {
@@ -543,25 +550,24 @@ class RecordList
                 $this->body .= GeneralUtility::callUserFunction($hook, $params, $this);
             }
         }
-        // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $dblist->getButtons();
-        $markers = array(
-            'CSH' => $docHeaderButtons['csh'],
-            'CONTENT' => $this->body,
-            'EXTRACONTAINERCLASS' => $this->table ? 'singletable' : '',
-            'BUTTONLIST_ADDITIONAL' => '',
-            'SEARCHBOX' => '',
-        );
+        // Setting up the buttons for docheader
+        $dblist->getDocHeaderButtons($this->moduleTemplate);
         // searchbox toolbar
         if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
-            $markers['SEARCHBOX'] = $dblist->getSearchBox();
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-            $markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', true) . '">' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL) . '</a>';
+            $this->content = $dblist->getSearchBox();
+            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
         }
+        $searchButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton();
+        $searchButton
+            ->setHref('#')
+            ->setClasses('t3js-toggle-search-toolbox')
+            ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', true))
+            ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL));
+        $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->addButton($searchButton);
+
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         // Build the <body> for the module
-        $this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-        // Renders the module page
-        $this->content = $this->doc->render('DB list', $this->content);
+        $this->content .= $this->body;
     }
 
     /**
@@ -579,8 +585,8 @@ class RecordList
         $this->init();
         $this->clearCache();
         $this->main();
-
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 

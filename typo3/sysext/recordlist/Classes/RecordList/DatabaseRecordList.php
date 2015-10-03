@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Recordlist\RecordList;
 
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -330,6 +332,140 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
             }
         }
         return $buttons;
+    }
+
+    /**
+     * Create the panel of buttons for submitting the form or otherwise perform
+     * operations.
+     *
+     * @param ModuleTemplate $moduleTemplate
+     */
+    public function getDocHeaderButtons(ModuleTemplate $moduleTemplate)
+    {
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $module = $this->getModule();
+        $backendUser = $this->getBackendUserAuthentication();
+        $lang = $this->getLanguageService();
+        // Get users permissions for this page record:
+        $localCalcPerms = $backendUser->calcPerms($this->pageRow);
+        // CSH
+        $cshButton = $buttonBar->makeFullyRenderedButton();
+        if ((string)$this->id === '') {
+            $cshButton->setHtmlSource(BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_noId'));
+        } elseif (!$this->id) {
+            $cshButton->setHtmlSource(BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_root'));
+        } else {
+            $cshButton->setHtmlSource(BackendUtility::cshItem('xMOD_csh_corebe', 'list_module'));
+        }
+        $buttonBar->addButton($cshButton);
+        if (isset($this->id)) {
+            // View Exclude doktypes 254,255 Configuration:
+            // mod.web_list.noViewWithDokTypes = 254,255
+            if (isset($module->modTSconfig['properties']['noViewWithDokTypes'])) {
+                $noViewDokTypes = GeneralUtility::trimExplode(',', $module->modTSconfig['properties']['noViewWithDokTypes'], true);
+            } else {
+                //default exclusion: doktype 254 (folder), 255 (recycler)
+                $noViewDokTypes = array(
+                    PageRepository::DOKTYPE_SYSFOLDER,
+                    PageRepository::DOKTYPE_RECYCLER
+                );
+            }
+            // New record on pages that are not locked by editlock
+            if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
+                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('db_new', ['id' => $this->id])) . ');';
+                $newRecordButton = $buttonBar->makeLinkButton()
+                    ->setHref('#')
+                    ->setOnClick($onClick)
+                    ->setTitle($lang->getLL('newRecordGeneral', true))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
+                $buttonBar->addButton($newRecordButton);
+            }
+            if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
+                $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id));
+                $viewButton = $buttonBar->makeLinkButton()
+                    ->setHref('#')
+                    ->setOnClick($onClick)
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+                $buttonBar->addButton($viewButton);
+            }
+            // If edit permissions are set, see
+            // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions()) {
+                // Edit
+                $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
+                $onClick = BackendUtility::editOnClick($params, '', -1);
+                $editButton = $buttonBar->makeLinkButton()
+                    ->setHref('#')
+                    ->setOnClick($onClick)
+                    ->setTitle($lang->getLL('editPage', true))
+                    ->setIcon($this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL));
+                $buttonBar->addButton($editButton);
+            }
+            // Paste
+            if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
+                $elFromTable = $this->clipObj->elFromTable('');
+                if (!empty($elFromTable)) {
+                    $onClick = 'return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable);
+                    $pasteButton = $buttonBar->makeLinkButton()
+                        ->setHref($this->clipObj->pasteUrl('', $this->id))
+                        ->setOnClick($onClick)
+                        ->setTitle($lang->getLL('clip_paste', true))
+                        ->setIcon($this->iconFactory->getIcon('actions-document-paste-after', Icon::SIZE_SMALL));
+                    $buttonBar->addButton($pasteButton);
+                }
+            }
+            // Cache
+            $clearCacheButton = $buttonBar->makeLinkButton()
+                ->setHref($this->listURL() . '&clear_cache=1')
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', true))
+                ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
+            $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            if (
+                $this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
+                || (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
+                    && !$module->modTSconfig['properties']['noExportRecordsLinks']))
+            ) {
+                // CSV
+                $csvButton = $buttonBar->makeLinkButton()
+                    ->setHref($this->listURL() . '&csv=1')
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.csv', true))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL));
+                $buttonBar->addButton($csvButton);
+                // Export
+                if (ExtensionManagementUtility::isLoaded('impexp')) {
+                    $url = BackendUtility::getModuleUrl('xMOD_tximpexp', array('tx_impexp[action]' => 'export'));
+                    $exportButton = $buttonBar->makeLinkButton()
+                        ->setHref($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.export', true))
+                        ->setIcon($this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL));
+                    $buttonBar->addButton($exportButton);
+                }
+            }
+            // Reload
+            $reloadButton = $buttonBar->makeLinkButton()
+                ->setHref($this->listURL())
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', true))
+                ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+            $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            // Shortcut
+            if ($backendUser->mayMakeShortcut()) {
+                $shortCutButton = $buttonBar->makeFullyRenderedButton()
+                    ->setHtmlSource($moduleTemplate->makeShortcutIcon(
+                        'id, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev',
+                        implode(',', array_keys($this->MOD_MENU)),
+                        'web_list'
+                    ));
+                $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+            }
+            // Back
+            if ($this->returnUrl) {
+                $href = htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl, array('id' => $this->id)));
+                $buttons['back'] = '<a href="' . $href . '" class="typo3-goBack" title="'
+                    . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">'
+                    . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+            }
+        }
     }
 
     /**
@@ -845,7 +981,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
         ) {
             $theData['parent'] = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
         }
-        $rowOutput .= $this->addelement(1, $theIcon, $theData, $row_bgColor);
+        $rowOutput .= $this->addElement(1, $theIcon, $theData, $row_bgColor);
         // Finally, return table row element:
         return $rowOutput;
     }
@@ -1098,7 +1234,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
 
 
         // Create and return header table row:
-        return '<thead>' . $this->addelement(1, $icon, $theData, '', '', '', 'th') . '</thead>';
+        return '<thead>' . $this->addElement(1, $icon, $theData, '', '', '', 'th') . '</thead>';
     }
 
     /**
@@ -1736,7 +1872,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                 ? rtrim($lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']), ':')
                 : '';
             $checkboxes[] = '<tr><td class="col-checkbox"><input type="checkbox" id="check-' . $fieldName . '" name="displayFields['
-                . $table . '][]" value="' . $fieldName . '"' . $checked
+                . $table . '][]" value="' . $fieldName . '" ' . $checked
                 . ($fieldName === $this->fieldArray[0] ? ' disabled="disabled"' : '') . '></td><td class="col-title">'
                 . '<label class="label-block" for="check-' . $fieldName . '">' . htmlspecialchars($fieldLabel) . ' <span class="text-muted text-monospace">[' . htmlspecialchars($fieldName) . ']</span></label></td></tr>';
         }
@@ -1796,7 +1932,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
      */
     public function clipNumPane()
     {
-        return in_Array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current != 'normal';
+        return in_array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current != 'normal';
     }
 
     /**

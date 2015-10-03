@@ -877,4 +877,46 @@ class ModuleTemplate
         }
         return '';
     }
+
+    /**
+     * Returns JavaScript variables setting the returnUrl and thisScript location for use by JavaScript on the page.
+     * Used in fx. db_list.php (Web>List)
+     *
+     * @param string $thisLocation URL to "this location" / current script
+     * @return string Urls are returned as JavaScript variables T3_RETURN_URL and T3_THIS_LOCATION
+     * @see typo3/db_list.php
+     * @internal
+     */
+    public function redirectUrls($thisLocation = '')
+    {
+        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript(array(
+            'CB' => '',
+            'SET' => '',
+            'cmd' => '',
+            'popViewId' => ''
+        ));
+        $out = '
+	var T3_RETURN_URL = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))))) . ';
+	var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode($thisLocation))) . '
+		';
+        return $out;
+    }
+
+    /**
+     * Returns the header-bar in the top of most backend modules
+     * Closes section if open.
+     *
+     * @param string $text The text string for the header
+     * @return string HTML content
+     * @internal
+     */
+    public function header($text)
+    {
+        $str = '
+
+	<!-- MAIN Header in page top -->
+	<h1 class="t3js-title-inlineedit">' . htmlspecialchars($text) . '</h1>
+';
+        return $this->sectionEnd() . $str;
+    }
 }
