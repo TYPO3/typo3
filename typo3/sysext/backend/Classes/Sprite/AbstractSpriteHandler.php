@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  */
 
 use TYPO3\CMS\Backend\Sprite\SpriteManager;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -141,10 +142,15 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 				// Adding the default Icon (without types)
 				if (isset($tcaCtrl['iconfile'])) {
 					// In CSS we need a path relative to the css file
-					// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
 					if (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
-						$icon = $tcaCtrl['iconfile'];
+						if (GeneralUtility::isFirstPartOfStr($tcaCtrl['iconfile'], 'EXT:')) {
+							list($extensionKey, $relativePath) = explode('/', substr($tcaCtrl['iconfile'], 4), 2);
+							$icon = ExtensionManagementUtility::extRelPath($extensionKey) . $relativePath;
+						} else {
+							$icon = $tcaCtrl['iconfile'];
+						}
 					} else {
+						// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
 						$icon = $skinPath . 'gfx/i/' . $tcaCtrl['iconfile'];
 					}
 					$icon = GeneralUtility::resolveBackPath($icon);
@@ -157,6 +163,9 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 						// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
 						if (strpos($icon, '/') === FALSE) {
 							$icon = $skinPath . 'gfx/i/' . $icon;
+						} elseif (GeneralUtility::isFirstPartOfStr($icon, 'EXT:')) {
+							list($extensionKey, $relativePath) = explode('/', substr($icon, 4), 2);
+							$icon = ExtensionManagementUtility::extRelPath($extensionKey) . $relativePath;
 						}
 						$icon = GeneralUtility::resolveBackPath($icon);
 						$resultArray['tcarecords-' . $tableName . '-' . $type] = $icon;
