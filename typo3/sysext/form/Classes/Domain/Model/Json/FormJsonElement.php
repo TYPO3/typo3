@@ -44,17 +44,29 @@ class FormJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\ContainerJsonEle
 	 * @var array
 	 */
 	protected $allowedAttributes = array(
+		'accesskey',
+		'class',
+		'contenteditable',
+		'contextmenu',
+		'dir',
+		'draggable',
+		'dropzone',
+		'hidden',
+		'id',
+		'lang',
+		'spellcheck',
+		'style',
+		'tabindex',
+		'title',
+		'translate',
+		/* element specific attributes */
 		'accept',
 		'accept-charset',
 		'action',
-		'class',
-		'dir',
+		'autocomplete',
 		'enctype',
-		'id',
-		'lang',
 		'method',
-		'style',
-		'title'
+		'novalidate'
 	);
 
 	/**
