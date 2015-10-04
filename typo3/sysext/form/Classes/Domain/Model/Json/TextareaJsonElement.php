@@ -52,18 +52,35 @@ class TextareaJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
 	protected $allowedAttributes = array(
 		'accesskey',
 		'class',
-		'cols',
+		'contenteditable',
+		'contextmenu',
 		'dir',
-		'disabled',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
+		'spellcheck',
+		'style',
+		'tabindex',
+		'title',
+		'translate',
+		/* element specific attributes */
+		'autofocus',
+		'cols',
+		'disabled',
+		'inputmode',
+		'maxlength',
+		'minlength',
 		'name',
 		'placeholder',
 		'readonly',
+		'required',
 		'rows',
-		'style',
-		'tabindex',
-		'title'
+		'selectionDirection',
+		'selectionEnd',
+		'selectionStart',
+		'wrap'
 	);
 
 }
