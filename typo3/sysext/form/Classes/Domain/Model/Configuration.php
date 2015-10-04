@@ -184,6 +184,8 @@ class Configuration {
 		// Set the theme name
 		if (!empty($this->typoScript['themeName'])) {
 			$this->setThemeName($this->typoScript['themeName']);
+		} elseif (!empty($this->typoScriptRepository->getModelConfigurationByScope('FORM', 'themeName'))) {
+			$this->setThemeName($this->typoScriptRepository->getModelConfigurationByScope('FORM', 'themeName'));
 		} else {
 			$this->setThemeName(static::DEFAULT_THEME_NAME);
 		}
