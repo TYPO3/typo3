@@ -88,9 +88,9 @@ class FormBuilder {
 	protected $objectManager;
 
 	/**
-	 * @var integer
+	 * @var \TYPO3\CMS\Form\Utility\ElementCounter
 	 */
-	protected $elementCounter = 0;
+	protected $elementCounter;
 
 	/**
 	 * @var NULL|\TYPO3\CMS\Extbase\Error\Result
@@ -137,6 +137,14 @@ class FormBuilder {
 	 */
 	public function injectSessionUtility(\TYPO3\CMS\Form\Utility\SessionUtility $sessionUtility) {
 		$this->sessionUtility = $sessionUtility;
+	}
+
+	/**
+	 * @param \TYPO3\CMS\Form\Utility\ElementCounter $elementCounter
+	 * @return void
+	 */
+	public function injectElementCounter(\TYPO3\CMS\Form\Utility\ElementCounter $elementCounter) {
+		$this->elementCounter = $elementCounter;
 	}
 
 	/**
@@ -280,7 +288,6 @@ class FormBuilder {
 	 * @return \TYPO3\CMS\Form\Domain\Model\Element
 	 */
 	protected function createElementObject() {
-		$this->elementCounter++;
 		$element = GeneralUtility::makeInstance(Element::class);
 		return $element;
 	}
@@ -301,7 +308,7 @@ class FormBuilder {
 		}
 
 		$element->setElementType($elementType);
-		$element->setElementCounter($this->elementCounter);
+		$element->setElementCounter($this->elementCounter->getElementId());
 
 		$elementBuilder = ElementBuilder::create($this, $element, $userConfiguredElementTypoScript);
 		$elementBuilder->setPartialPaths();
@@ -613,15 +620,6 @@ class FormBuilder {
 	 */
 	public function getValidationErrors() {
 		return $this->validationErrors;
-	}
-
-	/**
-	 * Get the current element counter
-	 *
-	 * @return integer
-	 */
-	public function getElementCounter() {
-		return $this->elementCounter;
 	}
 
 }
