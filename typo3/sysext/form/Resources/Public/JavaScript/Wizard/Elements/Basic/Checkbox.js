@@ -70,19 +70,30 @@ TYPO3.Form.Wizard.Elements.Basic.Checkbox = Ext.extend(TYPO3.Form.Wizard.Element
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					accesskey: '',
-					alt: '',
-					"class": '',
-					dir: '',
-					disabled: '',
-					id: '',
-					lang: '',
-					name: '',
-					style: '',
-					tabindex: '',
-					title: '',
-					type: 'checkbox',
-					value: ''
+					'accesskey': '',
+					'class': '',
+					'contenteditable': '',
+					'contextmenu': '',
+					'dir': '',
+					'draggable': '',
+					'dropzone': '',
+					'hidden': '',
+					'id': '',
+					'lang': '',
+					'spellcheck': '',
+					'style': '',
+					'tabindex': '',
+					'title': '',
+					'translate': '',
+
+					'autofocus': '',
+					'checked': '',
+					'disabled': '',
+					'name': '',
+					'readonly': '',
+					'required': '',
+					'type': 'checkbox',
+					'value': ''
 				},
 				filters: {},
 				label: {

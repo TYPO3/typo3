@@ -50,16 +50,27 @@ class CheckboxJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJson
 	 */
 	protected $allowedAttributes = array(
 		'accesskey',
-		'alt',
 		'class',
+		'contenteditable',
+		'contextmenu',
 		'dir',
-		'disabled',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
-		'name',
-		'style: ',
+		'spellcheck',
+		'style',
 		'tabindex',
 		'title',
+		'translate',
+		/* element specific attributes */
+		'autofocus',
+		'checked',
+		'disabled',
+		'name',
+		'readonly',
+		'required',
 		'type',
 		'value'
 	);
