@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Taskcenter\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -28,12 +31,19 @@ use TYPO3\CMS\Taskcenter\TaskInterface;
 /**
  * This class provides a taskcenter for BE users
  */
-class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class TaskModuleController extends BaseScriptClass {
 
 	/**
 	 * @var array
 	 */
 	protected $pageinfo;
+
+	/**
+	 * ModuleTemplate Container
+	 *
+	 * @var ModuleTemplate
+	 */
+	protected $moduleTemplate;
 
 	/**
 	 * The name of the module
@@ -46,6 +56,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Initializes the Module
 	 */
 	public function __construct() {
+		$this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+		$this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Css/styles.css');
 		$this->getLanguageService()->includeLLFile('EXT:taskcenter/Resources/Private/Language/locallang_task.xlf');
 		$this->MCONF = array(
 			'name' => $this->moduleName
@@ -54,8 +66,6 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Initialize document
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
 		$this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('taskcenter') . 'Resources/Private/Templates/mod_template.html');
-		$this->getPageRenderer()->loadJquery();
-		$this->doc->addStyleSheet('tx_taskcenter', '../' . ExtensionManagementUtility::siteRelPath('taskcenter') . 'Resources/Public/Css/styles.css');
 	}
 
 	/**
@@ -78,6 +88,37 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		parent::menuConfig();
 	}
 
+	/**
+	 * Generates the menu based on $this->MOD_MENU
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	protected function generateMenu() {
+		$menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+		$menu->setIdentifier('WebFuncJumpMenu');
+		foreach ($this->MOD_MENU['mode'] as $controller => $title) {
+			$item = $menu
+				->makeMenuItem()
+				->setHref(
+					BackendUtility::getModuleUrl(
+						$this->moduleName,
+						[
+							'id' => $this->id,
+							'SET' => [
+								'mode' => $controller
+							]
+						]
+					)
+				)
+				->setTitle($title);
+			if ($controller === $this->MOD_SETTINGS['mode']) {
+				$item->setActive(TRUE);
+			}
+			$menu->addMenuItem($item);
+		}
+		$this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+	}
+
 
 	/**
 	 * Injects the request object for the current request or subrequest
@@ -91,7 +132,9 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$GLOBALS['SOBE'] = $this;
 		$this->main();
 
-		$response->getBody()->write($this->content);
+		$this->moduleTemplate->setContent($this->content);
+
+		$response->getBody()->write($this->moduleTemplate->renderContent());
 		return $response;
 	}
 
@@ -102,9 +145,12 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	public function main() {
-		$docHeaderButtons = $this->getButtons();
-		$markers = array();
-		$this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) { top.fsMod.recentIds["web"] = 0; }');
+		$this->getButtons();
+		$this->generateMenu();
+		$this->moduleTemplate->addJavaScriptCode(
+			'TaskCenterInlineJavascript',
+			'if (top.fsMod) { top.fsMod.recentIds["web"] = 0; }'
+		);
 
 		// Render content depending on the mode
 		$mode = (string)$this->MOD_SETTINGS['mode'];
@@ -113,13 +159,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		} else {
 			$this->renderModuleContent();
 		}
-		// Compile document
-		$markers['FUNC_MENU'] = BackendUtility::getFuncMenu(0, 'SET[mode]', $this->MOD_SETTINGS['mode'], $this->MOD_MENU['mode']);
-		$markers['CONTENT'] = $this->content;
-		// Build the <body> for the module
-		$this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		// Renders the module page
-		$this->content = $this->doc->render($this->getLanguageService()->getLL('title'), $this->content);
+		$this->moduleTemplate->setTitle($this->getLanguageService()->getLL('title'));
 	}
 
 	/**
@@ -369,12 +410,28 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
+		$buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 		$buttons = array(
 			'shortcut' => '',
 			'open_new_window' => $this->openInNewWindow()
 		);
+		// Fullscreen Button
+		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+		$url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+		$onClick = 'devlogWin=window.open(' . GeneralUtility::quoteJSvalue($url) . ',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
+		$fullscreenButton = $buttonBar->makeLinkButton()
+			->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', TRUE))
+			->setOnClick($onClick)
+			->setHref('#')
+			->setIcon($iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
+			;
+		$buttonBar->addButton($fullscreenButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+
 		// Shortcut
 		if ($this->getBackendUser()->mayMakeShortcut()) {
+			$shortCutButton = $buttonBar->makeFullyRenderedButton()
+				->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', 'function', $this->moduleName));
+			$buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
 		}
 		return $buttons;
