@@ -137,7 +137,9 @@ class FormDataTraverser {
 			// @todo: the first value was not processed with old data preprocessor and contains no |
 			// @todo: this is simuluated here
 			if ($count === 1) {
-				$value = explode('|', $value);
+				if (!is_array($value)) {
+					$value = explode('|', $value);
+				}
 				$value = $value[0];
 			}
 
