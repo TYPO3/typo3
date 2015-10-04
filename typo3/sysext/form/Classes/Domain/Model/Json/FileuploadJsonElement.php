@@ -50,18 +50,30 @@ class FileuploadJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJs
 	 */
 	protected $allowedAttributes = array(
 		'accesskey',
-		'alt',
 		'class',
+		'contenteditable',
+		'contextmenu',
 		'dir',
-		'disabled',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
-		'name',
-		'size',
+		'spellcheck',
 		'style',
 		'tabindex',
 		'title',
-		'type'
+		'translate',
+		/* element specific attributes */
+		'accept',
+		'autofocus',
+		'disabled',
+		'multiple',
+		'name',
+		'readonly',
+		'required',
+		'type',
+		'value'
 	);
 
 }
