@@ -49,6 +49,14 @@ class TypoScriptToJsonConverter {
 	/**
 	 * @var array
 	 */
+	protected $nameMapping = array(
+		'checkboxgroup' => 'CheckboxGroup',
+		'radiogroup' => 'RadioGroup',
+	);
+
+	/**
+	 * @var array
+	 */
 	protected $validationRules;
 
 	/**
@@ -74,6 +82,9 @@ class TypoScriptToJsonConverter {
 	 */
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string)$class);
+		if (!empty($this->nameMapping[$class])) {
+			$class = $this->nameMapping[$class];
+		}
 		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\Json\\' . ucfirst($class) . 'JsonElement';
 		$this->addValidationRules($arguments);
 
