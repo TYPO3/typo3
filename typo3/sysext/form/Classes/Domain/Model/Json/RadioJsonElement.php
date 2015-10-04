@@ -50,16 +50,27 @@ class RadioJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
 	 */
 	protected $allowedAttributes = array(
 		'accesskey',
-		'alt',
 		'class',
+		'contenteditable',
+		'contextmenu',
 		'dir',
-		'disabled',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
-		'name',
+		'spellcheck',
 		'style',
 		'tabindex',
 		'title',
+		'translate',
+		/* element specific attributes */
+		'autofocus',
+		'checked',
+		'disabled',
+		'name',
+		'readonly',
+		'required',
 		'type',
 		'value'
 	);
