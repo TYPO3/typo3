@@ -14,10 +14,18 @@ namespace TYPO3\CMS\About\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+
 /**
  * Module 'about' shows some standard information for TYPO3 CMS: About-text, version number and so on.
  */
 class AboutController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+
+	/**
+	 * @var
+	 */
+	protected $defaultViewObjectName = BackendTemplateView::class;
 
 	/**
 	 * @var \TYPO3\CMS\About\Domain\Repository\ExtensionRepository
@@ -29,6 +37,18 @@ class AboutController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	public function injectExtensionRepository(\TYPO3\CMS\About\Domain\Repository\ExtensionRepository $extensionRepository) {
 		$this->extensionRepository = $extensionRepository;
+	}
+
+	/**
+	 * Set up the doc header properly here
+	 *
+	 * @param ViewInterface $view
+	 */
+	protected function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		// Disable Path
+		$view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 	}
 
 	/**
