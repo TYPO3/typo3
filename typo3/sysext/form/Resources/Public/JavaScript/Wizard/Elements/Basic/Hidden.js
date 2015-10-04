@@ -47,13 +47,25 @@ TYPO3.Form.Wizard.Elements.Basic.Hidden = Ext.extend(TYPO3.Form.Wizard.Elements,
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					"class": '',
-					id: '',
-					lang: '',
-					name: '',
-					style: '',
-					type: 'hidden',
-					value: ''
+					'accesskey': '',
+					'class': '',
+					'contenteditable': '',
+					'contextmenu': '',
+					'dir': '',
+					'draggable': '',
+					'dropzone': '',
+					'hidden': '',
+					'id': '',
+					'lang': '',
+					'spellcheck': '',
+					'style': '',
+					'tabindex': '',
+					'title': '',
+					'translate': '',
+
+					'name': '',
+					'type': 'hidden',
+					'value': ''
 				},
 				filters: {},
 				validation: {}

@@ -49,11 +49,23 @@ class HiddenJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
 	 * @var array
 	 */
 	protected $allowedAttributes = array(
+		'accesskey',
 		'class',
+		'contenteditable',
+		'contextmenu',
+		'dir',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
-		'name',
+		'spellcheck',
 		'style',
+		'tabindex',
+		'title',
+		'translate',
+		/* element specific attributes */
+		'name',
 		'type',
 		'value'
 	);
