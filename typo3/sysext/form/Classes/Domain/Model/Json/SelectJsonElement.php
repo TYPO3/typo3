@@ -48,16 +48,28 @@ class SelectJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEl
 	 * @var array
 	 */
 	protected $allowedAttributes = array(
+		'accesskey',
 		'class',
-		'disabled',
+		'contenteditable',
+		'contextmenu',
+		'dir',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
-		'multiple',
-		'name',
-		'size',
+		'spellcheck',
 		'style',
 		'tabindex',
-		'title'
+		'title',
+		'translate',
+		/* element specific attributes */
+		'autofocus',
+		'disabled',
+		'multiple',
+		'name',
+		'required',
+		'size'
 	);
 
 	protected $childElementsAllowed = FALSE;

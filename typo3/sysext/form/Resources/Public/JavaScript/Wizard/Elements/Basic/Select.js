@@ -74,16 +74,28 @@ TYPO3.Form.Wizard.Elements.Basic.Select = Ext.extend(TYPO3.Form.Wizard.Elements,
 		Ext.apply(this, {
 			configuration: {
 				attributes: {
-					"class": '',
-					disabled: '',
-					id: '',
-					lang: '',
-					multiple: '',
-					name: '',
-					size: '',
-					style: '',
-					tabindex: '',
-					title: ''
+					'accesskey': '',
+					'class': '',
+					'contenteditable': '',
+					'contextmenu': '',
+					'dir': '',
+					'draggable': '',
+					'dropzone': '',
+					'hidden': '',
+					'id': '',
+					'lang': '',
+					'spellcheck': '',
+					'style': '',
+					'tabindex': '',
+					'title': '',
+					'translate': '',
+
+					'autofocus': '',
+					'disabled': '',
+					'multiple': '',
+					'name': '',
+					'required': '',
+					'size': ''
 				},
 				filters: {},
 				label: {
