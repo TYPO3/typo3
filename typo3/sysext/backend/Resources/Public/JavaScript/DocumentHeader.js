@@ -11,7 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/**
+ * Calculates the height of the docHeader and hides it upon scrolling
+ */
 define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
+	"use strict";
 
 	var DocumentHeader = {
 		$documentHeader: null,
@@ -35,7 +39,7 @@ define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
 				moduleSearchBar: '.t3js-module-docheader-bar-search',
 				moduleBody: '.t3js-module-body'
 
-			},
+			}
 		}
 	};
 
@@ -49,32 +53,25 @@ define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
 	};
 
 	/**
-	 * Resize
-	 */
-	DocumentHeader.resize = function() {
-		DocumentHeader.reposition();
-	};
-
-	/**
 	 * Scroll
 	 */
 	DocumentHeader.scroll = function() {
 		DocumentHeader.currentPosition = $(window).scrollTop();
-		if (DocumentHeader.currentPosition > DocumentHeader.lastPosition){
-			if (DocumentHeader.direction !== 'down'){
+		if (DocumentHeader.currentPosition > DocumentHeader.lastPosition) {
+			if (DocumentHeader.direction !== 'down') {
 				DocumentHeader.direction = 'down';
 				DocumentHeader.changedPosition = DocumentHeader.currentPosition;
 			}
-		} else if (DocumentHeader.currentPosition < DocumentHeader.lastPosition){
-			if (DocumentHeader.direction !== 'up'){
+		} else if (DocumentHeader.currentPosition < DocumentHeader.lastPosition) {
+			if (DocumentHeader.direction !== 'up') {
 				DocumentHeader.direction = 'up';
 				DocumentHeader.changedPosition = DocumentHeader.currentPosition;
 			}
 		}
-		if(DocumentHeader.direction === "up" && (DocumentHeader.changedPosition - DocumentHeader.reactionRange) < DocumentHeader.currentPosition){
+		if (DocumentHeader.direction === 'up' && (DocumentHeader.changedPosition - DocumentHeader.reactionRange) < DocumentHeader.currentPosition) {
 			DocumentHeader.$documentHeader.css('margin-top', 0);
 		}
-		if(DocumentHeader.direction === "down" && (DocumentHeader.changedPosition + DocumentHeader.reactionRange) < DocumentHeader.currentPosition){
+		if (DocumentHeader.direction === 'down' && (DocumentHeader.changedPosition + DocumentHeader.reactionRange) < DocumentHeader.currentPosition) {
 			DocumentHeader.$documentHeader.css('margin-top', (DocumentHeader.$documentHeaderNavigationBar.outerHeight() + 4) * -1);
 		}
 		DocumentHeader.lastPosition = DocumentHeader.currentPosition;
@@ -85,7 +82,7 @@ define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
 	 */
 	DocumentHeader.start = function() {
 		DocumentHeader.reposition();
-		$(window).on('resize', DocumentHeader.resize);
+		$(window).on('resize', DocumentHeader.reposition);
 		$(window).on('scroll', DocumentHeader.scroll);
 	};
 
@@ -94,11 +91,11 @@ define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
 	 */
 	DocumentHeader.initialize = function() {
 		DocumentHeader.$documentHeader = $(DocumentHeader.settings.selectors.moduleDocumentHeader);
-		if(DocumentHeader.$documentHeader.length > 0){
+		if (DocumentHeader.$documentHeader.length > 0) {
 			DocumentHeader.$documentHeaderBars = $(DocumentHeader.settings.selectors.moduleDocheaderBar);
 			DocumentHeader.$documentHeaderNavigationBar = $(DocumentHeader.settings.selectors.moduleNavigationBar);
 			DocumentHeader.$documentHeaderSearchBar = $(DocumentHeader.settings.selectors.moduleSearchBar).remove();
-			if(DocumentHeader.$documentHeaderSearchBar.length > 0){
+			if (DocumentHeader.$documentHeaderSearchBar.length > 0) {
 				DocumentHeader.$documentHeader.append(DocumentHeader.$documentHeaderSearchBar);
 			}
 			DocumentHeader.$moduleBody = $(DocumentHeader.settings.selectors.moduleBody);
@@ -106,12 +103,7 @@ define('TYPO3/CMS/Backend/DocumentHeader', ['jquery'], function($) {
 		}
 	};
 
-	return function () {
-		$(document).ready(function() {
-			DocumentHeader.initialize();
-		});
-		TYPO3.DocumentHeader = DocumentHeader;
-		return DocumentHeader;
-	}();
+	$(DocumentHeader.initialize);
 
+	return DocumentHeader;
 });
