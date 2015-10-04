@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Setup\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\DefaultAvatarProvider;
+use TYPO3\CMS\Backend\Module\AbstractModule;
+use TYPO3\CMS\Backend\Module\ModuleLoader;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -32,11 +35,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Script class for the Setup module
  */
-class SetupModuleController
+class SetupModuleController extends AbstractModule
 {
+    /**
+     * Flag if password has not been updated
+     */
     const PASSWORD_NOT_UPDATED = 0;
+
+    /**
+     * Flag if password has been updated
+     */
     const PASSWORD_UPDATED = 1;
+
+    /**
+     * Flag if both new passwords do not match
+     */
     const PASSWORD_NOT_THE_SAME = 2;
+
+    /**
+     * Flag if the current password given was not identical to the real
+     * current password
+     */
     const PASSWORD_OLD_WRONG = 3;
 
     /**
@@ -146,10 +165,16 @@ class SetupModuleController
     protected $moduleName = 'user_setup';
 
     /**
+     * @var ModuleLoader
+     */
+    protected $loadModules;
+
+    /**
      * Instantiate the form protection before a simulated user is initialized.
      */
     public function __construct()
     {
+        parent::__construct();
         $this->formProtection = FormProtectionFactory::get();
     }
 
@@ -330,9 +355,9 @@ class SetupModuleController
         }
         // Create instance of object for output of data
         $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:setup/Resources/Private/Templates/setup.html');
-        $this->doc->form = '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="multipart/form-data">';
-        $this->doc->JScode .= $this->getJavaScript();
+        $this->moduleTemplate->setForm(
+            '<form action="' . BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="multipart/form-data">'
+        );
     }
 
     /**
@@ -360,23 +385,23 @@ class SetupModuleController
     public function main()
     {
         if ($this->languageUpdate) {
-            $this->doc->JScodeArray['languageUpdate'] .= '
-				if (top.refreshMenu) {
-					top.refreshMenu();
-				} else {
-					top.TYPO3ModuleMenu.refreshMenu();
-				}
-			';
+            $this->moduleTemplate->addJavaScriptCode('languageUpdate', '
+                if (top.refreshMenu) {
+                    top.refreshMenu();
+                } else {
+                    top.TYPO3ModuleMenu.refreshMenu();
+                }
+            ');
         }
         if ($this->pagetreeNeedsRefresh) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
         // Start page:
-        $this->doc->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
+        $this->moduleTemplate->loadJavascriptLib('sysext/backend/Resources/Public/JavaScript/md5.js');
         // Use a wrapper div
         $this->content .= '<div id="user-setup-wrapper">';
         // Load available backend modules
-        $this->loadModules = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Module\ModuleLoader::class);
+        $this->loadModules = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->loadModules->observeWorkspaces = true;
         $this->loadModules->load($GLOBALS['TBE_MODULES']);
         $this->content .= $this->doc->header($this->getLanguageService()->getLL('UserSettings'));
@@ -431,20 +456,17 @@ class SetupModuleController
         $this->content .= $this->doc->getDynamicTabMenu($menuItems, 'user-setup', 1, false, false);
         $formToken = $this->formProtection->generateToken('BE user setup', 'edit');
         $this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
-			<input type="hidden" name="formToken" value="' . $formToken . '" />
-			<input type="hidden" value="1" name="data[save]" />
-			<input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
-			<input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />');
+            <input type="hidden" name="formToken" value="' . $formToken . '" />
+            <input type="hidden" value="1" name="data[save]" />
+            <input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
+            <input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />');
         // End of wrapper div
         $this->content .= '</div>';
         // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CSH'] = $docHeaderButtons['csh'];
-        $markers['CONTENT'] = $this->content;
+        $this->getButtons();
         // Build the <body> for the module
-        $this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
         // Renders the module page
-        $this->content = $this->doc->render($this->getLanguageService()->getLL('UserSettings'), $this->content);
+        $this->moduleTemplate->setContent($this->content);
     }
 
 
@@ -464,7 +486,7 @@ class SetupModuleController
         $this->init();
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -482,26 +504,29 @@ class SetupModuleController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
-     *
-     * @return array All available buttons as an assoc. array
      */
     protected function getButtons()
     {
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $buttons = array(
-            'csh' => '',
-            'save' => '',
-            'shortcut' => ''
-        );
-        $buttons['csh'] = BackendUtility::cshItem('_MOD_user_setup', '');
-        $buttons['save'] = '<button class="c-inputButton" name="data[save]" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '">'
-            . $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-            . '</button>';
+        $cshButton = $buttonBar->makeFullyRenderedButton()
+            ->setHtmlSource(BackendUtility::cshItem('_MOD_user_setup', ''));
+        $buttonBar->addButton($cshButton, ButtonBar::BUTTON_POSITION_RIGHT, 99);
+
+        $saveButton = $buttonBar->makeInputButton()
+            ->setName('data[save]')
+            ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+            ->setValue('1')
+            ->setShowLabelText(true)
+            ->setIcon($iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL));
+
+        $buttonBar->addButton($saveButton);
         if ($this->getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->moduleName);
+            $shortCutButton = $buttonBar->makeFullyRenderedButton()
+                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', '', $this->moduleName));
+            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
-        return $buttons;
     }
 
     /******************************
@@ -518,10 +543,10 @@ class SetupModuleController
      */
     protected function renderUserSetup()
     {
+        $html = '';
         $result = array();
         $firstTabLabel = '';
         $code = array();
-        $i = 0;
         $fieldArray = $this->getFieldsFromShowItem();
         $tabLabel = '';
         foreach ($fieldArray as $fieldName) {
@@ -537,7 +562,6 @@ class SetupModuleController
                         'content' => count($code) ? implode(LF, $code) : ''
                     );
                     $tabLabel = $this->getLabel(substr($fieldName, 8), '', false);
-                    $i = 0;
                     $code = array();
                 }
                 continue;
@@ -590,8 +614,8 @@ class SetupModuleController
                         $more .= ' data-rsa-encryption=""';
                     }
                     $html = '<input id="field_' . $fieldName . '"
-						type="' . $type . '"
-						name="data' . $dataAdd . '[' . $fieldName . ']" ' .
+                        type="' . $type . '"
+                        name="data' . $dataAdd . '[' . $fieldName . ']" ' .
                         $noAutocomplete .
                         'value="' . htmlspecialchars($value) . '" ' .
                         $more .
@@ -599,8 +623,8 @@ class SetupModuleController
                     break;
                 case 'check':
                     $html = $label . '<div class="checkbox"><label><input id="field_' . $fieldName . '"
-						type="checkbox"
-						name="data' . $dataAdd . '[' . $fieldName . ']"' .
+                        type="checkbox"
+                        name="data' . $dataAdd . '[' . $fieldName . ']"' .
                         ($value ? ' checked="checked"' : '') .
                         $more .
                         ' /></label></div>';
@@ -611,7 +635,7 @@ class SetupModuleController
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
                     } else {
                         $html = '<select id="field_' . $fieldName . '"
-							name="data' . $dataAdd . '[' . $fieldName . ']"' .
+                            name="data' . $dataAdd . '[' . $fieldName . ']"' .
                             $more . '>' . LF;
                         foreach ($config['items'] as $key => $optionLabel) {
                             $html .= '<option value="' . $key . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
@@ -632,8 +656,8 @@ class SetupModuleController
                             $onClick = vsprintf($onClick, $config['onClickLabels']);
                         }
                         $html = '<br><input class="btn btn-default" type="button"
-							value="' . $this->getLabel($config['buttonlabel'], '', false) . '"
-							onclick="' . $onClick . '" />';
+                            value="' . $this->getLabel($config['buttonlabel'], '', false) . '"
+                            onclick="' . $onClick . '" />';
                     }
                     break;
                 case 'avatar':
@@ -647,7 +671,7 @@ class SetupModuleController
                         if ($avatarImage) {
                             $icon = '<span class="avatar"><span class="avatar-image">' .
                                 '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '"' .
-                                'width="' . (int)$avatarImage->getWidth() . '" ' .
+                                ' width="' . (int)$avatarImage->getWidth() . '" ' .
                                 'height="' . (int)$avatarImage->getHeight() . '" />' .
                                 '</span></span>';
                             $html .= '<span class="pull-left" style="padding-right: 10px" id="image_' . htmlspecialchars($fieldName) . '">' . $icon . ' </span>';
@@ -702,9 +726,11 @@ class SetupModuleController
     /**
      * Return a select with available languages
      *
+     * @param array $params
+     *
      * @return string Complete select as HTML string or warning box if something went wrong.
      */
-    public function renderLanguageSelect($params, $pObj)
+    public function renderLanguageSelect($params)
     {
         $languageOptions = array();
         // Compile the languages dropdown
@@ -730,8 +756,8 @@ class SetupModuleController
         }
         ksort($languageOptions);
         $languageCode = '
-				<select id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
-				</select>';
+            <select id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
+            </select>';
         if ($this->getBackendUser()->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $this->getBackendUser()->uc['lang']))) {
             $languageUnavailableWarning = 'The selected language "' . $this->getLanguageService()->getLL(('lang_' . $this->getBackendUser()->uc['lang']), true) . '" is not available before the language files are installed.<br />' . ($this->getBackendUser()->isAdmin() ? 'You can use the Language module to easily download new language files.' : 'Please ask your system administrator to do this.');
             $languageUnavailableMessage = GeneralUtility::makeInstance(FlashMessage::class, $languageUnavailableWarning, '', FlashMessage::WARNING);
@@ -742,6 +768,9 @@ class SetupModuleController
 
     /**
      * Returns a select with all modules for startup
+     *
+     * @param array $params
+     * @param SetupModuleController $pObj
      *
      * @return string Complete select as HTML string
      */
@@ -989,28 +1018,28 @@ class SetupModuleController
     protected function addAvatarButtonJs($fieldName)
     {
         $this->doc->JScodeArray['avatar-button'] = '
-			var browserWin="";
+            var browserWin="";
 
-			function openFileBrowser() {
-				var url = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy|setFileUid'])) . ';
-				browserWin = window.open(url,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
-				browserWin.focus();
-			}
+            function openFileBrowser() {
+                var url = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy|setFileUid'])) . ';
+                browserWin = window.open(url,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
+                browserWin.focus();
+            }
 
-			function clearExistingImage() {
-				TYPO3.jQuery(\'#image_' . htmlspecialchars($fieldName) . '\').hide();
-				TYPO3.jQuery(\'#clear_button_' . htmlspecialchars($fieldName) . '\').hide();
-				TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(\'\');
-			}
+            function clearExistingImage() {
+                TYPO3.jQuery(\'#image_' . htmlspecialchars($fieldName) . '\').hide();
+                TYPO3.jQuery(\'#clear_button_' . htmlspecialchars($fieldName) . '\').hide();
+                TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(\'\');
+            }
 
-			function setFileUid(field, value, fileUid) {
-				clearExistingImage();
-				TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(fileUid);
-				TYPO3.jQuery(\'#add_button_' . htmlspecialchars($fieldName) . '\').removeClass(\'btn-default\').addClass(\'btn-info\');
+            function setFileUid(field, value, fileUid) {
+                clearExistingImage();
+                TYPO3.jQuery(\'#field_' . htmlspecialchars($fieldName) . '\').val(fileUid);
+                TYPO3.jQuery(\'#add_button_' . htmlspecialchars($fieldName) . '\').removeClass(\'btn-default\').addClass(\'btn-info\');
 
-				browserWin.close();
-			}
-		';
+                browserWin.close();
+            }
+        ';
     }
 
     /**
