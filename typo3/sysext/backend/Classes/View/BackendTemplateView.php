@@ -20,7 +20,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
- * Decorates the main template view. Should be used as view if you want Fluid Templating in a backend moduel
+ * Decorates the main template view. Should be used as view if you want to use
+ * Fluid templates in a backend module in order to have a consistent backend.
  *
  * @api
  */
