@@ -156,6 +156,13 @@ class ModuleTemplate {
 	protected $moduleName = '';
 
 	/**
+	 * Title Tag
+	 *
+	 * @var string
+	 */
+	protected $title = '';
+
+	/**
 	 * Get template root path
 	 *
 	 * @return string
@@ -174,6 +181,15 @@ class ModuleTemplate {
 	public function setContent($content) {
 		$this->view->assign('content', $content);
 	}
+
+	/**
+	 * @param string $title
+	 */
+	public function setTitle($title) {
+		$this->title = $title;
+	}
+
+
 
 	/**
 	 * Class constructor
@@ -268,6 +284,7 @@ class ModuleTemplate {
 	 */
 	public function renderContent() {
 		$this->setupPage();
+		$this->pageRenderer->setTitle($this->title);
 		$this->loadJavaScripts();
 		$this->setJavaScriptCodeArray();
 		$this->loadStylesheets();
