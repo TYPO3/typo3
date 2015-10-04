@@ -1,12 +1,5 @@
 {namespace csh=TYPO3\CMS\Cshmanual\ViewHelpers}
-{namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="Default" />
-
-<f:section name="docheader">
-	<a href="{f:uri.action(action:'index')}">
-		<core:icon identifier="actions-view-go-up" />
-	</a>
-</f:section>
 
 <f:section name="content">
 	<f:for each="{manuals}" as="manual">

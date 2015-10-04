@@ -34,7 +34,12 @@ define('TYPO3/CMS/Backend/ContextHelp', ['jquery', 'TYPO3/CMS/Backend/Popover', 
 	 * Initialize context help trigger
 	 */
 	ContextHelp.initialize = function() {
-		ContextHelp.helpModuleUrl = top.TYPO3.settings.ContextHelp.moduleUrl;
+		ContextHelp.helpModuleUrl = (typeof top.TYPO3.settings.ContextHelp !== 'undefined') ? top.TYPO3.settings.ContextHelp.moduleUrl : null;
+		if (ContextHelp.helpModuleUrl === null) {
+			// @FIXME: if we are in the popup... remove the bookmark / shortcut button
+			// @TODO: make it possible to use the bookmark button also in popup mode
+			$('.icon-actions-system-shortcut-new').closest('.btn').hide();
+		}
 		var title = '&nbsp;';
 		if (typeof(top.TYPO3.LLL) !== 'undefined') {
 			title = top.TYPO3.LLL.core.csh_tooltip_loading;

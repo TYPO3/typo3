@@ -1,31 +1,6 @@
-<f:be.container>
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<div class="left">
-					<f:be.buttons.csh />
-				</div>
-				<div class="right">
-				</div>
-			</div>
-			<div class="typo3-docheader-buttons">
-				<div class="left">
-					<f:render section="docheader" />
-				</div>
-				<div class="right">
-					<f:be.buttons.shortcut />
-				</div>
-			</div>
-		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:render section="content" />
+<f:render section="content" />
 
-				<hr />
-				<p>
-					<f:format.raw>{copyright}</f:format.raw>
-				</p>
-			</div>
-		</div>
-	</div>
-</f:be.container>
+<hr />
+<p>
+	<f:format.raw>{copyright}</f:format.raw>
+</p>

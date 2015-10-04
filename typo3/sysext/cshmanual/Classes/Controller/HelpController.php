@@ -14,10 +14,16 @@ namespace TYPO3\CMS\Cshmanual\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Cshmanual\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Main help module controller
@@ -28,12 +34,23 @@ class HelpController extends ActionController
      * Section identifiers
      */
     const FULL = 0;
+
+    /**
+     * Show only Table of contents
+     */
     const TOC_ONLY = 1;
 
     /**
      * @var TableManualRepository
      */
     protected $tableManualRepository;
+
+    /**
+     * Default View Container
+     *
+     * @var BackendTemplateView
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
      * Initialize the controller
@@ -48,11 +65,14 @@ class HelpController extends ActionController
     /**
      * Initialize the view
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view The view
+     * @param ViewInterface $view The view
      * @return void
      */
-    public function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view)
+    public function initializeView(ViewInterface $view)
     {
+        /** @var BackendTemplateView $view */
+        parent::initializeView($view);
+        $this->registerDocheaderButtons();
         $view->assign('copyright', BackendUtility::TYPO3_copyRightNotice());
     }
 
@@ -118,5 +138,60 @@ class HelpController extends ActionController
             'field' => $field,
             'manuals' => $field === '*' ? $this->tableManualRepository->getTableManual($mainKey) : array($this->tableManualRepository->getSingleManual($mainKey, $field)),
         ));
+    }
+
+    /**
+     * Registers the Icons into the docheader
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function registerDocheaderButtons()
+    {
+        /** @var ButtonBar $buttonBar */
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $currentRequest = $this->request;
+        $moduleName = $currentRequest->getPluginName();
+        $getVars = $this->request->getArguments();
+
+        $mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
+
+        if ($mayMakeShortcut) {
+            $extensionName = $currentRequest->getControllerExtensionName();
+            if (count($getVars) === 0) {
+                $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+                $getVars = array('id', 'M', $modulePrefix);
+            }
+            $getList = implode(',', $getVars);
+            $shortcutButton = $buttonBar->makeFullyRenderedButton()
+                ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
+            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        }
+        if (isset($getVars['action']) && $getVars['action'] !== 'index') {
+            $backButton = $buttonBar->makeLinkButton()
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back', true))
+                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL))
+                ->setHref(BackendUtility::getModuleUrl($moduleName));
+            $buttonBar->addButton($backButton);
+        }
+    }
+
+    /**
+     * Returns the currently logged in BE user
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Returns the LanguageService
+     *
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
