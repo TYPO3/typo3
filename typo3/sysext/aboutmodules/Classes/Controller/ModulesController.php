@@ -15,10 +15,13 @@ namespace TYPO3\CMS\Aboutmodules\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Lang\LanguageService;
 
 /**
@@ -36,10 +39,30 @@ class ModulesController extends ActionController {
 	protected $languageService;
 
 	/**
+	 * BackendTemplateView Container
+	 *
+	 * @var BackendTemplateView
+	 */
+	protected $defaultViewObjectName = BackendTemplateView::class;
+
+	/**
 	 * @param LanguageService $languageService Language Service to inject
 	 */
 	public function __construct(LanguageService $languageService = NULL) {
+		parent::__construct();
 		$this->languageService = $languageService ?: $GLOBALS['LANG'];
+	}
+
+	/**
+	 * Set up the doc header properly here
+	 *
+	 * @param ViewInterface $view
+	 */
+	protected function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		// Disable Path
+		$view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
 	}
 
 	/**
