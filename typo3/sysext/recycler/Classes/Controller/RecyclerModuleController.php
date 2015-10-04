@@ -14,13 +14,18 @@ namespace TYPO3\CMS\Recycler\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
  * Module 'Recycler' for the 'recycler' extension.
  */
-class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class RecyclerModuleController extends ActionController {
 
 	/**
 	 * @var string
@@ -58,6 +63,18 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	protected $id;
 
 	/**
+	 * @var BackendTemplateView
+	 */
+	protected $view;
+
+	/**
+	 * BackendTemplateView Container
+	 *
+	 * @var BackendTemplateView
+	 */
+	protected $defaultViewObjectName = BackendTemplateView::class;
+
+	/**
 	 * Initializes the Module
 	 *
 	 * @return void
@@ -88,6 +105,18 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	}
 
 	/**
+	 * Initialize the view
+	 *
+	 * @param ViewInterface $view The view
+	 * @return void
+	 */
+	public function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		$this->registerDocheaderButtons();
+	}
+
+	/**
 	 * Renders the content of the module.
 	 *
 	 * @return void
@@ -95,11 +124,46 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	public function indexAction() {
 		// Integrate dynamic JavaScript such as configuration or lables:
 		$jsConfiguration = $this->getJavaScriptConfiguration();
-		$this->getPageRenderer()->addInlineSettingArray('Recycler', $jsConfiguration);
-		$this->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
+		$this->view->getModuleTemplate()->getPageRenderer()->addInlineSettingArray('Recycler', $jsConfiguration);
+		$this->view->getModuleTemplate()->getPageRenderer()->addInlineLanguageLabelFile('EXT:recycler/Resources/Private/Language/locallang.xlf');
+		$this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageRecord);
 
 		$this->view->assign('title', $this->getLanguageService()->getLL('title'));
 		$this->view->assign('allowDelete', $this->allowDelete);
+	}
+
+	/**
+	 * Registers the Icons into the docheader
+	 *
+	 * @return void
+	 * @throws \InvalidArgumentException
+	 */
+	protected function registerDocheaderButtons() {
+		/** @var ButtonBar $buttonBar */
+		$buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+		$currentRequest = $this->request;
+		$moduleName = $currentRequest->getPluginName();
+		$getVars = $this->request->getArguments();
+
+		$mayMakeShortcut = $this->getBackendUser()->mayMakeShortcut();
+
+		if ($mayMakeShortcut) {
+			$extensionName = $currentRequest->getControllerExtensionName();
+			if (count($getVars) === 0) {
+				$modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+				$getVars = array('id', 'M', $modulePrefix);
+			}
+			$getList = implode(',', $getVars);
+			$shortcutButton = $buttonBar->makeFullyRenderedButton()
+				->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
+			$buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+		}
+		$reloadButton = $buttonBar->makeLinkButton()
+			->setHref('#')
+			->setDataAttributes(['action' => 'reload'])
+			->setTitle($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:button.reload', TRUE))
+			->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-refresh', Icon::SIZE_SMALL));
+		$buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_LEFT);
 	}
 
 	/**
@@ -172,14 +236,5 @@ class RecyclerModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 	 */
 	protected function getLanguageService() {
 		return $GLOBALS['LANG'];
-	}
-
-	/**
-	 * Returns current PageRenderer
-	 *
-	 * @return PageRenderer
-	 */
-	protected function getPageRenderer() {
-		return GeneralUtility::makeInstance(PageRenderer::class);
 	}
 }

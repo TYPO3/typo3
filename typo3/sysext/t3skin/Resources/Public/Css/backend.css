@@ -7859,9 +7859,6 @@ button.close {
   width: 100%;
   background-color: #ffffff;
 }
-.module form {
-  margin: 0;
-}
 .module-docheader {
   position: fixed;
   width: 100%;

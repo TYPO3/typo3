@@ -187,7 +187,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 	 * Initialize the recycler module
 	 */
 	Recycler.initialize = function() {
-		NProgress.configure({parent: '#typo3-docheader', showSpinner: false});
+		NProgress.configure({parent: 'body', showSpinner: false});
 
 		Recycler.getElements();
 		Recycler.registerEvents();

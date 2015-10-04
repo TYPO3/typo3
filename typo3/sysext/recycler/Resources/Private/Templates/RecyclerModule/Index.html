@@ -1,28 +1,30 @@
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
 <f:layout name="Default" />
 
-<f:section name="iconButtons">
-	<a data-action="reload" title="{f:translate(key:'button.reload')}"><core:icon identifier="actions-refresh" /></a>
-</f:section>
-
 <f:section name="content">
 	<div id="recycler-index" class="tx_recycler_recycler">
-		<form id="recycler-form" class="form-inline">
-			<div class="input-group">
-				<input type="text" name="search-text" class="form-control">
-				<span class="input-group-btn">
-					<button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
-				</span>
+		<form id="recycler-form" class="form-inline form-inline-spaced">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" name="search-text" class="form-control">
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-default disabled"><core:icon identifier="actions-search" /></button>
+					</span>
+				</div>
 			</div>
-			<select name="depth" class="form-control">
-				<option value="0"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_0" /></option>
-				<option value="1"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_1" /></option>
-				<option value="2"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_2" /></option>
-				<option value="3"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_3" /></option>
-				<option value="4"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_4" /></option>
-				<option value="999"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_infi" /></option>
-			</select>
-			<select name="pages" class="form-control"></select>
+			<div class="form-group">
+				<select name="depth" class="form-control">
+					<option value="0"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_0" /></option>
+					<option value="1"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_1" /></option>
+					<option value="2"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_2" /></option>
+					<option value="3"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_3" /></option>
+					<option value="4"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_4" /></option>
+					<option value="999"><f:translate key="LLL:EXT:lang/locallang_core.xlf:labels.depth_infi" /></option>
+				</select>
+			</div>
+			<div class="form-group">
+				<select name="pages" class="form-control"></select>
+			</div>
 		</form>
 		<table class="table table-hover" id="itemsInRecycler">
 			<thead>
