@@ -266,9 +266,49 @@ class ActionController extends AbstractController {
 	 * @api
 	 */
 	protected function callActionMethod() {
-		$actionResult = $this->processActionResult();
-		$content = $this->resolveActionResult($actionResult);
-		$this->appendContent($content);
+		$preparedArguments = array();
+		/** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
+		foreach ($this->arguments as $argument) {
+			$preparedArguments[] = $argument->getValue();
+		}
+		$validationResult = $this->arguments->getValidationResults();
+		if (!$validationResult->hasErrors()) {
+			$this->emitBeforeCallActionMethodSignal($preparedArguments);
+			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+		} else {
+			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+			$ignoreValidationAnnotations = array();
+			if (isset($methodTagsValues['ignorevalidation'])) {
+				$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
+			}
+			// if there exist errors which are not ignored with @ignorevalidation => call error method
+			// else => call action method
+			$shouldCallActionMethod = TRUE;
+			foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
+				if (!$subValidationResult->hasErrors()) {
+					continue;
+				}
+				if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) {
+					continue;
+				}
+				$shouldCallActionMethod = FALSE;
+				break;
+			}
+			if ($shouldCallActionMethod) {
+				$this->emitBeforeCallActionMethodSignal($preparedArguments);
+				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
+			} else {
+				$actionResult = call_user_func(array($this, $this->errorMethodName));
+			}
+		}
+
+		if ($actionResult === NULL && $this->view instanceof ViewInterface) {
+			$this->response->appendContent($this->view->render());
+		} elseif (is_string($actionResult) && $actionResult !== '') {
+			$this->response->appendContent($actionResult);
+		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
+			$this->response->appendContent((string)$actionResult);
+		}
 	}
 
 	/**
@@ -573,76 +613,4 @@ class ActionController extends AbstractController {
 		return $result;
 	}
 
-	/**
-	 * If the action returns a string, it is appended to the content in the
-	 * response object. If the action does not return anything and a valid
-	 * view exists, the view is rendered automatically.
-	 *
-	 * @param string|object $actionResult
-	 * @return NULL|string
-	 */
-	protected function resolveActionResult($actionResult) {
-		if ($actionResult === NULL && $this->view instanceof ViewInterface) {
-			return $this->view->render();
-		} elseif (is_string($actionResult) && $actionResult !== '') {
-			return $actionResult;
-		} elseif (is_object($actionResult) && method_exists($actionResult, '__toString')) {
-			return (string)$actionResult;
-		}
-		return NULL;
-	}
-
-	/**
-	 * Appends content to response object.
-	 *
-	 * @param string $content
-	 */
-	protected function appendContent($content) {
-		$this->response->appendContent($content);
-	}
-
-	/**
-	 * Calls the specified action method and passes the arguments.
-	 *
-	* @return string|object
-	 */
-	protected function processActionResult() {
-		$preparedArguments = array();
-		foreach ($this->arguments as $argument) {
-			$preparedArguments[] = $argument->getValue();
-		}
-		$validationResult = $this->arguments->getValidationResults();
-		if (!$validationResult->hasErrors()) {
-			$this->emitBeforeCallActionMethodSignal($preparedArguments);
-			$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
-			return $actionResult;
-		} else {
-			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
-			$ignoreValidationAnnotations = array();
-			if (isset($methodTagsValues['ignorevalidation'])) {
-				$ignoreValidationAnnotations = $methodTagsValues['ignorevalidation'];
-			}
-			// if there exist errors which are not ignored with @ignorevalidation => call error method
-			// else => call action method
-			$shouldCallActionMethod = TRUE;
-			foreach ($validationResult->getSubResults() as $argumentName => $subValidationResult) {
-				if (!$subValidationResult->hasErrors()) {
-					continue;
-				}
-				if (array_search('$' . $argumentName, $ignoreValidationAnnotations) !== FALSE) {
-					continue;
-				}
-				$shouldCallActionMethod = FALSE;
-				break;
-			}
-			if ($shouldCallActionMethod) {
-				$this->emitBeforeCallActionMethodSignal($preparedArguments);
-				$actionResult = call_user_func_array(array($this, $this->actionMethodName), $preparedArguments);
-				return $actionResult;
-			} else {
-				$actionResult = call_user_func(array($this, $this->errorMethodName));
-				return $actionResult;
-			}
-		}
-	}
 }
