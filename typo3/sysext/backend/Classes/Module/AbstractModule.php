@@ -37,18 +37,10 @@ class AbstractModule {
 	protected $moduleTemplate;
 
 	/**
-	 * IconFactory object
-	 *
-	 * @var IconFactory
-	 */
-	protected $iconFactory;
-
-	/**
 	 * Constructor Method
 	 */
 	public function __construct() {
 		$this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-		$this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 	}
 
 	/**

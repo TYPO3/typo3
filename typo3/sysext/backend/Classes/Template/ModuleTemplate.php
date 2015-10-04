@@ -183,13 +183,22 @@ class ModuleTemplate {
 	}
 
 	/**
+	 * Set title tag
+	 *
 	 * @param string $title
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
 	}
 
-
+	/**
+	 * Returns the IconFactory
+	 *
+	 * @return IconFactory
+	 */
+	public function getIconFactory() {
+		return $this->iconFactory;
+	}
 
 	/**
 	 * Class constructor
