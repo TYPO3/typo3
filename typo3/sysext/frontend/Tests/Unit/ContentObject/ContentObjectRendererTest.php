@@ -1922,6 +1922,77 @@ class ContentObjectRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * Data provider for stdWrap_case test
+	 *
+	 * @return array
+	 */
+	public function stdWrap_caseDataProvider() {
+		return array(
+			'lower case text to upper' => array(
+				'<span>text</span>',
+				array(
+					'case' => 'upper',
+				),
+				'<span>TEXT</span>',
+			),
+			'upper case text to lower' => array(
+				'<span>TEXT</span>',
+				array(
+					'case' => 'lower',
+				),
+				'<span>text</span>',
+			),
+			'capitalize text' => array(
+				'<span>this is a text</span>',
+				array(
+					'case' => 'capitalize',
+				),
+				'<span>This Is A Text</span>',
+			),
+			'ucfirst text' => array(
+				'<span>this is a text</span>',
+				array(
+					'case' => 'ucfirst',
+				),
+				'<span>This is a text</span>',
+			),
+			'lcfirst text' => array(
+				'<span>This is a Text</span>',
+				array(
+					'case' => 'lcfirst',
+				),
+				'<span>this is a Text</span>',
+			),
+			'uppercamelcase text' => array(
+				'<span>this_is_a_text</span>',
+				array(
+					'case' => 'uppercamelcase',
+				),
+				'<span>ThisIsAText</span>',
+			),
+			'lowercamelcase text' => array(
+				'<span>this_is_a_text</span>',
+				array(
+					'case' => 'lowercamelcase',
+				),
+				'<span>thisIsAText</span>',
+			),
+		);
+	}
+
+	/**
+	 * @param string|NULL $content
+	 * @param array $configuration
+	 * @param string $expected
+	 * @dataProvider stdWrap_caseDataProvider
+	 * @test
+	 */
+	public function stdWrap_case($content, array $configuration, $expected) {
+		$result = $this->subject->stdWrap_case($content, $configuration);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * Data provider for stdWrap_stdWrapValue test
 	 *
 	 * @return array
