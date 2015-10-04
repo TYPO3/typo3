@@ -50,16 +50,24 @@ class ResetJsonElement extends \TYPO3\CMS\Form\Domain\Model\Json\AbstractJsonEle
 	 */
 	protected $allowedAttributes = array(
 		'accesskey',
-		'alt',
 		'class',
+		'contenteditable',
+		'contextmenu',
 		'dir',
-		'disabled',
+		'draggable',
+		'dropzone',
+		'hidden',
 		'id',
 		'lang',
-		'name:',
+		'spellcheck',
 		'style',
 		'tabindex',
 		'title',
+		'translate',
+		/* element specific attributes */
+		'autofocus',
+		'disabled',
+		'name',
 		'type',
 		'value'
 	);
