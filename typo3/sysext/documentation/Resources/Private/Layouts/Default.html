@@ -1,26 +1,5 @@
-{namespace doc=TYPO3\CMS\Documentation\ViewHelpers}
-
-<f:be.container pageTitle="{f:translate(key: 'documentation_manager')}" enableClickMenu="false" loadJQuery="true"
-	includeRequireJsModules="{
-		0: 'TYPO3/CMS/Documentation/Main'
-	}">
-
-	<div id="typo3-docheader">
-		<div class="typo3-docheader-functions">
-			<f:be.menus.actionMenu>
-				<f:be.menus.actionMenuItem label="{f:translate(key: 'showDocumentation')}" controller="Document" action="list" />
-				<doc:be.security.ifAdmin>
-					<f:be.menus.actionMenuItem label="{f:translate(key: 'downloadDocumentation')}" controller="Document" action="download" />
-				</doc:be.security.ifAdmin>
-			</f:be.menus.actionMenu>
-		</div>
-		<div class="typo3-docheader-buttons"></div>
-	</div>
-	<div id="typo3-docbody">
-		<div id="typo3-inner-docbody" class="typo3-documentation">
-			<f:render section="module-headline" />
-			<f:flashMessages />
-			<f:render section="Content" />
-		</div>
-	</div>
-</f:be.container>
+<div class="typo3-documentation">
+	<f:render section="module-headline" />
+	<f:flashMessages />
+	<f:render section="Content" />
+</div>

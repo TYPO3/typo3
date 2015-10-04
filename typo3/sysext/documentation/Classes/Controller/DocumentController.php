@@ -14,59 +14,122 @@ namespace TYPO3\CMS\Documentation\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository;
+use TYPO3\CMS\Documentation\Service\DocumentationService;
+use TYPO3\CMS\Documentation\Utility\LanguageUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Main controller of the Documentation module.
  */
-class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class DocumentController extends ActionController {
 
 	/**
-	 * @var \TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository
+	 * @var DocumentRepository
 	 */
 	protected $documentRepository;
 
 	/**
-	 * @var \TYPO3\CMS\Documentation\Service\DocumentationService
+	 * @var DocumentationService
 	 */
 	protected $documentationService;
 
 	/**
-	 * @var \TYPO3\CMS\Documentation\Utility\LanguageUtility
+	 * @var LanguageUtility
 	 */
 	protected $languageUtility;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @var Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 
 	/**
-	 * @param \TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository $documentRepository
+	 * Backend Template Container
+	 *
+	 * @var BackendTemplateView
 	 */
-	public function injectDocumentRepository(\TYPO3\CMS\Documentation\Domain\Repository\DocumentRepository $documentRepository) {
+	protected $defaultViewObjectName = BackendTemplateView::class;
+
+	/**
+	 * BackendTemplateContainer
+	 *
+	 * @var BackendTemplateView
+	 */
+	protected $view;
+
+	/**
+	 * Set up the doc header properly here
+	 *
+	 * @param ViewInterface $view
+	 */
+	protected function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		$view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+		$uriBuilder = $this->objectManager->get(UriBuilder::class);
+		$uriBuilder->setRequest($this->request);
+
+		$this->view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Documentation/Main');
+		$menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+		$menu->setIdentifier('DocumentationModuleMenu');
+
+		$isListActive = $this->request->getControllerActionName() === 'list' ? TRUE : FALSE;
+		$uri = $uriBuilder->reset()->uriFor('list', array(), 'Document');
+		$listMenuItem = $menu->makeMenuItem()
+			->setTitle($this->getLanguageService()->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:showDocumentation'))
+			->setHref($uri)
+			->setActive($isListActive);
+		$menu->addMenuItem($listMenuItem);
+
+		if ($this->getBackendUser()->isAdmin()) {
+			$isDownloadActive = $this->request->getControllerActionName() ===
+			'download' ? TRUE : FALSE;
+			$uri =
+				$uriBuilder->reset()->uriFor('download', array(), 'Document');
+			$downloadMenuItem = $menu->makeMenuItem()
+				->setTitle($this->getLanguageService()->sL('LLL:EXT:documentation/Resources/Private/Language/locallang.xlf:downloadDocumentation'))
+				->setHref($uri)
+				->setActive($isDownloadActive);
+			$menu->addMenuItem($downloadMenuItem);
+		}
+
+		$this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+	}
+
+	/**
+	 * @param DocumentRepository $documentRepository
+	 */
+	public function injectDocumentRepository(DocumentRepository $documentRepository) {
 		$this->documentRepository = $documentRepository;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Documentation\Service\DocumentationService $documentationService
+	 * @param DocumentationService $documentationService
 	 */
-	public function injectDocumentationService(\TYPO3\CMS\Documentation\Service\DocumentationService $documentationService) {
+	public function injectDocumentationService(DocumentationService $documentationService) {
 		$this->documentationService = $documentationService;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Documentation\Utility\LanguageUtility $languageUtility
+	 * @param LanguageUtility $languageUtility
 	 */
-	public function injectLanguageUtility(\TYPO3\CMS\Documentation\Utility\LanguageUtility $languageUtility) {
+	public function injectLanguageUtility(LanguageUtility $languageUtility) {
 		$this->languageUtility = $languageUtility;
 	}
 
 	/**
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 * @param Dispatcher $signalSlotDispatcher
 	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+	public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher) {
 		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
@@ -76,6 +139,8 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return void
 	 */
 	public function listAction() {
+		$this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
+
 		$documents = $this->getDocuments();
 
 		// Filter documents to be shown for current user
@@ -167,7 +232,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$result = $this->documentationService->fetchNearestDocument($url, $key, $version ?: 'latest', $language);
 			if ($result) {
 				$this->addFlashMessage(
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					LocalizationUtility::translate(
 						'downloadSucceeded',
 						'documentation'
 					),
@@ -176,11 +241,11 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 				);
 			} else {
 				$this->addFlashMessage(
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					LocalizationUtility::translate(
 						'downloadFailedNoArchive',
 						'documentation'
 					),
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+					LocalizationUtility::translate(
 						'downloadFailed',
 						'documentation'
 					),
@@ -189,7 +254,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			}
 		} catch (\Exception $e) {
 			$this->addFlashMessage(
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				LocalizationUtility::translate(
 					'downloadFailedDetails',
 					'documentation',
 					array(
@@ -198,7 +263,7 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 						$e->getCode()
 					)
 				),
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+				LocalizationUtility::translate(
 					'downloadFailed',
 					'documentation'
 				),
@@ -215,6 +280,15 @@ class DocumentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	protected function getBackendUser() {
 		return $GLOBALS['BE_USER'];
+	}
+
+	/**
+	 * Returns the LanguageService
+	 *
+	 * @return LanguageService
+	 */
+	protected function getLanguageService() {
+		return $GLOBALS['LANG'];
 	}
 
 }
