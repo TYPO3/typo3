@@ -358,7 +358,6 @@ class Commands
         $subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);
         $subNode->setQTip($qtip);
         if ((int)$record['uid'] !== 0) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $spriteIconCode = $iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render();
         } else {
             $spriteIconCode = $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();

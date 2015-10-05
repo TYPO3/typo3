@@ -84,11 +84,17 @@ class CreateFolderController
     public $content;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $GLOBALS['SOBE'] = $this;
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->init();
     }
 
@@ -119,9 +125,7 @@ class CreateFolderController
         }
 
         // Setting the title and the icon
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
+        $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
         $this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
         // Setting template object
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
@@ -284,10 +288,9 @@ class CreateFolderController
         $docHeaderButtons = array(
             'back' => ''
         );
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // Back
         if ($this->returnUrl) {
-            $docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+            $docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
         }
         // Add the HTML as a section:
         $markerArray = array(

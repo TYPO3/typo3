@@ -167,6 +167,11 @@ abstract class AbstractRecordList
     public $translateTools;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -174,6 +179,7 @@ abstract class AbstractRecordList
         if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
             $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
         }
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getTranslateTools();
         $this->determineScriptUrl();
     }
@@ -212,11 +218,11 @@ abstract class AbstractRecordList
      * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
      * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
      * @param string $_ OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
-     * @param string $_2 OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
+     * @param string $_ OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
      * @param string $colType Defines the tag being used for the columns. Default is td.
      * @return string HTML content for the table row
      */
-    public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_2 = '', $colType = 'td')
+    public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_ = '', $colType = 'td')
     {
         $colType = ($colType === 'th') ? 'th' : 'td';
         $noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
@@ -348,15 +354,14 @@ abstract class AbstractRecordList
     {
         $content = '';
         $tParam = $table ? '&table=' . rawurlencode($table) : '';
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         switch ($type) {
             case 'fwd':
                 $href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a> <i>[1 - ' . $pointer . ']</i>';
+                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a> <i>[1 - ' . $pointer . ']</i>';
                 break;
             case 'rwd':
                 $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
+                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
                 break;
         }
         return $content;
@@ -436,8 +441,7 @@ abstract class AbstractRecordList
         $out = '';
         $title = htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
         if ($this->languageIconTitles[$sys_language_uid]['flagIcon']) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            $out .= '<span title="' . $title . '">' . $iconFactory->getIcon($this->languageIconTitles[$sys_language_uid]['flagIcon'], Icon::SIZE_SMALL)->render() . '</span>';
+            $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon($this->languageIconTitles[$sys_language_uid]['flagIcon'], Icon::SIZE_SMALL)->render() . '</span>';
             if (!$addAsAdditionalText) {
                 return $out;
             }

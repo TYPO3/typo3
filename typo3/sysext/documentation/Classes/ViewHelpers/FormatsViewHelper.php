@@ -67,7 +67,6 @@ class FormatsViewHelper extends AbstractViewHelper implements CompilableInterfac
             'sxw' => '<a class="btn btn-default disabled">' . $emptyIcon . '</a>'
         );
         $formats = $documentTranslation->getFormats();
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         foreach ($formats as $format) {
             $output = '';

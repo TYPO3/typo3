@@ -547,8 +547,6 @@ class QueryView
      */
     public function resultRowDisplay($row, $conf, $table)
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $SET = $GLOBALS['SOBE']->MOD_SETTINGS;
         $out = '<tr>';
         foreach ($row as $fieldName => $fieldValue) {
@@ -571,8 +569,8 @@ class QueryView
                 ],
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET'))
             ]);
-            $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
-            $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
+            $out .= '<a class="btn btn-default" href="' . htmlspecialchars($url) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
         } else {
             $out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
                     ('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',

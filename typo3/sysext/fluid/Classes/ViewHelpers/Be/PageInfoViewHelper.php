@@ -72,11 +72,11 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
         $id = GeneralUtility::_GP('id');
         $pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
         // Add icon with clickmenu, etc:
+        /** @var IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($pageRecord['uid']) {
             // If there IS a real page
             $altText = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $theIcon = '<span title="' . $altText . '">' . $iconFactory->getIconForRecord('pages', $pageRecord, Icon::SIZE_SMALL)->render() . '</span>';
             // Make Icon:
             $theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', $pageRecord['uid']);
@@ -84,8 +84,6 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
             // Setting icon with clickmenu + uid
             $theIcon .= ' <em>[PID: ' . $pageRecord['uid'] . ']</em>';
         } else {
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             // On root-level of page tree
             // Make Icon
             $theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL)->render() . '</span>';

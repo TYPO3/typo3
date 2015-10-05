@@ -436,6 +436,19 @@ class ImportExport
      */
     protected $remainHeader = array();
 
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+    }
+
     /**************************
      * Initialize
      *************************/
@@ -3717,9 +3730,8 @@ class ImportExport
                     }
                 }
             }
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $pInfo['preCode'] = $preCode . '<span title="' . htmlspecialchars($table . ':' . $uid) . '">'
-                . $iconFactory->getIconForRecord($table, (array)$this->dat['records'][($table . ':' . $uid)]['data'], Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIconForRecord($table, (array)$this->dat['records'][($table . ':' . $uid)]['data'], Icon::SIZE_SMALL)->render()
                 . '</span>';
             $pInfo['title'] = htmlspecialchars($record['title']);
             // View page:
@@ -3744,13 +3756,11 @@ class ImportExport
         }
         // Soft ref
         if (!empty($record['softrefs'])) {
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $preCode_A = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;';
             $preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             foreach ($record['softrefs'] as $info) {
                 $pInfo = array();
-                $pInfo['preCode'] = $preCode_A . $iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL)->render();
+                $pInfo['preCode'] = $preCode_A . $this->iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL)->render();
                 $pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
                 if ($info['subst']['type']) {
                     if (strlen($info['subst']['title'])) {
@@ -3798,9 +3808,6 @@ class ImportExport
      */
     public function addRelations($rels, &$lines, $preCode, $recurCheck = array(), $htmlColorClass = '')
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         foreach ($rels as $dat) {
             $table = $dat['table'];
             $uid = $dat['id'];
@@ -3840,7 +3847,7 @@ class ImportExport
                 $staticFixed = true;
             }
 
-            $icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $this->iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render() . '</span>';
 
             $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $icon;
             $pInfo['class'] = $htmlColorClass ?: 'bgColor3';
@@ -3868,9 +3875,6 @@ class ImportExport
      */
     public function addFiles($rels, &$lines, $preCode, $htmlColorClass = '', $tokenID = '')
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         foreach ($rels as $ID) {
             // Process file:
             $pInfo = array();
@@ -3883,7 +3887,7 @@ class ImportExport
                     return;
                 }
             }
-            $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
+            $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
             $pInfo['title'] = htmlspecialchars($fI['filename']);
             $pInfo['ref'] = 'FILE';
             $pInfo['size'] = $fI['filesize'];
@@ -3934,7 +3938,7 @@ class ImportExport
                     $this->error('MISSING RTE original FILE: ' . $ID, 1);
                 }
                 $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
-                $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
+                $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
                 $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
                 $pInfo['ref'] = 'FILE';
                 $pInfo['size'] = $fI['filesize'];
@@ -3955,7 +3959,7 @@ class ImportExport
                         $pInfo['updatePath'] = $fI['parentRelFileName'];
                     }
                     $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$extID]);
-                    $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render();
+                    $pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $this->iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render();
                     $pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
                     $pInfo['ref'] = 'FILE';
                     $pInfo['size'] = $fI['filesize'];

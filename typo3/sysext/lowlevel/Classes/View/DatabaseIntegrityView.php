@@ -55,11 +55,17 @@ class DatabaseIntegrityView extends BaseScriptClass
     protected $templatePath = 'EXT:lowlevel/Resources/Private/Templates/Backend/';
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:lowlevel/Resources/Private/Language/locallang.xlf');
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->getRequest()->setControllerExtensionName('lowlevel');
     }
@@ -353,8 +359,6 @@ class DatabaseIntegrityView extends BaseScriptClass
      */
     public function func_records()
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         /** @var $admin DatabaseIntegrityCheck */
         $admin = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
         $admin->genTree(0);
@@ -362,15 +366,15 @@ class DatabaseIntegrityView extends BaseScriptClass
         // Pages stat
         $pageStatistic = array(
             'total_pages' => array(
-                'icon' => $iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL)->render(),
                 'count' => count($admin->page_idArray)
             ),
             'hidden_pages' => array(
-                'icon' => $iconFactory->getIconForRecord('pages', array('hidden' => 1), Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', array('hidden' => 1), Icon::SIZE_SMALL)->render(),
                 'count' => $admin->recStats['hidden']
             ),
             'deleted_pages' => array(
-                'icon' => $iconFactory->getIconForRecord('pages', array('deleted' => 1), Icon::SIZE_SMALL)->render(),
+                'icon' => $this->iconFactory->getIconForRecord('pages', array('deleted' => 1), Icon::SIZE_SMALL)->render(),
                 'count' => count($admin->recStats['deleted']['pages'])
             )
         );
@@ -384,7 +388,7 @@ class DatabaseIntegrityView extends BaseScriptClass
             foreach ($doktype as $setup) {
                 if ($setup[1] != '--div--') {
                     $doktypes[] = array(
-                        'icon' => $iconFactory->getIconForRecord('pages', array('doktype' => $setup[1]), Icon::SIZE_SMALL)->render(),
+                        'icon' => $this->iconFactory->getIconForRecord('pages', array('doktype' => $setup[1]), Icon::SIZE_SMALL)->render(),
                         'title' => $lang->sL($setup[0]) . ' (' . $setup[1] . ')',
                         'count' => (int)$admin->recStats['doktype'][$setup[1]]
                     );
@@ -424,15 +428,14 @@ class DatabaseIntegrityView extends BaseScriptClass
                 if (is_array($admin->lRecords[$t])) {
                     foreach ($admin->lRecords[$t] as $data) {
                         if (!GeneralUtility::inList($admin->lostPagesList, $data['pid'])) {
-                            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-                            $lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '" title="' . $lang->getLL('fixLostRecord', true) . '">' . $iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
+                            $lr .= '<div class="record"><a href="' . htmlspecialchars((BackendUtility::getModuleUrl('system_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '" title="' . $lang->getLL('fixLostRecord', true) . '">' . $this->iconFactory->getIcon('status-dialog-error', Icon::SIZE_SMALL)->render() . '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         } else {
                             $lr .= '<div class="record-noicon">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</div>';
                         }
                     }
                 }
                 $tableStatistic[$t] = array(
-                    'icon' => $iconFactory->getIconForRecord($t, array(), Icon::SIZE_SMALL)->render(),
+                    'icon' => $this->iconFactory->getIconForRecord($t, array(), Icon::SIZE_SMALL)->render(),
                     'title' => $lang->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
                     'count' => $theNumberOfRe,
                     'lostRecords' => $lr

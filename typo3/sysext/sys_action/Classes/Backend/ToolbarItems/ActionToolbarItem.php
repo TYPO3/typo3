@@ -31,11 +31,17 @@ class ActionToolbarItem implements ToolbarItemInterface
     protected $actionEntries = array();
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:sys_action/Resources/Private/Language/locallang.xlf');
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->initializeActionEntries();
     }
 
@@ -46,10 +52,8 @@ class ActionToolbarItem implements ToolbarItemInterface
      */
     public function getItem()
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $title = $this->getLanguageService()->getLL('action_toolbaritem', true);
-        return '<span title="' . $title . '">' . $iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render() . '</span>';
+        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('apps-toolbar-menu-actions', Icon::SIZE_SMALL)->render() . '</span>';
     }
 
     /**
@@ -101,12 +105,11 @@ class ActionToolbarItem implements ToolbarItemInterface
         }
 
         if ($queryResource) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             while ($actionRow = $databaseConnection->sql_fetch_assoc($queryResource)) {
                 $actions[] = array(
                     $actionRow['title'],
                     BackendUtility::getModuleUrl('user_task') . '&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-                    $iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
+                    $this->iconFactory->getIconForRecord('sys_action', $actionRow, Icon::SIZE_SMALL)->render()
                 );
             }
             $databaseConnection->sql_free_result($queryResource);

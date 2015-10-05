@@ -387,9 +387,6 @@ class NewRecordController
      */
     public function regularNew()
     {
-
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $lang = $this->getLanguageService();
         // Initialize array for accumulating table rows:
         $this->tRows = array();
@@ -441,7 +438,7 @@ class NewRecordController
         $iconFile = array();
         // New tables (but not pages) INSIDE this pages
         $isAdmin = $this->getBackendUserAuthentication()->isAdmin();
-        $newContentIcon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+        $newContentIcon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
         if ($this->newContentInto) {
             if (is_array($GLOBALS['TCA'])) {
                 $groupName = '';

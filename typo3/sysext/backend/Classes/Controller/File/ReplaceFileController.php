@@ -74,11 +74,17 @@ class ReplaceFileController
     public $content;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $GLOBALS['SOBE'] = $this;
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->init();
     }
 
@@ -120,9 +126,7 @@ class ReplaceFileController
             }
         }
         // Setting icon and title
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
+        $icon = $this->iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
         $this->title = $icon . htmlspecialchars($this->fileOrFolderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileOrFolderObject->getIdentifier());
         // Setting template object
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
@@ -191,10 +195,9 @@ class ReplaceFileController
         $docHeaderButtons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_rename');
         // Back
         if ($this->returnUrl) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl))
                 . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">'
-                . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render()
                 . '</a>';
         }
         // Add the HTML as a section:

@@ -46,6 +46,11 @@ class AdminPanelView
     protected $extJSCODE = '';
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -60,6 +65,7 @@ class AdminPanelView
      */
     public function initialize()
     {
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->saveConfigOptions();
         $typoScriptFrontend = $this->getTypoScriptFrontendController();
         // Setting some values based on the admin panel
@@ -419,10 +425,8 @@ class AdminPanelView
             $beUser->extPageInTreeInfo = array();
             $beUser->extPageInTreeInfo[] = array($tsfe->page['uid'], htmlspecialchars($tsfe->page['title']), $depth + 1);
             $beUser->extGetTreeList($tsfe->id, $depth, 0, $beUser->getPagePermsClause(1));
-            /** @var IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             foreach ($beUser->extPageInTreeInfo as $key => $row) {
-                $outTable .= '<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . $iconFactory->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL)->render() . htmlspecialchars($row[1]) . '</td><td>' . $beUser->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
+                $outTable .= '<tr class="typo3-adminPanel-itemRow ' . ($key % 2 == 0 ? 'line-even' : 'line-odd') . '">' . '<td><span style="width: ' . ($depth + 1 - $row[2]) * 18 . 'px; height: 1px; display: inline-block;"></span>' . $this->iconFactory->getIcon('apps-pagetree-page-default', Icon::SIZE_SMALL)->render() . htmlspecialchars($row[1]) . '</td><td>' . $beUser->extGetNumberOfCachedPages($row[0]) . '</td></tr>';
             }
             $outTable = '<table class="typo3-adminPanel-table"><thead><tr><th colspan="2">' . $this->extGetLL('cache_cacheEntries') . '</th></tr></thead>' . $outTable . '</table>';
             $outTable .= '<span class="fa fa-bolt clear-cache-icon"><!-- --></span><input class="btn btn-default clear-cache" type="submit" name="TSFE_ADMIN_PANEL[action][clearCache]" value="' . $this->extGetLL('cache_doit') . '" />';
@@ -628,9 +632,6 @@ class AdminPanelView
      */
     public function ext_makeToolBar()
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         $tsfe = $this->getTypoScriptFrontendController();
         //  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
         $tsConfig = BackendUtility::getModTSconfig($tsfe->page['uid'], 'mod.web_list');
@@ -641,7 +642,7 @@ class AdminPanelView
         $id = $tsfe->id;
         $returnUrl = GeneralUtility::getIndpEnv('REQUEST_URI');
 
-        $icon = $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
+        $icon = $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
         $link = BackendUtility::getModuleUrl('record_history', array('element' => 'pages:' . $id, 'returnUrl' => $returnUrl));
         $toolBar = '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '#latest" title="' . $this->extGetLL('edit_recordHistory') . '">' . $icon . '</a>';
         if ($perms & Permission::CONTENT_EDIT && $langAllowed) {
@@ -649,22 +650,22 @@ class AdminPanelView
             if ($tsfe->sys_language_uid) {
                 $params = '&sys_language_uid=' . $tsfe->sys_language_uid;
             }
-            $icon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+            $icon = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
             $link = $newContentWizScriptPath . 'id=' . $id . $params . '&returnUrl=' . rawurlencode($returnUrl);
             $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_newContentElement') .  '"">' . $icon . '</a>';
         }
         if ($perms & Permission::PAGE_EDIT) {
-            $icon = $iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL)->render();
+            $icon = $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL)->render();
             $link = BackendUtility::getModuleUrl('move_element', ['table' => 'pages', 'uid' => $id, 'returnUrl' => $returnUrl]);
             $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars($link) . '" title="' . $this->extGetLL('edit_move_page') . '">' . $icon . '</a>';
         }
         if ($perms & Permission::PAGE_NEW) {
             $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('db_new', ['id' => $id, 'pagesOnly' => 1, 'returnUrl' => $returnUrl])) . '" title="' . $this->extGetLL('edit_newPage') . '">'
-                . $iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render()
                 . '</a>';
         }
         if ($perms & Permission::PAGE_EDIT) {
-            $icon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
+            $icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
             $url = BackendUtility::getModuleUrl('record_edit', array(
                 'edit[pages][' . $id . ']' => 'edit',
                 'noView' => 1,
@@ -682,7 +683,7 @@ class AdminPanelView
                 $tsfe->sys_page->versionOL('pages_language_overlay', $row);
                 if (is_array($row)) {
                     $icon = '<span title="' . $this->extGetLL('edit_editPageOverlay', true) . '">'
-                        . $iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>';
+                        . $this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() . '</span>';
                     $url = BackendUtility::getModuleUrl('record_edit', array(
                         'edit[pages_language_overlay][' . $row['uid'] . ']' => 'edit',
                         'noView' => 1,
@@ -697,7 +698,7 @@ class AdminPanelView
                 'id' => $id,
                 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
             );
-            $icon = '<span title="' . $this->extGetLL('edit_db_list', false) . '">' . $iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</span>';
+            $icon = '<span title="' . $this->extGetLL('edit_db_list', false) . '">' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '</span>';
             $toolBar .= '<a class="t3-icon btn btn-default" href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_list', $urlParams)) . '">' . $icon . '</a>';
         }
 

@@ -53,12 +53,18 @@ class TaskModuleController extends BaseScriptClass
     protected $moduleName = 'user_task';
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Initializes the Module
      */
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('taskcenter') . 'Resources/Public/Css/styles.css');
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:taskcenter/Resources/Private/Language/locallang_task.xlf');
         $this->MCONF = array(
             'name' => $this->moduleName
@@ -122,6 +128,18 @@ class TaskModuleController extends BaseScriptClass
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
+    /**
+     * Injects the request object for the current request or subrequest
+     * Simply calls main() and writes the content to the response
+     *
+     * @param ServerRequestInterface $request the current request
+     * @param ResponseInterface $response
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $GLOBALS['SOBE'] = $this;
+        $this->main();
 
     /**
      * Injects the request object for the current request or subrequest
@@ -428,14 +446,13 @@ class TaskModuleController extends BaseScriptClass
             'open_new_window' => $this->openInNewWindow()
         );
         // Fullscreen Button
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         $onClick = 'devlogWin=window.open(' . GeneralUtility::quoteJSvalue($url) . ',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
         $fullscreenButton = $buttonBar->makeLinkButton()
             ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', true))
             ->setOnClick($onClick)
             ->setHref('#')
-            ->setIcon($iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
+            ->setIcon($this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL))
             ;
         $buttonBar->addButton($fullscreenButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
@@ -510,11 +527,10 @@ class TaskModuleController extends BaseScriptClass
      */
     protected function openInNewWindow()
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         $onClick = 'devlogWin=window.open(' . GeneralUtility::quoteJSvalue($url) . ',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
         $content = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.openInNewWindow', true) . '">'
-            . $iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL)->render()
+            . $this->iconFactory->getIcon('actions-window-open', Icon::SIZE_SMALL)->render()
         . '</a>';
         return $content;
     }

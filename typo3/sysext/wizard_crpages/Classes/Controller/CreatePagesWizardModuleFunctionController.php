@@ -47,12 +47,18 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
     protected $typeSelectHtml = '';
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Main function creating the content for the module.
      *
      * @return string HTML content for the module, actually a "section" made through the parent object in $this->pObj
      */
     public function main()
     {
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->getLanguageService()->includeLLFile('EXT:wizard_crpages/Resources/Private/Language/locallang.xlf');
         $theCode = '';
         $this->tsConfig = BackendUtility::getPagesTSconfig($this->pObj->id);
@@ -111,11 +117,10 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
                 // Display result:
                 $menuItems = $pageRepository->getMenu($this->pObj->id, '*', 'sorting', '', false);
                 $lines = array();
-                $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 foreach ($menuItems as $record) {
                     BackendUtility::workspaceOL('pages', $record);
                     if (is_array($record)) {
-                        $lines[] = '<span class="text-nowrap" title="' . BackendUtility::titleAttribForPages($record, '', false) . '">' . $iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render() . htmlspecialchars(GeneralUtility::fixed_lgd_cs($record['title'], $this->getBackendUser()->uc['titleLen'])) . '</span>';
+                        $lines[] = '<span class="text-nowrap" title="' . BackendUtility::titleAttribForPages($record, '', false) . '">' . $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render() . htmlspecialchars(GeneralUtility::fixed_lgd_cs($record['title'], $this->getBackendUser()->uc['titleLen'])) . '</span>';
                     }
                 }
                 $theCode .= '<h4>' . $this->getLanguageService()->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines);
@@ -190,7 +195,6 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
             $index = '{0}';
             $label = '{1}';
         }
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $content = '' .
             '<div class="form-section" id="form-line-' . $index . '">' .
                 '<div class="row">' .
@@ -209,7 +213,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
                         '<div class="form-control-wrap">' .
                             '<div class="input-group">' .
                                 '<div id="page_new_icon_' . $index . '" class="input-group-addon input-group-icon">' .
-                                    $iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL)->render() .
+                                    $this->iconFactory->getIconForRecord('pages', array(), Icon::SIZE_SMALL)->render() .
                                 '</div>' .
                                 '<select class="form-control form-control-adapt t3js-wizardcrpages-select-doktype" name="data[pages][NEW' . $index . '][doktype]" data-target="#page_new_icon_' . $index . '">' .
                                     $this->typeSelectHtml .

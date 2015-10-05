@@ -1126,14 +1126,12 @@ class EditDocumentController
             'translation_save' => '',
             'translation_saveclear' => ''
         );
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         // Render SAVE type buttons:
         // The action of each button is decided by its name attribute. (See doProcessData())
         if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
             // SAVE button:
             $buttons['save'] = '<button name="_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '">'
-                . $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
                 . '</button>';
             // SAVE / VIEW button:
             if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
@@ -1146,27 +1144,27 @@ class EditDocumentController
                 }
                 if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true) || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])) {
                     $buttons['save_view'] = '<button name="_savedokview" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', true) . '" onclick="window.open(\'\', \'newTYPO3frontendWindow\');">'
-                        . $iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)->render()
+                        . $this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)->render()
                         . '</button>';
                 }
             }
             // SAVE / NEW button:
             if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
                 $buttons['save_new'] = '<button name="_savedoknew" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', true) . '">'
-                    . $iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL)->render()
                     . '</button>';
             }
             // SAVE / CLOSE
             $buttons['save_close'] = '<button name="_saveandclosedok" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true) . '">'
-                . $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
+                . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
                 . '</button>';
             // FINISH TRANSLATION / SAVE / CLOSE
             if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation']) {
                 $buttons['translation_save'] = '<button name="_translation_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', true) . '">'
-                    . $iconFactory->getIcon('actions-document-save-translation', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-document-save-translation', Icon::SIZE_SMALL)->render()
                     . '</button>';
                 $buttons['translation_saveclear'] = '<button name="_translation_savedokclear" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', true) . '">'
-                    . $iconFactory->getIcon('actions-document-save-cleartranslationcache', Icon::SIZE_SMALL)->render()
+                    . $this->iconFactory->getIcon('actions-document-save-cleartranslationcache', Icon::SIZE_SMALL)->render()
                     . '</button>';
             }
         }

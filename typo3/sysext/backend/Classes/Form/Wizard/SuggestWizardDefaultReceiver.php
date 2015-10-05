@@ -92,6 +92,11 @@ class SuggestWizardDefaultReceiver
     protected $params = array();
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * The constructor of this class
      *
      * @param string $table The table to query
@@ -99,6 +104,7 @@ class SuggestWizardDefaultReceiver
      */
     public function __construct($table, $config)
     {
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->table = $table;
         $this->config = $config;
         // get a list of all the pages that should be looked on
@@ -150,7 +156,6 @@ class SuggestWizardDefaultReceiver
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $this->selectClause, '', $this->orderByStatement, $start . ', 50');
         $allRowsCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
         if ($allRowsCount) {
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 // check if we already have collected the maximum number of records
                 if (count($rows) > $this->maxItems) {
@@ -162,7 +167,7 @@ class SuggestWizardDefaultReceiver
                 if (!$this->checkRecordAccess($row, $row['uid'])) {
                     continue;
                 }
-                $spriteIcon = $iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
+                $spriteIcon = $this->iconFactory->getIconForRecord($this->table, $row, Icon::SIZE_SMALL)->render();
                 $uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
                 $path = $this->getRecordPath($row, $uid);
                 if (strlen($path) > 30) {
@@ -343,8 +348,7 @@ class SuggestWizardDefaultReceiver
     protected function getIcon($row)
     {
         GeneralUtility::logDeprecatedFunction();
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForRecord($this->mmForeignTable ?: $this->table, $row, Icon::SIZE_SMALL)->render();
+        return $this->iconFactory->getIconForRecord($this->mmForeignTable ?: $this->table, $row, Icon::SIZE_SMALL)->render();
     }
 
     /**

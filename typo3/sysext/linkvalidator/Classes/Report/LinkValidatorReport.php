@@ -128,6 +128,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     protected $templateService;
 
     /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * Main method of modfuncreport
      *
      * @return string Module content
@@ -135,6 +140,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
     public function main()
     {
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->searchLevel = GeneralUtility::_GP('search_levels');
         if (isset($this->pObj->id)) {
             $this->modTS = BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
@@ -472,9 +478,6 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
      */
     protected function renderTableRow($table, array $row, $brokenLinksItemTemplate)
     {
-        /** @var IconFactory $iconFactory */
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
         $markerArray = array();
         $fieldName = '';
         // Restore the linktype object
@@ -494,7 +497,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         ]);
         $actionLink = '<a href="' . htmlspecialchars($url);
         $actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
-        $actionLink .= $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
+        $actionLink .= $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
         $actionLink .= '</a>';
         $elementHeadline = $row['headline'];
         if (empty($elementHeadline)) {
@@ -511,8 +514,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
         // Fallback, if there is no label
         $fieldName = !empty($fieldName) ? $fieldName : $row['field'];
         // column "Element"
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $element = '<span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">' . $iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
+        $element = '<span title="' . htmlspecialchars($table . ':' . $row['record_uid']) . '">' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
         $element .= $elementHeadline;
         $element .= ' ' . sprintf($this->getLanguageService()->getLL('list.field'), $fieldName);
         $markerArray['actionlink'] = $actionLink;
