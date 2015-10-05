@@ -67,7 +67,7 @@ class ItemProcessingService {
 			/** @var FlashMessage $flashMessage */
 			$flashMessage = GeneralUtility::makeInstance(
 				FlashMessage::class,
-				htmlspecialchars($message),
+				$message,
 				'',
 				FlashMessage::ERROR,
 				TRUE
