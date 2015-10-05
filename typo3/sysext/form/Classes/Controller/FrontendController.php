@@ -191,6 +191,8 @@ class FrontendController extends ActionController {
 	 * @return void
 	 */
 	public function confirmationAction(ValidationElement $model) {
+		$this->skipForeignFormProcessing();
+
 		if (count($model->getIncomingFields()) === 0) {
 			$this->sessionUtility->destroySession();
 			$this->forward('show');
@@ -216,6 +218,8 @@ class FrontendController extends ActionController {
 	 * @return void
 	 */
 	public function dispatchConfirmationButtonClickAction(ValidationElement $model) {
+		$this->skipForeignFormProcessing();
+
 		if ($this->request->hasArgument('confirmation-true')) {
 			$this->forward('process', NULL, NULL, array($this->configuration->getPrefix() => $this->request->getArgument('model')));
 		} else {
@@ -233,6 +237,8 @@ class FrontendController extends ActionController {
 	 * @return void
 	 */
 	public function processAction(ValidationElement $model) {
+		$this->skipForeignFormProcessing();
+
 		$this->controllerContext->setValidationElement($model);
 		$form = $this->formBuilder->buildModel();
 		$postProcessorTypoScript = array();
@@ -261,6 +267,23 @@ class FrontendController extends ActionController {
 	 */
 	public function afterProcessAction($postProcessorContent) {
 		$this->view->assign('postProcessorContent', $postProcessorContent);
+	}
+
+	/**
+	 * Skip the processing of foreign forms.
+	 * If there is more than one form on a page
+	 * we have to be sure that only the submitted form will be
+	 * processed. On data submission, the extbase action "confirmation" or
+	 * "process" is called. The detection which form is submitted
+	 * is done by the form prefix. All forms which do not have any
+	 * submitted data are skipped and forwarded to the show action.
+	 *
+	 * @return void
+	 */
+	protected function skipForeignFormProcessing() {
+		if (!$this->request->hasArgument($this->configuration->getPrefix())) {
+			$this->forward('show');
+		}
 	}
 
 	/**
