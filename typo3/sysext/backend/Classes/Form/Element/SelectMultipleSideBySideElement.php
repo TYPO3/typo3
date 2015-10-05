@@ -105,7 +105,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 		$size = $config['autoSizeMax'] ? MathUtility::forceIntegerInRange(count($itemsArray) + 1, MathUtility::forceIntegerInRange($size, 1), $config['autoSizeMax']) : $size;
 
 		$itemsToSelect = [];
-		$filterTextfield = '';
+		$filterTextfield = [];
 		$filterSelectbox = '';
 		if (!$disabled) {
 			// Create option tags:
@@ -135,7 +135,6 @@ class SelectMultipleSideBySideElement extends AbstractFormElement {
 			$itemsToSelect[] = '</select>';
 
 			// enable filter functionality via a text field
-			$filterTextfield = [];
 			if ($config['enableMultiSelectFilterTextfield']) {
 				$filterTextfield[] = '<span class="input-group input-group-sm">';
 				$filterTextfield[] = 	'<span class="input-group-addon">';
