@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Workspaces\Controller;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Implements the preview controller of the workspace module.
@@ -34,6 +35,17 @@ class PreviewController extends AbstractController
     protected $workspaceService;
 
     /**
+     * Set up the doc header properly here
+     *
+     * @param BackendTemplateView $view
+     */
+    protected function initializeView(BackendTemplateView $view)
+    {
+        parent::initializeView($view);
+        $view->getModuleTemplate()->getDocHeaderComponent()->disable();
+    }
+
+    /**
      * Initializes the controller before invoking an action method.
      *
      * @return void
@@ -43,7 +55,7 @@ class PreviewController extends AbstractController
         parent::initializeAction();
         $this->stageService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\StagesService::class);
         $this->workspaceService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
-        $this->template->setExtDirectStateProvider();
+        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         $resourcePath = ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Css/preview.css';
         $GLOBALS['TBE_STYLES']['extJS']['theme'] = $resourcePath;
         $this->pageRenderer->loadExtJS();

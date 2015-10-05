@@ -43,6 +43,13 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
     );
 }
 
+// Registers preview link icon
+\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class)->registerIcon(
+    'module-workspaces-action-preview-link',
+    \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+    ['source' => 'EXT:workspaces/Resources/Public/Images/generate-ws-preview-link.png']
+);
+
 // @todo move icons to Core sprite or keep them here and remove the todo note ;)
 $icons = array(
     'sendtonextstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Images/version-workspace-sendtonextstage.png',

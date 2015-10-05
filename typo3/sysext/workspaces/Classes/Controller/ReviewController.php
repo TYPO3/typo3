@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Workspaces\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -24,6 +27,37 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 class ReviewController extends AbstractController
 {
     /**
+     * Set up the doc header properly here
+     *
+     * @param BackendTemplateView $view
+     */
+    protected function initializeView(BackendTemplateView $view)
+    {
+        parent::initializeView($view);
+        $this->registerButtons();
+    }
+
+    /**
+     * Registers the DocHeader buttons
+     */
+    protected function registerButtons()
+    {
+        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $currentRequest = $this->request;
+        $moduleName = $currentRequest->getPluginName();
+        $getVars = $this->request->getArguments();
+        $extensionName = $currentRequest->getControllerExtensionName();
+        if (count($getVars) === 0) {
+            $modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+            $getVars = array('id', 'M', $modulePrefix);
+        }
+        $getList = implode(',', $getVars);
+        $shortcutButton = $buttonBar->makeFullyRenderedButton()
+            ->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
+        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+    }
+
+    /**
      * Renders the review module user dependent with all workspaces.
      * The module will show all records of one workspace.
      *
@@ -31,12 +65,14 @@ class ReviewController extends AbstractController
      */
     public function indexAction()
     {
-        $wsService = GeneralUtility::makeInstance(\TYPO3\CMS\Workspaces\Service\WorkspaceService::class);
+        /** @var WorkspaceService $wsService */
+        $wsService = GeneralUtility::makeInstance(WorkspaceService::class);
         $this->view->assign('showGrid', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
         $this->view->assign('showAllWorkspaceTab', true);
         $this->view->assign('pageUid', GeneralUtility::_GP('id'));
         if (GeneralUtility::_GP('id')) {
             $pageRecord = BackendUtility::getRecord('pages', GeneralUtility::_GP('id'));
+            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
             $this->view->assign('pageTitle', BackendUtility::getRecordTitle('pages', $pageRecord));
         }
         $this->view->assign('showLegend', !($GLOBALS['BE_USER']->workspace === 0 && !$GLOBALS['BE_USER']->isAdmin()));
@@ -70,6 +106,16 @@ class ReviewController extends AbstractController
         $this->view->assign('workspaceList', $wsList);
         $this->view->assign('activeWorkspaceUid', $activeWorkspace);
         $this->view->assign('activeWorkspaceTitle', WorkspaceService::getWorkspaceTitle($activeWorkspace));
+        if ($wsService->canCreatePreviewLink(GeneralUtility::_GP('id'), $activeWorkspace)) {
+            $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+            $iconFactory = $this->view->getModuleTemplate()->getIconFactory();
+            $showButton = $buttonBar->makeLinkButton()
+                ->setHref('#')
+                ->setOnClick('TYPO3.Workspaces.Actions.generateWorkspacePreviewLinksForAllLanguages();return false;')
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:tooltip.generatePagePreview', true))
+                ->setIcon($iconFactory->getIcon('module-workspaces-action-preview-link', Icon::SIZE_SMALL));
+            $buttonBar->addButton($showButton);
+        }
         $this->view->assign('showPreviewLink', $wsService->canCreatePreviewLink(GeneralUtility::_GP('id'), $activeWorkspace));
         $GLOBALS['BE_USER']->setAndSaveSessionData('tx_workspace_activeWorkspace', $activeWorkspace);
     }
@@ -134,7 +180,7 @@ class ReviewController extends AbstractController
     protected function initializeAction()
     {
         parent::initializeAction();
-        $this->template->setExtDirectStateProvider();
+        $this->pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/ExtDirect.StateProvider.js');
         if (WorkspaceService::isOldStyleWorkspaceUsed()) {
             $flashMessage = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessage::class, $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:warning.oldStyleWorkspaceInUser'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
             /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
@@ -260,5 +306,13 @@ class ReviewController extends AbstractController
             $parameters = array_merge($parameters, $this->uriBuilder->getArguments());
         }
         return BackendUtility::getModuleUrl('web_WorkspacesWorkspaces', $parameters);
+    }
+
+    /**
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

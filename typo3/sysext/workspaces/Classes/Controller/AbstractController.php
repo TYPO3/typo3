@@ -18,12 +18,23 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Abstract action controller.
  */
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = BackendTemplateView::class;
+
+    /**
+     * @var BackendTemplateView
+     */
+    protected $view;
+
     /**
      * @var string Key of the extension this controller belongs to
      */
@@ -46,6 +57,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     protected function initializeAction()
     {
+        $this->pageRenderer = $this->getPageRenderer();
         // @todo Evaluate how the intval() call can be used with Extbase validators/filters
         $this->pageId = (int)GeneralUtility::_GP('id');
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -95,26 +107,6 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
         $extension['AdditionalColumn']['Definition'] = $this->getAdditionalColumnService()->getDefinition();
         $extension['AdditionalColumn']['Handler'] = $this->getAdditionalColumnService()->getHandler();
         $this->pageRenderer->addInlineSetting('Workspaces', 'extension', $extension);
-    }
-
-    /**
-     * Processes a general request. The result can be returned by altering the given response.
-     *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
-     * @return void
-     */
-    public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
-    {
-        $this->template = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->pageRenderer = $this->getPageRenderer();
-        $GLOBALS['SOBE'] = new \stdClass();
-        $GLOBALS['SOBE']->doc = $this->template;
-        parent::processRequest($request, $response);
-        $pageHeader = $this->template->startpage($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:module.title'));
-        $pageEnd = $this->template->endPage();
-        $response->setContent($pageHeader . $response->getContent() . $pageEnd);
     }
 
     /**
