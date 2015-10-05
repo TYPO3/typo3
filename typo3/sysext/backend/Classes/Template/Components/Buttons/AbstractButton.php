@@ -37,6 +37,34 @@ class AbstractButton extends AbstractControl implements ButtonInterface {
 	protected $type;
 
 	/**
+	 * Defines whether to show the title as a label within the button
+	 *
+	 * @var bool
+	 */
+	protected $showLabelText = FALSE;
+
+	/**
+	 * Show Label text
+	 *
+	 * @return bool
+	 */
+	public function getShowLabelText() {
+		return $this->showLabelText;
+	}
+
+	/**
+	 * Show Label text
+	 *
+	 * @param bool $showLabelText
+	 *
+	 * @return $this
+	 */
+	public function setShowLabelText($showLabelText) {
+		$this->showLabelText = $showLabelText;
+		return $this;
+	}
+
+	/**
 	 * Get icon
 	 *
 	 * @return Icon

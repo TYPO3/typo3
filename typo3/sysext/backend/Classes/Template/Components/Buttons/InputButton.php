@@ -121,6 +121,10 @@ class InputButton extends AbstractButton implements ButtonInterface {
 			'value' => $this->getValue(),
 			'title' => $this->getTitle()
 		);
+		$labelText = '';
+		if ($this->showLabelText) {
+			$labelText = ' ' . $this->title;
+		}
 		foreach ($this->dataAttributes as $attributeName => $attributeValue) {
 			$attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
 		}
@@ -129,7 +133,7 @@ class InputButton extends AbstractButton implements ButtonInterface {
 			$attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
 		}
 		return '<button' . $attributesString . '">'
-			. $this->getIcon()->render()
+			. $this->getIcon()->render() . htmlspecialchars($labelText)
 		. '</button>';
 	}
 

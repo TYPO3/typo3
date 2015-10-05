@@ -90,6 +90,10 @@ class LinkButton extends AbstractButton implements ButtonInterface {
 			'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
 			'title' => $this->getTitle()
 		);
+		$labelText = '';
+		if ($this->showLabelText) {
+			$labelText = ' ' . $this->title;
+		}
 		foreach ($this->dataAttributes as $attributeName => $attributeValue) {
 			$attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
 		}
@@ -102,7 +106,7 @@ class LinkButton extends AbstractButton implements ButtonInterface {
 		}
 
 		return '<a ' . $attributesString . '>'
-			. $this->getIcon()->render()
+			. $this->getIcon()->render() . htmlspecialchars($labelText)
 		. '</a>';
 	}
 
