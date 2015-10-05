@@ -417,6 +417,11 @@ class EvaluateDisplayConditionsTest extends UnitTestCase {
 				['foo' => 'bar'],
 				TRUE,
 			],
+			'Field value string comparison against list' => [
+				'FIELD:foo:IN:bar,baz',
+				['foo' => 'baz'],
+				TRUE,
+			],
 			'Field value comparison of 1 against multi-value field of 5 returns true' => [
 				'FIELD:content:BIT:1',
 				['content' => '5'],
@@ -440,6 +445,11 @@ class EvaluateDisplayConditionsTest extends UnitTestCase {
 			'Field value string not equal comparison' => [
 				'FIELD:foo:!=:baz',
 				['foo' => 'bar'],
+				TRUE,
+			],
+			'Field value string not equal comparison against list' => [
+				'FIELD:foo:!IN:bar,baz',
+				['foo' => 'foo'],
 				TRUE,
 			],
 			'Field value in range' => [

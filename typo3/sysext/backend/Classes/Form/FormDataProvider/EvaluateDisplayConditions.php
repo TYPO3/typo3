@@ -376,13 +376,23 @@ class EvaluateDisplayConditions implements FormDataProviderInterface {
 					$result = !$result;
 				}
 				break;
-			case 'IN':
-			case '!IN':
 			case '=':
 			case '!=':
-				$result = is_array($fieldValue)
-					? in_array($operand, $fieldValue)
-					: GeneralUtility::inList($operand, $fieldValue);
+				if (is_array($fieldValue) && count($fieldValue) === 1) {
+					$fieldValue = array_shift($fieldValue);
+				}
+				$result = $fieldValue == $operand;
+				if ($operator[0] === '!') {
+					$result = !$result;
+				}
+				break;
+			case 'IN':
+			case '!IN':
+				if (is_array($fieldValue)) {
+					$result = count(array_intersect($fieldValue, explode(',', $operand))) > 0;
+				} else {
+					$result = GeneralUtility::inList($operand, $fieldValue);
+				}
 				if ($operator[0] === '!') {
 					$result = !$result;
 				}
