@@ -912,7 +912,7 @@ class ClickMenu {
 			$identifier = $fileObject->getCombinedIdentifier();
 			if ($fileObject instanceof Folder) {
 				$icon = '<span title="' . htmlspecialchars($fileObject->getName()) . '" class="absmiddle">'
-					. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)
+					. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
 					. '</span>';
 				$folder = TRUE;
 				if ($fileObject->getIdentifier() === $fileObject->getStorage()->getRootLevelFolder()->getIdentifier()) {
@@ -930,7 +930,7 @@ class ClickMenu {
 			} else {
 				$title = $fileObject->getName() . ' (' . GeneralUtility::formatSize($fileObject->getSize()) . ')';
 				$icon = '<span class="absmiddle" title="' . htmlspecialchars($title). '">'
-					. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)
+					. $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render()
 					.'</span>';
 			}
 			// Hide

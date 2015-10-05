@@ -97,7 +97,7 @@ class IconViewHelper extends AbstractBackendViewHelper implements CompilableInte
 		$additionalAttributes = $arguments['additionalAttributes'];
 		$additionalTagAttributes = '';
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$icon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIcon($icon, Icon::SIZE_SMALL) . '</span>';
+		$icon = '<span title="' . htmlspecialchars($title) . '">' . $iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() . '</span>';
 		if (empty($uri)) {
 			return $icon;
 		}

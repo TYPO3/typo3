@@ -79,7 +79,7 @@ class HistoryEntryViewHelper extends AbstractViewHelper implements CompilableInt
 			'showHistory',
 			$controllerContext->getRequest()->getControllerExtensionName()
 		);
-		$historyIcon = $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL);
+		$historyIcon = $iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render();
 		$historyHref = BackendUtility::getModuleUrl(
 				'record_history',
 				array(

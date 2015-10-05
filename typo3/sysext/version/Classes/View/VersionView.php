@@ -63,7 +63,7 @@ class VersionView {
 				// Add management link:
 				$management = '
 					<a class="btn btn-default" href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_txversionM1', array('table' => 'pages', 'uid' => $onlineId))) . '">
-						' . $iconFactory->getIcon('actions-version-open', Icon::SIZE_SMALL) . '
+						' . $iconFactory->getIcon('actions-version-open', Icon::SIZE_SMALL)->render() . '
 						' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.mgm', TRUE) . '
 					</a>';
 				// Create onchange handler:
@@ -78,7 +78,7 @@ class VersionView {
 					);
 					$controls = '
 						<a href="' . htmlspecialchars($href) . '" class="btn btn-default" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swapPage', TRUE) . '">
-							' . $iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL) . '
+							' . $iconFactory->getIcon('actions-version-swap-version', Icon::SIZE_SMALL)->render() . '
 							' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:ver.swap', TRUE) . '
 						</a>';
 				}

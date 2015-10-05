@@ -114,7 +114,7 @@ class EditFileController {
 		// Setting the title and the icon
 		/** @var IconFactory $iconFactory */
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL);
+		$icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
 		$this->title = $icon . htmlspecialchars($this->fileObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileObject->getIdentifier());
 
 		// Setting template object
@@ -246,13 +246,13 @@ class EditFileController {
 		// CSH button
 		$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'file_edit');
 		// Save button
-		$theIcon = $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL);
+		$theIcon = $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render();
 		$buttons['SAVE'] = '<a href="#" class="t3js-fileedit-save" onclick="document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.submit', TRUE)) . '">' . $theIcon . '</a>';
 		// Save and Close button
-		$theIcon = $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL);
+		$theIcon = $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render();
 		$buttons['SAVE_CLOSE'] = '<a href="#" class="t3js-fileedit-save-close" onclick="document.editform.redirect.value=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->returnUrl)) . '; document.editform.submit();" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:file_edit.php.saveAndClose', TRUE)) . '">' . $theIcon . '</a>';
 		// Cancel button
-		$theIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL);
+		$theIcon = $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render();
 		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $lang->makeEntities($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
 		return $buttons;
 	}

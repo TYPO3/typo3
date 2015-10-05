@@ -332,11 +332,11 @@ abstract class AbstractRecordList {
 		switch ($type) {
 			case 'fwd':
 				$href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
-				$content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</a> <i>[1 - ' . $pointer . ']</i>';
+				$content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a> <i>[1 - ' . $pointer . ']</i>';
 				break;
 			case 'rwd':
 				$href = $this->listURL() . '&pointer=' . $pointer . $tParam;
-				$content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
+				$content = '<a href="' . htmlspecialchars($href) . '">' . $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
 				break;
 		}
 		return $content;

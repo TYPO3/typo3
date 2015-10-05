@@ -568,7 +568,7 @@ class AbstractDatabaseRecordList extends AbstractRecordList {
 								</div>
 								<div class="form-group">
 									<button type="submit" class="btn btn-default" name="search" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.search', TRUE) . '">
-										' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL) . ' ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '
+										' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.search', TRUE) . '
 									</button>
 								</div>
 							</div>

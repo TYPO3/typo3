@@ -325,7 +325,7 @@ class ElementInformationController {
 			if ($url) {
 				$showLink .= '
 					<a class="btn btn-primary" href="' . htmlspecialchars($url) . '" target="_blank">
-						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '
+						' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
 						' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.show', TRUE) . '
 					</a>';
 			}
@@ -488,7 +488,7 @@ class ElementInformationController {
 		if ($returnUrl) {
 			$backLink .= '
 				<a class="btn btn-primary" href="' . htmlspecialchars($returnUrl) . '>
-					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '
+					' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '
 					' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:back', TRUE) . '
 				</a>';
 		}
@@ -589,7 +589,7 @@ class ElementInformationController {
 		$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 		$pageActionIcons = '
 			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
-				' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '
+				' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
 			</a>';
 
 		// History button
@@ -600,7 +600,7 @@ class ElementInformationController {
 		$url = BackendUtility::getModuleUrl('record_history', $urlParameters);
 		$pageActionIcons .= '
 			<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '">
-				' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '
+				' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '
 			</a>';
 
 		if ($table === 'pages') {
@@ -608,14 +608,14 @@ class ElementInformationController {
 			$url = BackendUtility::getModuleUrl('web_list', array('id' => $uid, 'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')));
 			$pageActionIcons .= '
 				<a class="btn btn-default btn-sm" href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showList') . '">
-					' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL) . '
+					' . $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render() . '
 				</a>';
 
 			// View page button
 			$viewOnClick = BackendUtility::viewOnClick($uid, '', BackendUtility::BEgetRootLine($uid));
 			$pageActionIcons .= '
 				<a class="btn btn-default btn-sm" href="#" onclick="' . htmlspecialchars($viewOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">
-					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '
+					' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '
 				</a>';
 		}
 

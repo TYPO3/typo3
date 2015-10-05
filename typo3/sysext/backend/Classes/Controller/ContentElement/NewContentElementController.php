@@ -281,7 +281,7 @@ class NewContentElementController {
 							'source' => $icon
 						));
 					}
-					$icon = $this->iconFactory->getIcon($wInfo['iconIdentifier']);
+					$icon = $this->iconFactory->getIcon($wInfo['iconIdentifier'])->render();
 					$menuItems[$key]['content'] .= '
 						<div class="media">
 							<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
@@ -365,7 +365,7 @@ class NewContentElementController {
 		if ($this->id && $this->access) {
 			$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce');
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
 			}
 		}
 		return $buttons;

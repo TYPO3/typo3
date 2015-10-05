@@ -86,7 +86,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper implements Compilable
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			// On root-level of page tree
 			// Make Icon
-			$theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL) . '</span>';
+			$theIcon = '<span title="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '">' . $iconFactory->getIcon('apps-pagetree-page-domain', Icon::SIZE_SMALL)->render() . '</span>';
 			if ($GLOBALS['BE_USER']->user['admin']) {
 				$theIcon = $doc->wrapClickMenuOnIcon($theIcon, 'pages', 0);
 			}

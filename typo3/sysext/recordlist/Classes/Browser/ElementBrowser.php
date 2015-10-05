@@ -1818,7 +1818,7 @@ class ElementBrowser {
 		}
 		// Create header element; The folder from which files are listed.
 		$titleLen = (int)$this->getBackendUser()->uc['titleLen'];
-		$folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
+		$folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL)->render();
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
 		$selected = '';
 		if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
@@ -1855,7 +1855,7 @@ class ElementBrowser {
 					$fileIdentifier = $fileOrFolderObject->getUid();
 					// Get size and icon:
 					$size = ' (' . GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
-					$icon = '<span title="' . htmlspecialchars($fileOrFolderObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL) . '</span>';
+					$icon = '<span title="' . htmlspecialchars($fileOrFolderObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileOrFolderObject, Icon::SIZE_SMALL)->render() . '</span>';
 					$itemUid = 'file:' . $fileIdentifier;
 				}
 				$selected = '';
@@ -1924,7 +1924,7 @@ class ElementBrowser {
 		if ($folder) {
 			$folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL);
 			$lines[] = '<tr class="t3-row-header">
-				<td colspan="4">' . $folderIcon
+				<td colspan="4">' . $folderIcon->render()
 				. htmlspecialchars(GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
 			</tr>';
 		}
@@ -1961,7 +1961,7 @@ class ElementBrowser {
 			}
 			// Create file icon:
 			$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
-			$icon = '<span title="' . htmlspecialchars($fileObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
+			$icon = '<span title="' . htmlspecialchars($fileObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
 			// Create links for adding the file:
 			$filesIndex = count($this->elements);
 			$this->elements['file_' . $filesIndex] = array(
@@ -2002,7 +2002,7 @@ class ElementBrowser {
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td>' . $ATag . '<span title="' .  $lang->getLL('addToList', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '</td>
-						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
+						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 					</tr>';
 				$lines[] = '
@@ -2014,7 +2014,7 @@ class ElementBrowser {
 					<tr class="file_list_normal">
 						<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 						<td>' . $ATag . '<span title="' . $lang->getLL('addToList', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . '</span>' . $ATag_e . '</td>
-						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL) . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
+						<td nowrap="nowrap"><a href="' . htmlspecialchars($Ahref) . '" title="' . $lang->getLL('info', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . $lang->getLL('info', TRUE) . $ATag2_e . '</td>
 						<td>&nbsp;</td>
 					</tr>';
 			}
@@ -2066,7 +2066,7 @@ class ElementBrowser {
 			. ', \'\', \'\',\'\',1);">';
 		// Add the foder icon
 		$folderIcon = $aTag;
-		$folderIcon .= $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL);
+		$folderIcon .= $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render();
 		$folderIcon .= htmlspecialchars(GeneralUtility::fixed_lgd_cs($baseFolder->getName(), $titleLength));
 		$folderIcon .= '</a>';
 		$content .= $folderIcon . '<br />';
@@ -2077,7 +2077,7 @@ class ElementBrowser {
 			$subFolderIdentifier = $subFolder->getCombinedIdentifier();
 			// Create folder icon:
 			$icon = '<span style="width: 16px; height: 16px; display: inline-block;"></span>';
-			$icon .= '<span title="' . htmlspecialchars($subFolder->getName()) . '">' . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL) . '</span>';
+			$icon .= '<span title="' . htmlspecialchars($subFolder->getName()) . '">' . $this->iconFactory->getIcon('apps-filetree-folder-default', Icon::SIZE_SMALL)->render() . '</span>';
 			// Create links for adding the folder:
 			if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
 				$aTag = '<a href="#" onclick="return set_folderpath(' . GeneralUtility::quoteJSvalue($subFolderIdentifier)
@@ -2182,7 +2182,7 @@ class ElementBrowser {
 				);
 				$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
 				$size = ' (' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
-				$filenameAndIcon = '<span title="' . htmlspecialchars($fileObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL) . '</span>';
+				$filenameAndIcon = '<span title="' . htmlspecialchars($fileObject->getName() . $size) . '">' . $this->iconFactory->getIconForResource($fileObject, Icon::SIZE_SMALL)->render() . '</span>';
 				if (GeneralUtility::_GP('noLimit')) {
 					$maxW = 10000;
 					$maxH = 10000;
@@ -2619,10 +2619,10 @@ class ElementBrowser {
 		$noThumbsInEB = $this->getBackendUser()->getTSConfigVal('options.noThumbsInEB');
 		$out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()"'
 			. 'title="' . $labelImportSelection . '">'
-			. $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)
+			. $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)->render()
 			. $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
 			. '<a href="#" onclick="BrowseLinks.Selector.toggle()" title="' . $labelToggleSelection . '">'
-			. $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)
+			. $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render()
 			. $labelToggleSelection . '</a>' . '</div>';
 		if (!$noThumbsInEB && $this->selectedFolder) {
 			// MENU-ITEMS, fetching the setting for thumbnails from File>List module:

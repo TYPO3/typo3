@@ -113,7 +113,7 @@ class ElementBrowserRecordList extends DatabaseRecordList {
 		$ATag = '<a href="#" onclick="' . $aOnClick . '" title="' . $this->getLanguageService()->getLL('addToList', TRUE) . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 		$ATag_e = '</a>';
-		return $ATag . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL) . $ATag_e . $ATag_alt . $code . $ATag_e;
+		return $ATag . $this->iconFactory->getIcon('actions-edit-add', Icon::SIZE_SMALL)->render() . $ATag_e . $ATag_alt . $code . $ATag_e;
 	}
 
 	/**

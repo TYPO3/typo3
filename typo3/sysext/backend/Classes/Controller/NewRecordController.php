@@ -270,7 +270,7 @@ class NewRecordController {
 				$iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIconForRecord('pages', $this->pageinfo, Icon::SIZE_SMALL)->render() . '</span>';
 				$title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
 			} else {
-				$iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . '</span>';
+				$iconImgTag = '<span title="' . htmlspecialchars($this->pageinfo['_thePath']) . '">' . $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . '</span>';
 				$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 			}
 			$this->code = '<span class="typo3-moduleHeader">' . $this->doc->wrapClickMenuOnIcon($iconImgTag, 'pages', $this->pageinfo['uid']) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($title, 45)) . '</span><br />';
@@ -314,7 +314,7 @@ class NewRecordController {
 			// New page
 			if ($this->showNewRecLink('pages')) {
 				$buttons['new_page'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render()
 					. '</a>';
 			}
 			// CSH
@@ -326,7 +326,7 @@ class NewRecordController {
 		}
 		// Back
 		if ($this->R_URI) {
-			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 			// View
@@ -338,7 +338,7 @@ class NewRecordController {
 				$excludeDokTypes = array(PageRepository::DOKTYPE_RECYCLER, PageRepository::DOKTYPE_SYSFOLDER, PageRepository::DOKTYPE_SPACER);
 			}
 			if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE)) {
-				$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
+				$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
 			}
 		}
 		return $buttons;
@@ -402,7 +402,7 @@ class NewRecordController {
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
 		$pageIcon = $this->iconFactory->getIconForRecord($table, array(), Icon::SIZE_SMALL)->render();
-		$newPageIcon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL);
+		$newPageIcon = $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)->render();
 		$rowContent = '';
 		// New pages INSIDE this pages
 		$newPageLinks = array();
@@ -435,7 +435,7 @@ class NewRecordController {
 		$iconFile = array();
 		// New tables (but not pages) INSIDE this pages
 		$isAdmin = $this->getBackendUserAuthentication()->isAdmin();
-		$newContentIcon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
+		$newContentIcon = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
 		if ($this->newContentInto) {
 			if (is_array($GLOBALS['TCA'])) {
 				$groupName = '';
@@ -503,7 +503,7 @@ class NewRecordController {
 								}
 								$_EXTKEY = 'system';
 								$thisTitle = $lang->getLL('system_records');
-								$iconFile['system'] = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL);
+								$iconFile['system'] = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render();
 							}
 							if ($groupName == '' || $groupName != $_EXTKEY) {
 								$groupName = empty($v['ctrl']['groupName']) ? $_EXTKEY : $v['ctrl']['groupName'];

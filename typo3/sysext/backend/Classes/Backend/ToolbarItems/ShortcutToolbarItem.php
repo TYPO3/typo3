@@ -128,9 +128,9 @@ class ShortcutToolbarItem implements ToolbarItemInterface {
 		$shortcutEdit = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksEdit', TRUE);
 		$shortcutDelete = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.bookmarksDelete', TRUE);
 		$editIcon = '<a href="#" class="dropdown-list-link-edit shortcut-edit" ' . $shortcutEdit . '>'
-			. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+			. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 		$deleteIcon = '<a href="#" class="dropdown-list-link-delete shortcut-delete" title="' . $shortcutDelete . '">'
-			. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</a>';
+			. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
 
 		$shortcutMenu[] = '<ul class="dropdown-list">';
 

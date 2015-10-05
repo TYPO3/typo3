@@ -124,7 +124,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 								'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 							];
 							$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-							$editIcon = '<a href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+							$editIcon = '<a href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->getLL('editTSconfig', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 						}
 						$TScontent = nl2br(htmlspecialchars(trim($v) . LF));
 						$tsparser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
@@ -148,7 +148,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 						'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
 					];
 					$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
-					$editIcon = '<a href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
+					$editIcon = '<a href="' . htmlspecialchars($url) . '" title="' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '<strong>' . $this->getLanguageService()->getLL('editTSconfig_all', TRUE) . '</strong>' . '</a>';
 				} else {
 					$editIcon = '';
 				}

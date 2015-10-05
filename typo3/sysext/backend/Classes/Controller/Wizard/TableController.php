@@ -214,18 +214,18 @@ class TableController extends AbstractWizardController {
 			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons');
 			// Close
 			$title = 'title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '"';
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '); return false;')) . '" ' . $title . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(' . GeneralUtility::quoteJSvalue(GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '); return false;')) . '" ' . $title . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
 			// Save
 			$buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+				. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
 				. '</button>';
 			// Save & Close
 			$buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+				. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
 				. '</button>';
 			// Reload
 			$buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)
+				. $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render()
 				. '</button>';
 		}
 		return $buttons;

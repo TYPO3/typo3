@@ -3682,7 +3682,7 @@ class ImportExport {
 			$preCode_B = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			foreach ($record['softrefs'] as $info) {
 				$pInfo = array();
-				$pInfo['preCode'] = $preCode_A . $iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL);
+				$pInfo['preCode'] = $preCode_A . $iconFactory->getIcon('status-status-reference-soft', Icon::SIZE_SMALL)->render();
 				$pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
 				if ($info['subst']['type']) {
 					if (strlen($info['subst']['title'])) {
@@ -3771,7 +3771,7 @@ class ImportExport {
 				$staticFixed = TRUE;
 			}
 
-			$icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($iconName, Icon::SIZE_SMALL) . '</span>';
+			$icon = '<span class="' . $iconClass . '" title="' . htmlspecialchars($pInfo['ref']) . '">' . $iconFactory->getIcon($iconName, Icon::SIZE_SMALL)->render() . '</span>';
 
 			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $icon;
 			$pInfo['class'] = $htmlColorClass ?: 'bgColor3';
@@ -3813,7 +3813,7 @@ class ImportExport {
 					return;
 				}
 			}
-			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL);
+			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];
@@ -3864,7 +3864,7 @@ class ImportExport {
 					$this->error('MISSING RTE original FILE: ' . $ID, 1);
 				}
 				$pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);
-				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL);
+				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('status-status-reference-hard', Icon::SIZE_SMALL)->render();
 				$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
 				$pInfo['size'] = $fI['filesize'];
@@ -3885,7 +3885,7 @@ class ImportExport {
 						$pInfo['updatePath'] = $fI['parentRelFileName'];
 					}
 					$pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$extID]);
-					$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL);
+					$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $iconFactory->getIcon('actions-insert-reference', Icon::SIZE_SMALL)->render();
 					$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];

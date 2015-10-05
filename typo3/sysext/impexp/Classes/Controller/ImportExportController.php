@@ -243,7 +243,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					);
 					$title = $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE);
 					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $title . '">'
-						. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
+						. $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 			}
 		}
@@ -679,7 +679,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					// If the page is actually the root, handle it differently
 					// NOTE: we don't compare integers, because the number actually comes from the split string above
 					if ($referenceParts[1] === '0') {
-						$iconAndTitle = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL) . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+						$iconAndTitle = $this->iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 					} else {
 						$record = BackendUtility::getRecordWSOL('pages', $referenceParts[1]);
 						$iconAndTitle = $this->iconFactory->getIconForRecord('pages', $record, Icon::SIZE_SMALL)->render()

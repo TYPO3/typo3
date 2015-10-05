@@ -218,7 +218,7 @@ class InputTextElement extends AbstractFormElement {
 					' . $html . '
 					<span class="input-group-btn">
 						<label class="btn btn-default" for="' . $attributes['id'] . '">
-							' . $iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL) . '
+							' . $iconFactory->getIcon('actions-edit-pick-date', Icon::SIZE_SMALL)->render() . '
 						</label>
 					</span>
 				</div>';

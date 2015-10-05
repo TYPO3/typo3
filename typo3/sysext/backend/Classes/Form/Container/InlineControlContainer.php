@@ -446,7 +446,7 @@ class InlineControlContainer extends AbstractContainer {
 				$className = '';
 		}
 		// Create the link:
-		$icon = $icon ? $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL) : '';
+		$icon = $icon ? $this->iconFactory->getIcon($icon, Icon::SIZE_SMALL)->render() : '';
 		$link = $this->wrapWithAnchor($icon . $title, '#', $attributes);
 		return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $link . '</div>';
 	}
@@ -540,7 +540,7 @@ class InlineControlContainer extends AbstractContainer {
 		$item = '
 			<a href="#" class="btn btn-default inlineNewRelationButton ' . $this->inlineData['config'][$nameObject]['md5'] . '"
 				' . $buttonStyle . ' onclick="' . htmlspecialchars($onClick) . '" title="' . $createNewRelationText . '">
-				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL) . '
+				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
 				' . $createNewRelationText . '
 			</a>';
 		$isDirectFileUploadEnabled = (bool)$this->getBackendUserAuthentication()->uc['edit_docModuleUpload'];
@@ -581,7 +581,7 @@ class InlineControlContainer extends AbstractContainer {
 							data-btn-submit="' . $buttonSubmit . '"
 							data-placeholder="' . $placeholder . '"
 							>
-							'. $this->iconFactory->getIcon('actions-online-media-add', Icon::SIZE_SMALL) . '
+							'. $this->iconFactory->getIcon('actions-online-media-add', Icon::SIZE_SMALL)->render() . '
 							' . $buttonText . '</span>';
 				}
 			}
@@ -652,7 +652,7 @@ class InlineControlContainer extends AbstractContainer {
 				$item .= '
 				<span class="input-group-btn">
 					<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($onChange) . '" title="' . $createNewRelationText .'">
-						' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . $createNewRelationText . '
+						' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . $createNewRelationText . '
 					</a>
 				</span>';
 			} else {

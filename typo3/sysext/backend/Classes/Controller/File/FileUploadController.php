@@ -106,7 +106,7 @@ class FileUploadController {
 		// Setting the title and the icon
 		/** @var IconFactory $iconFactory */
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL);
+		$icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
 		$this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
 		// Setting template object
 		$this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
@@ -138,7 +138,7 @@ class FileUploadController {
 		// Back
 		if ($this->returnUrl) {
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisUrl($this->returnUrl)) . '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
 		$this->content .= $this->doc->endPage();

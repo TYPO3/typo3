@@ -359,7 +359,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					);
 					$eI = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 						. '" title="' . htmlspecialchars($iTitle) . '">'
-						. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+						. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 				} else {
 					$eI = '';
 				}
@@ -492,7 +492,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				if ($this->getPageLayoutController()->pageIsNotLockedForEditors()) {
 					$link = '<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP))
 						. '" title="' . $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-						. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)
+						. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
 						. ' '
 						. $this->getLanguageService()->getLL('content', TRUE) . '</a>';
 				}
@@ -567,7 +567,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 							$singleElementHTML .= '
 								<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
 									. $this->getLanguageService()->getLL('newContentElement', TRUE) . '" class="btn btn-default btn-sm">'
-									. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)
+									. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render()
 									. ' '
 									. $this->getLanguageService()->getLL('content', TRUE) . '</a>
 							';
@@ -726,7 +726,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
 							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 								. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
-								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>'
+								. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>'
 							: ''
 						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($lpRecord['title'], 20));
 				} else {
@@ -738,7 +738,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						) . $viewLink . ($this->getBackendUser()->check('tables_modify', 'pages_language_overlay')
 							? '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
-							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>'
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>'
 							: ''
 						) . htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->pageRecord['title'], 20));
 				}
@@ -837,7 +837,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			$onClick = BackendUtility::editOnClick('&edit[' . $table . '][' . $this->id . ']=new');
 			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" '
 				. 'title="' . $this->getLanguageService()->getLL('new', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a>';
+				. $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
 		// Render Items
@@ -860,7 +860,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					if ($this->doEdit) {
 						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $this->getLanguageService()->getLL('edit', TRUE) . '">'
-							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 					} else {
 						$Nrow['__editIconLink__'] = $this->noEditIcon();
 					}
@@ -1065,7 +1065,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$eI = '<a href="#" onclick="'
 							. htmlspecialchars(BackendUtility::editOnClick($params))
 							. '" title="' . $this->getLanguageService()->getLL('editThisPage', TRUE) . '">'
-							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+							. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 					} else {
 						$eI = '';
 					}
@@ -1128,7 +1128,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$iconsArr['edit'] = '<a href="#" onclick="'
 					. htmlspecialchars(BackendUtility::editOnClick($editParams)) . '" title="'
 					. $this->getLanguageService()->getLL('editColumn', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+					. $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 			}
 			if ($pasteParams) {
 				$elFromTable = $this->clipboard->elFromTable('tt_content');
@@ -1138,7 +1138,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						. '" onclick="' . htmlspecialchars(('return '
 						. $this->clipboard->confirmMsg('pages', $this->pageRecord, 'into', $elFromTable, $colName)))
 						. '" title="' . $this->getLanguageService()->getLL('pasteIntoColumn', TRUE) . '">'
-						. $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL) . '</a>';
+						. $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 			}
 		}
@@ -1222,7 +1222,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					)) . '" title="' . htmlspecialchars($this->nextThree > 1
 						? sprintf($this->getLanguageService()->getLL('nextThree'), $this->nextThree)
 						: $this->getLanguageService()->getLL('edit'))
-					. '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+					. '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 				// Hide element:
 				$hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
 				if (
@@ -1241,7 +1241,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						. '][' . $hiddenField . ']=' . $value;
 					$out .= '<a class="btn btn-default" href="' . htmlspecialchars($this->getPageLayoutController()->doc->issueCommand($params))
 						. '" title="' . $this->getLanguageService()->getLL($label, TRUE) . '">'
-						. $this->iconFactory->getIcon('actions-edit-' . strtolower($label), Icon::SIZE_SMALL) . '</a>';
+						. $this->iconFactory->getIcon('actions-edit-' . strtolower($label), Icon::SIZE_SMALL)->render() . '</a>';
 				}
 				// Delete
 				$params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
@@ -1255,7 +1255,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					. ' data-content="' . htmlspecialchars($confirm) . '" '
 					. ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel')) . '"'
 					. ' title="' . $this->getLanguageService()->getLL('deleteItem', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</a>';
+					. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
 				if ($out) {
 					$out = '<div class="btn-group btn-group-sm" role="group">' . $out . '</div>';
 				}
@@ -1268,7 +1268,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$moveButtonContent .= '<a class="btn btn-default" href="'
 							. htmlspecialchars($this->getPageLayoutController()->doc->issueCommand($params))
 							. '" title="' . $this->getLanguageService()->getLL('moveUp', TRUE) . '">'
-							. $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</a>';
+							. $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
 						if (!$dragDropEnabled) {
 							$displayMoveButtons = TRUE;
 						}
@@ -1281,7 +1281,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 						$moveButtonContent .= '<a class="btn btn-default" href="'
 							. htmlspecialchars($this->getPageLayoutController()->doc->issueCommand($params))
 							. '" title="' . $this->getLanguageService()->getLL('moveDown', TRUE) . '">'
-							. $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</a>';
+							. $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
 						if (!$dragDropEnabled) {
 							$displayMoveButtons = TRUE;
 						}
@@ -1301,7 +1301,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		if ($lockInfo = BackendUtility::isRecordLocked('tt_content', $row['uid'])) {
 			$additionalIcons[] = '<a href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg'])
 				. ');return false;" title="' . htmlspecialchars($lockInfo['msg']) . '">'
-				. $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL) . '</a>';
+				. $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		// Call stats information hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {

@@ -265,13 +265,13 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 			// CSH Buttons
 			$buttons['csh_buttons'] = BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons');
 			// Close
-			$buttons['close'] = '<button class="c-inputButton" name="closedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</button>';
+			$buttons['close'] = '<button class="c-inputButton" name="closedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</button>';
 			// Save
-			$buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL) . '</button>';
+			$buttons['save'] = '<button class="c-inputButton" name="savedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</button>';
 			// Save & Close
-			$buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL) . '</button>';
+			$buttons['save_close'] = '<button class="c-inputButton" name="saveandclosedok" value="1" title=' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '>' . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render() . '</button>';
 			// Reload
-			$buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL) . '</button>';
+			$buttons['reload'] = '<button class="c-inputButton" name="_refresh" value="1" title="' . $this->getLanguageService()->getLL('forms_refresh', TRUE) . '">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</button>';
 		}
 		return $buttons;
 	}
@@ -487,17 +487,17 @@ class FormsController extends \TYPO3\CMS\Backend\Controller\Wizard\AbstractWizar
 					// @todo $inputStyle undefined
 					$brTag = $inputStyle ? '' : '<br />';
 					if ($k != 1) {
-						$ctrl .= '<button name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL) . '</button>' . $brTag;
-						$ctrl .= '<button name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_top][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_top', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-top', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_up][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_up', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
 					}
-					$ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . ' title = "' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_LARGE) . '</button>' . $brTag;
+					$ctrl .= '<button name="FORMCFG[row_remove][' . ($k + 1) * 2 . ']" ' . $onClick . ' title = "' . $this->getLanguageService()->getLL('table_removeRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_LARGE)->render() . '</button>' . $brTag;
 
 					if ($k != (count($formCfgArray)/2)) {
-						$ctrl .= '<button name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '</button>' . $brTag;
-						$ctrl .= '<button name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL) . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_down][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_down', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
+						$ctrl .= '<button name="FORMCFG[row_bottom][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_bottom', TRUE) . '">' . $this->iconFactory->getIcon('actions-move-to-bottom', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
 					}
 
-					$ctrl .= '<button name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-template-new', Icon::SIZE_SMALL) . '</button>' . $brTag;
+					$ctrl .= '<button name="FORMCFG[row_add][' . ($k + 1) * 2 . ']"' . $onClick . ' title="' . $this->getLanguageService()->getLL('table_addRow', TRUE) . '">' . $this->iconFactory->getIcon('actions-template-new', Icon::SIZE_SMALL)->render() . '</button>' . $brTag;
 					$ctrl = '<span class="c-wizButtonsV">' . $ctrl . '</span>';
 					// Finally, put together the full row from the generated content above:
 					$bgC = $confData['type'] ? ' class="bgColor5"' : '';

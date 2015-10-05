@@ -88,7 +88,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 		}
 		$title = $lang->sL('LLL:EXT:lang/locallang_common.xlf:editField', TRUE);
 		$startAnchor = '<a href="' . htmlspecialchars($url) . '" title="' . $title . '">';
-		$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+		$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 		$ret = '<tr><td>';
 		$ret .= $startAnchor . '<strong>' . $label . '</strong></a>';
 		$ret .= '</td><td width="80%">' . $data . '</td><td>' . $startAnchor . '<span class="btn btn-default">' . $icon . '</span></a></td></tr>';
@@ -304,7 +304,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends AbstractFunc
 			];
 			$url = BackendUtility::getModuleUrl('record_edit', $urlParameters);
 			$title = $lang->getLL('editTemplateRecord', TRUE);
-			$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+			$icon = $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 			$outCode .= '<br /><a class="btn btn-default" href="' . htmlspecialchars($url)
 				. '"><strong>' . $icon . '&nbsp;' . $title . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);

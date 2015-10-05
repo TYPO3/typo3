@@ -452,7 +452,7 @@ class RecordHistory {
 			// Build up single line
 			$singleLine = array();
 			// Diff link
-			$image = '<span title="' . $languageService->getLL('sumUpChanges', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</span>';
+			$image = '<span title="' . $languageService->getLL('sumUpChanges', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</span>';
 			$singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
 			// remove first link
 			$singleLine[] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
@@ -498,10 +498,10 @@ class RecordHistory {
 			if (!$entry['action']) {
 				if ($entry['snapshot']) {
 					$title = $languageService->getLL('unmarkState', TRUE);
-					$image = $this->iconFactory->getIcon('actions-unmarkstate', Icon::SIZE_SMALL);
+					$image = $this->iconFactory->getIcon('actions-unmarkstate', Icon::SIZE_SMALL)->render();
 				} else {
 					$title = $languageService->getLL('markState', TRUE);
-					$image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL);
+					$image = $this->iconFactory->getIcon('actions-markstate', Icon::SIZE_SMALL)->render();
 				}
 				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']), '', $title);
 			} else {

@@ -329,7 +329,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$onClick = htmlspecialchars('jumpToUrl(unescape(\'' .
 			rawurlencode(GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl'])) . '\')); return false;');
 		$buttons['close'] = '<a href="#" onclick="' . $onClick . '" ' . $title . '>' .
-			$iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
+			$iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
 		return $buttons;
 	}
 

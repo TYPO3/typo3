@@ -480,7 +480,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 			$requestUri
 		));
 		$actionLink .= '" title="' . $this->getLanguageService()->getLL('list.edit') . '">';
-		$actionLink .= $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+		$actionLink .= $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 		$actionLink .= '</a>';
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {

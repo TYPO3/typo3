@@ -1061,7 +1061,7 @@ class PageLayoutController {
 		// Making search form:
 		if (!$this->modTSconfig['properties']['disableSearchBox'] && !empty($tableOutput)) {
 			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL) . '</a>';
+			$this->markers['BUTTONLIST_ADDITIONAL'] = '<a href="#" class="t3js-toggle-search-toolbox" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.title.searchIcon', TRUE) . '">' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . '</a>';
 			$this->markers['SEARCHBOX'] = $dbList->getSearchBox(0);
 		}
 		// Additional footer content
@@ -1121,7 +1121,7 @@ class PageLayoutController {
 		);
 		// View page
 		if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		// Shortcut
 		if ($this->getBackendUser()->mayMakeShortcut()) {
@@ -1164,7 +1164,7 @@ class PageLayoutController {
 					$buttons['edit_language'] = '<a href="#" ' .
 						'onclick="' . $editLanguageOnClick . '"' .
 						'title="' . $lang->getLL('editPageLanguageOverlayProperties', TRUE) . '">' .
-						$this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL) .
+						$this->iconFactory->getIcon('mimetypes-x-content-page-language-overlay', Icon::SIZE_SMALL)->render() .
 						'</a>';
 				}
 
@@ -1172,7 +1172,7 @@ class PageLayoutController {
 				// Edit page properties
 				$editPageOnClick = htmlspecialchars(BackendUtility::editOnClick('&edit[pages][' . $this->id . ']=edit'));
 				$buttons['edit_page'] = '<a href="#" onclick="' . $editPageOnClick . '" title="' . $lang->getLL('editPageProperties', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
 					. '</a>';
 			}
 
@@ -1185,24 +1185,24 @@ class PageLayoutController {
 			if ($function == 'quickEdit') {
 				// Save record
 				$buttons['savedok'] = '<button class="c-inputButton" name="_savedok_x" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
 					. '</button>';
 				// Save and close
 				$buttons['save_close'] = '<button class="c-inputButton" name="_saveandclosedok_x" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
 					. '</button>';
 				// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)->render()
 					. '</a>';
 				// Close record
 				$buttons['closedok'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(' . GeneralUtility::quoteJSvalue($this->closeUrl) . '); return false;') . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render()
 					. '</a>';
 				// Delete record
 				if ($this->deleteButton) {
 					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(' . GeneralUtility::quoteJSvalue($this->eRParts[0]) . ',' . GeneralUtility::quoteJSvalue($this->eRParts[1]) . ',' . GeneralUtility::quoteJSvalue(GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id) . ');') . '" title="' . $lang->getLL('deleteItem', TRUE) . '">'
-						. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)
+						. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render()
 						. '</a>';
 				}
 				if ($this->undoButton) {
@@ -1220,7 +1220,7 @@ class PageLayoutController {
 									)
 								)
 							) . '; return false;') . '"
-						title="' . htmlspecialchars(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . '</a>';
+						title="' . htmlspecialchars(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge($GLOBALS['EXEC_TIME'] - $this->undoButtonR['tstamp'], $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . '</a>';
 					// History button
 					$buttons['history_record'] = '<a href="#"
 						onclick="' . htmlspecialchars('jumpToUrl(' .
@@ -1233,7 +1233,7 @@ class PageLayoutController {
 									)
 								) . '#latest'
 							) . ');return false;') . '"
-						title="' . $lang->getLL('recordHistory', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</a>';
+						title="' . $lang->getLL('recordHistory', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 			}
 		}

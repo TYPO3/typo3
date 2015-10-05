@@ -132,7 +132,7 @@ class ElementHistoryController {
 		$returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
 		if ($returnUrl) {
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$buttons['back'] = '<a href="' . htmlspecialchars($returnUrl) . '" class="typo3-goBack">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+			$buttons['back'] = '<a href="' . htmlspecialchars($returnUrl) . '" class="typo3-goBack">' . $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		return $buttons;
 	}

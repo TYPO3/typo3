@@ -1303,12 +1303,12 @@ class ExtendedTemplateService extends TemplateService {
 							$defaultTyposcriptStyle = '';
 						}
 						$deleteTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.deleteTitle', TRUE);
-						$deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL);
+						$deleteIcon = $iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render();
 						$deleteIconHTML = '<span title="' . $deleteTitle . '" alt="' . $deleteTitle . '"'
 							. ' class="typo3-tstemplate-ceditor-control undoIcon" rel="' . $idName . '">'
 							. $deleteIcon . '</span>';
 						$editTitle = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.editTitle', TRUE);
-						$editIcon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL);
+						$editIcon = $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render();
 						$editIconHTML = '<span title="' . $editTitle . '" alt="' . $editTitle . '"'
 							. ' class="typo3-tstemplate-ceditor-control editIcon" rel="' . $idName . '">'
 							. $editIcon . '</span>';

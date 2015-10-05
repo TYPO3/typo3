@@ -201,7 +201,7 @@ abstract class AbstractContextMenuDataProvider {
 				if (!isset($actionConfiguration['iconName'])) {
 					$actionConfiguration['iconName'] = 'miscellaneous-placeholder';
 				}
-				$action->setIcon((string)$iconFactory->getIcon($actionConfiguration['iconName'], Icon::SIZE_SMALL));
+				$action->setIcon($iconFactory->getIcon($actionConfiguration['iconName'], Icon::SIZE_SMALL)->render());
 			}
 			$actionCollection->offsetSet($level . (int)$index, $action);
 			$actionCollection->ksort();

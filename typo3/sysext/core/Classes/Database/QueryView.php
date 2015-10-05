@@ -551,13 +551,13 @@ class QueryView {
 		if (!$row['deleted']) {
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$out .= '<a class="btn btn-default" href="#" onClick="top.launchView(\'' . $table . '\',' . $row['uid'] . ',\'' . $GLOBALS['BACK_PATH'] . '\');return false;">' . $iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render() . '</a>';
-			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+			$out .= '<a class="btn btn-default" href="#" onClick="' . htmlspecialchars(BackendUtility::editOnClick($params, '', GeneralUtility::getIndpEnv('REQUEST_URI') . GeneralUtility::implodeArrayForUrl('SET', (array)GeneralUtility::_POST('SET')))) . '">' . $iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 		} else {
 			$out .= '<a class="btn btn-default" href="' . GeneralUtility::linkThisUrl(BackendUtility::getModuleUrl('tce_db'), array(
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => GeneralUtility::linkThisScript(array())
 				)) . '" title="' . $GLOBALS['LANG']->getLL('undelete_only', TRUE) . '">';
-			$out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL) . '</a>';
+			$out .= $this->iconFactory->getIcon('actions-edit-restore', Icon::SIZE_SMALL)->render() . '</a>';
 			$formEngineParameters = array(
 				'edit[' . $table . '][' . $row['uid'] . ']' => 'edit',
 				'returnUrl' => GeneralUtility::linkThisScript(array())
@@ -567,7 +567,7 @@ class QueryView {
 					('cmd[' . $table . '][' . $row['uid'] . '][undelete]') => '1',
 					'redirect' => $redirectUrl
 				)) . '" title="' . $GLOBALS['LANG']->getLL('undelete_and_edit', TRUE) . '">';
-			$out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL) . '</a>';
+			$out .= $this->iconFactory->getIcon('actions-edit-restore-edit', Icon::SIZE_SMALL)->render() . '</a>';
 		}
 		$_params = array($table => $row);
 		if (is_array($this->hookArray['additionalButtons'])) {

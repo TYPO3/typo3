@@ -174,7 +174,7 @@ class MoveElementController {
 						$pidPageInfo = BackendUtility::readPageAccess($pageInfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($backendUser->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array('uid' => (int)$pageInfo['pid'], 'moveUid' => $this->moveUid))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
 								$code .= $this->iconFactory->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
@@ -224,7 +224,7 @@ class MoveElementController {
 								$code .= '<a href="' . htmlspecialchars(GeneralUtility::linkThisScript(array(
 									'uid' => (int)$pageInfo['pid'],
 									'moveUid' => $this->moveUid
-								))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL) . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
+								))) . '">' . $this->iconFactory->getIcon('actions-view-go-up', Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
 								$code .= $this->iconFactory->getIconForRecord('pages', $pidPageInfo, Icon::SIZE_SMALL)->render() . BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
@@ -276,7 +276,7 @@ class MoveElementController {
 				$buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'move_el_cs');
 			}
 			if ($this->R_URI) {
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $this->getLanguageService()->getLL('goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
 			}
 		}
 		return $buttons;

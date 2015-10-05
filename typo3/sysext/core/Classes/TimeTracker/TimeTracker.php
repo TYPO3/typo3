@@ -191,7 +191,7 @@ class TimeTracker {
 			$placeholder = '<br /><span style="width: 300px; height: 1px; display: inline-block;"></span>';
 		}
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$num], Icon::SIZE_SMALL) . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
+		$this->tsStackLog[$k]['message'][] = $iconFactory->getIcon($this->wrapIcon[$num], Icon::SIZE_SMALL)->render() . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
 	}
 
 	/**

@@ -176,7 +176,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 					TRUE
 				);
 				$title = 'title="' . $this->getLanguageService()->getLL('edit-sys_action') . '"';
-				$icon = $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL);
+				$icon = $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render();
 				$editActionLink = '<a class="edit" href="' . $link . '"' . $title . '>';
 				$editActionLink .= $icon . $this->getLanguageService()->getLL('edit-sys_action') . '</a>';
 			}
@@ -221,7 +221,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			);
 			$content .= '<p>' .
 				'<a href="' . $link . '" title="' . $this->getLanguageService()->getLL('new-sys_action') . '">' .
-				$this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) .
+				$this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() .
 				$this->getLanguageService()->getLL('new-sys_action') .
 				'</a></p>';
 		}
@@ -417,7 +417,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// Link to delete the user record
 		$link .= '
 				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" class="t3js-confirm-trigger" data-title="' . $this->getLanguageService()->getLL('lDelete_warning_title', TRUE) . '" data-message="' . $this->getLanguageService()->getLL('lDelete_warning', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) .
+					. $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() .
 				'</a>';
 		return $link;
 	}
@@ -746,7 +746,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 							. '&id=' . '&SET[function]=search' . '&SET[search]=query'
 							. '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1')
 						. '">'
-						. $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)
+						. $this->iconFactory->getIcon('actions-document-info', Icon::SIZE_SMALL)->render()
 						. $this->getLanguageService()->getLL(($queryIsEmpty ? 'action_createQuery'
 						: 'action_editQuery')) . '</a><br /><br />';
 				}

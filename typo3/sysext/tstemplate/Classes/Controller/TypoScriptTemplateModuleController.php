@@ -305,7 +305,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 
 		if ($this->id && $this->access) {
 			// View page
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL) . '</a>';
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
 			if ($this->extClassConf['name'] == TypoScriptTemplateInformationModuleFunctionController::class) {
 				// NEW button
 				$urlParameters = array(
@@ -313,26 +313,26 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 					'template' => 'all',
 					'createExtension' => 'new'
 				);
-				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL) . '</a>';
+				$buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
 				if (!empty($this->e) && !GeneralUtility::_POST('_saveandclosedok')) {
 					// no NEW-button while edit
 					$buttons['new'] = '';
 					// SAVE button
 					$buttons['save'] = '<button type="submit" class="c-inputButton" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
-						. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+						. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
 						. '</button>';
 					// SAVE AND CLOSE button
 					$buttons['save_close'] = '<button type="submit" class="c-inputButton" name="_saveandclosedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
-						. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+						. $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
 						. '</button>';
 					// CLOSE button
 					$url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
-					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) .'</a>';
+					$buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' .  $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() .'</a>';
 				}
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
 				// SAVE button
 				$buttons['save'] = '<button class="c-inputButton" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
-					. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+					. $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
 					. '</button>';
 			} elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
 				if (!empty($this->sObj)) {
@@ -341,7 +341,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass {
 						'id' => $this->id
 					);
 					$aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL) . '</a>';
+					$buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 			}
 			// Shortcut

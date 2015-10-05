@@ -47,10 +47,10 @@ class FlexFormContainerContainer extends AbstractContainer {
 
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 		$toggleIcons = '<span class="t3-flex-control-toggle-icon-open" style="' . ($flexFormContainerElementCollapsed ? 'display: none;' : '') . '">'
-			. $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)
+			. $iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render()
 			. '</span>';
 		$toggleIcons .= '<span class="t3-flex-control-toggle-icon-close" style="' . ($flexFormContainerElementCollapsed ? '' : 'display: none;') . '">'
-			. $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)
+			. $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render()
 			. '</span>';
 
 		$flexFormContainerCounter = $this->data['flexFormContainerCounter'];
@@ -68,8 +68,8 @@ class FlexFormContainerContainer extends AbstractContainer {
 		$userHasAccessToDefaultLanguage = $this->getBackendUserAuthentication()->checkLanguageAccess(0);
 		if ($userHasAccessToDefaultLanguage) {
 			$moveAndDeleteContent[] = '<div class="pull-right">';
-			$moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', TRUE) . '" class="t3-js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL) . '</span>';
-			$moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="t3-js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</span>';
+			$moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:sortable.dragmove', TRUE) . '" class="t3-js-sortable-handle">' . $iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '</span>';
+			$moveAndDeleteContent[] = '<span title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', TRUE) . '" class="t3-js-delete">' . $iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</span>';
 			$moveAndDeleteContent[] = '</div>';
 		}
 

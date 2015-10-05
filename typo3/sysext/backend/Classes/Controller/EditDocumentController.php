@@ -1098,7 +1098,7 @@ class EditDocumentController {
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly']) {
 			// SAVE button:
 			$buttons['save'] = '<button name="_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', TRUE) . '">'
-				. $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)
+				. $iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
 				. '</button>';
 			// SAVE / VIEW button:
 			if ($this->viewId && !$this->noView && $this->getNewIconMode($this->firstEl['table'], 'saveDocView')) {
@@ -1111,38 +1111,38 @@ class EditDocumentController {
 				}
 				if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, TRUE) || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'].'.']['previewPageId'])) {
 					$buttons['save_view'] = '<button name="_savedokview" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDocShow', TRUE) . '" onclick="window.open(\'\', \'newTYPO3frontendWindow\');">'
-						. $iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)
+						. $iconFactory->getIcon('actions-document-save-view', Icon::SIZE_SMALL)->render()
 						. '</button>';
 				}
 			}
 			// SAVE / NEW button:
 			if (count($this->elementsData) === 1 && $this->getNewIconMode($this->firstEl['table'])) {
 				$buttons['save_new'] = '<button name="_savedoknew" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveNewDoc', TRUE) . '">'
-					. $iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL)
+					. $iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL)->render()
 					. '</button>';
 			}
 			// SAVE / CLOSE
 			$buttons['save_close'] = '<button name="_saveandclosedok" class="c-inputButton t3js-editform-submitButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', TRUE) . '">'
-				. $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)
+				. $iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
 				. '</button>';
 			// FINISH TRANSLATION / SAVE / CLOSE
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation']) {
 				$buttons['translation_save'] = '<button name="_translation_savedok" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDoc', TRUE) . '">'
-					. $iconFactory->getIcon('actions-document-save-translation', Icon::SIZE_SMALL)
+					. $iconFactory->getIcon('actions-document-save-translation', Icon::SIZE_SMALL)->render()
 					. '</button>';
 				$buttons['translation_saveclear'] = '<button name="_translation_savedokclear" class="c-inputButton" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.translationSaveDocClear', TRUE) . '">'
-					. $iconFactory->getIcon('actions-document-save-cleartranslationcache', Icon::SIZE_SMALL)
+					. $iconFactory->getIcon('actions-document-save-cleartranslationcache', Icon::SIZE_SMALL)->render()
 					. '</button>';
 			}
 		}
 		// CLOSE button:
-		$buttons['close'] = '<a href="#" class="t3js-editform-close" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL) . '</a>';
+		$buttons['close'] = '<a href="#" class="t3js-editform-close" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
 		// DELETE + UNDO buttons:
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && count($this->elementsData) === 1) {
 			if ($this->firstEl['cmd'] != 'new' && MathUtility::canBeInterpretedAsInteger($this->firstEl['uid'])) {
 				// Delete:
 				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')) {
-					$buttons['delete'] = '<a href="#" class="t3js-editform-delete-record" data-return-url="' . htmlspecialchars($this->retUrl) . '" data-uid="' . htmlspecialchars($this->firstEl['uid']) . '" data-table="' . htmlspecialchars($this->firstEl['table']) . '" title="' . $lang->getLL('deleteItem', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL) . '</a>';
+					$buttons['delete'] = '<a href="#" class="t3js-editform-delete-record" data-return-url="' . htmlspecialchars($this->retUrl) . '" data-uid="' . htmlspecialchars($this->firstEl['uid']) . '" data-table="' . htmlspecialchars($this->firstEl['table']) . '" title="' . $lang->getLL('deleteItem', TRUE) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 				// Undo:
 				$undoRes = $this->getDatabaseConnection()->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $this->getDatabaseConnection()->fullQuoteStr($this->firstEl['table'], 'sys_history') . ' AND recuid=' . (int)$this->firstEl['uid'], '', 'tstamp DESC', '1');
@@ -1159,7 +1159,7 @@ class EditDocumentController {
 								)
 							)
 						) . '; return false;';
-					$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . '</a>';
+					$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . ' title="' . htmlspecialchars(sprintf($lang->getLL('undoLastChange'), BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.minutesHoursDaysYears')))) . '">' . $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 				if ($this->getNewIconMode($this->firstEl['table'], 'showHistory')) {
 					$aOnClick = 'window.location.href=' .
@@ -1172,11 +1172,11 @@ class EditDocumentController {
 								)
 							)
 						) . '; return false;';
-					$buttons['history'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL) . '</a>';
+					$buttons['history'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 				// If only SOME fields are shown in the form, this will link the user to the FULL form:
 				if ($this->columnsOnly) {
-					$buttons['columns_only'] = '<a href="' . htmlspecialchars(($this->R_URI . '&columnsOnly=')) . '" title="' . $lang->getLL('editWholeRecord', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '</a>';
+					$buttons['columns_only'] = '<a href="' . htmlspecialchars(($this->R_URI . '&columnsOnly=')) . '" title="' . $lang->getLL('editWholeRecord', TRUE) . '">' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
 				}
 			}
 		}

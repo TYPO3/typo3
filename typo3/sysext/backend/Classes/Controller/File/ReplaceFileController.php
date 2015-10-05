@@ -120,7 +120,7 @@ class ReplaceFileController {
 		// Setting icon and title
 		/** @var IconFactory $iconFactory */
 		$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-		$icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL);
+		$icon = $iconFactory->getIcon('apps-filetree-root', Icon::SIZE_SMALL)->render();
 		$this->title = $icon . htmlspecialchars($this->fileOrFolderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileOrFolderObject->getIdentifier());
 		// Setting template object
 		$this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
@@ -191,7 +191,7 @@ class ReplaceFileController {
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 			$docHeaderButtons['back'] = '<a href="' . htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl))
 				. '" class="typo3-goBack" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', TRUE) . '">'
-				. $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)
+				. $iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render()
 				. '</a>';
 		}
 		// Add the HTML as a section:

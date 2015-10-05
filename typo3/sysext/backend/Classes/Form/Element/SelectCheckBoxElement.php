@@ -195,7 +195,7 @@ class SelectCheckBoxElement extends AbstractFormElement {
 							. 'class="btn btn-default" '
 							. 'onclick="' . implode('', $resetGroup) . ' return false;" '
 							. 'title="' . $title . '">'
-							. $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL) . ' '
+							. $this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render() . ' '
 							. $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.revertSelection') . '</a>';
 					}
 

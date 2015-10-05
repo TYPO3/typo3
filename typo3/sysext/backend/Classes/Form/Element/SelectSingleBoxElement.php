@@ -228,7 +228,7 @@ class SelectSingleBoxElement extends AbstractFormElement {
 
 		$html = [
 			'<a ' . $this->implodeAttributes($attributes) . '>',
-				$this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL),
+				$this->iconFactory->getIcon('actions-edit-undo', Icon::SIZE_SMALL)->render(),
 			'</a>',
 		];
 

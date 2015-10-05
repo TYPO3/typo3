@@ -361,7 +361,7 @@ class SingleFieldContainer extends AbstractContainer {
 		if ($l10nMode === 'mergeIfNotBlank') {
 			/** @var IconFactory $iconFactory */
 			$iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-			$icon = $iconFactory->getIcon('actions-edit-merge-localization', Icon::SIZE_SMALL);
+			$icon = $iconFactory->getIcon('actions-edit-merge-localization', Icon::SIZE_SMALL)->render();
 		}
 		return $icon;
 	}

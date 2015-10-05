@@ -124,7 +124,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 			$onClickInsert[] = 'return false;';
 
 			$containerTemplateHtml[] = '<a href="#" onclick="' . htmlspecialchars(implode(LF, $onClickInsert)) . '">';
-			$containerTemplateHtml[] = 	$iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
+			$containerTemplateHtml[] = 	$iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
 			$containerTemplateHtml[] = 	htmlspecialchars(GeneralUtility::fixed_lgd_cs($sectionTitle, 30));
 			$containerTemplateHtml[] = '</a>';
 			$containerTemplatesHtml[] = implode(LF, $containerTemplateHtml);
@@ -158,7 +158,7 @@ class FlexFormSectionContainer extends AbstractContainer {
 		$html[] = 	'</div>';
 		$html[] = 	'<div class="t3-form-field-toggle-flexsection t3-form-flexsection-toggle">';
 		$html[] = 		'<a href="#" title="' . $toggleAll . '">';
-		$html[] = 			$iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL) . $toggleAll;
+		$html[] = 			$iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
 		$html[] = 		'</a>';
 		$html[] = 	'</div>';
 		$html[] = 	'<div';

@@ -516,11 +516,11 @@ class InlineRecordContainer extends AbstractContainer {
 		}
 		if (isset($rec['__create'])) {
 			$cells['localize.isLocalizable'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.isLocalizable', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)
+				. $this->iconFactory->getIcon('actions-edit-localize-status-low', Icon::SIZE_SMALL)->render()
 				. '</span>';
 		} elseif (isset($rec['__remove'])) {
 			$cells['localize.wasRemovedInOriginal'] = '<span title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize.wasRemovedInOriginal', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-edit-localize-status-high', Icon::SIZE_SMALL)
+				. $this->iconFactory->getIcon('actions-edit-localize-status-high', Icon::SIZE_SMALL)->render()
 				. '</span>';
 		}
 		// "Info": (All records)
@@ -560,14 +560,14 @@ class InlineRecordContainer extends AbstractContainer {
 				$style = $config['inline']['first'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
 				$cells['sort.up'] = '
 					<a class="btn btn-default sortingUp" href="#" onclick="' . htmlspecialchars($onClick) . '" ' . $style . ' title="' . $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveUp', TRUE) . '">
-						' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL) . '
+						' . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '
 					</a>';
 				// Down
 				$onClick = 'return inline.changeSorting(' . GeneralUtility::quoteJSvalue($nameObjectFtId) . ', \'-1\')';
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
 				$cells['sort.down'] = '
 					<a class="btn btn-default sortingDown" href="#" onclick="' . htmlspecialchars($onClick) . '" ' . $style . ' title="' . $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:moveDown', TRUE) . '">
-						' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL) . '
+						' . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '
 					</a>';
 			}
 			// "Edit" link:
@@ -594,7 +594,7 @@ class InlineRecordContainer extends AbstractContainer {
 					$title = $languageService->sL('LLL:EXT:lang/locallang_core.xlf:cm.editMetadata');
 					$cells['editmetadata'] = '
 						<a class="btn btn-default" href="#" class="btn" onclick="' . htmlspecialchars($editOnClick) . '" title="' . htmlspecialchars($title) . '">
-							' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL) . '
+							' . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '
 						</a>';
 				}
 			}
@@ -604,7 +604,7 @@ class InlineRecordContainer extends AbstractContainer {
 					|| $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)
 			) {
 				$title = $languageService->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:delete', TRUE);
-				$icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL);
+				$icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();
 				$cells['delete'] = '<a href="#" class="btn btn-default t3js-editform-delete-inline-record" data-objectid="' . htmlspecialchars($nameObjectFtId) . '" title="' . $title . '">' . $icon . '</a>';
 			}
 
@@ -618,14 +618,14 @@ class InlineRecordContainer extends AbstractContainer {
 					$cells['hide.unhide'] = '
 						<a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="'
 						. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
-						$this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL) . '
+						$this->iconFactory->getIcon('actions-edit-unhide', Icon::SIZE_SMALL)->render() . '
 						</a>';
 				} else {
 					$title = $languageService->sL(('LLL:EXT:lang/locallang_mod_web_list.xlf:hide' . ($isPagesTable ? 'Page' : '')), TRUE);
 					$cells['hide.hide'] = '
 						<a class="btn btn-default hiddenHandle ' . $className . '" href="#" onclick="'
 						. htmlspecialchars($onClick) . '"' . 'title="' . $title . '">' .
-						$this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL) . '
+						$this->iconFactory->getIcon('actions-edit-hide', Icon::SIZE_SMALL)->render() . '
 						</a>';
 				}
 			}
@@ -633,7 +633,7 @@ class InlineRecordContainer extends AbstractContainer {
 			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
 				$additionalCells['dragdrop'] = '
 					<span class="btn btn-default sortableHandle" data-id="' . htmlspecialchars($rec['uid']) . '" title="' . $languageService->sL('LLL:EXT:lang/locallang_core.xlf:labels.move', TRUE) . '">
-						' . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL) . '
+						' . $this->iconFactory->getIcon('actions-move-move', Icon::SIZE_SMALL)->render() . '
 					</span>';
 			}
 		} elseif ($isVirtualRecord && $isParentExisting) {
@@ -641,7 +641,7 @@ class InlineRecordContainer extends AbstractContainer {
 				$onClick = 'inline.synchronizeLocalizeRecords(' . GeneralUtility::quoteJSvalue($nameObjectFt) . ', ' . GeneralUtility::quoteJSvalue($rec['uid']) . ');';
 				$cells['localize'] = '
 					<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . 'title="' . $languageService->sL('LLL:EXT:lang/locallang_misc.xlf:localize', TRUE) . '">
-						' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL) . '
+						' . $this->iconFactory->getIcon('actions-document-localize', Icon::SIZE_SMALL)->render() . '
 					</a>';
 			}
 		}
@@ -649,7 +649,7 @@ class InlineRecordContainer extends AbstractContainer {
 		if ($lockInfo = BackendUtility::isRecordLocked($foreign_table, $rec['uid'])) {
 			$cells['locked'] = '
 				<a class="btn btn-default" href="#" onclick="alert(' . GeneralUtility::quoteJSvalue($lockInfo['msg']) . ');return false;">
-					' . '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL) . '</span>' . '
+					' . '<span title="' . htmlspecialchars($lockInfo['msg']) . '">' . $this->iconFactory->getIcon('status-warning-in-use', Icon::SIZE_SMALL)->render() . '</span>' . '
 				</a>';
 		}
 		// Hook: Post-processing of single controls for specific child records:

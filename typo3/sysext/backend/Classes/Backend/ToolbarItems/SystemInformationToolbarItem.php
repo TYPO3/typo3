@@ -292,7 +292,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface {
 	 */
 	public function getItem() {
 		$title = $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:toolbarItems.sysinfo', TRUE);
-		$icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL);
+		$icon = $this->iconFactory->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render();
 		return '<span title="' . $title . '">' . $icon . '<span id="t3js-systeminformation-counter" class="badge"></span></span>';
 	}
 
