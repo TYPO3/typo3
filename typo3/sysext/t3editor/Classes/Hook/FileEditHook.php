@@ -61,16 +61,14 @@ class FileEditHook {
 	 * Hook-function: inject t3editor JavaScript code before the page is compiled
 	 * called in \TYPO3\CMS\Backend\Template\DocumentTemplate:startPage
 	 *
-	 * @param array $parameters
-	 * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $documentTemplate
 	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::startPage
 	 */
-	public function preStartPageHook($parameters, $documentTemplate) {
+	public function preStartPageHook() {
 		// @todo: this is a workaround. Ideally the document template holds the current request so we can match the route
 		// against the name of the route and not the GET parameter
 		if (GeneralUtility::_GET('route') === '/file/editcontent') {
 			$t3editor = $this->getT3editor();
-			$t3editor->getJavascriptCode($documentTemplate);
+			$t3editor->getJavascriptCode();
 			$this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/T3editor/FileEdit');
 		}
 	}
