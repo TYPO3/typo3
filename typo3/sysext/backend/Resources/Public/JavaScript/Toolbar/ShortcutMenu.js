@@ -79,7 +79,7 @@ define('TYPO3/CMS/Backend/Toolbar/ShortcutMenu', ['jquery'], function($) {
 		top.TYPO3.Modal.confirm('Delete bookmark', 'Do you really want to remove this bookmark?')
 			.on('confirm.button.ok', function() {
 				$.ajax({
-					url: TYPO3.settings.ajaxUrls['shortcut_list'],
+					url: TYPO3.settings.ajaxUrls['shortcut_remove'],
 					data: {
 						shortcutId: $shortcutRecord.data('shortcutid')
 					},
