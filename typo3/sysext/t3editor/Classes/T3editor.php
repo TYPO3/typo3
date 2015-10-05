@@ -17,6 +17,7 @@ namespace TYPO3\CMS\T3editor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -177,34 +178,21 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Retrieves JavaScript code (header part) for editor
 	 *
-	 * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
 	 * @return string
 	 */
-	public function getJavascriptCode($doc) {
+	public function getJavascriptCode() {
 		/** @var $pageRenderer \TYPO3\CMS\Core\Page\PageRenderer */
 		$pageRenderer = $this->getPageRenderer();
-
-		$doc->addStyleSheet('t3editor', $this->relExtPath . 'Resources/Public/Css/t3editor.css');
-
+		$pageRenderer->addCssFile($this->relExtPath . 'Resources/Public/Css/t3editor.css');
 		// Include editor-js-lib
-		$doc->loadJavascriptLib($this->codemirrorPath . 'codemirror.js');
-		$this->loadTypoScriptCodeCompletion($doc);
-		$pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/T3editor');
-		return '';
-	}
-
-	/**
-	 * Load additional code completion for TypoScript
-	 *
-	 * @param \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
-	 */
-	protected function loadTypoScriptCodeCompletion($doc) {
+		$pageRenderer->addJsLibrary('codemirror', $this->codemirrorPath . 'codemirror.js');
 		if ($this->mode === self::MODE_TYPOSCRIPT) {
-			$pageRenderer = $doc->getPageRenderer();
 			foreach ($this->codeCompletionComponents as $codeCompletionComponent) {
 				$pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/Plugins/CodeCompletion/' . $codeCompletionComponent);
 			}
 		}
+		$pageRenderer->loadRequireJsModule('TYPO3/CMS/T3editor/T3editor');
+		return '';
 	}
 
 	/**
