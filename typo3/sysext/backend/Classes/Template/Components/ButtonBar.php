@@ -15,10 +15,13 @@ namespace TYPO3\CMS\Backend\Template\Components;
  */
 
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
+use TYPO3\CMS\Backend\Template\Components\Buttons\PositionInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\FullyRenderedButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\InputButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\LinkButton;
 use TYPO3\CMS\Backend\Template\Components\Buttons\SplitButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\Action\HelpButton;
+use TYPO3\CMS\Backend\Template\Components\Buttons\Action\ShortcutButton;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -59,8 +62,13 @@ class ButtonBar
         $buttonPosition = self::BUTTON_POSITION_LEFT,
         $buttonGroup = 1
     ) {
-        if (!$button->isValid($button)) {
+        if (!$button->isValid()) {
             throw new \InvalidArgumentException('Button "' . $button->getType() . '" is not valid', 1441706370);
+        }
+        // Determine the default button position
+        if ($button instanceof PositionInterface) {
+            $buttonPosition = $button->getPosition();
+            $buttonGroup = $button->getGroup();
         }
         // We make the button immutable here
         $this->buttons[$buttonPosition][$buttonGroup][] = clone $button;
@@ -126,6 +134,26 @@ class ButtonBar
     }
 
     /**
+     * Creates a new ShortcutButton
+     *
+     * @return ShortcutButton
+     */
+    public function makeShortcutButton()
+    {
+        return GeneralUtility::makeInstance(ShortcutButton::class);
+    }
+
+    /**
+     * Creates a new HelpButton
+     *
+     * @return HelpButton
+     */
+    public function makeHelpButton()
+    {
+        return GeneralUtility::makeInstance(HelpButton::class);
+    }
+
+    /**
      * Returns an associative array of all buttons in the form of
      * ButtonPosition > ButtonGroup > Button
      *
@@ -134,7 +162,7 @@ class ButtonBar
     public function getButtons()
     {
         // here we need to call the sorting methods and stuff.
-        foreach ($this->buttons as  $position => $_) {
+        foreach ($this->buttons as $position => $_) {
             ksort($this->buttons[$position]);
         }
         // @todo do we want to provide a hook here?
