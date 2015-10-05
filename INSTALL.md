@@ -187,6 +187,7 @@ On Windows Vista and Windows 7, you can create symbolic links using
 the `mklink` tool:
 ```
   mklink /D C:\<dir>\example.com\typo3_src C:\<dir>\typo3_src-7.0.x
+  mklink C:\<dir>\example.com\index.php C:\<dir>\typo3_src-7.0.x\index.php
 ```
 
 Users of Windows XP/2000 or newer can use the `junction` program by
