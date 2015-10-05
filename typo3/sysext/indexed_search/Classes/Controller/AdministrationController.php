@@ -14,10 +14,14 @@ namespace TYPO3\CMS\IndexedSearch\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\AdministrationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -60,6 +64,78 @@ class AdministrationController extends ActionController {
 	 * @var \TYPO3\CMS\IndexedSearch\Indexer
 	 */
 	protected $indexer;
+
+	/**
+	 * Backend Template Container
+	 *
+	 * @var BackendTemplateView
+	 */
+	protected $defaultViewObjectName = BackendTemplateView::class;
+
+	/**
+	 * BackendTemplateContainer
+	 *
+	 * @var BackendTemplateView
+	 */
+	protected $view;
+
+	/**
+	 * Set up the doc header properly here
+	 *
+	 * @param ViewInterface $view
+	 */
+	protected function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		$permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(1);
+		$pageRecord = BackendUtility::readPageAccess($this->pageUid, $permissionClause);
+		$view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
+		$this->generateMenu();
+	}
+
+	/**
+	 * Generates the action menu
+	 */
+	protected function generateMenu() {
+		$menuItems = [
+			'index' => [
+				'controller' => 'Administration',
+				'action' => 'index',
+				'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.general')
+			],
+			'pages' => [
+				'controller' => 'Administration',
+				'action' => 'pages',
+				'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.pages')
+			],
+			'externalDocuments' => [
+				'controller' => 'Administration',
+				'action' => 'externalDocuments',
+				'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.externalDocuments')
+			],
+			'statistic' => [
+				'controller' => 'Administration',
+				'action' => 'statistic',
+				'label' => $this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.menu.statistic')
+			]
+		];
+		$uriBuilder = $this->objectManager->get(UriBuilder::class);
+		$uriBuilder->setRequest($this->request);
+
+		$menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+		$menu->setIdentifier('IndexedSearchModuleMenu');
+
+		foreach ($menuItems as $menuItemConfig) {
+			$isActive = $this->request->getControllerActionName() === $menuItemConfig['action'];
+			$menuItem = $menu->makeMenuItem()
+				->setTitle($menuItemConfig['label'])
+				->setHref($this->getHref($menuItemConfig['controller'], $menuItemConfig['action']))
+				->setActive($isActive);
+			$menu->addMenuItem($menuItem);
+		}
+
+		$this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+	}
 
 	/**
 	 * Function will be called before every other action
@@ -170,6 +246,16 @@ class AdministrationController extends ActionController {
 	 * @return void
 	 */
 	public function statisticDetailsAction($pageHash = 0) {
+		// Set back button
+		$icon = $this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-up', Icon::SIZE_SMALL);
+		$backButton = $this->view->getModuleTemplate()->getDocHeaderComponent()
+			->getButtonBar()->makeLinkButton()
+			->setTitle($this->getLanguageService()->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang.xml:administration.back'))
+			->setIcon($icon)
+			->setHref($this->getHref('Administration', 'statistic'));
+		$this->view->getModuleTemplate()->getDocHeaderComponent()
+			->getButtonBar()->addButton($backButton);
+
 		$pageHash = (int)$pageHash;
 		$db = $this->getDatabaseConnection();
 		$pageHashRow = $db->exec_SELECTgetSingleRow('*', 'index_phash', 'phash = ' . (int)$pageHash);
@@ -338,6 +424,21 @@ class AdministrationController extends ActionController {
 	public function deleteIndexedItemAction($id, $depth = 1, $mode = 'overview') {
 		$this->administrationRepository->removeIndexedPhashRow($id, $this->pageUid, $depth);
 		$this->redirect('statistic', NULL, NULL, array('depth' => $depth, 'mode' => $mode));
+	}
+
+	/**
+	 * Creates te URI for a backend action
+	 *
+	 * @param string $controller
+	 * @param string $action
+	 * @param array $parameters
+	 *
+	 * @return string
+	 */
+	protected function getHref($controller, $action, $parameters = []) {
+		$uriBuilder = $this->objectManager->get(UriBuilder::class);
+		$uriBuilder->setRequest($this->request);
+		return $uriBuilder->reset()->uriFor($action, $parameters, $controller);
 	}
 
 	/**
