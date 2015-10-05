@@ -85,22 +85,25 @@ class LinkButton extends AbstractButton implements ButtonInterface {
 	 * @return string
 	 */
 	public function render() {
-		if ($this->onClick !== '') {
-			$onClick = 'onclick="' . htmlspecialchars($this->onClick) . '"';
-		} else {
-			$onClick = '';
+		$attributes = array(
+			'href' => $this->getHref(),
+			'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
+			'title' => $this->getTitle()
+		);
+		foreach ($this->dataAttributes as $attributeName => $attributeValue) {
+			$attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
 		}
-		return '<a href="' .
-		htmlspecialchars($this->getHref()) .
-		'" class="btn btn-sm btn-default ' .
-		htmlspecialchars($this->getClasses()) .
-		'" ' .
-		$onClick .
-		' title="' .
-		htmlspecialchars($this->getTitle()) .
-		'">' .
-		$this->getIcon()->__toString() .
-		'</a>';
+		if ($this->onClick !== '') {
+			$attributes['onclick'] = $this->onClick;
+		}
+		$attributesString = '';
+		foreach ($attributes as $key => $value) {
+			$attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+		}
+
+		return '<a ' . $attributesString . '>'
+			. $this->getIcon()->render()
+		. '</a>';
 	}
 
 	/**

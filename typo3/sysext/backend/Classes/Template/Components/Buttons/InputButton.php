@@ -115,19 +115,22 @@ class InputButton extends AbstractButton implements ButtonInterface {
 	 * @return string
 	 */
 	public function render() {
-		$content = '
-		<button name="' .
-			htmlspecialchars($this->getName()) .
-			'" class="btn btn-default btn-sm ' .
-			htmlspecialchars($this->getClasses()) .
-			'" value="' .
-			htmlspecialchars($this->getValue()) .
-			'" title="' .
-			htmlspecialchars($this->getTitle()) .
-			'">' . $this->getIcon()->__toString() .
-			'</button>
-		';
-		return $content;
+		$attributes = array(
+			'name' => $this->getName(),
+			'class' => 'btn btn-default btn-sm ' . $this->getClasses(),
+			'value' => $this->getValue(),
+			'title' => $this->getTitle()
+		);
+		foreach ($this->dataAttributes as $attributeName => $attributeValue) {
+			$attributes['data-' . htmlspecialchars($attributeName)] = $attributeValue;
+		}
+		$attributesString = '';
+		foreach ($attributes as $key => $value) {
+			$attributesString .= ' ' . htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+		}
+		return '<button' . $attributesString . '">'
+			. $this->getIcon()->render()
+		. '</button>';
 	}
 
 	/**
