@@ -300,7 +300,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 	 */
 	Recycler.loadDeletedElements = function() {
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['recycler_dispatch'],
+			url: TYPO3.settings.ajaxUrls['recycler'],
 			dataType: 'json',
 			data: {
 				action: 'getDeletedRecords',
@@ -427,7 +427,7 @@ define(['jquery', 'nprogress', 'TYPO3/CMS/Backend/jquery.clearable'], function($
 		}
 
 		$.ajax({
-			url: TYPO3.settings.ajaxUrls['recycler_dispatch'],
+			url: TYPO3.settings.ajaxUrls['recycler'],
 			dataType: 'json',
 			data: data,
 			beforeSend: function() {
