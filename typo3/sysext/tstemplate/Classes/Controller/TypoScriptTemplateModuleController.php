@@ -17,11 +17,14 @@ namespace TYPO3\CMS\Tstemplate\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -98,11 +101,19 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
     protected $iconFactory;
 
     /**
+     * ModuleTemplate Container
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
 
         $this->MCONF = array(
@@ -162,8 +173,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
 
         /** @var DocumentTemplate doc */
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->setModuleTemplate('EXT:tstemplate/Resources/Private/Templates/tstemplate.html');
-        $this->doc->addStyleSheet('module', 'sysext/tstemplate/Resources/Public/Css/styles.css');
+        $this->moduleTemplate->getPageRenderer()->addCssFile(ExtensionManagementUtility::extRelPath('tstemplate') . 'Resources/Public/Css/styles.css');
 
         $lang = $this->getLanguageService();
 
@@ -173,42 +183,37 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 'template' => 'all'
             );
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-            $this->doc->form = '<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" name="editForm" class="form">';
+            $this->moduleTemplate->setForm('<form action="' . htmlspecialchars($aHref) . '" method="post" enctype="multipart/form-data" name="editForm" class="form">');
 
             // JavaScript
-            $this->doc->JScode = '
-		<script language="javascript" type="text/javascript">
-			function uFormUrl(aname) {
-				document.forms[0].action = ' . GeneralUtility::quoteJSvalue(($aHref . '#'), true) . '+aname;
-			}
-			function brPoint(lnumber,t) {
-				window.location.href = ' . GeneralUtility::quoteJSvalue(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController&SET[ts_browser_type]='), true) . '+(t?"setup":"const")+"&breakPointLN="+lnumber;
-				return false;
-			}
-		</script>
-		';
-            $this->doc->postCode = '
-		<script language="javascript" type="text/javascript">
-			if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';
-		</script>
-		';
-            $this->doc->inDocStylesArray[] = '
-				TABLE#typo3-objectBrowser { width: 100%; margin-bottom: 24px; }
-				TABLE#typo3-objectBrowser A { text-decoration: none; }
-				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
-				.ts-typoscript { width: 100%; }
-				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
-				.tst-analyzer-options { margin:5px 0; }
-			';
+            $this->moduleTemplate->addJavaScriptCode(
+                'TSTemplateInlineJS', '
+                function uFormUrl(aname) {
+                    document.forms[0].action = ' . GeneralUtility::quoteJSvalue(($aHref . '#')) . '+aname;
+                }
+                function brPoint(lnumber,t) {
+                    window.location.href = ' . GeneralUtility::quoteJSvalue(($aHref . '&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateObjectBrowserModuleFunctionController&SET[ts_browser_type]=')) . '+(t?"setup":"const")+"&breakPointLN="+lnumber;
+                    return false;
+                }
+                if (top.fsMod) top.fsMod.recentIds["web"] = ' . $this->id . ';
+            ');
+            $this->moduleTemplate->getPageRenderer()->addCssInlineBlock(
+                'TSTemplateInlineStyle', '
+                TABLE#typo3-objectBrowser { width: 100%; margin-bottom: 24px; }
+                TABLE#typo3-objectBrowser A { text-decoration: none; }
+                TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
+                .ts-typoscript { width: 100%; }
+                .tsob-search-submit {margin-left: 3px; margin-right: 3px;}
+                .tst-analyzer-options { margin:5px 0; }
+            ');
             // Setting up the context sensitive menu:
-            $this->doc->getContextMenuCode();
-            // Build the modulle content
+            $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+            // Build the module content
             $this->content = $this->doc->header($lang->getLL('moduleTitle'));
             $this->extObjContent();
             // Setting up the buttons and markers for docheader
-            $docHeaderButtons = $this->getButtons();
-            $markers['FUNC_MENU'] = BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-            $markers['CONTENT'] = $this->content;
+            $this->getButtons();
+            $this->generateMenu();
         } else {
             // Template pages:
             $records = $this->getDatabaseConnection()->exec_SELECTgetRows(
@@ -240,20 +245,46 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                     '</table></div>';
 
             $this->content = $this->doc->header($lang->getLL('moduleTitle'));
-            $this->content .= $this->doc->section('', '<p class="lead">' . $lang->getLL('overview') . '</p>' . $table);
+            $this->content .= $this->moduleTemplate->section('', '<p class="lead">' . $lang->getLL('overview') . '</p>' . $table);
 
             // RENDER LIST of pages with templates, END
             // Setting up the buttons and markers for docheader
-            $docHeaderButtons = $this->getButtons();
-            $markers['CONTENT'] = $this->content;
+            $this->getButtons();
         }
-
-        // Build the <body> for the module
-        $this->content = $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-        // Renders the module page
-        $this->content = $this->doc->render('Template Tools', $this->content);
     }
 
+    /**
+     * Generates the menu based on $this->MOD_MENU
+     *
+     * @return void
+     * @throws \InvalidArgumentException
+     */
+    protected function generateMenu()
+    {
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('WebFuncJumpMenu');
+        foreach ($this->MOD_MENU['function'] as $controller => $title) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    BackendUtility::getModuleUrl(
+                        $this->moduleName,
+                        [
+                            'id' => $this->id,
+                            'SET' => [
+                                'function' => $controller
+                            ]
+                        ]
+                    )
+                )
+                ->setTitle($title);
+            if ($controller === $this->MOD_SETTINGS['function']) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
 
     /**
      * Injects the request object for the current request or subrequest
@@ -274,8 +305,8 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
         $this->clearCache();
         $this->main();
 
-        $this->content = $this->doc->insertStylesAndJS($this->content);
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -298,70 +329,87 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'back' => '',
-            'close' => '',
-            'new' => '',
-            'save' => '',
-            'save_close' => '',
-            'view' => '',
-            'shortcut' => ''
-        );
-
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
 
         if ($this->id && $this->access) {
             // View page
-            $buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true) . '">' . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
-            if ($this->extClassConf['name'] == TypoScriptTemplateInformationModuleFunctionController::class) {
+            $viewButton = $buttonBar->makeLinkButton()
+                ->setHref('#')
+                ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
+                ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+            $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
+            if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
                 // NEW button
                 $urlParameters = array(
                     'id' => $this->id,
                     'template' => 'all',
                     'createExtension' => 'new'
                 );
-                $buttons['new'] = '<a href="' . htmlspecialchars(BackendUtility::getModuleUrl('web_ts', $urlParameters)) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', true) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
+
                 if (!empty($this->e) && !GeneralUtility::_POST('_saveandclosedok')) {
-                    // no NEW-button while edit
-                    $buttons['new'] = '';
-                    // SAVE button
-                    $buttons['save'] = '<button type="submit" class="c-inputButton" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '">'
-                        . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-                        . '</button>';
-                    // SAVE AND CLOSE button
-                    $buttons['save_close'] = '<button type="submit" class="c-inputButton" name="_saveandclosedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true) . '">'
-                        . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render()
-                        . '</button>';
+                    $saveButton = $buttonBar->makeInputButton()
+                        ->setName('_savedok')
+                        ->setValue('1')
+                        ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true));
+
+                    $saveAndCloseButton = $buttonBar->makeInputButton()
+                        ->setName('_saveandclosedok')
+                        ->setValue('1')
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveCloseDoc', true))
+                        ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL));
+
+                    $splitButtonElement = $buttonBar->makeSplitButton()
+                        ->addItem($saveButton)
+                        ->addItem($saveAndCloseButton);
+
+                    $buttonBar->addButton($splitButtonElement, ButtonBar::BUTTON_POSITION_LEFT, 3);
+
                     // CLOSE button
-                    $url = BackendUtility::getModuleUrl('web_ts', array('id' => $this->id));
-                    $buttons['close'] = '<a href="' . htmlspecialchars($url) . '" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true) . '">' .  $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
+                    $closeButton = $buttonBar->makeLinkButton()
+                        ->setHref(BackendUtility::getModuleUrl('web_ts', array('id' => $this->id)))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.closeDoc', true))
+                        ->setIcon($this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL));
+                    $buttonBar->addButton($closeButton);
+                } else {
+                    $newButton = $buttonBar->makeLinkButton()
+                        ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:db_new.php.pagetitle', true))
+                        ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL));
+                    $buttonBar->addButton($newButton);
                 }
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateConstantEditorModuleFunctionController::class && !empty($this->MOD_MENU['constant_editor_cat'])) {
                 // SAVE button
-                $buttons['save'] = '<button class="c-inputButton" name="_savedok" value="1" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true) . '">'
-                    . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render()
-                    . '</button>';
+                $saveButton = $buttonBar->makeInputButton()
+                    ->setName('_savedok')
+                    ->setValue('1')
+                    ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:rm.saveDoc', true))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                    ->setShowLabelText(true);
+                $buttonBar->addButton($saveButton);
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class) {
                 if (!empty($this->sObj)) {
                     // BACK
                     $urlParameters = array(
                         'id' => $this->id
                     );
-                    $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-                    $buttons['back'] = '<a href="' . htmlspecialchars($aHref) . '" class="typo3-goBack" title="' . $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true) . '">' . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
+                    $backButton = $buttonBar->makeLinkButton()
+                        ->setHref(BackendUtility::getModuleUrl('web_ts', $urlParameters))
+                        ->setClasses('typo3-goBack')
+                        ->setTitle($lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.goBack', true))
+                        ->setIcon($this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                    $buttonBar->addButton($backButton);
                 }
             }
-            // Shortcut
-            if ($this->getBackendUser()->mayMakeShortcut()) {
-                $buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
-            }
-        } else {
-            // Shortcut
-            if ($this->getBackendUser()->mayMakeShortcut()) {
-                $buttons['shortcut'] = $this->doc->makeShortcutIcon('id', '', $this->MCONF['name']);
-            }
         }
-        return $buttons;
+        // Shortcut
+        if ($this->getBackendUser()->mayMakeShortcut()) {
+            $shortcutButton = $buttonBar->makeFullyRenderedButton()
+                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('id', '', $this->MCONF['name']));
+            $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 99);
+        }
     }
 
     // OTHER FUNCTIONS:
@@ -441,13 +489,13 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 $staticsText = '';
             }
             // Extension?
-            $theOutput .= $this->doc->section(
+            $theOutput .= $this->moduleTemplate->section(
                 $lang->getLL('newWebsite') . $staticsText,
                 '<p>' . $lang->getLL('newWebsiteDescription') . '</p>' . $selector . '<input class="btn btn-primary" type="submit" name="newWebsite" value="' . $lang->getLL('newWebsiteAction') . '" />',
                 0, 1);
         }
         // Extension?
-        $theOutput .= $this->doc->section(
+        $theOutput .= $this->moduleTemplate->section(
             $lang->getLL('extTemplate'),
             '<p>' . $lang->getLL('extTemplateDescription') . '</p>' . '<input class="btn btn-default" type="submit" name="createExtension" value="' . $lang->getLL('extTemplateAction') . '" />',
             0, 1);
@@ -458,7 +506,7 @@ class TypoScriptTemplateModuleController extends BaseScriptClass
                 'id' => $first['uid']
             );
             $aHref = BackendUtility::getModuleUrl('web_ts', $urlParameters);
-            $theOutput .= $this->doc->section(
+            $theOutput .= $this->moduleTemplate->section(
                 $lang->getLL('goToClosest'),
                 sprintf('<p>' . $lang->getLL('goToClosestDescription') . '</p>%s' . $lang->getLL('goToClosestAction') . '%s', htmlspecialchars($first['title']), $first['uid'], '<a class="btn btn-default" href="' . htmlspecialchars($aHref) . '">', '</a>'),
                 0, 1);

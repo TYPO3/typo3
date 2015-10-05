@@ -648,8 +648,11 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 
 		// remember the clicked submit button. we need to know that in TBE_EDITOR.submitForm();
 		$(document).on('click', '.t3js-editform-submitButton', function(event) {
-			var $elem = $('<input />').attr('type', 'hidden').attr('name', this.name).attr('value', '1');
-			$(this).parents('form').append($elem);
+			var $me = $(this),
+				name = $me.data('name') || this.name,
+				$elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', '1');
+
+			$me.parents('form').append($elem);
 		});
 	};
 

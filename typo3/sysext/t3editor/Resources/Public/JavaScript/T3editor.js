@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
+define('TYPO3/CMS/T3editor/T3editor', ['jquery', 'TYPO3/CMS/Backend/SplitButtons'], function ($, SplitButtons) {
 
 	var T3editor = {
 		instances: {}
@@ -67,7 +67,7 @@ define('TYPO3/CMS/T3editor/T3editor', ['jquery'], function ($) {
 	 * Initializes editor events
 	 */
 	T3editor.initializeEditorEvents = function(codemirror) {
-		$('button[name^="_save"]').on('click', function(e) {
+		SplitButtons.addPreSubmitCallback(function() {
 			codemirror.options.originalTextarea.val(codemirror.editor.getCode());
 		});
 

@@ -68,6 +68,7 @@ class TypoScriptTemplateInfoHook
     public function postOutputProcessingHook($parameters, $pObj)
     {
         $t3editor = $this->getT3editor();
+        $t3editor->getJavascriptCode();
         foreach (array('constants', 'config') as $type) {
             if ($parameters['e'][$type]) {
                 $attributes = 'rows="' . $parameters['numberOfRows'] . '" ' . 'wrap="off" ' . $pObj->pObj->doc->formWidth(48, true, 'width:98%;height:60%');
