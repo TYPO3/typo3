@@ -2495,7 +2495,12 @@ Connection: close
 					'header' => implode(CRLF, $requestHeaders)
 				)
 			));
-			$content = @file_get_contents($url, FALSE, $ctx);
+			$defaultCtx = stream_context_get_default();
+			if ($defaultCtx) {
+				$content = @file_get_contents($url);
+			} else {
+				$content = @file_get_contents($url, FALSE, $ctx);
+			}
 			if ($content === FALSE && isset($report)) {
 				$report['error'] = -1;
 				$report['message'] = 'Couldn\'t get URL: ' . (isset($http_response_header) ? implode(LF, $http_response_header) : $url);
