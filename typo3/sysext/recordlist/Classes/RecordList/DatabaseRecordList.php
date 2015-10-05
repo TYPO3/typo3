@@ -288,7 +288,7 @@ class DatabaseRecordList extends AbstractDatabaseRecordList {
 			// Cache
 			$buttons['cache'] = '<a href="' . htmlspecialchars(($this->listURL() . '&clear_cache=1')) . '" title="'
 				. $lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.clear_cache', TRUE) . '">'
-				. $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render()->render() . '</a>';
+				. $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
 			if (
 				$this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
 				|| (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
