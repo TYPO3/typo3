@@ -14,14 +14,73 @@ namespace TYPO3\CMS\Viewpage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 /**
  * Controller for viewing the frontend
  */
-class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class ViewModuleController extends ActionController {
+
+	/**
+	 * @var string
+	 */
+	protected $defaultViewObjectName = BackendTemplateView::class;
+
+	/**
+	 * @var BackendTemplateView
+	 */
+	protected $view;
+
+	/**
+	 * Set up the doc header properly here
+	 *
+	 * @param ViewInterface $view
+	 */
+	protected function initializeView(ViewInterface $view) {
+		/** @var BackendTemplateView $view */
+		parent::initializeView($view);
+		$this->registerButtons();
+	}
+
+	/**
+	 * Registers the docheader buttons
+	 */
+	protected function registerButtons() {
+		$iconFactory = $this->view->getModuleTemplate()->getIconFactory();
+		$buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+		$showButton = $buttonBar->makeLinkButton()
+			->setHref($this->getTargetUrl())
+			->setOnClick('window.open(this.href, \'newTYPO3frontendWindow\').focus();return false;')
+			->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', TRUE))
+			->setIcon($iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL));
+		$buttonBar->addButton($showButton);
+
+		$refreshButton = $buttonBar->makeLinkButton()
+			->setHref('javascript:document.getElementById(\'tx_viewpage_iframe\').contentWindow.location.reload(true);')
+			->setTitle($this->getLanguageService()->sL('LLL:EXT:viewpage/Resources/Private/Language/locallang.xlf:refreshPage'))
+			->setIcon($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL));
+		$buttonBar->addButton($refreshButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
+
+		$currentRequest = $this->request;
+		$moduleName = $currentRequest->getPluginName();
+		$getVars = $this->request->getArguments();
+		$extensionName = $currentRequest->getControllerExtensionName();
+		if (count($getVars) === 0) {
+			$modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
+			$getVars = array('id', 'M', $modulePrefix);
+		}
+		$getList = implode(',', $getVars);
+		$shortcutButton = $buttonBar->makeFullyRenderedButton()
+			->setHtmlSource($this->view->getModuleTemplate()->makeShortcutIcon($getList, '', $moduleName));
+		$buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+	}
 
 	/**
 	 * Gets called before each action
@@ -52,6 +111,11 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 */
 	protected function getTargetUrl() {
 		$pageIdToShow = (int)GeneralUtility::_GP('id');
+
+		$permissionClause = $this->getBackendUser()->getPagePermsClause(1);
+		$pageRecord = BackendUtility::readPageAccess($pageIdToShow, $permissionClause);
+		$this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
+
 		$adminCommand = $this->getAdminCommand($pageIdToShow);
 		$domainName = $this->getDomainName($pageIdToShow);
 		$languageParameter = $this->getLanguageParameter();

@@ -1,47 +1,24 @@
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
-<f:be.container
+<f:be.pageRenderer
 	includeCssFiles="{
 		0:'{f:uri.resource(path:\'Css/ui-lightness/jquery-ui-1.10.3.custom.min.css\')}',
 		1:'{f:uri.resource(path:\'Css/main.css\')}'
 	}"
 	includeRequireJsModules="{
 		0:'TYPO3/CMS/Viewpage/Main'
-	}">
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<form>
-					<label for="width">
-						<f:translate key="width" />
-					</label>
-					<f:form.select options="{widths}" id="width" name="width" />
-					<f:if condition="{languages -> f:count()} > 1">
-						<label for="language">
-							<f:translate key="language" />
-						</label>
-						<f:form.select options="{languages}" id="language" name="language" />
-					</f:if>
-				</form>
-			</div>
-			<div class="typo3-docheader-buttons">
-				<div class="left">
-					<a href="{url}" onclick="window.open(this.href, 'newTYPO3frontendWindow').focus();return false;" title="{f:translate(key: 'LLL:EXT:lang/locallang_core.xlf:labels.showPage')}">
-						<core:icon identifier="actions-document-view" />
-					</a>
-				</div>
-				<div class="right">
-					<a href="javascript:document.getElementById('tx_viewpage_iframe').contentWindow.location.reload(true);" title="{f:translate(key: 'refreshPage')}">
-						<core:icon identifier="actions-refresh" />
-					</a>
-					<f:be.buttons.shortcut/>
-				</div>
-			</div>
-		</div>
-
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody" class="tx_viewpage">
-				<f:render section="Content" />
-			</div>
-		</div>
-	</div>
-</f:be.container>
+	}" />
+<div class="tx_viewpage">
+	<form>
+		<label for="width">
+			<f:translate key="width" />
+		</label>
+		<f:form.select options="{widths}" id="width" name="width" />
+		<f:if condition="{languages -> f:count()} > 1">
+			<label for="language">
+				<f:translate key="language" />
+			</label>
+			<f:form.select options="{languages}" id="language" name="language" />
+		</f:if>
+	</form>
+	<f:render section="Content" />
+</div>

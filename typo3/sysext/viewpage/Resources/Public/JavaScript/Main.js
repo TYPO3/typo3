@@ -37,9 +37,13 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 			var value = me.$widthSelector.val();
 			if (value) {
 				value = value.split('|');
+				var height = value[1] || '100%';
+				if (height === '100%') {
+					height = ViewPage.calculateContainerMaxHeight();
+				}
 				me.$resizableContainer.animate({
 					width:  value[0],
-					height: value[1] || '100%'
+					height: height
 				});
 				Storage.Persistent.set(me.storagePrefix + 'widthSelectorValue', value[0] + '|' + (value[1] || '100%'));
 			}
@@ -116,6 +120,15 @@ define(['jquery', 'jquery-ui/resizable'], function($) {
 			me.$iframe.attr('src', newIframeUrl);
 			Storage.Persistent.set(me.storagePrefix + 'languageSelectorValue', me.$languageSelector.val());
 		});
+	};
+
+	ViewPage.calculateContainerMaxHeight = function() {
+		ViewPage.$resizableContainer.hide();
+		var padding = $('.t3js-module-body').outerHeight() - $('.t3js-module-body').height(),
+			controlsHeight = ViewPage.$widthSelector.parents('form:first').height(),
+			documentHeight = $(document).height();
+		ViewPage.$resizableContainer.show();
+		return documentHeight - (controlsHeight + padding);
 	};
 
 	ViewPage.addCustomWidthOption = function(value) {
