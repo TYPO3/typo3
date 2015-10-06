@@ -145,25 +145,19 @@ class HandleIncomingFormValues implements SingletonInterface {
 					&& $formBuilder->getValidationErrors()->forProperty($elementName)->hasErrors() !== TRUE
 				)
 			) {
-				$formPrefix = $formBuilder->getFormPrefix();
-				if (
-					isset($_FILES['tx_form_form']['tmp_name'][$formPrefix])
-					&& is_array($_FILES['tx_form_form']['tmp_name'][$formPrefix])
-				) {
-					foreach ($_FILES['tx_form_form']['tmp_name'][$formPrefix] as $fieldName => $uploadedFile) {
-						$uploadedFiles = array();
-						if (is_string($uploadedFile)) {
-							$uploadedFiles[] = $this->saveUploadedFile($formPrefix, $fieldName, -1, $uploadedFile);
-						} else {
-								// multi upload
-							foreach ($uploadedFile as $key => $file) {
-								$uploadedFiles[] = $this->saveUploadedFile($formPrefix, $fieldName, $key, $file);
-							}
+				$uploadedFiles = $formBuilder->getIncomingData()->getIncomingField($elementName);
+				if (is_array($uploadedFiles)) {
+					foreach ($uploadedFiles as $key => &$file) {
+						$tempFilename = $this->saveUploadedFile($file['tmp_name']);
+						if (!$tempFilename) {
+							unset($uploadedFiles[$key]);
+							continue;
 						}
-						$element->setAdditionalArgument('uploadedFiles', $uploadedFiles);
-						$this->setAttribute($element, 'value', '');
-						$this->sessionUtility->setSessionData($fieldName, $uploadedFiles);
+						$file['tempFilename'] = $tempFilename;
 					}
+					$element->setAdditionalArgument('uploadedFiles', $uploadedFiles);
+					$this->setAttribute($element, 'value', '');
+					$this->sessionUtility->setSessionData($elementName, $uploadedFiles);
 				}
 			}
 		}
@@ -172,33 +166,17 @@ class HandleIncomingFormValues implements SingletonInterface {
 	/**
 	 * Save a uploaded file
 	 *
-	 * @param string $formPrefix
-	 * @param string $fieldName
-	 * @param integer $key
 	 * @param string $uploadedFile
-	 * @return NULL|array
+	 * @return NULL|string
 	 */
-	public function saveUploadedFile($formPrefix, $fieldName, $key, $uploadedFile) {
+	public function saveUploadedFile($uploadedFile) {
 		if (is_uploaded_file($uploadedFile)) {
 			$tempFilename = GeneralUtility::upload_to_tempfile($uploadedFile);
 			if (TYPO3_OS === 'WIN') {
 				$tempFilename = GeneralUtility::fixWindowsFilePath($tempFilename);
 			}
 			if ($tempFilename !== '') {
-				if ($key == -1) {
-					$originalFilename = $_FILES['tx_form_form']['name'][$formPrefix][$fieldName];
-					$size = $_FILES['tx_form_form']['size'][$formPrefix][$fieldName];
-				} else {
-					$originalFilename = $_FILES['tx_form_form']['name'][$formPrefix][$fieldName][$key];
-					$size = $_FILES['tx_form_form']['size'][$formPrefix][$fieldName][$key];
-				}
-				$fileInfo = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Type\File\FileInfo::class, $tempFilename);
-				return array(
-						'tempFilename' => $tempFilename,
-						'originalFilename' => $originalFilename,
-						'type' => $fileInfo->getMimeType(),
-						'size' => (int)$size
-					);
+				return $tempFilename;
 			}
 		}
 		return NULL;

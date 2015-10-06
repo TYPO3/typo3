@@ -28,6 +28,18 @@ class ValidationElementValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 	protected $propertyValidators = array();
 
 	/**
+	 * @var \TYPO3\CMS\Form\Utility\SessionUtility
+	 */
+	protected $sessionUtility;
+
+	/**
+	 * @param \TYPO3\CMS\Form\Utility\SessionUtility $sessionUtility
+	 */
+	public function injectSessionUtility(\TYPO3\CMS\Form\Utility\SessionUtility $sessionUtility) {
+		$this->sessionUtility = $sessionUtility;
+	}
+
+	/**
 	 * Checks if the given value is valid according to the validator, and returns
 	 * the Error Messages object which occurred.
 	 *
@@ -58,7 +70,19 @@ class ValidationElementValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 	 * @return mixed
 	 */
 	protected function getPropertyValue(\TYPO3\CMS\Form\Domain\Model\ValidationElement $validationElement, $propertyName) {
-		return $validationElement->getIncomingField($propertyName);
+		/**
+		 * If a confirmation page is set and a fileupload was done before
+		 * there is no incoming data if the process action is called.
+		 * The data is only in the session at this time.
+		 * This results in a negative validation (if a validation is set).
+		 * Therefore, look first in the session.
+		 */
+		if ($this->sessionUtility->getSessionData($propertyName)) {
+			$propertyValue = $this->sessionUtility->getSessionData($propertyName);
+		} else {
+			$propertyValue = $validationElement->getIncomingField($propertyName);
+		}
+		return $propertyValue;
 	}
 
 	/**
@@ -77,12 +101,38 @@ class ValidationElementValidator extends \TYPO3\CMS\Extbase\Validation\Validator
 			if ($validator instanceof ObjectValidatorInterface) {
 				$validator->setValidatedInstancesContainer($this->validatedInstancesContainer);
 			}
-			$currentResult = $validator->validate($value);
-			if ($currentResult->hasMessages()) {
-				if ($result == NULL) {
-					$result = $currentResult;
-				} else {
-					$result->merge($currentResult);
+
+			/**
+			 * File upload validation.
+			 *
+			 * If a $_FILES array is found in the request data,
+			 * iterate over all requested files and validate each
+			 * single file.
+			 */
+			if (
+				isset($value[0]['name'])
+				&& isset($value[0]['type'])
+				&& isset($value[0]['tmp_name'])
+				&& isset($value[0]['size'])
+			) {
+				foreach ($value as $file) {
+					$currentResult = $validator->validate($file);
+					if ($currentResult->hasMessages()) {
+						if ($result == NULL) {
+							$result = $currentResult;
+						} else {
+							$result->merge($currentResult);
+						}
+					}
+				}
+			} else {
+				$currentResult = $validator->validate($value);
+				if ($currentResult->hasMessages()) {
+					if ($result == NULL) {
+						$result = $currentResult;
+					} else {
+						$result->merge($currentResult);
+					}
 				}
 			}
 		}

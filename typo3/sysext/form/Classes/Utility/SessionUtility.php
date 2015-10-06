@@ -141,7 +141,6 @@ class SessionUtility implements SingletonInterface {
 			foreach ($sessionData as $fieldName => $values) {
 				if (is_array($values)) {
 					foreach ($values as $file) {
-
 						if (isset($file['tempFilename'])) {
 							GeneralUtility::unlink_tempfile($file['tempFilename']);
 						}

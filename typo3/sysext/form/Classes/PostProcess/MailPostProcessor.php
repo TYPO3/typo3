@@ -425,7 +425,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 								is_file($file['tempFilename'])
 								&& GeneralUtility::isAllowedAbsPath($file['tempFilename'])
 							) {
-								$this->mailMessage->attach(\Swift_Attachment::fromPath($file['tempFilename'])->setFilename($file['originalFilename']));
+								$this->mailMessage->attach(\Swift_Attachment::fromPath($file['tempFilename'])->setFilename($file['name']));
 							}
 						}
 					}

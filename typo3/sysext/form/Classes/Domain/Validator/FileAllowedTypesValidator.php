@@ -35,48 +35,19 @@ class FileAllowedTypesValidator extends AbstractValidator {
 	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_fileallowedtypes';
 
 	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
+	 * Check if the file mime type is allowed.
+	 *
+	 * The mime type is set in the propertymapper
+	 * @see TYPO3\CMS\Form\Domain\Property\TypeConverter::convertFrom
 	 *
 	 * @param mixed $value
 	 * @return void
 	 */
 	public function isValid($value) {
-		// @todo $value is never used, what's the process flow here?
-
 		$allowedTypes = strtolower($this->options['types']);
-		$this->options['types'] = GeneralUtility::trimExplode(', ', $allowedTypes);
-
-		if (isset($this->rawArgument[$this->options['element']]['name'])) {
-			$request = $this->rawArgument[$this->options['element']];
-			$this->checkFileType($request);
-		} else {
-				// multi upload
-			foreach ($this->rawArgument[$this->options['element']] as $file) {
-				if (
-					$file['name'] === ''
-					&& $file['type'] === ''
-					&& $file['tmp_name'] === ''
-					&& $file['size'] === 0
-				) {
-					continue;
-				}
-				$this->checkFileType($file);
-			}
-		}
-	}
-
-	/**
-	 * Check if $value is valid. If it is not valid, needs to add an error
-	 * to result.
-	 *
-	 * @param array $request
-	 * @return void
-	 */
-	public function checkFileType($request) {
-		// @todo Using $_FILES[...]['type] is probably insecure, since it's submitted by the client directly
-		$value = strtolower($request['type']);
-		if (!in_array($value, $this->options['types'])) {
+		$allowedMimeTypes = GeneralUtility::trimExplode(', ', $allowedTypes);
+		$fileMimeType = strtolower($value['type']);
+		if (!in_array($fileMimeType, $allowedMimeTypes, TRUE)) {
 			$this->addError(
 				$this->renderMessage(
 					$this->options['errorMessage'][0],
