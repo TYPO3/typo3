@@ -317,6 +317,7 @@ class ModuleLoader
                 $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl($name);
             }
         } elseif ($setupInformation['configuration']['script'] && file_exists($setupInformation['path'] . '/' . $setupInformation['configuration']['script'])) {
+            GeneralUtility::deprecationLog('Loading module "' . $name . '" as a standalone script. Script-based modules are deprecated since TYPO3 CMS 7. Support will be removed with TYPO3 CMS 8, use the "routeTarget" option or dispatched modules instead.');
             $finalModuleConfiguration['script'] = $this->getRelativePath(PATH_typo3, $fullPath . '/' . $setupInformation['configuration']['script']);
         } else {
             $finalModuleConfiguration['script'] = BackendUtility::getModuleUrl('dummy');
@@ -330,6 +331,7 @@ class ModuleLoader
                     : array()
             );
         } elseif (!empty($setupInformation['configuration']['navFrameScript'])) {
+            GeneralUtility::deprecationLog('Loading navFrameScript "' . $setupInformation['configuration']['navFrameScript'] . '" as a standalone script. Script-based navigation frames are deprecated since TYPO3 CMS 7. Support will be removed with TYPO3 CMS 8, use "navigationFrameModule" option or the "navigationComponentId" option instead.');
             // Navigation Frame Script (GET params could be added)
             $navFrameScript = explode('?', $setupInformation['configuration']['navFrameScript']);
             $navFrameScript = $navFrameScript[0];

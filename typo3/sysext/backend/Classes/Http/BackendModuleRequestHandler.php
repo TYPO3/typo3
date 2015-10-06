@@ -91,6 +91,7 @@ class BackendModuleRequestHandler implements RequestHandlerInterface
         if ($this->isDispatchedModule($moduleName)) {
             return $this->dispatchModule($moduleName);
         } else {
+            // @deprecated: This else path is deprecated and throws deprecations logs at registration time. Can be removed with TYPO3 CMS 8.
             $isDispatched = $this->callTraditionalModule($moduleName);
             if (!$isDispatched) {
                 throw new Exception('No module "' . $moduleName . '" could be found.', 1294585070);
