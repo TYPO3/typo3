@@ -88,23 +88,23 @@ class ModuleTemplate {
 	/**
 	 * TemplateRootPath
 	 *
-	 * @var string
+	 * @var string[]
 	 */
-	protected $templateRootPath = 'EXT:backend/Resources/Private/Templates';
+	protected $templateRootPaths = ['EXT:backend/Resources/Private/Templates'];
 
 	/**
 	 * PartialRootPath
 	 *
-	 * @var string
+	 * @var string[]
 	 */
-	protected $partialRootPath = 'EXT:backend/Resources/Private/Partials';
+	protected $partialRootPaths = ['EXT:backend/Resources/Private/Partials'];
 
 	/**
 	 * LayoutRootPath
 	 *
-	 * @var string
+	 * @var string[]
 	 */
-	protected $layoutRootPath = 'EXT:backend/Resources/Private/Layouts';
+	protected $layoutRootPaths = ['EXT:backend/Resources/Private/Layouts'];
 
 	/**
 	 * Template name
@@ -163,19 +163,18 @@ class ModuleTemplate {
 	protected $title = '';
 
 	/**
-	 * Get template root path
+	 * Gets the standalone view.
 	 *
-	 * @return string
+	 * @return StandaloneView
 	 */
-	public function getTemplateRootPath() {
-		return $this->templateRootPath;
+	public function getView() {
+		return $this->view;
 	}
 
 	/**
 	 * Set content
 	 *
 	 * @param string $content Content of the module
-	 *
 	 * @return void
 	 */
 	public function setContent($content) {
@@ -208,9 +207,9 @@ class ModuleTemplate {
 	 */
 	public function __construct() {
 		$this->view = GeneralUtility::makeInstance(StandaloneView::class);
-		$this->view->setPartialRootPaths([$this->partialRootPath]);
-		$this->view->setTemplateRootPaths([$this->templateRootPath]);
-		$this->view->setLayoutRootPaths([$this->layoutRootPath]);
+		$this->view->setPartialRootPaths($this->partialRootPaths);
+		$this->view->setTemplateRootPaths($this->templateRootPaths);
+		$this->view->setLayoutRootPaths($this->layoutRootPaths);
 		$this->view->setTemplate($this->templateFile);
 		$this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
