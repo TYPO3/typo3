@@ -1,15 +1,18 @@
 <?php
 namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
-/*                                                                        *
- * This script belongs to the TYPO3 Flow framework.                       *
- *                                                                        *
- * It is free software; you can redistribute it and/or modify it under    *
- * the terms of the GNU Lesser General Public License, either version 3   *
- * of the License, or (at your option) any later version.                 *
- *                                                                        *
- * The TYPO3 project - inspiring people to share!                         *
- *                                                                        */
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
 
 use Composer\Autoload\ClassLoader;
 use TYPO3\CMS\Core\Core\ClassLoadingInformationGenerator;
@@ -54,10 +57,111 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 		$generator = $this->getAccessibleMock(
 			ClassLoadingInformationGenerator::class,
 			['dummy'],
-			[$this->getMock(ClassLoader::class), $this->createPackagesMock(array()), __DIR__]
+			[$this->getMock(ClassLoader::class), array(), __DIR__]
 		);
 
 		$this->assertEquals($expectedResult, $generator->_call('isIgnoredClassName', $className));
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Error\Exception
+	 * @expectedExceptionCode 1444142481
+	 */
+	public function buildClassAliasMapForPackageThrowsExceptionForWrongComposerManifestInformation() {
+		$packageMock = $this->createPackageMock([
+			'extra' => [
+				'typo3/class-alias-loader' => [
+					'class-alias-maps' => [
+						'foo' => Fixtures\test_extension\Resources\PHP\Test::class,
+						'bar' => Fixtures\test_extension\Resources\PHP\AnotherTestFile::class,
+					],
+				],
+			],
+		]);
+		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
+		$classLoaderMock = $this->getMock(ClassLoader::class);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+		$generator->buildClassAliasMapForPackage($packageMock);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Error\Exception
+	 * @expectedExceptionCode 1422625075
+	 */
+	public function buildClassAliasMapForPackageThrowsExceptionForWrongClassAliasMapFile() {
+		$packageMock = $this->createPackageMock([
+			'extra' => [
+				'typo3/class-alias-loader' => [
+					'class-alias-maps' => [
+						'Migrations/Code/WrongClassAliasMap.php',
+					],
+				],
+			],
+		]);
+		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
+		$classLoaderMock = $this->getMock(ClassLoader::class);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+		$generator->buildClassAliasMapForPackage($packageMock);
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildClassAliasMapForPackageReturnsClassAliasMapForClassAliasMapFile() {
+		$expectedClassMap = [
+			'aliasToClassNameMapping' => [
+				'foo' => Fixtures\test_extension\Resources\PHP\Test::class,
+				'bar' => Fixtures\test_extension\Resources\PHP\AnotherTestFile::class,
+			],
+			'classNameToAliasMapping' => [
+				Fixtures\test_extension\Resources\PHP\Test::class => [
+					'foo' => 'foo',
+				],
+				Fixtures\test_extension\Resources\PHP\AnotherTestFile::class => [
+					'bar' => 'bar',
+				]
+			],
+		];
+		$packageMock = $this->createPackageMock(array());
+		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
+		$classLoaderMock = $this->getMock(ClassLoader::class);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+		$this->assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildClassAliasMapForPackageReturnsClassAliasMapForComposerManifestInformation() {
+		$expectedClassMap = [
+			'aliasToClassNameMapping' => [
+				'foo' => Fixtures\test_extension\Resources\PHP\Test::class,
+				'bar' => Fixtures\test_extension\Resources\PHP\AnotherTestFile::class,
+			],
+			'classNameToAliasMapping' => [
+				Fixtures\test_extension\Resources\PHP\Test::class => [
+					'foo' => 'foo',
+				],
+				Fixtures\test_extension\Resources\PHP\AnotherTestFile::class => [
+					'bar' => 'bar',
+				]
+			],
+		];
+		$packageMock = $this->createPackageMock([
+			'extra' => [
+				'typo3/class-alias-loader' => [
+					'class-alias-maps' => [
+						'Resources/PHP/ClassAliasMap.php',
+					],
+				],
+			],
+		]);
+		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
+		$classLoaderMock = $this->getMock(ClassLoader::class);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
+		$this->assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
 	}
 
 	/**
@@ -168,7 +272,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 	public function autoloadFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles) {
 		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
 		$classLoaderMock = $this->getMock(ClassLoader::class);
-		$generator = new ClassLoadingInformationGenerator($classLoaderMock, $this->createPackagesMock($packageManifest), __DIR__);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__);
 		$files = $generator->buildAutoloadInformationFiles();
 
 		$this->assertArrayHasKey('psr-4File', $files);
@@ -193,16 +297,16 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 
 	/**
 	 * @param array Array which should be returned as composer manifest
-	 * @return PackageInterface[]
+	 * @return PackageInterface
 	 */
-	protected function createPackagesMock($packageManifest) {
-		$packageStub = $this->getMock(PackageInterface::class);
-		$packageStub->expects($this->any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
-		$packageStub->expects($this->any())->method('getValueFromComposerManifest')->willReturn(
+	protected function createPackageMock($packageManifest) {
+		$packageMock = $this->getMock(PackageInterface::class);
+		$packageMock->expects($this->any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
+		$packageMock->expects($this->any())->method('getValueFromComposerManifest')->willReturn(
 			json_decode(json_encode($packageManifest))
 		);
 
-		return [$packageStub];
+		return $packageMock;
 	}
 
 }

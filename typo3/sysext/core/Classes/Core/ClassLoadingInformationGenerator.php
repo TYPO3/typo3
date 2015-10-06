@@ -165,18 +165,31 @@ class ClassLoadingInformationGenerator {
 	 * @return array
 	 */
 	public function buildClassAliasMapForPackage(PackageInterface $package) {
-		$aliasToClassNameMapping = array();
-		$classNameToAliasMapping = array();
-		$possibleClassAliasFile = $package->getPackagePath() . 'Migrations/Code/ClassAliasMap.php';
-		if (file_exists($possibleClassAliasFile)) {
-			$packageAliasMap = require $possibleClassAliasFile;
-			if (!is_array($packageAliasMap)) {
-				throw new \TYPO3\CMS\Core\Error\Exception('"class alias maps" must return an array', 1422625075);
+		$aliasToClassNameMapping = [];
+		$classNameToAliasMapping = [];
+		$possibleClassAliasFiles = [];
+		$manifest = $package->getValueFromComposerManifest();
+		if (!empty($manifest->extra->{'typo3/class-alias-loader'}->{'class-alias-maps'})) {
+			$possibleClassAliasFiles = $manifest->extra->{'typo3/class-alias-loader'}->{'class-alias-maps'};
+			if (!is_array($possibleClassAliasFiles)) {
+				throw new \TYPO3\CMS\Core\Error\Exception('"typo3/class-alias-loader"/"class-alias-maps" must return an array!', 1444142481);
 			}
-			foreach ($packageAliasMap as $aliasClassName => $className) {
-				$lowerCasedAliasClassName = strtolower($aliasClassName);
-				$aliasToClassNameMapping[$lowerCasedAliasClassName] = $className;
-				$classNameToAliasMapping[$className][$lowerCasedAliasClassName] = $lowerCasedAliasClassName;
+		} else {
+			$possibleClassAliasFiles[] = 'Migrations/Code/ClassAliasMap.php';
+		}
+		$packagePath = $package->getPackagePath();
+		foreach ($possibleClassAliasFiles as $possibleClassAliasFile) {
+			$possiblePathToClassAliasFile = $packagePath . $possibleClassAliasFile;
+			if (file_exists($possiblePathToClassAliasFile)) {
+				$packageAliasMap = require $possiblePathToClassAliasFile;
+				if (!is_array($packageAliasMap)) {
+					throw new \TYPO3\CMS\Core\Error\Exception('"class alias maps" must return an array', 1422625075);
+				}
+				foreach ($packageAliasMap as $aliasClassName => $className) {
+					$lowerCasedAliasClassName = strtolower($aliasClassName);
+					$aliasToClassNameMapping[$lowerCasedAliasClassName] = $className;
+					$classNameToAliasMapping[$className][$lowerCasedAliasClassName] = $lowerCasedAliasClassName;
+				}
 			}
 		}
 
