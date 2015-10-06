@@ -25,6 +25,7 @@
 	},
 	"config": {
 		"vendor-dir": "Packages/Libraries",
+		"optimize-autoloader": true,
 		"bin-dir": "bin"
 	},
 	"require": {
