@@ -15,12 +15,15 @@ namespace TYPO3\CMS\Beuser\Controller;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Lang\LanguageService;
 
 /**
  * Backend module user administration controller
  */
-class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class BackendUserController extends BackendUserActionController
 {
     /**
      * @var \TYPO3\CMS\Beuser\Domain\Model\ModuleData
@@ -176,7 +179,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
         $this->view->assign('dateFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
         $this->view->assign('timeFormat', $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
         $this->view->assign('onlineUsersAndSessions', $onlineUsersAndSessions);
-        $this->view->assign('currentSessionId', $GLOBALS['BE_USER']->user['ses_id']);
+        $this->view->assign('currentSessionId', $this->getBackendUserAuthentication()->user['ses_id']);
     }
 
     /**
@@ -228,11 +231,11 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
      */
     protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId)
     {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery(
+        $this->getDatabaseConnection()->exec_DELETEquery(
             'be_sessions',
-            'ses_userid = "' . (int)$backendUser->getUid() . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
+            'ses_userid = "' . (int)$backendUser->getUid() . '" AND ses_id = ' . $this->getDatabaseConnection()->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1'
         );
-        if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
+        if ($this->getDatabaseConnection()->sql_affected_rows() == 1) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser'));
         }
         $this->forward('online');
@@ -247,19 +250,19 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
     protected function switchUser($switchUser)
     {
         $targetUser = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $switchUser);
-        if (is_array($targetUser) && $GLOBALS['BE_USER']->isAdmin()) {
+        if (is_array($targetUser) && $this->getBackendUserAuthentication()->isAdmin()) {
             $updateData['ses_userid'] = (int)$targetUser['uid'];
-            $updateData['ses_backuserid'] = (int)$GLOBALS['BE_USER']->user['uid'];
+            $updateData['ses_backuserid'] = (int)$this->getBackendUserAuthentication()->user['uid'];
 
             // Set backend user listing module as starting module for switchback
-            $GLOBALS['BE_USER']->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
-            $GLOBALS['BE_USER']->writeUC();
+            $this->getBackendUserAuthentication()->uc['startModuleOnFirstLogin'] = 'system_BeuserTxBeuser';
+            $this->getBackendUserAuthentication()->writeUC();
 
-            $whereClause = 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions');
-            $whereClause .= ' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions');
-            $whereClause .= ' AND ses_userid=' . (int)$GLOBALS['BE_USER']->user['uid'];
+            $whereClause = 'ses_id=' . $this->getDatabaseConnection()->fullQuoteStr($this->getBackendUserAuthentication()->id, 'be_sessions');
+            $whereClause .= ' AND ses_name=' . $this->getDatabaseConnection()->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions');
+            $whereClause .= ' AND ses_userid=' . (int)$this->getBackendUserAuthentication()->user['uid'];
 
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+            $this->getDatabaseConnection()->exec_UPDATEquery(
                 'be_sessions',
                 $whereClause,
                 $updateData
@@ -268,5 +271,29 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
             $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
             \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
         }
+    }
+
+    /**
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

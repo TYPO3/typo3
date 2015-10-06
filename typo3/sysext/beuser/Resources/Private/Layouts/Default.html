@@ -1,35 +1,7 @@
-<f:be.container includeRequireJsModules="{0: 'TYPO3/CMS/Backend/Modal', 1: 'TYPO3/CMS/Beuser/BackendUserListing'}">
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<div class="left">
-					<f:be.buttons.csh />
-					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'backendUsers')}" controller="BackendUser" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'backendUserGroupsMenu')}" controller="BackendUserGroup" action="index" />
-						<f:be.menus.actionMenuItem label="{f:translate(key: 'onlineUsers')}" controller="BackendUser" action="online" />
-					</f:be.menus.actionMenu>
-				</div>
-				<div class="right">
-				</div>
-			</div>
-			<div class="typo3-docheader-buttons">
-				<div class="left">
-					<f:render section="iconButtons" />
-				</div>
-				<div class="right">
-					<f:be.buttons.shortcut />
-				</div>
-			</div>
-		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:render section="headline" />
+<f:be.pageRenderer />
 
-				<f:flashMessages />
+<f:render section="headline" />
 
-				<f:render section="content" />
-			</div>
-		</div>
-	</div>
-</f:be.container>
+<f:flashMessages />
+
+<f:render section="content" />

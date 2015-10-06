@@ -19,7 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 /**
  * Backend module user group administration controller
  */
-class BackendUserGroupController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class BackendUserGroupController extends BackendUserActionController
 {
     /**
      * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository
@@ -59,12 +59,6 @@ class BackendUserGroupController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
      */
     public function indexAction()
     {
-        $this->view->assign('returnUrl', rawurlencode(BackendUtility::getModuleUrl('system_BeuserTxBeuser', array(
-            'tx_beuser_system_beusertxbeuser' => array(
-                'action' => 'index',
-                'controller' => 'BackendUserGroup'
-            )
-        ))));
         $this->view->assign('backendUserGroups', $this->backendUserGroupRepository->findAll());
     }
 }

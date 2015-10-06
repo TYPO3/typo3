@@ -1,40 +1,15 @@
-<f:be.container
-	includeRequireJsModules="{0: 'TYPO3/CMS/Beuser/Permissions'}"
-	loadExtJsTheme="0"
-	loadJQuery="1"
->
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<div class="left"></div>
-				<div class="right"></div>
-			</div>
-			<div class="typo3-docheader-buttons">
-				<div class="left">
-					<f:render section="iconButtons" />
-				</div>
-				<div class="right">
-					<f:be.buttons.shortcut />
-				</div>
-			</div>
-		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:render section="headline" />
+<f:be.pageRenderer />
+<f:render section="headline" />
 
-				<f:flashMessages as="flashMessages">
-					<ul class="typo3-flashMessages">
-						<f:for each="{flashMessages}" as="flashMessage">
-							<li class="alert {flashMessage.class}">
-								<h4><f:translate id="{flashMessage.title}" extensionName="beuser" /></h4>
-								<f:translate id="{flashMessage.message}" extensionName="beuser" />
-							</li>
-						</f:for>
-					</ul>
-				</f:flashMessages>
+<f:flashMessages as="flashMessages">
+	<ul class="typo3-flashMessages">
+		<f:for each="{flashMessages}" as="flashMessage">
+			<li class="alert {flashMessage.class}">
+				<h4><f:translate id="{flashMessage.title}" extensionName="beuser" /></h4>
+				<f:translate id="{flashMessage.message}" extensionName="beuser" />
+			</li>
+		</f:for>
+	</ul>
+</f:flashMessages>
 
-				<f:render section="content" />
-			</div>
-		</div>
-	</div>
-</f:be.container>
+<f:render section="content" />
