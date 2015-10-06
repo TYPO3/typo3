@@ -41,7 +41,7 @@ prefix = tx_form
 					showAccordions = legend, label, attributes, options, validation, filters, various
 					accordions {
 						attributes {
-							showProperties = accept, acceptcharset, accesskey, action, alt, checked, class, cols, dir, disabled, enctype, id, label, lang, maxlength, method, multiple, name, placeholder, readonly, rows, selected, size, src, style, tabindex, title, type, value
+							showProperties = accept, accept-charset, accesskey, action, alt, autocomplete, autofocus, checked, class, cols, contenteditable, contextmenu, dir, draggable, dropzone, disabled, enctype, hidden, height, id, inputmode, label, lang, list, max, maxlength, method, min, minlength, multiple, name, novalidate, pattern, placeholder, readonly, required, rows, selected, selectionDirection, selectionEnd, selectionStart, size, spellcheck, src, step, style, tabindex, title, translate, type, value, width, wrap
 						}
 						label {
 							showProperties = label
@@ -157,9 +157,6 @@ prefix = tx_form
 				form {
 					showAccordions = behaviour, prefix, attributes, postProcessor
 					accordions {
-						attributes {
-							showProperties = accept, acceptcharset, action, class, dir, enctype, id, lang, method, name, style, title
-						}
 						postProcessor {
 							showPostProcessors = mail, redirect
 							postProcessors {
@@ -176,6 +173,13 @@ prefix = tx_form
 			}
 		}
 		elements {
+			form {
+				accordions {
+					attributes {
+						showProperties = accept, accept-charset, action, class, dir, enctype, id, lang, method, style, title
+					}
+				}
+			}
 			button {
 				showAccordions = attributes
 				accordions {

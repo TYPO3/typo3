@@ -78,6 +78,9 @@
 			<trans-unit id="basic_hidden">
 				<source>Hidden Field</source>
 			</trans-unit>
+			<trans-unit id="basic_input">
+				<source>Input Field</source>
+			</trans-unit>
 			<trans-unit id="basic_password">
 				<source>Password Field</source>
 			</trans-unit>
@@ -156,6 +159,21 @@
 			<trans-unit id="attributes_alt">
 				<source>Alt</source>
 			</trans-unit>
+			<trans-unit id="attributes_autocomplete">
+				<source>Autocomplete</source>
+			</trans-unit>
+			<trans-unit id="attributes_autocomplete_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_autocomplete_off">
+				<source>Off</source>
+			</trans-unit>
+			<trans-unit id="attributes_autocomplete_on">
+				<source>On</source>
+			</trans-unit>
+			<trans-unit id="attributes_autofocus">
+				<source>Autofocus</source>
+			</trans-unit>
 			<trans-unit id="attributes_checked">
 				<source>Checked</source>
 			</trans-unit>
@@ -164,6 +182,21 @@
 			</trans-unit>
 			<trans-unit id="attributes_cols">
 				<source>Cols</source>
+			</trans-unit>
+			<trans-unit id="attributes_contenteditable">
+				<source>Content editable</source>
+			</trans-unit>
+			<trans-unit id="attributes_contenteditable_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_contenteditable_true">
+				<source>True</source>
+			</trans-unit>
+			<trans-unit id="attributes_contenteditable_false">
+				<source>False</source>
+			</trans-unit>
+			<trans-unit id="attributes_contextmenu">
+				<source>Contextmenu</source>
 			</trans-unit>
 			<trans-unit id="attributes_dir">
 				<source>Dir</source>
@@ -177,6 +210,24 @@
 			<trans-unit id="attributes_disabled">
 				<source>Disabled</source>
 			</trans-unit>
+			<trans-unit id="attributes_draggable">
+				<source>Draggable</source>
+			</trans-unit>
+			<trans-unit id="attributes_draggable_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_draggable_true">
+				<source>True</source>
+			</trans-unit>
+			<trans-unit id="attributes_draggable_false">
+				<source>False</source>
+			</trans-unit>
+			<trans-unit id="attributes_draggable_auto">
+				<source>Auto</source>
+			</trans-unit>
+			<trans-unit id="attributes_dropzone">
+				<source>Dropzone</source>
+			</trans-unit>
 			<trans-unit id="attributes_enctype">
 				<source>Enctype</source>
 			</trans-unit>
@@ -189,8 +240,56 @@
 			<trans-unit id="attributes_enctype_3">
 				<source>No encoding - Spaces converted</source>
 			</trans-unit>
+			<trans-unit id="attributes_hidden">
+				<source>Hidden</source>
+			</trans-unit>
+			<trans-unit id="attributes_height">
+				<source>Height</source>
+			</trans-unit>
 			<trans-unit id="attributes_id">
 				<source>Id</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode">
+				<source>Inputmode</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_verbatim">
+				<source>Verbatim</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_latin">
+				<source>Latin</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_latin-name">
+				<source>Latin-name</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_latin-prose">
+				<source>Latin-prose</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_full-width-latin">
+				<source>Full-width-latin</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_kana">
+				<source>Kana</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_kana-name">
+				<source>Kana-name</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_katakana">
+				<source>Katakana</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_numeric">
+				<source>Numeric</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_tel">
+				<source>Tel</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="attributes_inputmode_url">
+				<source>Url</source>
 			</trans-unit>
 			<trans-unit id="attributes_label">
 				<source>Label</source>
@@ -198,14 +297,29 @@
 			<trans-unit id="attributes_lang">
 				<source>Lang</source>
 			</trans-unit>
+			<trans-unit id="attributes_list">
+				<source>List</source>
+			</trans-unit>
+			<trans-unit id="attributes_max">
+				<source>Max</source>
+			</trans-unit>
 			<trans-unit id="attributes_maxlength">
 				<source>Maxlength</source>
 			</trans-unit>
 			<trans-unit id="attributes_method">
 				<source>Method</source>
 			</trans-unit>
+			<trans-unit id="attributes_min">
+				<source>Min</source>
+			</trans-unit>
+			<trans-unit id="attributes_minlength">
+				<source>Minlength</source>
+			</trans-unit>
 			<trans-unit id="attributes_method_get">
 				<source>Get</source>
+			</trans-unit>
+			<trans-unit id="attributes_pattern">
+				<source>Pattern</source>
 			</trans-unit>
 			<trans-unit id="attributes_method_post">
 				<source>Post</source>
@@ -216,11 +330,17 @@
 			<trans-unit id="attributes_name">
 				<source>Name</source>
 			</trans-unit>
+			<trans-unit id="attributes_novalidate">
+				<source>Novalidate</source>
+			</trans-unit>
 			<trans-unit id="attributes_placeholder">
 				<source>Placeholder</source>
 			</trans-unit>
 			<trans-unit id="attributes_readonly">
 				<source>Readonly</source>
+			</trans-unit>
+			<trans-unit id="attributes_required">
+				<source>Required</source>
 			</trans-unit>
 			<trans-unit id="attributes_rows">
 				<source>Rows</source>
@@ -228,11 +348,44 @@
 			<trans-unit id="attributes_selected">
 				<source>Selected</source>
 			</trans-unit>
+			<trans-unit id="attributes_selectionDirection">
+				<source>Selection direction</source>
+			</trans-unit>
+			<trans-unit id="attributes_selectionDirection_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_selectionDirection_forward">
+				<source>Forward</source>
+			</trans-unit>
+			<trans-unit id="attributes_selectionDirection_backward">
+				<source>Backward</source>
+			</trans-unit>
+			<trans-unit id="attributes_selectionEnd">
+				<source>Selection end</source>
+			</trans-unit>
+			<trans-unit id="attributes_selectionStart">
+				<source>Selection start</source>
+			</trans-unit>
 			<trans-unit id="attributes_size">
 				<source>Size</source>
 			</trans-unit>
+			<trans-unit id="attributes_spellcheck">
+				<source>Spellcheck</source>
+			</trans-unit>
+			<trans-unit id="attributes_spellcheck_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_spellcheck_true">
+				<source>True</source>
+			</trans-unit>
+			<trans-unit id="attributes_spellcheck_false">
+				<source>False</source>
+			</trans-unit>
 			<trans-unit id="attributes_src">
 				<source>Src</source>
+			</trans-unit>
+			<trans-unit id="attributes_step">
+				<source>Step</source>
 			</trans-unit>
 			<trans-unit id="attributes_style">
 				<source>Style</source>
@@ -243,6 +396,18 @@
 			<trans-unit id="attributes_title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="attributes_translate">
+				<source>Translate</source>
+			</trans-unit>
+			<trans-unit id="attributes_translate_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_translate_yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="attributes_translate_no">
+				<source>No</source>
+			</trans-unit>
 			<trans-unit id="attributes_type">
 				<source>Type</source>
 			</trans-unit>
@@ -251,6 +416,21 @@
 			</trans-unit>
 			<trans-unit id="attributes_type_checkbox">
 				<source>checkbox</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_color">
+				<source>color</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_date">
+				<source>date</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_datetime">
+				<source>datetime</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_datetime-local">
+				<source>datetime-local</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_email">
+				<source>email</source>
 			</trans-unit>
 			<trans-unit id="attributes_type_file">
 				<source>file</source>
@@ -261,23 +441,62 @@
 			<trans-unit id="attributes_type_image">
 				<source>image</source>
 			</trans-unit>
+			<trans-unit id="attributes_type_month">
+				<source>month</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_number">
+				<source>number</source>
+			</trans-unit>
 			<trans-unit id="attributes_type_password">
 				<source>password</source>
 			</trans-unit>
 			<trans-unit id="attributes_type_radio">
 				<source>radio</source>
 			</trans-unit>
+			<trans-unit id="attributes_type_range">
+				<source>range</source>
+			</trans-unit>
 			<trans-unit id="attributes_type_reset">
 				<source>reset</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_search">
+				<source>search</source>
 			</trans-unit>
 			<trans-unit id="attributes_type_submit">
 				<source>submit</source>
 			</trans-unit>
+			<trans-unit id="attributes_type_tel">
+				<source>tel</source>
+			</trans-unit>
 			<trans-unit id="attributes_type_text">
 				<source>text</source>
 			</trans-unit>
+			<trans-unit id="attributes_type_time">
+				<source>time</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_url">
+				<source>url</source>
+			</trans-unit>
+			<trans-unit id="attributes_type_week">
+				<source>week</source>
+			</trans-unit>
 			<trans-unit id="attributes_value">
 				<source>Value</source>
+			</trans-unit>
+			<trans-unit id="attributes_width">
+				<source>Width</source>
+			</trans-unit>
+			<trans-unit id="attributes_wrap">
+				<source>Wrap</source>
+			</trans-unit>
+			<trans-unit id="attributes_wrap_none">
+				<source>Not set</source>
+			</trans-unit>
+			<trans-unit id="attributes_wrap_soft">
+				<source>Soft</source>
+			</trans-unit>
+			<trans-unit id="attributes_wrap_hard">
+				<source>Hard</source>
 			</trans-unit>
 			<trans-unit id="options_label">
 				<source>Label Properties</source>
