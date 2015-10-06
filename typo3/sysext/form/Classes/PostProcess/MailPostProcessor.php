@@ -120,6 +120,7 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 		$this->setFrom();
 		$this->setTo();
 		$this->setCc();
+		$this->setReplyTo();
 		$this->setPriority();
 		$this->setOrganization();
 		$this->setHtmlContent();
@@ -138,7 +139,10 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 */
 	protected function setSubject() {
 		if (isset($this->typoScript['subject'])) {
-			$subject = $this->typoScript['subject'];
+			$subject = $this->formUtility->renderItem(
+				$this->typoScript['subject.'],
+				$this->typoScript['subject']
+			);
 		} elseif ($this->getTypoScriptValueFromIncomingData('subjectField') !== NULL) {
 			$subject = $this->getTypoScriptValueFromIncomingData('subjectField');
 		} else {
@@ -157,8 +161,11 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @return void
 	 */
 	protected function setFrom() {
-		if ($this->typoScript['senderEmail']) {
-			$fromEmail = $this->typoScript['senderEmail'];
+		if (isset($this->typoScript['senderEmail'])) {
+			$fromEmail = $this->formUtility->renderItem(
+				$this->typoScript['senderEmail.'],
+				$this->typoScript['senderEmail']
+			);
 		} elseif ($this->getTypoScriptValueFromIncomingData('senderEmailField') !== NULL) {
 			$fromEmail = $this->getTypoScriptValueFromIncomingData('senderEmailField');
 		} else {
@@ -167,8 +174,11 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 		if (!GeneralUtility::validEmail($fromEmail)) {
 			$fromEmail = MailUtility::getSystemFromAddress();
 		}
-		if ($this->typoScript['senderName']) {
-			$fromName = $this->typoScript['senderName'];
+		if (isset($this->typoScript['senderName'])) {
+			$fromName = $this->formUtility->renderItem(
+				$this->typoScript['senderName.'],
+				$this->typoScript['senderName']
+			);
 		} elseif ($this->getTypoScriptValueFromIncomingData('senderNameField') !== NULL) {
 			$fromName = $this->getTypoScriptValueFromIncomingData('senderNameField');
 		} else {
@@ -221,7 +231,11 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @return void
 	 */
 	protected function setTo() {
-		$validEmails = $this->filterValidEmails($this->typoScript['recipientEmail']);
+		$emails = $this->formUtility->renderItem(
+			$this->typoScript['recipientEmail.'],
+			$this->typoScript['recipientEmail']
+		);
+		$validEmails = $this->filterValidEmails($emails);
 		if (!empty($validEmails)) {
 			$this->mailMessage->setTo($validEmails);
 		}
@@ -235,9 +249,35 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @return void
 	 */
 	protected function setCc() {
-		$validEmails = $this->filterValidEmails($this->typoScript['ccEmail']);
+		$emails = $this->formUtility->renderItem(
+			$this->typoScript['ccEmail.'],
+			$this->typoScript['ccEmail']
+		);
+		$validEmails = $this->filterValidEmails($emails);
 		if (!empty($validEmails)) {
 			$this->mailMessage->setCc($validEmails);
+		}
+	}
+
+	/**
+	 * Adds the reply to header of the mail message when configured
+	 *
+	 * Checks the address if it is a valid email address
+	 *
+	 * @return void
+	 */
+	protected function setReplyTo() {
+		if (isset($this->typoScript['replyToEmail'])) {
+			$emails = $this->formUtility->renderItem(
+				$this->typoScript['replyToEmail.'],
+				$this->typoScript['replyToEmail']
+			);
+		} elseif ($this->getTypoScriptValueFromIncomingData('replyToEmailField') !== NULL) {
+			$emails = $this->getTypoScriptValueFromIncomingData('replyToEmailField');
+		}
+		$validEmails = $this->filterValidEmails($emails);
+		if (!empty($validEmails)) {
+			$this->mailMessage->setReplyTo($validEmails);
 		}
 	}
 
@@ -251,8 +291,14 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 */
 	protected function setPriority() {
 		$priority = 3;
-		if ($this->typoScript['priority']) {
-			$priority = MathUtility::forceIntegerInRange($this->typoScript['priority'], 1, 5);
+		if (isset($this->typoScript['priority'])) {
+			$priorityFromTs = $this->formUtility->renderItem(
+				$this->typoScript['priority.'],
+				$this->typoScript['priority']
+			);
+		}
+		if (!empty($priorityFromTs)) {
+			$priority = MathUtility::forceIntegerInRange($priorityFromTs, 1, 5);
 		}
 		$this->mailMessage->setPriority($priority);
 	}
@@ -265,8 +311,13 @@ class MailPostProcessor extends AbstractPostProcessor implements PostProcessorIn
 	 * @return void
 	 */
 	protected function setOrganization() {
-		if ($this->typoScript['organization']) {
-			$organization = $this->typoScript['organization'];
+		if (isset($this->typoScript['organization'])) {
+			$organization = $this->formUtility->renderItem(
+				$this->typoScript['organization.'],
+				$this->typoScript['organization']
+			);
+		}
+		if (!empty($organization)) {
 			$organization = $this->sanitizeHeaderString($organization);
 			$this->mailMessage->getHeaders()->addTextHeader('Organization', $organization);
 		}
