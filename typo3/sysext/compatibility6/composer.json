@@ -12,7 +12,7 @@
 		"compatibility6": "*"
 	},
 	"extra": {
-		"helhum/class-alias-loader": {
+		"typo3/class-alias-loader": {
 			"class-alias-maps": [
 				"Migrations/Code/ClassAliasMap.php"
 			]

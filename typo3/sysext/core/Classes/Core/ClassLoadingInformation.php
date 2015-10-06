@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Core\Core;
  */
 
 use Composer\Autoload\ClassLoader;
-use Helhum\ClassAliasLoader\ClassAliasMap;
+use TYPO3\ClassAliasLoader\ClassAliasMap;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
