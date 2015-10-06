@@ -296,6 +296,108 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase {
 	}
 
 	/**
+	 * Data provider for different autoload information
+	 *
+	 * @return array
+	 */
+	public function autoloadDevFilesAreBuildCorrectlyDataProvider() {
+		return [
+			'Psr-4 sections' => [
+				[
+					'autoload' => [
+						'psr-4' => [
+							'TYPO3\\CMS\\TestExtension\\' => 'Classes',
+						],
+					],
+					'autoload-dev' => [
+						'psr-4' => [
+							'TYPO3\\CMS\\TestExtension\\Tests\\' => 'Tests',
+						],
+					],
+				],
+				[
+					'\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\')',
+					'\'TYPO3\\\\CMS\\\\TestExtension\\\\Tests\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Tests\')',
+				],
+				[],
+			],
+			'Psr-4 sections with override' => [
+				[
+					'autoload' => [
+						'psr-4' => [
+							'TYPO3\\CMS\\TestExtension\\' => 'Classes',
+						],
+					],
+					'autoload-dev' => [
+						'psr-4' => [
+							'TYPO3\\CMS\\TestExtension\\' => 'Tests',
+						],
+					],
+				],
+				[
+					'!\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Classes\')',
+					'\'TYPO3\\\\CMS\\\\TestExtension\\\\\' => array($typo3InstallDir . \'/Fixtures/test_extension/Tests\')',
+				],
+				[],
+			],
+			'Classmap section pointing to two files, one in dev and one not' => [
+				[
+					'autoload' => [
+						'classmap' => [
+							'Resources/PHP/Test.php',
+						],
+					],
+					'autoload-dev' => [
+						'classmap' => [
+							'Resources/PHP/AnotherTestFile.php',
+						],
+					],
+				],
+				[],
+				[
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Test.php\'',
+					'$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/AnotherTestFile.php\'',
+					'!$typo3InstallDir . \'/Fixtures/test_extension/Resources/PHP/Subdirectory/SubdirectoryTest.php\'',
+				],
+			],
+		];
+	}
+
+	/**
+	 * @test
+	 * @dataProvider autoloadDevFilesAreBuildCorrectlyDataProvider
+	 *
+	 * @param array $packageManifest
+	 * @param array $expectedPsr4Files
+	 * @param array $expectedClassMapFiles
+	 */
+	public function autoloadDevFilesAreBuildCorrectly($packageManifest, $expectedPsr4Files, $expectedClassMapFiles) {
+		/** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
+		$classLoaderMock = $this->getMock(ClassLoader::class);
+		$generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__, TRUE);
+		$files = $generator->buildAutoloadInformationFiles();
+
+		$this->assertArrayHasKey('psr-4File', $files);
+		$this->assertArrayHasKey('classMapFile', $files);
+		foreach ($expectedPsr4Files as $expectation) {
+			if ($expectation[0] === '!') {
+				$expectedCount = 0;
+			} else {
+				$expectedCount = 1;
+			}
+			$this->assertSame($expectedCount, substr_count($files['psr-4File'], $expectation), '' . $expectation);
+		}
+		foreach ($expectedClassMapFiles as $expectation) {
+			if ($expectation[0] === '!') {
+				$expectedCount = 0;
+			} else {
+				$expectedCount = 1;
+			}
+			$this->assertSame($expectedCount, substr_count($files['classMapFile'], $expectation), '' . $expectation);
+		}
+	}
+
+	/**
 	 * @param array Array which should be returned as composer manifest
 	 * @return PackageInterface
 	 */

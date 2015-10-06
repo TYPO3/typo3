@@ -42,14 +42,21 @@ class ClassLoadingInformationGenerator {
 	protected $installationRoot;
 
 	/**
+	 * @var bool
+	 */
+	protected $isDevMode;
+
+	/**
 	 * @param ClassLoader $classLoader
 	 * @param array $activeExtensionPackages
 	 * @param string $installationRoot
+	 * @param bool $isDevMode
 	 */
-	public function __construct(ClassLoader $classLoader, array $activeExtensionPackages = array(), $installationRoot) {
+	public function __construct(ClassLoader $classLoader, array $activeExtensionPackages, $installationRoot, $isDevMode = FALSE) {
 		$this->classLoader = $classLoader;
 		$this->activeExtensionPackages = $activeExtensionPackages;
 		$this->installationRoot = $installationRoot;
+		$this->isDevMode = $isDevMode;
 	}
 
 	/**
@@ -67,12 +74,12 @@ class ClassLoadingInformationGenerator {
 
 		if (empty($manifest->autoload)) {
 			// Legacy mode: Scan the complete extension directory for class files
-			$classMap = $this->createClassMap($packagePath, $useRelativePaths, TRUE);
+			$classMap = $this->createClassMap($packagePath, $useRelativePaths, !$this->isDevMode);
 		} else {
-			$autoloadDefinition = json_decode(json_encode($manifest->autoload), TRUE);
-			if (!empty($autoloadDefinition['psr-4']) && is_array($autoloadDefinition['psr-4'])) {
+			$autoloadPsr4 = $this->getAutoloadSectionFromManifest($manifest, 'psr-4');
+			if (!empty($autoloadPsr4)) {
 				$classLoaderPrefixesPsr4 = $this->classLoader->getPrefixesPsr4();
-				foreach ($autoloadDefinition['psr-4'] as $namespacePrefix => $path) {
+				foreach ($autoloadPsr4 as $namespacePrefix => $path) {
 					$namespacePath = $packagePath . $path;
 					if ($useRelativePaths) {
 						$psr4[$namespacePrefix] = $this->makePathRelative($namespacePath, realpath($namespacePath));
@@ -86,14 +93,39 @@ class ClassLoadingInformationGenerator {
 					}
 				}
 			}
-			if (!empty($autoloadDefinition['classmap']) && is_array($autoloadDefinition['classmap'])) {
-				foreach ($autoloadDefinition['classmap'] as $path) {
+			$autoloadClassmap = $this->getAutoloadSectionFromManifest($manifest, 'classmap');
+			if (!empty($autoloadClassmap)) {
+				foreach ($autoloadClassmap as $path) {
 					$classMap = array_merge($classMap, $this->createClassMap($packagePath . $path, $useRelativePaths));
 				}
 			}
 		}
 
 		return array('classMap' => $classMap, 'psr-4' => $psr4);
+	}
+
+	/**
+	 * Fetches class loading info from the according section from the manifest file.
+	 * Development information will be extracted and merged as well.
+	 *
+	 * @param \stdClass $manifest
+	 * @param string $section
+	 * @return array
+	 */
+	protected function getAutoloadSectionFromManifest($manifest, $section) {
+		$finalAutoloadSection = [];
+		$autoloadDefinition = json_decode(json_encode($manifest->autoload), TRUE);
+		if (!empty($autoloadDefinition[$section]) && is_array($autoloadDefinition[$section])) {
+			$finalAutoloadSection = $autoloadDefinition[$section];
+		}
+		if ($this->isDevMode) {
+			$autoloadDefinitionDev = json_decode(json_encode($manifest->{'autoload-dev'}), TRUE);
+			if (!empty($autoloadDefinitionDev[$section]) && is_array($autoloadDefinitionDev[$section])) {
+				$finalAutoloadSection = array_merge($finalAutoloadSection, $autoloadDefinitionDev[$section]);
+			}
+		}
+
+		return $finalAutoloadSection;
 	}
 
 	/**

@@ -74,7 +74,7 @@ class ClassLoadingInformation {
 		$activeExtensionPackages = static::getActiveExtensionPackages();
 
 		/** @var ClassLoadingInformationGenerator  $generator */
-		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site);
+		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
 		$classInfoFiles = $generator->buildAutoloadInformationFiles();
 		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
 		GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
@@ -128,7 +128,7 @@ class ClassLoadingInformation {
 		$activeExtensionPackages = static::getActiveExtensionPackages();
 
 		/** @var ClassLoadingInformationGenerator  $generator */
-		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site);
+		$generator = GeneralUtility::makeInstance(ClassLoadingInformationGenerator::class, $composerClassLoader, $activeExtensionPackages, PATH_site, self::isTestingContext());
 
 		$classInformation = $generator->buildClassLoadingInformationForPackage($package);
 		$composerClassLoader->addClassMap($classInformation['classMap']);
@@ -145,7 +145,7 @@ class ClassLoadingInformation {
 	 * @return string
 	 */
 	static protected function getClassLoadingInformationDirectory() {
-		if (Bootstrap::getInstance()->getApplicationContext()->isTesting()) {
+		if (self::isTestingContext()) {
 			return PATH_site . self::AUTOLOAD_INFO_DIR_TESTS;
 		} else {
 			return PATH_site . self::AUTOLOAD_INFO_DIR;
@@ -170,7 +170,7 @@ class ClassLoadingInformation {
 		$autoloadInfoDir = self::getClassLoadingInformationDirectory();
 		if (!file_exists($autoloadInfoDir)) {
 			GeneralUtility::mkdir_deep($autoloadInfoDir);
-		} elseif (Bootstrap::getInstance()->getApplicationContext()->isTesting()) {
+		} elseif (self::isTestingContext()) {
 			GeneralUtility::flushDirectory($autoloadInfoDir, TRUE);
 		}
 	}
@@ -183,6 +183,16 @@ class ClassLoadingInformation {
 	 */
 	static protected function getClassLoader() {
 		return Bootstrap::getInstance()->getEarlyInstance(ClassLoader::class);
+	}
+
+	/**
+	 * Internal method calling the bootstrap to get application context information
+	 *
+	 * @return bool
+	 * @throws \TYPO3\CMS\Core\Exception
+	 */
+	static protected function isTestingContext() {
+		return Bootstrap::getInstance()->getApplicationContext()->isTesting();
 	}
 
 	/**
