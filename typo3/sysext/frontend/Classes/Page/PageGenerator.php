@@ -275,6 +275,8 @@ class PageGenerator {
 			case '':
 				if ($tsfe->xhtmlVersion) {
 					$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
+				} else {
+					$xmlDocument = FALSE;
 				}
 				break;
 			default:
