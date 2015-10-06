@@ -43,6 +43,11 @@ class DocHeaderComponent {
 	protected $buttonBar;
 
 	/**
+	 * @var bool
+	 */
+	protected $enabled = TRUE;
+
+	/**
 	 * Sets up buttonBar and MenuRegistry
 	 */
 	public function __construct() {
@@ -81,12 +86,36 @@ class DocHeaderComponent {
 	}
 
 	/**
+	 * Determines whether this components is enabled.
+	 *
+	 * @return bool
+	 */
+	public function isEnabled() {
+		return $this->enabled;
+	}
+
+	/**
+	 * Sets the enabled property to TRUE.
+	 */
+	public function enable() {
+		$this->enabled = TRUE;
+	}
+
+	/**
+	 * Sets the enabled property to FALSE (disabled).
+	 */
+	public function disable() {
+		$this->enabled = FALSE;
+	}
+
+	/**
 	 * Returns the abstract content of the docHeader as an array
 	 *
 	 * @return array
 	 */
 	public function docHeaderContent() {
 		return [
+			'enabled' => $this->isEnabled(),
 			'buttons' => $this->buttonBar->getButtons(),
 			'menus' => $this->menuRegistry->getMenus(),
 			'metaInformation' => $this->metaInformation

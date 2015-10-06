@@ -4,7 +4,9 @@
 			<f:format.raw>{formTag}</f:format.raw>
 		</f:then>
 	</f:if>
-	<f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
+	<f:if condition="{docHeader.enabled}">
+		<f:render partial="DocHeader" arguments="{docHeader:docHeader}" />
+	</f:if>
 	<div class="module-body t3js-module-body">
 		<f:format.raw>{content}</f:format.raw>
 	</div>
