@@ -7536,13 +7536,6 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField extends \TYP
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class Tx_Reports_ViewHelpers_ActionMenuItemViewHelper extends \TYPO3\CMS\Reports\ViewHelpers\ActionMenuItemViewHelper
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class Tx_Reports_ViewHelpers_IconViewHelper extends \TYPO3\CMS\Reports\ViewHelpers\IconViewHelper
 {
 }

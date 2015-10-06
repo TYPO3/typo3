@@ -1083,7 +1083,6 @@ return array(
     'tx_reports_StatusProvider' => \TYPO3\CMS\Reports\StatusProviderInterface::class,
     'tx_reports_tasks_SystemStatusUpdateTask' => \TYPO3\CMS\Reports\Task\SystemStatusUpdateTask::class,
     'tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField' => \TYPO3\CMS\Reports\Task\SystemStatusUpdateTaskNotificationEmailField::class,
-    'Tx_Reports_ViewHelpers_ActionMenuItemViewHelper' => \TYPO3\CMS\Reports\ViewHelpers\ActionMenuItemViewHelper::class,
     'Tx_Reports_ViewHelpers_IconViewHelper' => \TYPO3\CMS\Reports\ViewHelpers\IconViewHelper::class,
     'tx_rsaauth_abstract_backend' => \TYPO3\CMS\Rsaauth\Backend\AbstractBackend::class,
     'tx_rsaauth_backendfactory' => \TYPO3\CMS\Rsaauth\Backend\BackendFactory::class,
