@@ -136,7 +136,8 @@ return [
 	// ExtDirect routing
 	'ext_direct_route' => [
 		'path' => '/ext-direct/route',
-		'target' => \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter::class . '::routeAction'
+		'target' => \TYPO3\CMS\Core\ExtDirect\ExtDirectRouter::class . '::routeAction',
+		'access' => 'public'
 	],
 
 	// ExtDirect API
