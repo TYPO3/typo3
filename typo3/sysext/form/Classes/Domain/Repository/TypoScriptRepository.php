@@ -92,11 +92,15 @@ class TypoScriptRepository implements SingletonInterface {
 			return array();
 		}
 		$htmlAttributes = $this->getModelConfigurationByScope($elementType, 'htmlAttributes.');
-		$htmlAttributes = array_fill_keys($htmlAttributes, null);
+		if (is_array($htmlAttributes)) {
+			$htmlAttributes = array_fill_keys($htmlAttributes, NULL);
+		} else {
+			$htmlAttributes = array();
+		}
 		$defaultHtmlAttributeValues = $this->getModelConfigurationByScope($elementType, 'defaultHtmlAttributeValues.');
 		if (is_array($defaultHtmlAttributeValues)) {
-			foreach ($defaultHtmlAttributeValues as $defaultHtmlAttributeKey => $defaultHtmlAttibuteValue) {
-				$htmlAttributes[$defaultHtmlAttributeKey] = $defaultHtmlAttibuteValue;
+			foreach ($defaultHtmlAttributeValues as $defaultHtmlAttributeKey => $defaultHtmlAttributeValue) {
+				$htmlAttributes[$defaultHtmlAttributeKey] = $defaultHtmlAttributeValue;
 			}
 		} elseif (!is_array($htmlAttributes)) {
 			$htmlAttributes = array();
