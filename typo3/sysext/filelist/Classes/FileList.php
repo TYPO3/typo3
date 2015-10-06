@@ -240,9 +240,11 @@ class FileList extends AbstractRecordList
      *
      * @param Folder $folderObject
      * @return array
+     * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, buttons are now defined in FileListController
      */
     public function getButtonsAndOtherMarkers(Folder $folderObject)
     {
+        GeneralUtility::logDeprecatedFunction();
         $otherMarkers = array(
             'PAGE_ICON' => '',
             'TITLE' => ''
