@@ -952,7 +952,7 @@ var inline = {
 			// If the record already exists in storage, mark it to be deleted on clicking the save button:
 		} else {
 			document.getElementsByName('cmd' + shortName + '[delete]')[0].disabled = false;
-			TYPO3.jQuery('#' + objectId + '_div').fadeOut();
+			TYPO3.jQuery('#' + objectId + '_div').fadeOut(200);
 		}
 
 		var recordCount = this.memorizeRemoveRecord(
@@ -1207,18 +1207,16 @@ var inline = {
 	},
 
 	hideElementsWithClassName: function (selector, parentElement) {
-		TYPO3.jQuery('#' + parentElement).find(selector).fadeOut();
+		TYPO3.jQuery('#' + parentElement).find(selector).fadeOut(200);
 	},
 
 	showElementsWithClassName: function (selector, parentElement) {
-		TYPO3.jQuery('#' + parentElement).find(selector).fadeIn();
+		TYPO3.jQuery('#' + parentElement).find(selector).fadeIn(200);
 	},
 
+	// sets the opacity to 0.2 and then fades in to opacity 1
 	fadeOutFadeIn: function (objectId) {
-		objectId = this.escapeObjectId(objectId);
-		TYPO3.jQuery('#' + objectId).fadeTo(500, 0.5, 'linear', function () {
-			TYPO3.jQuery('#' + objectId).fadeTo(500, 1, 'linear');
-		});
+		TYPO3.jQuery('#' + this.escapeObjectId(objectId)).css({opacity: 0.2}).fadeTo(200, 1, 'linear');
 	},
 
 	isNewRecord: function (objectId) {
@@ -1249,7 +1247,7 @@ var inline = {
 	},
 
 	fadeAndRemove: function (element) {
-		TYPO3.jQuery('#' + this.escapeObjectId(element)).fadeOut(500, function () {
+		TYPO3.jQuery('#' + this.escapeObjectId(element)).fadeOut(200, function () {
 			TYPO3.jQuery(this).remove();
 		});
 	},
