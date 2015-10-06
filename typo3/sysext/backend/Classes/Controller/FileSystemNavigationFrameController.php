@@ -237,7 +237,7 @@ class FileSystemNavigationFrameController {
 	 **********************************/
 	/**
 	 * Makes the AJAX call to expand or collapse the foldertree.
-	 * Called by typo3/ajax.php
+	 * Called by an AJAX Route, see AjaxRequestHandler
 	 *
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response

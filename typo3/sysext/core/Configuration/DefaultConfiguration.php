@@ -929,7 +929,7 @@ return array(
 		'versionNumberInFilename' => FALSE,					// <p>Boolean: If TRUE, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires extra .htaccess rules to work (please refer to _.htaccess or the _.htaccess file from the dummy package)</p><p>If FALSE the filemtime will be appended as a query-string.</p>
 		'spriteIconGenerator_handler' => \TYPO3\CMS\Backend\Sprite\SimpleSpriteHandler::class,		// String: Used to register own/other spriteGenerating Handler, they have to implement the interface \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface. If set to "\TYPO3\CMS\Backend\Sprite\SpriteBuildingHandler" icons from extensions will automatically merged into sprites.
 		'debug' => FALSE,									// Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!
-		'AJAX' => array(),									// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php for more information.
+		'AJAX' => array(),									// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See the AjaxRequestHandler class for more information.
 		'toolbarItems' => array(), // Array: Registered toolbar items classes
 		'HTTP' => array(
 			'Response' => array(

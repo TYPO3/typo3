@@ -350,9 +350,9 @@ class SystemEnvironmentBuilder {
 	 * We have two main scenarios for entry points:
 	 * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php sets $relativePathPart to
 	 * empty string to hint this code that the document root is identical to the directory the script is located at.
-	 * - An indirect include of any Backend related script (-> a backend module, the install tool, or scripts like ajax.php).
+	 * - An indirect include of any Backend related script (-> typo3/index.php or the install tool).
 	 * - A Backend script: This is the case for the index.php dispatcher and other entry scripts like 'cli_dispatch.phpsh'
-	 * or 'ajax.php' that are located inside typo3/ directly. In this case the Bootstrap->run() command sets
+	 * or 'typo3/index.php' that are located inside typo3/ directly. In this case the Bootstrap->run() command sets
 	 * 'typo3/' as $relativePathPart as base to calculate the document root.
 	 *
 	 * @param string $relativePathPart Relative directory part from document root to script path

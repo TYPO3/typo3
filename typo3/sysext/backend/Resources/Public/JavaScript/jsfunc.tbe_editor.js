@@ -327,7 +327,7 @@ var TBE_EDITOR = {
 	},
 
 	/**
-	 * Determines backend path to be used for e.g. ajax.php
+	 * Determines backend path
 	 * @return string
 	 * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
 	 */

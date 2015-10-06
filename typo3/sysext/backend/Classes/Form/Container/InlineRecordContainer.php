@@ -163,12 +163,6 @@ class InlineRecordContainer extends AbstractContainer {
 				$html = $childArray['html'];
 				$childArray['html'] = '';
 				$resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childArray);
-
-				// Replace returnUrl in Wizard-Code, if this is an AJAX call
-				$ajaxArguments = GeneralUtility::_GP('ajax');
-				if (isset($ajaxArguments[2]) && trim($ajaxArguments[2]) != '') {
-					$html = str_replace('P[returnUrl]=%2F' . rawurlencode(TYPO3_mainDir) . 'ajax.php', 'P[returnUrl]=' . rawurlencode($ajaxArguments[2]), $html);
-				}
 			} else {
 				// This string is the marker for the JS-function to check if the full content has already been loaded
 				$html = '<!--notloaded-->';

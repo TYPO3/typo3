@@ -1220,10 +1220,10 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="ExtDirect.namespaceError" xml:space="preserve">
 				<source>Ext Direct error in "%s" with namespace: "%s"\n
-Try to clear the TYPO3 cache and / or use parameter no_cache=1 as parameter in URL typo3/ajax.php\n\n
+Try to clear the TYPO3 cache and / or use parameter no_cache=1 as parameter in URL typo3/index.php\n\n
 Check also the following points:\n
 - configuration in ext_localconf.php: registration key should be like "TYPO3.MyExtension.Sample"\n
-- URL typo3/ajax.php: namespace parameter should be like: "TYPO3.MyExtension"\n
+- URL typo3/index.php: namespace parameter should be like: "TYPO3.MyExtension"\n
 - javascript: method\'s name should be like: "TYPO3.MyExtension.Sample.myMethod"\n</source>
 			</trans-unit>
 			<trans-unit id="ExtDirect.noNamespace">

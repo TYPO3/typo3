@@ -176,8 +176,7 @@ var inline = {
 
 	synchronizeLocalizeRecords: function (objectId, type) {
 		var context = this.getContext(objectId);
-		var parameters = [objectId, type];
-		this.makeAjaxCall('synchronizelocalize', parameters, true, context);
+		this.makeAjaxCall('synchronizelocalize', [objectId, type], true, context);
 	},
 
 	setExpandedCollapsedState: function (objectId, expand, collapse) {
@@ -190,7 +189,7 @@ var inline = {
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
 			url = TYPO3.settings.ajaxUrls['record_inline_' + method];
 			urlParams = '';
-			for (var i = 0, max = params.length; i < max; i++) {
+			for (var i = 0; i < params.length; i++) {
 				urlParams += '&ajax[' + i + ']=' + encodeURIComponent(params[i]);
 			}
 			if (context) {

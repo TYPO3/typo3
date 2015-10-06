@@ -36,7 +36,7 @@ class TypoScriptReferenceLoader {
 
 	/**
 	 * General processor for AJAX requests.
-	 * (called by typo3/ajax.php)
+	 * Called by AjaxRequestHandler
 	 *
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response

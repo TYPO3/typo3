@@ -86,7 +86,7 @@ class ClickMenuController {
 	/**
 	 * Main function - generating the click menu in whatever form it has.
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as ajax.php is now the main entry point
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as an AJAX Route is now the main entry point
 	 * @return void
 	 */
 	public function main() {
@@ -114,7 +114,7 @@ class ClickMenuController {
 	/**
 	 * End page and output content.
 	 *
-	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as ajax.php is now the main entry point
+	 * @deprecated since TYPO3 CMS 7, will be removed in TYPO3 CMS 8, as an AJAX Route is now the main entry point
 	 * @return void
 	 */
 	public function printContent() {

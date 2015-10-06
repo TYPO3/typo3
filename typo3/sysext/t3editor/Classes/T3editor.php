@@ -371,7 +371,7 @@ class T3editor implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Gets plugins that are defined at $TYPO3_CONF_VARS['EXTCONF']['t3editor']['plugins']
-	 * (called by typo3/ajax.php)
+	 * Called by AjaxRequestHandler
 	 *
 	 * @param ServerRequestInterface $request
 	 * @param ResponseInterface $response
