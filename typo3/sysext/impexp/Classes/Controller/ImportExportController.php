@@ -16,11 +16,14 @@ namespace TYPO3\CMS\Impexp\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Module\BaseScriptClass;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +35,7 @@ use TYPO3\CMS\Lang\LanguageService;
 /**
  * Main script class for the Import / Export facility
  */
-class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
+class ImportExportController extends BaseScriptClass
 {
     /**
      * @var array|\TYPO3\CMS\Core\Resource\File[]
@@ -89,11 +92,19 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     protected $moduleName = 'xMOD_tximpexp';
 
     /**
+     * ModuleTemplate Container
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
     }
 
     /**
@@ -118,19 +129,22 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
     {
         $this->lang->includeLLFile('EXT:impexp/Resources/Private/Language/locallang.xlf');
         // Start document template object:
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
+        // We keep this here, in case somebody relies on the old doc being here
+        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->bodyTagId = 'imp-exp-mod';
-        $this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('impexp') . '/Resources/Private/Templates/template.html');
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
+        $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
         // Setting up the context sensitive menu:
-        $this->doc->getContextMenuCode();
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
-        $this->doc->postCode = $this->doc->wrapScriptTags('if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';');
-        $this->doc->form = '<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="multipart/form-data">'
-            . '<input type="hidden" name="id" value="' . $this->id . '" />';
-        $this->content .= $this->doc->header($this->lang->getLL('title'));
-        $this->content .= $this->doc->spacer(5);
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ClickMenu');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Impexp/ImportExport');
+        $this->moduleTemplate->addJavaScriptCode(
+            'ImpexpInLineJS',
+            'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';'
+        );
+        $this->moduleTemplate->setForm('<form action="' . htmlspecialchars(BackendUtility::getModuleUrl('xMOD_tximpexp')) . '" method="post" enctype="multipart/form-data">'
+            . '<input type="hidden" name="id" value="' . $this->id . '" />');
+        $this->content .= $this->moduleTemplate->sectionHeader($this->lang->getLL('title'));
+        $this->content .= $this->moduleTemplate->spacer(5);
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
         $this->checkUpload();
@@ -156,13 +170,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 break;
         }
         // Setting up the buttons and markers for docheader
-        $docHeaderButtons = $this->getButtons();
-        $markers['CONTENT'] = $this->content;
-        // Build the <body> for the module
-        $this->content = $this->doc->startPage($this->lang->getLL('title'));
-        $this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-        $this->content .= $this->doc->endPage();
-        $this->content = $this->doc->insertStylesAndJS($this->content);
+        $this->getButtons();
     }
 
     /**
@@ -217,8 +225,8 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $GLOBALS['SOBE'] = $this;
         $this->init();
         $this->main();
-
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -229,12 +237,12 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     protected function getButtons()
     {
-        $buttons = array(
-            'view' => '',
-            'shortcut' => ''
-        );
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         if ($this->getBackendUser()->mayMakeShortcut()) {
-            $buttons['shortcut'] = $this->doc->makeShortcutIcon('tx_impexp', '', $this->moduleName);
+            $shortcutButton = $buttonBar->makeShortcutButton()
+                ->setGetVariables(['tx_impexp'])
+                ->setModuleName($this->moduleName);
+            $buttonBar->addButton($shortcutButton);
         }
         // Input data grabbed:
         $inData = GeneralUtility::_GP('tx_impexp');
@@ -247,13 +255,15 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         '',
                         BackendUtility::BEgetRootLine($this->pageinfo['uid'])
                     );
-                    $title = $this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true);
-                    $buttons['view'] = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $title . '">'
-                        . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
+                    $viewButton = $buttonBar->makeLinkButton()
+                        ->setTitle($this->lang->sL('LLL:EXT:lang/locallang_core.xlf:labels.showPage', true))
+                        ->setHref('#')
+                        ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
+                        ->setOnClick($onClick);
+                    $buttonBar->addButton($viewButton);
                 }
             }
         }
-        return $buttons;
     }
 
     /**************************
@@ -532,11 +542,11 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         );
         // Add hidden fields and create tabs:
 
-        $content = $this->doc->getDynamicTabMenu($menuItems, 'tx_impexp_export', 1, false, true, false);
+        $content = $this->moduleTemplate->getDynamicTabMenu($menuItems, 'tx_impexp_export', 1, false, true, false);
         $content .= '<input type="hidden" name="tx_impexp[action]" value="export" />';
-        $this->content .= $this->doc->section('', $content, 0, 1);
+        $this->content .= $this->moduleTemplate->section('', $content, 0, 1);
         // Output Overview:
-        $this->content .= $this->doc->section($this->lang->getLL('execlistqu_structureToBeExported'), $overViewContent, 0, 1);
+        $this->content .= $this->moduleTemplate->section($this->lang->getLL('execlistqu_structureToBeExported'), $overViewContent, 0, 1);
     }
 
     /**
@@ -591,7 +601,14 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Warning about hitting limit:
         if ($db->sql_num_rows($res) == $limit) {
             $limitWarning = sprintf($this->lang->getLL('makeconfig_anSqlQueryReturned', true), $limit);
-            $this->content .= $this->doc->section($this->lang->getLL('execlistqu_maxNumberLimit'), $limitWarning, 0, 1, 2);
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $this->lang->getLL('execlistqu_maxNumberLimit'),
+                $limitWarning,
+                FlashMessage::WARNING
+            );
+            $this->content .= $flashMessage->render();
         }
         return $res;
     }
@@ -713,7 +730,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         . BackendUtility::cshItem('xMOD_tx_impexp', 'tableListMaxNumber') . '</strong></td>
 					<td>
 						<input type="text" name="tx_impexp[listCfg][maxNumber]" value="'
-                        . htmlspecialchars($inData['listCfg']['maxNumber']) . '"' . $this->doc->formWidth(10) . ' /><br/>
+                        . htmlspecialchars($inData['listCfg']['maxNumber']) . '" /><br/>
 					</td>
 				</tr>';
         }
@@ -872,7 +889,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 						<br/>
 						' . $this->lang->getLL('makesavefo_titleOfNewPreset', true) . '
 						<input type="text" name="tx_impexp[preset][title]" value="'
-                            . htmlspecialchars($inData['preset']['title']) . '"' . $this->doc->formWidth(30) . ' /><br/>
+                            . htmlspecialchars($inData['preset']['title']) . '" /><br/>
 						<label for="checkPresetPublic">' . $this->lang->getLL('makesavefo_public', true) . '</label>
 						<input type="checkbox" name="tx_impexp[preset][public]" id="checkPresetPublic" value="1"'
                             . ($inData['preset']['public'] ? ' checked="checked"' : '') . ' /><br/>
@@ -903,17 +920,17 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                         . BackendUtility::cshItem('xMOD_tx_impexp', 'metadata') . '</td>
 					<td>
 							' . $this->lang->getLL('makesavefo_title', true) . ' <br/>
-							<input type="text" name="tx_impexp[meta][title]" value="' . htmlspecialchars($inData['meta']['title']) . '"' . $this->doc->formWidth(30) . ' /><br/>
+							<input type="text" name="tx_impexp[meta][title]" value="' . htmlspecialchars($inData['meta']['title']) . '" /><br/>
 							' . $this->lang->getLL('makesavefo_description', true) . ' <br/>
-							<input type="text" name="tx_impexp[meta][description]" value="' . htmlspecialchars($inData['meta']['description']) . '"' . $this->doc->formWidth(30) . ' /><br/>
+							<input type="text" name="tx_impexp[meta][description]" value="' . htmlspecialchars($inData['meta']['description']) . '" /><br/>
 							' . $this->lang->getLL('makesavefo_notes', true) . ' <br/>
-							<textarea name="tx_impexp[meta][notes]"' . $this->doc->formWidth(30, 1) . '>' . htmlspecialchars($inData['meta']['notes']) . '</textarea><br/>
+							<textarea name="tx_impexp[meta][notes]">' . htmlspecialchars($inData['meta']['notes']) . '</textarea><br/>
 							' . (!empty($thumbnailFiles) ? '
 							' . $this->lang->getLL('makesavefo_thumbnail', true) . '<br/>
 							' . $this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnailFiles) : '') . '<br/>
 							' . ($thumbnail ? '<img src="' . htmlspecialchars($thumbnail->getPublicUrl(true)) . '" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '') . '
 							' . $this->lang->getLL('makesavefo_uploadThumbnail', true) . '<br/>
-							' . ($saveFolder ? '<input type="file" name="upload_1" ' . $this->doc->formWidth(30) . ' size="30" /><br/>
+							' . ($saveFolder ? '<input type="file" name="upload_1"  size="30" /><br/>
 								<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($saveFolder->getCombinedIdentifier()) . '" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />' : '') . '
 						</td>
@@ -930,7 +947,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             $fileName = sprintf($this->lang->getLL('makesavefo_filenameSavedInS', true), $saveFolder->getCombinedIdentifier())
                 . '<br/>
 						<input type="text" name="tx_impexp[filename]" value="'
-                . htmlspecialchars($inData['filename']) . '"' . $this->doc->formWidth(30) . ' /><br/>';
+                . htmlspecialchars($inData['filename']) . '" /><br/>';
         }
         $row[] = '
 				<tr>
@@ -941,7 +958,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 					<td>
 						' . $this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt) . '<br/>
 						' . $this->lang->getLL('makesavefo_maxSizeOfFiles', true) . '<br/>
-						<input type="text" name="tx_impexp[maxFileSize]" value="' . htmlspecialchars($inData['maxFileSize']) . '"' . $this->doc->formWidth(10) . ' />
+						<input type="text" name="tx_impexp[maxFileSize]" value="' . htmlspecialchars($inData['maxFileSize']) . '" />
 						<br/>
 						' . $fileName . '
 					</td>
@@ -1129,7 +1146,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 							' . $this->lang->getLL('importdata_browse', true) . BackendUtility::cshItem('xMOD_tx_impexp', 'upload') . '
 						</td>
 						<td>
-							<input type="file" name="upload_1"' . $this->doc->formWidth(35) . ' size="40" />
+							<input type="file" name="upload_1" size="40" />
 							<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($tempFolder->getCombinedIdentifier()) . '" />
 							<input type="hidden" name="file[upload][1][data]" value="1" />
 							<br />
@@ -1249,15 +1266,15 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                 'stateIcon' => $errors ? 2 : 0
             );
             // Output tabs:
-            $content = $this->doc->getDynamicTabMenu($menuItems, 'tx_impexp_import', 1, false, true, false);
+            $content = $this->moduleTemplate->getDynamicTabMenu($menuItems, 'tx_impexp_import', 1, false, true, false);
             if ($extensionInstallationMessage) {
                 $content = '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'
-                    . $this->doc->icons(1) . htmlspecialchars($extensionInstallationMessage) . '</div>' . $content;
+                    . $this->moduleTemplate->icons(1) . htmlspecialchars($extensionInstallationMessage) . '</div>' . $content;
             }
-            $this->content .= $this->doc->section('', $content, 0, 1);
+            $this->content .= $this->moduleTemplate->section('', $content, 0, 1);
             // Print overview:
             if ($overviewContent) {
-                $this->content .= $this->doc->section($inData['import_file']
+                $this->content .= $this->moduleTemplate->section($inData['import_file']
                     ? $this->lang->getLL('importdata_structureHasBeenImported', true)
                     : $this->lang->getLL('filterpage_structureToBeImported', true), $overviewContent, 0, 1);
             }
@@ -1361,7 +1378,14 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
         // Show message:
         if ($msg !== '') {
-            $this->content .= $this->doc->section('Presets', $msg, 0, 1, $err ? 3 : 1);
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                'Presets',
+                $msg,
+                $err ? FlashMessage::ERROR : FlashMessage::INFO
+            );
+            $this->content .= $flashMessage->render();
         }
     }
 
