@@ -34,16 +34,18 @@ class IconViewHelper extends AbstractViewHelper implements CompilableInterface
      * @param string $size
      * @param string $overlay
      * @param string $state
+     * @param string $alternativeMarkupIdentifier
      * @return string
      */
-    public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = null, $state = IconState::STATE_DEFAULT)
+    public function render($identifier, $size = Icon::SIZE_SMALL, $overlay = null, $state = IconState::STATE_DEFAULT, $alternativeMarkupIdentifier = null)
     {
         return static::renderStatic(
             array(
                 'identifier' => $identifier,
                 'size' => $size,
                 'overlay' => $overlay,
-                'state' => $state
+                'state' => $state,
+                'alternativeMarkupIdentifier' => $alternativeMarkupIdentifier
             ),
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
@@ -64,8 +66,9 @@ class IconViewHelper extends AbstractViewHelper implements CompilableInterface
         $size = $arguments['size'];
         $overlay = $arguments['overlay'];
         $state = IconState::cast($arguments['state']);
+        $alternativeMarkupIdentifier = $arguments['alternativeMarkupIdentifier'];
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIcon($identifier, $size, $overlay, $state)->render();
+        return $iconFactory->getIcon($identifier, $size, $overlay, $state)->render($alternativeMarkupIdentifier);
     }
 }

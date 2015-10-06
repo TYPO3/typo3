@@ -90,11 +90,22 @@ class Icon
     protected $markup;
 
     /**
+     * @var array
+     */
+    protected $alternativeMarkups = array();
+
+    /**
      * @internal this method is used for internal processing, to get the prepared and final markup use render()
+     *
+     * @param string $alternativeMarkupIdentifier
+     *
      * @return string
      */
-    public function getMarkup()
+    public function getMarkup($alternativeMarkupIdentifier = null)
     {
+        if ($alternativeMarkupIdentifier !== null && isset($this->alternativeMarkups[$alternativeMarkupIdentifier])) {
+            return $this->alternativeMarkups[$alternativeMarkupIdentifier];
+        }
         return $this->markup;
     }
 
@@ -104,6 +115,25 @@ class Icon
     public function setMarkup($markup)
     {
         $this->markup = $markup;
+    }
+
+    /**
+     * @param string $markupIdentifier
+     *
+     * @return string
+     */
+    public function getAlternativeMarkup($markupIdentifier)
+    {
+        return $this->alternativeMarkups[$markupIdentifier];
+    }
+
+    /**
+     * @param string $markupIdentifier
+     * @param string $markup
+     */
+    public function setAlternativeMarkup($markupIdentifier, $markup)
+    {
+        $this->alternativeMarkups[$markupIdentifier] = $markup;
     }
 
     /**
@@ -202,15 +232,17 @@ class Icon
     /**
      * Render the icon as HTML code
      *
+     * @param string $alternativeMarkupIdentifier
+     *
      * @return string
      */
-    public function render()
+    public function render($alternativeMarkupIdentifier = null)
     {
         $overlayIconMarkup = '';
         if ($this->overlayIcon !== null) {
             $overlayIconMarkup = '<span class="icon-overlay icon-' . htmlspecialchars($this->overlayIcon->getIdentifier()) . '">' . $this->overlayIcon->getMarkup() . '</span>';
         }
-        return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon());
+        return str_replace('{overlayMarkup}', $overlayIconMarkup, $this->wrappedIcon($alternativeMarkupIdentifier));
     }
 
     /**
@@ -226,9 +258,11 @@ class Icon
     /**
      * Wrap icon markup in unified HTML code
      *
+     * @param string $alternativeMarkupIdentifier
+     *
      * @return string
      */
-    protected function wrappedIcon()
+    protected function wrappedIcon($alternativeMarkupIdentifier = null)
     {
         $classes = array();
         $classes[] = 'icon';
@@ -242,7 +276,7 @@ class Icon
         $markup = array();
         $markup[] = '<span class="' . htmlspecialchars(implode(' ', $classes)) . '">';
         $markup[] = '	<span class="icon-markup">';
-        $markup[] = $this->getMarkup();
+        $markup[] = $this->getMarkup($alternativeMarkupIdentifier);
         $markup[] = '	</span>';
         $markup[] = '	{overlayMarkup}';
         $markup[] = '</span>';
