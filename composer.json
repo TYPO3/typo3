@@ -24,6 +24,7 @@
 		"news": "nntp://lists.typo3.org"
 	},
 	"config": {
+		"optimize-autoloader": true,
 		"bin-dir": "bin"
 	},
 	"require": {
