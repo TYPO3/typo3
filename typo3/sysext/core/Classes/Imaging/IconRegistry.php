@@ -1710,12 +1710,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/an.png'
             )
         ),
-        'flags-bv' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/bv.png'
-            )
-        ),
         'flags-catalonia' => array(
             'provider' => BitmapIconProvider::class,
             'options' => array(
@@ -1740,12 +1734,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/fam.png'
             )
         ),
-        'flags-hm' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/hm.png'
-            )
-        ),
         'flags-qc' => array(
             'provider' => BitmapIconProvider::class,
             'options' => array(
@@ -1756,24 +1744,6 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             'provider' => BitmapIconProvider::class,
             'options' => array(
                 'source' => 'EXT:core/Resources/Public/Icons/Flags/scotland.png'
-            )
-        ),
-        'flags-sj' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/sj.png'
-            )
-        ),
-        'flags-tf' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/tf.png'
-            )
-        ),
-        'flags-um' => array(
-            'provider' => BitmapIconProvider::class,
-            'options' => array(
-                'source' => 'EXT:core/Resources/Public/Icons/Flags/um.png'
             )
         ),
         'flags-wales' => array(
@@ -2122,25 +2092,26 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
         $iconFolder = 'EXT:core/Resources/Public/Icons/Flags/SVG/';
         $files = array(
             'AC', 'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
-            'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BM', 'BN', 'BO', 'BR', 'BS', 'BT', 'BW', 'BY', 'BZ',
-            'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
-            'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'EU',
+            'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ',
+            'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CP', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ',
+            'DE', 'DG', 'DJ', 'DK', 'DM', 'DO', 'DZ',
+            'EA', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'EU',
             'FI', 'FJ', 'FK', 'FM', 'FO', 'FR',
             'GA', 'GB-ENG', 'GB-NIR', 'GB-SCT', 'GB-WLS', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY',
-            'HK', 'HN', 'HR', 'HT', 'HU',
+            'HK', 'HM', 'HN', 'HR', 'HT', 'HU',
             'IC', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT',
             'JE', 'JM', 'JO', 'JP',
             'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ',
             'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY',
-            'MA', 'MC', 'MD', 'ME', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
+            'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
             'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ',
             'OM',
             'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY',
             'QA',
             'RE', 'RO', 'RS', 'RU', 'RW',
-            'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
-            'TA', 'TC', 'TD', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
-            'UA', 'UG', 'US-AK', 'US-AL', 'US-AR', 'US-AZ', 'US-CA', 'US-CO', 'US-CT', 'US-DE', 'US-FL', 'US-GA', 'US-HI', 'US-IA', 'US-ID', 'US-IL', 'US-IN', 'US-KS', 'US-KY', 'US-LA', 'US-MA', 'US-MD', 'US-ME', 'US-MI', 'US-MN', 'US-MO', 'US-MS', 'US-MT', 'US-NC', 'US-ND', 'US-NE', 'US-NH', 'US-NJ', 'US-NM', 'US-NV', 'US-NY', 'US-OH', 'US-OK', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-SD', 'US-TN', 'US-TX', 'US-UT', 'US-VA', 'US-VT', 'US-WA', 'US-WI', 'US-WV', 'US-WY', 'US', 'UY', 'UZ',
+            'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ',
+            'TA', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ',
+            'UA', 'UG', 'UM', 'US-AK', 'US-AL', 'US-AR', 'US-AZ', 'US-CA', 'US-CO', 'US-CT', 'US-DE', 'US-FL', 'US-GA', 'US-HI', 'US-IA', 'US-ID', 'US-IL', 'US-IN', 'US-KS', 'US-KY', 'US-LA', 'US-MA', 'US-MD', 'US-ME', 'US-MI', 'US-MN', 'US-MO', 'US-MS', 'US-MT', 'US-NC', 'US-ND', 'US-NE', 'US-NH', 'US-NJ', 'US-NM', 'US-NV', 'US-NY', 'US-OH', 'US-OK', 'US-OR', 'US-PA', 'US-RI', 'US-SC', 'US-SD', 'US-TN', 'US-TX', 'US-UT', 'US-VA', 'US-VT', 'US-WA', 'US-WI', 'US-WV', 'US-WY', 'US', 'UY', 'UZ',
             'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU',
             'WF', 'WS',
             'XK',
