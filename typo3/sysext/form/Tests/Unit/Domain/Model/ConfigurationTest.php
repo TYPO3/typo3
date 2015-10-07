@@ -55,15 +55,20 @@ class ConfigurationTest extends UnitTestCase {
 	/**
 	 * @param array $typoScript
 	 * @param bool $globalCompatibilityMode
+	 * @param string $globalThemeName
 	 * @param array $expected
 	 *
 	 * @test
 	 * @dataProvider propertiesAreUpdatedFromTypoScriptDataProvider
 	 */
-	public function propertiesAreUpdatedFromTypoScript(array $typoScript, $globalCompatibilityMode, array $expected) {
+	public function propertiesAreUpdatedFromTypoScript(array $typoScript, $globalCompatibilityMode, $globalThemeName, array $expected) {
 		$this->typoScriptRepositoryProphecy
 			->getModelConfigurationByScope('FORM', 'compatibilityMode')
 			->willReturn($globalCompatibilityMode);
+
+		$this->typoScriptRepositoryProphecy
+			->getModelConfigurationByScope('FORM', 'themeName')
+			->willReturn($globalThemeName);
 
 		$this->subject->setTypoScript($typoScript);
 		$this->assertEquals($expected['prefix'], $this->subject->getPrefix());
@@ -84,6 +89,7 @@ class ConfigurationTest extends UnitTestCase {
 					'disableContentElement' => FALSE,
 				),
 				FALSE,
+				'',
 				array(
 					'prefix' => 'form',
 					'themeName' => 'Default',
@@ -99,6 +105,7 @@ class ConfigurationTest extends UnitTestCase {
 					'disableContentElement' => FALSE,
 				),
 				TRUE,
+				'',
 				array(
 					'prefix' => 'form',
 					'themeName' => 'Default',
@@ -114,6 +121,7 @@ class ConfigurationTest extends UnitTestCase {
 					'disableContentElement' => TRUE,
 				),
 				TRUE,
+				'',
 				array(
 					'prefix' => 'somePrefix',
 					'themeName' => 'someTheme',
@@ -129,6 +137,7 @@ class ConfigurationTest extends UnitTestCase {
 					'disableContentElement' => TRUE,
 				),
 				FALSE,
+				'',
 				array(
 					'prefix' => 'somePrefix',
 					'themeName' => 'someTheme',
@@ -144,6 +153,7 @@ class ConfigurationTest extends UnitTestCase {
 					'disableContentElement' => TRUE,
 				),
 				TRUE,
+				'',
 				array(
 					'prefix' => 'somePrefix',
 					'themeName' => 'someTheme',
@@ -159,11 +169,28 @@ class ConfigurationTest extends UnitTestCase {
 					'disableContentElement' => TRUE,
 				),
 				FALSE,
+				'',
 				array(
 					'prefix' => 'somePrefix',
 					'themeName' => 'someTheme',
 					'compatibility' => FALSE,
 					'contentElementRendering' => FALSE,
+				),
+			),
+			'#7' => array(
+				array(
+					'prefix' => '',
+					'themeName' => '',
+					'compatibilityMode' => FALSE,
+					'disableContentElement' => FALSE,
+				),
+				FALSE,
+				'globalTheme',
+				array(
+					'prefix' => 'form',
+					'themeName' => 'globalTheme',
+					'compatibility' => FALSE,
+					'contentElementRendering' => TRUE,
 				),
 			),
 		);
