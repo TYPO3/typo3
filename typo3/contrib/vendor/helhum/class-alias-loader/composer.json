@@ -1,5 +1,6 @@
 {
     "name": "helhum/class-alias-loader",
+    "type": "composer-plugin",
     "license": "MIT",
     "description": "Amends the composer class loader to support class aliases to provide backwards compatibility for packages",
     "keywords": [
@@ -15,9 +16,13 @@
     "autoload": {
         "psr-4": { "Helhum\\ClassAliasLoader\\": "Classes/"}
     },
+    "require": {
+        "composer-plugin-api": "^1.0"
+    },
     "extra": {
+        "class": "Helhum\\ClassAliasLoader\\Composer\\Plugin",
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "1.1.x-dev"
         }
     }
 }

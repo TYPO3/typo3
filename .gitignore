@@ -36,7 +36,8 @@ Build/node_modules/*
 # Ignore composer stuff
 bin/*
 Packages/*
-typo3/contrib/vendor/*
+typo3/contrib/vendor/composer/LICENSE
+typo3/contrib/vendor/composer/installed.json
 composer.lock
 #
 # Ignore common TYPO3 CMS directories
