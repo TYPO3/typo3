@@ -454,6 +454,26 @@ class FormBuilder {
 		$additionalArguments['prefix'] = $this->configuration->getPrefix();
 		$element->setAdditionalArguments($additionalArguments);
 		$this->handleIncomingValues($element, $userConfiguredElementTypoScript);
+
+		if (
+			$element->getElementType() === 'FORM'
+			&& $this->getControllerAction() === 'show'
+		) {
+			if (empty($element->getHtmlAttribute('action'))) {
+				if (
+					$element->getAdditionalArgument('confirmation')
+					&& (int)$element->getAdditionalArgument('confirmation') === 1
+				) {
+					$element->setAdditionalArgument('action', 'confirmation');
+				} else {
+					$element->setAdditionalArgument('action', 'process');
+				}
+			} else {
+				$element->setAdditionalArgument('pageUid', $element->getHtmlAttribute('action'));
+				$element->setAdditionalArgument('action', NULL);
+			}
+		}
+
 		// needed if confirmation page is enabled
 		if (
 			$this->sessionUtility->getSessionData($element->getName())

@@ -172,14 +172,6 @@ class FrontendController extends ActionController {
 			$this->controllerContext->setValidationElement($incomingData);
 		}
 		$form = $this->formBuilder->buildModel();
-		if (
-			$this->typoscript['confirmation']
-			&& (int)$this->typoscript['confirmation'] == 1
-		) {
-			$form->setAdditionalArgument('action', 'confirmation');
-		} else {
-			$form->setAdditionalArgument('action', 'process');
-		}
 		$this->view->assign('model', $form);
 	}
 
