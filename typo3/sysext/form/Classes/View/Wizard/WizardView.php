@@ -115,6 +115,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 			'Ux/Ext.ux.spinner.js',
 			'Ux/Ext.ux.form.spinnerfield.js',
 			'Ux/Ext.ux.form.textfieldsubmit.js',
+			'Ux/Ext.ux.form.ValueCheckbox.js', // required by Viewport/Left/Options/Forms/Attributes.js
 			'Ux/Ext.ux.grid.CheckColumn.js',
 			'Ux/Ext.ux.grid.SingleSelectCheckColumn.js',
 			'Ux/Ext.ux.grid.ItemDeleter.js',

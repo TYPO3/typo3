@@ -151,7 +151,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'autofocus':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_autofocus'),
 						name: 'autofocus',
 						inputValue: 'autofocus',
@@ -165,7 +165,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'checked':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_checked'),
 						name: 'checked',
 						inputValue: 'checked',
@@ -276,7 +276,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'disabled':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_disabled'),
 						name: 'disabled',
 						inputValue: 'disabled',
@@ -376,7 +376,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'hidden':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_hidden'),
 						name: 'hidden',
 						inputValue: 'hidden',
@@ -561,7 +561,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'multiple':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_multiple'),
 						name: 'multiple',
 						inputValue: 'multiple',
@@ -588,7 +588,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'novalidate':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_novalidate'),
 						name: 'novalidate',
 						inputValue: 'novalidate',
@@ -626,7 +626,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'readonly':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_readonly'),
 						name: 'readonly',
 						inputValue: 'readonly',
@@ -640,7 +640,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'required':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_required'),
 						name: 'required',
 						inputValue: 'required',
@@ -672,7 +672,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Attributes = Ext.extend(Ext.FormPa
 					break;
 				case 'selected':
 					formItems.push({
-						xtype: 'checkbox',
+						xtype: 'typo3-form-wizard-valuecheckbox',
 						fieldLabel: TYPO3.l10n.localize('attributes_selected'),
 						name: 'selected',
 						inputValue: 'selected',
