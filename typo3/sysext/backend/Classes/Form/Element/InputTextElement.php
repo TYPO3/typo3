@@ -184,6 +184,10 @@ class InputTextElement extends AbstractFormElement {
 			$attributes['placeholder'] = trim($config['placeholder']);
 		}
 
+		if (isset($config['autocomplete'])) {
+			$attributes['autocomplete'] = empty($config['autocomplete']) ? 'off' : 'on';
+		}
+
 		// Build the attribute string
 		$attributeString = '';
 		foreach ($attributes as $attributeName => $attributeValue) {

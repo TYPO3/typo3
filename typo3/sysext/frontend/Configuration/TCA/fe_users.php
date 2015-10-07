@@ -30,7 +30,8 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '255',
-				'eval' => 'nospace,trim,lower,uniqueInPid,required'
+				'eval' => 'nospace,trim,lower,uniqueInPid,required',
+				'autocomplete' => FALSE,
 			)
 		),
 		'password' => array(
@@ -39,7 +40,8 @@ return array(
 				'type' => 'input',
 				'size' => '10',
 				'max' => '40',
-				'eval' => 'nospace,trim,required,password'
+				'eval' => 'nospace,trim,required,password',
+				'autocomplete' => FALSE,
 			)
 		),
 		'usergroup' => array(

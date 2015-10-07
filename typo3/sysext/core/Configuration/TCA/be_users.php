@@ -37,7 +37,8 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '50',
-				'eval' => 'nospace,trim,lower,unique,required'
+				'eval' => 'nospace,trim,lower,unique,required',
+				'autocomplete' => FALSE,
 			)
 		),
 		'description' => array(
@@ -55,7 +56,8 @@ return array(
 				'type' => 'input',
 				'size' => '20',
 				'max' => '40',
-				'eval' => 'trim,required,md5,password'
+				'eval' => 'trim,required,md5,password',
+				'autocomplete' => FALSE,
 			)
 		),
 		'usergroup' => array(
