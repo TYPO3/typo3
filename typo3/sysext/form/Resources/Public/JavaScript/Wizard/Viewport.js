@@ -153,12 +153,13 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 	 */
 	save: function(event, element, object) {
 		var configuration = Ext.getCmp('formwizard-right').getConfiguration();
+		var url = document.location.href.substring(document.location.href.indexOf('&P'));
+		url = TYPO3.settings.ajaxUrls['formwizard_save'] + url;
 
 		Ext.Ajax.request({
-			url: document.location.href,
+			url: url,
 			method: 'POST',
 			params: {
-				action: 'save',
 				configuration: Ext.encode(configuration)
 			},
 			success: function(response, opts) {
@@ -169,7 +170,6 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 				);
 			},
 			failure: function(response, opts) {
-				var responseObject = Ext.decode(response.responseText);
 				Ext.MessageBox.alert(
 					TYPO3.l10n.localize('action_save'),
 					TYPO3.l10n.localize('action_save_error') + ' ' + response.status
@@ -188,12 +188,12 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 	 */
 	saveAndClose: function(event, element, object) {
 		var configuration = Ext.getCmp('formwizard-right').getConfiguration();
-
+		var url = document.location.href.substring(document.location.href.indexOf('&P'));
+		url = TYPO3.settings.ajaxUrls['formwizard_save'] + url;
 		Ext.Ajax.request({
-			url: document.location.href,
+			url: url,
 			method: 'POST',
 			params: {
-				action: 'save',
 				configuration: Ext.encode(configuration)
 			},
 			success: function(response, opts) {
@@ -201,7 +201,6 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 				document.location = urlParameters['P[returnUrl]'];
 			},
 			failure: function(response, opts) {
-				var responseObject = Ext.decode(response.responseText);
 				Ext.MessageBox.alert(
 					TYPO3.l10n.localize('action_save'),
 					TYPO3.l10n.localize('action_save_error') + ' ' + response.status

@@ -21,12 +21,25 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Repository\ContentRepository;
 
 /**
  * The form wizard view
  */
-class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
+class WizardView
 {
+    /**
+     * Is the referenced record available
+     *
+     * @var bool TRUE if available, FALSE if not
+     */
+    protected $recordIsAvailable = false;
+
+    /**
+     * @var ContentRepository
+     */
+    protected $repository;
+
     /**
      * The document template object
      *
@@ -50,18 +63,29 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
      *
      * Defines the document template object.
      *
-     * @param \TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository
+     * @param ContentRepository $repository
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      */
-    public function __construct(\TYPO3\CMS\Form\Domain\Repository\ContentRepository $repository)
+    public function __construct(ContentRepository $repository)
     {
-        parent::__construct($repository);
+        $this->setRepository($repository);
+        $this->getLanguageService()->includeLLFile('EXT:form/Resources/Private/Language/locallang_wizard.xlf');
         $GLOBALS['SOBE'] = $this;
         // Define the document template object
         $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
         $this->doc->setModuleTemplate('EXT:form/Resources/Private/Templates/Wizard.html');
     }
 
+    /**
+     * Sets the content repository to be used.
+     *
+     * @param ContentRepository $repository
+     * @return void
+     */
+    public function setRepository(ContentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * The main render method
      *
@@ -376,5 +400,15 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView
         }
 
         return $this->pageRenderer;
+    }
+
+    /**
+     * Returns an instance of LanguageService
+     *
+     * @return \TYPO3\CMS\Lang\LanguageService
+     */
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
