@@ -1268,7 +1268,6 @@ return array(
     'typo3\\cms\\sv\\authenticationservice' => $baseDir . '/typo3/sysext/sv/Classes/AuthenticationService.php',
     'typo3\\cms\\sv\\loginformhook' => $baseDir . '/typo3/sysext/sv/Classes/LoginFormHook.php',
     'typo3\\cms\\sv\\report\\serviceslistreport' => $baseDir . '/typo3/sysext/sv/Classes/Report/ServicesListReport.php',
-    'typo3\\flow\\core\\classloader' => $baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes/TYPO3/Flow/Core/ClassLoader.php',
     'typo3\\flow\\exception' => $baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes/TYPO3/Flow/Exception.php',
     'typo3\\flow\\log\\loggerinterface' => $baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes/TYPO3/Flow/Log/LoggerInterface.php',
     'typo3\\flow\\log\\systemloggerinterface' => $baseDir . '/typo3/sysext/core/Resources/PHP/TYPO3.Flow/Classes/TYPO3/Flow/Log/SystemLoggerInterface.php',
