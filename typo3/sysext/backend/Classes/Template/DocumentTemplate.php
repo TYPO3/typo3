@@ -656,6 +656,7 @@ function jumpToUrl(URL) {
      */
     public function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '')
     {
+        $gvList = 'route,' . $gvList;
         $storeUrl = $this->makeShortcutUrl($gvList, $setList);
         $pathInfo = parse_url(GeneralUtility::getIndpEnv('REQUEST_URI'));
         // Fallback for alt_mod. We still pass in the old xMOD... stuff, but TBE_MODULES only knows about "record_edit".

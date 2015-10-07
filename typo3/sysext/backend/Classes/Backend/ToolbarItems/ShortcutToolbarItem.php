@@ -340,6 +340,22 @@ class ShortcutToolbarItem implements ToolbarItemInterface
         if (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['M'])) {
             $module = $parameters['M'];
             $url = BackendUtility::getModuleUrl($module, $parameters);
+        } elseif (strpos($parsedUrl['path'], 'index.php') !== false && isset($parameters['route'])) {
+            $routePath = $parameters['route'];
+            /** @var \TYPO3\CMS\Backend\Routing\Router $router */
+            $router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
+            try {
+                $route = $router->match($routePath);
+                if ($route) {
+                    $routeIdentifier = $route->getOption('_identifier');
+                    /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                    unset($parameters['route']);
+                    $url = (string)$uriBuilder->buildUriFromRoute($routeIdentifier, $parameters);
+                }
+            } catch (\TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException $e) {
+                $url = '';
+            }
         }
         return $url;
     }
