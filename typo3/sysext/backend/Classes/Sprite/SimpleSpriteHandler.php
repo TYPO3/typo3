@@ -21,6 +21,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  * for all registered icons so that they may be used through
  * \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon* Without the css classes
  * generated here, icons of for example tca records would be empty.
+ * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
  */
 class SimpleSpriteHandler extends AbstractSpriteHandler
 {

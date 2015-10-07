@@ -1077,6 +1077,26 @@ class IconRegistry implements \TYPO3\CMS\Core\SingletonInterface
             )
         ),
 
+        // Extension icons
+        'extensions-workspaces-sendtonextstage' => array(
+            'provider' => BitmapIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:workspaces/Resources/Public/Images/version-workspace-sendtonextstage.png'
+            )
+        ),
+        'extensions-workspaces-sendtoprevstage' => array(
+            'provider' => BitmapIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:workspaces/Resources/Public/Images/version-workspace-sendtoprevstage.png'
+            )
+        ),
+        'extensions-workspaces-generatepreviewlink' => array(
+            'provider' => BitmapIconProvider::class,
+            'options' => array(
+                'source' => 'EXT:workspaces/Resources/Public/Images/generate-ws-preview-link.png'
+            )
+        ),
+
         // Status
         'status-user-admin' => array(
             'provider' => BitmapIconProvider::class,

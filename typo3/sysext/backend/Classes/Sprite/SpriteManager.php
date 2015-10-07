@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * and registers sprite icons in a cache file.
  *
  * A configurable handler class does the business task.
+ * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
  */
 class SpriteManager
 {
@@ -62,9 +63,11 @@ class SpriteManager
      * Whether the sprite manager is initialized.
      *
      * @return bool TRUE if sprite manager is initialized
+     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      */
     public static function isInitialized()
     {
+        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         return self::$isInitialized;
     }
 
@@ -76,9 +79,11 @@ class SpriteManager
      *
      * @throws \RuntimeException
      * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      */
     protected static function buildSpriteDataAndCreateCacheEntry()
     {
+        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         $handlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'];
         /** @var $handler \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface */
         $handler = GeneralUtility::makeInstance($handlerClass);
@@ -134,9 +139,11 @@ class SpriteManager
      * @param array $icons Icon names
      * @param string $styleSheetFile Stylesheet filename relative to PATH_typo3. Skins do not need to supply the $styleSheetFile, if the CSS file is within the registered stylesheet folders
      * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      */
     public static function addIconSprite(array $icons, $styleSheetFile = '')
     {
+        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge((array)$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $icons);
         if ($styleSheetFile !== '') {
             $GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
@@ -150,9 +157,11 @@ class SpriteManager
      * @param array $icons Icons to be registered, $iconname => $iconFile, $iconFile must be relative to PATH_site
      * @param string $extKey Extension key
      * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      */
     public static function addSingleIcons(array $icons, $extKey = '')
     {
+        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         foreach ($icons as $iconName => $iconFile) {
             $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extKey . '-' . $iconName] = $iconFile;
         }
@@ -166,9 +175,11 @@ class SpriteManager
      * @param string $type Type column name of the table
      * @param string $iconFile Icon filename, relative to PATH_typo3
      * @return void
+     * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
      */
     public static function addTcaTypeIcon($table, $type, $iconFile)
     {
+        GeneralUtility::deprecationLog(self::class . ' is deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8');
         $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
         if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
             $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;

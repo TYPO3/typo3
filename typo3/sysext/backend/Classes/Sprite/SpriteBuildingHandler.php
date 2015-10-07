@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sprite build handler
+ * @deprecated since TYPO3 CMS 7, will be removed with TYPO3 CMS 8
  */
 class SpriteBuildingHandler extends AbstractSpriteHandler
 {

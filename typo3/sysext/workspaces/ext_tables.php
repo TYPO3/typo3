@@ -49,12 +49,4 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
     \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
     ['source' => 'EXT:workspaces/Resources/Public/Images/generate-ws-preview-link.png']
 );
-
-// @todo move icons to Core sprite or keep them here and remove the todo note ;)
-$icons = array(
-    'sendtonextstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Images/version-workspace-sendtonextstage.png',
-    'sendtoprevstage' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Images/version-workspace-sendtoprevstage.png',
-    'generatepreviewlink' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('workspaces') . 'Resources/Public/Images/generate-ws-preview-link.png'
-);
-\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, 'workspaces');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_workspace_stage', 'EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xlf');
