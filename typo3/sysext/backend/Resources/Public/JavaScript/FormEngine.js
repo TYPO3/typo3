@@ -597,7 +597,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			var $anchorElement = $(this);
 			var $modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
-					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'No, I will continue editing',
+					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
 					name: 'no'
 				},
@@ -624,7 +624,7 @@ define('TYPO3/CMS/Backend/FormEngine', ['jquery'], function ($) {
 			var $anchorElement = $(this);
 			var $modal = top.TYPO3.Modal.confirm(title, content, top.TYPO3.Severity.warning, [
 				{
-					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'No, I will continue editing',
+					text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
 					active: true,
 					name: 'no'
 				},
