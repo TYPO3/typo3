@@ -34,7 +34,7 @@
 				<source>The driver is the technical background of a storage, and thus also defines whether the location of the storage is local (= on the same machine as this TYPO3 installation) or remote like a WebDAV server connection. Search for extensions in the TYPO3 Extension Repository that extend this driver list.</source>
 			</trans-unit>
 			<trans-unit id="processingfolder.description">
-				<source>Defines the directory on this storage to be used to save temporary files like resized images. When on a different storage make sure that the folder exists and is writable.</source>
+				<source>Defines the directory on this storage to be used to save temporary files like resized images.</source>
 			</trans-unit>
 			<trans-unit id="is_browsable.description">
 				<source>If set, backend users can browse through this storage. Otherwise it will show up as a unselectable item in the list.</source>
