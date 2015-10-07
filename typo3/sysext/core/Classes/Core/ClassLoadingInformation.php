@@ -56,13 +56,13 @@ class ClassLoadingInformation {
 	const AUTOLOAD_CLASSALIASMAP_FILENAME = 'autoload_classaliasmap.php';
 
 	/**
-	 * Checks if the autoload_classmap.php exists. Used to see if the ClassLoadingInformationGenerator
-	 * should be called.
+	 * Checks if the autoload_classmap.php exists and we are not in testing context.
+	 * Used to see if the ClassLoadingInformationGenerator should be called.
 	 *
 	 * @return bool
 	 */
-	static public function classLoadingInformationExists() {
-		return file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
+	static public function isClassLoadingInformationAvailable() {
+		return !self::isTestingContext() && file_exists(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME);
 	}
 
 	/**
@@ -170,8 +170,6 @@ class ClassLoadingInformation {
 		$autoloadInfoDir = self::getClassLoadingInformationDirectory();
 		if (!file_exists($autoloadInfoDir)) {
 			GeneralUtility::mkdir_deep($autoloadInfoDir);
-		} elseif (self::isTestingContext()) {
-			GeneralUtility::flushDirectory($autoloadInfoDir, TRUE);
 		}
 	}
 

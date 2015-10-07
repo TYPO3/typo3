@@ -182,7 +182,7 @@ class Bootstrap {
 	 */
 	public function baseSetup($relativePathPart = '') {
 		SystemEnvironmentBuilder::run($relativePathPart);
-		if (!self::$usesComposerClassLoading) {
+		if (!self::$usesComposerClassLoading && ClassLoadingInformation::isClassLoadingInformationAvailable()) {
 			ClassLoadingInformation::registerClassLoadingInformation();
 		}
 		GeneralUtility::presetApplicationContext($this->applicationContext);
@@ -414,7 +414,7 @@ class Bootstrap {
 	 * @internal This is not a public API method, do not use in own extensions
 	 */
 	public function ensureClassLoadingInformationExists() {
-		if (!self::$usesComposerClassLoading && !ClassLoadingInformation::classLoadingInformationExists()) {
+		if (!self::$usesComposerClassLoading && !ClassLoadingInformation::isClassLoadingInformationAvailable()) {
 			ClassLoadingInformation::dumpClassLoadingInformation();
 			ClassLoadingInformation::registerClassLoadingInformation();
 		}
