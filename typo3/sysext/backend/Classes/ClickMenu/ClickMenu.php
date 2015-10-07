@@ -252,7 +252,7 @@ class ClickMenu {
 			// Get permissions
 			$lCP = $this->backendUser->calcPerms(BackendUtility::getRecord('pages', $table === 'pages' ? $this->rec['uid'] : $this->rec['pid']));
 			// View
-			if (!in_array('view', $this->disabledItems)) {
+			if (!in_array('view', $this->disabledItems, TRUE)) {
 				if ($table === 'pages') {
 					$menuItems['view'] = $this->DB_view($uid);
 				}
@@ -263,31 +263,31 @@ class ClickMenu {
 			}
 			// Edit:
 			if (!$root && ($this->backendUser->isPSet($lCP, $table, 'edit') || $this->backendUser->isPSet($lCP, $table, 'editcontent'))) {
-				if (!in_array('edit', $this->disabledItems)) {
+				if (!in_array('edit', $this->disabledItems, TRUE)) {
 					$menuItems['edit'] = $this->DB_edit($table, $uid);
 				}
 				$this->editOK = TRUE;
 			}
 			// New:
-			if (!in_array('new', $this->disabledItems) && $this->backendUser->isPSet($lCP, $table, 'new')) {
+			if (!in_array('new', $this->disabledItems, TRUE) && $this->backendUser->isPSet($lCP, $table, 'new')) {
 				$menuItems['new'] = $this->DB_new($table, $uid);
 			}
 			// Info:
-			if (!in_array('info', $this->disabledItems) && !$root) {
+			if (!in_array('info', $this->disabledItems, TRUE) && !$root) {
 				$menuItems['info'] = $this->DB_info($table, $uid);
 			}
 			$menuItems['spacer1'] = 'spacer';
 			// Copy:
-			if (!in_array('copy', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay) {
+			if (!in_array('copy', $this->disabledItems, TRUE) && !$root && !$DBmount && !$l10nOverlay) {
 				$menuItems['copy'] = $this->DB_copycut($table, $uid, 'copy');
 			}
 			// Cut:
-			if (!in_array('cut', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay) {
+			if (!in_array('cut', $this->disabledItems, TRUE) && !$root && !$DBmount && !$l10nOverlay) {
 				$menuItems['cut'] = $this->DB_copycut($table, $uid, 'cut');
 			}
 			// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable(''));
-			if (!in_array('paste', $this->disabledItems) && $elFromAllTables) {
+			if (!in_array('paste', $this->disabledItems, TRUE) && $elFromAllTables) {
 				$selItem = $this->clipObj->getSelectedRecord();
 				$elInfo = array(
 					GeneralUtility::fixed_lgd_cs($selItem['_RECORD_TITLE'], $this->backendUser->uc['titleLen']),
@@ -304,11 +304,22 @@ class ClickMenu {
 					$menuItems['pasteafter'] = $this->DB_paste($table, -$uid, 'after', $elInfo);
 				}
 			}
+
+			// Delete:
+			$elInfo = array(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen']));
+			if (!in_array('delete', $this->disabledItems, TRUE) && !$root && !$DBmount && $this->backendUser->isPSet($lCP, $table, 'delete')) {
+				$menuItems['spacer2'] = 'spacer';
+				$menuItems['delete'] = $this->DB_delete($table, $uid, $elInfo);
+			}
+			if (!in_array('history', $this->disabledItems, TRUE)) {
+				$menuItems['history'] = $this->DB_history($table, $uid, $elInfo);
+			}
+
 			$localItems = array();
 			if (!$this->cmLevel && !in_array('moreoptions', $this->disabledItems, TRUE)) {
 				// Creating menu items here:
 				if ($this->editOK) {
-					$localItems[] = 'spacer';
+					$localItems['spacer3'] = 'spacer';
 					$localItems['moreoptions'] = $this->linkItem(
 						$this->label('more'),
 						'',
@@ -372,16 +383,6 @@ class ClickMenu {
 				} else {
 					$menuItems = array_merge($menuItems, $localItems);
 				}
-			}
-
-			// Delete:
-			$elInfo = array(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $this->rec), $this->backendUser->uc['titleLen']));
-			if (!in_array('delete', $this->disabledItems) && !$root && !$DBmount && $this->backendUser->isPSet($lCP, $table, 'delete')) {
-				$menuItems['spacer2'] = 'spacer';
-				$menuItems['delete'] = $this->DB_delete($table, $uid, $elInfo);
-			}
-			if (!in_array('history', $this->disabledItems)) {
-				$menuItems['history'] = $this->DB_history($table, $uid, $elInfo);
 			}
 		}
 		// Adding external elements to the menuItems array
@@ -934,7 +935,7 @@ class ClickMenu {
 					.'</span>';
 			}
 			// Hide
-			if (!in_array('hide', $this->disabledItems) && $isStorageRoot && $userMayEditStorage) {
+			if (!in_array('hide', $this->disabledItems, TRUE) && $isStorageRoot && $userMayEditStorage) {
 				$record = BackendUtility::getRecord('sys_file_storage', $fileObject->getStorage()->getUid());
 				$menuItems['hide'] = $this->DB_changeFlag(
 					'sys_file_storage',
@@ -945,7 +946,7 @@ class ClickMenu {
 				);
 			}
 			// Edit
-			if (!in_array('edit', $this->disabledItems) && $fileObject->checkActionPermission('write')) {
+			if (!in_array('edit', $this->disabledItems, TRUE) && $fileObject->checkActionPermission('write')) {
 				if (!$folder && !$isStorageRoot && $fileObject->isIndexed() && $this->backendUser->check('tables_modify', 'sys_file_metadata')) {
 					$metaData = $fileObject->_getMetaData();
 					$menuItems['edit2'] = $this->DB_edit('sys_file_metadata', $metaData['uid']);
@@ -957,19 +958,19 @@ class ClickMenu {
 				}
 			}
 			// Rename
-			if (!in_array('rename', $this->disabledItems) && !$isStorageRoot && $fileObject->checkActionPermission('rename')) {
+			if (!in_array('rename', $this->disabledItems, TRUE) && !$isStorageRoot && $fileObject->checkActionPermission('rename')) {
 				$menuItems['rename'] = $this->FILE_launch($identifier, 'file_rename', 'rename', 'actions-edit-rename');
 			}
 			// Upload
-			if (!in_array('upload', $this->disabledItems) && $folder && $isOnline && $fileObject->checkActionPermission('write')) {
+			if (!in_array('upload', $this->disabledItems, TRUE) && $folder && $isOnline && $fileObject->checkActionPermission('write')) {
 				$menuItems['upload'] = $this->FILE_launch($identifier, 'file_upload', 'upload', 'actions-edit-upload');
 			}
 			// New
-			if (!in_array('new', $this->disabledItems) && $folder && $isOnline && $fileObject->checkActionPermission('write')) {
+			if (!in_array('new', $this->disabledItems, TRUE) && $folder && $isOnline && $fileObject->checkActionPermission('write')) {
 				$menuItems['new'] = $this->FILE_launch($identifier, 'file_newfolder', 'new', 'actions-document-new');
 			}
 			// Info
-			if (!in_array('info', $this->disabledItems) && $fileObject->checkActionPermission('read')) {
+			if (!in_array('info', $this->disabledItems, TRUE) && $fileObject->checkActionPermission('read')) {
 				if ($isStorageRoot && $userMayViewStorage) {
 					$menuItems['info'] = $this->DB_info('sys_file_storage', $fileObject->getStorage()->getUid());
 				} elseif (!$folder) {
@@ -978,16 +979,16 @@ class ClickMenu {
 			}
 			$menuItems[] = 'spacer';
 			// Copy:
-			if (!in_array('copy', $this->disabledItems) && !$isStorageRoot && $fileObject->checkActionPermission('read')) {
+			if (!in_array('copy', $this->disabledItems, TRUE) && !$isStorageRoot && $fileObject->checkActionPermission('read')) {
 				$menuItems['copy'] = $this->FILE_copycut($identifier, 'copy');
 			}
 			// Cut:
-			if (!in_array('cut', $this->disabledItems) && !$isStorageRoot && $fileObject->checkActionPermission('move')) {
+			if (!in_array('cut', $this->disabledItems, TRUE) && !$isStorageRoot && $fileObject->checkActionPermission('move')) {
 				$menuItems['cut'] = $this->FILE_copycut($identifier, 'cut');
 			}
 			// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable('_FILE'));
-			if (!in_array('paste', $this->disabledItems) && $elFromAllTables && $folder && $fileObject->checkActionPermission('write')) {
+			if (!in_array('paste', $this->disabledItems, TRUE) && $elFromAllTables && $folder && $fileObject->checkActionPermission('write')) {
 				$elArr = $this->clipObj->elFromTable('_FILE');
 				$selItem = reset($elArr);
 				$clickedFileOrFolder = ResourceFactory::getInstance()->retrieveFileOrFolderObject($combinedIdentifier);
@@ -1003,7 +1004,7 @@ class ClickMenu {
 			}
 			$menuItems[] = 'spacer';
 			// Delete:
-			if (!in_array('delete', $this->disabledItems) && $fileObject->checkActionPermission('delete')) {
+			if (!in_array('delete', $this->disabledItems, TRUE) && $fileObject->checkActionPermission('delete')) {
 				if ($isStorageRoot && $userMayEditStorage) {
 					$elInfo = array(GeneralUtility::fixed_lgd_cs($fileObject->getStorage()->getName(), $this->backendUser->uc['titleLen']));
 					$menuItems['delete'] = $this->DB_delete('sys_file_storage', $fileObject->getStorage()->getUid(), $elInfo);
