@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -90,10 +92,18 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     protected $iconFactory;
 
     /**
+     * ModuleTemplate Container
+     *
+     * @var ModuleTemplate
+     */
+    protected $moduleTemplate;
+
+    /**
      * @return \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController
      */
     public function __construct()
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->getLanguageService()->includeLLFile('EXT:scheduler/Resources/Private/Language/locallang.xlf');
         $this->MCONF = array(
             'name' => $this->moduleName,
@@ -107,6 +117,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/SplitButtons');
     }
 
     /**
@@ -117,12 +128,6 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     public function init()
     {
         parent::init();
-
-        // Initialize document
-        $this->doc = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\DocumentTemplate::class);
-        $this->doc->setModuleTemplate(ExtensionManagementUtility::extPath('scheduler') . 'Resources/Private/Templates/Module.html');
-        $this->doc->bodyTagId = 'typo3-mod-php';
-        $this->doc->bodyTagAdditions = 'class="tx_scheduler_mod1"';
 
         // Create scheduler instance
         $this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
@@ -156,20 +161,64 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // The page will show only if user has admin rights
         if ($this->getBackendUser()->isAdmin()) {
             // Set the form
-            $this->doc->form = '<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">';
+            $this->moduleTemplate->setForm('<form name="tx_scheduler_form" id="tx_scheduler_form" method="post" action="">');
 
             // Prepare main content
-            $this->content = $this->doc->header($this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']));
+            $this->content = '<h1>' . $this->getLanguageService()->getLL('function.' . $this->MOD_SETTINGS['function']) . '</h1>';
             $this->content .= $this->getModuleContent();
         } else {
             // If no access, only display the module's title
-            $this->content = $this->doc->header($this->getLanguageService()->getLL('title'));
-            $this->content .= $this->doc->spacer(5);
+            $this->content = '<h1>' . $this->getLanguageService()->getLL('title.') . '</h1>';
+            $this->content .= $this->moduleTemplate->spacer(5);
         }
-        // Place content inside template
-        $content = $this->doc->moduleBody(array(), $this->getDocHeaderButtons(), $this->getTemplateMarkers());
-        // Renders the module page
-        $this->content = $this->doc->render($this->getLanguageService()->getLL('title'), $content);
+        $this->getButtons();
+        $this->getModuleMenu();
+        $this->content = $this->getFlashMessages() . $this->content;
+    }
+
+    /**
+     * Get the default rendered FlashMessages from queue
+     *
+     * @return string
+     */
+    public function getFlashMessages()
+    {
+        /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
+        /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+        $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+        return $defaultFlashMessageQueue->renderFlashMessages();
+    }
+
+    /**
+     * Generates the action menu
+     */
+    protected function getModuleMenu()
+    {
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('SchedulerJumpMenu');
+
+        foreach ($this->MOD_MENU['function'] as $controller => $title) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    BackendUtility::getModuleUrl(
+                        $this->moduleName,
+                        [
+                            'id' => $this->id,
+                            'SET' => [
+                                'function' => $controller
+                            ]
+                        ]
+                    )
+                )
+                ->setTitle($title);
+            if ($controller === $this->MOD_SETTINGS['function']) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
     /**
@@ -267,7 +316,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 break;
         }
         // Wrap the content in a section
-        return $this->doc->section($sectionTitle, '<div class="tx_scheduler_mod1">' . $content . '</div>', false, true);
+        return $this->moduleTemplate->section($sectionTitle, '<div class="tx_scheduler_mod1">' . $content . '</div>', false, true);
     }
 
     /**
@@ -284,7 +333,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         $this->init();
         $this->main();
 
-        $response->getBody()->write($this->content);
+        $this->moduleTemplate->setContent($this->content);
+        $response->getBody()->write($this->moduleTemplate->renderContent());
         return $response;
     }
 
@@ -932,15 +982,15 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
         // Just to get the number of entries
         $query = array(
             'SELECT' => '
-				tx_scheduler_task.*,
-				tx_scheduler_task_group.groupName as taskGroupName,
-				tx_scheduler_task_group.description as taskGroupDescription,
-				tx_scheduler_task_group.deleted as isTaskGroupDeleted
-				',
+                tx_scheduler_task.*,
+                tx_scheduler_task_group.groupName as taskGroupName,
+                tx_scheduler_task_group.description as taskGroupDescription,
+                tx_scheduler_task_group.deleted as isTaskGroupDeleted
+                ',
             'FROM' => '
-				tx_scheduler_task
-				LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task_group.uid = tx_scheduler_task.task_group
-				',
+                tx_scheduler_task
+                LEFT JOIN tx_scheduler_task_group ON tx_scheduler_task_group.uid = tx_scheduler_task.task_group
+                ',
             'WHERE' => '1=1',
             'ORDERBY' => 'tx_scheduler_task_group.sorting'
         );
@@ -959,13 +1009,13 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             $table[] =
                 '<thead><tr>'
                     . '<th><a href="#" id="checkall" title="' . $this->getLanguageService()->getLL('label.checkAll', true) . '" class="icon">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a></th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.id', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('task', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.type', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.frequency', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.parallel', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.lastExecution', true) . '</th>'
-                    . '<th>' . $this->getLanguageService()->getLL('label.nextExecution', true) . '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.id', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('task', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.type', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.frequency', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.parallel', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.lastExecution', true). '</th>'
+                    . '<th>' . $this->getLanguageService()->getLL('label.nextExecution', true). '</th>'
                     . '<th></th>'
                 . '</tr></thead>';
 
@@ -991,8 +1041,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     $table[] = '<tr><td colspan="9">' . $groupText . '</td></tr>';
                 }
 
-                foreach ($taskGroup['tasks'] as $schedulerRecord) {
-                    // Define action icons
+                foreach ($taskGroup['tasks'] as $schedulerRecord) {// Define action icons
                     $link = htmlspecialchars($this->moduleUri . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']);
                     $editAction = '<a class="btn btn-default" href="' . $link . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:edit', true) . '" class="icon">' .
                         $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
@@ -1320,7 +1369,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     /**
      * Checks the submitted data and performs some pre-processing on it
      *
-     * @return bool TRUE if everything was ok, FALSE otherwise
+     * @return bool true if everything was ok, false otherwise
      */
     protected function preprocessData()
     {
@@ -1396,8 +1445,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
             /** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
             $providerObject = GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
             if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
-                // The validate method will return TRUE if all went well, but that must not
-                // override previous FALSE values => AND the returned value with the existing one
+                // The validate method will return true if all went well, but that must not
+                // override previous false values => AND the returned value with the existing one
                 $result &= $providerObject->validateAdditionalFields($this->submittedData, $this);
             }
         }
@@ -1434,7 +1483,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                 // Get a timestamp from all these parts
                 $timestamp = @mktime($hour, $minutes, 0, $month, $day, $year);
             }
-            // If the timestamp is still FALSE, throw an exception
+            // If the timestamp is still false, throw an exception
             if ($timestamp === false) {
                 throw new \InvalidArgumentException('"' . $string . '" seems not to be a correct date.', 1294587694);
             }
@@ -1537,72 +1586,83 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     protected function getTemplateMarkers()
     {
         return array(
-            'CSH' => BackendUtility::wrapInHelp('_MOD_system_txschedulerM1', ''),
-            'FUNC_MENU' => $this->getFunctionMenu(),
             'CONTENT' => $this->content,
             'TITLE' => $this->getLanguageService()->getLL('title')
         );
     }
 
     /**
-     * Gets the function menu selector for this backend module.
-     *
-     * @return string The HTML representation of the function menu selector
+     * Create the panel of buttons for submitting the form or otherwise perform operations.
      */
-    protected function getFunctionMenu()
+    protected function getButtons()
     {
-        return BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
-    }
-
-    /**
-     * Gets the buttons that shall be rendered in the docHeader.
-     *
-     * @return array Available buttons for the docHeader
-     */
-    protected function getDocHeaderButtons()
-    {
-        $buttons = array(
-            'addtask' => '',
-            'close' => '',
-            'save' => '',
-            'saveclose' => '',
-            'savenew' => '',
-            'delete' => '',
-            'reload' => '',
-            'shortcut' => $this->getShortcutButton()
-        );
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        // CSH
+        $helpButton = $buttonBar->makeHelpButton()
+            ->setModuleName('_MOD_' . $this->moduleName)
+            ->setFieldName('');
+        $buttonBar->addButton($helpButton);
+        // Add and Reload
         if (empty($this->CMD) || $this->CMD === 'list' || $this->CMD === 'delete' || $this->CMD === 'stop' || $this->CMD === 'toggleHidden') {
-            $buttons['reload'] = '<a href="' . htmlspecialchars($this->moduleUri) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', true) . '">' . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
+            $reloadButton = $buttonBar->makeLinkButton()
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_core.xlf:labels.reload', true))
+                ->setIcon($this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL))
+                ->setHref($this->moduleUri);
+            $buttonBar->addButton($reloadButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
             if ($this->MOD_SETTINGS['function'] === 'scheduler' && !empty($this->getRegisteredClasses())) {
-                $link = $this->moduleUri . '&CMD=add';
-                $image = $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL);
-                $buttons['addtask'] = '<a href="' . htmlspecialchars($link) . '" ' . 'title="' . $this->getLanguageService()->getLL('action.add') . '">' . $image->render() . '</a>';
+                $addButton = $buttonBar->makeLinkButton()
+                    ->setTitle($this->getLanguageService()->getLL('action.add'))
+                    ->setIcon($this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL))
+                    ->setHref($this->moduleUri . '&CMD=add');
+                $buttonBar->addButton($addButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
             }
         }
+        // Close and Save
         if ($this->CMD === 'add' || $this->CMD === 'edit') {
-            $buttons['close'] = '<a href="#" onclick="document.location=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->moduleUri)) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', true) . '">' . $this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL)->render() . '</a>';
-            $buttons['save'] = '<button name="CMD" value="save" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', true) . '">' . $this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL)->render() . '</button>';
-            $buttons['saveclose'] = '<button name="CMD" value="saveclose" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', true) . '">' . $this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL)->render() . '</button>';
-            $buttons['savenew'] = '<button name="CMD" value="savenew" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', true) . '">' . $this->iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL)->render() . '</button>';
+            // Close
+            $closeButton = $buttonBar->makeLinkButton()
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:cancel', true))
+                ->setIcon($this->iconFactory->getIcon('actions-document-close', Icon::SIZE_SMALL))
+                ->setOnClick('document.location=' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->moduleUri)))
+                ->setHref('#');
+            $buttonBar->addButton($closeButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
+            // Save, SaveAndClose, SaveAndNew
+            $saveButtonDropdown = $buttonBar->makeSplitButton();
+            $saveButton = $buttonBar->makeInputButton()
+                ->setName('CMD')
+                ->setValue('save')
+                ->setIcon($this->iconFactory->getIcon('actions-document-save', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:save', true));
+            $saveButtonDropdown->addItem($saveButton);
+            $saveAndCloseButton = $buttonBar->makeInputButton()
+                ->setName('CMD')
+                ->setValue('saveclose')
+                ->setIcon($this->iconFactory->getIcon('actions-document-save-close', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndClose', true));
+            $saveButtonDropdown->addItem($saveAndCloseButton);
+            $saveAndNewButton = $buttonBar->makeInputButton()
+                ->setName('CMD')
+                ->setValue('savenew')
+                ->setIcon($this->iconFactory->getIcon('actions-document-save-new', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:saveAndCreateNewDoc', true));
+            $saveButtonDropdown->addItem($saveAndNewButton);
+            $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
+        // Edit
         if ($this->CMD === 'edit') {
-            $buttons['delete'] = '<button name="CMD" value="delete" class="c-inputButton" title="' . $this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</button>';
+            $deleteButton = $buttonBar->makeInputButton()
+                ->setName('CMD')
+                ->setValue('delete')
+                ->setIcon($this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/locallang_common.xlf:delete', true));
+            $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
         }
-        return $buttons;
-    }
-
-    /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to).
-     *
-     * @return string HTML representation of the shortcut button
-     */
-    protected function getShortcutButton()
-    {
-        $result = '';
+        // Shortcut
         if ($this->getBackendUser()->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('', 'function', $this->moduleName);
+            $shortCutButton = $buttonBar->makeFullyRenderedButton()
+                ->setHtmlSource($this->moduleTemplate->makeShortcutIcon('', 'function', $this->moduleName));
+            $buttonBar->addButton($shortCutButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
         }
-        return $result;
     }
 
     /**
@@ -1624,4 +1684,5 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
     {
         return $GLOBALS['TYPO3_DB'];
     }
+
 }
