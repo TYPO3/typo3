@@ -643,16 +643,16 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "1.2.2",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "fe2135c3eeaca23fc7a39add8aa4d75d089a2478"
+                "reference": "f41bf519acc9430a7d999a6a22a5720e1ee3a27a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/fe2135c3eeaca23fc7a39add8aa4d75d089a2478",
-                "reference": "fe2135c3eeaca23fc7a39add8aa4d75d089a2478",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/f41bf519acc9430a7d999a6a22a5720e1ee3a27a",
+                "reference": "f41bf519acc9430a7d999a6a22a5720e1ee3a27a",
                 "shasum": ""
             },
             "require": {
@@ -700,7 +700,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2015-07-15 18:24:33"
+            "time": "2015-10-08 20:34:38"
         }
     ],
     "packages-dev": [
