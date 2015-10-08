@@ -29,7 +29,7 @@ New page TSconfig is introduced. The options are:
 				uid = tx_myext_pi1[showUid]
 			}
 			additionalGetParameters {
-				tx_myext_pi1[special] = HELLO
+				tx_myext_pi1.special = HELLO # results in tx_myext_pi1[special]
 			}
 		}
 	}
