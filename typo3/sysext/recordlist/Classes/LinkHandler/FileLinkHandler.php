@@ -231,10 +231,10 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             $out .= '<ul class="list-tree list-tree-root">';
             foreach ($folderContent as $fileOrFolderObject) {
                 list($fileIdentifier, $icon) = $this->renderItem($fileOrFolderObject);
-                $selected = $currentIdentifier === $fileIdentifier ? ' class="active"' : ''; // @todo this class has no styling yet!
+                $selected = $currentIdentifier === $fileIdentifier ? ' class="active"' : '';
                 $out .=
                     '<li' . $selected . '>
-						<a href="#" class="t3-js-fileLink" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" data-file="file:' . htmlspecialchars($fileIdentifier) . '">
+						<a href="#" class="t3js-fileLink" title="' . htmlspecialchars($fileOrFolderObject->getName()) . '" data-file="file:' . htmlspecialchars($fileIdentifier) . '">
 							' .    $icon . '
 							' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '
 						</a>
@@ -298,7 +298,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getBodyTagAttributes()
     {
         return [
-            'data-current-file' => empty($this->linkParts) ? '' : 'file:' . $this->linkParts['url']
+            'data-current-link' => empty($this->linkParts) ? '' : 'file:' . $this->linkParts['url']
         ];
     }
 

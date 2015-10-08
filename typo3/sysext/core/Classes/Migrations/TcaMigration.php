@@ -615,7 +615,7 @@ class TcaMigration
     }
 
     /**
-     * Migrate wizard "wizard_element_browser" used in mode "wizard" to use the "wizard_link_browser" instead
+     * Migrate wizard "wizard_element_browser" used in mode "wizard" to use the "wizard_link" instead
      *
      * @param array $tca
      * @return array Migrated TCA
@@ -631,12 +631,12 @@ class TcaMigration
                     isset($fieldConfig['config']['wizards']['link']['module']['name']) && $fieldConfig['config']['wizards']['link']['module']['name'] === 'wizard_element_browser'
                     && isset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']) &&  $fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode'] === 'wizard'
                 ) {
-                    $fieldConfig['config']['wizards']['link']['module']['name'] = 'wizard_link_browser';
+                    $fieldConfig['config']['wizards']['link']['module']['name'] = 'wizard_link';
                     unset($fieldConfig['config']['wizards']['link']['module']['urlParameters']['mode']);
                     if (empty($fieldConfig['config']['wizards']['link']['module']['urlParameters'])) {
                         unset($fieldConfig['config']['wizards']['link']['module']['urlParameters']);
                     }
-                    $this->messages[] = 'Reference to "wizard_element_browser" was migrated to new "wizard_link_browser" for field "' . $fieldName . '" in TCA table "' . $table . '"';
+                    $this->messages[] = 'Reference to "wizard_element_browser" was migrated to new "wizard_link" for field "' . $fieldName . '" in TCA table "' . $table . '"';
                 }
             }
         }

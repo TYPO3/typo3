@@ -192,5 +192,11 @@ return [
     'icons' => [
         'path' => '/icons',
         'target' => \TYPO3\CMS\Core\Imaging\IconFactory::class . '::processAjaxRequest'
-    ]
+    ],
+
+    // Encode typolink parts on demand
+    'link_browser_encodetypolink' => [
+        'path' => '/link-browser/encode-typolink',
+        'target' => \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::encodeTypoLink',
+    ],
 ];

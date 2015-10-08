@@ -20,7 +20,7 @@ define(['jquery'], function($) {
 
 	/**
 	 *
-	 * @type {{thisScriptUrl: string, urlParameters: {}, parameters: {}, addOnParams: string, linkAttributeFields: Array, updateFunctions: null}}
+	 * @type {{thisScriptUrl: string, urlParameters: {}, parameters: {}, addOnParams: string, linkAttributeFields: Array, additionalLinkAttributes: {}, finalizeFunction: null}}
 	 * @exports TYPO3/CMS/Recordlist/LinkBrowser
 	 */
 	var LinkBrowser = {
@@ -29,21 +29,8 @@ define(['jquery'], function($) {
 		parameters: {},
 		addOnParams: '',
 		linkAttributeFields: [],
-		updateFunctions: null // those are set in the module initializer function in PHP
-	};
-
-	/**
-	 * Return reference to parent's form element
-	 *
-	 * @returns {Element}
-	 */
-	LinkBrowser.checkReference = function () {
-		var selector = 'form[name="' + LinkBrowser.parameters.formName + '"] [data-formengine-input-name="' + LinkBrowser.parameters.itemName + '"]';
-		if (window.opener && window.opener.document && window.opener.document.querySelector(selector)) {
-			return window.opener.document.querySelector(selector);
-		} else {
-			close();
-		}
+		additionalLinkAttributes: {},
+		finalizeFunction: null // receives the value of the selected element as parameter (e.g. "page:<pageUid>" or "file:<uid>", etc
 	};
 
 	/**
@@ -59,46 +46,15 @@ define(['jquery'], function($) {
 				attributeValues[fieldName] = val;
 			}
 		});
+		$.extend(attributeValues, LinkBrowser.additionalLinkAttributes);
 		return attributeValues;
-	};
-
-	/**
-	 * Save the current link back to the opener
-	 *
-	 * @param {String} input
-	 */
-	LinkBrowser.updateValueInMainForm = function(input) {
-		var field = LinkBrowser.checkReference();
-		if (field) {
-			var attributeValues = LinkBrowser.getLinkAttributeValues();
-
-			// encode link on server
-			attributeValues.url = input;
-
-			$.ajax({
-				url: TYPO3.settings.ajaxUrls['link_browser_encodeTypoLink'],
-				data: attributeValues,
-				method: 'GET',
-				async: false,
-				success: function(data) {
-					if (data.typoLink) {
-						field.value = data.typoLink;
-						if (typeof field.onchange === 'function') {
-							field.onchange();
-						}
-
-						LinkBrowser.updateFunctions();
-					}
-				}
-			});
-		}
 	};
 
 	/**
 	 *
 	 */
 	LinkBrowser.loadTarget = function() {
-		$('#linkTarget').val($(this).val());
+		$('.t3js-linkTarget').val($(this).val());
 		this.selectedIndex = 0;
 	};
 
@@ -127,6 +83,10 @@ define(['jquery'], function($) {
 		return '&' + str.join("&");
 	};
 
+	LinkBrowser.setAdditionalLinkAttribute = function(name, value) {
+		LinkBrowser.additionalLinkAttributes[name] = value;
+	};
+
 	$(function() {
 		var data = $('body').data();
 
@@ -136,7 +96,7 @@ define(['jquery'], function($) {
 		LinkBrowser.addOnParams = data.addOnParams;
 		LinkBrowser.linkAttributeFields = data.linkAttributeFields;
 
-		$('#targetPreselect').on('change', LinkBrowser.loadTarget);
+		$('.t3js-targetPreselect').on('change', LinkBrowser.loadTarget);
 	});
 
 	/**

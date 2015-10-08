@@ -1229,13 +1229,6 @@ interface t3lib_TCEmain_processUploadHook extends \TYPO3\CMS\Core\DataHandling\D
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-interface t3lib_browseLinksHook extends \TYPO3\CMS\Core\ElementBrowser\ElementBrowserHookInterface
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class t3lib_codec_JavaScriptEncoder extends \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
 {
 }
@@ -7361,13 +7354,6 @@ class SC_mod_web_perm_index extends \TYPO3\CMS\Beuser\Controller\PermissionContr
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class browse_links extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class SC_browse_links extends \TYPO3\CMS\Recordlist\Controller\ElementBrowserController
 {
 }
@@ -7628,13 +7614,6 @@ class tx_rsaauth_split_storage extends \TYPO3\CMS\Rsaauth\Storage\SplitStorage
  * @deprecated since 6.0, removed since 7.0
  */
 class tx_rsaauth_storagefactory extends \TYPO3\CMS\Rsaauth\Storage\StorageFactory
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_rtehtmlarea_browse_links extends \TYPO3\CMS\Rtehtmlarea\BrowseLinks
 {
 }
 
@@ -7907,13 +7886,6 @@ class tx_rtehtmlarea_userelements extends \TYPO3\CMS\Rtehtmlarea\Extension\UserE
 /**
  * @deprecated since 6.0, removed since 7.0
  */
-class tx_rtehtmlarea_folderTree extends \TYPO3\CMS\Rtehtmlarea\FolderTree
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
 class tx_rtehtmlarea_deprecatedRteProperties extends \TYPO3\CMS\Rtehtmlarea\Hook\Install\DeprecatedRteProperties
 {
 }
@@ -7929,20 +7901,6 @@ class tx_rtehtmlarea_softrefproc extends \TYPO3\CMS\Rtehtmlarea\Hook\SoftReferen
  * @deprecated since 6.0, removed since 7.0
  */
 class tx_rtehtmlarea_statusReport_conflictsCheck extends \TYPO3\CMS\Rtehtmlarea\Hook\StatusReportConflictsCheckHook
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_rtehtmlarea_image_folderTree extends \TYPO3\CMS\Rtehtmlarea\FolderTree
-{
-}
-
-/**
- * @deprecated since 6.0, removed since 7.0
- */
-class tx_rtehtmlarea_pageTree extends \TYPO3\CMS\Rtehtmlarea\PageTree
 {
 }
 

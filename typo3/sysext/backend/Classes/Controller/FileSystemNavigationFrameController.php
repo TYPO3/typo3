@@ -118,8 +118,7 @@ class FileSystemNavigationFrameController
             if ($this->foldertree instanceof ElementBrowserFolderTreeView) {
                 // create a fake provider to pass link data along properly
                 $linkParamProvider = GeneralUtility::makeInstance(DummyLinkParameterProvider::class,
-                    $this->scopeData['browser']['mode'],
-                    $this->scopeData['browser']['act'],
+                    $this->scopeData['browser'],
                     $this->scopeData['script']
                 );
                 $this->foldertree->setLinkParameterProvider($linkParamProvider);

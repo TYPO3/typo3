@@ -1010,7 +1010,7 @@ class TcaMigrationTest extends UnitTestCase
                             'wizards' => [
                                 'link' => [
                                     'module' => [
-                                        'name' => 'wizard_link_browser',
+                                        'name' => 'wizard_link',
                                     ],
                                 ],
                             ],

@@ -21,17 +21,15 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Lang\LanguageService;
 use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 
 /**
  * Script class for the Link Browser window.
  */
-class LinkBrowserController
+abstract class AbstractLinkBrowserController
 {
     /**
      * @var DocumentTemplate
@@ -56,9 +54,13 @@ class LinkBrowserController
     protected $linkHandlers = [];
 
     /**
-     * @var string
+     * All parts of the current link
+     *
+     * Comprised of url information and additional link parameters.
+     *
+     * @var string[]
      */
-    protected $currentLink = '';
+    protected $currentLinkParts = [];
 
     /**
      * Link handler responsible for the current active link
@@ -172,13 +174,8 @@ class LinkBrowserController
         $content = $this->doc->startPage('Link Browser');
         $content .= $this->doc->getFlashMessages();
 
-        if ($this->currentLink) {
-            $content .= '<!-- Print current URL -->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
-					<tr>
-						<td>' . $this->getLanguageService()->getLL('currentLink', true) . ': ' . htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) . '</td>
-					</tr>
-				</table>';
+        if (!empty($this->currentLinkParts)) {
+            $content .= $this->renderCurrentUrl();
         }
         $content .= $this->doc->getTabMenuRaw($menuData);
         $content .= $renderLinkAttributeFields;
@@ -227,7 +224,6 @@ class LinkBrowserController
         $this->displayedLinkHandlerId = $act;
         $this->parameters = isset($queryParams['P']) ? $queryParams['P'] : [];
         $this->linkAttributeValues = isset($queryParams['linkAttributes']) ? $queryParams['linkAttributes'] : [];
-        $this->currentLink = isset($this->parameters['currentValue']) ? trim($this->parameters['currentValue']) : '';
     }
 
     /**
@@ -277,7 +273,7 @@ class LinkBrowserController
 
         foreach ($this->hookObjects as $hookObject) {
             if (method_exists($hookObject, 'modifyLinkHandlers')) {
-                $linkHandlers = $hookObject->modifyLinkHandlers($linkHandlers, $this->currentLink);
+                $linkHandlers = $hookObject->modifyLinkHandlers($linkHandlers, $this->currentLinkParts);
             }
         }
 
@@ -285,19 +281,15 @@ class LinkBrowserController
     }
 
     /**
-     * Initialize $this->currentLink and $this->currentLinkHandler
+     * Initialize $this->currentLinkParts and $this->currentLinkHandler
      *
      * @return void
      */
     protected function initCurrentUrl()
     {
-        if (!$this->currentLink) {
+        if (empty($this->currentLinkParts)) {
             return;
         }
-
-        $currentLinkParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($this->currentLink);
-        $currentLinkParts['params'] = $currentLinkParts['additionalParams'];
-        unset($currentLinkParts['additionalParams']);
 
         $orderedHandlers = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($this->linkHandlers, 'scanBefore', 'scanAfter');
 
@@ -305,7 +297,7 @@ class LinkBrowserController
         foreach ($orderedHandlers as $key => $configuration) {
             /** @var LinkHandlerInterface $handler */
             $handler = $configuration['handlerInstance'];
-            if ($handler->canHandleLink($currentLinkParts)) {
+            if ($handler->canHandleLink($this->currentLinkParts)) {
                 $this->currentLinkHandler = $handler;
                 $this->currentLinkHandlerId = $key;
                 break;
@@ -313,13 +305,14 @@ class LinkBrowserController
         }
         // reset the link if we have no handler for it
         if (!$this->currentLinkHandler) {
-            $this->currentLink = '';
+            $this->currentLinkParts = [];
         }
 
-        unset($currentLinkParts['url']);
         // overwrite any preexisting
-        foreach ($currentLinkParts as $key => $part) {
-            $this->linkAttributeValues[$key] = $part;
+        foreach ($this->currentLinkParts as $key => $part) {
+            if ($key !== 'url') {
+                $this->linkAttributeValues[$key] = $part;
+            }
         }
     }
 
@@ -333,22 +326,6 @@ class LinkBrowserController
         $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
         $this->doc->bodyTagId = 'typo3-browse-links-php';
 
-        if (!$this->areFieldChangeFunctionsValid() && !$this->areFieldChangeFunctionsValid(true)) {
-            $this->parameters['fieldChangeFunc'] = array();
-        }
-        unset($this->parameters['fieldChangeFunc']['alert']);
-        $update = [];
-        foreach ($this->parameters['fieldChangeFunc'] as $v) {
-            $update[] = 'parent.opener.' . $v;
-        }
-        $inlineJS = implode(LF, $update);
-
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJquery();
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Recordlist/LinkBrowser', 'function(LinkBrowser) {
-			LinkBrowser.updateFunctions = function() {' . $inlineJS . '};
-		}');
-
         foreach ($this->getBodyTagAttributes() as $attributeName => $value) {
             $this->doc->bodyTagAdditions .= ' ' . $attributeName . '="' . htmlspecialchars($value) . '"';
         }
@@ -356,6 +333,21 @@ class LinkBrowserController
         // Finally, add the accumulated JavaScript to the template object:
         // also unset the default jumpToUrl() function before
         unset($this->doc->JScodeArray['jumpToUrl']);
+    }
+
+    /**
+     * Render the currently set URL
+     *
+     * @return string
+     */
+    protected function renderCurrentUrl()
+    {
+        return '<!-- Print current URL -->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
+					<tr>
+						<td>' . $this->getLanguageService()->getLL('currentLink', true) . ': ' . htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) . '</td>
+					</tr>
+				</table>';
     }
 
     /**
@@ -408,7 +400,7 @@ class LinkBrowserController
         // if there is no active tab
         if (!$this->displayedLinkHandler) {
             // empty the current link
-            $this->currentLink = '';
+            $this->currentLinkParts = [];
             $this->currentLinkHandler = null;
             $this->currentLinkHandler = '';
             // select first tab
@@ -432,7 +424,7 @@ class LinkBrowserController
 
         foreach ($this->hookObjects as $hookObject) {
             if (method_exists($hookObject, 'modifyAllowedItems')) {
-                $allowedItems = $hookObject->modifyAllowedItems($allowedItems, $this->currentLink);
+                $allowedItems = $hookObject->modifyAllowedItems($allowedItems, $this->currentLinkParts);
             }
         }
 
@@ -471,6 +463,9 @@ class LinkBrowserController
     public function renderLinkAttributeFields()
     {
         $fieldRenderingDefinitions = $this->getLinkAttributeFieldDefinitions();
+
+        $fieldRenderingDefinitions = $this->displayedLinkHandler->modifyLinkAttributes($fieldRenderingDefinitions);
+
         $this->linkAttributeFields = $this->getAllowedLinkAttributes();
 
         $content = '';
@@ -479,12 +474,12 @@ class LinkBrowserController
         }
 
         // add update button if appropriate
-        if ($this->currentLink && $this->displayedLinkHandler === $this->currentLinkHandler && $this->currentLinkHandler->isUpdateSupported()) {
+        if (!empty($this->currentLinkParts) && $this->displayedLinkHandler === $this->currentLinkHandler && $this->currentLinkHandler->isUpdateSupported()) {
             $content .= '
 				<form action="" name="lparamsform" id="lparamsform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
 					<tr><td>
-						<input class="btn btn-default t3-js-linkCurrent" type="submit" value="' . $this->getLanguageService()->getLL('update', true) . '" />
+						<input class="btn btn-default t3js-linkCurrent" type="submit" value="' . $this->getLanguageService()->getLL('update', true) . '" />
 					</td></tr>
 					</table>
 				</form><br /><br />';
@@ -512,8 +507,8 @@ class LinkBrowserController
 						<tr>
 							<td style="width: 96px;">' . $lang->getLL('target', true) . ':</td>
 							<td>
-								<input type="text" name="ltarget" id="linkTarget" value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
-								<select name="ltarget_type" id="targetPreselect">
+								<input type="text" name="ltarget" class="t3js-linkTarget" value="' . htmlspecialchars($this->linkAttributeValues['target']) . '" />
+								<select name="ltarget_type" class="t3js-targetPreselect">
 									<option value=""></option>
 									<option value="_top">' . $lang->getLL('top', true) . '</option>
 									<option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
@@ -581,6 +576,8 @@ class LinkBrowserController
     }
 
     /**
+     * Get attributes for the body tag
+     *
      * @return string[] Array of body-tag attributes
      */
     protected function getBodyTagAttributes()
@@ -590,8 +587,6 @@ class LinkBrowserController
         $parameters['pid'] = $this->parameters['pid'];
         $parameters['itemName'] = $this->parameters['itemName'];
         $parameters['formName'] = $this->parameters['formName'];
-        $parameters['fieldChangeFunc'] = $this->parameters['fieldChangeFunc'];
-        $parameters['fieldChangeFuncHash'] = GeneralUtility::hmac(serialize($this->parameters['fieldChangeFunc']));
         $parameters['params']['allowedExtensions'] = isset($this->parameters['params']['allowedExtensions']) ? $this->parameters['params']['allowedExtensions'] : '';
         $parameters['params']['blindLinkOptions'] = isset($this->parameters['params']['blindLinkOptions']) ? $this->parameters['params']['blindLinkOptions'] : '';
         $parameters['params']['blindLinkFields'] = isset($this->parameters['params']['blindLinkFields']) ? $this->parameters['params']['blindLinkFields']: '';
@@ -611,79 +606,11 @@ class LinkBrowserController
     }
 
     /**
-     * Determines whether submitted field change functions are valid
-     * and are coming from the system and not from an external abuse.
-     *
-     * @param bool $handleFlexformSections Whether to handle flexform sections differently
-     * @return bool Whether the submitted field change functions are valid
-     */
-    protected function areFieldChangeFunctionsValid($handleFlexformSections = false)
-    {
-        $result = false;
-        if (isset($this->parameters['fieldChangeFunc']) && is_array($this->parameters['fieldChangeFunc']) && isset($this->parameters['fieldChangeFuncHash'])) {
-            $matches = array();
-            $pattern = '#\\[el\\]\\[(([^]-]+-[^]-]+-)(idx\\d+-)([^]]+))\\]#i';
-            $fieldChangeFunctions = $this->parameters['fieldChangeFunc'];
-            // Special handling of flexform sections:
-            // Field change functions are modified in JavaScript, thus the hash is always invalid
-            if ($handleFlexformSections && preg_match($pattern, $this->parameters['itemName'], $matches)) {
-                $originalName = $matches[1];
-                $cleanedName = $matches[2] . $matches[4];
-                foreach ($fieldChangeFunctions as &$value) {
-                    $value = str_replace($originalName, $cleanedName, $value);
-                }
-                unset($value);
-            }
-            $result = $this->parameters['fieldChangeFuncHash'] === GeneralUtility::hmac(serialize($fieldChangeFunctions));
-        }
-        return $result;
-    }
-
-    /**
-     * Encode a typolink via ajax
-     *
-     * This avoids to implement the encoding functionality again in JS for the browser.
-     *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @return ResponseInterface
-     */
-    public static function encodeTypoLink(ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $typoLinkParts = $request->getQueryParams();
-        if (isset($typoLinkParts['params'])) {
-            $typoLinkParts['additionalParams'] = $typoLinkParts['params'];
-            unset($typoLinkParts['params']);
-        }
-
-        $typoLink = GeneralUtility::makeInstance(TypoLinkCodecService::class)->encode($typoLinkParts);
-
-        $response->getBody()->write(json_encode(['typoLink' => $typoLink]));
-        return $response;
-    }
-
-    /**
      * Return the ID of current page
      *
      * @return int
      */
-    protected function getCurrentPageId()
-    {
-        $pageId = 0;
-        $P = $this->parameters;
-        if (isset($P['pid'])) {
-            $pageId = $P['pid'];
-        } elseif (isset($P['itemName'])) {
-            // parse data[<table>][<uid>]
-            if (preg_match('~data\[([^]]*)\]\[([^]]*)\]~', $P['itemName'], $matches)) {
-                $recordArray = BackendUtility::getRecord($matches['1'], $matches['2']);
-                if (is_array($recordArray)) {
-                    $pageId = $recordArray['pid'];
-                }
-            }
-        }
-        return $pageId;
-    }
+    abstract protected function getCurrentPageId();
 
     /**
      * @return array
@@ -691,6 +618,15 @@ class LinkBrowserController
     public function getParameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     * Retrieve the configuration
+     *
+     * @return array
+     */
+    public function getConfiguration() {
+        return [];
     }
 
     /**

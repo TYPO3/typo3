@@ -201,7 +201,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
 							' . $icon . '
 						</span>
 						<span class="list-tree-title">
-							<a href="#" class="t3-js-pageLink" data-id="' . (int)$expPageId . '" data-anchor="#' . (int)$row['uid'] . '">
+							<a href="#" class="t3js-pageLink" data-id="' . (int)$expPageId . '" data-anchor="#' . (int)$row['uid'] . '">
 								' . htmlspecialchars(BackendUtility::getRecordTitle('tt_content', $row, true)) . '
 							</a>
 						</span>
@@ -271,7 +271,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             return [];
         }
         return [
-            'data-current-link' => $this->linkParts['pageid'] . '#' . $this->linkParts['anchor']
+            'data-current-link' => $this->linkParts['pageid'] . ($this->linkParts['anchor'] !== '' ? '#' . $this->linkParts['anchor'] : '')
         ];
     }
 
@@ -306,6 +306,29 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function getScriptUrl()
     {
         return $this->linkBrowser->getScriptUrl();
+    }
+
+    /**
+     * @param string[] $fieldDefinitions Array of link attribute field definitions
+     * @return string[]
+     */
+    public function modifyLinkAttributes(array $fieldDefinitions) {
+        $configuration = $this->linkBrowser->getConfiguration();
+        if (!empty($configuration['pageIdSelector.']['enabled'])) {
+            $fieldDefinitions['pageIdSelector'] = '
+				<tr>
+					<td>
+						<label>
+							' . $this->getLanguageService()->getLL('page_id', true) . ':
+						</label>
+					</td>
+					<td colspan="3">
+						<input type="text" size="6" name="luid" id="luid" /> <input class="btn btn-default t3js-pageLink" type="submit" value="'
+            . $this->getLanguageService()->getLL('setLink', true) . '" />
+					</td>
+				</tr>';
+        }
+        return $fieldDefinitions;
     }
 
     /**

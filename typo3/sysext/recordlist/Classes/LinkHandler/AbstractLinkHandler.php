@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Recordlist\Controller\LinkBrowserController;
+use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
  * Base class for link handlers
@@ -42,7 +42,7 @@ abstract class AbstractLinkHandler
     protected $updateSupported = true;
 
     /**
-     * @var LinkBrowserController
+     * @var AbstractLinkBrowserController
      */
     protected $linkBrowser;
 
@@ -61,13 +61,13 @@ abstract class AbstractLinkHandler
     /**
      * Initialize the handler
      *
-     * @param LinkBrowserController $linkBrowser
+     * @param AbstractLinkBrowserController $linkBrowser
      * @param string $identifier
      * @param array $configuration Page TSconfig
      *
      * @return void
      */
-    public function initialize(LinkBrowserController $linkBrowser, $identifier, array $configuration)
+    public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration)
     {
         $this->linkBrowser = $linkBrowser;
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -79,6 +79,14 @@ abstract class AbstractLinkHandler
     public function getLinkAttributes()
     {
         return $this->linkAttributes;
+    }
+
+    /**
+     * @param string[] $fieldDefinitions Array of link attribute field definitions
+     * @return string[]
+     */
+    public function modifyLinkAttributes(array $fieldDefinitions) {
+        return $fieldDefinitions;
     }
 
     /**

@@ -36,9 +36,29 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 
 		var id = $(this).data('id');
 		var anchor = $(this).data('anchor');
-		LinkBrowser.updateValueInMainForm(id + (anchor ? anchor : ""));
 
-		close();
+		if (!LinkBrowser.finalizeFunction) {
+			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
+		}
+		LinkBrowser.finalizeFunction('page:' + id + (anchor ? anchor : ''));
+	};
+
+	/**
+	 *
+	 * @param {Event} event
+	 */
+	PageLinkHandler.linkPageByTextfield = function(event) {
+		event.preventDefault();
+
+		var value = $('#luid').val();
+		if (!value) {
+			return;
+		}
+
+		if (!LinkBrowser.finalizeFunction) {
+			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
+		}
+		LinkBrowser.finalizeFunction('page:' + value);
 	};
 
 	/**
@@ -48,16 +68,18 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 	PageLinkHandler.linkCurrent = function(event) {
 		event.preventDefault();
 
-		LinkBrowser.updateValueInMainForm(PageLinkHandler.currentLink);
-
-		close();
+		if (!LinkBrowser.finalizeFunction) {
+			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
+		}
+		LinkBrowser.finalizeFunction('page:' + PageLinkHandler.currentLink);
 	};
 
 	$(function() {
 		PageLinkHandler.currentLink = $('body').data('currentLink');
 
-		$('a.t3-js-pageLink').on('click', PageLinkHandler.linkPage);
-		$('input.t3-js-linkCurrent').on('click', PageLinkHandler.linkCurrent);
+		$('a.t3js-pageLink').on('click', PageLinkHandler.linkPage);
+		$('input.t3js-linkCurrent').on('click', PageLinkHandler.linkCurrent);
+		$('input.t3js-pageLink').on('click', PageLinkHandler.linkPageByTextfield);
 	});
 
 	return PageLinkHandler;

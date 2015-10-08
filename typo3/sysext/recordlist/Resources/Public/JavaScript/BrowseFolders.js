@@ -27,7 +27,7 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Moda
 			ElementBrowser.insertElement('', folderId, 'folder', folderId, folderId, '', '', '', close);
 		});
 
-		$('.t3-js-folderIdError').on('click', function (event) {
+		$('.t3js-folderIdError').on('click', function (event) {
 			event.preventDefault();
 			Modal.confirm('', $(this).data('message'), opener.TYPO3.Severity.error, [], []);
 		});

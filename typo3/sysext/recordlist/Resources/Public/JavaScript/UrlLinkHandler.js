@@ -37,13 +37,12 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) 
 			return;
 		}
 
-		if (value.substr(0, 7) === "http://") {
-			value = value.substr(7);
+		LinkBrowser.setAdditionalLinkAttribute('data-htmlarea-external', '1');
+
+		if (!LinkBrowser.finalizeFunction) {
+			throw 'The link browser requires the finalizeFunction to be set. Seems like you discovered a major bug.';
 		}
-
-		LinkBrowser.updateValueInMainForm(value);
-
-		close();
+		LinkBrowser.finalizeFunction(value);
 	};
 
 	$(function() {

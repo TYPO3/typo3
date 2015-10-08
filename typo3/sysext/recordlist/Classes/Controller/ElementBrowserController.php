@@ -77,7 +77,7 @@ class ElementBrowserController
     }
 
     /**
-     * Injects the request object for the current request or subrequest
+     * Injects the request object for the current request or sub-request
      * As this controller goes only through the main() method, it is rather simple for now
      *
      * @param ServerRequestInterface $request the current request
@@ -88,7 +88,7 @@ class ElementBrowserController
     {
         // Fallback for old calls, which use mode "wizard" or "rte" for link selection
         if ($this->mode === 'wizard' || $this->mode === 'rte') {
-            return $response->withStatus(303)->withHeader('Location', BackendUtility::getModuleUrl('wizard_link_browser', $_GET, false, true));
+            return $response->withStatus(303)->withHeader('Location', BackendUtility::getModuleUrl('wizard_link', $_GET, false, true));
         }
 
         $response->getBody()->write($this->main());

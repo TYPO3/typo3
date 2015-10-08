@@ -61,7 +61,7 @@ $extraContentColumns = array(
                     'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_link_formlabel',
                     'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                     'module' => array(
-                        'name' => 'wizard_link_browser',
+                        'name' => 'wizard_link',
                     ),
                     'JSopenParams' => 'width=800,height=600,status=0,menubar=0,scrollbars=1'
                 )
@@ -128,7 +128,7 @@ $extraContentColumns = array(
                     'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:image_link_formlabel',
                     'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif',
                     'module' => array(
-                        'name' => 'wizard_link_browser',
+                        'name' => 'wizard_link',
                     ),
                     'params' => array(
                         'blindLinkOptions' => 'folder,file,mail,spec',

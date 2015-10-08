@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -33,7 +34,7 @@ class FolderTreeView extends AbstractTreeView
     /**
      * The users' file Storages
      *
-     * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
+     * @var ResourceStorage[]
      */
     protected $storages = null;
 
@@ -99,11 +100,12 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Generate the plus/minus icon for the browsable tree.
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject Entry folder object
+     * @param Folder $folderObject Entry folder object
      * @param int $subFolderCounter The current entry number
      * @param int $totalSubFolders The total number of entries. If equal to $a, a "bottom" element is returned.
      * @param int $nextCount The number of sub-elements to the current element.
      * @param bool $isExpanded The element was expanded to render subelements if this flag is set.
+     *
      * @return string Image tag with the plus/minus icon.
      * @internal
      * @see \TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
@@ -163,7 +165,8 @@ class FolderTreeView extends AbstractTreeView
      * Wrapping the folder icon
      *
      * @param string $icon The image tag for the icon
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The row for the current element
+     * @param Folder $folderObject The row for the current element
+     *
      * @return string The processed icon input value.
      * @internal
      */
@@ -188,8 +191,9 @@ class FolderTreeView extends AbstractTreeView
      * Wrapping $title in a-tags.
      *
      * @param string $title Title string
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folder record
+     * @param Folder $folderObject the folder record
      * @param int $bank Bank pointer (which mount point number)
+     *
      * @return string
      * @internal
      */
@@ -208,7 +212,8 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Returns the id from the record - for folders, this is an md5 hash.
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
+     * @param Folder $folderObject The folder object
+     *
      * @return int The "uid" field value.
      */
     public function getId($folderObject)
@@ -219,7 +224,8 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Returns jump-url parameter value.
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
+     * @param Folder $folderObject The folder object
+     *
      * @return string The jump-url parameter.
      */
     public function getJumpToParam($folderObject)
@@ -243,8 +249,9 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Returns the value for the image "title" attribute
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder to be used
-     * @return 	string The attribute value (is htmlspecialchared() already)
+     * @param Folder $folderObject The folder to be used
+     *
+     * @return string The attribute value (is htmlspecialchared() already)
      */
     public function getTitleAttrib($folderObject)
     {
@@ -275,10 +282,10 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Get a tree for one storage
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
+     * @param ResourceStorage $storageObject
      * @return void
      */
-    public function getBrowseableTreeForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject)
+    public function getBrowseableTreeForStorage(ResourceStorage $storageObject)
     {
         // If there are filemounts, show each, otherwise just the rootlevel folder
         $fileMounts = $storageObject->getFileMounts();
@@ -300,7 +307,7 @@ class FolderTreeView extends AbstractTreeView
         $this->reset();
         // Go through all "root level folders" of this tree (can be the rootlevel folder or any file mount points)
         foreach ($rootLevelFolders as $rootLevelFolderInfo) {
-            /** @var $rootLevelFolder \TYPO3\CMS\Core\Resource\Folder */
+            /** @var $rootLevelFolder Folder */
             $rootLevelFolder = $rootLevelFolderInfo['folder'];
             $rootLevelFolderName = $rootLevelFolderInfo['name'];
             $folderHashSpecUID = GeneralUtility::md5int($rootLevelFolder->getCombinedIdentifier());
@@ -352,13 +359,14 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Fetches the data for the tree
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject the folderobject
+     * @param Folder $folderObject the folderobject
      * @param int $depth Max depth (recursivity limit)
      * @param string $type HTML-code prefix for recursive calls.
+     *
      * @return int The count of items on the level
      * @see getBrowsableTree()
      */
-    public function getFolderTree(\TYPO3\CMS\Core\Resource\Folder $folderObject, $depth = 999, $type = '')
+    public function getFolderTree(Folder $folderObject, $depth = 999, $type = '')
     {
         $depth = (int)$depth;
 
@@ -476,7 +484,7 @@ class FolderTreeView extends AbstractTreeView
         // so we know how many we have to close when all children are done rendering
         $closeDepth = array();
         foreach ($treeItems as $treeItem) {
-            /** @var $folderObject \TYPO3\CMS\Core\Resource\Folder */
+            /** @var $folderObject Folder */
             $folderObject = $treeItem['row']['folder'];
             $classAttr = $treeItem['row']['_CSSCLASS'];
             $folderIdentifier = $folderObject->getCombinedIdentifier();
@@ -543,10 +551,11 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Counts the number of directories in a file path.
      *
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject File path.
+     * @param Folder $folderObject File path.
+     *
      * @return int
      */
-    public function getNumberOfSubfolders(\TYPO3\CMS\Core\Resource\Folder $folderObject)
+    public function getNumberOfSubfolders(Folder $folderObject)
     {
         $subFolders = $folderObject->getSubfolders();
         return count($subFolders);
@@ -585,11 +594,12 @@ class FolderTreeView extends AbstractTreeView
     /**
      * Helper method to map md5-hash to shorter number
      *
-     * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
-     * @param \TYPO3\CMS\Core\Resource\Folder $startingPointFolder
+     * @param ResourceStorage $storageObject
+     * @param Folder $startingPointFolder
+     *
      * @return int
      */
-    protected function getShortHashNumberForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject = null, \TYPO3\CMS\Core\Resource\Folder $startingPointFolder = null)
+    protected function getShortHashNumberForStorage(ResourceStorage $storageObject = null, Folder $startingPointFolder = null)
     {
         if (!$this->storageHashNumbers) {
             $this->storageHashNumbers = array();
@@ -657,11 +667,12 @@ class FolderTreeView extends AbstractTreeView
      *
      * @param string $mountKey The mount key / storage UID
      * @param bool $doExpand Whether to expand/collapse
-     * @param \TYPO3\CMS\Core\Resource\Folder $folderObject The folder object
+     * @param Folder $folderObject The folder object
      * @param string $treeName The name of the tree
+     *
      * @return string
      */
-    protected function generateExpandCollapseParameter($mountKey = null, $doExpand = false, \TYPO3\CMS\Core\Resource\Folder $folderObject = null, $treeName = null)
+    protected function generateExpandCollapseParameter($mountKey = null, $doExpand = false, Folder $folderObject = null, $treeName = null)
     {
         $parts = array(
             $mountKey !== null ? $mountKey : $this->bank,

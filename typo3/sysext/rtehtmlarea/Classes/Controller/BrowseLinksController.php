@@ -19,13 +19,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
-use TYPO3\CMS\Recordlist\Controller\LinkBrowserController;
-use TYPO3\CMS\Rtehtmlarea\LinkHandler\RemoveLinkHandler;
+use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
  * Extended controller for link browser
  */
-class BrowseLinksController extends LinkBrowserController
+class BrowseLinksController extends AbstractLinkBrowserController
 {
     /**
      * Active with TYPO3 Element Browser: Contains the name of the form field for which this window
@@ -92,6 +91,46 @@ class BrowseLinksController extends LinkBrowserController
     protected $RTEtsConfigParams;
 
     /**
+     * @var array
+     */
+    protected $classesAnchorDefault = array();
+
+    /**
+     * @var array
+     */
+    protected $classesAnchorDefaultTitle = array();
+
+    /**
+     * @var array
+     */
+    protected $classesAnchorClassTitle = array();
+
+    /**
+     * @var array
+     */
+    protected $classesAnchorDefaultTarget = array();
+
+    /**
+     * @var array
+     */
+    protected $classesAnchorJSOptions = array();
+
+    /**
+     * @var string
+     */
+    protected $defaultLinkTarget = '';
+
+    /**
+     * @var array
+     */
+    protected $additionalAttributes = array();
+
+    /**
+     * @var string
+     */
+    protected $siteUrl = '';
+
+    /**
      * Initialize controller
      */
     protected function init()
@@ -112,8 +151,18 @@ class BrowseLinksController extends LinkBrowserController
     {
         parent::initVariables($request);
 
-        $parameters = $request->getQueryParams();
-        $this->bparams = isset($parameters['bparams']) ? $parameters['bparams'] : '';
+        $queryParameters = $request->getQueryParams();
+        $this->bparams = isset($queryParameters['bparams']) ? $queryParameters['bparams'] : '';
+
+        $this->siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+
+        $currentLinkParts = isset($queryParameters['curUrl']) ? $queryParameters['curUrl'] : [];
+        if (isset($currentLinkParts['all'])) {
+            $currentLinkParts = GeneralUtility::get_tag_attributes($queryParameters['curUrl']['all']);
+            $currentLinkParts['url'] = htmlspecialchars_decode($currentLinkParts['href']);
+            unset($currentLinkParts['href']);
+        }
+        $this->currentLinkParts = $currentLinkParts;
 
         // Process bparams
         $pArr = explode('|', $this->bparams);
@@ -147,8 +196,164 @@ class BrowseLinksController extends LinkBrowserController
      */
     protected function initDocumentTemplate()
     {
+        parent::initDocumentTemplate();
+
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Rtehtmlarea/RteLinkBrowser');
+    }
+
+    /**
+     * Initialize $this->currentLink and $this->currentLinkHandler
+     *
+     * @return void
+     */
+    protected function initCurrentUrl()
+    {
+        if (empty($this->currentLinkParts)) {
+            return;
+        }
+
+        if (empty($this->currentLinkParts['data-htmlarea-external'])) {
+            // strip siteUrl prefix except for external and mail links
+            if (strpos($this->currentLinkParts['url'], 'mailto:') === false) {
+                $paramsPosition = strpos($this->currentLinkParts['url'], '?');
+                if ($paramsPosition !== false) {
+                    $this->currentLinkParts['url'] = substr($this->currentLinkParts['url'], $paramsPosition + 1);
+                }
+            }
+            // special treatment for page links, remove the id= part
+            $idPosition = strpos($this->currentLinkParts['url'], 'id=');
+            if ($idPosition !== false) {
+                $this->currentLinkParts['url'] = substr($this->currentLinkParts['url'], $idPosition + 3);
+            }
+
+            // in RTE the additional params are encoded directly at the end of the href part
+            // we need to split this again into dedicated fields
+            $additionalParamsPosition = strpos($this->currentLinkParts['url'], '?');
+            if ($additionalParamsPosition === false) {
+                $additionalParamsPosition = strpos($this->currentLinkParts['url'], '&');
+            }
+            if ($additionalParamsPosition !== false) {
+                $this->currentLinkParts['params'] = substr($this->currentLinkParts['url'], $additionalParamsPosition);
+                $this->currentLinkParts['url'] = substr($this->currentLinkParts['url'], 0, $additionalParamsPosition);
+                // in case the first sign was an ? override it with &
+                $this->currentLinkParts['params'][0] = '&';
+            }
+        }
+
+        parent::initCurrentUrl();
+    }
+
+    /**
+     * Renders the link attributes for the selected link handler
+     *
+     * @return string
+     */
+    public function renderLinkAttributeFields()
+    {
+        // Processing the classes configuration
+        if (!empty($this->buttonConfig['properties.']['class.']['allowedClasses'])) {
+            $classesAnchorArray = GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], true);
+            // Collecting allowed classes and configured default values
+            $classesAnchor = [
+                'all' => []
+            ];
+            $titleReadOnly = $this->buttonConfig['properties.']['title.']['readOnly']
+                || $this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['title.']['readOnly'];
+            if (is_array($this->RTEProperties['classesAnchor.'])) {
+                foreach ($this->RTEProperties['classesAnchor.'] as $label => $conf) {
+                    if (in_array($conf['class'], $classesAnchorArray)) {
+                        $classesAnchor['all'][] = $conf['class'];
+                        if ($conf['type'] === $this->displayedLinkHandlerId) {
+                            $classesAnchor[$conf['type']][] = $conf['class'];
+                            if ($this->buttonConfig[$conf['type'] . '.']['properties.']['class.']['default'] == $conf['class']) {
+                                $this->classesAnchorDefault[$conf['type']] = $conf['class'];
+                                if ($conf['titleText']) {
+                                    $this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText']));
+                                }
+                                if (isset($conf['target'])) {
+                                    $this->classesAnchorDefaultTarget[$conf['type']] = trim($conf['target']);
+                                }
+                            }
+                        }
+                        if ($titleReadOnly && $conf['titleText']) {
+                            $this->classesAnchorClassTitle[$conf['class']] = ($this->classesAnchorDefaultTitle[$conf['type']] = $this->contentLanguageService->sL(trim($conf['titleText'])));
+                        }
+                    }
+                }
+            }
+            // Constructing the class selector options
+            foreach ($classesAnchorArray as $class) {
+                if (!in_array($class, $classesAnchor['all']) || in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$this->displayedLinkHandlerId]) && in_array($class, $classesAnchor[$this->displayedLinkHandlerId])) {
+                    $selected = '';
+                    if ($this->linkAttributeValues['class'] === $class || !$this->linkAttributeValues['class'] && $this->classesAnchorDefault[$this->displayedLinkHandlerId] == $class) {
+                        $selected = 'selected="selected"';
+                    }
+                    $classLabel = !empty($this->RTEProperties['classes.'][$class . '.']['name'])
+                        ? $this->getPageConfigLabel($this->RTEProperties['classes.'][$class . '.']['name'], 0)
+                        : $class;
+                    $classStyle = !empty($this->RTEProperties['classes.'][$class . '.']['value'])
+                        ? $this->RTEProperties['classes.'][$class . '.']['value']
+                        : '';
+                    $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] .= '<option ' . $selected . ' value="' . $class . '"' . ($classStyle ? ' style="' . $classStyle . '"' : '') . '>' . $classLabel . '</option>';
+                }
+            }
+            if ($this->classesAnchorJSOptions[$this->displayedLinkHandlerId] && !($this->buttonConfig['properties.']['class.']['required'] || $this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['class.']['required'])) {
+                $selected = '';
+                if (!$this->linkAttributeValues['class'] && !$this->classesAnchorDefault[$this->displayedLinkHandlerId]) {
+                    $selected = 'selected="selected"';
+                }
+                $this->classesAnchorJSOptions[$this->displayedLinkHandlerId] = '<option ' . $selected . ' value=""></option>' . $this->classesAnchorJSOptions[$this->displayedLinkHandlerId];
+            }
+        }
+        // Default target
+        $this->defaultLinkTarget = $this->classesAnchorDefault[$this->currentLinkHandlerId] && $this->classesAnchorDefaultTarget[$this->currentLinkHandlerId]
+            ? $this->classesAnchorDefaultTarget[$this->currentLinkHandlerId]
+            : (isset($this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['target.']['default'])
+                ? $this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['target.']['default']
+                : (isset($this->buttonConfig['properties.']['target.']['default'])
+                    ? $this->buttonConfig['properties.']['target.']['default']
+                    : ''));
+        // Initializing additional attributes
+        if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes']) {
+            $addAttributes = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rtehtmlarea']['plugins']['TYPO3Link']['additionalAttributes'], true);
+            foreach ($addAttributes as $attribute) {
+                $this->additionalAttributes[$attribute] = isset($this->linkAttributeValues[$attribute]) ? $this->linkAttributeValues[$attribute] : '';
+            }
+        }
+        return parent::renderLinkAttributeFields();
+    }
+
+    /**
+     * Localize a label obtained from Page TSConfig
+     *
+     * @param string $string The label to be localized
+     * @param bool $JScharCode If needs to be converted to an array of char numbers
+     * @return string Localized string
+     */
+    public function getPageConfigLabel($string, $JScharCode = true)
+    {
+        if (substr($string, 0, 4) !== 'LLL:') {
+            $label = $string;
+        } else {
+            $label = $this->getLanguageService()->sL(trim($string));
+        }
+        $label = str_replace('"', '\\"', str_replace('\\\'', '\'', $label));
+        return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
+    }
+
+    /**
+     * @return string
+     */
+    protected function renderCurrentUrl()
+    {
+        $removeLink = '<a href="#" class="btn btn-default t3js-removeCurrentLink">' . $this->getLanguageService()->getLL('removeLink', true) . '</a>';
+        return '
+            <table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
+                <tr>
+                    <td>' . $this->getLanguageService()->getLL('currentLink', true) . ': ' . htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) . $removeLink . '</td>
+                </tr>
+            </table>';
     }
 
     /**
@@ -159,14 +364,6 @@ class BrowseLinksController extends LinkBrowserController
     protected function getAllowedItems()
     {
         $allowedItems = parent::getAllowedItems();
-
-        // do not show the "removeLink" item if there is no current link
-        if (!$this->currentLink) {
-            $position = array_search('removeLink', $allowedItems, true);
-            if ($position !== false) {
-                unset($allowedItems[$position]);
-            }
-        }
 
         $blindLinkOptions = isset($this->RTEProperties['default.']['blindLinkOptions'])
             ? GeneralUtility::trimExplode(',', $this->RTEProperties['default.']['blindLinkOptions'], true)
@@ -208,10 +405,15 @@ class BrowseLinksController extends LinkBrowserController
         $fieldRenderingDefinitions['title'] = $this->getTitleField();
         $fieldRenderingDefinitions['class'] = $this->getClassField();
         $fieldRenderingDefinitions['target'] = $this->getTargetField();
-        $fieldRenderingDefinitions['params'] = $this->getParamsField();
         $fieldRenderingDefinitions['rel'] = $this->getRelField();
+        if (
+            isset($this->buttonConfig['queryParametersSelector.']['enabled'])
+            && !$this->buttonConfig['queryParametersSelector.']['enabled']
+        ) {
+            unset($fieldRenderingDefinitions['params']);
+        }
+        return $fieldRenderingDefinitions;
     }
-
 
     /**
      * Add rel field
@@ -220,41 +422,24 @@ class BrowseLinksController extends LinkBrowserController
      */
     protected function getRelField()
     {
-        // Unset rel attribute if we changed tab
-        $currentRel = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['rel']) ? $this->curUrlArray['rel'] : '';
-        if (($this->act === 'page' || $this->act === 'url' || $this->act === 'file')
-            && isset($this->buttonConfig['relAttribute.']['enabled']) && $this->buttonConfig['relAttribute.']['enabled']
-        ) {
-            return '
-						<tr>
-							<td><label>' . $this->getLanguageService()->getLL('linkRelationship', true) . ':</label></td>
-							<td colspan="3">
-								<input type="text" name="lrel" value="' . $currentRel . '"  '
-            . $this->doc->formWidth(30) . ' />
-							</td>
-						</tr>';
-        }
-        return '';
-    }
-
-
-    /**
-     * Add query parameter selector
-     *
-     * @return string
-     */
-    protected function getParamsField()
-    {
-        if (empty($this->buttonConfig['queryParametersSelector.']['enabled'])) {
+        if (empty($this->buttonConfig['relAttribute.']['enabled'])) {
             return '';
         }
+        // @todo add rel to attributes
+        $currentRel = $this->displayedLinkHandler === $this->currentLinkHandler && !empty($this->currentLinkParts)
+            ? $this->linkAttributeValues['rel']
+            : '';
+        // @todo define label "linkRelationship" below in xlf
         return '
-			<tr>
-				<td><label>' . $this->getLanguageService()->getLL('query_parameters', true) . ':</label></td>
-				<td colspan="3">
-					<input type="text" name="query_parameters" value="' . ($this->curUrlInfo['query'] ?: '') . '" ' . $this->doc->formWidth(30) . ' />
-				</td>
-			</tr>';
+				<form action="" name="lrelform" id="lrelform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkRel">
+						<tr>
+							<td><label>' . $this->getLanguageService()->getLL('linkRelationship', true) . ':</label></td>
+							<td colspan="3"><input type="text" name="lrel" value="' . $currentRel . '" /></td>
+						</tr>
+					</table>
+				</form>
+			';
     }
 
     /**
@@ -268,31 +453,34 @@ class BrowseLinksController extends LinkBrowserController
         if (is_array($this->buttonConfig['targetSelector.'])) {
             $targetSelectorConfig = $this->buttonConfig['targetSelector.'];
         }
-        // Reset the target to default if we changed tab
-        $currentTarget = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['target']) ? $this->curUrlArray['target'] : '';
-        $target = $currentTarget ?: $this->defaultLinkTarget;
+        $target = $this->linkAttributeValues['target'] ?: $this->defaultLinkTarget;
         $lang = $this->getLanguageService();
-        $ltarget = '
-				<tr id="ltargetrow"' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
-					<td><label>' . $lang->getLL('target', true) . ':</label></td>
-					<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="'
-            . htmlspecialchars($target) . '"' . $this->doc->formWidth(10) . ' /></td>';
-        $ltarget .= '
-					<td colspan="2">';
+        $targetSelector = '';
+
         if (!$targetSelectorConfig['disabled']) {
-            $ltarget .= '
-						<select name="ltarget_type" onchange="browse_links_setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
-							<option></option>
+            $targetSelector = '
+						<select name="ltarget_type" class="t3js-targetPreselect">
+							<option value=""></option>
 							<option value="_top">' . $lang->getLL('top', true) . '</option>
 							<option value="_blank">' . $lang->getLL('newWindow', true) . '</option>
-						</select>';
+						</select>
+			';
         }
-        $ltarget .= '
-					</td>
-				</tr>';
-        return $ltarget;
-    }
 
+        return '
+				<form action="" name="ltargetform" id="ltargetform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
+						<tr' . ($targetSelectorConfig['disabled'] ? ' style="display: none;"' : '') . '>
+							<td style="width: 96px;">' . $lang->getLL('target', true) . ':</td>
+							<td>
+								<input type="text" name="ltarget" class="t3js-linkTarget" value="' . htmlspecialchars($target) . '" />
+								' . $targetSelector . '
+							</td>
+						</tr>
+					</table>
+				</form>
+				';
+    }
 
     /**
      * Add title selector
@@ -301,33 +489,43 @@ class BrowseLinksController extends LinkBrowserController
      */
     protected function getTitleField()
     {
-        // Reset the title to default if we changed tab
-        $currentTitle = $this->curUrlInfo['act'] === $this->act && isset($this->curUrlArray['title']) ? $this->curUrlArray['title'] : '';
-        $title = $currentTitle ?: (!$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefaultTitle[$this->act]);
-        $readOnly = isset($this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly'])
-            ? $this->buttonConfig[$this->act . '.']['properties.']['title.']['readOnly']
-            : (isset($this->buttonConfig['properties.']['title.']['readOnly'])
-                ? $this->buttonConfig['properties.']['title.']['readOnly']
-                : false);
+        if ($this->linkAttributeValues['title']) {
+            $title = $this->linkAttributeValues['title'];
+        } else {
+            $title = !$this->classesAnchorDefault[$this->currentLinkHandlerId] ? '' : $this->classesAnchorDefaultTitle[$this->currentLinkHandlerId];
+        }
+        if (isset($this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['title.']['readOnly'])) {
+            $readOnly = (bool)$this->buttonConfig[$this->currentLinkHandlerId . '.']['properties.']['title.']['readOnly'];
+        } else {
+            $readOnly = isset($this->buttonConfig['properties.']['title.']['readOnly'])
+                ? (bool)$this->buttonConfig['properties.']['title.']['readOnly']
+                : false;
+        }
+
         if ($readOnly) {
-            $currentClass = $this->curUrlInfo['act'] === $this->act ? $this->curUrlArray['class'] : '';
+            $currentClass = $this->linkAttributeFields['class'];
             if (!$currentClass) {
-                $currentClass = !$this->classesAnchorDefault[$this->act] ? '' : $this->classesAnchorDefault[$this->act];
+                $currentClass = empty($this->classesAnchorDefault[$this->currentLinkHandlerId]) ? '' : $this->classesAnchorDefault[$this->currentLinkHandlerId];
             }
             $title = $currentClass
                 ? $this->classesAnchorClassTitle[$currentClass]
-                : $this->classesAnchorDefaultTitle[$this->act];
+                : $this->classesAnchorDefaultTitle[$this->currentLinkHandlerId];
         }
         return '
+				<form action="" name="ltitleform" id="ltitleform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
-							<td><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $this->getLanguageService()->getLL('anchor_title', true) . ':</label></td>
-							<td colspan="3">
+							<td style="width: 96px;"><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $this->getLanguageService()->getLL('anchor_title', true) . '</label></td>
+							<td>
 								<span id="rtehtmlarea-browse-links-title-input" style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
-									<input type="text" id="rtehtmlarea-browse-links-anchor_title" name="anchor_title" value="' . htmlspecialchars($title) . '" ' . $this->doc->formWidth(30) . ' />
+									<input type="text" id="rtehtmlarea-browse-links-anchor_title" name="ltitle" value="' . htmlspecialchars($title) . '" />
 								</span>
 								<span id="rtehtmlarea-browse-links-title-readonly" style="display: ' . ($readOnly ? 'inline' : 'none') . ';">' . htmlspecialchars($title) . '</span>
 							</td>
-						</tr>';
+						</tr>
+					</table>
+				</form>
+				';
     }
 
     /**
@@ -338,76 +536,21 @@ class BrowseLinksController extends LinkBrowserController
     protected function getClassField()
     {
         $selectClass = '';
-        if ($this->classesAnchorJSOptions[$this->act]) {
+        if ($this->classesAnchorJSOptions[$this->currentLinkHandlerId]) {
             $selectClass = '
+				<form action="" name="lclassform" id="lclassform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
-							<td><label>' . $this->getLanguageService()->getLL('anchor_class', true) . ':</label></td>
-							<td colspan="3">
-								<select name="anchor_class" onchange="' . $this->getClassOnChangeJS() . '">
-									' . $this->classesAnchorJSOptions[$this->act] . '
-								</select>
-							</td>
-						</tr>';
+							<td style="width: 96px;">' . $this->getLanguageService()->getLL('anchor_class', true) . '</td>
+							<td><select name="lclass" class="t3js-class-selector">
+								' . $this->classesAnchorJSOptions[$this->currentLinkHandlerId] . '
+							</select></td>
+						</tr>
+					</table>
+				</form>
+				';
         }
         return $selectClass;
-    }
-
-    /**
-     * Return JS code for the class selector onChange event
-     *
-     * @return 	string	class selector onChange JS code
-     */
-    protected function getClassOnChangeJS()
-    {
-        return '
-					if (document.ltargetform.anchor_class) {
-						document.ltargetform.anchor_class.value = document.ltargetform.anchor_class.options[document.ltargetform.anchor_class.selectedIndex].value;
-						if (document.ltargetform.anchor_class.value && HTMLArea.classesAnchorSetup) {
-							for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
-								var anchorClass = HTMLArea.classesAnchorSetup[i];
-								if (anchorClass[\'name\'] == document.ltargetform.anchor_class.value) {
-									if (anchorClass[\'titleText\'] && document.ltargetform.anchor_title) {
-										document.ltargetform.anchor_title.value = anchorClass[\'titleText\'];
-										document.getElementById(\'rtehtmlarea-browse-links-title-readonly\').innerHTML = anchorClass[\'titleText\'];
-										browse_links_setTitle(anchorClass[\'titleText\']);
-									}
-									if (typeof anchorClass[\'target\'] !== \'undefined\') {
-										if (document.ltargetform.ltarget) {
-											document.ltargetform.ltarget.value = anchorClass[\'target\'];
-										}
-										browse_links_setTarget(anchorClass[\'target\']);
-									} else if (document.ltargetform.ltarget && document.getElementById(\'ltargetrow\').style.display == \'none\') {
-											// Reset target to default if field is not displayed and class has no configured target
-										document.ltargetform.ltarget.value = \'' . ($this->defaultLinkTarget ?: '') . '\';
-										browse_links_setTarget(document.ltargetform.ltarget.value);
-									}
-									break;
-								}
-							}
-						}
-						browse_links_setClass(document.ltargetform.anchor_class.value);
-					}
-								';
-    }
-
-    /**
-     * Reads the configured link handlers from page TSconfig
-     *
-     * @return array
-     */
-    protected function getLinkHandlers()
-    {
-        $linkHandlers = parent::getLinkHandlers();
-
-        // add the "remove link" tab as last tab
-        $linkHandlers['removeLink'] = [
-            'handler' => RemoveLinkHandler::class,
-            'label' => 'LLL:EXT:rtehtmlarea/Resources/Private/Language/locallang_browselinkscontroller.xlf:removeLink',
-            'displayAfter' => [ 'page', 'file', 'folder', 'url', 'mail' ],
-            'addParams' => 'onclick="plugin.unLink();return false;"',
-        ];
-
-        return $linkHandlers;
     }
 
     /**
@@ -418,6 +561,29 @@ class BrowseLinksController extends LinkBrowserController
     protected function getCurrentPageId()
     {
         return explode(':', $this->RTEtsConfigParams)[5];
+    }
+
+    /**
+     * Retrieve the configuration
+     *
+     * This is only used by RTE currently.
+     *
+     * @return array
+     */
+    public function getConfiguration() {
+        return $this->buttonConfig;
+    }
+
+    /**
+     * Get attributes for the body tag
+     *
+     * @return string[] Array of body-tag attributes
+     */
+    protected function getBodyTagAttributes()
+    {
+        $parameters = parent::getBodyTagAttributes();
+        $parameters['data-site-url'] = $this->siteUrl;
+        return $parameters;
     }
 
     /**

@@ -105,8 +105,8 @@ define(['jquery', 'TYPO3/CMS/Recordlist/ElementBrowser', 'TYPO3/CMS/Backend/Lega
 			BrowseFiles.File.insertElement('file_' + $(this).data('fileIndex'), $(this).data('close'));
 		});
 
-		$('#t3-js-importSelection').on('click', BrowseFiles.Selector.handle);
-		$('#t3-js-toggleSelection').on('click', BrowseFiles.Selector.toggle);
+		$('#t3js-importSelection').on('click', BrowseFiles.Selector.handle);
+		$('#t3js-toggleSelection').on('click', BrowseFiles.Selector.toggle);
 	});
 
 	return BrowseFiles;

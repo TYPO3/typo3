@@ -385,10 +385,10 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         $labelToggleSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:toggleSelection', true);
         $labelImportSelection = $lang->sL('LLL:EXT:lang/locallang_browse_links.xlf:importSelection', true);
 
-        $out = '<div style="padding-top:10px;">' . '<a href="#" id="t3-js-importSelection" title="' . $labelImportSelection . '">'
+        $out = '<div style="padding-top:10px;">' . '<a href="#" id="t3js-importSelection" title="' . $labelImportSelection . '">'
             . $this->iconFactory->getIcon('actions-document-import-t3d', Icon::SIZE_SMALL)
             . $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;'
-            . '<a href="#" id="t3-js-toggleSelection" title="' . $labelToggleSelection . '">'
+            . '<a href="#" id="t3js-toggleSelection" title="' . $labelToggleSelection . '">'
             . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)
             . $labelToggleSelection . '</a>' . '</div>';
 

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Recordlist\Controller\LinkBrowserController;
+use TYPO3\CMS\Recordlist\Controller\AbstractLinkBrowserController;
 
 /**
  * Interface for link handlers displayed in the LinkBrowser
@@ -28,15 +28,21 @@ interface LinkHandlerInterface
     public function getLinkAttributes();
 
     /**
+     * @param string[] $fieldDefinitions Array of link attribute field defintions
+     * @return string[]
+     */
+    public function modifyLinkAttributes(array $fieldDefinitions);
+
+    /**
      * Initialize the handler
      *
-     * @param LinkBrowserController $linkBrowser
+     * @param AbstractLinkBrowserController $linkBrowser
      * @param string $identifier
      * @param array $configuration Page TSconfig
      *
      * @return void
      */
-    public function initialize(LinkBrowserController $linkBrowser, $identifier, array $configuration);
+    public function initialize(AbstractLinkBrowserController $linkBrowser, $identifier, array $configuration);
 
     /**
      * Checks if this is the handler for the given link

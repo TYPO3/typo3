@@ -126,22 +126,21 @@ define(['TYPO3/CMS/Rtehtmlarea/HTMLArea/Plugin/Plugin',
 					this.unLink(true);
 					return false;
 				}
-				var additionalParameter;
 				var node = this.editor.getSelection().getParentElement();
 				var el = this.editor.getSelection().getFirstAncestorOfType('a');
 				if (el != null) {
 					node = el;
 				}
+				var additionalParameter = '';
 				if (node != null && /^a$/i.test(node.nodeName)) {
-					additionalParameter = '&curUrl[href]=' + encodeURIComponent(node.getAttribute('href'));
+					additionalParameter = '&curUrl[url]=' + encodeURIComponent(node.getAttribute('href'));
 					if (node.target) additionalParameter += '&curUrl[target]=' + encodeURIComponent(node.target);
 					if (node.className) additionalParameter += '&curUrl[class]=' + encodeURIComponent(node.className);
 					if (node.title) additionalParameter += '&curUrl[title]=' + encodeURIComponent(node.title);
 					if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes) {
 						var additionalAttributes = this.pageTSConfiguration.additionalAttributes.split(',');
 						for (var i = additionalAttributes.length; --i >= 0;) {
-								// hasAttribute() not available in IE < 8
-							if ((node.hasAttribute && node.hasAttribute(additionalAttributes[i])) || node.getAttribute(additionalAttributes[i]) != null) {
+							if (node.hasAttribute(additionalAttributes[i])) {
 								additionalParameter += '&curUrl[' + additionalAttributes[i] + ']=' + encodeURIComponent(node.getAttribute(additionalAttributes[i]));
 							}
 						}

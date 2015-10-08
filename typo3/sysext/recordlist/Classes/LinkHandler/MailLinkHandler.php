@@ -43,8 +43,13 @@ class MailLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
     public function __construct()
     {
         parent::__construct();
-        // remove unsupported link attribute
-        unset($this->linkAttributes[array_search('target', $this->linkAttributes, true)]);
+        // remove unsupported link attributes
+        foreach (['target', 'rel'] as $attribute) {
+            $position = array_search($attribute, $this->linkAttributes, true);
+            if ($position !== false) {
+                unset($this->linkAttributes[$position]);
+            }
+        }
     }
 
     /**

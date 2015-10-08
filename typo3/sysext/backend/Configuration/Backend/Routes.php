@@ -80,6 +80,11 @@ return [
         'target' => Controller\Wizard\EditController::class . '::mainAction'
     ],
 
+    // Register link wizard
+    'wizard_link' => [
+        'path' => '/wizard/link/browse',
+        'target' => \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::mainAction'
+    ],
 
     /** File- and folder-related routes */
 

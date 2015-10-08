@@ -30,17 +30,15 @@ class DummyLinkParameterProvider implements LinkParameterProviderInterface
     protected $thisScript;
 
     /**
-     * @param string $mode
-     * @param string $act
+     * @param string[] $parameters
      * @param string $thisScript
      */
-    public function __construct($mode, $act, $thisScript)
+    public function __construct(array $parameters, $thisScript)
     {
-        if ($mode) {
-            $this->parameters['mode'] = $mode;
-        }
-        if ($act) {
-            $this->parameters['act'] = $act;
+        foreach ($parameters as $name => $value) {
+            if ($value) {
+                $this->parameters[$name] = $value;
+            }
         }
         $this->thisScript = $thisScript;
     }

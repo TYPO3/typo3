@@ -163,7 +163,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             if (strstr($subFolderIdentifier, ',') || strstr($subFolderIdentifier, '|')) {
                 // In case an invalid character is in the filepath, display error message:
                 $errorMessage = sprintf($lang->getLL('invalidChar', true), ', |');
-                $aTag = '<a href="#" class="t3-js-folderIdError" data-message="' . $errorMessage . '">';
+                $aTag = '<a href="#" class="t3js-folderIdError" data-message="' . $errorMessage . '">';
             }
             $aTag_e = '</a>';
             // Combine icon and folderpath:
